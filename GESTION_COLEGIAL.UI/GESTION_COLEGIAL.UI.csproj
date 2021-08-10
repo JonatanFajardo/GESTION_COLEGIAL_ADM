@@ -155,8 +155,33 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AlumnosController.cs" />
+    <Compile Include="Controllers\AulasController.cs" />
+    <Compile Include="Controllers\CargosController.cs" />
+    <Compile Include="Controllers\CursosController.cs" />
+    <Compile Include="Controllers\CursosNivelesController.cs" />
+    <Compile Include="Controllers\CursosNombresController.cs" />
+    <Compile Include="Controllers\DiasController.cs" />
+    <Compile Include="Controllers\DuracionesController.cs" />
+    <Compile Include="Controllers\EmpleadosController.cs" />
+    <Compile Include="Controllers\EncargadosController.cs" />
+    <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HorarioAlumnosController.cs" />
+    <Compile Include="Controllers\HorarioProfesoresController.cs" />
+    <Compile Include="Controllers\HorasController.cs" />
+    <Compile Include="Controllers\MateriasController.cs" />
     <Compile Include="Controllers\ModalidadesController.cs" />
+    <Compile Include="Controllers\NivelesEducativosController.cs" />
+    <Compile Include="Controllers\NotasController.cs" />
+    <Compile Include="Controllers\ParcialesController.cs" />
+    <Compile Include="Controllers\ParentescosController.cs" />
+    <Compile Include="Controllers\PersonasController.cs" />
+    <Compile Include="Controllers\SeccionesController.cs" />
+    <Compile Include="Controllers\SemestresController.cs" />
+    <Compile Include="Controllers\SubMenuController.cs" />
+    <Compile Include="Controllers\TitulosController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1860,6 +1885,31 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Alumnos\" />
+    <Folder Include="Views\Aulas\" />
+    <Folder Include="Views\Cargos\" />
+    <Folder Include="Views\CursosNiveles\" />
+    <Folder Include="Views\CursosNombres\" />
+    <Folder Include="Views\Cursos\" />
+    <Folder Include="Views\Dias\" />
+    <Folder Include="Views\Duraciones\" />
+    <Folder Include="Views\Empleados\" />
+    <Folder Include="Views\Encargados\" />
+    <Folder Include="Views\Estados\" />
+    <Folder Include="Views\HorarioAlumnos\" />
+    <Folder Include="Views\HorarioProfesores\" />
+    <Folder Include="Views\Horas\" />
+    <Folder Include="Views\Materias\" />
+    <Folder Include="Views\NivelesEducativos\" />
+    <Folder Include="Views\Notas\" />
+    <Folder Include="Views\Parciales\" />
+    <Folder Include="Views\Parentescos\" />
+    <Folder Include="Views\Personas\" />
+    <Folder Include="Views\Secciones\" />
+    <Folder Include="Views\Semestres\" />
+    <Folder Include="Views\SubMenu\" />
+    <Folder Include="Views\Titulos\" />
+    <Folder Include="Views\Usuarios\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
