@@ -1,0 +1,41 @@
+﻿@model GESTION_COLEGIAL.UI.Models.ModalidadViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Create", "Modalidades", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Registro de Razas</h3>
+            </div>
+
+            <div class="card-body">
+                @*<form asp-controller="Modalidades" asp-action="Create" method="post" autocomplete="off">*@
+                @*<input type="hidden" asp-for="raza_Id" />*@
+                @Html.HiddenFor(model => model.Mda_Id)
+                <div class="form-row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Mda_Descripcion, "Modalidad", htmlAttributes: new { @class = "control-label" })
+                            @*<label class="control-label">Descripción</label>*@
+                            @Html.EditorFor(model => model.Mda_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Mda_Descripcion, "", new { @class = "text-danger" })
+                            @*<input class="form-control" asp-for="raza_Descripcion" type="text" />
+        <span class="text-danger" asp-validation-for="raza_Descripcion"></span>*@
+                        </div>
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                @*</form>*@
+            </div>
+        </div>
+
+      
+
+    </div>
+}
+
