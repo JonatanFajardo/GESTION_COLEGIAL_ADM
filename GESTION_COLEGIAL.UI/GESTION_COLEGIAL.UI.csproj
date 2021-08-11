@@ -1744,28 +1744,6 @@
     <Content Include="Content\plugins\dropify\fonts\dropify.eot" />
     <Content Include="Content\plugins\dropify\fonts\dropify.ttf" />
     <Content Include="Content\plugins\dropify\fonts\dropify.woff" />
-    <Content Include="Content\plugins\fullcalendar\packages\bootstrap\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\bootstrap\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\core\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\core\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\daygrid\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\daygrid\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\google-calendar\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\google-calendar\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\interaction\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\interaction\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\list\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\list\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\luxon\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\luxon\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\moment-timezone\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\moment-timezone\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\moment\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\moment\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\rrule\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\rrule\README.md" />
-    <Content Include="Content\plugins\fullcalendar\packages\timegrid\package.json" />
-    <Content Include="Content\plugins\fullcalendar\packages\timegrid\README.md" />
     <Content Include="Content\plugins\ion-rangeslider\less\irs.less" />
     <Content Include="Content\plugins\ion-rangeslider\less\skins\big.less" />
     <Content Include="Content\plugins\ion-rangeslider\less\skins\flat.less" />
@@ -1881,6 +1859,28 @@
     <Content Include="Content\scss\_variables-dark.scss" />
     <Content Include="Content\scss\_variables-material.scss" />
     <Content Include="Content\scss\_variables.scss" />
+    <Content Include="Content\plugins\fullcalendar\packages\bootstrap\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\bootstrap\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\core\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\core\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\daygrid\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\daygrid\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\google-calendar\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\google-calendar\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\interaction\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\interaction\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\list\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\list\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\luxon\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\luxon\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\moment-timezone\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\moment-timezone\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\moment\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\moment\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\rrule\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\rrule\README.md" />
+    <Content Include="Content\plugins\fullcalendar\packages\timegrid\package.json" />
+    <Content Include="Content\plugins\fullcalendar\packages\timegrid\README.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1952,6 +1952,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
     <TypeScriptCompile Include="Content\plugins\fullcalendar\packages\bootstrap\main.d.ts" />
     <TypeScriptCompile Include="Content\plugins\fullcalendar\packages\core\main.d.ts" />
     <TypeScriptCompile Include="Content\plugins\fullcalendar\packages\daygrid\main.d.ts" />
@@ -1963,9 +1966,6 @@
     <TypeScriptCompile Include="Content\plugins\fullcalendar\packages\moment\main.d.ts" />
     <TypeScriptCompile Include="Content\plugins\fullcalendar\packages\rrule\main.d.ts" />
     <TypeScriptCompile Include="Content\plugins\fullcalendar\packages\timegrid\main.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
