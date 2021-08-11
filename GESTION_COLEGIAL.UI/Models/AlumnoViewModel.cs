@@ -8,19 +8,19 @@ namespace GESTION_COLEGIAL.UI.Models
         [Key]
         public int Alu_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Persona")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Per_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Curso")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Cur_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Estado")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Est_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public bool? Alu_EsActivo { get; set; }
 

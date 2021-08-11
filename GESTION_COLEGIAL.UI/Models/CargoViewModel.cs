@@ -11,7 +11,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Car_Id { get; set; }
 
         [StringLength(100)]
-        [Display(Name = "")]
+        [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public string Car_Descripcion { get; set; }
 
@@ -19,7 +19,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Car_UsuarioRegistra { get; set; }
 
         [Display(Name = "Usuario registra Nombre")]
-        public string Car_UsuarioRegistra { get; set; }
+        public string Car_UsuarioRegistraNombre { get; set; }
 
         [Display(Name = "Fecha registra")]
         public DateTime Car_FechaRegistra { get; set; }
@@ -28,7 +28,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int? Car_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modifica Nombre")]
-        public string Car_UsuarioModifica { get; set; }
+        public string Car_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Car_FechaModifica { get; set; }

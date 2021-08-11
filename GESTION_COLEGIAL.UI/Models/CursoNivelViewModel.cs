@@ -10,7 +10,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Cun_Id { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "")]
+        [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public string Cun_Descripcion { get; set; }
 
@@ -18,7 +18,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Cun_UsuarioRegistra { get; set; }
 
         [Display(Name = "Usuario registra Nombre")]
-        public string Cun_UsuarioRegistra { get; set; }
+        public string Cun_UsuarioRegistraNombre { get; set; }
 
         [Display(Name = "Fecha registra")]
         public DateTime Cun_FechaRegistra { get; set; }
@@ -27,7 +27,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int? Cun_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modifica Nombre")]
-        public string Cun_UsuarioModifica { get; set; }
+        public string Cun_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Cun_FechaModifica { get; set; }

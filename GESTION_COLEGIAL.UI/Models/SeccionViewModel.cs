@@ -12,7 +12,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Sec_Id { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "")]
+        [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public string Sec_Descripcion { get; set; }
 
@@ -20,23 +20,18 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Sec_UsuarioRegistra { get; set; }
 
         [Display(Name = "Usuario registra Nombre")]
-        public string Sec_UsuarioRegistra { get; set; }
+        public string Sec_UsuarioRegistraNombre { get; set; }
 
-        [Column(TypeName = "datetime")]
-        [Display(Name = "")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Display(Name = "Fecha registra")]
         public DateTime Sec_FechaRegistra { get; set; }
 
-        [Display(Name = "")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Display(Name = "Fecha modifica")]
         public int? Sec_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modifica Nombre")]
-        public string Sec_UsuarioModifica { get; set; }
+        public string Sec_UsuarioModificaNombre { get; set; }
 
-        [Column(TypeName = "datetime")]
-        [Display(Name = "")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Display(Name = "Fecha modifica")]
         public DateTime? Sec_FechaModifica { get; set; }
 
 

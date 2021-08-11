@@ -10,7 +10,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Pac_Id { get; set; }
 
         [StringLength(100)]
-        [Display(Name = "")]
+        [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public string Pac_Descripcion { get; set; }
 
@@ -18,7 +18,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Pac_UsuarioRegistra { get; set; }
 
         [Display(Name = "Usuario registra Nombre")]
-        public string Pac_UsuarioRegistra { get; set; }
+        public string Pac_UsuarioRegistraNombre { get; set; }
 
         [Display(Name = "Fecha registra")]
         public DateTime Pac_FechaRegistra { get; set; }
@@ -27,7 +27,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int? Pac_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modifica Nombre")]
-        public string Pac_UsuarioModifica { get; set; }
+        public string Pac_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Pac_FechaModifica { get; set; }

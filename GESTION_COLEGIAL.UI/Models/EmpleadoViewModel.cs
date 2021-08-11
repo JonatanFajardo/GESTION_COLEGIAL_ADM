@@ -9,23 +9,23 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Emp_Id { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "")]
+        [Display(Name = "Código")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public string Emp_Codigo { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Persona")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Per_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Título")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Tit_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Cargo")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Car_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public bool? Emp_EsActivo { get; set; }
 

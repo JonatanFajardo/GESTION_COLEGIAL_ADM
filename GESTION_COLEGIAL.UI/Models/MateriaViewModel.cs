@@ -10,15 +10,15 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Mat_Id { get; set; }
 
         [StringLength(150)]
-        [Display(Name = "")]
+        [Display(Name = "Nombre")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public string Mat_Nombre { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Duración")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Dur_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public bool? EsActivo { get; set; }
 
@@ -26,7 +26,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Mat_UsuarioRegistra { get; set; }
 
         [Display(Name = "Usuario registra Nombre")]
-        public string Mat_UsuarioRegistra { get; set; }
+        public string Mat_UsuarioRegistraNombre { get; set; }
 
         [Display(Name = "Fecha registra")]
         public DateTime Mat_FechaRegistra { get; set; }
@@ -34,8 +34,8 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Usuario modifica Id")]
         public int? Mat_UsuarioModifica { get; set; }
 
-        [Display(Name = "Usuario modifica Nombre")]
-        public string Mat_UsuarioModifica { get; set; }
+        [Display(Name = "Usuario registra Nombre")]
+        public string Mat_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Mat_FechaModifica { get; set; }

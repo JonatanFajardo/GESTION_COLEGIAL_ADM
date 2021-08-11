@@ -10,28 +10,28 @@ namespace GESTION_COLEGIAL.UI.Models
         [Key]
         public int Not_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Nota")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Not_Nota { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Materia")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Mat_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Semestre")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Sem_Id { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Parcial")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Pac_Id { get; set; }
 
-        [Column(TypeName = "date")]
+        [Column(TypeName = "Año")]
         [Display(Name = "")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public DateTime Not_Año { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public bool? Not_EsActivo { get; set; }
 
@@ -39,7 +39,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Not_UsuarioRegistra { get; set; }
 
         [Display(Name = "Usuario registra Nombre")]
-        public string Not_UsuarioRegistra { get; set; }
+        public string Not_UsuarioRegistraNombre { get; set; }
 
         [Display(Name = "Fecha registra")]
         public DateTime Not_FechaRegistra { get; set; }
@@ -48,7 +48,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int? Not_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modifica Nombre")]
-        public string Not_UsuarioModifica { get; set; }
+        public string Not_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Not_FechaModifica { get; set; }
