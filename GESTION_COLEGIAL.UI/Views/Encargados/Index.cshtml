@@ -1,0 +1,48 @@
+﻿
+@model GESTION_COLEGIAL.UI.Models.EncargadoViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("Create", "Encargados", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Registro de Encargados</h3>
+            </div>
+
+            <div class="card-body">
+                @Html.HiddenFor(model => model.Enc_Id)
+                @* Columna Per_Id *@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Per_Id, "Per_Id", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("Per_Id", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Per_Id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @* Columna Enc_Ocupacion *@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Enc_Ocupacion, "Enc_Ocupacion", htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Enc_Ocupacion, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Enc_Ocupacion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @* Columna Enc_EsActivo *@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Enc_EsActivo, "Enc_EsActivo", htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Enc_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Enc_EsActivo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,36 @@
+﻿
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace GESTION_COLEGIAL.UI.Models
+{
+    public class CursoNivelViewModel
+    {
+        [Key]
+        public int Cun_Id { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "")]
+        [Required(ErrorMessage = "El campo  es requerido")]
+        public string Cun_Descripcion { get; set; }
+
+        [Display(Name = "Usuario registra Id")]
+        public int Cun_UsuarioRegistra { get; set; }
+
+        [Display(Name = "Usuario registra Nombre")]
+        public string Cun_UsuarioRegistra { get; set; }
+
+        [Display(Name = "Fecha registra")]
+        public DateTime Cun_FechaRegistra { get; set; }
+
+        [Display(Name = "Usuario modifica Id")]
+        public int? Cun_UsuarioModifica { get; set; }
+
+        [Display(Name = "Usuario modifica Nombre")]
+        public string Cun_UsuarioModifica { get; set; }
+
+        [Display(Name = "Fecha modifica")]
+        public DateTime? Cun_FechaModifica { get; set; }
+
+    }
+}
