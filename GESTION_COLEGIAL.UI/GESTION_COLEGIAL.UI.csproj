@@ -185,7 +185,32 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AlumnoViewModel.cs" />
+    <Compile Include="Models\AulaViewModel.cs" />
+    <Compile Include="Models\CargoViewModel.cs" />
+    <Compile Include="Models\CursoViewModel.cs" />
+    <Compile Include="Models\CursoNivelViewModel.cs" />
+    <Compile Include="Models\CursoNombreViewModel.cs" />
+    <Compile Include="Models\DiaViewModel.cs" />
+    <Compile Include="Models\DuracionViewModel.cs" />
+    <Compile Include="Models\EmpleadoViewModel.cs" />
+    <Compile Include="Models\EncargadoViewModel.cs" />
+    <Compile Include="Models\EstadoViewModel.cs" />
+    <Compile Include="Models\HorarioAlumnoViewModel.cs" />
+    <Compile Include="Models\HorarioProfesorViewModel.cs" />
+    <Compile Include="Models\HoraViewModel.cs" />
+    <Compile Include="Models\MateriaViewModel.cs" />
+    <Compile Include="Models\Modalidades2.cs" />
     <Compile Include="Models\ModalidadViewModel.cs" />
+    <Compile Include="Models\NivelEducativoViewModel.cs" />
+    <Compile Include="Models\NotaViewModel.cs" />
+    <Compile Include="Models\ParcialViewModel.cs" />
+    <Compile Include="Models\ParentescoViewModel.cs" />
+    <Compile Include="Models\PersonaViewModel.cs" />
+    <Compile Include="Models\SeccionViewModel.cs" />
+    <Compile Include="Models\SemestreViewModel.cs" />
+    <Compile Include="Models\TituloViewModel.cs" />
+    <Compile Include="Models\UsuarioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1882,33 +1907,33 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Modalidades\Index.cshtml" />
+    <Content Include="Views\Semestres\Index.cshtml" />
+    <Content Include="Views\Notas\Index.cshtml" />
+    <Content Include="Views\Secciones\Index.cshtml" />
+    <Content Include="Views\Parentescos\Index.cshtml" />
+    <Content Include="Views\Parciales\Index.cshtml" />
+    <Content Include="Views\NivelesEducativos\Index.cshtml" />
+    <Content Include="Views\Cargos\Index.cshtml" />
+    <Content Include="Views\Cursos\Index.cshtml" />
+    <Content Include="Views\CursosNombres\Index.cshtml" />
+    <Content Include="Views\Titulos\Index.cshtml" />
+    <Content Include="Views\HorarioAlumnos\Index.cshtml" />
+    <Content Include="Views\Estados\Index.cshtml" />
+    <Content Include="Views\Encargados\Index.cshtml" />
+    <Content Include="Views\Empleados\Index.cshtml" />
+    <Content Include="Views\Duraciones\Index.cshtml" />
+    <Content Include="Views\Dias\Index.cshtml" />
+    <Content Include="Views\Materias\Index.cshtml" />
+    <Content Include="Views\Alumnos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Alumnos\" />
     <Folder Include="Views\Aulas\" />
-    <Folder Include="Views\Cargos\" />
     <Folder Include="Views\CursosNiveles\" />
-    <Folder Include="Views\CursosNombres\" />
-    <Folder Include="Views\Cursos\" />
-    <Folder Include="Views\Dias\" />
-    <Folder Include="Views\Duraciones\" />
-    <Folder Include="Views\Empleados\" />
-    <Folder Include="Views\Encargados\" />
-    <Folder Include="Views\Estados\" />
-    <Folder Include="Views\HorarioAlumnos\" />
     <Folder Include="Views\HorarioProfesores\" />
     <Folder Include="Views\Horas\" />
-    <Folder Include="Views\Materias\" />
-    <Folder Include="Views\NivelesEducativos\" />
-    <Folder Include="Views\Notas\" />
-    <Folder Include="Views\Parciales\" />
-    <Folder Include="Views\Parentescos\" />
     <Folder Include="Views\Personas\" />
-    <Folder Include="Views\Secciones\" />
-    <Folder Include="Views\Semestres\" />
     <Folder Include="Views\SubMenu\" />
-    <Folder Include="Views\Titulos\" />
     <Folder Include="Views\Usuarios\" />
   </ItemGroup>
   <ItemGroup>

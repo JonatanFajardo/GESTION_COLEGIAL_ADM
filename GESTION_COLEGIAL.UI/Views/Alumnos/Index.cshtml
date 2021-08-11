@@ -1,0 +1,56 @@
+﻿
+@model GESTION_COLEGIAL.UI.Models.AlumnoViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("Create", "Alumnos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Registro de Alumnos</h3>
+            </div>
+
+            <div class="card-body">
+                @Html.HiddenFor(model => model.Alu_Id)
+                @* Columna Per_Id *@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Per_Id, "Per_Id", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("Per_Id", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Per_Id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @* Columna Cur_Id *@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Cur_Id, "Cur_Id", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("Cur_Id", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Cur_Id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @* Columna Est_Id *@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Est_Id, "Est_Id", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("Est_Id", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Est_Id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @* Columna Alu_EsActivo *@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Alu_EsActivo, "Alu_EsActivo", htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Alu_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Alu_EsActivo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+}

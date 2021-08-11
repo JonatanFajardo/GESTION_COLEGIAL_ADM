@@ -1,0 +1,36 @@
+﻿
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace GESTION_COLEGIAL.UI.Models
+{
+    public class ParcialViewModel
+    {
+        [Key]
+        public int Pac_Id { get; set; }
+
+        [StringLength(100)]
+        [Display(Name = "")]
+        [Required(ErrorMessage = "El campo  es requerido")]
+        public string Pac_Descripcion { get; set; }
+
+        [Display(Name = "Usuario registra Id")]
+        public int Pac_UsuarioRegistra { get; set; }
+
+        [Display(Name = "Usuario registra Nombre")]
+        public string Pac_UsuarioRegistra { get; set; }
+
+        [Display(Name = "Fecha registra")]
+        public DateTime Pac_FechaRegistra { get; set; }
+
+        [Display(Name = "Usuario modifica Id")]
+        public int? Pac_UsuarioModifica { get; set; }
+
+        [Display(Name = "Usuario modifica Nombre")]
+        public string Pac_UsuarioModifica { get; set; }
+
+        [Display(Name = "Fecha modifica")]
+        public DateTime? Pac_FechaModifica { get; set; }
+
+    }
+}
