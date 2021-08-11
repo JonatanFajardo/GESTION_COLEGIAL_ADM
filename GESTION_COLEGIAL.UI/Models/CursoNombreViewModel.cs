@@ -10,7 +10,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Cno_Id { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "")]
+        [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public string Cno_Descripcion { get; set; }
 
@@ -18,7 +18,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Cno_UsuarioRegistra { get; set; }
 
         [Display(Name = "Usuario registra Nombre")]
-        public string Cno_UsuarioRegistra { get; set; }
+        public string Cno_UsuarioRegistraNombre { get; set; }
 
         [Display(Name = "Fecha registra")]
         public DateTime Cno_FechaRegistra { get; set; }
@@ -27,7 +27,7 @@ namespace GESTION_COLEGIAL.UI.Models
         public int? Cno_UsuarioModifica { get; set; }
 
         [Display(Name = "Usuario modifica Nombre")]
-        public string Cno_UsuarioModifica { get; set; }
+        public string Cno_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Cno_FechaModifica { get; set; }

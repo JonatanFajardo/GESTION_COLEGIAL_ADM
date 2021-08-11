@@ -200,7 +200,6 @@
     <Compile Include="Models\HorarioProfesorViewModel.cs" />
     <Compile Include="Models\HoraViewModel.cs" />
     <Compile Include="Models\MateriaViewModel.cs" />
-    <Compile Include="Models\Modalidades2.cs" />
     <Compile Include="Models\ModalidadViewModel.cs" />
     <Compile Include="Models\NivelEducativoViewModel.cs" />
     <Compile Include="Models\NotaViewModel.cs" />
