@@ -17,17 +17,19 @@
 
             <div class="card-body">
                 @Html.HiddenFor(model => model.Pac_Id)
-                @* Columna Pac_Descripcion *@
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Pac_Descripcion, "Pac_Descripcion", htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Pac_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Pac_Descripcion, "", new { @class = "text-danger" })
+                <div class="form-row">
+                    @* Columna Descripción *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Pac_Descripcion, "Pac_Descripcion", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Pac_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Pac_Descripcion, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                </div>
             </div>
-        </div>
     </div>
 }
 

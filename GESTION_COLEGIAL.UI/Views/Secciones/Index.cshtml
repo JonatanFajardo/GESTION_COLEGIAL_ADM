@@ -1,4 +1,4 @@
-﻿@model GESTION_COLEGIAL.UI.Models.ModalidadViewModel
+﻿@model GESTION_COLEGIAL.UI.Models.SeccionViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -16,17 +16,19 @@
 
             <div class="card-body">
                 @Html.HiddenFor(model => model.Sec_Id)
-                @* Columna Sec_Descripcion *@
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Sec_Descripcion, "Sec_Descripcion", htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Sec_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Sec_Descripcion, "", new { @class = "text-danger" })
+                <div class="form-row">
+                    @* Columna Descripción *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Sec_Descripcion, "Sec_Descripcion", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Sec_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Sec_Descripcion, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                </div>
             </div>
-        </div>
     </div>
 }
 
