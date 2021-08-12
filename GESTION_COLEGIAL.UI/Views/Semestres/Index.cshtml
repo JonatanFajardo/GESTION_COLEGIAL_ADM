@@ -17,24 +17,26 @@
 
             <div class="card-body">
                 @Html.HiddenFor(model => model.Sem_Id)
-                @* Columna Sem_Descripcion *@
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Sem_Descripcion, "Sem_Descripcion", htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Sem_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Sem_Descripcion, "", new { @class = "text-danger" })
+                <div class="form-row">
+                    @* Columna Descripción *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Sem_Descripcion, "Sem_Descripcion", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Sem_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Sem_Descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @* Columna Es activo *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Sem_EsActivo, "Sem_EsActivo", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Sem_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Sem_EsActivo, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
-                @* Columna Sem_EsActivo *@
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Sem_EsActivo, "Sem_EsActivo", htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Sem_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Sem_EsActivo, "", new { @class = "text-danger" })
-                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
             </div>
-        </div>
     </div>
 }

@@ -4,6 +4,12 @@ namespace GESTION_COLEGIAL.UI.Models
 {
     public class AlumnoViewModel
     {
+        public PersonaViewModel persona { get; set; }
+
+        public AlumnoViewModel()
+        {
+            persona = new PersonaViewModel();
+        }
 
         [Key]
         public int Alu_Id { get; set; }
