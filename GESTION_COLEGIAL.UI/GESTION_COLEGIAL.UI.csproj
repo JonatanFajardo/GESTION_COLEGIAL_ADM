@@ -1958,12 +1958,20 @@
     <Content Include="Views\Dias\Index.cshtml" />
     <Content Include="Views\Materias\Index.cshtml" />
     <Content Include="Views\Alumnos\Create.cshtml" />
+    <Content Include="Views\Alumnos\Index.cshtml" />
+    <Content Include="Views\Cursos\Index.cshtml" />
+    <Content Include="Views\Empleados\Index.cshtml" />
+    <Content Include="Views\Encargados\Index.cshtml" />
+    <Content Include="Views\HorarioAlumnos\Index.cshtml" />
+    <Content Include="Views\HorarioProfesores\Index.cshtml" />
+    <Content Include="Views\HorarioProfesores\Create.cshtml" />
+    <Content Include="Views\Notas\Index.cshtml" />
+    <Content Include="Views\Materias\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Aulas\" />
     <Folder Include="Views\CursosNiveles\" />
-    <Folder Include="Views\HorarioProfesores\" />
     <Folder Include="Views\Horas\" />
     <Folder Include="Views\Personas\" />
     <Folder Include="Views\SubMenu\" />
