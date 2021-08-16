@@ -9,5 +9,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             return View();
         }
+        public ActionResult Create()
+        {
+            return View("Create");
+        }
     }
 }
