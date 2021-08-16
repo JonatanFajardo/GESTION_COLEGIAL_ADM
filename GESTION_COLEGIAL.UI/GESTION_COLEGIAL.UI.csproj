@@ -368,6 +368,7 @@
     <Content Include="Content\js\jquery.core.js" />
     <Content Include="Content\js\jquery.min.js" />
     <Content Include="Content\js\jquery.slimscroll.min.js" />
+    <Content Include="Content\js\main.js" />
     <Content Include="Content\js\metismenu.min.js" />
     <Content Include="Content\js\simplebar.min.js" />
     <Content Include="Content\js\waves.js" />
