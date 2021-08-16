@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
 }
 
-@using (Html.BeginForm("Save", "Modalidades", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Alert", "Modalidades", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="container">
 
@@ -32,3 +32,16 @@
     </div>
 }
 
+@section Scripts{
+    <script src="~/Content/js/test.js"></script>
+    @*<script type="text/javascript">
+            @Html.Raw(ViewBag.JavaScriptFunction)
+        </script>*@
+   
+    @if (ViewBag.JavaScriptFunction != null)
+    {
+        <script type="text/javascript">
+        @Html.Raw(ViewBag.JavaScriptFunction);
+        </script>
+    }
+}

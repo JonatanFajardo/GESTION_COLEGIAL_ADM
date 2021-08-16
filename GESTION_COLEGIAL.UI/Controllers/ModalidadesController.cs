@@ -21,14 +21,19 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Create()
-        {
+        //[HttpPost]
+        //public ActionResult Create()
+        //{
 
-            string str = string.Format("Alert('{0}')", "gola");
-            JavaScriptResult result = new JavaScriptResult();
-            result.Script = str;
-            return result;
+        //    string str = string.Format("Alert('{0}')", "gola");
+        //    JavaScriptResult result = new JavaScriptResult();
+        //    result.Script = str;
+        //    return result;
+        //}
+        public ActionResult Alert()
+        {
+            ViewBag.JavaScriptFunction = string.Format("appConfig.alert('{0}', '{1}');", "success", "Ingresado :p");
+            return View("Index");
         }
         //[HttpPost]
         // GET: Modalidades/Create
