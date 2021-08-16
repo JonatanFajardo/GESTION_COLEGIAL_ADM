@@ -1938,24 +1938,24 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Modalidades\Create.cshtml" />
-    <Content Include="Views\Semestres\Create.cshtml" />
+    <Content Include="Views\Modalidades\Index.cshtml" />
+    <Content Include="Views\Semestres\Index.cshtml" />
     <Content Include="Views\Notas\Create.cshtml" />
-    <Content Include="Views\Secciones\Create.cshtml" />
-    <Content Include="Views\Parentescos\Create.cshtml" />
-    <Content Include="Views\Parciales\Create.cshtml" />
-    <Content Include="Views\NivelesEducativos\Create.cshtml" />
-    <Content Include="Views\Cargos\Create.cshtml" />
+    <Content Include="Views\Secciones\Index.cshtml" />
+    <Content Include="Views\Parentescos\Index.cshtml" />
+    <Content Include="Views\Parciales\Index.cshtml" />
+    <Content Include="Views\NivelesEducativos\Index.cshtml" />
+    <Content Include="Views\Cargos\Index.cshtml" />
     <Content Include="Views\Cursos\Create.cshtml" />
-    <Content Include="Views\CursosNombres\Create.cshtml" />
+    <Content Include="Views\CursosNombres\Index.cshtml" />
     <Content Include="Views\Titulos\Index.cshtml" />
     <Content Include="Views\HorarioAlumnos\Create.cshtml" />
-    <Content Include="Views\Estados\Create.cshtml" />
+    <Content Include="Views\Estados\Index.cshtml" />
     <Content Include="Views\Encargados\Create.cshtml" />
     <Content Include="Views\Empleados\Create.cshtml" />
-    <Content Include="Views\Duraciones\Create.cshtml" />
-    <Content Include="Views\Dias\Create.cshtml" />
-    <Content Include="Views\Materias\Create.cshtml" />
+    <Content Include="Views\Duraciones\Index.cshtml" />
+    <Content Include="Views\Dias\Index.cshtml" />
+    <Content Include="Views\Materias\Index.cshtml" />
     <Content Include="Views\Alumnos\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
