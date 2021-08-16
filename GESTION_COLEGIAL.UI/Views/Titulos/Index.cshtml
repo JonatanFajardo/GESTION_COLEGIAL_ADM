@@ -1,12 +1,12 @@
 ﻿
 @model GESTION_COLEGIAL.UI.Models.TituloViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Crear";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-@using (Html.BeginForm("Create", "Titulos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Save", "Titulos", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="container">
 

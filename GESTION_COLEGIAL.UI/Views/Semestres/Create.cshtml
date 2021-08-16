@@ -1,0 +1,42 @@
+﻿@model GESTION_COLEGIAL.UI.Models.SemestreViewModel
+
+@{
+    ViewBag.Title = "Crear";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("Save", "Semestres", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Registro de Semestres</h3>
+            </div>
+
+            <div class="card-body">
+                @Html.HiddenFor(model => model.Sem_Id)
+                <div class="form-row">
+                    @* Columna Descripción *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Sem_Descripcion, "Sem_Descripcion", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Sem_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Sem_Descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @* Columna Es activo *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Sem_EsActivo, "Sem_EsActivo", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Sem_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Sem_EsActivo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                </div>
+            </div>
+    </div>
+}
