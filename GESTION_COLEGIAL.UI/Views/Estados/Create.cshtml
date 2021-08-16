@@ -1,29 +1,30 @@
 ﻿
-@model GESTION_COLEGIAL.UI.Models.TituloViewModel
+
+@model GESTION_COLEGIAL.UI.Models.EstadoViewModel
 @{
     ViewBag.Title = "Crear";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-@using (Html.BeginForm("Save", "Titulos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Save", "Estados", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="container">
 
         <div class="card">
             <div class="card-header">
-                <h3>Registro de Titulos</h3>
+                <h3>Registro de Estados</h3>
             </div>
 
             <div class="card-body">
-                @Html.HiddenFor(model => model.Tit_Id)
+                @Html.HiddenFor(model => model.Est_Id)
                 <div class="form-row">
                     @* Columna Descripción *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Tit_Descripcion, "Tit_Descripcion", htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Tit_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Tit_Descripcion, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.Est_Descripcion, "Est_Descripcion", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Est_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Est_Descripcion, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
