@@ -1153,6 +1153,8 @@
     <Content Include="Content\plugins\tinymce\themes\modern\theme.min.js" />
     <Content Include="Content\plugins\tinymce\tinymce.min.js" />
     <Content Include="Content\plugins\tippy\tippy.all.min.js" />
+    <Content Include="Content\plugins\toastr\toastr.css" />
+    <Content Include="Content\plugins\toastr\toastr.min.js" />
     <Content Include="Content\plugins\treeview\jstree.min.js" />
     <Content Include="Content\plugins\treeview\themes\default-dark\32px.png" />
     <Content Include="Content\plugins\treeview\themes\default-dark\40px.png" />
