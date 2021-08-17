@@ -1,4 +1,5 @@
 ﻿using GESTION_COLEGIAL.Business.Helpers;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Models;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
-    public class ModalidadesController : Controller
+    public class ModalidadesController : BaseController
     {
         // GET: Modalidades
         public ActionResult Index()
@@ -32,7 +33,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //}
         public ActionResult Alert()
         {
-            ViewBag.JavaScriptFunction = string.Format("appConfig.alert('{0}', '{1}');", "success", "Ingresado :p");
+
+
+
+            AlertMessage alertMessage = new AlertMessage();
+            //alertMessage.Show();
+            ShowController(AlertMessageType.Warning);
+            //ViewBag.JavaScriptFunction = string.Format("alertConfig.alert('{0}', '{1}');", "success", "Ingresado :p");
             return View("Index");
         }
         //[HttpPost]
