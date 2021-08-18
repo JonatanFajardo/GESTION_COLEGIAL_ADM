@@ -65,9 +65,6 @@ var datatable = (function () {
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
-
-                            console.log("call");
-                            console.log(response);
                             callback(response);
                         },
                     });
@@ -83,10 +80,10 @@ var datatable = (function () {
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
                 dom:
-                    "<'row mb-3' <'col-md-3 'B><'col-md-7'f><'col-md-2'l>>" +
-
+                    "<'row d-flex justify-content-between'fB>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
                 order: [],
                 scrollCollapse: true,
                 paging: true,
@@ -147,8 +144,6 @@ var datatable = (function () {
      * @returns 
      */
     obj.dataHeader = function (header) {
-        console.log("sss");
-
         var _header = header;
         head = [];
         var i = 0;
@@ -171,7 +166,6 @@ var datatable = (function () {
                     botones += '<button class="btn btn-secondary btn-sm" onclick=RedirectEdit(' + row[head] + ')><i class="mdi mdi-square-edit-outline"></i></button>';
                     botones += '<button class="btn btn-danger btn-sm ml-1" onclick="getIdDelete(' + row[head] + ')"><i class="ion-trash-a"></i></button>';
                     //botones += '<button class="btn btn-secondary btn-sm" href="/Usuarios/Editar/1"><i class="mdi mdi-square-edit-outline"></i></button>';
-                    console.log(row[head]);
 
                 }
                 return botones;

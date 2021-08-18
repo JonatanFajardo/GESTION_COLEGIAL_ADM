@@ -26,21 +26,21 @@
             switch (type) {
 
                 default:
-                case "info":
+                case "Info":
                 case 0:
                     toastr.info('<i class="mdi mdi-information-outline"> </i><span>' + message + '</span>')
                     break;
-                case "success":
+                case "Warning":
                 case 1:
+                    toastr.warning('<i class="mdi mdi-alert-outline"> </i><span>' + message + '</span>')
+                    break;
+                case "Success":
+                case 2:
                     toastr.success('<i class="mdi mdi-checkbox-marked-circle-outline"> </i><span>' + message + '</span>')
                     break;
-                case "error":
-                case 2:
-                    toastr.error('<i class="mdi mdi-close-circle-outline"> </i><span>' + message + '</span>')
-                    break;
-                case "warning":
+                case "Error":
                 case 3:
-                    toastr.warning('<i class="mdi mdi-alert-outline"> </i><span>' + message + '</span>')
+                    toastr.error('<i class="mdi mdi-close-circle-outline"> </i><span>' + message + '</span>')
                     break;
             }
 

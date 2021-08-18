@@ -35,9 +35,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public enum AlertMessageType
         {
-            Success = 0,
-            Info = 1,
-            Warning = 2,
+            Info = 0,
+            Warning = 1,
+            Success = 2,
             Error = 3
 
         }
