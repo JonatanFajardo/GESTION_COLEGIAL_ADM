@@ -11,11 +11,6 @@
                 "Mda_Id",
                 "Mda_Descripcion"
             ];
-            //header = [
-            //    ["raza_Id", 80, false],
-            //    ["raza_Descripcion", true, true]
-            //];
-            console.log(Direction.listUrl);
             datatable.init(Direction.listUrl, header);
         })
     }

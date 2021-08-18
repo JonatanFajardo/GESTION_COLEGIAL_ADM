@@ -31,9 +31,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             try
             {
                 var httpclient = new HttpClient();
-                //var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
-                //var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-                var httpResponse = await httpclient.GetAsync(url);//
+                var httpResponse = await httpclient.GetAsync(url);
 
                 if (!httpResponse.IsSuccessStatusCode)
                 {
