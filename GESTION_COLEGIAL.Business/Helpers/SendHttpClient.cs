@@ -24,7 +24,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             return false;
         }
 
-        public static async Task<T> Get<T>(string url)
+        public static async Task<object> Get<T>(string url)
         {
             var httpclient = new HttpClient();
             //var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
@@ -33,9 +33,10 @@ namespace GESTION_COLEGIAL.Business.Helpers
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                return default(T);
+                return null;
             }
-            var resultSerialize = await httpResponse.Content.ReadAsAsync<T>();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
+            var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
+            var resultSerialize = JsonConvert.DeserializeObject<T>(content);
             return resultSerialize;
         }
     }
