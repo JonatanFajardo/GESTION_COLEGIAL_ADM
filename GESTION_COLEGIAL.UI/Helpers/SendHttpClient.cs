@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace GESTION_COLEGIAL.Business.Helpers
+namespace GESTION_COLEGIAL.UI.Helpers
 {
     public static class SendHttpClient
     {
@@ -37,6 +37,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             }
             var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
             var resultSerialize = JsonConvert.DeserializeObject<T>(content);
+            var ss = 1;
             return resultSerialize;
         }
     }
