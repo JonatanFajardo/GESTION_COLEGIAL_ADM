@@ -50,12 +50,17 @@
     </div>
 }
 
-@section Scripts{ 
+@section Scripts{
 
     @*<script type="text/javascript">
             @Html.Raw(ViewBag.JavaScriptFunction)
         </script>*@
-   
+    <script src="~/Content/js/components/datatable.init.js"></script>
+
+    <script src="~/Content/js/pages/modalidades.js"></script>
+    <script>
+        Modalidades.datatable({listUrl: "@Url.Action("List")" });
+    </script>
     @if (ViewBag.JavaScriptFunction != null)
     {
         <script type="text/javascript">
