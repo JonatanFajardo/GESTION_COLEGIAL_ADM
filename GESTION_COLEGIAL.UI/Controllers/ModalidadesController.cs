@@ -22,31 +22,18 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        public ActionResult List()
+        public async Task<ActionResult> List()
         {
-            if (!ModelState.IsValid)
-            {
-            }
-            
-            string url = "https://localhost:44341/api/Modalidades/Create";
-            SendHttpClient.Get<ModalidadViewModel>(url);
-            return View("Index");
-
-            //using (var client = new HttpClient())
+            //if (!ModelState.IsValid)
             //{
-            //    client.BaseAddress = new Uri("http://localhost:64189/api/student");
+            //}
+            
+            string url = "https://localhost:44341/api/Modalidades/List";
+            var result = await SendHttpClient.Get<ModalidadViewModel>(url);
+            return Json(new { data = result });
+            //return View("Index");
 
-            //    //HTTP POST
-            //    var response = client.PostAsync("api/AgentCollection", new StringContent(new JavaScriptSerializer().Serialize(user), Encoding.UTF8, "application/json")).Result;
-
-            //    var postJob = client.PostAsJsonAsync< ModalidadViewModel > "model", model);
-            //    postJob.Wait();
-
-            //    var result = postTask.Result;
-            //    if (result.IsSuccessStatusCode)
-            //    {
-            //        return RedirectToAction("Index");
-            //    }
+            
         }
 
         //[HttpPost]
