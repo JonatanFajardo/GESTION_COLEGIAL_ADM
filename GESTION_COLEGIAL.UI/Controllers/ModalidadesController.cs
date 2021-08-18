@@ -1,4 +1,5 @@
-﻿using GESTION_COLEGIAL.UI.Helpers;
+﻿
+using GESTION_COLEGIAL.Business.Helpers;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Models;
 using Newtonsoft.Json;
@@ -6,6 +7,8 @@ using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Net.Http;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -28,32 +31,21 @@ namespace GESTION_COLEGIAL.UI.Controllers
             //if (!ModelState.IsValid)
             //{
             //}
-            
-            string url = "https://localhost:44341/api/Modalidades/List";
-
-            var httpclient = new HttpClient();
-            //var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
-            //var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-            var httpResponse = await httpclient.GetAsync(url);//
-
-            if (!httpResponse.IsSuccessStatusCode)
+            try
             {
-                return null;
-            }
-            var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
-            var resultSerialize = JsonConvert.DeserializeObject<ModalidadViewModel>(content);
 
-            //var result = await SendHttpClient.Get<ModalidadViewModel>(url);
-            //var resultSerialize = JsonConvert.DeserializeObject<ModalidadViewModel>(result);
-
-            //if (result == null)
-            //{
-            //    Show(AlertMessageType.Warning, "No se pudo acceder a los datos.");
-            //}
-            return Json(new { data = resultSerialize });
-            //return View("Index");
-
+            string url = "https://localhost:44341/api/Modalidades/List";
             
+            var resultSerialize = await SendHttpClient.Get<ModalidadViewModel>(url);
+            return Json(new { data = resultSerialize }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }        
+
+
         }
 
         //[HttpPost]

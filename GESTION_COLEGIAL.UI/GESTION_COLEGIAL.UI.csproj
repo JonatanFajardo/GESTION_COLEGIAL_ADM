@@ -218,7 +218,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\SendHttpClient.cs" />
     <Compile Include="Models\AlumnoViewModel.cs" />
     <Compile Include="Models\AulaViewModel.cs" />
     <Compile Include="Models\CargoViewModel.cs" />
