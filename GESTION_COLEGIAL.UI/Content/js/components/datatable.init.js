@@ -26,48 +26,48 @@ var datatable = (function () {
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
-                order: [],
-                scrollCollapse: true,
-                paging: true,
-                stateSave: true,
-                //bLengthChange: false,
-                //bInfo: false,
-                processing: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLenght: 10,
-                displayLength: 10,
-                language: {
-                    processing: "Procesando...",
-                    lengthMenu: " _MENU_ ",
-                    zeroRecords: "No se encontraron resultados",
-                    emptyTable: "Ningún dato disponible en esta tabla",
-                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                    infoPostFix: "",
-                    search: "",
-                    url: "",
-                    infoThousands: ",",
-                    loadingRecords: " ",
-                    searchPlaceholder: "Buscar en la tabla...",
-                    paginate: {
-                        first: "Primero",
-                        last: "Último",
-                        next: "Siguiente",
-                        previous: "Anterior"
-                    },
-                    aria: {
-                        sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                        sortDescending: ": Activar para ordenar la columna de manera descendente"
-                    }
-                }
-            });
+            //    order: [],
+            //    scrollCollapse: true,
+            //    paging: true,
+            //    stateSave: true,
+            //    //bLengthChange: false,
+            //    //bInfo: false,
+            //    processing: true,
+            //    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+            //    pageLenght: 10,
+            //    displayLength: 10,
+            //    language: {
+            //        processing: "Procesando...",
+            //        lengthMenu: " _MENU_ ",
+            //        zeroRecords: "No se encontraron resultados",
+            //        emptyTable: "Ningún dato disponible en esta tabla",
+            //        info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            //        infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+            //        infoFiltered: "(filtrado de un total de _MAX_ registros)",
+            //        infoPostFix: "",
+            //        search: "",
+            //        url: "",
+            //        infoThousands: ",",
+            //        loadingRecords: " ",
+            //        searchPlaceholder: "Buscar en la tabla...",
+            //        paginate: {
+            //            first: "Primero",
+            //            last: "Último",
+            //            next: "Siguiente",
+            //            previous: "Anterior"
+            //        },
+            //        aria: {
+            //            sortAscending: ": Activar para ordenar la columna de manera ascendente",
+            //            sortDescending: ": Activar para ordenar la columna de manera descendente"
+            //        }
+            //    }
+            //});
 
 
 
 
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
-            var table = $('#datatable').DataTable({
+            var table =     $('#datatable').DataTable({
                 //serverSide: true,
                 buttons: [
                     //{
@@ -118,7 +118,7 @@ var datatable = (function () {
                 },
                 columnDefs: obj.dataHeader(header)
 
-            });
+            } );
 
 
 
@@ -126,6 +126,11 @@ var datatable = (function () {
 
 
 
+        });
+        $('#datatable').on('init.dt', function () {
+            $('#add-btn')
+                .attr('data-toggle', 'modal')
+                .attr('data-target', '#edit-modal');
         });
     };
 
@@ -163,8 +168,9 @@ var datatable = (function () {
                 botones = "";
                 var head = _header[0];
                 if (type == "display") {
-                    botones += '<button class="btn btn-secondary btn-sm" onclick=RedirectEdit(' + row[head] + ')><i class="mdi mdi-square-edit-outline"></i></button>';
-                    botones += '<button class="btn btn-danger btn-sm ml-1" onclick="getIdDelete(' + row[head] + ')"><i class="ion-trash-a"></i></button>';
+                    botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
+                    //botones += '<button class="btn btn-secondary btn-sm edit-btn" onclick=RedirectEdit(' + row[head] + ')><i class="mdi mdi-square-edit-outline"></i></button>';
+                    //botones += '<button class="btn btn-danger btn-sm ml-1" onclick="getIdDelete(' + row[head] + ')"><i class="ion-trash-a"></i></button>';
                     //botones += '<button class="btn btn-secondary btn-sm" href="/Usuarios/Editar/1"><i class="mdi mdi-square-edit-outline"></i></button>';
 
                 }
