@@ -18,6 +18,52 @@ var datatable = (function () {
 
 
 
+            //$("input").removeClass(".form-control-sm")
+            //configuraciones
+            $.extend(true, $.fn.dataTable.defaults, {
+                dom:"<'row <'col-sm-12' >'fB>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+                order: [],
+                scrollCollapse: true,
+                paging: true,
+                stateSave: true,
+                //bLengthChange: false,
+                //bInfo: false,
+                processing: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+                pageLenght: 10,
+                displayLength: 10,
+                language: {
+                    processing: "Procesando...",
+                    lengthMenu: " _MENU_ ",
+                    zeroRecords: "No se encontraron resultados",
+                    emptyTable: "Ningún dato disponible en esta tabla",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                    infoPostFix: "",
+                    search: "",
+                    url: "",
+                    infoThousands: ",",
+                    loadingRecords: " ",
+                    searchPlaceholder: "Buscar en la tabla...",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    aria: {
+                        sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                        sortDescending: ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+
+
+
 
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
             var table = $('#datatable').DataTable({
@@ -73,53 +119,6 @@ var datatable = (function () {
 
             });
 
-
-
-
-            //$("input").removeClass(".form-control-sm")
-            //configuraciones
-            $.extend(true, $.fn.dataTable.defaults, {
-                dom:
-                    "<'row d-flex justify-content-between'fB>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-
-                order: [],
-                scrollCollapse: true,
-                paging: true,
-                stateSave: true,
-                //bLengthChange: false,
-                //bInfo: false,
-                processing: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLenght: 10,
-                displayLength: 10,
-                language: {
-                    processing: "Procesando...",
-                    lengthMenu: " _MENU_ ",
-                    zeroRecords: "No se encontraron resultados",
-                    emptyTable: "Ningún dato disponible en esta tabla",
-                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                    infoPostFix: "",
-                    search: "",
-                    url: "",
-                    infoThousands: ",",
-                    loadingRecords: " ",
-                    searchPlaceholder: "Buscar en la tabla...",
-                    paginate: {
-                        first: "Primero",
-                        last: "Último",
-                        next: "Siguiente",
-                        previous: "Anterior"
-                    },
-                    aria: {
-                        sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                        sortDescending: ": Activar para ordenar la columna de manera descendente"
-                    }
-                }
-            });
 
 
 
