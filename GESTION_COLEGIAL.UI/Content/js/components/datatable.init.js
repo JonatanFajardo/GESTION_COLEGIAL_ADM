@@ -17,11 +17,12 @@ var datatable = (function () {
         $(function () {
 
 
-
+            
             //$("input").removeClass(".form-control-sm")
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
-                dom:"<'row <'col-sm-12' >'fB>" +
+                dom:
+                    "<'row d-flex justify-content-between'fB>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
