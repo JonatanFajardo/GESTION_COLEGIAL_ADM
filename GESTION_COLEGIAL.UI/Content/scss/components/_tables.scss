@@ -70,11 +70,28 @@
 
   
   /*== Table Responsive ==*/
-  
-  .table-rep-plugin {
+
+/* typical tablet screen resolution */
+@media only screen and (max-width : 834px) {
+}
+/* landscape orientation */
+@media only screen and (min-width : 768px){
+    .datatable-header {
+        -ms-flex-direction: row-reverse;
+        -webkit-flex-direction: row-reverse;
+        flex-direction: row-reverse;
+    }
+}
+/* portrait orientation */
+@media only screen and (min-width : 768px) and (max-width : 834px) and (orientation : portrait) {
+}
+
+
+.table-rep-plugin {
     .btn-toolbar {
         display: block;
     }
+
     .btn-default {
         border: none;
         background: linear-gradient(14deg, $primary 0%, rgba($primary, 0.6));
@@ -82,12 +99,14 @@
         margin-right: 5px;
         box-shadow: 0 7px 14px 0 rgba($primary, 0.5);
         transition: .3s ease-out;
+
         &:hover,
         &:focus {
             color: $white;
             box-shadow: 0 0 0 2px rgba($primary,.3);
         }
     }
+
     .btn-default.btn-primary:active,
     .btn-default.btn-primary:hover,
     .btn-default.btn-primary:focus {
@@ -96,16 +115,17 @@
         color: $white;
         box-shadow: 0 0 0 2px rgba($primary,.3);
     }
+
     tbody th {
         font-size: 14px;
         font-weight: normal;
     }
 
-    table.focus-on tbody tr.focused th, 
+    table.focus-on tbody tr.focused th,
     table.focus-on tbody tr.focused td {
-      background-color: $primary;
-      color: $white;
-  }
+        background-color: $primary;
+        color: $white;
+    }
 }
 
 
