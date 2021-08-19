@@ -1,6 +1,12 @@
-﻿[
+[
+  {
+    "outputFile": "Content/scss/components/_forms.css",
+    "inputFile": "Content/scss/components/_forms.scss",
+    "sourceMap": false
+  },
   {
     "outputFile": "Content/scss/app.css",
-    "inputFile": "Content/scss/app.scss"
+    "inputFile": "Content/scss/app.scss",
+    "sourceMap": false
   }
 ]

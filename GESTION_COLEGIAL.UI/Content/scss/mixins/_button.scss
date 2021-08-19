@@ -1,0 +1,7 @@
+﻿@each $color, $nombre in $colors {
+    .btn-#{$color} {
+        background-color: $nombre;
+        padding: $btn-padding-y-sm $btn-padding-x-sm;
+        border-radius: $btn-border-width;
+    }
+}
