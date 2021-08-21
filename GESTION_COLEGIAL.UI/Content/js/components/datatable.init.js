@@ -18,50 +18,48 @@ var datatable = (function () {
 
 
 
-            ////$("input").removeClass(".form-control-sm")
-            ////configuraciones
-            //$.extend(true, $.fn.dataTable.defaults, {
-            //    dom:
-            //        "<'row d-flex justify-content-between'fB>" +
-            //        "<'row'<'col-sm-12'tr>>" +
-            //        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            //configuraciones
+            $.extend(true, $.fn.dataTable.defaults, {
+                dom: "<'row mb-3'<'col-md-7'f> <'col-md-5 d-flex justify-content-end custom-buttons'B>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
-            //    order: [],
-            //    scrollCollapse: true,
-            //    paging: true,
-            //    stateSave: true,
-            //    //bLengthChange: false,
-            //    //bInfo: false,
-            //    processing: true,
-            //    lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-            //    pageLenght: 10,
-            //    displayLength: 10,
-            //    language: {
-            //        processing: "Procesando...",
-            //        lengthMenu: " _MENU_ ",
-            //        zeroRecords: "No se encontraron resultados",
-            //        emptyTable: "Ningún dato disponible en esta tabla",
-            //        info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            //        infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-            //        infoFiltered: "(filtrado de un total de _MAX_ registros)",
-            //        infoPostFix: "",
-            //        search: "",
-            //        url: "",
-            //        infoThousands: ",",
-            //        loadingRecords: " ",
-            //        searchPlaceholder: "Buscar en la tabla...",
-            //        paginate: {
-            //            first: "Primero",
-            //            last: "Último",
-            //            next: "Siguiente",
-            //            previous: "Anterior"
-            //        },
-            //        aria: {
-            //            sortAscending: ": Activar para ordenar la columna de manera ascendente",
-            //            sortDescending: ": Activar para ordenar la columna de manera descendente"
-            //        }
-            //    }
-            //});
+                order: [],
+                scrollCollapse: true,
+                paging: true,
+                stateSave: true,
+                //bLengthChange: false,
+                //bInfo: false,
+                processing: true,
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+                pageLenght: 10,
+                displayLength: 10,
+                language: {
+                    processing: "Procesando...",
+                    lengthMenu: " _MENU_ ",
+                    zeroRecords: "No se encontraron resultados",
+                    emptyTable: "Ningún dato disponible en esta tabla",
+                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    infoFiltered: "(filtrado de un total de _MAX_ registros)",
+                    infoPostFix: "",
+                    search: "",
+                    url: "",
+                    infoThousands: ",",
+                    loadingRecords: " ",
+                    searchPlaceholder: "Buscar en la tabla...",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    },
+                    aria: {
+                        sortAscending: ": Activar para ordenar la columna de manera ascendente",
+                        sortDescending: ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
 
 
 
@@ -78,32 +76,38 @@ var datatable = (function () {
                     //}
                     //},
                     {
-                        extend: "collection",
-                        text: '<i class="mdi mdi-export"> Exportar</i>',
-                        titleAttr: 'Exportar esta tabla',
-                        buttons: [{
-                            extend: "excelHtml5",
-                            text: '<i class="mdi mdi-file-excel"> Excel</i>',
-                            exportOptions: exportOptions
-                        },
-                        {
-                            extend: "csvHtml5",
-                            text: '<i class="mdi mdi-file-excel-outline"> CSV</i>',
-                            exportOptions: exportOptions
-                        },
-                        {
-                            extend: "pdfHtml5",
-                            text: '<i class="mdi mdi-file-pdf"> CSV</i>',
-                            exportOptions: exportOptions
-                        }
-                        ]
+                        title: "Exportar a CSV",
+                        extend: "csvHtml5",
+                        text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
+                        className: "btn-secondary",
+                        exportOptions: exportOptions
                     },
                     {
-                        text: '<i class="mdi mdi-plus-box-outline" > Nuevo</i>',
+                        extend: "pdfHtml5",
+                        title: "Exportar a PDF",
+                        text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
+                        class: "btn btn-secondary",
+                        exportOptions: exportOptions
+                    },
+                    {
+                        extend: "excelHtml5",
+                        title: "Exportar a EXCEL",
+                        text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
+                        class: "btn btn-secondary",
+                        exportOptions: exportOptions
+                    },
+                    {
+
                         attr: {
-                            tittle: "Añadir nuevo elemento",
-                            onclick: "obj.RedirectNew"
-                        }
+                            title: "Añadir nuevo elemento",
+                            id: "add-btn",
+                            class: "btn btn-primary",
+                            'data-style': "zoom-in",
+                            'data-toggle': "modal",
+                            'data-target': "#edit-modal"
+                        },
+                        text: '<i class="mdi mdi-plus-thick ladda-button"> Nuevo</i>'
+
                     }
                 ],
                 ajax: function (data, callback, settings) {
@@ -132,6 +136,13 @@ var datatable = (function () {
                 .attr('data-toggle', 'modal')
                 .attr('data-target', '#edit-modal');
         });
+
+        //Eliminamos la agrupaciond de los botones.
+        $(function () {
+            $(".dt-buttons").removeClass("btn-group");
+
+        });
+
     };
 
 
@@ -180,10 +191,12 @@ var datatable = (function () {
         return head;
     };
 
+    
 
-
+    
     return obj;
 }());
+
 
 
 
