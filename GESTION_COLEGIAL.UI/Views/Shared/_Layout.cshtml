@@ -7,15 +7,20 @@
     <title>Mi aplicación ASP.NET</title>
     <!-- App favicon -->
     <link rel="shortcut icon" href="~/Content/images/favicon.ico">
+
     <!-- App css -->
-
-
-    <link href="~/Content/plugins/bootstrap-4.5.3-dist/css/bootstrap.min.css" rel="stylesheet" />
-
-    <link href="~/Content/css/jquery-ui.min.css" rel="stylesheet" />
-    <link href="~/Content/css/icons.css" rel="stylesheet" />
-    <link href="~/Content/css/metisMenu.min.css" rel="stylesheet" />
-    <link href="~/Content/scss/app.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="~/Content/img/favicon.ico" />
+    <link href="~/Content/css/loader.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/js/loader.js"></script>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="~/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/plugins.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link href="~/Content/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @*@Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")*@
     @* toastr *@
@@ -24,33 +29,62 @@
 </head>
 <body>
 
-    @Html.Partial("~/Views/Shared/_sidebar.cshtml");
-    <div class="page-wrapper">
-
-        <!-- Page Content-->
-        <div class="page-content-tab">
-            @RenderBody()
+    <!-- BEGIN LOADER -->
+    <div id="load_screen">
+        <div class="loader">
+            <div class="loader-content">
+                <div class="spinner-grow align-self-center"></div>
+            </div>
         </div>
-
-        @*<x-extra-modal />
-            <x-footer />*@
-        <footer class="footer text-center text-sm-left">
-            &copy; @DateTime.Now.Year - Metrica <span class="text-muted d-none d-sm-inline-block float-right">Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</span>
-        </footer>
-
     </div>
-
+    <!--  END LOADER -->
+    <!--  BEGIN HEADER -->
+    @Html.Partial("~/Views/Shared/_header.cshtml");
+    <!--  END HEADER -->
+    <!-- BEGIN CONTENT -->
+    <div class="main-container" id="container">
+        <!--  BEGIN SIDEBAR -->
+        @Html.Partial("~/Views/Shared/_sidebar.cshtml");
+        <!--  END SIDEBAR -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">
+                @RenderBody()
+            </div>
+            <!--  BEGIN  FOOTER -->
+            @Html.Partial("~/Views/Shared/_footer.cshtml");
+            <!--  END FOOTER -->
+        </div>
+    </div>
+    <!-- END CONTENT -->
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="~/Content/js/libs/jquery-3.1.1.min.js"></script>
+    <script src="~/Content/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="~/Content/js/app.js"></script>
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>
+    <script src="~/Content/js/custom.js"></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="plugins/apex/apexcharts.min.js"></script>
+    <script src="~/Content/js/dashboard/dash_1.js"></script>
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")*@
     <!-- jQuery  -->
-    <script src="~/Content/js/jquery.min.js"></script>
-    <script src="~/Content/js/jquery-ui.min.js"></script>
-    <script src="~/Content/plugins/bootstrap-4.5.3-dist/js/bootstrap.bundle.js"></script>
+    @*<script src="~/Content/js/jquery.min.js"></script>
+        <script src="~/Content/js/jquery-ui.min.js"></script>
+        <script src="~/Content/plugins/bootstrap-4.5.3-dist/js/bootstrap.bundle.js"></script>*@
 
-    <script src="~/Content/js/waves.js"></script>
-    <script src="~/Content/js/feather.min.js"></script>
-    <script src="~/Content/js/jquery.slimscroll.min.js"></script>
-    <script src="~/Content/plugins/apexcharts/apexcharts.min.js"></script>
+    @*<script src="~/Content/js/waves.js"></script>
+        <script src="~/Content/js/feather.min.js"></script>
+        <script src="~/Content/js/jquery.slimscroll.min.js"></script>
+        <script src="~/Content/plugins/apexcharts/apexcharts.min.js"></script>*@
+
     @* toastr *@
     <script src="~/Content/plugins/toastr/toastr.min.js"></script>
     <script src="~/Content/js/components/alert.js"></script>
@@ -68,7 +102,7 @@
     <script src="~/Content/plugins/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
     <script src="~/Content/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
     <script src="~/Content/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-    <script src="~/Content/plugins/summernote/summernote-bs4.min.js"></script>
+    @*<script src="~/Content/plugins/summernote/summernote-bs4.min.js"></script>*@
 
     <script src="~/Content/plugins/datatables/jszip.min.js"></script>
     @*<script src="~/Content/plugins/jszip/jszip.min.js"></script>*@

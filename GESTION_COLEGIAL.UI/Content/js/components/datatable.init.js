@@ -17,14 +17,14 @@ var datatable = (function () {
         $(function () {
 
 
-            
-            //$("input").removeClass(".form-control-sm")
-            //configuraciones
-            $.extend(true, $.fn.dataTable.defaults, {
-            
-                dom: "<'row datatable-header'<'col-sm-7'f><'col-sm-5'B>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+            ////$("input").removeClass(".form-control-sm")
+            ////configuraciones
+            //$.extend(true, $.fn.dataTable.defaults, {
+            //    dom:
+            //        "<'row d-flex justify-content-between'fB>" +
+            //        "<'row'<'col-sm-12'tr>>" +
+            //        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
             //    order: [],
             //    scrollCollapse: true,
@@ -67,7 +67,7 @@ var datatable = (function () {
 
 
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
-            var table =     $('#datatable').DataTable({
+            var table = $('#datatable').DataTable({
                 //serverSide: true,
                 buttons: [
                     //{
@@ -118,7 +118,7 @@ var datatable = (function () {
                 },
                 columnDefs: obj.dataHeader(header)
 
-            } );
+            });
 
 
 
