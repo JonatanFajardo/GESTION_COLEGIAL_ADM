@@ -23,6 +23,10 @@
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @*@Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")*@
+
+    @* ladda *@
+    <link href="~/Content/plugins/ladda/ladda-themeless.css" rel="stylesheet" />
+
     @* toastr *@
     <link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
 
@@ -85,17 +89,23 @@
         <script src="~/Content/js/jquery.slimscroll.min.js"></script>
         <script src="~/Content/plugins/apexcharts/apexcharts.min.js"></script>*@
 
-    @* jquery-unobtrusive *@
+    @* jquery-validate *@
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.js"></script>
 
     @* toastr *@
     <script src="~/Content/plugins/toastr/toastr.min.js"></script>
+
+    @* ladda *@
+    <script src="~/Content/plugins/ladda/spin.min.js"></script>
+    <script src="~/Content/plugins/ladda/ladda.min.js"></script>
     <script src="~/Content/js/components/alert.js"></script>
     @*<script src="~/Content/js/main.js"></script>*@
     <script src="~/Content/js/app.js"></script>
 
-    <script src="~/Content/js/components/datatable.init.js"></script>
+    @*<script src="~/Content/js/components/datatable.init.js"></script>*@
     <script src="~/Content/js/components/catalogs.js"></script>
     <script src="~/Content/js/components/navbar.js"></script>
 

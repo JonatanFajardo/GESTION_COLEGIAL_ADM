@@ -881,6 +881,10 @@
     <Content Include="Content\plugins\jvector\oceania\jquery-jvectormap-oceanina-en.js" />
     <Content Include="Content\plugins\jvector\south-america\jquery-jvectormap-south-america-en.js" />
     <Content Include="Content\plugins\jvector\worldmap_script\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="Content\plugins\ladda\ladda-themeless.css" />
+    <Content Include="Content\plugins\ladda\ladda.min.css" />
+    <Content Include="Content\plugins\ladda\ladda.min.js" />
+    <Content Include="Content\plugins\ladda\spin.min.js" />
     <Content Include="Content\plugins\lightbox\custom-photswipe.css" />
     <Content Include="Content\plugins\lightbox\custom-photswipe.js" />
     <Content Include="Content\plugins\lightbox\default-skin\default-skin.css" />
