@@ -30,7 +30,7 @@
                         $editModal.modal("show");
                     }
                     else {
-                        appConfig.alert(response.type, response.message);
+                        alertConfig.alert(response.message, response.type);
                     }
                 },
                 complete: function () {
@@ -56,7 +56,7 @@
                         $editModal.modal("show");
                     }
                     else {
-                        appConfig.alert(response.type, response.message);
+                        alertConfig.alert(response.message, response.type);
                     }
                 },
                 complete: function () {
@@ -90,7 +90,7 @@
                         $deleteModal.modal("show");
                     }
                     else {
-                        appConfig.alert(response.type, response.message);
+                        alertConfig.alert(response.message, response.type);
                     }
                 },
                 complete: function () {
@@ -154,6 +154,7 @@
     function createEditModal(params) {
         $editModal = $(params.editModalId);
         formId = params.editModalId + " form:first";
+        console.log(formId);
         $editModal.on("show.bs.modal", function () {
             var modalTitle = "Agregar ", saveBtnText = "Guardar";
 
@@ -210,27 +211,28 @@
     };
 
     obj.begin = function (xhr, settings) {
-        if (action == "edit") {
-            submitBtn = Ladda.create($("#edit-modal .ladda-button")[0]);
-        }
-        else {
-            submitBtn = Ladda.create($("#delete-modal .ladda-button")[0]);
-        }
-        submitBtn.start();
+        //if (action == "edit") {
+        //    submitBtn = Ladda.create($("#edit-modal .ladda-button")[0]);
+        //}
+        //else {
+        //    submitBtn = Ladda.create($("#delete-modal .ladda-button")[0]);
+        //}
+        //submitBtn.start();
     };
 
     obj.success = function (data, status, xhr) {
+        console.log(data);
         if (data.success) {
-            appConfig.alertSetPositionHeader();
+            alertConfig.alertSetPositionHeader();
             $editModal.modal("hide");
             $deleteModal.modal("hide");
             //table.ajax.reload();
         }
         else {
-            appConfig.alertSetPositionTop();
+            alertConfig.alertSetPositionTop();
         }
 
-        appConfig.alert(data.type, data.message);
+        alertConfig.alert(data.message, data.type);
     };
 
     obj.failure = function (xhr, status, error) {
