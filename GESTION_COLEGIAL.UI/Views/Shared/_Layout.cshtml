@@ -60,7 +60,7 @@
     <script src="~/Content/js/libs/jquery-3.1.1.min.js"></script>
     <script src="~/Content/plugins/bootstrap/js/popper.min.js"></script>
     <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="~/Content/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="~/Content/js/app.js"></script>
     <script>
         $(document).ready(function () {
@@ -70,30 +70,15 @@
     <script src="~/Content/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-    <script src="plugins/apex/apexcharts.min.js"></script>
+    <script src="~/Content/plugins/apex/apexcharts.min.js"></script>
     <script src="~/Content/js/dashboard/dash_1.js"></script>
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-    @*@Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")*@
-    <!-- jQuery  -->
-    @*<script src="~/Content/js/jquery.min.js"></script>
-        <script src="~/Content/js/jquery-ui.min.js"></script>
-        <script src="~/Content/plugins/bootstrap-4.5.3-dist/js/bootstrap.bundle.js"></script>*@
-
-    @*<script src="~/Content/js/waves.js"></script>
-        <script src="~/Content/js/feather.min.js"></script>
-        <script src="~/Content/js/jquery.slimscroll.min.js"></script>
-        <script src="~/Content/plugins/apexcharts/apexcharts.min.js"></script>*@
 
     @* toastr *@
     <script src="~/Content/plugins/toastr/toastr.min.js"></script>
     <script src="~/Content/js/components/alert.js"></script>
-    @*<script src="~/Content/js/main.js"></script>*@
-    <script src="~/Content/js/app.js"></script>
 
-    <script src="~/Content/js/components/datatable.init.js"></script>
+    @*<script src="~/Content/js/components/datatable.init.js"></script>*@
     <script src="~/Content/js/components/catalogs.js"></script>
-    <script src="~/Content/js/components/navbar.js"></script>
 
     <!-- Required datatable js -->
     <script src="~/Content/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -113,9 +98,10 @@
     <script src="~/Content/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
     <script src="~/Content/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
-
     <script src="~/Content/js/components/datatable.init.js"></script>
 
+
+    <script src="~/Content/js/app.js"></script>
 
     <!-- App js -->
     @RenderSection("Scripts", required: false)
