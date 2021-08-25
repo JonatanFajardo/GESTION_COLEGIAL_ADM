@@ -39,22 +39,47 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
+                Show(AlertMessageType.Error, "paso algo");
+                return View("Index");
+            }
+            else
+            {
+
+                string url = "https://localhost:44341/api/Modalidades/Create";
+                bool result = await SendHttpClient.Post(url, model);
+                if (result == true)
+                {
+                    ShowController(AlertMessageType.Error);
+                    return View("Index");
+                }
+
+                ShowController(AlertMessageType.Success);
+                return View("Index");
             }
 
-            string url = "https://localhost:44341/api/Modalidades/Create";
-            bool result = await SendHttpClient.Post(url, model);
-            if (result == true)
-            {
-                ShowController(AlertMessageType.Error);
-                return View("Index");
-            } 
-
-            ShowController(AlertMessageType.Success);
-            return View("Index");           
         }
 
 
-       // GET: Modalidades/Edit/5
+
+        //public async Task<ActionResult> Validaciones()
+        //{
+        //}
+
+        //[AcceptVerbs("GET", "POST")]
+        [HttpPost]
+        public async Task<ActionResult> Exist(int? Mda_Id, string Mda_Descripcion)
+        {
+            string url = "https://localhost:44341/api/Modalidades/Exist";
+            var result = await SendHttpClient.Exist<ModalidadViewModel>(url, Mda_Descripcion);
+            int? firstValue = result.First().Mda_Id;
+            if (result != null)
+            {
+                return (firstValue == Mda_Id) ? Json(true) : Json(msjExist, JsonRequestBehavior.AllowGet);
+            }
+            return Json(true);
+        }
+
+        // GET: Modalidades/Edit/5
         public ActionResult Edit(int id)
         {
             return View();

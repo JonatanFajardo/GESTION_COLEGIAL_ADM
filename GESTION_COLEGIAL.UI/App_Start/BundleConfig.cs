@@ -8,7 +8,7 @@ namespace GESTION_COLEGIAL.UI
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Content/js/libs/jquery-3.1.1.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -24,6 +24,24 @@ namespace GESTION_COLEGIAL.UI
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            //bundles.Add(new StyleBundle("~/bundles/datatable/js").Include(
+            //            "~/Content/plugins/datatables.net/js/jquery.dataTables.min.js",
+            //          "~/Content/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
+            //          "~/Content/plugins/datatables.net-buttons/js/dataTables.buttons.min.js",
+            //          "~/Content/plugins/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js",
+            //          "~/Content/plugins/datatables.net-responsive/js/dataTables.responsive.min.js",
+            //          "~/Content/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js",
+            //          "~/Content/plugins/datatables/jszip.min.js",
+            //          "~/Content/plugins/datatables/pdfmake.min.js",
+            //          "~/Content/plugins/datatables/vfs_fonts.js",
+            //          "~/Content/plugins/datatables.net-buttons/js/buttons.html5.min.js",
+            //          "~/Content/plugins/datatables.net-buttons/js/buttons.print.min.js",
+            //          "~/Content/plugins/datatables.net-buttons/js/buttons.colVis.min.js",
+            //          "~/Content/js/components/datatable.init.js"
+            //          ));
+
+
         }
     }
 }

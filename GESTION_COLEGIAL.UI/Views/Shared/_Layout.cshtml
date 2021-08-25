@@ -62,15 +62,17 @@
     <!-- END CONTENT -->
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script src="~/Content/js/libs/jquery-3.1.1.min.js"></script>
+    @*@Scripts.Render("~/bundles/jquery");*@
+
     <script src="~/Content/plugins/bootstrap/js/popper.min.js"></script>
     <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Content/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="~/Content/js/app.js"></script>
-    <script>
-        $(document).ready(function () {
-            App.init();
-        });
-    </script>
+    @*<script>
+            $(document).ready(function () {
+                App.init();
+            });
+        </script>*@
     <script src="~/Content/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
@@ -79,9 +81,10 @@
 
     @* jquery-validate *@
     @*<script src="~/Scripts/jquery.validate.min.js"></script>*@
-    <script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Content/plugins/jquery-validation/jquery.validate.js"></script>
     <script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.js"></script>
-    <script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    @*<script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
 
     @* toastr *@
     <script src="~/Content/plugins/toastr/toastr.min.js"></script>
@@ -113,6 +116,7 @@
     <script src="~/Content/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
     <script src="~/Content/js/components/datatable.init.js"></script>
+    @*@Scripts.Render("~/bundles/datatable/js");*@
 
 
     <script src="~/Content/js/app.js"></script>

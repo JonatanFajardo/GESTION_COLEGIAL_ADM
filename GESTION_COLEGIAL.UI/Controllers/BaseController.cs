@@ -8,12 +8,16 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class BaseController:Controller
     {
-        public void Show(AlertMessageType type, string message=null)
+        protected string msjExist = $"El registro ya está en uso.";
+
+
+
+        protected void Show(AlertMessageType type, string message=null)
         {
             ViewBag.JavaScriptFunction = string.Format($"alertConfig.alert('{message}', '{type}');");
         }
 
-        public void ShowController(AlertMessageType type)
+        protected void ShowController(AlertMessageType type)
         {
             switch (type)
             {

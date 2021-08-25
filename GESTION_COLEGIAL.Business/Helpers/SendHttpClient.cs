@@ -10,6 +10,12 @@ namespace GESTION_COLEGIAL.Business.Helpers
 {
     public static class SendHttpClient
     {
+        /// <summary>
+        /// Envia datos a una API.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public static async Task<bool> Post(string url, object model)
         {
             var httpclient = new HttpClient();
@@ -26,6 +32,37 @@ namespace GESTION_COLEGIAL.Business.Helpers
             return false;
         }
 
+
+        public static async Task<List<T>> Exist<T>(string url, string value)
+        {
+            try
+            {
+                string direction = $"{url}?value={value.Trim()}";
+                var httpclient = new HttpClient();
+                var httpResponse = await httpclient.GetAsync(direction);
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
+                var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
+                return resultSerialize;
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Obteiene valores desde una API.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static async Task<List<T>> Get<T>(string url/*, object model*/)
         {
             try
