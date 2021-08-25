@@ -216,6 +216,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\AlumnoViewModel.cs" />
     <Compile Include="Models\AulaViewModel.cs" />
     <Compile Include="Models\CargoViewModel.cs" />
@@ -870,6 +871,10 @@
     <Content Include="Content\plugins\jquery-validation-unobtrusive\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Content\plugins\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
     <Content Include="Content\plugins\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Content\plugins\jquery-validation\additional-methods.js" />
+    <Content Include="Content\plugins\jquery-validation\additional-methods.min.js" />
+    <Content Include="Content\plugins\jquery-validation\jquery.validate.js" />
+    <Content Include="Content\plugins\jquery-validation\jquery.validate.min.js" />
     <Content Include="Content\plugins\jvector\africa\jquery-jvectormap-africa-en.js" />
     <Content Include="Content\plugins\jvector\asia\jquery-jvectormap-asia-en.js" />
     <Content Include="Content\plugins\jvector\continents\jquery-jvectormap-continents-en.js" />
@@ -1479,6 +1484,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\pages\" />
+    <Folder Include="Helpers\" />
     <Folder Include="Views\Aulas\" />
     <Folder Include="Views\CursosNiveles\" />
     <Folder Include="Views\Horas\" />

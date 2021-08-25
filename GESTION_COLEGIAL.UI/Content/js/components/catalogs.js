@@ -221,7 +221,7 @@
     };
 
     obj.success = function (data, status, xhr) {
-        console.log(data);
+        console.log(data.success);
         if (data.success) {
             alertConfig.alertSetPositionHeader();
             $editModal.modal("hide");
@@ -229,18 +229,18 @@
             //table.ajax.reload();
         }
         else {
-            alertConfig.alertSetPositionTop();
+            //alertConfig.alertSetPositionTop();
+        alertConfig.alert("hola bebesita", data.type);
         }
 
-        alertConfig.alert(data.message, data.type);
     };
 
     obj.failure = function (xhr, status, error) {
-        console.log(error);
+        console.log("error");
     }
 
     obj.complete = function (xhr, status) {
-        submitBtn.stop();
+        //submitBtn.stop();
     };
 
     return obj;
