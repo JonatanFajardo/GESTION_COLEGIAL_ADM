@@ -216,6 +216,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ValidationModal.cs" />
     <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\AlumnoViewModel.cs" />
     <Compile Include="Models\AulaViewModel.cs" />
@@ -1484,7 +1485,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\pages\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Views\Aulas\" />
     <Folder Include="Views\CursosNiveles\" />
     <Folder Include="Views\Horas\" />

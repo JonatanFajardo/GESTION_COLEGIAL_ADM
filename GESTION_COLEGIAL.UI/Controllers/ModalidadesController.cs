@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Linq;
+using GESTION_COLEGIAL.UI.Helpers;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -61,20 +62,29 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
 
 
-        //public async Task<ActionResult> Validaciones()
-        //{
-        //}
+
 
         //[AcceptVerbs("GET", "POST")]
         [HttpPost]
         public async Task<ActionResult> Exist(int? Mda_Id, string Mda_Descripcion)
         {
+            //Validaciones.
+            ValidationModal validationModal = new ValidationModal();
+            validationModal.SendMessage = Mda_Descripcion;
+            validationModal.BlankSpaces();
+            validationModal.SpecialCharacters();
+            if (validationModal.RequestMessage != null)
+            {
+                return Json(validationModal.RequestMessage);
+            }
+
+            //Envío de datos.
             string url = "https://localhost:44341/api/Modalidades/Exist";
             var result = await SendHttpClient.Exist<ModalidadViewModel>(url, Mda_Descripcion);
-            int? firstValue = result.First().Mda_Id;
             if (result != null)
             {
-                return (firstValue == Mda_Id) ? Json(true) : Json(msjExist, JsonRequestBehavior.AllowGet);
+                int? firstValue = result.First().Mda_Id;
+                return (firstValue == Mda_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
