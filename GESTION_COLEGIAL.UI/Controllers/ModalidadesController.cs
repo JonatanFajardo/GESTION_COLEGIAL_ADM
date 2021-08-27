@@ -38,14 +38,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //GET: Modalidades/Create
         public async Task<ActionResult> Create(ModalidadViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (model.Mda_Id == 0)
             {
-                Show(AlertMessageType.Error, "paso algo");
-                return View("Index");
-            }
-            else
-            {
-
                 string url = "https://localhost:44341/api/Modalidades/Create";
                 bool result = await SendHttpClient.Post(url, model);
                 if (result == true)
@@ -57,12 +51,21 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 ShowController(AlertMessageType.Success);
                 return View("Index");
             }
+            else
+            {
+                string url = "https://localhost:44341/api/Modalidades/Edit";
+                bool result = await SendHttpClient.Put(url, model);
+                if (result == true)
+                {
+                    ShowController(AlertMessageType.Error);
+                    return View("Index");
+                }
+
+                ShowController(AlertMessageType.Success);
+                return View("Index");
+            }
 
         }
-
-
-
-
 
         //[AcceptVerbs("GET", "POST")]
         [HttpPost]
@@ -90,9 +93,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         // GET: Modalidades/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Find(int id)
         {
-            return View();
+            string url = "https://localhost:44341/api/Modalidades/Find";
+            ModalidadViewModel resultSerialize = await SendHttpClient.Find<ModalidadViewModel>(url, id);
+            return Json(new { item = resultSerialize , success = true}, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Modalidades/Edit/5

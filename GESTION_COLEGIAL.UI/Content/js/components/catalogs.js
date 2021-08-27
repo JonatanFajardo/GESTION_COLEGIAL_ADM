@@ -25,14 +25,18 @@
                     btn.start();
                 },
                 success: function (response) {
-                    if (response.success) {
+                    console.log(response);
+                    console.log(response.success);
+                    console.log(response.item);
+                    if (response != null) {
                         assignSettings(response.item);
                         $editModal.modal("show");
                     }
                     else {
-                        alertConfig.alert(response.message, response.type);
+                        alertConfig.alert('hola', 'success');
                     }
-                },
+                }
+                ,
                 complete: function () {
                     btn.stop();
                 }
@@ -135,14 +139,14 @@
         //viene indefinido cuando se ejecuta desde el edit entonces se instancia el prefix como un string
         if (typeof prefix != "undefined") {
             prefix += ".";
-            console.log(prefix);
+            //onsole.log(prefix);
         } else {
             prefix = "";
         }
 
         for (var item in list) {
             if ((typeof list[item] == "string") || (typeof list[item] == "boolean") || typeof list[item] == "number") {
-                console.log(assignValue(prefix + item, list[item]));
+                //console.log(assignValue(prefix + item, list[item]));
                 assignValue(prefix + item, list[item]);
             } else if (typeof list[item] == "object") {
                 var n1 = item;
@@ -211,13 +215,13 @@
     };
 
     obj.begin = function (xhr, settings) {
-        //if (action == "edit") {
-        //    submitBtn = Ladda.create($("#edit-modal .ladda-button")[0]);
-        //}
-        //else {
-        //    submitBtn = Ladda.create($("#delete-modal .ladda-button")[0]);
-        //}
-        //submitBtn.start();
+        if (action == "edit") {
+            submitBtn = Ladda.create($("#edit-modal .ladda-button")[0]);
+        }
+        else {
+            submitBtn = Ladda.create($("#delete-modal .ladda-button")[0]);
+        }
+        submitBtn.start();
     };
 
     obj.success = function (data, status, xhr) {
@@ -230,7 +234,7 @@
         }
         else {
             //alertConfig.alertSetPositionTop();
-        alertConfig.alert("hola bebesita", data.type);
+        alertConfig.alert("error", data.type);
         }
 
     };
@@ -240,7 +244,7 @@
     }
 
     obj.complete = function (xhr, status) {
-        //submitBtn.stop();
+        submitBtn.stop();
     };
 
     return obj;

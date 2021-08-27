@@ -32,6 +32,22 @@ namespace GESTION_COLEGIAL.Business.Helpers
             return false;
         }
 
+        public static async Task<bool> Put(string url, object model)
+        {
+            var httpclient = new HttpClient();
+            var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
+            var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
+            var httpResponse = await httpclient.PutAsync(url, contentSerialized);//
+            //httpResponse.Wait();
+
+            //var postJob = httpResponse.Result;
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public static async Task<List<T>> Exist<T>(string url, string value)
         {
@@ -47,6 +63,30 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 }
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
+                return resultSerialize;
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        public static async Task<T> Find<T>(string url, int value)
+        {
+            try
+            {
+                string direction = $"{url}?value={value}";
+                var httpclient = new HttpClient();
+                var httpResponse = await httpclient.GetAsync(direction);
+
+                //if (!httpResponse.IsSuccessStatusCode)
+                //{
+                //    return null;
+                //}
+                var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
+                var resultSerialize = JsonConvert.DeserializeObject<T>(content);
                 return resultSerialize;
 
             }
