@@ -181,7 +181,7 @@ var datatable = (function () {
                 if (type == "display") {
                     botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
                     //botones += '<button class="btn btn-secondary btn-sm edit-btn" onclick=RedirectEdit(' + row[head] + ')><i class="mdi mdi-square-edit-outline"></i></button>';
-                    //botones += '<button class="btn btn-danger btn-sm ml-1" onclick="getIdDelete(' + row[head] + ')"><i class="ion-trash-a"></i></button>';
+                    botones += '<button class="btn btn-danger btn-sm ml-1" onclick="getIdDelete(' + row[head] + ')"><i class="ion-trash-a"></i></button>';
                     //botones += '<button class="btn btn-secondary btn-sm" href="/Usuarios/Editar/1"><i class="mdi mdi-square-edit-outline"></i></button>';
 
                 }
