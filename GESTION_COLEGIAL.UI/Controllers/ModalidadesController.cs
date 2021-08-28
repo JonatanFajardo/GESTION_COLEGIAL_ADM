@@ -58,11 +58,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 if (result == true)
                 {
                     ShowController(AlertMessageType.Error);
-                    return View("Index");
+                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                 }
 
                 ShowController(AlertMessageType.Success);
-                return View("Index");
+                //return View("Index");
+                //return Json(new { data = true }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
 
         }
