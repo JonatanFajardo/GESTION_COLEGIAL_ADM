@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi aplicación ASP.NET</title>
     <!-- App favicon -->
-    <link rel="shortcut icon" href="~/Content/images/favicon.ico">
+    <link rel="shortcut icon" href="~/Content/img/favicon.ico">
 
     <!-- App css -->
     <link rel="icon" type="image/x-icon" href="~/Content/img/favicon.ico" />
@@ -15,6 +15,7 @@
     <link href="~/Content/css/scrollspyNav.css" rel="stylesheet" type="text/css" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="~/Content/plugins/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" />
     <link href="~/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/css/plugins.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -63,31 +64,38 @@
     <!-- END CONTENT -->
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script src="~/Content/js/libs/jquery-3.1.1.min.js"></script>
-    @*@Scripts.Render("~/bundles/jquery");*@
-
     <script src="~/Content/plugins/bootstrap/js/popper.min.js"></script>
     <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/Content/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="~/Content/js/app.js"></script>
     <script src="~/Content/js/loader.js"></script>
     @*<script>
-            $(document).ready(function () {
-                App.init();
-            });
-        </script>*@
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>*@
     <script src="~/Content/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     <script src="~/Content/plugins/apex/apexcharts.min.js"></script>
     <script src="~/Content/js/dashboard/dash_1.js"></script>
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+    <!-- jQuery  -->
+    @*<script src="~/Content/js/jquery.min.js"></script>
+        <script src="~/Content/js/jquery-ui.min.js"></script>
+        <script src="~/Content/plugins/bootstrap-4.5.3-dist/js/bootstrap.bundle.js"></script>*@
 
-    @* jquery-validate *@
-    @*<script src="~/Scripts/jquery.validate.min.js"></script>*@
+    @*<script src="~/Content/js/waves.js"></script>
+        <script src="~/Content/js/feather.min.js"></script>
+        <script src="~/Content/js/jquery.slimscroll.min.js"></script>
+        <script src="~/Content/plugins/apexcharts/apexcharts.min.js"></script>*@
+
+    @* jquery-unobtrusive *@
     <script src="~/Content/plugins/jquery-validation/jquery.validate.js"></script>
     <script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.unobtrusive-ajax.js"></script>
-    @*<script src="~/Content/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
 
     @* toastr *@
     <script src="~/Content/plugins/toastr/toastr.min.js"></script>
@@ -95,9 +103,12 @@
     @* ladda *@
     <script src="~/Content/plugins/ladda/spin.min.js"></script>
     <script src="~/Content/plugins/ladda/ladda.min.js"></script>
-    <script src="~/Content/js/components/alert.js"></script>
 
-    @*<script src="~/Content/js/components/datatable.init.js"></script>*@
+    <script src="~/Content/js/components/alert.js"></script>
+    @*<script src="~/Content/js/main.js"></script>*@
+    @*<script src="~/Content/js/app.js"></script>*@
+
+    @*<script src="~/Content/js/components/navbar.js"></script>*@
 
     <!-- Required datatable js -->
     <script src="~/Content/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -117,12 +128,11 @@
     <script src="~/Content/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
     <script src="~/Content/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
     <script src="~/Content/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
     <script src="~/Content/js/components/datatable.init.js"></script>
-    @*@Scripts.Render("~/bundles/datatable/js");*@
     <script src="~/Content/js/components/catalogs.js"></script>
+    @*<script src="~/Content/js/components/datatable.init.js"></script>*@
 
-
-    <script src="~/Content/js/app.js"></script>
 
     <!-- App js -->
     @RenderSection("Scripts", required: false)

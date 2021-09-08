@@ -45,17 +45,19 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 if (result == true)
                 {
                     ShowController(AlertMessageType.Error);
-                    return View("Index");
+                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
                 }
 
                 ShowController(AlertMessageType.Success);
-                return View("Index");
+                //return View("Index");
+                //return Json(new { data = true }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 string url = "https://localhost:44341/api/Modalidades/Edit";
                 bool result = await SendHttpClient.Put(url, model);
-                if (result == true)
+                if (result == true) //2
                 {
                     ShowController(AlertMessageType.Error);
                     return Json(new { success = false }, JsonRequestBehavior.AllowGet);
@@ -119,25 +121,26 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         // GET: Modalidades/Delete/5
+        [HttpPost]
         public ActionResult Delete(int id)
         {
-            return View();
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Modalidades/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+        //[HttpPost]
+        //public ActionResult Delete(int id, FormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }
