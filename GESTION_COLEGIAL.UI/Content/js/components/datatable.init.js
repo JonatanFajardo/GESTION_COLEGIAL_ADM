@@ -98,6 +98,20 @@ var datatable = (function () {
                     },
                     {
 
+                        //attr: 
+                        //    'data-toggle': "modal",
+                        //    'data-target': "#edit-modal"
+                        //},
+                        //text: 'Nuevo',
+                        //class: "btn btn-primary",
+                        //attr: {
+                        //    title: "Añadir nuevo elemento",
+                        //    id: "add-btn",
+                        //    //onclick: "nuevo()",
+                        //    'data-toggle': "modal",
+                        //    'data-target': "#edit-modal"
+                        //    /*onclick: "nuevo()"*/
+                        //}
                         attr: {
                             title: "Añadir nuevo elemento",
                             id: "add-btn",
@@ -107,6 +121,14 @@ var datatable = (function () {
                             'data-target': "#edit-modal"
                         },
                         text: '<i class="mdi mdi-plus-thick ladda-button"> Nuevo</i>'
+                        
+
+                        //text: 'Nuevo <i class="mdi mdi-plus-thick"></i>',
+                        //className: "btn btn-success",
+                        //attr: {
+                        //    title: "Añadir componente nuevo",
+                        //    onclick: "Modal()"
+                        //}
 
                     }
                 ],
@@ -181,7 +203,7 @@ var datatable = (function () {
                 if (type == "display") {
                     botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
                     //botones += '<button class="btn btn-secondary btn-sm edit-btn" onclick=RedirectEdit(' + row[head] + ')><i class="mdi mdi-square-edit-outline"></i></button>';
-                    botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn" data-style="zoom-in" data-id="' + row[head] + '"><i class="ion-trash-a"></i></button>';
+                    botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="ion-trash-a"></i></span></button>';
                     //botones onclick="getIdDelete(' + row[head] + ')+= '<button class="btn btn-secondary btn-sm" href="/Usuarios/Editar/1"><i class="mdi mdi-square-edit-outline"></i></button>';
 
                 }
@@ -197,17 +219,27 @@ var datatable = (function () {
     return obj;
 }());
 
+//function nuevo() {
+//    //$(formId).trigger("reset");
+//    console.log('add-btn');
+//    $("#item-id").val("0");
+//    //$editModal.modal("show");
+//    //action = "edit"; console.log('add-btn');
+//}
+
+//$("#add-btn").click(function () {
+//    /*$(formId).trigger("reset");*/
+//    console.log('add-btn');
+//    //$("#item-id").val("0");
+//    //$editModal.modal("show");
+//    //action = "edit";
+//});
 
 
 
-
-
-
-
-
-function RedirectEdit(params) {
-    window.location = '/' + tabla + '/Edit/' + params + '';
-}
+//function RedirectEdit(params) {
+//    window.location = '/' + tabla + '/Edit/' + params + '';
+//}
 
 
 

@@ -13,8 +13,11 @@ var Catalogs = (function () {
 
     //Evento que le envia al controlador el id para editar un registro, levanta el modal, 
     function createDataTable(params) {
+        //console.log(params.getUrl);
+        //console.log(params.getUrlDelete);
         table = $("#datatable");
 
+        // Eventos que se levantan al dar clic en el datatable.
         table.on("click", ".edit-btn", function (e) {
             var id = $(this).data("id");
             var btn = Ladda.create($(this)[0]); //button spin animation
@@ -67,41 +70,80 @@ var Catalogs = (function () {
             });
         });
 
+        //table.on("click", ".delete-btn", function (e) {
+        //    //var id = $(this).data("id");
+        //    ////var btn = Ladda.create($(this)[0]);
+        //    //action = "delete";
+        //    //$("#delete-item-id").val(id);
+        //    //$("#delete-item-name").html(response.item.name);
+        //    //$deleteModal.modal("show");
+        //    console.log('Modal eliminar');
+        //    //$.ajax({
+        //    //    type: "GET",
+        //    //    url: params.getUrl + "/" + id,
+        //    //    dataType: "json",
+        //    //    beforeSend: function () {
+        //    //        btn.start();
+        //    //    },
+        //    //    success: function (response) {
+        //    //        if (response.success) {
+        //    //            $("#delete-item-id").val(id);
+        //    //            $("#delete-item-name").html(response.item.name);
+        //    //            $deleteModal.modal("show");
+        //    //        }
+        //    //        else {
+        //    //            alertConfig.alert(response.message, response.type);
+        //    //        }
+        //    //    },
+        //    //    complete: function () {
+        //    //        btn.stop();
+        //    //    }
+        //    //});
+        //});
+
+        //Levanta el modal de nuevo.
         $("#add-btn").click(function () {
+            console.log('add-btn');
             $(formId).trigger("reset");
             $("#item-id").val("0");
             action = "edit";
         });
+         
+        //$("#add-btn").click(function () {
+        //    //$(formId).trigger("reset");
+        //    console.log('add-btn');
+        //    //$("#item-id").val("0");
+        //    //$editModal.modal("show");
+        //    //action = "edit";
+        //});
 
-        table.on("click", ".delete-btn", function (e) {
-            //var id = $(this).data("id");
-            ////var btn = Ladda.create($(this)[0]);
-            //action = "delete";
-            //$("#delete-item-id").val(id);
-            //$("#delete-item-name").html(response.item.name);
-            console.log('Modal eliminar');
-            $deleteModal.modal("show");
-            //$.ajax({
-            //    type: "GET",
-            //    url: params.getUrl + "/" + id,
-            //    dataType: "json",
-            //    beforeSend: function () {
-            //        btn.start();
-            //    },
-            //    success: function (response) {
-            //        if (response.success) {
-            //            $("#delete-item-id").val(id);
-            //            $("#delete-item-name").html(response.item.name);
-            //            $deleteModal.modal("show");
-            //        }
-            //        else {
-            //            alertConfig.alert(response.message, response.type);
-            //        }
-            //    },
-            //    complete: function () {
-            //        btn.stop();
-            //    }
-            //});
+        //function nuevo() {
+        //    $(formId).trigger("reset");
+        //    console.log('add-btn');
+        //    $("#item-id").val("0");
+        //    $editModal.modal("show");
+        //    action = "edit"; console.log('add-btn');
+        //}
+
+        //table.on("click", ".add-btn", function (e) {
+        //    console.log('table onclick add-btn')
+        //});
+
+        $("#accept-delete-btn").click(function () {
+            var id = $(".delete-btn").data("id");
+            console.log(id);
+            console.log(params.getUrlDelete + "/" + id);
+            $.ajax({
+                url: params.getUrlDelete + "/" + id,
+                type: "POST",
+                dataType: "json"
+            }).done(function (resultAjax) {
+                if (resultAjax.success) {
+                    //console.log('Error al eliminar');
+                    $deleteModal.modal("hide");
+                    alertConfig.alert("Eliminado correctamente", 'success');
+                }
+            });
         });
     }
 
@@ -157,7 +199,9 @@ var Catalogs = (function () {
     function createEditModal(params) {
         $editModal = $(params.editModalId);
         formId = params.editModalId + " form:first";
+
         $editModal.on("show.bs.modal", function () {
+        console.log('createEditModal: Jon');
             var modalTitle = "Agregar ", saveBtnText = "Guardar";
 
             //si el id es igual a 0 que le asigne otros valores al titulo y al boton de guardar
@@ -175,6 +219,7 @@ var Catalogs = (function () {
             }, 500);
         });
 
+
         $editModal.on("hidden.bs.modal", function () {
             $(":input", formId).not(':button, :submit, :reset, input[name="__RequestVerificationToken"]').val("").removeAttr("readonly");
 
@@ -189,15 +234,34 @@ var Catalogs = (function () {
             validator.reset();
             $(".input-validation-error").removeClass("input-validation-error");
         });
+
+
     }
+    
 
     function createDeleteModal(params) {
-        console.log('createDeleteModal: ' + params);
+        
         $deleteModal = $(params.deleteModalId);
+        console.log('createDeleteModal: ' + params.deleteModalId)
+        $deleteModal.on("show.bs.modal", function () {
+            var modalTitle = "Eliminar ", saveBtnText = "Aceptar", modalBody = "¿Está seguro de que desea eliminar este registro?";
+
+            $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
+            $(params.deleteModalId + " .modal-body").html("<p>" + modalBody +"</p>");
+            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
+
+        });
+
+
+        $deleteModal.on("hidden.bs.modal", function () {
+           
+        });
+
+
     }
 
     obj.configure = function (params) {
-        console.log('obj.configure: ' + params);
+        //console.log('obj.configure: ' + params);
         //if (params.dataTableId === undefined)
         //    params.dataTableId = "#datatable";
         if (params.editModalId === undefined)
@@ -208,8 +272,8 @@ var Catalogs = (function () {
 
         $(function () {
             createDataTable(params);
-            createEditModal(params);
             createDeleteModal(params);
+            createEditModal(params);
         });
     };
 
@@ -225,16 +289,18 @@ var Catalogs = (function () {
 
     obj.success = function (data, status, xhr) {
         if (data.success) {
+            console.log(data.success);
             //alertConfig.alertSetPositionHeader();
             $editModal.modal("hide");
-            $deleteModal.modal("hide");
+            console.log('delemodalhide');
+            /*$deleteModal.modal("hide");*/
             alertConfig.alert("Success", data.type);
             table.DataTable().ajax.reload(null, false);
         }
         else {
             //alertConfig.alertSetPositionTop();
-            //$editModal.modal("hide");
-            alertConfig.alert("error", data.type);
+            $editModal.modal("hide");
+            alertConfig.alert("error", data.error);
         }
 
     };
@@ -249,3 +315,6 @@ var Catalogs = (function () {
 
     return obj;
 }());
+
+
+

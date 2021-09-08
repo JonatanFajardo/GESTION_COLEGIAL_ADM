@@ -376,6 +376,7 @@
     <Content Include="Content\js\ie11fix\fn.fix-padStart.js" />
     <Content Include="Content\js\libs\jquery-3.1.1.min.js" />
     <Content Include="Content\js\libs\jquery-ui.js" />
+    <Content Include="Content\js\libs\jquery.min.js" />
     <Content Include="Content\js\loader.js" />
     <Content Include="Content\js\pages\alumnos.js" />
     <Content Include="Content\js\pages\aulas.js" />
