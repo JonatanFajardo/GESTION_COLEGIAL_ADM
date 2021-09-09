@@ -135,20 +135,5 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Modalidades/Delete/5
-        //[HttpPost]
-        //public ActionResult Delete(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }
