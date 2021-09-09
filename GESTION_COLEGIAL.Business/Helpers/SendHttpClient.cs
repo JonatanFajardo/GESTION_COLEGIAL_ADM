@@ -8,8 +8,13 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.Business.Helpers
 {
+    /// <summary>
+    /// Crea peticiones a un servicio web.
+    /// </summary>
     public static class SendHttpClient
     {
+        private const string baseUrl = "https://localhost:44341/api/";
+
         /// <summary>
         /// Envia datos a una API.
         /// </summary>
@@ -32,6 +37,34 @@ namespace GESTION_COLEGIAL.Business.Helpers
             return false;
         }
 
+        /// <summary>
+        /// Solicita la eliminacion de un registro.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="id">Identificador del registro a eliminar.</param>
+        /// <returns></returns>
+        public static async Task<bool> Delete(string url, int id)
+        {
+            var httpclient = new HttpClient();
+            var content = JsonConvert.SerializeObject(id);//se convierte a json el contenido a enviar
+            var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
+            var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?id={id}", contentSerialized);//
+            //httpResponse.Wait();
+
+            //var postJob = httpResponse.Result;
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Solicita la modificacion de un registro.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="model">Entidad que encapsula los datos a actualizar.</param>
+        /// <returns></returns>
         public static async Task<bool> Put(string url, object model)
         {
             var httpclient = new HttpClient();
@@ -48,7 +81,13 @@ namespace GESTION_COLEGIAL.Business.Helpers
             return false;
         }
 
-
+        /// <summary>
+        /// Solicita la verificacion de la existencia de un registro.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static async Task<List<T>> Exist<T>(string url, string value)
         {
             try
@@ -73,6 +112,13 @@ namespace GESTION_COLEGIAL.Business.Helpers
             }
         }
 
+        /// <summary>
+        /// Obtiene un registro especifico.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static async Task<T> Find<T>(string url, int value)
         {
             try
@@ -98,7 +144,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         }
 
         /// <summary>
-        /// Obteiene valores desde una API.
+        /// Obtiene valores del servicio.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="url"></param>
@@ -108,7 +154,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             try
             {
                 var httpclient = new HttpClient();
-                var httpResponse = await httpclient.GetAsync(url);
+                var httpResponse = await httpclient.GetAsync($"{baseUrl}{url}");
 
                 if (!httpResponse.IsSuccessStatusCode)
                 {
@@ -125,5 +171,8 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 throw;
             }
         }
+
+
+       
     }
 }

@@ -29,7 +29,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "https://localhost:44341/api/Modalidades/List";
+            string url = "Modalidades/List";
             var resultSerialize = await SendHttpClient.Get<ModalidadViewModel>(url);
             return Json(new { data = resultSerialize }, JsonRequestBehavior.AllowGet);
         }
@@ -64,9 +64,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 }
 
                 ShowController(AlertMessageType.Success);
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
                 //return View("Index");
                 //return Json(new { data = true }, JsonRequestBehavior.AllowGet);
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -122,8 +122,16 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         // GET: Modalidades/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
+            string url = "Modalidades/Remove";
+            bool result = await SendHttpClient.Delete(url, id);
+            if (result == true) 
+            {
+                //ShowController(AlertMessageType.Error);
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+            }
+            //ShowController(AlertMessageType.Success);
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 

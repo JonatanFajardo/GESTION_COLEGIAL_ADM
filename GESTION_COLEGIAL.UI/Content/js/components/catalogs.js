@@ -11,13 +11,16 @@ var Catalogs = (function () {
         action,
         submitBtn;
 
-    //Evento que le envia al controlador el id para editar un registro, levanta el modal, 
+    /**
+     * Evento que le envia al controlador el id para editar un registro, levanta el modal,
+     * @param {any} params
+     */
     function createDataTable(params) {
         //console.log(params.getUrl);
         //console.log(params.getUrlDelete);
         table = $("#datatable");
 
-        // Eventos que se levantan al dar clic en el datatable.
+        // Eventos que se levantan al dar clic en el boton de editar en datatable.
         table.on("click", ".edit-btn", function (e) {
             var id = $(this).data("id");
             var btn = Ladda.create($(this)[0]); //button spin animation
@@ -44,6 +47,7 @@ var Catalogs = (function () {
             });
         });
 
+        // Eventos que se levantan al dar clic en el boton de detalle en datatable.
         table.on("click", ".details-btn", function (e) {
             var id = $(this).data("id");
             var btn = Ladda.create($(this)[0]); //button spin animation
@@ -70,65 +74,14 @@ var Catalogs = (function () {
             });
         });
 
-        //table.on("click", ".delete-btn", function (e) {
-        //    //var id = $(this).data("id");
-        //    ////var btn = Ladda.create($(this)[0]);
-        //    //action = "delete";
-        //    //$("#delete-item-id").val(id);
-        //    //$("#delete-item-name").html(response.item.name);
-        //    //$deleteModal.modal("show");
-        //    console.log('Modal eliminar');
-        //    //$.ajax({
-        //    //    type: "GET",
-        //    //    url: params.getUrl + "/" + id,
-        //    //    dataType: "json",
-        //    //    beforeSend: function () {
-        //    //        btn.start();
-        //    //    },
-        //    //    success: function (response) {
-        //    //        if (response.success) {
-        //    //            $("#delete-item-id").val(id);
-        //    //            $("#delete-item-name").html(response.item.name);
-        //    //            $deleteModal.modal("show");
-        //    //        }
-        //    //        else {
-        //    //            alertConfig.alert(response.message, response.type);
-        //    //        }
-        //    //    },
-        //    //    complete: function () {
-        //    //        btn.stop();
-        //    //    }
-        //    //});
-        //});
-
-        //Levanta el modal de nuevo.
+        //Recetea los valores.
         $("#add-btn").click(function () {
-            console.log('add-btn');
             $(formId).trigger("reset");
             $("#item-id").val("0");
             action = "edit";
         });
-         
-        //$("#add-btn").click(function () {
-        //    //$(formId).trigger("reset");
-        //    console.log('add-btn');
-        //    //$("#item-id").val("0");
-        //    //$editModal.modal("show");
-        //    //action = "edit";
-        //});
 
-        //function nuevo() {
-        //    $(formId).trigger("reset");
-        //    console.log('add-btn');
-        //    $("#item-id").val("0");
-        //    $editModal.modal("show");
-        //    action = "edit"; console.log('add-btn');
-        //}
-
-        //table.on("click", ".add-btn", function (e) {
-        //    console.log('table onclick add-btn')
-        //});
-
+        //Evento que se levanta al dar clic en el boton de aceptar en el modal de eliminar.
         $("#accept-delete-btn").click(function () {
             var id = $(".delete-btn").data("id");
             console.log(id);
@@ -142,6 +95,10 @@ var Catalogs = (function () {
                     //console.log('Error al eliminar');
                     $deleteModal.modal("hide");
                     alertConfig.alert("Eliminado correctamente", 'success');
+                    table.DataTable().ajax.reload(null, false);
+                } else {
+                    $deleteModal.modal("hide");
+                    alertConfig.alert("Ocurrio un error al eliminar", 'error');
                 }
             });
         });
@@ -196,12 +153,16 @@ var Catalogs = (function () {
         }
     }
 
+    /**
+     * Configura y establece los valores del modal.
+     * @param {any} params
+     */
     function createEditModal(params) {
         $editModal = $(params.editModalId);
         formId = params.editModalId + " form:first";
 
         $editModal.on("show.bs.modal", function () {
-        console.log('createEditModal: Jon');
+            console.log('createEditModal: Jon');
             var modalTitle = "Agregar ", saveBtnText = "Guardar";
 
             //si el id es igual a 0 que le asigne otros valores al titulo y al boton de guardar
@@ -237,27 +198,26 @@ var Catalogs = (function () {
 
 
     }
-    
 
+    /**
+     * Configura y establece los valores del modal.
+     * @param {any} params
+     */
     function createDeleteModal(params) {
-        
+
         $deleteModal = $(params.deleteModalId);
         console.log('createDeleteModal: ' + params.deleteModalId)
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", saveBtnText = "Aceptar", modalBody = "¿Está seguro de que desea eliminar este registro?";
 
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-body").html("<p>" + modalBody +"</p>");
+            $(params.deleteModalId + " .modal-body").html("<p>" + modalBody + "</p>");
             $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
 
         });
 
 
-        $deleteModal.on("hidden.bs.modal", function () {
-           
-        });
-
-
+        $deleteModal.on("hidden.bs.modal", function () {});
     }
 
     obj.configure = function (params) {
