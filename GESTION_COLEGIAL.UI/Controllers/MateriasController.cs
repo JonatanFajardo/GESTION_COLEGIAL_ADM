@@ -29,7 +29,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(ModalidadViewModel model)
         {
-            if (model.Mat_Id == 0)
+            if (model.Mda_Id == 0)
             {
                 string url = "Materias/Create";
                 bool result = await CatalogsService.Create(url, model);
