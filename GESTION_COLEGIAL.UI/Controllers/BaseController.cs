@@ -2,21 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Helpers;
+using GESTION_COLEGIAL.UI.Models;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
-    public class BaseController:Controller
+    public class BaseController : Controller
     {
         protected string msjExist = $"El registro ya está en uso.";
 
 
-
-        protected void Show(AlertMessageType type, string message=null)
+        /// <summary>
+        /// Muestra una alerta en pantalla.
+        /// </summary>
+        /// <param name="type">Tipo de mensaje.</param>
+        /// <param name="message">Descripción a mostrar.</param>
+        protected void Show(AlertMessageType type, string message = null)
         {
             ViewBag.JavaScriptFunction = string.Format($"alertConfig.alert('{message}', '{type}');");
         }
 
+        public ActionResult AjaxResult(dynamic item, bool success)
+        {
+            return Json(new { item = item, success = success }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AjaxResult(dynamic response)
+        {
+            //if: si response es boleano significa que este es un POST.
+            if (response.GetType() == typeof(bool))
+            {
+                return Json(new { success = response });
+            }
+            else
+            {
+                return Json(new { data = response }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Mensajes predefinidos para el controlador.
+        /// </summary>
+        /// <param name="type">Tipo de alerta.</param>
         protected void ShowController(AlertMessageType type)
         {
             switch (type)
