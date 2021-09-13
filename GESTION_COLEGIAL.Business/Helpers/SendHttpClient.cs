@@ -26,7 +26,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-            var httpResponse = await httpclient.PostAsync(url, contentSerialized);//
+            var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);//
             //httpResponse.Wait();
 
             //var postJob = httpResponse.Result;
@@ -48,7 +48,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(id);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-            var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?id={id}", contentSerialized);//
+            var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?value={id}", contentSerialized);//
             //httpResponse.Wait();
 
             //var postJob = httpResponse.Result;
@@ -70,7 +70,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-            var httpResponse = await httpclient.PutAsync(url, contentSerialized);//
+            var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}", contentSerialized);
             //httpResponse.Wait();
 
             //var postJob = httpResponse.Result;
@@ -92,7 +92,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         {
             try
             {
-                string direction = $"{url}?value={value.Trim()}";
+                string direction = $"{baseUrl}{url}?value={value.Trim()}";
                 var httpclient = new HttpClient();
                 var httpResponse = await httpclient.GetAsync(direction);
 
@@ -123,7 +123,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         {
             try
             {
-                string direction = $"{url}?value={value}";
+                string direction = $"{baseUrl}{url}?value={value}";
                 var httpclient = new HttpClient();
                 var httpResponse = await httpclient.GetAsync(direction);
 
