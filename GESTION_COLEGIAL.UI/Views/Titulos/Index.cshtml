@@ -50,3 +50,17 @@
         </div>
     </div>
 }
+
+@section Scripts{
+    <script src="~/Content/js/pages/titulos.js"></script>
+    <script>
+        Titulos.datatable({listUrl: "@Url.Action("List")" });
+    </script>
+    <script>
+        Catalogs.configure({
+            displayName: "titulos",
+            getUrl: "@Url.Action("Find")",
+            getUrlDelete: "@Url.Action("Delete")"
+        });
+    </script>
+}

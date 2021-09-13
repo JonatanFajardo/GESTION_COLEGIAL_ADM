@@ -58,8 +58,16 @@
     </div>
 }
 
-@if (ModelState.is)
-{
-    s
+@section Scripts{
+    <script src="~/Content/js/pages/niveleseducativos.js"></script>
+    <script>
+        NivelesEducativos.datatable({listUrl: "@Url.Action("List")" });
+    </script>
+    <script>
+        Catalogs.configure({
+            displayName: "niveles educativos",
+            getUrl: "@Url.Action("Find")",
+            getUrlDelete: "@Url.Action("Delete")"
+        });
+    </script>
 }
-

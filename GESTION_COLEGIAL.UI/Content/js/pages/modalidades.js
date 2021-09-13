@@ -7,7 +7,6 @@
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
-                //["Fila"],
                 "Mda_Id",
                 "Mda_Descripcion"
             ];
@@ -15,7 +14,6 @@
         })
     }
     return obj;
-
 }());
 
 

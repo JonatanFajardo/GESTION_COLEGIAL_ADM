@@ -24,6 +24,7 @@
         </table>
     </div>
 </div>
+
 <!-- Modal -->
 <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -60,7 +61,7 @@
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.Mda_Descripcion, "Modalidad", htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.Mda_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
                                     @Html.EditorFor(model => model.Mda_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Mda_Descripcion, "", new { @class = "text-danger" })
                                 </div>
@@ -110,22 +111,10 @@
 
 
 @section Scripts{
-
-    @*<script type="text/javascript">
-            @Html.Raw(ViewBag.JavaScriptFunction)
-        </script>*@
-    @*<script src="~/Content/js/components/datatable.init.js"></script>*@
-
     <script src="~/Content/js/pages/modalidades.js"></script>
     <script>
         Modalidades.datatable({listUrl: "@Url.Action("List")" });
     </script>
-    @if (ViewBag.JavaScriptFunction != null)
-    {
-        <script type="text/javascript">
-        @Html.Raw(ViewBag.JavaScriptFunction);
-        </script>
-    }
     <script>
         Catalogs.configure({
             displayName: "modalidad",
@@ -133,4 +122,10 @@
             getUrlDelete: "@Url.Action("Delete")"
         });
     </script>
+    @*@if (ViewBag.JavaScriptFunction != null)
+    {
+        <script type="text/javascript">
+        @Html.Raw(ViewBag.JavaScriptFunction);
+        </script>
+    }*@
 }
