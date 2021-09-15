@@ -1,15 +1,14 @@
-﻿
-@model GESTION_COLEGIAL.UI.Models.NivelEducativoViewModel
-@{
-    ViewBag.Title = "Index";
+﻿@model GESTION_COLEGIAL.UI.Models.CursoNivelViewModel
+@{ ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <div class="card">
     <div class="card-header" style="background-color:white;">
         <div class="row space-between">
             <div class="col-md-9">
-                <div class="col-md-9"><h3>Listado de niveles educativos</h3></div>
+                <div class="col-md-9"><h3>Listado de cursos niveles</h3></div>
                 <div class="col-md-3"><button class="btn btn-primary mdi mdi-plus-circle-outline float-right" id="add-btn" data-toggle="modal" data-target="#edit-modal">  Nuevo</button></div>
             </div>
         </div>
@@ -37,7 +36,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Ajax.BeginForm("Create", "NivelesEducativos", new AjaxOptions
+            @using (Ajax.BeginForm("Create", "CursosNiveles", new AjaxOptions
             {
                 HttpMethod = "Post",
                 OnBegin = "Catalogs.begin",
@@ -50,24 +49,15 @@
             {
                 <div class="container">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    @Html.HiddenFor(model => model.Niv_Id, new { @id = "item-id" })
+                    @Html.HiddenFor(model => model.Cun_Id, new { @id = "item-id" })
                     @*<input name="Mda_Id" id="item-id" type="hidden">*@
                     <div class="modal-body">
                         <div class="form-row">
-                            @* Columna Descripción *@
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.Niv_Descripcion, "Niv_Descripcion", htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Niv_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Niv_Descripcion, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            @* Columna Es activo *@
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.EsActivo, "EsActivo", htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.EsActivo, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.EsActivo, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.Cun_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Cun_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Cun_Descripcion, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -113,14 +103,15 @@
 </div>
 <!-- Fin Modal -->
 
+
 @section Scripts{
-    <script src="~/Content/js/pages/niveleseducativos.js"></script>
+    <script src="~/Content/js/pages/cursosniveles.js"></script>
     <script>
-        NivelesEducativos.datatable({listUrl: "@Url.Action("List")" });
+        CursosNiveles.datatable({listUrl: "@Url.Action("List")" });
     </script>
     <script>
         Catalogs.configure({
-            displayName: "niveles educativos",
+            displayName: "curso nivel",
             getUrl: "@Url.Action("Find")",
             getUrlDelete: "@Url.Action("Delete")"
         });

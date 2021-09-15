@@ -1456,14 +1456,13 @@
     <Content Include="Views\Shared\_sidebar.cshtml" />
     <Content Include="Views\Shared\_header.cshtml" />
     <Content Include="Views\Shared\_footer.cshtml" />
+    <Content Include="Views\CursosNiveles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\pages\" />
     <Folder Include="Content\scss\pages\" />
     <Folder Include="Views\Aulas\" />
-    <Folder Include="Views\CursosNiveles\" />
-    <Folder Include="Views\Horas\" />
     <Folder Include="Views\Personas\" />
     <Folder Include="Views\SubMenu\" />
     <Folder Include="Views\Usuarios\" />
