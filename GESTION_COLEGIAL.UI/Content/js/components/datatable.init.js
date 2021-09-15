@@ -15,7 +15,7 @@ var datatable = (function () {
      */
     obj.init = function (listUrl, header) {
         $(function () {
-
+            console.log(listUrl);
 
 
             //configuraciones
@@ -138,8 +138,12 @@ var datatable = (function () {
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
+                            console.log(response);
                             callback(response);
                         },
+                        error: function () {
+                            console.log('error');
+                        }
                     });
                 },
                 columnDefs: obj.dataHeader(header)
