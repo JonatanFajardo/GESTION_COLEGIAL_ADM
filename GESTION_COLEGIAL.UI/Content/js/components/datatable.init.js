@@ -206,9 +206,7 @@ var datatable = (function () {
                 var head = _header[0];
                 if (type == "display") {
                     botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
-                    //botones += '<button class="btn btn-secondary btn-sm edit-btn" onclick=RedirectEdit(' + row[head] + ')><i class="mdi mdi-square-edit-outline"></i></button>';
                     botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="ion-trash-a"></i></span></button>';
-                    //botones onclick="getIdDelete(' + row[head] + ')+= '<button class="btn btn-secondary btn-sm" href="/Usuarios/Editar/1"><i class="mdi mdi-square-edit-outline"></i></button>';
 
                 }
                 return botones;

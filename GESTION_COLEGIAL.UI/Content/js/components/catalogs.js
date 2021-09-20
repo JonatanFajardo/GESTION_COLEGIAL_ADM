@@ -1,8 +1,4 @@
-﻿////function reloadTable() {
-////    $("#datatable").DataTable().ajax.reload();
-////}
-
-var Catalogs = (function () {
+﻿var Catalogs = (function () {
     var obj = {},
         table,
         formId,
@@ -16,8 +12,6 @@ var Catalogs = (function () {
      * @param {any} params
      */
     function createDataTable(params) {
-        //console.log(params.getUrl);
-        //console.log(params.getUrlDelete);
         table = $("#datatable");
 
         // Eventos que se levantan al dar clic en el boton de editar en datatable.
@@ -81,24 +75,28 @@ var Catalogs = (function () {
             action = "edit";
         });
 
-        //Evento que se levanta al dar clic en el boton de aceptar en el modal de eliminar.
-        $("#accept-delete-btn").click(function () {
-            var id = $(".delete-btn").data("id");
-            console.log(id);
-            console.log(params.getUrlDelete + "/" + id);
+        table.on("click", ".delete-btn", function (e) {
+            var id = $(this).data("id");
+            var btn = Ladda.create($(this)[0]);
+            action = "delete";
             $.ajax({
-                url: params.getUrlDelete + "/" + id,
-                type: "POST",
-                dataType: "json"
-            }).done(function (resultAjax) {
-                if (resultAjax.success) {
-                    //console.log('Error al eliminar');
-                    $deleteModal.modal("hide");
-                    alertConfig.alert("Eliminado correctamente", 'success');
-                    table.DataTable().ajax.reload(null, false);
-                } else {
-                    $deleteModal.modal("hide");
-                    alertConfig.alert("Ocurrio un error al eliminar", 'error');
+                type: "GET",
+                url: params.getUrl + "/" + id,
+                dataType: "json",
+                beforeSend: function () {
+                    btn.start();
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $("#delete-item-id").val(id);
+                        $deleteModal.modal("show");
+                    }
+                    else {
+                        alertConfig.alert('error', 'success');
+                    }
+                },
+                complete: function () {
+                    btn.stop();
                 }
             });
         });
@@ -162,7 +160,6 @@ var Catalogs = (function () {
         formId = params.editModalId + " form:first";
 
         $editModal.on("show.bs.modal", function () {
-            console.log('createEditModal: Jon');
             var modalTitle = "Agregar ", saveBtnText = "Guardar";
 
             //si el id es igual a 0 que le asigne otros valores al titulo y al boton de guardar
@@ -206,12 +203,10 @@ var Catalogs = (function () {
     function createDeleteModal(params) {
 
         $deleteModal = $(params.deleteModalId);
-        console.log('createDeleteModal: ' + params.deleteModalId)
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", saveBtnText = "Aceptar", modalBody = "¿Está seguro de que desea eliminar este registro?";
-
+            var input = '@Html.HiddenFor(model => model, new { @id = "delete-item-id" })';
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-body").html("<p>" + modalBody + "</p>");
             $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
 
         });
@@ -221,7 +216,6 @@ var Catalogs = (function () {
     }
 
     obj.configure = function (params) {
-        //console.log('obj.configure: ' + params);
         //if (params.dataTableId === undefined)
         //    params.dataTableId = "#datatable";
         if (params.editModalId === undefined)
@@ -249,16 +243,13 @@ var Catalogs = (function () {
 
     obj.success = function (data, status, xhr) {
         if (data.success) {
-            console.log(data.success);
-            //alertConfig.alertSetPositionHeader();
             $editModal.modal("hide");
-            console.log('delemodalhide');
-            /*$deleteModal.modal("hide");*/
+            $deleteModal.modal("hide");
             alertConfig.alert("Success", data.type);
             table.DataTable().ajax.reload(null, false);
         }
         else {
-            //alertConfig.alertSetPositionTop();
+            $deleteModal.modal("hide");
             $editModal.modal("hide");
             alertConfig.alert("error", data.error);
         }
@@ -266,7 +257,7 @@ var Catalogs = (function () {
     };
 
     obj.failure = function (xhr, status, error) {
-        console.log("error");
+        console.log("Ocurrió  un error.");
     }
 
     obj.complete = function (xhr, status) {

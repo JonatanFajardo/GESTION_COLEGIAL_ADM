@@ -8,7 +8,7 @@ namespace GESTION_COLEGIAL.UI.Models
     public class ModalidadViewModel : BaseViewModel
     {
         [Key]
-        public int? Mda_Id { get; set; }
+        public int Mda_Id { get; set; }
 
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo es requerido")]
