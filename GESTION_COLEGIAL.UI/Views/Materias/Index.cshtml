@@ -16,13 +16,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @*@using (Html.BeginForm("Create", "Modalidades", FormMethod.Post, new { enctype = "multipart/form-data" ,
-                        data_ajax_begin = "Catalogs.begin",
-                      data_ajax_success = "Catalogs.success",
-                      data_ajax_failure = "Catalogs.failure",
-                      data_ajax_complete = "Catalogs.complete"
-                }))
-                {*@
+
             @using (Ajax.BeginForm("Create", "Materias", new AjaxOptions
             {
                 HttpMethod = "Post",
@@ -30,8 +24,7 @@
                 OnComplete = "Catalogs.complete",
                 OnFailure = "Catalogs.failure",
                 OnSuccess = "Catalogs.success"
-                //UpdateTargetId = "PostList",
-                //InsertionMode = InsertionMode.Replace
+
             }))
             {
                 <div class="container">
@@ -54,7 +47,7 @@
                         <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
                     </div>
                 </div>}
-            @*</form>*@
+            
         </div>
     </div>
 </div>
@@ -111,8 +104,7 @@
     <script>
         Catalogs.configure({
             displayName: "materias",
-            getUrl: "@Url.Action("Find")",
-            getUrlDelete: "@Url.Action("Delete")"
+            getUrl: "@Url.Action("Find")"
         });
     </script>
 }

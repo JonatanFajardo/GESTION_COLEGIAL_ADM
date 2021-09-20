@@ -43,8 +43,7 @@
                 OnComplete = "Catalogs.complete",
                 OnFailure = "Catalogs.failure",
                 OnSuccess = "Catalogs.success"
-                //UpdateTargetId = "PostList",
-                //InsertionMode = InsertionMode.Replace
+
             }))
             {
                 <div class="container">
@@ -67,7 +66,7 @@
                         <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
                     </div>
                 </div>}
-            @*</form>*@
+            
         </div>
     </div>
 </div>
@@ -124,8 +123,7 @@
     <script>
         Catalogs.configure({
             displayName: "hora",
-            getUrl: "@Url.Action("Find")",
-            getUrlDelete: "@Url.Action("Delete")"
+            getUrl: "@Url.Action("Find")"
         });
     </script>
 }
