@@ -65,7 +65,7 @@
                         <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
                     </div>
                 </div>}
-            @*</form>*@
+            
         </div>
     </div>
 </div>
@@ -122,8 +122,7 @@
     <script>
         Catalogs.configure({
             displayName: "semestres",
-            getUrl: "@Url.Action("Find")",
-            getUrlDelete: "@Url.Action("Delete")"
+            getUrl: "@Url.Action("Find")"
         });
     </script>
 }

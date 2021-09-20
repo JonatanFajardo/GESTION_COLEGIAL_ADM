@@ -37,13 +37,6 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @*@using (Html.BeginForm("Create", "Modalidades", FormMethod.Post, new { enctype = "multipart/form-data" ,
-                        data_ajax_begin = "Catalogs.begin",
-                      data_ajax_success = "Catalogs.success",
-                      data_ajax_failure = "Catalogs.failure",
-                      data_ajax_complete = "Catalogs.complete"
-                }))
-                {*@
             @using (Ajax.BeginForm("Create", "Duraciones", new AjaxOptions
             {
                 HttpMethod = "Post",
@@ -51,14 +44,12 @@
                 OnComplete = "Catalogs.complete",
                 OnFailure = "Catalogs.failure",
                 OnSuccess = "Catalogs.success"
-                //UpdateTargetId = "PostList",
-                //InsertionMode = InsertionMode.Replace
+
             }))
             {
                 <div class="container">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @Html.HiddenFor(model => model.Dur_Id, new { @id = "item-id" })
-                    @*<input name="Mda_Id" id="item-id" type="hidden">*@
                     <div class="modal-body">
                         <div class="form-row">
                             <div class="col-md-6">
@@ -75,7 +66,6 @@
                         <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
                     </div>
                 </div>}
-            @*</form>*@
         </div>
     </div>
 </div>
@@ -83,7 +73,7 @@
 <!-- Modal Delete-->
 <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        @using (Ajax.BeginForm("Delete", "Modalidades", new AjaxOptions
+        @using (Ajax.BeginForm("Delete", "Duraciones", new AjaxOptions
         {
             HttpMethod = "Post",
             OnBegin = "Catalogs.begin",
@@ -93,26 +83,26 @@
         }))
         {
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5>
-                </h5>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            @Html.HiddenFor(model => model.Mda_Id, new { @id = "delete-item-id" })
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.Dur_Id, new { @id = "delete-item-id" })
                                 <p>¿Está seguro de que desea eliminar este registro?</p>
-                        </div>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
                 </div>
@@ -131,8 +121,7 @@
     <script>
         Catalogs.configure({
             displayName: "duraciones",
-            getUrl: "@Url.Action("Find")",
-            getUrlDelete: "@Url.Action("Delete")"
+            getUrl: "@Url.Action("Find")"
         });
     </script>
 }
