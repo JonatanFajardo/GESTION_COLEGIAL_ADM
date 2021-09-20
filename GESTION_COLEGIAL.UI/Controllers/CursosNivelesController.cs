@@ -17,7 +17,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Modalidades/List";
+            string url = "CursosNiveles/List";
             var result = await CatalogsService.List<CursoNivelViewModel>(url);
             return AjaxResult(result);
         }
@@ -27,7 +27,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Cun_Id == 0)
             {
-                string url = "Modalidades/Create";
+                string url = "CursosNiveles/Create";
                 bool result = await CatalogsService.Create(url, model);
 
                 //Validamos error
@@ -40,7 +40,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Modalidades/Edit";
+                string url = "CursosNiveles/Edit";
                 bool result = await CatalogsService.Edit(url, model);
 
                 //Validamos error
@@ -56,7 +56,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Modalidades/Find";
+            string url = "CursosNiveles/Find";
             var result = await CatalogsService.Find<CursoNivelViewModel>(url, id);
             return AjaxResult(result, true);
         }
@@ -75,7 +75,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Modalidades/Exist";
+            string url = "CursosNiveles/Exist";
             var result = await CatalogsService.Exist<CursoNivelViewModel>(url, Cun_Descripcion);
             if (result != null)
             {
@@ -88,7 +88,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
-            string url = "Modalidades/Remove";
+            string url = "CursosNiveles/Remove";
             bool result = await CatalogsService.Delete(url, id);
 
             //Validamos error
