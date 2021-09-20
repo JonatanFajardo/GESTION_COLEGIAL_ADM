@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.Business.Helpers
 {
@@ -173,6 +172,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
         }
 
 
-       
+
     }
 }
