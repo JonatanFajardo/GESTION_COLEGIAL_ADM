@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
@@ -30,7 +29,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Usuario modifica Nombre")]
         public string Par_UsuarioModificaNombre { get; set; }
 
-        [Display(Name = "Fecha modifica")] 
+        [Display(Name = "Fecha modifica")]
         public DateTime? Par_FechaModifica { get; set; }
     }
 }

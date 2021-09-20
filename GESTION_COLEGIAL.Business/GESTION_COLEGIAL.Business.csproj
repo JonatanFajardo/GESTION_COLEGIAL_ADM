@@ -75,28 +75,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AlumnosService.cs" />
     <Compile Include="Services\AulasService.cs" />
-    <Compile Include="Services\CargosService.cs" />
-    <Compile Include="Services\CursosNivelesService.cs" />
-    <Compile Include="Services\CursosNombresService.cs" />
     <Compile Include="Services\CursosService.cs" />
-    <Compile Include="Services\DiasService.cs" />
-    <Compile Include="Services\DuracionesService.cs" />
     <Compile Include="Services\EmpleadosService.cs" />
     <Compile Include="Services\EncargadosService.cs" />
-    <Compile Include="Services\EstadosService.cs" />
     <Compile Include="Services\HorarioAlumnosService.cs" />
     <Compile Include="Services\HorarioProfesoresService.cs" />
-    <Compile Include="Services\HorasService.cs" />
-    <Compile Include="Services\MateriasService.cs" />
     <Compile Include="Services\CatalogsService.cs" />
     <Compile Include="Services\NivelesEducativosService.cs" />
     <Compile Include="Services\NotasService.cs" />
-    <Compile Include="Services\ParcialesService.cs" />
-    <Compile Include="Services\ParentescosService.cs" />
     <Compile Include="Services\PersonasService.cs" />
-    <Compile Include="Services\SeccionesService.cs" />
-    <Compile Include="Services\SemestresService.cs" />
-    <Compile Include="Services\TitulosService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
