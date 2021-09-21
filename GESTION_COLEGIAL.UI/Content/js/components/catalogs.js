@@ -68,7 +68,7 @@
             });
         });
 
-        //Recetea los valores.
+        //Resetea los valores.
         $("#add-btn").click(function () {
             $(formId).trigger("reset");
             $("#item-id").val("0");
@@ -92,7 +92,7 @@
                         $deleteModal.modal("show");
                     }
                     else {
-                        alertConfig.alert('error', 'success');
+                        alertConfig.alert('Ocurrió un error.', 'Error');
                     }
                 },
                 complete: function () {
@@ -136,7 +136,6 @@
         //viene indefinido cuando se ejecuta desde el edit entonces se instancia el prefix como un string
         if (typeof prefix != "undefined") {
             prefix += ".";
-            //onsole.log(prefix);
         } else {
             prefix = "";
         }
@@ -204,7 +203,7 @@
 
         $deleteModal = $(params.deleteModalId);
         $deleteModal.on("show.bs.modal", function () {
-            var modalTitle = "Eliminar ", saveBtnText = "Aceptar", modalBody = "¿Está seguro de que desea eliminar este registro?";
+            var modalTitle = "Eliminar ", saveBtnText = "Aceptar";
             var input = '@Html.HiddenFor(model => model, new { @id = "delete-item-id" })';
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
             $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
@@ -242,18 +241,19 @@
     };
 
     obj.success = function (data, status, xhr) {
+        console.log(data.message);
         if (data.success) {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
-            alertConfig.alert("Success", data.type);
+            /*alertConfig.alert("Success", data.type);*/
             table.DataTable().ajax.reload(null, false);
         }
         else {
-            $deleteModal.modal("hide");
             $editModal.modal("hide");
-            alertConfig.alert("error", data.error);
+            $deleteModal.modal("hide");
+            /*alertConfig.alert("Ocurrió  un error.", data.error);*/
         }
-
+        alertConfig.alert(data.message, data.type);
     };
 
     obj.failure = function (xhr, status, error) {
