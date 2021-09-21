@@ -12,6 +12,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
         // GET: Modalidades
         public ActionResult Index()
         {
+           
+
             return View();
         }
 
@@ -19,6 +21,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             string url = "Modalidades/List";
             var result = await CatalogsService.List<ModalidadViewModel>(url);
+            Show(AlertMessageType.Error, "error");
             return AjaxResult(result);
         }
 
@@ -33,9 +36,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 //Validamos error
                 if (result)
                 {
+                    //ShowController(AlertMessageCustomType.Error);
+                    //Show(AlertMessageType.Error, "error");
                     return AjaxResult(false);
                 }
-
+                //ShowController(AlertMessageCustomType.SuccessInsert);
+                //Show(AlertMessageType.Success, "success");
                 return AjaxResult(true);
             }
             else
@@ -98,22 +104,5 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             return AjaxResult(true);
         }
-
-        //// POST: Modalidades/Edit/5
-        //[HttpPost]
-        //public ActionResult Edit(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-
-
     }
 }

@@ -27,7 +27,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             //if: si response es boleano significa que este es un POST.
             if (response.GetType() == typeof(bool))
             {
-                return Json(new { success = response });
+                return Json(new { success = response, type = "success", message = "este es el mensaje." });
             }
             else
             {
@@ -39,25 +39,33 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Mensajes predefinidos para el controlador.
         /// </summary>
         /// <param name="type">Tipo de alerta.</param>
-        protected void ShowController(AlertMessageType type)
+        protected void ShowController(AlertMessageCustomType type)
         {
             switch (type)
             {
-                case AlertMessageType.Success:
+                case AlertMessageCustomType.SuccessInsert:
                     Show(AlertMessageType.Success, "Registro guardado exitosamente.");//satifactoriamente
                     break;
-                case AlertMessageType.Info:
-                    Show(AlertMessageType.Info, "");
+                case AlertMessageCustomType.SuccessUpdate:
+                    Show(AlertMessageType.Success, "Registro editado exitosamente.");//satifactoriamente
                     break;
-                case AlertMessageType.Warning:
-                    Show(AlertMessageType.Warning, "Ha ocurrido un problema.");
+                case AlertMessageCustomType.SuccessDelete:
+                    Show(AlertMessageType.Success, "Registro eliminado exitosamente.");//satifactoriamente
                     break;
-                case AlertMessageType.Error:
+                case AlertMessageCustomType.Error:
                     Show(AlertMessageType.Error, "Se produjo un error inesperado.");
                     break;
             }
         }
-
+        //case AlertMessageType.Success:
+        //    Show(AlertMessageType.Success, "Registro guardado exitosamente.");//satifactoriamente
+        //    break;
+        //case AlertMessageType.Warning:
+        //    Show(AlertMessageType.Warning, "Ha ocurrido un problema.");
+        //    break;
+        //case AlertMessageType.Error:
+        //    Show(AlertMessageType.Error, "Se produjo un error inesperado.");
+        //    break;
 
         public enum AlertMessageType
         {
@@ -65,7 +73,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             Warning = 1,
             Success = 2,
             Error = 3
+        }
 
+        public enum AlertMessageCustomType
+        {
+            SuccessInsert = 0,
+            SuccessUpdate = 1,
+            SuccessDelete = 2,
+            Error = 3
         }
     }
 }
