@@ -4,6 +4,7 @@ using GESTION_COLEGIAL.UI.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using static GESTION_COLEGIAL.UI.Extensions.AlertMessage;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -12,8 +13,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
         // GET: Modalidades
         public ActionResult Index()
         {
-           
-
             return View();
         }
 
@@ -21,7 +20,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             string url = "Modalidades/List";
             var result = await CatalogsService.List<ModalidadViewModel>(url);
-            Show(AlertMessageType.Error, "error");
+            //Show(AlertMessageType.Error, "error");
             return AjaxResult(result);
         }
 
@@ -36,13 +35,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 //Validamos error
                 if (result)
                 {
-                    //ShowController(AlertMessageCustomType.Error);
-                    //Show(AlertMessageType.Error, "error");
-                    return AjaxResult(false);
+                    return AjaxResult(false, AlertMessageCustomType.Error);
                 }
-                //ShowController(AlertMessageCustomType.SuccessInsert);
-                //Show(AlertMessageType.Success, "success");
-                return AjaxResult(true);
+                return AjaxResult(true, AlertMessageCustomType.SuccessUpdate);
             }
             else
             {
