@@ -2,7 +2,7 @@
 
 namespace GESTION_COLEGIAL.UI.Extensions
 {
-    public class AlertMessage : Controller
+    public static class AlertMessage 
     {
         //public string Show()
         //{

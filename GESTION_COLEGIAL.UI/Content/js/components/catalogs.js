@@ -241,7 +241,7 @@
     };
 
     obj.success = function (data, status, xhr) {
-        console.log(data.message);
+        /*console.log(data.message);*/
         if (data.success) {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
@@ -253,7 +253,7 @@
             $deleteModal.modal("hide");
             /*alertConfig.alert("Ocurrió  un error.", data.error);*/
         }
-        alertConfig.alert(data.message, data.type);
+        /*alertConfig.alert(data.message, data.type);*/
     };
 
     obj.failure = function (xhr, status, error) {

@@ -51,11 +51,20 @@
                     @*<input name="Mda_Id" id="item-id" type="hidden">*@
                     <div class="modal-body">
                         <div class="form-row">
+                            @* Columna Descripción *@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Sem_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
                                     @Html.EditorFor(model => model.Sem_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Sem_Descripcion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            @* Columna Es activo *@
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Sem_EsActivo, "Activo", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Sem_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Sem_EsActivo, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -95,7 +104,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            @Html.HiddenFor(model => model.Mda_Id, new { @id = "delete-item-id" })
+                            @Html.HiddenFor(model => model.Sem_Id, new { @id = "delete-item-id" })
                                 <p>¿Está seguro de que desea eliminar este registro?</p>
                         </div>
 

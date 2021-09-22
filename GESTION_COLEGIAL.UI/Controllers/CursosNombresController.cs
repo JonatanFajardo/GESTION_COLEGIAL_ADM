@@ -1,4 +1,5 @@
-﻿using GESTION_COLEGIAL.Business.Services;
+﻿using GESTION_COLEGIAL.UI.Extensions;
+using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Helpers;
 using GESTION_COLEGIAL.UI.Models;
 using System.Linq;
@@ -33,10 +34,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 //Validamos error
                 if (result)
                 {
-                    return AjaxResult(false);
+                    return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
                 }
-
-                return AjaxResult(true);
+                return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessInsert);
             }
             else
             {
@@ -46,10 +46,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 //Validamos error
                 if (result)
                 {
-                    return AjaxResult(false);
+                    return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
                 }
 
-                return AjaxResult(true);
+                return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
         }
@@ -94,9 +94,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             //Validamos error
             if (result)
             {
-                return AjaxResult(false);
+                return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
-            return AjaxResult(true);
+            return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
     }
 }
