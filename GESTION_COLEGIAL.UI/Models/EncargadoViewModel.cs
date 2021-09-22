@@ -25,7 +25,8 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
-        public bool? Enc_EsActivo { get; set; }
+        public bool? EsActivo { get; set; }
+        public string? Enc_EsActivo { get; set; }
 
     }
 }
