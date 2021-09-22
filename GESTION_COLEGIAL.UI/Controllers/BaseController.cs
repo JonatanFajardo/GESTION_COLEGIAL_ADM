@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using GESTION_COLEGIAL.UI.Extensions;
+using System;
+using System.Web.Mvc;
+using static GESTION_COLEGIAL.UI.Extensions.AlertMessage;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -7,16 +10,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         protected string msjExist = $"El registro ya está en uso.";
 
 
-        /// <summary>
-        /// Muestra una alerta en pantalla.
-        /// </summary>
-        /// <param name="type">Tipo de mensaje.</param>
-        /// <param name="message">Descripción a mostrar.</param>
-        protected void Show(AlertMessageType type, string message = null)
-        {
-            ViewBag.JavaScriptFunction = string.Format($"alertConfig.alert('{message}', '{type}');");
-        }
-
+        ///// <summary>
+        ///// Muestra una alerta en pantalla.
+        ///// </summary>
+        ///// <param name="type">Tipo de mensaje.</param>
+        ///// <param name="message">Descripción a mostrar.</param>
+        //protected void Show(AlertMessageType type, string message = null)
+        //{
+        //    ViewBag.JavaScriptFunction = string.Format($"alertConfig.alert('{message}', '{type}');");
+        //}
         public ActionResult AjaxResult(dynamic item, bool success)
         {
             return Json(new { item = item, success = success }, JsonRequestBehavior.AllowGet);
@@ -27,7 +29,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             //if: si response es boleano significa que este es un POST.
             if (response.GetType() == typeof(bool))
             {
-                return Json(new { success = response, type = "success", message = "este es el mensaje." });
+                return Json(new { success = response });
             }
             else
             {
@@ -35,28 +37,49 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
         }
 
-        /// <summary>
-        /// Mensajes predefinidos para el controlador.
-        /// </summary>
-        /// <param name="type">Tipo de alerta.</param>
-        protected void ShowController(AlertMessageCustomType type)
+
+
+        public ActionResult AjaxResult(dynamic item, bool success, AlertMessageCustomType type)
         {
-            switch (type)
+            return Json(new { item = item, success = success }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AjaxResult(dynamic response, AlertMessageCustomType type)
+        {
+            //if: si response es boleano significa que este es un POST.
+            AlertMessageEntity _mensaje = ShowCustom(type);
+            if (response.GetType() == typeof(bool))
             {
-                case AlertMessageCustomType.SuccessInsert:
-                    Show(AlertMessageType.Success, "Registro guardado exitosamente.");//satifactoriamente
-                    break;
-                case AlertMessageCustomType.SuccessUpdate:
-                    Show(AlertMessageType.Success, "Registro editado exitosamente.");//satifactoriamente
-                    break;
-                case AlertMessageCustomType.SuccessDelete:
-                    Show(AlertMessageType.Success, "Registro eliminado exitosamente.");//satifactoriamente
-                    break;
-                case AlertMessageCustomType.Error:
-                    Show(AlertMessageType.Error, "Se produjo un error inesperado.");
-                    break;
+                return Json(new { success = response, type = _mensaje.type, message = _mensaje.message });
+            }
+            else
+            {
+                return Json(new { data = response }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        public ActionResult AjaxResult(dynamic item, bool success, AlertMessageType type, string mensaje)
+        {
+            AlertMessageEntity _mensaje = Show(type, mensaje);
+            return Json(new { item = item, success = success, type = _mensaje.type, message = _mensaje.message }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AjaxResult(dynamic response, AlertMessageType type, string mensaje)
+        {
+            //if: si response es boleano significa que este es un POST.
+            AlertMessageEntity _mensaje = Show(type, mensaje);
+            if (response.GetType() == typeof(bool))
+            {
+                return Json(new { success = response, type = _mensaje.type , message = _mensaje.message });
+            }
+            else
+            {
+                return Json(new { data = response, type = _mensaje.type, message = _mensaje.message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        
         //case AlertMessageType.Success:
         //    Show(AlertMessageType.Success, "Registro guardado exitosamente.");//satifactoriamente
         //    break;
@@ -67,20 +90,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //    Show(AlertMessageType.Error, "Se produjo un error inesperado.");
         //    break;
 
-        public enum AlertMessageType
-        {
-            Info = 0,
-            Warning = 1,
-            Success = 2,
-            Error = 3
-        }
-
-        public enum AlertMessageCustomType
-        {
-            SuccessInsert = 0,
-            SuccessUpdate = 1,
-            SuccessDelete = 2,
-            Error = 3
-        }
+       
     }
 }
