@@ -251,9 +251,9 @@
         else {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
-            /*alertConfig.alert("Ocurrió  un error.", data.error);*/
+            alertConfig.alert("Ocurrió  un error.", data.error);
         }
-        /*alertConfig.alert(data.message, data.type);*/
+        alertConfig.alert(data.message, data.type);
     };
 
     obj.failure = function (xhr, status, error) {
