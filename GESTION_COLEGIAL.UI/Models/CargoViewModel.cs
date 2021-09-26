@@ -1,10 +1,11 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class CargoViewModel
+    public class Cargo : BaseViewModel
     {
 
         [Key]
@@ -13,6 +14,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [StringLength(100)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [Remote(action: "Exist", controller: "Cargos", HttpMethod = "POST", AdditionalFields = nameof(Car_Id) + "," + nameof(Car_Descripcion))]
         public string Car_Descripcion { get; set; }
 
         [Display(Name = "Usuario registra Id")]

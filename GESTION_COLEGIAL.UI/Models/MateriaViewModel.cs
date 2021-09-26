@@ -1,10 +1,11 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class MateriaViewModel
+    public class Materia : BaseViewModel
     {
         [Key]
         public int Mat_Id { get; set; }
@@ -12,6 +13,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [StringLength(150)]
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [Remote(action: "Exist", controller: "Materias", HttpMethod = "POST", AdditionalFields = nameof(Mat_Id) + "," + nameof(Mat_Nombre))]
         public string Mat_Nombre { get; set; }
 
         [Display(Name = "Duración")]

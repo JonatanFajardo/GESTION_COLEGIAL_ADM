@@ -1,10 +1,11 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class CursoNivelViewModel
+    public class CursoNivel : BaseViewModel
     {
         [Key]
         public int Cun_Id { get; set; }
@@ -12,6 +13,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [StringLength(50)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [Remote(action: "Exist", controller: "CursosNiveles", HttpMethod = "POST", AdditionalFields = nameof(Cun_Id) + "," + nameof(Cun_Descripcion))]
         public string Cun_Descripcion { get; set; }
 
         [Display(Name = "Usuario registra Id")]

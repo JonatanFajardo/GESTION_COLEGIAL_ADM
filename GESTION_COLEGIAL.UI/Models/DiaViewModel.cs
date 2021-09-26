@@ -1,10 +1,11 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class DiaViewModel
+    public class Dia : BaseViewModel
     {
 
         [Key]
@@ -13,6 +14,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [StringLength(50)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [Remote(action: "Exist", controller: "Dias", HttpMethod = "POST", AdditionalFields = nameof(Dia_Id) + "," + nameof(Dia_Descripcion))]
         public string Dia_Descripcion { get; set; }
 
         [Display(Name = "Usuario registra Id")]

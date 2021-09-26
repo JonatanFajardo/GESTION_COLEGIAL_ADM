@@ -2,14 +2,8 @@
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class EncargadoViewModel
+    public class Encargado : BaseViewModel
     {
-        public PersonaViewModel persona { get; set; }
-
-        public EncargadoViewModel()
-        {
-            persona = new PersonaViewModel();
-        }
 
         [Key]
         public int Enc_Id { get; set; }
