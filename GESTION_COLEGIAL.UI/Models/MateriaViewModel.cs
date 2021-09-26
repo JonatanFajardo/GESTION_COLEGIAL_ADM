@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class Materia : BaseViewModel
+    public class MateriaViewModel : BaseViewModel
     {
         [Key]
         public int Mat_Id { get; set; }

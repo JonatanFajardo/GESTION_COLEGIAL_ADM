@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class Cargo : BaseViewModel
+    public class CargoViewModel : BaseViewModel
     {
 
         [Key]

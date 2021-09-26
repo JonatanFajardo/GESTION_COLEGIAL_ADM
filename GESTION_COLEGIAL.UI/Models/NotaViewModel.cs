@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class Nota : BaseViewModel
+    public class NotaViewModel : BaseViewModel
     {
         [Key]
         public int Not_Id { get; set; }

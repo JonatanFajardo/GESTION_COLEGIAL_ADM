@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class Curso : BaseViewModel
+    public class CursoViewModel : BaseViewModel
     {
 
         [Key]
