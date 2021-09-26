@@ -87,7 +87,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         /// <param name="url"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static async Task<List<T>> Exist<T>(string url, string value)
+        public static async Task<T> Exist<T>(string url, string value)
         {
             try
             {
@@ -97,10 +97,10 @@ namespace GESTION_COLEGIAL.Business.Helpers
 
                 if (!httpResponse.IsSuccessStatusCode)
                 {
-                    return null;
+                    return default;
                 }
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
-                var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
+                var resultSerialize = JsonConvert.DeserializeObject<T>(content);
                 return resultSerialize;
 
             }

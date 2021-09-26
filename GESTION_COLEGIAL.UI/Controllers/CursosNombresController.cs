@@ -23,6 +23,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        public async Task<ActionResult> Find(int id)
+        {
+            string url = "CursosNombres/Find";
+            var result = await CatalogsService.Find<CursoNombreViewModel>(url, id);
+            return AjaxResult(result, true);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(CursoNombreViewModel model)
         {
@@ -52,14 +59,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
-        }
-
-        public async Task<ActionResult> Find(int id)
-        {
-            string url = "CursosNombres/Find";
-            var result = await CatalogsService.Find<CursoNombreViewModel>(url, id);
-            return AjaxResult(result, true);
-        }
+        }        
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Cno_Id, string Cno_Descripcion)
@@ -79,7 +79,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await CatalogsService.Exist<CursoNombreViewModel>(url, Cno_Descripcion);
             if (result != null)
             {
-                int? firstValue = result.First().Cno_Id;
+                int? firstValue = result.Cno_Id;
                 return (firstValue == Cno_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);

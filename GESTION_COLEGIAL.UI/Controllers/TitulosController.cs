@@ -23,6 +23,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        public async Task<ActionResult> Find(int id)
+        {
+            string url = "Titulos/Find";
+            var result = await CatalogsService.Find<TituloViewModel>(url, id);
+            return AjaxResult(result, true);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(TituloViewModel model)
         {
@@ -51,15 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
-        }
-
-        public async Task<ActionResult> Find(int id)
-        {
-            string url = "Titulos/Find";
-            var result = await CatalogsService.Find<TituloViewModel>(url, id);
-            return AjaxResult(result, true);
-        }
+        }        
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Tit_Id, string Tit_Descripcion)
@@ -79,7 +78,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await CatalogsService.Exist<TituloViewModel>(url, Tit_Descripcion);
             if (result != null)
             {
-                int? firstValue = result.First().Tit_Id;
+                int? firstValue = result.Tit_Id;
                 return (firstValue == Tit_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);

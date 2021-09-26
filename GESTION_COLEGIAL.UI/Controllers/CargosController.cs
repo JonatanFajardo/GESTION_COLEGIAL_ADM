@@ -22,6 +22,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        public async Task<ActionResult> Find(int id)
+        {
+            string url = "Cargos/Find";
+            var result = await CatalogsService.Find<CargoViewModel>(url, id);
+            return AjaxResult(result, true);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(CargoViewModel model)
         {
@@ -51,14 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
-        }
-
-        public async Task<ActionResult> Find(int id)
-        {
-            string url = "Cargos/Find";
-            var result = await CatalogsService.Find<CargoViewModel>(url, id);
-            return AjaxResult(result, true);
-        }
+        }               
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Car_Id, string Car_Descripcion)
@@ -80,7 +80,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             //Validamos error
             if (result != null)
             {
-                int? firstValue = result.First().Car_Id;
+                int? firstValue = result.Car_Id;
                 return (firstValue == Car_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);

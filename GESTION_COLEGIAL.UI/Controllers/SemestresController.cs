@@ -23,6 +23,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        public async Task<ActionResult> Find(int id)
+        {
+            string url = "Semestres/Find";
+            var result = await CatalogsService.Find<SemestreViewModel>(url, id);
+            return AjaxResult(result, true);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(SemestreViewModel model)
         {
@@ -51,15 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
-        }
-
-        public async Task<ActionResult> Find(int id)
-        {
-            string url = "Semestres/Find";
-            var result = await CatalogsService.Find<SemestreViewModel>(url, id);
-            return AjaxResult(result, true);
-        }
+        }        
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Sem_Id, string Sem_Descripcion)
@@ -79,7 +78,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await CatalogsService.Exist<SemestreViewModel>(url, Sem_Descripcion);
             if (result != null)
             {
-                int? firstValue = result.First().Sem_Id;
+                int? firstValue = result.Sem_Id;
                 return (firstValue == Sem_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);

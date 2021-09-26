@@ -23,6 +23,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        public async Task<ActionResult> Find(int id)
+        {
+            string url = "NivelesEducativos/Find";
+            var result = await CatalogsService.Find<NivelEducativoViewModel>(url, id);
+            return AjaxResult(result, true);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(NivelEducativoViewModel model)
         {
@@ -51,15 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
-        }
-
-        public async Task<ActionResult> Find(int id)
-        {
-            string url = "NivelesEducativos/Find";
-            var result = await CatalogsService.Find<NivelEducativoViewModel>(url, id);
-            return AjaxResult(result, true);
-        }
+        }        
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Niv_Id, string Niv_Descripcion)
@@ -79,7 +78,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await CatalogsService.Exist<NivelEducativoViewModel>(url, Niv_Descripcion);
             if (result != null)
             {
-                int? firstValue = result.First().Niv_Id;
+                int? firstValue = result.Niv_Id;
                 return (firstValue == Niv_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);
