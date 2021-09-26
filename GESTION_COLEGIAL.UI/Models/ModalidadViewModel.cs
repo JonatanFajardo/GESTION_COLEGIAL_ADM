@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class ModalidadViewModelViewModel : BaseViewModel
+    public class ModalidadViewModel : BaseViewModel
     {
         [Key]
         public int Mda_Id { get; set; }
