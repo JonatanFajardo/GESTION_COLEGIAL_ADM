@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
@@ -13,6 +14,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [StringLength(50)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [Remote(action: "Exist", controller: "Secciones", HttpMethod = "POST", AdditionalFields = nameof(Sec_Id) + "," + nameof(Sec_Descripcion))]
         public string Sec_Descripcion { get; set; }
 
         [Display(Name = "Usuario registra Id")]
