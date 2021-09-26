@@ -8,7 +8,7 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 "Mat_Id",
-                "Mat_Descripcion"
+                "Mat_Nombre"
             ];
             datatable.init(Direction.listUrl, header);
         })
