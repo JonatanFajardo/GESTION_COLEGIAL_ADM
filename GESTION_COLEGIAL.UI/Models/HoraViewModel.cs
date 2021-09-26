@@ -1,10 +1,11 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class HoraViewModel
+    public class Hora : BaseViewModel
     {
 
         [Key]
@@ -13,6 +14,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [StringLength(11)]
         [Display(Name = "Hora")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [Remote(action: "Exist", controller: "Horas", HttpMethod = "POST", AdditionalFields = nameof(Hor_Id) + "," + nameof(Hor_Hora))]
         public string Hor_Hora { get; set; }
 
         [Display(Name = "Usuario registra Id")]

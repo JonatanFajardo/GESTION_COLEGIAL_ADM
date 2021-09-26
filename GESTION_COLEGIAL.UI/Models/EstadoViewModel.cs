@@ -2,11 +2,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
     [Table("tbEstados", Schema = "app")]
-    public class EstadoViewModel
+    public class Estado : BaseViewModel
     {
         [Key]
         public int Est_Id { get; set; }
@@ -14,6 +15,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [StringLength(150)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [Remote(action: "Exist", controller: "Estados", HttpMethod = "POST", AdditionalFields = nameof(Est_Id) + "," + nameof(Est_Descripcion))]
         public string Est_Descripcion { get; set; }
 
         [Display(Name = "Usuario registra Id")]

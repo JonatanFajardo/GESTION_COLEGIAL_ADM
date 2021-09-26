@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class UsuarioViewModel
+    public class Usuario : BaseViewModel
     {
         [Key]
         public int Usu_Id { get; set; }
