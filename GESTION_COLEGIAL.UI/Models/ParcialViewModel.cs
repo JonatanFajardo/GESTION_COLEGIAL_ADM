@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class Parcial : BaseViewModel
+    public class ParcialViewModel : BaseViewModel
     {
         [Key]
         public int Pac_Id { get; set; }

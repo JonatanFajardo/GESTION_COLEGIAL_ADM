@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class CursoNivel : BaseViewModel
+    public class CursoNivelViewModel : BaseViewModel
     {
         [Key]
         public int Cun_Id { get; set; }

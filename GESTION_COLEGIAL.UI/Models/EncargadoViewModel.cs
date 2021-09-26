@@ -2,7 +2,7 @@
 
 namespace GESTION_COLEGIAL.UI.Models
 {
-    public class Encargado : BaseViewModel
+    public class EncargadoViewModel : BaseViewModel
     {
 
         [Key]

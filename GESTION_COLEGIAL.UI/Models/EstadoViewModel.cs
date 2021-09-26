@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace GESTION_COLEGIAL.UI.Models
 {
     [Table("tbEstados", Schema = "app")]
-    public class Estado : BaseViewModel
+    public class EstadoViewModel : BaseViewModel
     {
         [Key]
         public int Est_Id { get; set; }
