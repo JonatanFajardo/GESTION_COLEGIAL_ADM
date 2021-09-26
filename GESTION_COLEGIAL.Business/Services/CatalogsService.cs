@@ -44,7 +44,7 @@ namespace GESTION_COLEGIAL.Business.Services
             return result;
         }
 
-        public static async Task<List<T>> Exist<T>(string evaluar, string url)
+        public static async Task<T> Exist<T>(string url, string evaluar)
         {
             // Crea la peticion a la api
             var result = await SendHttpClient.Exist<T>(url, evaluar);
@@ -54,7 +54,7 @@ namespace GESTION_COLEGIAL.Business.Services
             //else: Retorna los valores solicitados.
             if (result == null)
             {
-                return null;
+                return default;
             }
             else
             {

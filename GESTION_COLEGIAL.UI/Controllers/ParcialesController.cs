@@ -23,6 +23,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        public async Task<ActionResult> Find(int id)
+        {
+            string url = "Parciales/Find";
+            var result = await CatalogsService.Find<ParcialViewModel>(url, id);
+            return AjaxResult(result, true);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(ParcialViewModel model)
         {
@@ -51,15 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
-        }
-
-        public async Task<ActionResult> Find(int id)
-        {
-            string url = "Parciales/Find";
-            var result = await CatalogsService.Find<ParcialViewModel>(url, id);
-            return AjaxResult(result, true);
-        }
+        }        
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Pac_Id, string Pac_Descripcion)
@@ -79,7 +78,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await CatalogsService.Exist<ParcialViewModel>(url, Pac_Descripcion);
             if (result != null)
             {
-                int? firstValue = result.First().Pac_Id;
+                int? firstValue = result.Pac_Id;
                 return (firstValue == Pac_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);

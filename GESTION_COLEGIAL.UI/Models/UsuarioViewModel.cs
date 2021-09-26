@@ -39,7 +39,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public bool? EsActivo { get; set; }
-        public string? Usu_EsActivo { get; set; }
+        public string Usu_EsActivo { get; set; }
 
         [Display(Name = "Suspendido")]
         public bool? Usu_Suspendido { get; set; }

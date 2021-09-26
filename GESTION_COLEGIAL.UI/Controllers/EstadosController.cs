@@ -29,17 +29,24 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Modalidades/List";
-            var result = await CatalogsService.List<ModalidadViewModel>(url);
+            string url = "Estados/List";
+            var result = await CatalogsService.List<EstadoViewModel>(url);
             return AjaxResult(result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Create(ModalidadViewModel model)
+        public async Task<ActionResult> Find(int id)
         {
-            if (model.Mda_Id == 0)
+            string url = "Estados/Find";
+            var result = await CatalogsService.Find<EstadoViewModel>(url, id);
+            return AjaxResult(result, true);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(EstadoViewModel model)
+        {
+            if (model.Est_Id == 0)
             {
-                string url = "Modalidades/Create";
+                string url = "Estados/Create";
                 bool result = await CatalogsService.Create(url, model);
 
                 //Validamos error
@@ -51,7 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Modalidades/Edit";
+                string url = "Estados/Edit";
                 bool result = await CatalogsService.Edit(url, model);
 
                 //Validamos error
@@ -62,22 +69,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
-        }
-
-        public async Task<ActionResult> Find(int id)
-        {
-            string url = "Modalidades/Find";
-            var result = await CatalogsService.Find<ModalidadViewModel>(url, id);
-            return AjaxResult(result, true);
-        }
+        }        
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Mda_Id, string Mda_Descripcion)
+        public async Task<ActionResult> Exist(int? Est_Id, string Est_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Mda_Descripcion;
+            validationModal.SendMessage = Est_Descripcion;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -86,12 +85,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Modalidades/Exist";
-            var result = await CatalogsService.Exist<ModalidadViewModel>(url, Mda_Descripcion);
+            string url = "Estados/Exist";
+            var result = await CatalogsService.Exist<EstadoViewModel>(url, Est_Descripcion);
             if (result != null)
             {
-                int? firstValue = result.First().Mda_Id;
-                return (firstValue == Mda_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.Est_Id;
+                return (firstValue == Est_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -99,7 +98,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(EstadoViewModel model)
         {
-            string url = "Modalidades/Remove";
+            string url = "Estados/Remove";
             bool result = await CatalogsService.Delete(url, model.Est_Id);
 
             //Validamos error

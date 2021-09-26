@@ -23,6 +23,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        public async Task<ActionResult> Find(int id)
+        {
+            string url = "Duraciones/Find";
+            var result = await CatalogsService.Find<DuracionViewModel>(url, id);
+            return AjaxResult(result, true);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(DuracionViewModel model)
         {
@@ -52,14 +59,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
-        }
-
-        public async Task<ActionResult> Find(int id)
-        {
-            string url = "Duraciones/Find";
-            var result = await CatalogsService.Find<DuracionViewModel>(url, id);
-            return AjaxResult(result, true);
-        }
+        }        
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Dur_Id, string Dur_Descripcion)
@@ -79,7 +79,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await CatalogsService.Exist<DuracionViewModel>(url, Dur_Descripcion);
             if (result != null)
             {
-                int? firstValue = result.First().Dur_Id;
+                int? firstValue = result.Dur_Id;
                 return (firstValue == Dur_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);

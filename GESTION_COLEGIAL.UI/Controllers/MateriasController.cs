@@ -23,14 +23,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> List()
         {
             string url = "Materias/List";
-            var result = await CatalogsService.List<ModalidadViewModel>(url);
+            var result = await CatalogsService.List<MateriaViewModel>(url);
             return AjaxResult(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(ModalidadViewModel model)
+        public async Task<ActionResult> Create(MateriaViewModel model)
         {
-            if (model.Mda_Id == 0)
+            if (model.Mat_Id == 0)
             {
                 string url = "Materias/Create";
                 bool result = await CatalogsService.Create(url, model);
@@ -61,33 +61,33 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> Find(int id)
         {
             string url = "Materias/Find";
-            var result = await CatalogsService.Find<ModalidadViewModel>(url, id);
+            var result = await CatalogsService.Find<MateriaViewModel>(url, id);
             return AjaxResult(result, true);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Exist(int? Mat_Id, string Mat_Descripcion)
-        {
-            //Validaciones.
-            ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Mat_Descripcion;
-            validationModal.BlankSpaces();
-            validationModal.SpecialCharacters();
-            if (validationModal.RequestMessage != null)
-            {
-                return Json(validationModal.RequestMessage);
-            }
+        //[HttpPost]
+        //public async Task<ActionResult> Exist(int? Mat_Id, string Mat_Descripcion)
+        //{
+        //    //Validaciones.
+        //    ValidationModal validationModal = new ValidationModal();
+        //    validationModal.SendMessage = Mat_Descripcion;
+        //    validationModal.BlankSpaces();
+        //    validationModal.SpecialCharacters();
+        //    if (validationModal.RequestMessage != null)
+        //    {
+        //        return Json(validationModal.RequestMessage);
+        //    }
 
-            //Envío de datos.
-            string url = "Materias/Exist";
-            var result = await CatalogsService.Exist<MateriaViewModel>(url, Mat_Descripcion);
-            if (result != null)
-            {
-                int? firstValue = result.First().Mat_Id;
-                return (firstValue == Mat_Id) ? Json(true) : Json(msjExist);
-            }
-            return Json(true);
-        }
+        //    //Envío de datos.
+        //    string url = "Materias/Exist";
+        //    var result = await CatalogsService.Exist<MateriaViewModel>(url, Mat_Descripcion);
+        //    if (result != null)
+        //    {
+        //        int? firstValue = result.First().Mat_Id;
+        //        return (firstValue == Mat_Id) ? Json(true) : Json(msjExist);
+        //    }
+        //    return Json(true);
+        //}
 
         [HttpPost]
         public async Task<ActionResult> Delete(MateriaViewModel model)
