@@ -65,29 +65,29 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result, true);
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult> Exist(int? Mat_Id, string Mat_Descripcion)
-        //{
-        //    //Validaciones.
-        //    ValidationModal validationModal = new ValidationModal();
-        //    validationModal.SendMessage = Mat_Descripcion;
-        //    validationModal.BlankSpaces();
-        //    validationModal.SpecialCharacters();
-        //    if (validationModal.RequestMessage != null)
-        //    {
-        //        return Json(validationModal.RequestMessage);
-        //    }
+        [HttpPost]
+        public async Task<ActionResult> Exist(int? Mat_Id, string Mat_Nombre)
+        {
+            //Validaciones.
+            ValidationModal validationModal = new ValidationModal();
+            validationModal.SendMessage = Mat_Nombre;
+            validationModal.BlankSpaces();
+            validationModal.SpecialCharacters();
+            if (validationModal.RequestMessage != null)
+            {
+                return Json(validationModal.RequestMessage);
+            }
 
-        //    //Envío de datos.
-        //    string url = "Materias/Exist";
-        //    var result = await CatalogsService.Exist<MateriaViewModel>(url, Mat_Descripcion);
-        //    if (result != null)
-        //    {
-        //        int? firstValue = result.First().Mat_Id;
-        //        return (firstValue == Mat_Id) ? Json(true) : Json(msjExist);
-        //    }
-        //    return Json(true);
-        //}
+            //Envío de datos.
+            string url = "Materias/Exist";
+            var result = await CatalogsService.Exist<MateriaViewModel>(url, Mat_Nombre);
+            if (result != null)
+            {
+                int? firstValue = result.Mat_Id;
+                return (firstValue == Mat_Id) ? Json(true) : Json(msjExist);
+            }
+            return Json(true);
+        }
 
         [HttpPost]
         public async Task<ActionResult> Delete(MateriaViewModel model)

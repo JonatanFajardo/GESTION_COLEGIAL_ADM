@@ -31,6 +31,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <!-- Billing Cycle  -->
+                @*<div class="billing-cycle-radios mt-5">
+                    <div class="radio billed-yearly-radio">*@
+                @*<span class="txt-monthly">Monthly</span>*@
+
+                <!--<span class="txt-yearly">Yearly--> @*<span class="badge badge-pill badge-success">20% Off</span>*@<!--</span>-->
+                @*</div>
+                    </div>*@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -49,9 +57,15 @@
                     @Html.HiddenFor(model => model.Mda_Id, new { @id = "item-id" })
                     <div class="modal-body">
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Mda_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                    <div class="float-right">
+                                        <label class="switch s-icons s-outline  s-outline-primary">
+                                            <input type="checkbox" id="radio-6">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
                                     @Html.EditorFor(model => model.Mda_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Mda_Descripcion, "", new { @class = "text-danger" })
                                 </div>

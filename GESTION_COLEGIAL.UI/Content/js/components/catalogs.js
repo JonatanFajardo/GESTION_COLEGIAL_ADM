@@ -204,7 +204,6 @@
         $deleteModal = $(params.deleteModalId);
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", saveBtnText = "Aceptar";
-            var input = '@Html.HiddenFor(model => model, new { @id = "delete-item-id" })';
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
             $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
 
