@@ -26,7 +26,10 @@
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="~/Content/css/forms/switches.css" rel="stylesheet" />
     <link href="~/Content/plugins/pricing-table/css/component.css" rel="stylesheet" />
-    <!-- END PAGE LEVEL STYLES -->
+
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="~/Content/css/elements/tooltip.css" rel="stylesheet" />
+    <!--  END CUSTOM STYLE FILE  -->
     <!-- LADDA -->
     <link href="~/Content/plugins/ladda/ladda-themeless.css" rel="stylesheet" />
 
@@ -34,7 +37,7 @@
     <link href="~/Content/plugins/toastr/toastr.css" rel="stylesheet" />
 
 </head>
-<body>
+<body class="sidebar-noneoverflow" data-spy="scroll" data-target="#navSection" data-offset="140">
 
     <!-- BEGIN LOADER -->
     <div id="load_screen">
@@ -70,16 +73,18 @@
     <script src="~/Content/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="~/Content/js/app.js"></script>
     <script src="~/Content/js/loader.js"></script>
-    @*<script>
-            $(document).ready(function () {
-                App.init();
-            });
-        </script>*@
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>
     <script src="~/Content/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     <script src="~/Content/plugins/apex/apexcharts.min.js"></script>
     <script src="~/Content/js/dashboard/dash_1.js"></script>
+    <script src="~/Content/js/elements/tooltip.js"></script>
+    <script src="~/Content/js/scrollspyNav.js"></script>
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")*@
@@ -133,7 +138,7 @@
     <script src="~/Content/js/components/datatable.init.js"></script>
     <script src="~/Content/js/components/catalogs.js"></script>
     @*<script src="~/Content/js/components/datatable.init.js"></script>*@
-    
+
 
     <!-- App js -->
     @RenderSection("Scripts", required: false)
