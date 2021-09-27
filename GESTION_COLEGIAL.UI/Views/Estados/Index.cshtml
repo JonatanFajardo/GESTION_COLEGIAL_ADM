@@ -52,10 +52,9 @@
                 <div class="container">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @Html.HiddenFor(model => model.Est_Id, new { @id = "item-id" })
-                    @*<input name="Mda_Id" id="item-id" type="hidden">*@
                     <div class="modal-body">
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Est_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
                                     @Html.EditorFor(model => model.Est_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
