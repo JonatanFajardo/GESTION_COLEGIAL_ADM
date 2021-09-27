@@ -48,23 +48,21 @@
                 <div class="container">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @Html.HiddenFor(model => model.Sem_Id, new { @id = "item-id" })
-                    @*<input name="Mda_Id" id="item-id" type="hidden">*@
                     <div class="modal-body">
                         <div class="form-row">
                             @* Columna Descripción *@
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Sem_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                    <div class="float-right">
+                                        <label class="switch s-icons s-outline  s-outline-primary bs-tooltip" data-placement="right"
+                                               data-original-title="Es activo">
+                                            <input type="checkbox" id="radio-6">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
                                     @Html.EditorFor(model => model.Sem_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Sem_Descripcion, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            @* Columna Es activo *@
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.Sem_EsActivo, "Activo", htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Sem_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Sem_EsActivo, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -73,8 +71,8 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
                     </div>
-                </div>}
-            
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -92,26 +90,26 @@
         }))
         {
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5>
-                </h5>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            @Html.HiddenFor(model => model.Sem_Id, new { @id = "delete-item-id" })
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.Sem_Id, new { @id = "delete-item-id" })
                                 <p>¿Está seguro de que desea eliminar este registro?</p>
-                        </div>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
                 </div>
