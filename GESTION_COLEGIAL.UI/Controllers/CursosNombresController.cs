@@ -86,10 +86,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(CursoNombreViewModel model)
         {
             string url = "CursosNombres/Remove";
-            bool result = await CatalogsService.Delete(url, id);
+            bool result = await CatalogsService.Delete(url, model.Cno_Id);
 
             //Validamos error
             if (result)
