@@ -62,7 +62,8 @@
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Dur_Id, "Duración", htmlAttributes: new { @class = "control-label" })
                                     <div class="float-right">
-                                        <label class="switch s-icons s-outline  s-outline-primary">
+                                        <label class="switch s-icons s-outline  s-outline-primary bs-tooltip" 
+                                               data-placement="right" title="Activo">
                                             <input type="checkbox" id="radio-6">
                                             <span class="slider round"></span>
                                         </label>
