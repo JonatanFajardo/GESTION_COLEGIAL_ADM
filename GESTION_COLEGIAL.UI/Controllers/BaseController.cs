@@ -79,7 +79,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
         }
 
-        
+
+        //public ActionResult PageError404()
+        //{
+
+        //}
+
+
         //case AlertMessageType.Success:
         //    Show(AlertMessageType.Success, "Registro guardado exitosamente.");//satifactoriamente
         //    break;
@@ -90,6 +96,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //    Show(AlertMessageType.Error, "Se produjo un error inesperado.");
         //    break;
 
-       
+
     }
 }

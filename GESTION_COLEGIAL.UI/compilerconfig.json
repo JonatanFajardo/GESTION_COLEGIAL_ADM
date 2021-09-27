@@ -1,6 +1,6 @@
 ﻿[
   {
-    "outputFile": "Content/scss/components/_forms.css",
+    "outputFile": "Content/css/_forms.css",
     "inputFile": "Content/scss/components/_forms.scss"
   },
   {
@@ -10,5 +10,15 @@
   {
     "outputFile": "Content/scss/_general.css",
     "inputFile": "Content/scss/app.scss"
+  },
+  {
+    "outputFile": "Content/css/structure.css",
+    "inputFile": "Content/scss/assets/structure.scss"
+  },
+  {
+    "outputFile": "Content/css/main.css",
+    "inputFile": "Content/scss/assets/main.scss"
   }
+
+
 ]
