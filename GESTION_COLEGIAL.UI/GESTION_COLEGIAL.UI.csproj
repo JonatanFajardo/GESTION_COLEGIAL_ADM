@@ -204,6 +204,7 @@
     <Compile Include="Controllers\ModalidadesController.cs" />
     <Compile Include="Controllers\NivelesEducativosController.cs" />
     <Compile Include="Controllers\NotasController.cs" />
+    <Compile Include="Controllers\PageError404Controller.cs" />
     <Compile Include="Controllers\ParcialesController.cs" />
     <Compile Include="Controllers\ParentescosController.cs" />
     <Compile Include="Controllers\PersonasController.cs" />
@@ -289,6 +290,9 @@
     <Content Include="Content\css\forms\theme-checkbox-radio.css" />
     <Content Include="Content\css\loader.css" />
     <Content Include="Content\css\main.css" />
+    <Content Include="Content\css\main.min.css">
+      <DependentUpon>main.css</DependentUpon>
+    </Content>
     <Content Include="Content\css\pages\coming-soon\style.css" />
     <Content Include="Content\css\pages\contact_us.css" />
     <Content Include="Content\css\pages\error\style-400.css" />
@@ -1458,6 +1462,7 @@
     <Content Include="Views\Shared\_footer.cshtml" />
     <Content Include="Views\CursosNiveles\Index.cshtml" />
     <Content Include="Views\Horas\Index.cshtml" />
+    <Content Include="Views\PageError404\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
