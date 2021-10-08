@@ -115,12 +115,15 @@
 @section Scripts{
     <script src="~/Content/js/pages/parciales.js"></script>
     <script>
-        Parciales.datatableCatalogs({listUrl: "@Url.Action("List")" });
+        Parciales.datatableCatalogs({
+            urlList: "@Url.Action("List")",
+            urlDetail: "Detail"
+        });
     </script>
     <script>
         Catalogs.configure({
             displayName: "parciales",
-            getUrl: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("Find")"
         });
     </script>
 }

@@ -115,12 +115,15 @@
 @section Scripts{
     <script src="~/Content/js/pages/titulos.js"></script>
     <script>
-        Titulos.datatableCatalogs({listUrl: "@Url.Action("List")" });
+        Titulos.datatableCatalogs({
+            urlList: "@Url.Action("List")",
+            urlDetail: "Detail"
+        });
     </script>
     <script>
         Catalogs.configure({
             displayName: "titulos",
-            getUrl: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("Find")"
         });
     </script>
 }

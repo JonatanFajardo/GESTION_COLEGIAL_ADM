@@ -116,12 +116,15 @@
 @section Scripts{
     <script src="~/Content/js/pages/cursosniveles.js"></script>
     <script>
-        CursosNiveles.datatableCatalogs({listUrl: "@Url.Action("List")" });
+        CursosNiveles.datatableCatalogs({
+            urlList: "@Url.Action("List")",
+            urlDetail: "Detail"
+        });
     </script>
     <script>
         Catalogs.configure({
             displayName: "curso nivel",
-            getUrl: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("Find")"
         });
     </script>
 }

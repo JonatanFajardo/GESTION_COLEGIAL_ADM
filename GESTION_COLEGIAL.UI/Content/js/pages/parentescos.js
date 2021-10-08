@@ -7,10 +7,15 @@
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
-                "Par_Id",
-                "Par_Descripcion"
-            ];
-            datatableCatalogs.init(Direction.listUrl, header);
+                {
+                    FieldName: "Par_Id",
+                    Size: 200
+                },
+                {
+                    FieldName: "Par_Descripcion"
+                }
+            ]
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

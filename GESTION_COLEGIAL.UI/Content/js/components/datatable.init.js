@@ -10,12 +10,11 @@ var datatable = (function () {
 
     /**
      * Inicializa y configura el DataTable 
-     * @param {Object} listUrl Direccion al que se enviaran los datos
+     * @param {Object} DirectionUrls Direccion al que se enviaran los datos
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
-    obj.init = function (listUrl, header) {
+    obj.init = function (DirectionUrls, header) {
         $(function () {
-            console.log(listUrl);
 
 
             //configuraciones
@@ -135,7 +134,7 @@ var datatable = (function () {
                 ],
                 ajax: function (data, callback, settings) {
                     $.ajax({
-                        url: listUrl,
+                        url: DirectionUrls.urlList,
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
@@ -151,17 +150,22 @@ var datatable = (function () {
 
             });
 
+            // Evento click que Redirecciona.
+            // Obtiene el id seleccionado en el boton, Redirecciona a la vista de editar.
+            table.on("click", ".edit-btn", function (e) {
+                var getIdEdit = $(this).data("id");
+                window.location = `${DirectionUrls.urlUpdate}/${getIdEdit}`;
+            });
+
+            // Evento click de clase .add-btn.
+            // Redirecciona a la vista de crear.
+            var addBtn = $('#add-btn');
+            addBtn.click(function () {
+                window.location = DirectionUrls.urlInsert;
+            });
 
 
 
-
-
-
-        });
-        $('#datatable').on('init.dt', function () {
-            $('#add-btn')
-                .attr('data-toggle', 'modal')
-                .attr('data-target', '#edit-modal');
         });
 
         //Eliminamos la agrupaciond de los botones.

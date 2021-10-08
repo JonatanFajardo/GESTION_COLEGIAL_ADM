@@ -116,12 +116,15 @@
 @section Scripts{
     <script src="~/Content/js/pages/cargos.js"></script>
     <script>
-        Cargos.datatableCatalogs({listUrl: "@Url.Action("List")" });
+        Cargos.datatableCatalogs({
+            urlList: "@Url.Action("List")",
+            urlDetail: "Detail"
+        });
     </script>
     <script>
         Catalogs.configure({
             displayName: "cargos",
-            getUrl: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("Find")"
         });
     </script>
 }

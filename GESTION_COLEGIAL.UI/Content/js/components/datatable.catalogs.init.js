@@ -10,12 +10,11 @@ var datatableCatalogs = (function () {
 
     /**
      * Inicializa y configura el DataTable 
-     * @param {Object} listUrl Direccion al que se enviaran los datos
+     * @param {Object} DirectionUrls Direccion al que se enviaran los datos
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
-    obj.init = function (listUrl, header) {
+    obj.init = function (DirectionUrls, header) {
         $(function () {
-            console.log(listUrl);
 
 
             //configuraciones
@@ -135,7 +134,7 @@ var datatableCatalogs = (function () {
                 ],
                 ajax: function (data, callback, settings) {
                     $.ajax({
-                        url: listUrl,
+                        url: DirectionUrls.urlList,
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
@@ -194,8 +193,16 @@ var datatableCatalogs = (function () {
 
             head.push({
                 targets: i,
-                data: _header[i]
+                data: _header[i].FieldName
             })
+            // Entra si se desea deshabilitar la columna
+            if (header[i].Visibility == false || header[i].Visibility != undefined) {
+                head[i]['visible'] = false
+            }
+            // Entra si se desea indicar un ancho especifico
+            if (_header[i].Size != undefined) {
+                head[i]['width'] = _header[i].Size
+            }
         }
 
         head.push({
@@ -204,7 +211,7 @@ var datatableCatalogs = (function () {
             width: 80,
             render: function (data, type, row) {
                 botones = "";
-                var head = _header[0];
+                var head = _header[0].FieldName;
                 if (type == "display") {
                     botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
                     botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="ion-trash-a"></i></span></button>';
