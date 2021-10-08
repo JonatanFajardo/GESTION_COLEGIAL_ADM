@@ -28,6 +28,7 @@
                 },
                 success: function (response) {
                     if (response != null) {
+                        console.log(response);
                         assignSettings(response.item);
                         $editModal.modal("show");
                     }

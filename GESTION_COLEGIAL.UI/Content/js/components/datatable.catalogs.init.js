@@ -2,7 +2,7 @@
 //Recorre el arreglo de encabezados
 //==================================================
 
-var datatable = (function () {
+var datatableCatalogs = (function () {
     var obj = {};
     //serverSide
 

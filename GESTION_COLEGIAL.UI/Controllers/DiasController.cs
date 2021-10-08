@@ -19,21 +19,21 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> List()
         {
             string url = "Dias/List";
-            var result = await CatalogsService.List<DuracionViewModel>(url);
+            var result = await CatalogsService.List<DiaViewModel>(url);
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
             string url = "Dias/Find";
-            var result = await CatalogsService.Find<DuracionViewModel>(url, id);
+            var result = await CatalogsService.Find<DiaViewModel>(url, id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(DuracionViewModel model)
+        public async Task<ActionResult> Create(DiaViewModel model)
         {
-            if (model.Dur_Id == 0)
+            if (model.Dia_Id == 0)
             {
                 string url = "Dias/Create";
                 bool result = await CatalogsService.Create(url, model);
@@ -62,11 +62,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }        
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Dur_Id, string Dur_Descripcion)
+        public async Task<ActionResult> Exist(int? Dia_Id, string Dia_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Dur_Descripcion;
+            validationModal.SendMessage = Dia_Descripcion;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -76,11 +76,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
             //Envío de datos.
             string url = "Dias/Exist";
-            var result = await CatalogsService.Exist<DuracionViewModel>(url, Dur_Descripcion);
+            var result = await CatalogsService.Exist<DuracionViewModel>(url, Dia_Descripcion);
             if (result != null)
             {
                 int? firstValue = result.Dur_Id;
-                return (firstValue == Dur_Id) ? Json(true) : Json(msjExist);
+                return (firstValue == Dia_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }

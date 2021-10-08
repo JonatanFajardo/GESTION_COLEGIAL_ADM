@@ -2,7 +2,7 @@
 
     var obj = {};
 
-    obj.datatable = function (Direction) {
+    obj.datatableCatalogs = function (Direction) {
         $(function () {
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
@@ -10,7 +10,7 @@
                 "Cno_Id",
                 "Cno_Descripcion"
             ];
-            datatable.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction.listUrl, header);
         })
     }
     return obj;
