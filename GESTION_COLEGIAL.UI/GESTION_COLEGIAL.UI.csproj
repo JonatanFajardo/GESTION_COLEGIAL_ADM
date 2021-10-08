@@ -365,6 +365,7 @@
     <Content Include="Content\js\components\custom-countdown.js" />
     <Content Include="Content\js\components\custom-counter.js" />
     <Content Include="Content\js\components\datatable.init.js" />
+    <Content Include="Content\js\components\datatable.catalogs.init.js" />
     <Content Include="Content\js\components\notification\custom-snackbar.js" />
     <Content Include="Content\js\components\session-timeout\bootstrap-session-timeout.js" />
     <Content Include="Content\js\components\session-timeout\custom-bootstrap_session_timeout.js" />

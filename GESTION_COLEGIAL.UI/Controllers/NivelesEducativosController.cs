@@ -13,7 +13,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
         // GET: NivelesEducativos
         public ActionResult Index()
         {
-            return View();
+            NivelEducativoViewModel model = new NivelEducativoViewModel();
+            return View(model);
         }
 
         public async Task<ActionResult> List()
@@ -55,7 +56,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 {
                     return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
                 }
-
+                //ModelState.Clear();
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
         }        

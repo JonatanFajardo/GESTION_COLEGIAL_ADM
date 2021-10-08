@@ -2,7 +2,7 @@
    
     var obj = {};
 
-    obj.datatable = function (Direction) {
+    obj.datatableCatalogs = function (Direction) {
         $(function() {
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
@@ -15,7 +15,7 @@
             //    ["raza_Id", 80, false],
             //    ["raza_Descripcion", true, true]
             //];
-            datatable.init(Direction.listUrl, header);
+            datatableCatalogs.init(Direction.listUrl, header);
         })
     }
     return obj;

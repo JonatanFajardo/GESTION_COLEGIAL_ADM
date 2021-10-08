@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -9,6 +10,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             return View();
         }
+
+        //public async Task<ActionResult> List()
+        //{
+        //    string url = "NivelesEducativos/List";
+        //    var result = await CatalogsService.List<NivelEducativoViewModel>(url);
+        //    return AjaxResult(result);
+        //}
+
         public ActionResult Create()
         {
             return View("Create");

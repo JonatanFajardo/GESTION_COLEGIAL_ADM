@@ -19,6 +19,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //{
         //    ViewBag.JavaScriptFunction = string.Format($"alertConfig.alert('{message}', '{type}');");
         //}
+        #region Result
         public ActionResult AjaxResult(dynamic item, bool success)
         {
             return Json(new { item = item, success = success }, JsonRequestBehavior.AllowGet);
@@ -36,9 +37,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return Json(new { data = response }, JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
 
-
-
+        #region CustomResult
         public ActionResult AjaxResult(dynamic item, bool success, AlertMessageCustomType type)
         {
             return Json(new { item = item, success = success }, JsonRequestBehavior.AllowGet);
@@ -78,7 +79,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return Json(new { data = response, type = _mensaje.type, message = _mensaje.message }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        #endregion
 
         //public ActionResult PageError404()
         //{

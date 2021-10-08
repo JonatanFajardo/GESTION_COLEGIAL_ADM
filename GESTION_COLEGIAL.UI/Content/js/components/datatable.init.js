@@ -66,6 +66,7 @@ var datatable = (function () {
 
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
             var table = $('#datatable').DataTable({
+                responsive: true,
                 //serverSide: true,
                 buttons: [
                     //{
