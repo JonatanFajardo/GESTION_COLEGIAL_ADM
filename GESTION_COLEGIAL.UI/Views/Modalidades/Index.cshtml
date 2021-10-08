@@ -112,12 +112,15 @@
 @section Scripts{
     <script src="~/Content/js/pages/modalidades.js"></script>
     <script>
-        Modalidades.datatableCatalogs({listUrl: "@Url.Action("List")" });
+        Modalidades.datatableCatalogs({
+            urlList: "@Url.Action("List")",
+            urlDetail: "Detail"
+        });
     </script>
     <script>
         Catalogs.configure({
             displayName: "modalidad",
-            getUrl: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("Find")"
         });
     </script>
     @if (ViewBag.JavaScriptFunction != null)

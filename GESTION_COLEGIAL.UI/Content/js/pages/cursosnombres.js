@@ -7,10 +7,15 @@
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
-                "Cno_Id",
-                "Cno_Descripcion"
-            ];
-            datatableCatalogs.init(Direction.listUrl, header);
+                {
+                    FieldName: "Cno_Id",
+                    Size: 200
+                },
+                {
+                    FieldName: "Cno_Descripcion"
+                }
+            ]
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

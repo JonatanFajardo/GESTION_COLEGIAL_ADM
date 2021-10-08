@@ -15,7 +15,16 @@
             //    ["raza_Id", 80, false],
             //    ["raza_Descripcion", true, true]
             //];
-            datatableCatalogs.init(Direction.listUrl, header);
+            header = [
+                {
+                    FieldName: "Tit_Id",
+                    Size: 200
+                },
+                {
+                    FieldName: "Tit_Descripcion"
+                }
+            ]
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

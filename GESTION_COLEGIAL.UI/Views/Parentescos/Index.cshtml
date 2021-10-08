@@ -115,12 +115,15 @@
 @section Scripts{
     <script src="~/Content/js/pages/parentescos.js"></script>
     <script>
-        Parentescos.datatableCatalogs({listUrl: "@Url.Action("List")" });
+        Parentescos.datatableCatalogs({
+            urlList: "@Url.Action("List")",
+            urlDetail: "Detail"
+        });
     </script>
     <script>
         Catalogs.configure({
             displayName: "parentescos",
-            getUrl: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("Find")"
         });
     </script>
 }

@@ -7,10 +7,15 @@
             var header = new Array();
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
-                "Hor_Id",
-                "Hor_Hora"
-            ];
-            datatableCatalogs.init(Direction.listUrl, header);
+                {
+                    FieldName: "Hor_Id",
+                    Size: 200
+                },
+                {
+                    FieldName: "Hor_Hora"
+                }
+            ]
+            datatableCatalogs.init(Direction, header);
         })
     }
     return obj;

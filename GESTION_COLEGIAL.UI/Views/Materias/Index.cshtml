@@ -131,12 +131,15 @@
 @section Scripts{
     <script src="~/Content/js/pages/materias.js"></script>
     <script>
-        Materias.datatableCatalogs({listUrl: "@Url.Action("List")" });
+        Materias.datatableCatalogs({
+            urlList: "@Url.Action("List")",
+            urlDetail: "Detail"
+        });
     </script>
     <script>
         Catalogs.configure({
             displayName: "materias",
-            getUrl: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("Find")"
         });
     </script>
 }
