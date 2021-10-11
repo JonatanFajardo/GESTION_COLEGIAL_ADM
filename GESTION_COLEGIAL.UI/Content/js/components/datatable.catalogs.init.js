@@ -138,7 +138,6 @@ var datatableCatalogs = (function () {
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
-                            console.log(response);
                             callback(response);
                         },
                         error: function () {

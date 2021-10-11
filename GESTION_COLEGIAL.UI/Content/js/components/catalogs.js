@@ -17,14 +17,12 @@
         // Eventos que se levantan al dar clic en el boton de editar en datatable.
         table.on("click", ".edit-btn", function (e) {
             var id = $(this).data("id");
-            /*console.log(id);*/
-            console.log(params.urlUpdate);
 
             var btn = Ladda.create($(this)[0]); //button spin animation
             action = "edit";
             $.ajax({
                 type: "GET",
-                url: params.urlUpdate + "/" + id,
+                url: `${params.urlUpdate}/${id}`,
                 dataType: "json",
                 beforeSend: function () {
                     btn.start();
@@ -52,7 +50,7 @@
             action = "details";
             $.ajax({
                 type: "GET",
-                url: params.urlUpdate + "/" + id,
+                url: `${params.urlUpdate}/${id}`,
                 dataType: "json",
                 beforeSend: function () {
                     btn.start();
@@ -85,7 +83,7 @@
             action = "delete";
             $.ajax({
                 type: "GET",
-                url: params.urlUpdate + "/" + id,
+                url: `${params.urlUpdate}/${id}`,
                 dataType: "json",
                 beforeSend: function () {
                     btn.start();
