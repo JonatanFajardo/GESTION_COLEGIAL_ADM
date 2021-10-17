@@ -19,15 +19,8 @@
     </div>
     <div class="card-body">
         @Html.HiddenFor(model => model.Enc_Id)
+        @Html.HiddenFor(model => model.Per_Id)
         <div class="form-row">
-            @* Columna Persona *@
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Per_Id, "Per_Id", htmlAttributes: new { @class = "control-label" })
-                    @Html.DropDownList("Per_Id", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Per_Id, "", new { @class = "text-danger" })
-                </div>
-            </div>
             @* Columna Ocupación *@
             <div class="col-md-6">
                 <div class="form-group">
@@ -86,7 +79,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Per_FechaNacimiento, "Per_FechaNacimiento", htmlAttributes: new { @class = "control-label" })
-                    @Html.EditorFor(model => model.Per_FechaNacimiento, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Per_FechaNacimiento, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                     @Html.ValidationMessageFor(model => model.Per_FechaNacimiento, "", new { @class = "text-danger" })
                 </div>
             </div>
