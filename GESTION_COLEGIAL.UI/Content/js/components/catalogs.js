@@ -210,8 +210,6 @@
             $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
 
         });
-
-
         $deleteModal.on("hidden.bs.modal", function () {});
     }
 
@@ -242,7 +240,7 @@
     };
 
     obj.success = function (data, status, xhr) {
-        /*console.log(data.message);*/
+        //console.log(data);
         if (data.success) {
             $editModal.modal("hide");
             $deleteModal.modal("hide");

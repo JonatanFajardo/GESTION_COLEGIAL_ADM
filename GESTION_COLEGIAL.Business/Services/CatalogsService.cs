@@ -62,6 +62,12 @@ namespace GESTION_COLEGIAL.Business.Services
             }
         }
 
+        public static async Task<IEnumerable<T>> Dropdown<T>(string url)
+        {
+            // Crea la peticion a la api
+            var resultSerialize = await SendHttpClient.Get<T>(url);
+            return resultSerialize;
+        }
         public static async Task<bool> Delete(string url, int id)
         {
             // Crea la peticion a la api

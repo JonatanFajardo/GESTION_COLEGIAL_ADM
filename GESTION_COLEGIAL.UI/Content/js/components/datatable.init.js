@@ -2,6 +2,101 @@
 //Recorre el arreglo de encabezados
 //==================================================
 
+
+var Modals = (function () {
+    var obj = {},
+        action,
+        table,
+        $deleteModal;
+
+    //obj.NewModal
+
+
+        table = $("#datatable");
+
+
+
+    function deleteModal(params) {
+
+        $deleteModal = $(params.deleteModalId);
+        $deleteModal.on("show.bs.modal", function () {
+            var modalTitle = "Eliminar ", deleteBtnText = "Aceptar";
+            $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
+            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + deleteBtnText);
+
+        });
+        $deleteModal.on("hidden.bs.modal", function () { });
+    }
+
+    function typeModal(params) {
+        switch (params.type) {
+
+            case 'delete':
+                $(function () {
+                    console.log('aa' + params);
+                    deleteModal(params);
+                    $deleteModal.modal("show");
+                });
+                break;
+        }
+    }
+
+    obj.configure = function (params) {
+        console.log(params);
+        //if (params.dataTableId === undefined)
+        //    params.dataTableId = "#datatable";
+        if (params.editModalId === undefined)
+            params.editModalId = "#edit-modal";
+
+        if (params.deleteModalId === undefined)
+            params.deleteModalId = "#delete-modal-secondary";
+
+        $(function () {
+            //createDataTable(params);
+            typeModal(params);
+            //createModal(params);
+            //createEditModal(params);
+        });
+    };
+
+    obj.begin = function (xhr, settings) {
+        if (action == "edit") {
+            submitBtn = Ladda.create($(".ladda-button")[0]);
+        }
+        else {
+            submitBtn = Ladda.create($(".ladda-button")[0]);
+        }
+        submitBtn.start();
+    };
+
+    obj.success = function (data, status, xhr) {
+        //console.log(data);
+        if (data.success) {
+            //$editModal.modal("hide");
+            $deleteModal.modal("hide");
+            /*alertConfig.alert("Success", data.type);*/
+            table.DataTable().ajax.reload(null, false);
+        }
+        else {
+            //$editModal.modal("hide");
+            $deleteModal.modal("hide");
+            alertConfig.alert("Ocurrió  un error.", data.error);
+        }
+        alertConfig.alert(data.message, data.type);
+    };
+
+    obj.failure = function (xhr, status, error) {
+        console.log("Ocurrió  un error.");
+    }
+
+    obj.complete = function (xhr, status) {
+        submitBtn.stop();
+    };
+    return obj;
+}());
+
+
+
 var datatable = (function () {
     var obj = {};
     //serverSide
@@ -59,8 +154,6 @@ var datatable = (function () {
                     }
                 }
             });
-
-
 
 
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
@@ -121,7 +214,7 @@ var datatable = (function () {
                             'data-target': "#edit-modal"
                         },
                         text: '<i class="mdi mdi-plus-thick ladda-button"> Nuevo</i>'
-                        
+
 
                         //text: 'Nuevo <i class="mdi mdi-plus-thick"></i>',
                         //className: "btn btn-success",
@@ -138,7 +231,6 @@ var datatable = (function () {
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
-                            console.log(response);
                             callback(response);
                         },
                         error: function () {
@@ -157,11 +249,39 @@ var datatable = (function () {
                 window.location = `${DirectionUrls.urlUpdate}/${getIdEdit}`;
             });
 
+            table.on("click", ".delete-btn-btn", function (e) {
+                var getIdDelete = $(this).data("id");
+                console.log(`getIdDelete: ${getIdDelete}`);
+                $("#delete-item-id").val(getIdDelete);
+                Modals.configure({
+                    displayName: "empleado",
+                    type: "delete"
+                });
+                //$(function () {
+                //    Modals.configure({
+                //        displayName: "empleado",
+                //        type: "delete"
+                //    });
+                //})
+                //var obj = {};
+
+                //obj.Modals = function () {
+                //    $(function () {
+                //        Modals.configure({
+                //            displayName: "empleado",
+                //            type: "delete"
+                //        });
+                //    })
+                //}
+                //return obj;
+
+            });
+
             // Evento click de clase .add-btn.
             // Redirecciona a la vista de crear.
             var addBtn = $('#add-btn');
             addBtn.click(function () {
-                window.location = DirectionUrls.urlInsert;
+                window.location = `${DirectionUrls.urlInsert}`;
             });
 
 
@@ -175,7 +295,6 @@ var datatable = (function () {
         });
 
     };
-
 
     //obj.RedirectNew = function (tabla) {
     //    $(function () {
@@ -198,8 +317,16 @@ var datatable = (function () {
 
             head.push({
                 targets: i,
-                data: _header[i]
+                data: _header[i].FieldName
             })
+            // Entra si se desea deshabilitar la columna
+            if (header[i].Visibility == false || header[i].Visibility != undefined) {
+                head[i]['visible'] = false
+            }
+            // Entra si se desea indicar un ancho especifico
+            if (_header[i].Size != undefined) {
+                head[i]['width'] = _header[i].Size
+            }
         }
 
         head.push({
@@ -208,10 +335,10 @@ var datatable = (function () {
             width: 80,
             render: function (data, type, row) {
                 botones = "";
-                var head = _header[0];
+                var head = _header[0].FieldName;
                 if (type == "display") {
                     botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
-                    botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="ion-trash-a"></i></span></button>';
+                    botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="ion-trash-a"></i></span></button>';
 
                 }
                 return botones;
@@ -220,11 +347,13 @@ var datatable = (function () {
         return head;
     };
 
-    
 
-    
+
+
     return obj;
 }());
+
+
 
 //function nuevo() {
 //    //$(formId).trigger("reset");

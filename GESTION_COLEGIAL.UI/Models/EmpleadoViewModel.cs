@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
@@ -17,6 +19,10 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Persona")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Per_Id { get; set; }
+
+        public string Emp_Nombre { get; set; }
+        public string Tit_Descripcion { get; set; }
+        public string Car_Descripcion { get; set; }
 
         [Display(Name = "Título")]
         [Required(ErrorMessage = "El campo  es requerido")]
@@ -53,6 +59,8 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Fecha nacimiento")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        //Indica la forma en que se muestra. (Before: 00/00/00 00:00:00, after: 00/00/00)
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Per_FechaNacimiento { get; set; }
 
         [StringLength(150)]
@@ -77,8 +85,8 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
-        public bool? EsActivo { get; set; }
-        public string Per_EsActivo { get; set; }
+        public string EsActivo { get; set; }
+        public bool Per_EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
         public int Per_UsuarioRegistra { get; set; }
@@ -98,5 +106,17 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Fecha modifica")]
         public DateTime? Per_FechaModifica { get; set; }
 
+        #region Dropdown
+
+        public SelectList titulosList { get; set; }
+        public SelectList cargosList { get; set; }
+
+        public void LoadDropDownList(IEnumerable<TituloViewModel> tituloDropdownResults,
+                                    IEnumerable<CargoViewModel> cargoDropdownResults)
+        {
+            titulosList = new SelectList(tituloDropdownResults, "Tit_Id", "Tit_Descripcion");
+            cargosList = new SelectList(cargoDropdownResults, "Car_Id", "Car_Descripcion");
+        }
+        #endregion Dropdown
     }
 }

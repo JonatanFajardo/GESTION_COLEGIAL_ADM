@@ -17,10 +17,11 @@
             <thead>
                 <tr>
                     <th>Id</th>
+                    <th>Código</th>
                     <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Cargo</th>
                     <th>Estado</th>
+                    <th>Título</th>
+                    <th>Cargo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -29,15 +30,15 @@
 </div>
 
 <!-- Modal Delete-->
-<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal" id="delete-modal-secondary" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         @using (Ajax.BeginForm("Delete", "Empleados", new AjaxOptions
         {
             HttpMethod = "Post",
-            OnBegin = "Catalogs.begin",
-            OnComplete = "Catalogs.complete",
-            OnFailure = "Catalogs.failure",
-            OnSuccess = "Catalogs.success"
+            OnBegin = "Modals.begin",
+            OnComplete = "Modals.complete",
+            OnFailure = "Modals.failure",
+            OnSuccess = "Modals.success"
         }))
         {
             <div class="modal-content">
@@ -70,16 +71,17 @@
 </div>
 <!-- Fin Modal -->
 
-
 @section Scripts{
     <script src="~/Content/js/pages/empleados.js"></script>
     <script>
-        Empleados.datatable({listUrl: "@Url.Action("List")" });
-    </script>
-    @*<script>
-        Catalogs.configure({
-            displayName: "empleado",
-            urlUpdate: "@Url.Action("Find")"
+        Empleados.datatable({
+            urlList: "@Url.Action("List")",
+            urlInsert: "@Url.Action("Create")",
+            urlUpdate: "@Url.Action("Find")",
+            urlDetail: "Detail"
         });
-    </script>*@
+    </script>
+    <script>
+
+    </script>
 }
