@@ -77,16 +77,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
         }
 
-        public async Task<EmpleadoViewModel> Dropdown(EmpleadoViewModel model)
-        {
-            string urlTitulos = "Empleados/TitulosDropdown";
-            string urlCargos = "Empleados/CargosDropdown";
-            var titulosDropdown = await CatalogsService.Dropdown<TituloViewModel>(urlTitulos);
-            var cargosDropdown = await CatalogsService.Dropdown<CargoViewModel>(urlCargos);
-            model.LoadDropDownList(titulosDropdown, cargosDropdown);
-            return model;
-        }
-
         [HttpPost]
         public async Task<ActionResult> Delete(EmpleadoViewModel model)
         {
@@ -99,6 +89,16 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
+        }
+
+        public async Task<EmpleadoViewModel> Dropdown(EmpleadoViewModel model)
+        {
+            string urlTitulos = "Empleados/TitulosDropdown";
+            string urlCargos = "Empleados/CargosDropdown";
+            var titulosDropdown = await CatalogsService.Dropdown<TituloViewModel>(urlTitulos);
+            var cargosDropdown = await CatalogsService.Dropdown<CargoViewModel>(urlCargos);
+            model.LoadDropDownList(titulosDropdown, cargosDropdown);
+            return model;
         }
     }
 }

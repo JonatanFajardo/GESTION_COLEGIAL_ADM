@@ -23,7 +23,7 @@
                     @* Columna Curso *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Cur_Id, "Cur_Id", htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Cur_Id, "Curso", htmlAttributes: new { @class = "control-label" })
                             @Html.DropDownList("Cur_Id", null, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Cur_Id, "", new { @class = "text-danger" })
                         </div>
@@ -31,7 +31,7 @@
                     @* Columna Curso nivel *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Cun_Id, "Cun_Id", htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Cun_Id, "Curso nivel", htmlAttributes: new { @class = "control-label" })
                             @Html.DropDownList("Cun_Id", null, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Cun_Id, "", new { @class = "text-danger" })
                         </div>
@@ -41,7 +41,7 @@
                     @* Columna Materia *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Mat_Id, "Mat_Id", htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Mat_Id, "Materia", htmlAttributes: new { @class = "control-label" })
                             @Html.DropDownList("Mat_Id", null, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Mat_Id, "", new { @class = "text-danger" })
                         </div>
@@ -49,7 +49,7 @@
                     @* Columna Hora inicio *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.HoAl_HoraInicio, "HoAl_HoraInicio", htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.HoAl_HoraInicio, "inicio", htmlAttributes: new { @class = "control-label" })
                             @Html.EditorFor(model => model.HoAl_HoraInicio, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.HoAl_HoraInicio, "", new { @class = "text-danger" })
                         </div>
@@ -59,7 +59,7 @@
                     @* Columna Hora finaliza *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.HoAl_HoraFinaliza, "HoAl_HoraFinaliza", htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.HoAl_HoraFinaliza, "finaliza", htmlAttributes: new { @class = "control-label" })
                             @Html.EditorFor(model => model.HoAl_HoraFinaliza, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.HoAl_HoraFinaliza, "", new { @class = "text-danger" })
                         </div>
@@ -67,7 +67,7 @@
                     @* Columna Día *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Dia_Id, "Dia_Id", htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Dia_Id, "Día", htmlAttributes: new { @class = "control-label" })
                             @Html.DropDownList("Dia_Id", null, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Dia_Id, "", new { @class = "text-danger" })
                         </div>

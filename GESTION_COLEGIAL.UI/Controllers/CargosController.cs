@@ -15,6 +15,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             return View();
         }
+
+        public ActionResult Create()
+        {
+            return View("Create");
+        }
+
         public async Task<ActionResult> List()
         {
             string url = "Cargos/List";
