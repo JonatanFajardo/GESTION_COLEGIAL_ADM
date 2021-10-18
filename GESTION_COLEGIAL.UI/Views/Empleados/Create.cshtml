@@ -15,8 +15,6 @@
                 <h3>Registro de Empleados</h3>
             </div>
 
-        </div>
-    </div>
     <div class="card-body">
         @Html.HiddenFor(model => model.Emp_Id)
         @Html.HiddenFor(model => model.Per_Id)
@@ -24,7 +22,7 @@
             @* Columna Código *@
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Emp_Codigo, "Codigo", htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Emp_Codigo, "Código", htmlAttributes: new { @class = "control-label" })
                     @Html.EditorFor(model => model.Emp_Codigo, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Emp_Codigo, "", new { @class = "text-danger" })
                 </div>
@@ -42,7 +40,7 @@
             @* Columna Título *@
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Tit_Id, "Id", htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Tit_Id, "Título", htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownList("Tit_Id", Model.titulosList, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Tit_Id, "", new { @class = "text-danger" })
                 </div>
@@ -50,7 +48,7 @@
             @* Columna Cargo *@
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Car_Id, "Id", htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.Car_Id, "Cargo", htmlAttributes: new { @class = "control-label" })
                     @Html.DropDownList("Car_Id", Model.cargosList, htmlAttributes: new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Car_Id, "", new { @class = "text-danger" })
                 </div>
@@ -156,4 +154,16 @@
         </div>
         <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
     </div>
+}
+
+@section Scripts{
+    <script src="~/Content/js/pages/empleados.js"></script>
+    <script>
+        Empleados.datatable({
+            urlList: "@Url.Action("List")",
+            urlInsert: "@Url.Action("Create")",
+            urlUpdate: "@Url.Action("Find")",
+            urlDetail: "Detail"
+        });
+    </script>
 }

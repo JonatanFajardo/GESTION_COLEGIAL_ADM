@@ -6,3 +6,17 @@
 
 <h2>Index</h2>
 
+
+
+
+@section Scripts{
+    <script src="~/Content/js/pages/notas.js"></script>
+    <script>
+        Empleados.datatable({
+            urlList: "@Url.Action("List")",
+            urlInsert: "@Url.Action("Create")",
+            urlUpdate: "@Url.Action("Find")",
+            urlDetail: "Detail"
+        });
+    </script>
+}
