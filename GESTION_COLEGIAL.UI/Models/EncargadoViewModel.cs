@@ -13,6 +13,8 @@ namespace GESTION_COLEGIAL.UI.Models
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Per_Id { get; set; }
 
+        public string Enc_Nombre { get; set; }
+
         [StringLength(50)]
         [Display(Name = "Ocupación")]
         [Required(ErrorMessage = "El campo  es requerido")]
@@ -45,6 +47,7 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Fecha nacimiento")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Per_FechaNacimiento { get; set; }
 
         [StringLength(150)]
@@ -69,8 +72,9 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
-        public bool? EsActivo { get; set; }
-        public string Per_EsActivo { get; set; }
+
+        public string EsActivo { get; set; }
+        public bool Per_EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
         public int Per_UsuarioRegistra { get; set; }
