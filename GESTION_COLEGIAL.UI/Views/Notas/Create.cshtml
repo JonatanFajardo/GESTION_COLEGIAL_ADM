@@ -22,7 +22,7 @@
                 @* Columna Nota *@
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Not_Nota, "Not_Nota", htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Not_Nota, "Nota", htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.Not_Nota, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Not_Nota, "", new { @class = "text-danger" })
                     </div>
@@ -30,7 +30,7 @@
                 @* Columna Materia *@
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Mat_Id, "Mat_Id", htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Mat_Id, "Materia", htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownList("Mat_Id", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Mat_Id, "", new { @class = "text-danger" })
                     </div>
@@ -38,7 +38,7 @@
                 @* Columna Semestre *@
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Sem_Id, "Sem_Id", htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Sem_Id, "Semestre", htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownList("Sem_Id", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Sem_Id, "", new { @class = "text-danger" })
                     </div>
@@ -46,7 +46,7 @@
                 @* Columna Parcial *@
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Pac_Id, "Pac_Id", htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Pac_Id, "Parcial", htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownList("Pac_Id", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Pac_Id, "", new { @class = "text-danger" })
                     </div>
@@ -54,7 +54,7 @@
                 @* Columna Año *@
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Not_Año, "Not_Año", htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Not_Año, "Año", htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.Not_Año, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Not_Año, "", new { @class = "text-danger" })
                     </div>
@@ -62,7 +62,7 @@
                 @* Columna Es activo *@
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Not_EsActivo, "EsActivo", htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Not_EsActivo, "activo", htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.Not_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Not_EsActivo, "", new { @class = "text-danger" })
                     </div>
