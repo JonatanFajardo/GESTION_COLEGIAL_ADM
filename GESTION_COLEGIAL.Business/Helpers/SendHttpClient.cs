@@ -15,6 +15,35 @@ namespace GESTION_COLEGIAL.Business.Helpers
         private const string baseUrl = "https://localhost:44341/api/";
 
         /// <summary>
+        /// Obtiene valores del servicio.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static async Task<List<T>> Get<T>(string url/*, object model*/)
+        {
+            try
+            {
+                var httpclient = new HttpClient();
+                var httpResponse = await httpclient.GetAsync($"{baseUrl}{url}");
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
+                var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
+                return resultSerialize;
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Envia datos a una API.
         /// </summary>
         /// <param name="url"></param>
@@ -140,38 +169,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Obtiene valores del servicio.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        public static async Task<List<T>> Get<T>(string url/*, object model*/)
-        {
-            try
-            {
-                var httpclient = new HttpClient();
-                var httpResponse = await httpclient.GetAsync($"{baseUrl}{url}");
-
-                if (!httpResponse.IsSuccessStatusCode)
-                {
-                    return null;
-                }
-                var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
-                var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
-                return resultSerialize;
-
-            }
-            catch (Exception e)
-            {
-
-                throw;
-            }
-        }
-
-
-
+        }     
     }
 }

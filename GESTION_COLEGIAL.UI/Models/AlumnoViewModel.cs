@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
@@ -16,10 +18,14 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Curso")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Cur_Id { get; set; }
+        public string Cno_Descripcion { get; set; }
+
+        public string Alu_Nombre { get; set; }
 
         [Display(Name = "Estado")]
         [Required(ErrorMessage = "El campo  es requerido")]
         public int Est_Id { get; set; }
+        public string Est_Descripcion { get; set; }
 
         [StringLength(13)]
         [Display(Name = "Identidad")]
@@ -48,6 +54,7 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Fecha nacimiento")]
         [Required(ErrorMessage = "El campo  es requerido")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Per_FechaNacimiento { get; set; }
 
         [StringLength(150)]
@@ -72,8 +79,9 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo  es requerido")]
-        public bool? EsActivo { get; set; }
-        public string Per_EsActivo { get; set; }
+
+        public string EsActivo { get; set; }
+        public bool Per_EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
         public int Per_UsuarioRegistra { get; set; }
@@ -91,8 +99,19 @@ namespace GESTION_COLEGIAL.UI.Models
         public string Per_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
-        public DateTime? Per_FechaModifica { get; set; }
+        public DateTime? Per_FechaModifica { get; set; }        
 
+        #region Dropdown
 
+        public SelectList cursosList { get; set; }
+        public SelectList estadosList { get; set; }
+
+        public void LoadDropDownList(IEnumerable<CursoViewModel> cursoDropdownResults,
+                                    IEnumerable<EstadoViewModel> estadoDropdownResults)
+        {
+            cursosList = new SelectList(cursoDropdownResults, "Cur_Id", "Cno_Descripcion");
+            estadosList = new SelectList(estadoDropdownResults, "Est_Id", "Est_Descripcion");
+        }
+        #endregion Dropdown
     }
 }

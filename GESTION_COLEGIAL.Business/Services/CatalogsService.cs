@@ -62,7 +62,20 @@ namespace GESTION_COLEGIAL.Business.Services
             }
         }
 
+        /// <summary>
+        /// Obtiene un listado de registros.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static async Task<IEnumerable<T>> Dropdown<T>(string url)
+        {
+            // Crea la peticion a la api
+            var resultSerialize = await SendHttpClient.Get<T>(url);
+            return resultSerialize;
+        }
+
+        public static async Task<List<T>> CheckList<T>(string url)
         {
             // Crea la peticion a la api
             var resultSerialize = await SendHttpClient.Get<T>(url);

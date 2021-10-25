@@ -16,6 +16,10 @@ namespace GESTION_COLEGIAL.UI.Models
         [Remote(action: "Exist", controller: "CursosNiveles", HttpMethod = "POST", AdditionalFields = nameof(Cun_Id) + "," + nameof(Cun_Descripcion))]
         public string Cun_Descripcion { get; set; }
 
+        public int Niv_Id { get; set; }
+
+        public string Niv_Descripcion { get; set; }
+
         [Display(Name = "Usuario registra Id")]
         public int Cun_UsuarioRegistra { get; set; }
 
@@ -33,6 +37,8 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Cun_FechaModifica { get; set; }
+
+        public bool IsSelected { get; set; }
 
     }
 }
