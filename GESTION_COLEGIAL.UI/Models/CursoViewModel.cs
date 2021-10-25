@@ -72,16 +72,16 @@ namespace GESTION_COLEGIAL.UI.Models
         public int[] Materias { get; set; }
         public int[] Secciones { get; set; }
         // Propiedad con la información de modalidades.
-        public List<ModalidadViewModel> ModalidadesCheckList { get; set; }
+        public IList<SelectListItem> ModalidadesCheckList { get; set; }
 
         // Propiedad con la información de secciones.
-        public List<SeccionViewModel> SeccionesCheckList { get; set; }
+        public IList<SelectListItem> SeccionesCheckList { get; set; }
 
         // Propiedad con la información de cursos niveles.
-        public List<CursoNivelViewModel> CursoNivelesCheckList { get; set; }
+        public IList<SelectListItem> CursoNivelesCheckList { get; set; }
 
         // Propiedad con la información de cursos materias.
-        public List<MateriaViewModel> MateriasCheckList { get; set; }
+        public IList<SelectListItem> MateriasCheckList { get; set; }
 
         // Propiedad con listado de niveles educativos.
         public SelectList NivelEducativoList { get; set; }
@@ -100,18 +100,39 @@ namespace GESTION_COLEGIAL.UI.Models
         /// Permite mostrar una colección de checkbox.
         /// </remarks>
         /// <param name="modalidades"></param>
-        public void LoadCheckList(  List<ModalidadViewModel> modalidades, List<SeccionViewModel> secciones,
+        public void LoadCheckList( IList<ModalidadViewModel> modalidades, IList<SeccionViewModel> secciones,
                                     List<CursoNivelViewModel> cursoNiveles, List<MateriaViewModel> materias)
         {
             // Evaluamos si la propiedad viene vacia.
             if (modalidades == null)
                 return;
+            // Usamos SelectListItem para estandarizar la forma en la que se llamara en la vista.
 
-            ModalidadesCheckList = modalidades;
-            SeccionesCheckList = secciones;
+            ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
+            {
+                Text = x.Mda_Descripcion,
+                Value = x.Mda_Id.ToString(),
+                Selected = x.IsSelected
+            }).ToList(); ;
+            SeccionesCheckList = secciones.Select(x => new SelectListItem()
+            {
+                Text = x.Sec_Descripcion,
+                Value = x.Sec_Id.ToString(),
+                Selected = x.IsSelected
+            }).ToList();
             //CursoNiveles = cursoNiveles.Where(x => x.Niv_Id == Niv_Id).ToList();
-            CursoNivelesCheckList = cursoNiveles;
-            MateriasCheckList = materias;
+            CursoNivelesCheckList = cursoNiveles.Select(x => new SelectListItem()
+            {
+                Text = x.Cun_Descripcion,
+                Value = x.Cun_Id.ToString(),
+                Selected = x.IsSelected
+            }).ToList();
+            MateriasCheckList = materias.Select(x => new SelectListItem()
+            {
+                Text = x.Mat_Nombre,
+                Value = x.Mat_Id.ToString(),
+                Selected = x.IsSelected
+            }).ToList();
         }
         #endregion CheckList
 
