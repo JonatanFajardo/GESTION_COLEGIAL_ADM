@@ -35,6 +35,6 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Fecha modifica")]
         public DateTime? Sec_FechaModifica { get; set; }
 
-
+        public bool IsSelected { get; set; }
     }
 }

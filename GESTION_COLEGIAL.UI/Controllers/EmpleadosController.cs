@@ -1,6 +1,7 @@
 ﻿using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Models;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -24,8 +25,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> Create()
         {
             var model = new EmpleadoViewModel();
-            var drop = await Dropdown(model);
-            return View(drop);
+            var load = await Load(model);
+            return View(load);
         }
 
         public async Task<ActionResult> List()
@@ -40,13 +41,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             string url = "Empleados/Find"; 
             var result = await CatalogsService.Find<EmpleadoViewModel>(url, id);
             //var model = _mapper.Map<EmpleadoViewModel>(result);
-            var drop = await Dropdown(result);
-            return View("Create", drop);
+            var load = await Load(result);
+            return View("Create", load);
         }
 
         [HttpPost]
         public async Task<ActionResult> Save(EmpleadoViewModel model)
-        {
+        {            
             if (model.Emp_Id == 0)
             {
                 string url = "Empleados/Create";
@@ -91,12 +92,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
 
-        public async Task<EmpleadoViewModel> Dropdown(EmpleadoViewModel model)
+        public async Task<EmpleadoViewModel> Load(EmpleadoViewModel model)
         {
+            // Direcciones.
             string urlTitulos = "Empleados/TitulosDropdown";
             string urlCargos = "Empleados/CargosDropdown";
+            // Instancias.
             var titulosDropdown = await CatalogsService.Dropdown<TituloViewModel>(urlTitulos);
             var cargosDropdown = await CatalogsService.Dropdown<CargoViewModel>(urlCargos);
+            // Cargando en el modelo.
             model.LoadDropDownList(titulosDropdown, cargosDropdown);
             return model;
         }

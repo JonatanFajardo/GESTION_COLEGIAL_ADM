@@ -240,6 +240,10 @@
     <Compile Include="Models\ParcialViewModel.cs" />
     <Compile Include="Models\ParentescoViewModel.cs" />
     <Compile Include="Models\PersonaViewModel.cs" />
+    <Compile Include="Models\CursoNivelCursoViewModel.cs" />
+    <Compile Include="Models\MateriaCursoViewModel.cs" />
+    <Compile Include="Models\ModalidadCursoViewModel.cs" />
+    <Compile Include="Models\SeccionCursoViewModel.cs" />
     <Compile Include="Models\SeccionViewModel.cs" />
     <Compile Include="Models\SemestreViewModel.cs" />
     <Compile Include="Models\TituloViewModel.cs" />

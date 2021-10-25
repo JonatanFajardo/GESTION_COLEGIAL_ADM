@@ -15,8 +15,9 @@
                 <h3>Registro de Alumnos</h3>
             </div>
 
-    <div class="card-body">
+            <div class="card-body">
                 @Html.HiddenFor(model => model.Alu_Id)
+                @Html.HiddenFor(model => model.Per_Id)
                 <div class="form-row">
                     @* Columna Persona *@
                     <div class="col-md-6">
@@ -30,7 +31,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Cur_Id, "Curso", htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownList("Cur_Id", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("Cur_Id", Model.cursosList, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Cur_Id, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -40,7 +41,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Est_Id, "Estado", htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownList("Est_Id", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("Est_Id", Model.estadosList, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Est_Id, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -94,7 +95,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Per_FechaNacimiento, "Fecha Nacimiento", htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Per_FechaNacimiento, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Per_FechaNacimiento, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                             @Html.ValidationMessageFor(model => model.Per_FechaNacimiento, "", new { @class = "text-danger" })
                         </div>
                     </div>

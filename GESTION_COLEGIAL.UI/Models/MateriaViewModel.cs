@@ -43,5 +43,7 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Fecha modifica")]
         public DateTime? Mat_FechaModifica { get; set; }
 
+        public bool IsSelected { get; set; }
+
     }
 }

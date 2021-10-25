@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Models
 {
     public class EmpleadoViewModel : BaseViewModel
-    {
-
+    {  
         [Key]
         public int Emp_Id { get; set; }
 
@@ -104,13 +104,23 @@ namespace GESTION_COLEGIAL.UI.Models
         public string Per_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
-        public DateTime? Per_FechaModifica { get; set; }
+        public DateTime? Per_FechaModifica { get; set; }       
+
+        // Propiedad con listado de títulos.
+        public SelectList titulosList { get; set; }
+
+        // Propiedad con listado de cargos.
+        public SelectList cargosList { get; set; }      
 
         #region Dropdown
-
-        public SelectList titulosList { get; set; }
-        public SelectList cargosList { get; set; }
-
+        /// <summary>
+        /// Carga los datos solicitados.
+        /// </summary>
+        /// <remarks>
+        /// Permite mostrar una colección de dropdown.
+        /// </remarks>
+        /// <param name="tituloDropdownResults"></param>
+        /// <param name="cargoDropdownResults"></param>
         public void LoadDropDownList(IEnumerable<TituloViewModel> tituloDropdownResults,
                                     IEnumerable<CargoViewModel> cargoDropdownResults)
         {
