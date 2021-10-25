@@ -41,10 +41,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Save(CursoViewModel model)
         {
-            model.Modalidades = model.ModalidadesCheckList.Where(x => x.IsSelected == true).Select(x => Convert.ToInt32(x.Mda_Id)).ToArray();
-            model.CursoNiveles = model.CursoNivelesCheckList.Where(x => x.IsSelected == true).Select(x => Convert.ToInt32(x.Cun_Id)).ToArray();
-            model.Materias = model.MateriasCheckList.Where(x => x.IsSelected == true).Select(x => Convert.ToInt32(x.Mat_Id)).ToArray();
-            model.Secciones = model.SeccionesCheckList.Where(x => x.IsSelected == true).Select(x => Convert.ToInt32(x.Sec_Id)).ToArray();
+            model.Modalidades = model.ModalidadesCheckList.Where(x => x.Selected == true).Select(x => Convert.ToInt32(x.Value)).ToArray();
+            model.CursoNiveles = model.CursoNivelesCheckList.Where(x => x.Selected == true).Select(x => Convert.ToInt32(x.Value)).ToArray();
+            model.Materias = model.MateriasCheckList.Where(x => x.Selected == true).Select(x => Convert.ToInt32(x.Value)).ToArray();
+            model.Secciones = model.SeccionesCheckList.Where(x => x.Selected == true).Select(x => Convert.ToInt32(x.Value)).ToArray();
+            model.SeccionesCheckList = null;
+            model.ModalidadesCheckList = null;
+            model.CursoNivelesCheckList = null;
+            model.MateriasCheckList = null;
             if (model.Cur_Id == 0)
             {
                 string url = "Cursos/Create";

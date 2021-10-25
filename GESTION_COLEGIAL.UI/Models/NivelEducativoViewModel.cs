@@ -40,5 +40,6 @@ namespace GESTION_COLEGIAL.UI.Models
         [Display(Name = "Fecha modifica")]
         public DateTime? Niv_FechaModifica { get; set; }
 
+        //public bool IsSelected { get; set; }
     }
 }

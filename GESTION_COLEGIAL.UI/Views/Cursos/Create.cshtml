@@ -25,10 +25,10 @@
                 <div class="form-group">
                     @for (int i = 0; i < Model.MateriasCheckList.Count; i++)
                     {
-                        @Html.DisplayFor(model => model.MateriasCheckList[i].Mat_Nombre);
-                        @Html.CheckBoxFor(model => model.MateriasCheckList[i].IsSelected)
-                        @Html.HiddenFor(model => model.MateriasCheckList[i].Mat_Nombre)
-                        @Html.HiddenFor(model => model.MateriasCheckList[i].Mat_Id)
+                        @Html.DisplayFor(model => model.MateriasCheckList[i].Text);
+                        @Html.CheckBoxFor(model => model.MateriasCheckList[i].Selected)
+                        @Html.HiddenFor(model => model.MateriasCheckList[i].Text)
+                        @Html.HiddenFor(model => model.MateriasCheckList[i].Value)
                     }
                 </div>
             </div>
@@ -40,10 +40,10 @@
                     @* Itera y muestra ckebox con la respectiva descripción *@
                     @for (int i = 0; i < Model.SeccionesCheckList.Count; i++)
                     {
-                        @Html.DisplayFor(model => model.SeccionesCheckList[i].Sec_Descripcion);
-                        @Html.CheckBoxFor(model => model.SeccionesCheckList[i].IsSelected)
-                        @Html.HiddenFor(model => model.SeccionesCheckList[i].Sec_Descripcion)
-                        @Html.HiddenFor(model => model.SeccionesCheckList[i].Sec_Id)
+                        @Html.DisplayFor(model => model.SeccionesCheckList[i].Text);
+                        @Html.CheckBoxFor(model => model.SeccionesCheckList[i].Selected)
+                        @Html.HiddenFor(model => model.SeccionesCheckList[i].Text)
+                        @Html.HiddenFor(model => model.SeccionesCheckList[i].Value)
                     }
                 </div>
             </div>
@@ -53,10 +53,10 @@
                     @* Itera y muestra ckebox con la respectiva descripción *@
                     @for (int i = 0; i < Model.ModalidadesCheckList.Count; i++)
                     {
-                        @Html.DisplayFor(model => model.ModalidadesCheckList[i].Mda_Descripcion);
-                        @Html.CheckBoxFor(model => model.ModalidadesCheckList[i].IsSelected)
-                        @Html.HiddenFor(model => model.ModalidadesCheckList[i].Mda_Descripcion)
-                        @Html.HiddenFor(model => model.ModalidadesCheckList[i].Mda_Id)
+                        @Html.DisplayFor(model => model.ModalidadesCheckList[i].Text);
+                        @Html.CheckBoxFor(model => model.ModalidadesCheckList[i].Selected)
+                        @Html.HiddenFor(model => model.ModalidadesCheckList[i].Text)
+                        @Html.HiddenFor(model => model.ModalidadesCheckList[i].Value)
                     }
                 </div>
             </div>
@@ -68,10 +68,10 @@
                     @* Itera y muestra ckebox con la respectiva descripción *@
                     @for (int i = 0; i < Model.CursoNivelesCheckList.Count; i++)
                     {
-                        @Html.DisplayFor(model => model.CursoNivelesCheckList[i].Cun_Descripcion);
-                        @Html.CheckBoxFor(model => model.CursoNivelesCheckList[i].IsSelected)
-                        @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Cun_Descripcion)
-                        @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Cun_Id)
+                        @Html.DisplayFor(model => model.CursoNivelesCheckList[i].Text);
+                        @Html.CheckBoxFor(model => model.CursoNivelesCheckList[i].Selected)
+                        @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Text)
+                        @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Value)
                     }
                 </div>
             </div>
