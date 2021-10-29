@@ -44,6 +44,13 @@ namespace GESTION_COLEGIAL.Business.Services
             return result;
         }
 
+        public static async Task<IEnumerable<T>> FindAll<T>(string url, int id)
+        {
+            // Crea la peticion a la api
+            var resultSerialize = await SendHttpClient.FindAll<T>(url, id);
+            return resultSerialize;
+        }
+
         public static async Task<T> Exist<T>(string url, string evaluar)
         {
             // Crea la peticion a la api

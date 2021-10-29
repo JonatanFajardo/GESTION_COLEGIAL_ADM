@@ -107,13 +107,13 @@ namespace GESTION_COLEGIAL.UI.Models
             if (modalidades == null)
                 return;
             // Usamos SelectListItem para estandarizar la forma en la que se llamara en la vista.
-
+            //ModalidadesCheckList = modalidades;
             ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
             {
                 Text = x.Mda_Descripcion,
                 Value = x.Mda_Id.ToString(),
                 Selected = x.IsSelected
-            }).ToList(); ;
+            }).ToList();
             SeccionesCheckList = secciones.Select(x => new SelectListItem()
             {
                 Text = x.Sec_Descripcion,

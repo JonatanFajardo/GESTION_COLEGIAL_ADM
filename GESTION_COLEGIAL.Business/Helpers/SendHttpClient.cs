@@ -169,6 +169,30 @@ namespace GESTION_COLEGIAL.Business.Helpers
 
                 throw;
             }
-        }     
+        }
+
+        public static async Task<List<T>> FindAll<T>(string url, int value)
+        {
+            try
+            {
+                string direction = $"{baseUrl}{url}?value={value}";
+                var httpclient = new HttpClient();
+                var httpResponse = await httpclient.GetAsync(direction);
+
+                //if (!httpResponse.IsSuccessStatusCode)
+                //{
+                //    return null;
+                //}
+                var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
+                var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
+                return resultSerialize;
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
     }
 }
