@@ -2,6 +2,7 @@
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -33,10 +34,26 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> Find(int id)
         {
             string url = "Cursos/Find";
+            string urlModalidades = "Cursos/CursosModalidadesFind";
+            string urlMaterias = "Cursos/CursosMateriasFind";
+            string urlCursosNiveles = "Cursos/CursosNivelesFind";
+            string urlSecciones = "Cursos/CursosSeccionesFind";
             var result = await CatalogsService.Find<CursoViewModel>(url, id);
+            var modalidades = await CatalogsService.FindAll<ModalidadViewModel>(urlModalidades, id);
+            //result.ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
+            //{
+            //    Text = x.Mda_Descripcion,
+            //    Value = x.Mda_Id.ToString(),
+            //    Selected = true
+            //}).ToList();
+            //result.MateriasCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<MateriaViewModel>(urlMaterias, id);
+            //result.CursoNivelesCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<CursoNivelViewModel>(urlCursosNiveles, id);
+            //result.SeccionesCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<SeccionViewModel>(urlSecciones, id);
             var load = await Load(result);
             return View("Create", load);
         }
+
+
 
         [HttpPost]
         public async Task<ActionResult> Save(CursoViewModel model)
