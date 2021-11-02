@@ -1,4 +1,5 @@
-﻿using GESTION_COLEGIAL.Business.Services;
+﻿using GESTION_COLEGIAL.Business.Extensions;
+using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Models;
 using System;
@@ -40,6 +41,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             string urlSecciones = "Cursos/CursosSeccionesFind";
             var result = await CatalogsService.Find<CursoViewModel>(url, id);
             var modalidades = await CatalogsService.FindAll<ModalidadViewModel>(urlModalidades, id);
+            object ob = modalidades;
+            ObjectExtension.GetValuePropertie<EmpleadoViewModel>(modalidades, "Mda_Id");
+
             //result.ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
             //{
             //    Text = x.Mda_Descripcion,
@@ -52,6 +56,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var load = await Load(result);
             return View("Create", load);
         }
+
+
+        //public Boolean GetIsValid(object obj, string name)
+        //{
+        //    obj1.
+        //}
 
 
 
