@@ -1,4 +1,5 @@
-﻿using GESTION_COLEGIAL.Business.Services;
+﻿using GESTION_COLEGIAL.Business.Extensions;
+using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Models;
 using System.Linq;
@@ -42,6 +43,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await CatalogsService.Find<EmpleadoViewModel>(url, id);
             //var model = _mapper.Map<EmpleadoViewModel>(result);
             var load = await Load(result);
+
             return View("Create", load);
         }
 
