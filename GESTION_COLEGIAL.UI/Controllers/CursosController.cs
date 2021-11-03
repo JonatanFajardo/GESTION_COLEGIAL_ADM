@@ -42,7 +42,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await CatalogsService.Find<CursoViewModel>(url, id);
             var modalidades = await CatalogsService.FindAll<ModalidadViewModel>(urlModalidades, id);
             object ob = modalidades;
-            ObjectExtension.GetValuePropertie<EmpleadoViewModel>(modalidades, "Mda_Id");
+            var load = await Load(result);
+            ObjectExtension.EqualsBoolean<ModalidadViewModel>(modalidades, "Mda_Id", result.ModalidadesCheckList, "Value", "Selected");
+            //ObjectExtension.EqualsBoolean(modalidades.Select(prop => Convert.ToInt32(prop.Mda_Id)).ToArray(), modalidades.Select(prop => Convert.ToInt32(prop.Mda_Id)).ToArray());
+            ObjectExtension.GetValueProperty(modalidades, "Mda_Id");
 
             //result.ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
             //{
@@ -53,7 +56,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
             //result.MateriasCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<MateriaViewModel>(urlMaterias, id);
             //result.CursoNivelesCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<CursoNivelViewModel>(urlCursosNiveles, id);
             //result.SeccionesCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<SeccionViewModel>(urlSecciones, id);
-            var load = await Load(result);
             return View("Create", load);
         }
 

@@ -9,18 +9,118 @@ namespace GESTION_COLEGIAL.Business.Extensions
 {
     public static class ObjectExtension
     {
-        public static object GetValuePropertie<T>(object obj, string name)
+
+        //public static bool[] EqualsBoolean(int[] obj1, int[] obj2)
+        //{
+        //    bool[] result;
+        //    foreach (var arr1 in obj1)
+        //    {
+        //        if (arr1.)
+        //        {
+
+        //        }
+        //    }
+
+
+        //    if ()
+        //    {
+
+        //    }
+        //}
+
+        public static object EqualsBoolean<T>(dynamic obj, string name, dynamic obj2, string name2, string NameReturn)
         {
             Type temp = typeof(T);
-            //IfNotExist
-            foreach (var item in obj.GetType().GetProperties())
+            var newObject = Activator.CreateInstance(temp);
+            List<bool> result = new List<bool>();
+            List<dynamic> list1 = GetValueProperty(obj, name);
+            List<dynamic> list2 = GetValueProperty(obj2, name2);
+
+
+            bool status = false;
+            for (int i = 0; i < list2.Count; i++)
             {
-                
+                status = false;
+                for (int j = 0; j < list1.Count; j++)
+                {
+                    if (Convert.ToInt32(list2[i]) == Convert.ToInt32(list1[j]))
+                    {
+                        status = true;
+                    }
+                }
+                result.Add(status);
             }
-            var property = obj.GetType().GetProperty(name);
-            var value = property.GetValue(obj, null);
-            List<dynamic> list = new List<dynamic>();
-            return value;
+            //foreach (var item in list2)
+            //{
+            //    foreach (var item2 in list1)
+            //    {
+            //        if (Convert.ToInt32(item) == Convert.ToInt32(item2))
+            //        {
+            //            result.Add(true);
+            //        }
+            //        else
+            //        {
+            //            result.Add(false);
+            //        }
+            //    }
+            //}
+            SetValueToProperty<T>(obj2, NameReturn, result);
+            return result;
+
+
+
+        }
+
+        /// <summary>
+        /// Modifica los valores de toda la columna.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="name">Nombre de la propiedad</param>
+        /// <param name="newName">Listado con los valores a cambiar en la columna.</param>
+        public static void SetValueToProperty<T>(dynamic obj, string name, dynamic newName)
+        {
+            Type temp = typeof(T);
+            var newObject = Activator.CreateInstance<T>();
+            if (obj != null && newName != null)
+            {
+                foreach (var item in obj)
+                {
+                    foreach (var newValue in newName)
+                    {
+                        var property2 = item.GetType().GetProperty(name);
+                        var value = property2.SetValue(newObject, newValue, null);
+
+                        //var value2 = property2.GetValue(item, null)
+                    }
+                    //int i = item;
+                }
+            }
+        }
+
+        public static List<dynamic> GetValueProperty(dynamic obj, string name)
+        {
+            List<dynamic> listValues = new List<dynamic>();
+            //Type temp = typeof(T);
+            //IfNotExist
+            if (obj != null)
+            {
+                foreach (var item in obj)
+                {
+                    var property2 = item.GetType().GetProperty(name);
+                    var value2 = property2.GetValue(item, null);
+                    listValues.Add(value2);
+                    //int i = item;
+                }
+            }
+
+            //foreach (var item in obj.GetType().GetProperties())
+            //{
+
+            //}
+            //var property = obj.GetType().GetProperty(name);
+            //var value = property.GetValue(obj, null);
+
+            return listValues;
             //foreach (PropertyInfo property in temp.GetProperties())
             //{
             //    if (property.Name == name)
