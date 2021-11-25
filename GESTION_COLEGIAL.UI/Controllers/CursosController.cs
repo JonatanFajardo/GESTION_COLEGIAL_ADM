@@ -40,12 +40,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
             string urlCursosNiveles = "Cursos/CursosNivelesFind";
             string urlSecciones = "Cursos/CursosSeccionesFind";
             var result = await CatalogsService.Find<CursoViewModel>(url, id);
-            var modalidades = await CatalogsService.FindAll<ModalidadViewModel>(urlModalidades, id);
-            object ob = modalidades;
+            var modalidades = await CatalogsService.FindAll<ModalidadViewModel>(urlModalidades, id); 
+            //object ob = ;
             var load = await Load(result);
             ObjectExtension.EqualsBoolean<ModalidadViewModel>(modalidades, "Mda_Id", result.ModalidadesCheckList, "Value", "Selected");
             //ObjectExtension.EqualsBoolean(modalidades.Select(prop => Convert.ToInt32(prop.Mda_Id)).ToArray(), modalidades.Select(prop => Convert.ToInt32(prop.Mda_Id)).ToArray());
-            ObjectExtension.GetValueProperty(modalidades, "Mda_Id");
+            //ObjectExtension.GetValueProperty(modalidades, "Mda_Id");
 
             //result.ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
             //{

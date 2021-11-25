@@ -33,8 +33,8 @@ namespace GESTION_COLEGIAL.Business.Extensions
             Type temp = typeof(T);
             var newObject = Activator.CreateInstance(temp);
             List<bool> result = new List<bool>();
-            List<dynamic> list1 = GetValueProperty(obj, name);
-            List<dynamic> list2 = GetValueProperty(obj2, name2);
+            List<dynamic> list1 = GetValueProperty(obj, name); //Datos seleccionados en la base de datos
+            List<dynamic> list2 = GetValueProperty(obj2, name2); //Datos de la SelectList
 
 
             bool status = false;
@@ -74,27 +74,37 @@ namespace GESTION_COLEGIAL.Business.Extensions
         /// <summary>
         /// Modifica los valores de toda la columna.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">Contiene una lista de objetos</param>
         /// <param name="name">Nombre de la propiedad</param>
-        /// <param name="newName">Listado con los valores a cambiar en la columna.</param>
-        public static void SetValueToProperty<T>(dynamic obj, string name, dynamic newName)
+        /// <param name="newValues">Listado con los valores a cambiar en la columna.</param>
+        public static object SetValueToProperty<T>(dynamic obj, string name, dynamic newValues)
         {
             Type temp = typeof(T);
             var newObject = Activator.CreateInstance<T>();
-            if (obj != null && newName != null)
+            if (obj != null && newValues != null)
             {
                 foreach (var item in obj)
                 {
-                    foreach (var newValue in newName)
+                    foreach (var newValue in newValues)
                     {
-                        var property2 = item.GetType().GetProperty(name);
-                        var value = property2.SetValue(newObject, newValue, null);
+                        try
+                        {
+                            var property2 = item.GetType().GetProperty(name);
+                            property2.SetValue(newObject, newValue, null);
 
-                        //var value2 = property2.GetValue(item, null)
+                        }
+                        catch (Exception e)
+                        {
+
+                            throw;
+                        }
+
+                        //var value2 = property2.GetValue(item, null);
                     }
                     //int i = item;
                 }
             }
+            return newObject;
         }
 
         public static List<dynamic> GetValueProperty(dynamic obj, string name)
