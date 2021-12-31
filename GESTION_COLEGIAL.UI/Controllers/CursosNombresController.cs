@@ -98,5 +98,17 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
+
+        public async Task<CursoNombreViewModel> Load(CursoNombreViewModel model)
+        {
+            // Direcciones.
+            string urlNivelesEducativos = "CursosNombres/NivelesEducativosDropdown";
+            // Instancias.
+            var nivelesEducativosDropdown = await CatalogsService.Dropdown<NivelEducativoViewModel>(urlNivelesEducativos);
+            // Cargando en el modelo.
+            model.LoadDropDownList(nivelesEducativosDropdown);
+            return model;
+        } 
+
     }
 }

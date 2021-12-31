@@ -40,10 +40,43 @@ namespace GESTION_COLEGIAL.UI.Controllers
             string urlCursosNiveles = "Cursos/CursosNivelesFind";
             string urlSecciones = "Cursos/CursosSeccionesFind";
             var result = await CatalogsService.Find<CursoViewModel>(url, id);
+
             var modalidades = await CatalogsService.FindAll<ModalidadViewModel>(urlModalidades, id); 
+            var secciones = await CatalogsService.FindAll<SeccionViewModel>(urlSecciones, id); 
+            var cursosniveles = await CatalogsService.FindAll<CursoNivelViewModel>(urlCursosNiveles, id); 
+            var materias = await CatalogsService.FindAll<MateriaViewModel>(urlMaterias, id); 
             //object ob = ;
             var load = await Load(result);
-            ObjectExtension.EqualsBoolean<ModalidadViewModel>(modalidades, "Mda_Id", result.ModalidadesCheckList, "Value", "Selected");
+
+            load.ModalidadesCheckList = load.ModalidadesCheckList.Select(x => new SelectListItem()
+            {
+                Text = x.Text,
+                Value = x.Value.ToString(),
+                Selected = modalidades.Any(y => y.Mda_Id.ToString() == x.Value.ToString()) ? true : false
+            }).ToList();
+
+            load.SeccionesCheckList = load.SeccionesCheckList.Select(x => new SelectListItem()
+            {
+                Text = x.Text,
+                Value = x.Value.ToString(),
+                Selected = secciones.Any(y => y.Sec_Id.ToString() == x.Value.ToString()) ? true : false
+            }).ToList();
+
+            load.CursoNivelesCheckList = load.CursoNivelesCheckList.Select(x => new SelectListItem()
+            {
+                Text = x.Text,
+                Value = x.Value.ToString(),
+                Selected = cursosniveles.Any(y => y.Cun_Id.ToString() == x.Value.ToString()) ? true : false
+            }).ToList();
+
+            load.MateriasCheckList = load.MateriasCheckList.Select(x => new SelectListItem()
+            {
+                Text = x.Text,
+                Value = x.Value.ToString(),
+                Selected = materias.Any(y => y.Mat_Id.ToString() == x.Value.ToString()) ? true : false
+            }).ToList();
+
+            //ObjectExtension.EqualCheckBoxProperties<ModalidadViewModel>(modalidades, "Mda_Id", result.ModalidadesCheckList, "Value", "Selected");
             //ObjectExtension.EqualsBoolean(modalidades.Select(prop => Convert.ToInt32(prop.Mda_Id)).ToArray(), modalidades.Select(prop => Convert.ToInt32(prop.Mda_Id)).ToArray());
             //ObjectExtension.GetValueProperty(modalidades, "Mda_Id");
 
@@ -103,8 +136,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
             else
             {
                 string url = "Cursos/Edit";
+                string urlModalidades = "Cursos/CursosModalidadesEdit";
+                string urlCursosNiveles = "Cursos/CursosNivelesEdit";
+                string urlMaterias = "Cursos/CursosMateriasEdit";
+                string urlSecciones = "Cursos/CursosSeccionesEdit";
                 bool result = await CatalogsService.Edit(url, model);
-
+                bool resultModalidades = await CatalogsService.Edit(urlModalidades, model);
+                bool resultCursosNiveles = await CatalogsService.Edit(urlCursosNiveles, model);
+                bool resultMaterias = await CatalogsService.Edit(urlMaterias, model);
+                bool resultSecciones = await CatalogsService.Edit(urlSecciones, model);
                 //Validamos error
                 if (result)
                 {

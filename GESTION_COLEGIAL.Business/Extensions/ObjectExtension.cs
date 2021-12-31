@@ -27,14 +27,23 @@ namespace GESTION_COLEGIAL.Business.Extensions
 
         //    }
         //}
-
-        public static object EqualsBoolean<T>(dynamic obj, string name, dynamic obj2, string name2, string NameReturn)
+        /// <summary>
+        /// Compara una propiedad específica de dos objetos.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">Objeto a comparar</param>
+        /// <param name="nameProperty">Nombre de propiedad</param>
+        /// <param name="obj2">Objeto de comparación</param>
+        /// <param name="nameProperty2">Nombre de propiedad</param>
+        /// <param name="NameReturn"></param>
+        /// <returns></returns>
+        public static object EqualCheckBoxProperties<T>(dynamic obj, string nameProperty, dynamic obj2, string nameProperty2, string NameReturn)
         {
             Type temp = typeof(T);
             var newObject = Activator.CreateInstance(temp);
             List<bool> result = new List<bool>();
-            List<dynamic> list1 = GetValueProperty(obj, name); //Datos seleccionados en la base de datos
-            List<dynamic> list2 = GetValueProperty(obj2, name2); //Datos de la SelectList
+            List<dynamic> list1 = GetValueProperty(obj, nameProperty); //Datos seleccionados en la base de datos
+            List<dynamic> list2 = GetValueProperty(obj2, nameProperty2); //Datos de la SelectList
 
 
             bool status = false;
@@ -83,30 +92,41 @@ namespace GESTION_COLEGIAL.Business.Extensions
             var newObject = Activator.CreateInstance<T>();
             if (obj != null && newValues != null)
             {
-                foreach (var item in obj)
+                for (int i = 0; i < obj.Count; i++)
                 {
-                    foreach (var newValue in newValues)
-                    {
-                        try
-                        {
-                            var property2 = item.GetType().GetProperty(name);
-                            property2.SetValue(newObject, newValue, null);
-
-                        }
-                        catch (Exception e)
-                        {
-
-                            throw;
-                        }
-
-                        //var value2 = property2.GetValue(item, null);
-                    }
-                    //int i = item;
+                    var property2 = obj[i].GetType().GetProperty(name);
+                    property2.SetValue(obj[i], newValues[i], null);
                 }
+                //foreach (var item in obj)
+                //{
+                //    foreach (var newValue in newValues)
+                //    {
+                //        try
+                //        {
+                //            var property2 = item.GetType().GetProperty(name);
+                //            property2.SetValue(item, newValue, null);
+
+                //        }
+                //        catch (Exception e)
+                //        {
+
+                //            throw;
+                //        }
+
+                //        //var value2 = property2.GetValue(item, null);
+                //    }
+                //    //int i = item;
+                //}
             }
             return newObject;
         }
 
+        /// <summary>
+        /// Obtiene un listado con los valores de la propiedad especificada del objeto.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static List<dynamic> GetValueProperty(dynamic obj, string name)
         {
             List<dynamic> listValues = new List<dynamic>();

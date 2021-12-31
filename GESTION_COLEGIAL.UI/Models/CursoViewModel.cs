@@ -71,6 +71,9 @@ namespace GESTION_COLEGIAL.UI.Models
         public int[] CursoNiveles { get; set; }
         public int[] Materias { get; set; }
         public int[] Secciones { get; set; }
+
+        /// Check Box
+
         // Propiedad con la información de modalidades.
         public IList<SelectListItem> ModalidadesCheckList { get; set; }
 
@@ -82,6 +85,8 @@ namespace GESTION_COLEGIAL.UI.Models
 
         // Propiedad con la información de cursos materias.
         public IList<SelectListItem> MateriasCheckList { get; set; }
+
+        // Dropdown
 
         // Propiedad con listado de niveles educativos.
         public SelectList NivelEducativoList { get; set; }
@@ -110,7 +115,7 @@ namespace GESTION_COLEGIAL.UI.Models
             //ModalidadesCheckList = modalidades;
             ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
             {
-                Text = x.Mda_Descripcion,
+                Text = x.Mda_Descripcion, 
                 Value = x.Mda_Id.ToString(),
                 Selected = x.IsSelected
             }).ToList();
