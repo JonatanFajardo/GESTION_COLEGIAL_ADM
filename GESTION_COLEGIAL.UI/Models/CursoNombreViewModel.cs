@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -15,6 +16,8 @@ namespace GESTION_COLEGIAL.UI.Models
         [Required(ErrorMessage = "El campo  es requerido")]
         [Remote(action: "Exist", controller: "CursosNombres", HttpMethod = "POST", AdditionalFields = nameof(Cno_Id) + "," + nameof(Cno_Descripcion))]
         public string Cno_Descripcion { get; set; }
+        public int Niv_Id { get; set; }
+        public string Niv_Descripcion { get; set; }
 
         [Display(Name = "Usuario registra Id")]
         public int Cno_UsuarioRegistra { get; set; }
@@ -33,6 +36,14 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Cno_FechaModifica { get; set; }
+
+        public SelectList NivelEducativoList { get; set; }
+
+        public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoViewModels)
+        {
+            NivelEducativoList = new SelectList(nivelEducativoViewModels, "Niv_Id", "Niv_Descripcion");
+
+        }
 
     }
 }

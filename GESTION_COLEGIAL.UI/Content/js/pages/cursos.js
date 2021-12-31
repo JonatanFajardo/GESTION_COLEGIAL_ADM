@@ -29,3 +29,22 @@
     }
     return obj;
 }());
+
+
+
+
+document.ready(function () {
+    $('#Niv_Id').change(function () {
+        var Niv_Id = $(this).val();
+        debugger
+        $.ajax({
+            type: "post",
+            url: "/Cas/GetStatelist?Cid=" + countryId,
+            contentType: "html",
+            success: function (response) {
+                debugger
+                $("#Cno_Id").empty();
+                $("#Cno_Id").append(response);
+            }),
+    })
+})
