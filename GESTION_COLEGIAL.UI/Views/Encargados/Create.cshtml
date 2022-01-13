@@ -27,8 +27,6 @@
                             @Html.ValidationMessageFor(model => model.Enc_Ocupacion, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                </div>
-                <div class="form-row">
                     @* Columna Identidad *@
                     <div class="col-md-6">
                         <div class="form-group">
@@ -37,6 +35,8 @@
                             @Html.ValidationMessageFor(model => model.Per_Identidad, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                </div>
+                <div class="form-row">
                     @* Columna Primer Nombre *@
                     <div class="col-md-6">
                         <div class="form-group">
@@ -45,8 +45,6 @@
                             @Html.ValidationMessageFor(model => model.Per_PrimerNombre, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                </div>
-                <div class="form-row">
                     @* Columna Segundo Nombre *@
                     <div class="col-md-6">
                         <div class="form-group">
@@ -55,6 +53,8 @@
                             @Html.ValidationMessageFor(model => model.Per_SegundoNombre, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                </div>
+                <div class="form-row">
                     @* Columna Apellido Paterno *@
                     <div class="col-md-6">
                         <div class="form-group">
@@ -76,7 +76,7 @@
                     @* Columna Fecha Nacimiento *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Per_FechaNacimiento, "Per_FechaNacimiento", htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Per_FechaNacimiento, "Fecha Nacimiento", htmlAttributes: new { @class = "control-label " })
                             @Html.EditorFor(model => model.Per_FechaNacimiento, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                             @Html.ValidationMessageFor(model => model.Per_FechaNacimiento, "", new { @class = "text-danger" })
                         </div>
@@ -84,7 +84,7 @@
                     @* Columna Correo Electronico *@
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Per_CorreoElectronico, "Electronico", htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.Per_CorreoElectronico, "Correo Electronico", htmlAttributes: new { @class = "control-label" })
                             @Html.EditorFor(model => model.Per_CorreoElectronico, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Per_CorreoElectronico, "", new { @class = "text-danger" })
                         </div>
@@ -126,6 +126,13 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                <div class="d-flex justify-content-end">
+                    <div class="btn mr-2">
+                        @Html.ActionLink("Cancelar", "Index", "Encargados")
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                </div>
             </div>
+        </div>            
+    </div>
             }

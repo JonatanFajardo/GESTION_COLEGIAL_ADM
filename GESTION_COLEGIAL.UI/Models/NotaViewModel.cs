@@ -11,28 +11,28 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Not_Id { get; set; }
 
         [Display(Name = "Nota")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Not_Nota { get; set; }
 
         [Display(Name = "Materia")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Mat_Id { get; set; }
 
         [Display(Name = "Semestre")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Sem_Id { get; set; }
 
         [Display(Name = "Parcial")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Pac_Id { get; set; }
 
         [Column(TypeName = "Año")]
         [Display(Name = "")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public DateTime Not_Año { get; set; }
 
         [Display(Name = "Es activo")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public bool? EsActivo { get; set; }
         public string Not_EsActivo { get; set; }
 

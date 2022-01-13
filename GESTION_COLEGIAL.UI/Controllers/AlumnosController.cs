@@ -18,7 +18,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             var model = new AlumnoViewModel();
             var drop = await Dropdown(model);
-            return View(drop);
+            return View();
         }
 
         public async Task<ActionResult> List()
@@ -49,10 +49,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 if (result)
                 {
                     AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
                 AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Insertado exitosamente");
-                return View("Index");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -63,10 +63,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 if (result)
                 {
                     AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
                 AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Editado exitosamente");
-                return View("Index");
+                return RedirectToAction("Index");
             }
         }
 

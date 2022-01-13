@@ -10,23 +10,23 @@ namespace GESTION_COLEGIAL.UI.Models
         public int HoPr_Id { get; set; }
 
         [Display(Name = "Curso")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Cur_Id { get; set; }
 
         [Display(Name = "Curso nivel")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Cun_Id { get; set; }
 
         [Display(Name = "Hora inicio")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int HoPr_HoraInicio { get; set; }
 
         [Display(Name = "Hora finaliza")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int HoPr_HoraFinaliza { get; set; }
 
         [Display(Name = "Día")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Dia_Id { get; set; }
 
         [Display(Name = "Usuario registra Id")]

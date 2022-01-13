@@ -59,10 +59,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 if (result)
                 {
                     AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
                 AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Insertado exitosamente");
-                return View("Index");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -73,10 +73,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 if (result)
                 {
                     AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
                 AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Editado exitosamente");
-                return View("Index");
+                return RedirectToAction("Index");
             }
         }
 
@@ -94,6 +94,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
 
+        /// <summary>
+        /// Carga informacion.
+        /// </summary>
+        /// <remarks>
+        /// Carga los dropdown y los check list
+        /// </remarks>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<EmpleadoViewModel> Load(EmpleadoViewModel model)
         {
             // Direcciones.

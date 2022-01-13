@@ -14,7 +14,7 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [StringLength(150)]
         [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         [Remote(action: "Exist", controller: "Estados", HttpMethod = "POST", AdditionalFields = nameof(Est_Id) + "," + nameof(Est_Descripcion))]
         public string Est_Descripcion { get; set; }
 

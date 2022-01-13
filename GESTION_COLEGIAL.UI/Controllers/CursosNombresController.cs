@@ -99,6 +99,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
 
+        /// <summary>
+        /// Carga informacion.
+        /// </summary>
+        /// <remarks>
+        /// Carga los dropdown y los check list
+        /// </remarks>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<CursoNombreViewModel> Load(CursoNombreViewModel model)
         {
             // Direcciones.
