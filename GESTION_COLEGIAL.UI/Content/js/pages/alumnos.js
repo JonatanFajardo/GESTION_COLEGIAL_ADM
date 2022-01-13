@@ -22,9 +22,6 @@
                 },
                 {
                     FieldName: "Est_Descripcion"
-                },
-                {
-                    FieldName: "EsActivo"
                 }
             ]
             datatable.init(Direction, header);

@@ -70,7 +70,12 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                <div class="d-flex justify-content-end">
+                    <div class="btn mr-2">
+                        @Html.ActionLink("Cancelar", "Index", "HorarioAlumnos")
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                </div>
             </div>
         </div>
     </div>

@@ -34,18 +34,19 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> Find(int id)
         {
+            // Url de peticion
             string url = "Cursos/Find";
             string urlModalidades = "Cursos/CursosModalidadesFind";
             string urlMaterias = "Cursos/CursosMateriasFind";
             string urlCursosNiveles = "Cursos/CursosNivelesFind";
             string urlSecciones = "Cursos/CursosSeccionesFind";
+            // Envio y recepcion de la peticion
             var result = await CatalogsService.Find<CursoViewModel>(url, id);
-
             var modalidades = await CatalogsService.FindAll<ModalidadViewModel>(urlModalidades, id); 
             var secciones = await CatalogsService.FindAll<SeccionViewModel>(urlSecciones, id); 
             var cursosniveles = await CatalogsService.FindAll<CursoNivelViewModel>(urlCursosNiveles, id); 
             var materias = await CatalogsService.FindAll<MateriaViewModel>(urlMaterias, id); 
-            //object ob = ;
+            
             var load = await Load(result);
 
             load.ModalidadesCheckList = load.ModalidadesCheckList.Select(x => new SelectListItem()
@@ -76,29 +77,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 Selected = materias.Any(y => y.Mat_Id.ToString() == x.Value.ToString()) ? true : false
             }).ToList();
 
-            //ObjectExtension.EqualCheckBoxProperties<ModalidadViewModel>(modalidades, "Mda_Id", result.ModalidadesCheckList, "Value", "Selected");
-            //ObjectExtension.EqualsBoolean(modalidades.Select(prop => Convert.ToInt32(prop.Mda_Id)).ToArray(), modalidades.Select(prop => Convert.ToInt32(prop.Mda_Id)).ToArray());
-            //ObjectExtension.GetValueProperty(modalidades, "Mda_Id");
-
-            //result.ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
-            //{
-            //    Text = x.Mda_Descripcion,
-            //    Value = x.Mda_Id.ToString(),
-            //    Selected = true
-            //}).ToList();
-            //result.MateriasCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<MateriaViewModel>(urlMaterias, id);
-            //result.CursoNivelesCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<CursoNivelViewModel>(urlCursosNiveles, id);
-            //result.SeccionesCheckList = (IList<SelectListItem>)await CatalogsService.FindAll<SeccionViewModel>(urlSecciones, id);
             return View("Create", load);
         }
-
-
-        //public Boolean GetIsValid(object obj, string name)
-        //{
-        //    obj1.
-        //}
-
-
 
         [HttpPost]
         public async Task<ActionResult> Save(CursoViewModel model)
@@ -128,10 +108,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 if (result)
                 {
                     AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
                 AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Insertado exitosamente");
-                return View("Index");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -149,10 +129,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 if (result)
                 {
                     AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
-                    return View("Index");
+                    return RedirectToAction("Index");
                 }
                 AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Editado exitosamente");
-                return View("Index");
+                return RedirectToAction("Index");
             }
         }
 
@@ -170,6 +150,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
 
+        /// <summary>
+        /// Carga informacion.
+        /// </summary>
+        /// <remarks>
+        /// Carga los dropdown y los check list
+        /// </remarks>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<CursoViewModel> Load(CursoViewModel model)
         {
             // Direcciones.

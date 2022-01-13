@@ -20,18 +20,18 @@
                 @Html.HiddenFor(model => model.Per_Id)
                 <div class="form-row">
                     @* Columna Persona *@
-                    <div class="col-md-6">
+                    @*<div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Per_Id, "Persona", htmlAttributes: new { @class = "control-label" })
                             @Html.DropDownList("Per_Id", null, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Per_Id, "", new { @class = "text-danger" })
                         </div>
-                    </div>
+                    </div>*@
                     @* Columna Curso *@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Cur_Id, "Curso", htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownList("Cur_Id", Model.cursosList, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("Cur_Id", Model.cursosList, "-- Seleccionar Curso --", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Cur_Id, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Est_Id, "Estado", htmlAttributes: new { @class = "control-label" })
-                            @Html.DropDownList("Est_Id", Model.estadosList, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("Est_Id", Model.estadosList, "-- Seleccionar Estado --", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Est_Id, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -144,7 +144,12 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                <div class="d-flex justify-content-end">
+                    <div class="btn mr-2">
+                        @Html.ActionLink("Cancelar", "Index", "Alumnos")
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
+                </div>
             </div>
         </div>
     </div>

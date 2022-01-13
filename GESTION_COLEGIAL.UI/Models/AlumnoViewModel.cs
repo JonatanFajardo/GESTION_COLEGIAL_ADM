@@ -12,73 +12,76 @@ namespace GESTION_COLEGIAL.UI.Models
         public int Alu_Id { get; set; }
 
         [Display(Name = "Persona")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Per_Id { get; set; }
 
         [Display(Name = "Curso")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Cur_Id { get; set; }
         public string Cno_Descripcion { get; set; }
 
         public string Alu_Nombre { get; set; }
 
         [Display(Name = "Estado")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public int Est_Id { get; set; }
         public string Est_Descripcion { get; set; }
 
-        [StringLength(13)]
+        [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo debe contener 13 digitos")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe debe ser numerico")]
         [Display(Name = "Identidad")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Per_Identidad { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Primer nombre")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Per_PrimerNombre { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Segundo nombre")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Per_SegundoNombre { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Apellido paterno")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Per_ApellidoPaterno { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Apellido materno")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Per_ApellidoMaterno { get; set; }
 
         [Display(Name = "Fecha nacimiento")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Per_FechaNacimiento { get; set; }
 
         [StringLength(150)]
         [Display(Name = "Correo electrónico")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [EmailAddress(ErrorMessage = "Ingrese un correo valido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Per_CorreoElectronico { get; set; }
 
-        [StringLength(9)]
         [Display(Name = "Teléfono")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        [StringLength(11, MinimumLength = 8, ErrorMessage = "El campo debe de tener minimo 8 digitos y como maximo 11")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe debe ser numerico")]
         public string Per_Telefono { get; set; }
 
         [StringLength(150)]
         [Display(Name = "Dirección")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Per_Direccion { get; set; }
 
         [StringLength(1)]
         [Display(Name = "Sexo")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Per_Sexo { get; set; }
 
         [Display(Name = "Es activo")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
 
         public string EsActivo { get; set; }
         public bool Per_EsActivo { get; set; }

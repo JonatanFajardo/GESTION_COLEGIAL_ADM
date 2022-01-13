@@ -17,8 +17,7 @@
             <div class="card-body">
                 @Html.HiddenFor(model => model.Cur_Id)
                 <div class="row">
-                    <div class="col-md-4 ">
-
+                    <div class="col-md-4">
                         <div class="card p-4">
                             <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
                                 <h4>Opciones</h4>
@@ -36,7 +35,6 @@
 
                                     <div id="defaultAccordionOne" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
                                         <div class="card-body">
-
                                             @* Columna MateriasCheckList *@
                                             <div class="col-md-12">
                                                 <div class="form-group">
@@ -55,13 +53,11 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-
                                                         @Html.HiddenFor(model => model.MateriasCheckList[i].Text)
                                                         @Html.HiddenFor(model => model.MateriasCheckList[i].Value)
-                                                    }
+                                                     }
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -201,7 +197,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Aul_Id, "Aula", htmlAttributes: new { @class = "control-label" })
-                                            @Html.DropDownList("Aul_Id", Model.AulaList, "-- Select Aula --", htmlAttributes: new { @class = "form-control" })
+                                            @Html.DropDownList("Aul_Id", Model.AulaList, "-- Seleccionar Aula --", htmlAttributes: new { @class = "form-control" })
                                             @Html.ValidationMessageFor(model => model.Aul_Id, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -209,7 +205,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
-                                            @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Select Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
+                                            @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
                                             @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -219,7 +215,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Cno_Id, "Curso nombre", htmlAttributes: new { @class = "control-label" })
-                                            @Html.DropDownList("Cno_Id", Model.CursoNombreList, "-- Select Curso nombre --", htmlAttributes: new { @class = "form-control", @id = "Cno_Id" })
+                                            @Html.DropDownList("Cno_Id", Model.CursoNombreList, "-- Seleccionar Curso nombre --", htmlAttributes: new { @class = "form-control", @id = "Cno_Id" })
                                             @Html.ValidationMessageFor(model => model.Cno_Id, "", new { @class = "text-danger" })
                                         </div>
                                     </div>

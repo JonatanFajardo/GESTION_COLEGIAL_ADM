@@ -13,12 +13,12 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [StringLength(100)]
         [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         [Remote(action: "Exist", controller: "Semestres", HttpMethod = "POST", AdditionalFields = nameof(Sem_Id) + "," + nameof(Sem_Descripcion))]
         public string Sem_Descripcion { get; set; }
 
         [Display(Name = "Es activo")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public bool? EsActivo { get; set; }
         public string Sem_EsActivo { get; set; }
 

@@ -12,7 +12,7 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [StringLength(100)]
         [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         [Remote(action: "Exist", controller: "Parciales", HttpMethod = "POST", AdditionalFields = nameof(Pac_Id) + "," + nameof(Pac_Descripcion))]
         public string Pac_Descripcion { get; set; }
 

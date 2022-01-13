@@ -12,7 +12,7 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [StringLength(50)]
         [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         public string Aul_Descripcion { get; set; }
 
         [Display(Name = "Usuario registra Id")]

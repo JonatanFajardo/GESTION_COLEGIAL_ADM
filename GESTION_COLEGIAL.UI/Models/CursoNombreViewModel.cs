@@ -13,7 +13,7 @@ namespace GESTION_COLEGIAL.UI.Models
 
         [StringLength(50)]
         [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "El campo  es requerido")]
+        [Required(ErrorMessage = "El campo es requerido")]
         [Remote(action: "Exist", controller: "CursosNombres", HttpMethod = "POST", AdditionalFields = nameof(Cno_Id) + "," + nameof(Cno_Descripcion))]
         public string Cno_Descripcion { get; set; }
         public int Niv_Id { get; set; }
