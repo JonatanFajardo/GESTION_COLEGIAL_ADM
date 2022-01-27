@@ -240,7 +240,7 @@
     };
 
     obj.success = function (data, status, xhr) {
-        
+        //console.log(data);
         if (data.success) {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
