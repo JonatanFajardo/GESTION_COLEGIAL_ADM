@@ -29,12 +29,11 @@
                 },
                 success: function (response) {
                     if (response != null) {
-                        console.log(response);
                         assignSettings(response.item);
                         $editModal.modal("show");
                     }
                     else {
-                        alertConfig.alert('hola', 'success');
+                        alertConfig.alert(response.message, 'error');
                     }
                 },
                 complete: function () {
@@ -91,10 +90,11 @@
                 success: function (response) {
                     if (response.success) {
                         $("#delete-item-id").val(id);
+                        alertConfig.alert('Eliminado correctamente.', 'success');
                         $deleteModal.modal("show");
                     }
                     else {
-                        alertConfig.alert('Ocurrió un error.', 'Error');
+                        alertConfig.alert('Parece que ocurrio un error inesperado.', 'Error');
                     }
                 },
                 complete: function () {
@@ -240,7 +240,7 @@
     };
 
     obj.success = function (data, status, xhr) {
-        //console.log(data);
+        
         if (data.success) {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
@@ -250,7 +250,7 @@
         else {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
-            alertConfig.alert("Ocurrió  un error.", data.error);
+            alertConfig.alert("Ocurrió un error.", data.error);
         }
         alertConfig.alert(data.message, data.type);
     };
