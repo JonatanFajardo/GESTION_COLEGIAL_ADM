@@ -1,5 +1,4 @@
 ﻿using GESTION_COLEGIAL.UI.Extensions;
-using System;
 using System.Web.Mvc;
 using static GESTION_COLEGIAL.UI.Extensions.AlertMessage;
 
@@ -72,7 +71,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             AlertMessageEntity _mensaje = Show(type, mensaje);
             if (response.GetType() == typeof(bool))
             {
-                return Json(new { success = response, type = _mensaje.type , message = _mensaje.message });
+                return Json(new { success = response, type = _mensaje.type, message = _mensaje.message });
             }
             else
             {

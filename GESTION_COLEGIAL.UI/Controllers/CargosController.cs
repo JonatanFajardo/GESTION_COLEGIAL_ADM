@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.Business.Services;
+﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class CargosController : BaseController
     {
+        CargosService cargosService = new CargosService();
         // GET: Cargos
         public ActionResult Index()
         {
@@ -23,15 +23,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Cargos/List";
-            var result = await CatalogsService.List<CargoViewModel>(url);
+            var result = await cargosService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Cargos/Find";
-            var result = await CatalogsService.Find<CargoViewModel>(url, id);
+            var result = await cargosService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -40,8 +38,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Car_Id == 0)
             {
-                string url = "Cargos/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await cargosService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -52,8 +49,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Cargos/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await cargosService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -64,11 +60,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
-        }               
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Car_Id, string Car_Descripcion)
-            {
+        {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
             validationModal.SendMessage = Car_Descripcion;
@@ -80,8 +76,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Cargos/Exist";
-            var result = await CatalogsService.Exist<CargoViewModel>(url, Car_Descripcion);
+            var result = await cargosService.Exist(Car_Descripcion);
 
             //Validamos error
             if (result != null)
@@ -95,8 +90,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(CargoViewModel model)
         {
-            string url = "Cargos/Remove";
-            bool result = await CatalogsService.Delete(url, model.Car_Id);
+            bool result = await cargosService.Delete(model.Car_Id);
 
             //Validamos error
             if (result)

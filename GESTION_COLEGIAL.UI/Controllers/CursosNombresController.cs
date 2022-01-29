@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.UI.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class CursosNombresController : BaseController
     {
+        CursosNombresService cursosNombresService = new CursosNombresService();
         // GET: CursosNombres
         public ActionResult Index()
         {
@@ -18,15 +18,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "CursosNombres/List";
-            var result = await CatalogsService.List<CursoNombreViewModel>(url);
+            var result = await cursosNombresService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "CursosNombres/Find";
-            var result = await CatalogsService.Find<CursoNombreViewModel>(url, id);
+            var result = await cursosNombresService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -35,8 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Cno_Id == 0)
             {
-                string url = "CursosNombres/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await cursosNombresService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -47,8 +44,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "CursosNombres/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await cursosNombresService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -59,7 +55,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
-        }        
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Cno_Id, string Cno_Descripcion)
@@ -75,8 +71,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "CursosNombres/Exist";
-            var result = await CatalogsService.Exist<CursoNombreViewModel>(url, Cno_Descripcion);
+            var result = await cursosNombresService.Exist(Cno_Descripcion);
             if (result != null)
             {
                 int? firstValue = result.Cno_Id;
@@ -88,8 +83,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(CursoNombreViewModel model)
         {
-            string url = "CursosNombres/Remove";
-            bool result = await CatalogsService.Delete(url, model.Cno_Id);
+            bool result = await cursosNombresService.Delete(model.Cno_Id);
 
             //Validamos error
             if (result)
@@ -109,14 +103,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <returns></returns>
         public async Task<CursoNombreViewModel> Load(CursoNombreViewModel model)
         {
-            // Direcciones.
-            string urlNivelesEducativos = "CursosNombres/NivelesEducativosDropdown";
-            // Instancias.
-            var nivelesEducativosDropdown = await CatalogsService.Dropdown<NivelEducativoViewModel>(urlNivelesEducativos);
-            // Cargando en el modelo.
-            model.LoadDropDownList(nivelesEducativosDropdown);
+            var result = await cursosNombresService.Load(model);
             return model;
-        } 
+        }
 
     }
 }

@@ -71,24 +71,68 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ObjectExtension.cs" />
+    <Compile Include="Extensions\ValidationResults.cs" />
     <Compile Include="Helpers\SendHttpClient.cs" />
+    <Compile Include="Models\AlumnoViewModel.cs" />
+    <Compile Include="Models\AulaViewModel.cs" />
+    <Compile Include="Models\BaseViewModel.cs" />
+    <Compile Include="Models\CargoViewModel.cs" />
+    <Compile Include="Models\CursoNivelCursoViewModel.cs" />
+    <Compile Include="Models\CursoNivelViewModel.cs" />
+    <Compile Include="Models\CursoNombreViewModel.cs" />
+    <Compile Include="Models\CursoViewModel.cs" />
+    <Compile Include="Models\DiaViewModel.cs" />
+    <Compile Include="Models\DuracionViewModel.cs" />
+    <Compile Include="Models\EmpleadoViewModel.cs" />
+    <Compile Include="Models\EncargadoViewModel.cs" />
+    <Compile Include="Models\EstadoViewModel.cs" />
+    <Compile Include="Models\HorarioAlumnoViewModel.cs" />
+    <Compile Include="Models\HorarioProfesorViewModel.cs" />
+    <Compile Include="Models\HoraViewModel.cs" />
+    <Compile Include="Models\MateriaCursoViewModel.cs" />
+    <Compile Include="Models\MateriaViewModel.cs" />
+    <Compile Include="Models\ModalidadCursoViewModel.cs" />
+    <Compile Include="Models\ModalidadViewModel.cs" />
+    <Compile Include="Models\NivelEducativoViewModel.cs" />
+    <Compile Include="Models\NotaViewModel.cs" />
+    <Compile Include="Models\ParcialViewModel.cs" />
+    <Compile Include="Models\ParentescoViewModel.cs" />
+    <Compile Include="Models\PersonaViewModel.cs" />
+    <Compile Include="Models\SeccionCursoViewModel.cs" />
+    <Compile Include="Models\SeccionViewModel.cs" />
+    <Compile Include="Models\SemestreViewModel.cs" />
+    <Compile Include="Models\TituloViewModel.cs" />
+    <Compile Include="Models\UsuarioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AlumnosService.cs" />
     <Compile Include="Services\AulasService.cs" />
+    <Compile Include="Services\CargosService.cs" />
+    <Compile Include="Services\CursosNivelesService.cs" />
+    <Compile Include="Services\CursosNombresService.cs" />
     <Compile Include="Services\CursosService.cs" />
+    <Compile Include="Services\DiasService.cs" />
+    <Compile Include="Services\DuracionesService.cs" />
     <Compile Include="Services\EmpleadosService.cs" />
     <Compile Include="Services\EncargadosService.cs" />
+    <Compile Include="Services\EstadosService.cs" />
     <Compile Include="Services\HorarioAlumnosService.cs" />
     <Compile Include="Services\HorarioProfesoresService.cs" />
-    <Compile Include="Services\CatalogsService.cs" />
+    <Compile Include="Extensions\ApiRequests.cs" />
+    <Compile Include="Services\HorasService.cs" />
+    <Compile Include="Services\MateriasService.cs" />
+    <Compile Include="Services\ModalidadesService.cs" />
     <Compile Include="Services\NivelesEducativosService.cs" />
     <Compile Include="Services\NotasService.cs" />
+    <Compile Include="Services\ParcialesService.cs" />
+    <Compile Include="Services\ParentescosService.cs" />
     <Compile Include="Services\PersonasService.cs" />
+    <Compile Include="Services\SeccionesService.cs" />
+    <Compile Include="Services\SemestresService.cs" />
+    <Compile Include="Services\TitulosService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.UI.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class DuracionesController : BaseController
     {
+        DuracionesService duracionesService = new DuracionesService();
+
         // GET: Duraciones
         public ActionResult Index()
         {
@@ -18,15 +19,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Duraciones/List";
-            var result = await CatalogsService.List<DuracionViewModel>(url);
+            var result = await duracionesService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Duraciones/Find";
-            var result = await CatalogsService.Find<DuracionViewModel>(url, id);
+            var result = await duracionesService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -35,8 +34,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Dur_Id == 0)
             {
-                string url = "Duraciones/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await duracionesService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -47,8 +45,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Duraciones/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await duracionesService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -59,7 +56,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
-        }        
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Dur_Id, string Dur_Descripcion)
@@ -75,8 +72,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Duraciones/Exist";
-            var result = await CatalogsService.Exist<DuracionViewModel>(url, Dur_Descripcion);
+            var result = await duracionesService.Exist(Dur_Descripcion);
             if (result != null)
             {
                 int? firstValue = result.Dur_Id;
@@ -88,8 +84,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(DuracionViewModel model)
         {
-            string url = "Duraciones/Remove";
-            bool result = await CatalogsService.Delete(url, model.Dur_Id);
+            bool result = await duracionesService.Delete(model.Dur_Id);
 
             //Validamos error
             if (result)

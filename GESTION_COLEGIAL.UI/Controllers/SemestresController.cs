@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.UI.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class SemestresController : BaseController
     {
+        SemestresService semestresService = new SemestresService();
         // GET: Semestres
         public ActionResult Index()
         {
@@ -18,15 +18,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Semestres/List";
-            var result = await CatalogsService.List<SemestreViewModel>(url);
+            var result = await semestresService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Semestres/Find";
-            var result = await CatalogsService.Find<SemestreViewModel>(url, id);
+            var result = await semestresService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -35,8 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Sem_Id == 0)
             {
-                string url = "Semestres/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await semestresService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -47,8 +44,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Semestres/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await semestresService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -58,7 +54,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-        }        
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Sem_Id, string Sem_Descripcion)
@@ -74,8 +70,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Semestres/Exist";
-            var result = await CatalogsService.Exist<SemestreViewModel>(url, Sem_Descripcion);
+            var result = await semestresService.Exist(Sem_Descripcion);
             if (result != null)
             {
                 int? firstValue = result.Sem_Id;
@@ -87,8 +82,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(SemestreViewModel model)
         {
-            string url = "Semestres/Remove";
-            bool result = await CatalogsService.Delete(url, model.Sem_Id);
+            bool result = await semestresService.Delete(model.Sem_Id);
 
             //Validamos error
             if (result)

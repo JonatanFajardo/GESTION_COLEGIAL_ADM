@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.UI.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class MateriasController : BaseController
     {
+        MateriasService materiasService = new MateriasService();
         // GET: Materias
         public ActionResult Index()
         {
@@ -22,8 +22,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Materias/List";
-            var result = await CatalogsService.List<MateriaViewModel>(url);
+            var result = await materiasService.List();
             return AjaxResult(result);
         }
 
@@ -32,8 +31,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Mat_Id == 0)
             {
-                string url = "Materias/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await materiasService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -44,8 +42,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Materias/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await materiasService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -60,8 +57,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Materias/Find";
-            var result = await CatalogsService.Find<MateriaViewModel>(url, id);
+            var result = await materiasService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -79,8 +75,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Materias/Exist";
-            var result = await CatalogsService.Exist<MateriaViewModel>(url, Mat_Nombre);
+            var result = await materiasService.Exist(Mat_Nombre);
             if (result != null)
             {
                 int? firstValue = result.Mat_Id;
@@ -92,8 +87,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(MateriaViewModel model)
         {
-            string url = "Materias/Remove";
-            bool result = await CatalogsService.Delete(url, model.Mat_Id);
+            bool result = await materiasService.Delete(model.Mat_Id);
 
             //Validamos error
             if (result)

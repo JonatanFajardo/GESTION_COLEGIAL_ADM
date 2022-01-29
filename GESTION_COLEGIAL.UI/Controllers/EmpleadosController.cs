@@ -1,8 +1,6 @@
-﻿using GESTION_COLEGIAL.Business.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +8,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class EmpleadosController : BaseController
     {
+        EmpleadosService empleadosService = new EmpleadosService();
+
         // GET: Empleados
         public ActionResult Index()
         {
@@ -19,7 +19,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //public async Task<ActionResult> List()
         //{
         //    string url = "NivelesEducativos/List";
-        //    var result = await CatalogsService.List<NivelEducativoViewModel>(url);
+        //    var result = await empleadosService.List<NivelEducativoViewModel>(url);
         //    return AjaxResult(result);
         //}
 
@@ -32,15 +32,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Empleados/List";
-            var result = await CatalogsService.List<EmpleadoViewModel>(url);
+            var result = await empleadosService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Empleados/Find"; 
-            var result = await CatalogsService.Find<EmpleadoViewModel>(url, id);
+            var result = await empleadosService.Find(id);
             //var model = _mapper.Map<EmpleadoViewModel>(result);
             var load = await Load(result);
 
@@ -49,11 +47,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Save(EmpleadoViewModel model)
-        {            
+        {
             if (model.Emp_Id == 0)
             {
-                string url = "Empleados/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await empleadosService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -66,8 +63,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Empleados/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await empleadosService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -83,8 +79,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(EmpleadoViewModel model)
         {
-            string url = "Empleados/Remove";
-            bool result = await CatalogsService.Delete(url, model.Emp_Id);
+            bool result = await empleadosService.Delete(model.Emp_Id);
 
             //Validamos error
             if (result)
@@ -104,15 +99,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <returns></returns>
         public async Task<EmpleadoViewModel> Load(EmpleadoViewModel model)
         {
-            // Direcciones.
-            string urlTitulos = "Empleados/TitulosDropdown";
-            string urlCargos = "Empleados/CargosDropdown";
-            // Instancias.
-            var titulosDropdown = await CatalogsService.Dropdown<TituloViewModel>(urlTitulos);
-            var cargosDropdown = await CatalogsService.Dropdown<CargoViewModel>(urlCargos);
-            // Cargando en el modelo.
-            model.LoadDropDownList(titulosDropdown, cargosDropdown);
-            return model;
+            return await empleadosService.Dropdown(model);
         }
     }
 }

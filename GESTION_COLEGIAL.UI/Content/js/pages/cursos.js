@@ -25,6 +25,7 @@
                 }
             ]
             datatable.init(Direction, header);
+            console.log("di:"+Direction);
         })
     }
     return obj;
@@ -45,6 +46,7 @@ document.ready(function () {
                 debugger
                 $("#Cno_Id").empty();
                 $("#Cno_Id").append(response);
-            }),
+            }
+        })
     })
 })

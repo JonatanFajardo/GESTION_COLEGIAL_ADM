@@ -218,36 +218,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ValidationModal.cs" />
-    <Compile Include="Models\BaseViewModel.cs" />
-    <Compile Include="Models\AlumnoViewModel.cs" />
-    <Compile Include="Models\AulaViewModel.cs" />
-    <Compile Include="Models\CargoViewModel.cs" />
-    <Compile Include="Models\CursoViewModel.cs" />
-    <Compile Include="Models\CursoNivelViewModel.cs" />
-    <Compile Include="Models\CursoNombreViewModel.cs" />
-    <Compile Include="Models\DiaViewModel.cs" />
-    <Compile Include="Models\DuracionViewModel.cs" />
-    <Compile Include="Models\EmpleadoViewModel.cs" />
-    <Compile Include="Models\EncargadoViewModel.cs" />
-    <Compile Include="Models\EstadoViewModel.cs" />
-    <Compile Include="Models\HorarioAlumnoViewModel.cs" />
-    <Compile Include="Models\HorarioProfesorViewModel.cs" />
-    <Compile Include="Models\HoraViewModel.cs" />
-    <Compile Include="Models\MateriaViewModel.cs" />
-    <Compile Include="Models\ModalidadViewModel.cs" />
-    <Compile Include="Models\NivelEducativoViewModel.cs" />
-    <Compile Include="Models\NotaViewModel.cs" />
-    <Compile Include="Models\ParcialViewModel.cs" />
-    <Compile Include="Models\ParentescoViewModel.cs" />
-    <Compile Include="Models\PersonaViewModel.cs" />
-    <Compile Include="Models\CursoNivelCursoViewModel.cs" />
-    <Compile Include="Models\MateriaCursoViewModel.cs" />
-    <Compile Include="Models\ModalidadCursoViewModel.cs" />
-    <Compile Include="Models\SeccionCursoViewModel.cs" />
-    <Compile Include="Models\SeccionViewModel.cs" />
-    <Compile Include="Models\SemestreViewModel.cs" />
-    <Compile Include="Models\TituloViewModel.cs" />
-    <Compile Include="Models\UsuarioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1473,6 +1443,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\pages\" />
     <Folder Include="Content\scss\pages\" />
+    <Folder Include="Models\" />
     <Folder Include="Views\Aulas\" />
     <Folder Include="Views\Personas\" />
     <Folder Include="Views\SubMenu\" />
