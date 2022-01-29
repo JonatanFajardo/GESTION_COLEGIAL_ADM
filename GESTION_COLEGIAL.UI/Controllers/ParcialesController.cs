@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.UI.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class ParcialesController : BaseController
     {
+        ParcialesService parcialesService = new ParcialesService();
         // GET: Parciales
         public ActionResult Index()
         {
@@ -18,15 +18,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Parciales/List";
-            var result = await CatalogsService.List<ParcialViewModel>(url);
+            var result = await parcialesService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Parciales/Find";
-            var result = await CatalogsService.Find<ParcialViewModel>(url, id);
+            var result = await parcialesService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -35,8 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Pac_Id == 0)
             {
-                string url = "Parciales/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await parcialesService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -47,8 +44,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Parciales/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await parcialesService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -58,7 +54,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-        }        
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Pac_Id, string Pac_Descripcion)
@@ -74,8 +70,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Parciales/Exist";
-            var result = await CatalogsService.Exist<ParcialViewModel>(url, Pac_Descripcion);
+            var result = await parcialesService.Exist(Pac_Descripcion);
             if (result != null)
             {
                 int? firstValue = result.Pac_Id;
@@ -87,8 +82,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(ParcialViewModel model)
         {
-            string url = "Parciales/Remove";
-            bool result = await CatalogsService.Delete(url, model.Pac_Id);
+            bool result = await parcialesService.Delete(model.Pac_Id);
 
             //Validamos error
             if (result)

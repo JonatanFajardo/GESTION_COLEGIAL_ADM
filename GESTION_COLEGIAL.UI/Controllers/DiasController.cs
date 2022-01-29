@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.UI.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class DiasController : BaseController
     {
+        DiasService diasService = new DiasService();
+
         // GET: Dias
         public ActionResult Index()
         {
@@ -18,15 +19,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Dias/List";
-            var result = await CatalogsService.List<DiaViewModel>(url);
+            var result = await diasService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Dias/Find";
-            var result = await CatalogsService.Find<DiaViewModel>(url, id);
+            var result = await diasService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -35,8 +34,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Dia_Id == 0)
             {
-                string url = "Dias/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await diasService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -47,8 +45,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Dias/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await diasService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -59,7 +56,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
-        }        
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Dia_Id, string Dia_Descripcion)
@@ -75,11 +72,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Dias/Exist";
-            var result = await CatalogsService.Exist<DuracionViewModel>(url, Dia_Descripcion);
+            var result = await diasService.Exist(Dia_Descripcion);
             if (result != null)
             {
-                int? firstValue = result.Dur_Id;
+                int? firstValue = result.Dia_Id;
                 return (firstValue == Dia_Id) ? Json(true) : Json(msjExist);
             }
             return Json(true);
@@ -88,8 +84,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(DiaViewModel model)
         {
-            string url = "Dias/Remove";
-            bool result = await CatalogsService.Delete(url, model.Dia_Id);
+            bool result = await diasService.Delete(model.Dia_Id);
 
             //Validamos error
             if (result)

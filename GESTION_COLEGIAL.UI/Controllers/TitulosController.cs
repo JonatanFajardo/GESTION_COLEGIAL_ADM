@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.UI.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class TitulosController : BaseController
     {
+        TitulosService titulosService = new TitulosService();
         // GET: Titulos
         public ActionResult Index()
         {
@@ -18,15 +18,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Titulos/List";
-            var result = await CatalogsService.List<TituloViewModel>(url);
+            var result = await titulosService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Titulos/Find";
-            var result = await CatalogsService.Find<TituloViewModel>(url, id);
+            var result = await titulosService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -35,8 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Tit_Id == 0)
             {
-                string url = "Titulos/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await titulosService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -47,8 +44,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Titulos/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await titulosService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -58,7 +54,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-        }        
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Tit_Id, string Tit_Descripcion)
@@ -74,8 +70,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Titulos/Exist";
-            var result = await CatalogsService.Exist<TituloViewModel>(url, Tit_Descripcion);
+            var result = await titulosService.Exist(Tit_Descripcion);
             if (result != null)
             {
                 int? firstValue = result.Tit_Id;
@@ -87,8 +82,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(TituloViewModel model)
         {
-            string url = "Titulos/Remove";
-            bool result = await CatalogsService.Delete(url, model.Tit_Id);
+            bool result = await titulosService.Delete(model.Tit_Id);
 
             //Validamos error
             if (result)

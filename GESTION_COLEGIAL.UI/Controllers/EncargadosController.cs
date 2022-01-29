@@ -1,6 +1,6 @@
-﻿using GESTION_COLEGIAL.Business.Services;
+﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
-using GESTION_COLEGIAL.UI.Models;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -8,6 +8,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class EncargadosController : BaseController
     {
+        EncargadosService encargadosService = new EncargadosService();
+
         // GET: Encargados
         public ActionResult Index()
         {
@@ -21,15 +23,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "Encargados/List";
-            var result = await CatalogsService.List<EncargadoViewModel>(url);
+            var result = await encargadosService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "Encargados/Find";
-            var result = await CatalogsService.Find<EncargadoViewModel>(url, id);
+            var result = await encargadosService.Find(id);
             return View("Create", result);
         }
 
@@ -38,8 +38,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Enc_Id == 0)
             {
-                string url = "Encargados/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await encargadosService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -52,8 +51,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "Encargados/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await encargadosService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -69,8 +67,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(EncargadoViewModel model)
         {
-            string url = "Encargados/Remove";
-            bool result = await CatalogsService.Delete(url, model.Enc_Id);
+            bool result = await encargadosService.Delete(model.Enc_Id);
 
             //Validamos error
             if (result)

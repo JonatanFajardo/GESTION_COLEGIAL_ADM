@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.UI.Extensions;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class NivelesEducativosController : BaseController
     {
+        NivelesEducativosService nivelesEducativosService = new NivelesEducativosService();
         // GET: NivelesEducativos
         public ActionResult Index()
         {
@@ -19,15 +19,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "NivelesEducativos/List";
-            var result = await CatalogsService.List<NivelEducativoViewModel>(url);
+            var result = await nivelesEducativosService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "NivelesEducativos/Find";
-            var result = await CatalogsService.Find<NivelEducativoViewModel>(url, id);
+            var result = await nivelesEducativosService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -36,8 +34,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Niv_Id == 0)
             {
-                string url = "NivelesEducativos/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await nivelesEducativosService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -48,8 +45,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "NivelesEducativos/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await nivelesEducativosService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -59,7 +55,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 //ModelState.Clear();
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-        }        
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Niv_Id, string Niv_Descripcion)
@@ -75,8 +71,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "NivelesEducativos/Exist";
-            var result = await CatalogsService.Exist<NivelEducativoViewModel>(url, Niv_Descripcion);
+            var result = await nivelesEducativosService.Exist(Niv_Descripcion);
             if (result != null)
             {
                 int? firstValue = result.Niv_Id;
@@ -88,8 +83,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(NivelEducativoViewModel model)
         {
-            string url = "NivelesEducativos/Remove";
-            bool result = await CatalogsService.Delete(url, model.Niv_Id);
+            bool result = await nivelesEducativosService.Delete(model.Niv_Id);
 
             //Validamos error
             if (result)

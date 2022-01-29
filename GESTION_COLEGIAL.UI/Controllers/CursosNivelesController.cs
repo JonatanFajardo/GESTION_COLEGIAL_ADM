@@ -1,8 +1,7 @@
-﻿using GESTION_COLEGIAL.Business.Services;
+﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
-using GESTION_COLEGIAL.UI.Models;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -10,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class CursosNivelesController : BaseController
     {
+        CursosNivelesService cursosNivelesService = new CursosNivelesService();
         // GET: CursosNiveles
         public ActionResult Index()
         {
@@ -18,15 +18,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> List()
         {
-            string url = "CursosNiveles/List";
-            var result = await CatalogsService.List<CursoNivelViewModel>(url);
+            var result = await cursosNivelesService.List();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
-            string url = "CursosNiveles/Find";
-            var result = await CatalogsService.Find<CursoNivelViewModel>(url, id);
+            var result = await cursosNivelesService.Find(id);
             return AjaxResult(result, true);
         }
 
@@ -35,8 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             if (model.Cun_Id == 0)
             {
-                string url = "CursosNiveles/Create";
-                bool result = await CatalogsService.Create(url, model);
+                bool result = await cursosNivelesService.Create(model);
 
                 //Validamos error
                 if (result)
@@ -47,8 +44,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                string url = "CursosNiveles/Edit";
-                bool result = await CatalogsService.Edit(url, model);
+                bool result = await cursosNivelesService.Edit(model);
 
                 //Validamos error
                 if (result)
@@ -59,7 +55,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
-        }               
+        }
 
         [HttpPost]
         public async Task<ActionResult> Exist(int? Cun_Id, string Cun_Descripcion)
@@ -75,8 +71,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "CursosNiveles/Exist";
-            var result = await CatalogsService.Exist<CursoNivelViewModel>(url, Cun_Descripcion);
+            var result = await cursosNivelesService.Exist(Cun_Descripcion);
             if (result != null)
             {
                 int? firstValue = result.Cun_Id;
@@ -88,8 +83,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(CursoNivelViewModel model)
         {
-            string url = "CursosNiveles/Remove";
-            bool result = await CatalogsService.Delete(url, model.Cun_Id);
+            bool result = await cursosNivelesService.Delete(model.Cun_Id);
 
             //Validamos error
             if (result)

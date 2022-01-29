@@ -1,8 +1,6 @@
-﻿using System.Web.Mvc;
-
-namespace GESTION_COLEGIAL.UI.Extensions
+﻿namespace GESTION_COLEGIAL.UI.Extensions
 {
-    public static class AlertMessage 
+    public static class AlertMessage
     {
         //public string Show()
         //{
