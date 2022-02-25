@@ -15,10 +15,30 @@ namespace GESTION_COLEGIAL.Business.Models
         [Required(ErrorMessage = "El campo es requerido")]
         public int Per_Id { get; set; }
 
+        [Display(Name = "Nivel educativo")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int Niv_Id { get; set; }
+        public string Niv_Descripcion { get; set; }
+
+        [Display(Name = "Curso nivel")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int Cun_Id { get; set; }
+        public string Cun_Descripcion { get; set; }
+
+        [Display(Name = "Modalidad")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int Mda_Id { get; set; }
+        public string Mda_Descripcion { get; set; }
+
         [Display(Name = "Curso")]
         [Required(ErrorMessage = "El campo es requerido")]
         public int Cur_Id { get; set; }
-        public string Cno_Descripcion { get; set; }
+        public string Cur_Descripcion { get; set; }
+
+        [Display(Name = "Secciones")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int Sec_Id { get; set; }
+        public string Sec_Descripcion { get; set; }
 
         public string Alu_Nombre { get; set; }
 
@@ -55,7 +75,9 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha nacimiento")]
         [Required(ErrorMessage = "El campo es requerido")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Per_FechaNacimiento { get; set; }
 
         [StringLength(150)]
@@ -104,17 +126,48 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Fecha modifica")]
         public DateTime? Per_FechaModifica { get; set; }
 
+        // Propiedad con listado de niveles educativos.
+        public SelectList NivelesEducativosList { get; set; }
+
+        // Propiedad con listado de cursos niveles.
+        public IEnumerable<SelectListItem> CursosNivelesList { get; set; }
+
+        // Propiedad con listado de modalidades.
+        public IEnumerable<SelectListItem> ModalidadesList { get; set; }
+
+        // Propiedad con listado de cursos.
+        public IEnumerable<SelectListItem> CursosList { get; set; }
+
+        // Propiedad con listado de secciones.
+        public IEnumerable<SelectListItem> SeccionesList { get; set; }
+
+        // Propiedad con listado de estados.
+        public SelectList EstadosList { get; set; }
+
         #region Dropdown
 
-        public SelectList cursosList { get; set; }
-        public SelectList estadosList { get; set; }
-
-        public void LoadDropDownList(IEnumerable<CursoViewModel> cursoDropdownResults,
-                                    IEnumerable<EstadoViewModel> estadoDropdownResults)
+        public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults, 
+            IEnumerable<EstadoViewModel> estadoDropdownResults)
         {
-            cursosList = new SelectList(cursoDropdownResults, "Cur_Id", "Cno_Descripcion");
-            estadosList = new SelectList(estadoDropdownResults, "Est_Id", "Est_Descripcion");
+            EstadosList = new SelectList(estadoDropdownResults, "Est_Id", "Est_Descripcion");
+            NivelesEducativosList = new SelectList(nivelEducativoDropdownResults, "Niv_Id", "Niv_Descripcion");
         }
+
+
+        //public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults,
+        //                            IEnumerable<CursoNivelViewModel> cursoNivelDropdownResults,
+        //                            IEnumerable<ModalidadViewModel> modalidadDropdownResults,
+        //                            IEnumerable<CursoViewModel> cursoDropdownResults,
+        //                            IEnumerable<SeccionViewModel> seccionDropdownResults,
+        //                            IEnumerable<EstadoViewModel> estadoDropdownResults)
+        //{
+        //    NivelEducativoList = new SelectList(nivelEducativoDropdownResults, "Niv_Id", "Niv_Descripcion");
+        //    CursosNivelesList = new SelectList(cursoNivelDropdownResults, "Cun_Id", "Cun_Descripcion");
+        //    ModalidadesList = new SelectList(modalidadDropdownResults, "Mda_Id", "Mda_Descripcion");
+        //    CursosList = new SelectList(cursoDropdownResults, "Cur_Id", "Cur_Descripcion");
+        //    SeccionesList = new SelectList(seccionDropdownResults, "Sec_Id", "Sec_Descripcion");
+        //    EstadosList = new SelectList(estadoDropdownResults, "Est_Id", "Est_Descripcion");
+        //}
         #endregion Dropdown
     }
 }

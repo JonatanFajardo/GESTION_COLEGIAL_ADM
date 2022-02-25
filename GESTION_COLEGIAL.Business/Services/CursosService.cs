@@ -128,22 +128,18 @@ namespace GESTION_COLEGIAL.Business.Services
         {
             // Direcciones.
             string urlNivelesEducativos = "Cursos/NivelesEducativosDropdown";
-            string urlAulas = "Cursos/AulasDropdown";
-            string urlCursosNombres = "Cursos/CursosNombresDropdown";
             string urlModalidades = "Cursos/ModalidadesList";
             string urlMaterias = "Cursos/MateriasList";
             string urlCursosNiveles = "Cursos/CursosNivelesList";
             string urlSecciones = "Cursos/SeccionesList";
             // Instancias.
             var nivelesEducativosDropdown = await ApiRequests.Dropdown<NivelEducativoViewModel>(urlNivelesEducativos);
-            var aulasDropdown = await ApiRequests.Dropdown<AulaViewModel>(urlAulas);
-            var cursosNombresDropdown = await ApiRequests.Dropdown<CursoNombreViewModel>(urlCursosNombres);
             var modalidadesList = await ApiRequests.CheckList<ModalidadViewModel>(urlModalidades);
             var materiasList = await ApiRequests.CheckList<MateriaViewModel>(urlMaterias);
             var cursosNivelesList = await ApiRequests.CheckList<CursoNivelViewModel>(urlCursosNiveles);
             var seccionesList = await ApiRequests.CheckList<SeccionViewModel>(urlSecciones);
             // Cargando en el modelo.
-            model.LoadDropDownList(nivelesEducativosDropdown, aulasDropdown, cursosNombresDropdown);
+            model.LoadDropDownList(nivelesEducativosDropdown);
             model.LoadCheckList(modalidadesList, seccionesList, cursosNivelesList, materiasList);
             return model;
         }

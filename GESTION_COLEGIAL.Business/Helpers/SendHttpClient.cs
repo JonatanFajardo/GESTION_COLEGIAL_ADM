@@ -43,6 +43,28 @@ namespace GESTION_COLEGIAL.Business.Helpers
             }
         }
 
+        public static async Task<List<T>> Dropdown<T>(string url, int id)
+        {
+            try
+            {
+                string direction = $"{baseUrl}{url}?id={id}";
+                var httpclient = new HttpClient();
+                var httpResponse = await httpclient.GetAsync(direction);
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
+                var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
+                return resultSerialize;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// Envia datos a una API.
         /// </summary>

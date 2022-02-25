@@ -45,14 +45,51 @@ namespace GESTION_COLEGIAL.Business.Services
             string url = "Alumnos/Remove";
             return await ApiRequests.Delete(url, id);
         }
+
         public async Task<AlumnoViewModel> Dropdown(AlumnoViewModel model)
         {
-            string urlCursos = "Alumnos/CursosDropdown";
+            string urlNivelesEducativos = "Alumnos/NivelesEducativosDropdown";
             string urlEstados = "Alumnos/EstadosDropdown";
-            var cursosDropdown = await ApiRequests.Dropdown<CursoViewModel>(urlCursos);
+            var nivelesEducativosDropdown = await ApiRequests.Dropdown<NivelEducativoViewModel>(urlNivelesEducativos);
             var estadosDropdown = await ApiRequests.Dropdown<EstadoViewModel>(urlEstados);
-            model.LoadDropDownList(cursosDropdown, estadosDropdown);
+            model.LoadDropDownList(nivelesEducativosDropdown, estadosDropdown);
             return model;
         }
+        public async Task<IEnumerable<CursoNivelDropViewModel>> CursoNivelesDropdown(int id)
+        {
+            try
+            {
+                string urlCursosNiveles = "Alumnos/CursosNivelesDropdown";
+                var cursosNivelesDropdown = await ApiRequests.Dropdown<CursoNivelDropViewModel>(urlCursosNiveles, id);
+                return cursosNivelesDropdown;
+            }
+            catch (Exception error)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<ModalidadViewModel>> ModalidadesDropdown(int id)
+        {
+            string urlModalidades = "Alumnos/ModalidadesDropdown";
+            var modalidadesDropdown = await ApiRequests.Dropdown<ModalidadViewModel>(urlModalidades, id);
+            return modalidadesDropdown;
+        }
+
+        public async Task<IEnumerable<CursoViewModel>> CursosDropdown(int id)
+        {
+            string urlCursos = "Alumnos/CursosDropdown";
+            var cursosDropdown = await ApiRequests.Dropdown<CursoViewModel>(urlCursos, id);
+            return cursosDropdown;
+        }
+
+        public async Task<IEnumerable<SeccionViewModel>> SeccionesDropdown(int id)
+        {
+            string urlSecciones = "Alumnos/SeccionesDropdown";
+            var seccionesDropdown = await ApiRequests.Dropdown<SeccionViewModel>(urlSecciones, id);
+            return seccionesDropdown;
+        }
+
     }
 }

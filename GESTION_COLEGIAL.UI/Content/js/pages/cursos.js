@@ -12,10 +12,7 @@
                     Size: 200
                 },
                 {
-                    FieldName: "Cno_Descripcion"
-                },
-                {
-                    FieldName: "Aul_Descripcion"
+                    FieldName: "Cur_Nombre"
                 },
                 {
                     FieldName: "Niv_Descripcion"

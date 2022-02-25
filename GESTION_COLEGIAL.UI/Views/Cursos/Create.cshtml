@@ -25,7 +25,7 @@
 
                             <div id="toggleAccordion">
                                 <div class="card">
-                                    <div class="card-header" id="...">
+                                    <div class="card-header">
                                         <section class="mb-0 mt-0">
                                             <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionOne" aria-expanded="true" aria-controls="defaultAccordionOne">
                                                 Materias
@@ -55,7 +55,7 @@
                                                         </ul>
                                                         @Html.HiddenFor(model => model.MateriasCheckList[i].Text)
                                                         @Html.HiddenFor(model => model.MateriasCheckList[i].Value)
-                                                     }
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="card">
-                                    <div class="card-header" id="...">
+                                    <div class="card-header">
                                         <section class="mb-0 mt-0">
                                             <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionTwo" aria-expanded="true" aria-controls="defaultAccordionOne">
                                                 Secciones
@@ -88,6 +88,14 @@
                                                                         <span class="new-control-indicator"></span>
                                                                         <span class="ml-2">
                                                                             @Html.DisplayFor(model => model.SeccionesCheckList[i].Text)
+                                                                            @* Columna Nivel *@
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
+                                                                                    @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
+                                                                                    @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
+                                                                                </div>
+                                                                            </div>
                                                                         </span>
                                                                     </label>
                                                                 </div>
@@ -104,7 +112,7 @@
                                 </div>
 
                                 <div class="card">
-                                    <div class="card-header" id="...">
+                                    <div class="card-header">
                                         <section class="mb-0 mt-0">
                                             <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionThree" aria-expanded="true" aria-controls="defaultAccordionOne">
                                                 Modalidades
@@ -145,7 +153,7 @@
                                 </div>
 
                                 <div class="card">
-                                    <div class="card-header" id="...">
+                                    <div class="card-header">
                                         <section class="mb-0 mt-0">
                                             <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionFour" aria-expanded="true" aria-controls="defaultAccordionOne">
                                                 Niveles
@@ -192,52 +200,40 @@
                     <div class="col-md-8 ">
                         <div class="card">
                             <div class="card-body">
-                                <div class="form-row">
-                                    @* Columna Aula *@
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Aul_Id, "Aula", htmlAttributes: new { @class = "control-label" })
-                                            @Html.DropDownList("Aul_Id", Model.AulaList, "-- Seleccionar Aula --", htmlAttributes: new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.Aul_Id, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    @* Columna Nivel *@
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
-                                            @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
-                                            @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
-                                        </div>
+                                @* Columna Nivel *@
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
+                                        @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
+                                        @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    @* Columna Curso nombre *@
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Cno_Id, "Curso nombre", htmlAttributes: new { @class = "control-label" })
-                                            @Html.DropDownList("Cno_Id", Model.CursoNombreList, "-- Seleccionar Curso nombre --", htmlAttributes: new { @class = "form-control", @id = "Cno_Id" })
-                                            @Html.ValidationMessageFor(model => model.Cno_Id, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    @* Columna Es activo *@
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Cur_EsActivo, "Es activo", htmlAttributes: new { @class = "control-label" })
-                                            @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.Cur_EsActivo, "", new { @class = "text-danger" })
-                                        </div>
+                            </div>
+                            <div class="form-row">
+                                @* Columna Curso nombre *@
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Cur_Nombre, "Curso nombre", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Cur_Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Cur_Nombre, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+                                @* Columna Es activo *@
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Cur_EsActivo, "Es activo", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Cur_EsActivo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div class="col ">
-                                    <button type="submit" class="btn btn-primary float-right m-1"><i class="mdi mdi-content-save"></i> Guardar</button>
-                                    @Html.ActionLink("Retornar", "Index", "Cursos", null, new { @class = "btn btn-primary-outline float-right m-1" })
-                                </div>
+                            <div class="col ">
+                                <button type="submit" class="btn btn-primary float-right m-1"><i class="mdi mdi-content-save"></i> Guardar</button>
+                                @Html.ActionLink("Retornar", "Index", "Cursos", null, new { @class = "btn btn-primary-outline float-right m-1" })
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
