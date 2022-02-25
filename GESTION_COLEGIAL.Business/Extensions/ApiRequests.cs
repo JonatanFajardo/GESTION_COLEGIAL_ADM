@@ -79,6 +79,12 @@ namespace GESTION_COLEGIAL.Business.Extensions
             return await SendHttpClient.Get<T>(url);
         }
 
+        public static async Task<IEnumerable<T>> Dropdown<T>(string url, int id)
+        {
+            // Crea la peticion a la api
+            return await SendHttpClient.Dropdown<T>(url, id);
+        }
+
         public static async Task<List<T>> CheckList<T>(string url)
         {
             // Crea la peticion a la api

@@ -19,7 +19,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             var model = new AlumnoViewModel();
             var drop = await Dropdown(model);
-            return View();
+            return View(drop);
         }
 
         public async Task<ActionResult> List()
@@ -69,7 +69,34 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<AlumnoViewModel> Dropdown(AlumnoViewModel model)
         {
+
+
             return await alumnosService.Dropdown(model);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCursosNiveles(int id)
+        {
+            var cursoNiveles = await alumnosService.CursoNivelesDropdown(id);
+            return AjaxResult(cursoNiveles);
+        }
+
+        public JsonResult GetModalidades(int id)
+        {
+            var modalidades = alumnosService.ModalidadesDropdown(id);
+            return Json(modalidades, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCursos(int id)
+        {
+            var cursos = alumnosService.CursosDropdown(id);
+            return Json(cursos, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetSecciones(int id)
+        {
+            var secciones = alumnosService.SeccionesDropdown(id);
+            return Json(secciones, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

@@ -13,15 +13,9 @@ namespace GESTION_COLEGIAL.Business.Models
         [Key]
         public int Cur_Id { get; set; }
 
-        [Display(Name = "Curso nivel")]
+        [Display(Name = "Curso nombre")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public int Cno_Id { get; set; }
-        public string Cno_Descripcion { get; set; }
-
-        [Display(Name = "Aula")]
-        [Required(ErrorMessage = "El campo es requerido")]
-        public int Aul_Id { get; set; }
-        public string Aul_Descripcion { get; set; }
+        public string Cur_Nombre { get; set; }
         public int Mat_Id { get; set; }
         public string Mat_Descripcion { get; set; }
 
@@ -90,12 +84,6 @@ namespace GESTION_COLEGIAL.Business.Models
         // Propiedad con listado de niveles educativos.
         public SelectList NivelEducativoList { get; set; }
 
-        // Propiedad con listado de aulas.
-        public SelectList AulaList { get; set; }
-
-        // Propiedad con listado de curso nombre.
-        public SelectList CursoNombreList { get; set; }
-
         #region CheckList
         /// <summary>
         /// Carga los datos solicitados.
@@ -148,14 +136,9 @@ namespace GESTION_COLEGIAL.Business.Models
         /// Permite mostrar una colección de dropdown.
         /// </remarks>
         /// <param name="nivelEducativoDropdownResults"></param>
-        /// <param name="aulaDropdownResults"></param>
-        public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults,
-                                    IEnumerable<AulaViewModel> aulaDropdownResults,
-                                    IEnumerable<CursoNombreViewModel> cursoNombreDropdownResults)
+        public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults)
         {
             NivelEducativoList = new SelectList(nivelEducativoDropdownResults, "Niv_Id", "Niv_Descripcion");
-            AulaList = new SelectList(aulaDropdownResults, "Aul_Id", "Aul_Descripcion");
-            CursoNombreList = new SelectList(cursoNombreDropdownResults, "Cno_Id", "Cno_Descripcion");
         }
         #endregion Dropdown
     }

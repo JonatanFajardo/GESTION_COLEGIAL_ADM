@@ -78,8 +78,8 @@
     <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\CargoViewModel.cs" />
     <Compile Include="Models\CursoNivelCursoViewModel.cs" />
+    <Compile Include="Models\CursoNivelDropViewModel.cs" />
     <Compile Include="Models\CursoNivelViewModel.cs" />
-    <Compile Include="Models\CursoNombreViewModel.cs" />
     <Compile Include="Models\CursoViewModel.cs" />
     <Compile Include="Models\DiaViewModel.cs" />
     <Compile Include="Models\DuracionViewModel.cs" />
@@ -108,7 +108,6 @@
     <Compile Include="Services\AulasService.cs" />
     <Compile Include="Services\CargosService.cs" />
     <Compile Include="Services\CursosNivelesService.cs" />
-    <Compile Include="Services\CursosNombresService.cs" />
     <Compile Include="Services\CursosService.cs" />
     <Compile Include="Services\DiasService.cs" />
     <Compile Include="Services\DuracionesService.cs" />

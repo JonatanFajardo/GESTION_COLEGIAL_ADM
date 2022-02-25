@@ -33,7 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> Find(int id)
         {
-            var result = cursosService.Find(id);
+            var result = await cursosService.Find(id);
             return View("Create", result);
         }
 
@@ -69,7 +69,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(CursoViewModel model)
         {
-            string url = "Cursos/Remove";
             bool result = await cursosService.Delete(model.Cur_Id);
 
             //Validamos error

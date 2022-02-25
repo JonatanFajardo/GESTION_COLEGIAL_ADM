@@ -190,7 +190,6 @@
     <Compile Include="Controllers\CargosController.cs" />
     <Compile Include="Controllers\CursosController.cs" />
     <Compile Include="Controllers\CursosNivelesController.cs" />
-    <Compile Include="Controllers\CursosNombresController.cs" />
     <Compile Include="Controllers\DiasController.cs" />
     <Compile Include="Controllers\DuracionesController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
@@ -363,7 +362,6 @@
     <Content Include="Content\js\pages\coming-soon\coming-soon.js" />
     <Content Include="Content\js\pages\cursos.js" />
     <Content Include="Content\js\pages\cursosniveles.js" />
-    <Content Include="Content\js\pages\cursosnombres.js" />
     <Content Include="Content\js\pages\dias.js" />
     <Content Include="Content\js\pages\duraciones.js" />
     <Content Include="Content\js\pages\empleados.js" />
@@ -1414,7 +1412,6 @@
     <Content Include="Views\NivelesEducativos\Index.cshtml" />
     <Content Include="Views\Cargos\Index.cshtml" />
     <Content Include="Views\Cursos\Create.cshtml" />
-    <Content Include="Views\CursosNombres\Index.cshtml" />
     <Content Include="Views\Titulos\Index.cshtml" />
     <Content Include="Views\HorarioAlumnos\Create.cshtml" />
     <Content Include="Views\Estados\Index.cshtml" />
