@@ -1,8 +1,12 @@
 ﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -74,11 +78,40 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return await alumnosService.Dropdown(model);
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult> GetCursosNiveles(int id)
+        //{
+        //    var cursoNiveles = await alumnosService.CursoNivelesDropdown(id);
+        //    return AjaxResult(cursoNiveles);
+        //}
+
         [HttpGet]
         public async Task<ActionResult> GetCursosNiveles(int id)
         {
             var cursoNiveles = await alumnosService.CursoNivelesDropdown(id);
-            return AjaxResult(cursoNiveles);
+            IList<SelectListItem> cursosNivelesList = cursoNiveles.Select(x => new SelectListItem()
+            {
+                Text = x.Cun_Descripcion,
+                Value = x.Cun_Id.ToString()
+            }).ToList();
+            //SelectList cursosNivelesList = cursoNiveles.Select(x => new SelectList()
+            //{
+            //    dataTextField = x.Cun_Descripcion,
+            //    Value = x.Cun_Id.ToString()
+            //}).ToList();
+            //var model = JsonConvert.DeserializeObject<List<MatrixModel.RootObject>>(json);
+            //var resultSerialize = JsonConvert.DeserializeObject<List<SelectListItem>>(cursosNivelesList);
+
+
+            //var json = JsonConvert.SerializeObject(new
+            //{
+            //    data = cursosNivelesList
+            //});
+
+            var jsonSerialiser = new JavaScriptSerializer();
+            var json = jsonSerialiser.Serialize(cursosNivelesList);
+            return AjaxResult(json);
+            //return Json(json, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetModalidades(int id)

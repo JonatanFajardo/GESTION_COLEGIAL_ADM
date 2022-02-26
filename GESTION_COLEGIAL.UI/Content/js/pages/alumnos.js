@@ -32,22 +32,6 @@
 
 $("#Niv_Id").on("change", function (e) {
     var valueSelected = $(this).val();
-
-    //var json = {
-    //    data:
-    //        [
-    //            {
-    //                Value: 1,
-    //                Text: "jona"
-    //            },
-    //            {
-    //                Value: 1,
-    //                Text: "jona"
-    //            }
-    //        ]
-    //}
-    //console.log(json.data)
-    //FillDropDown(valueSelected, json.data);
     var data = {
         id: valueSelected
     }
@@ -59,7 +43,7 @@ $("#Niv_Id").on("change", function (e) {
         success: function (response) {
                 
             if (response != null) {
-                FillDropDown(valueSelected, response);
+                FillDropDown("#Cddl_CursoNiveles", response);
             }
             else {
             }
@@ -67,29 +51,105 @@ $("#Niv_Id").on("change", function (e) {
         error: function (request, status, error) {
             console.log('Error: ' + request.responseText);
         }
+    });    
+});
+
+
+$("#Cddl_CursoNiveles").on("change", function (e) {
+    var valueSelected = $(this).val();
+    var data = {
+        id: valueSelected
+    }
+    $.ajax({
+        type: "GET",
+        url: 'GetModalidades/',
+        data: data,
+        dataType: "json",
+        success: function (response) {
+
+            if (response != null) {
+                FillDropDown("#Cddl_Modalidades", response);
+            }
+            else {
+            }
+        },
+        error: function (request, status, error) {
+            console.log('Error: ' + request.responseText);
+        }
     });
-   
+});
 
 
-    
+$("#Cddl_Modalidades").on("change", function (e) {
+    var valueSelected = $(this).val();
+    var data = {
+        id: valueSelected
+    }
+    $.ajax({
+        type: "GET",
+        url: 'GetCursos/',
+        data: data,
+        dataType: "json",
+        success: function (response) {
+
+            if (response != null) {
+                FillDropDown("#Cddl_Cursos", response.data.Cur_Id, response.data.Cur_Nombre);
+            }
+            else {
+            }
+        },
+        error: function (request, status, error) {
+            console.log('Error: ' + request.responseText);
+        }
+    });
+});
+
+$("#Cddl_Cursos").on("change", function (e) {
+    var valueSelected = $(this).val();
+    var data = {
+        id: valueSelected
+    }
+    $.ajax({
+        type: "GET",
+        url: 'GetSecciones/',
+        data: data,
+        dataType: "json",
+        success: function (response) {
+
+            if (response != null) {
+                FillDropDown("#Cddl_CursoSecciones", response.data.Sec_Id, response.data.Sec_Descripcion);
+            }
+            else {
+            }
+        },
+        error: function (request, status, error) {
+            console.log('Error: ' + request.responseText);
+        }
+    });
 });
 $(function () {
 });
 
 /**
- * Permite ingresar data a un dropdawn.
+ * Permite ingresar data a un dropdown.
  * @param {any} dropDownId
  * @param {any} list El primer valor debe de ser el valor y el segundo el texto a mostrar.
  */
 function FillDropDown(dropDownId, list) {
     $(dropDownId).empty();
+    console.log(list);
     $.each(list, function (index, row) {
-        if (index == 0) {
-            console.log(row)
-            console.log(row['data'][0]//revisar
-            $(dropDownId).append("<option value='" + row.Value + "' selected='selected'>" + row.Text + "</option>");
+        console.log(row);
+            //console.log(row[]);
+        //if (index != 0) { 
+        //    $(dropDownId).append("<option value='" + list["data"][0] + "' selected='selected'>" + Text + "</option>");
+        //} else {
+        //    $(dropDownId).append("<option value='" + Value + "'>" + Text + "</option>")
+        //}
+         if (index != 0) { 
+             $(dropDownId).append("<option value='" + row.Value + "' selected='selected'>" + row.Text + "</option>");
         } else {
-            $(dropDownId).append("<option value='" + row.Value + "'>" + row.Text + "</option>")
+             $(dropDownId).append("<option value='" + row.Value + "'>" + row.Text + "</option>")
         }
     });
 }

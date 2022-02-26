@@ -29,6 +29,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Required(ErrorMessage = "El campo es requerido")]
         public int Mda_Id { get; set; }
         public string Mda_Descripcion { get; set; }
+        public string Cno_Descripcion { get; set; }
 
         [Display(Name = "Curso")]
         [Required(ErrorMessage = "El campo es requerido")]

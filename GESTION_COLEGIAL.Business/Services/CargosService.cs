@@ -10,39 +10,39 @@ namespace GESTION_COLEGIAL.Business.Services
     {
         public async Task<IEnumerable<CargoViewModel>> List()
         {
-            string url = "Cargoses/List";
+            string url = "Cargos/List";
             IEnumerable<CargoViewModel> apiUrl = await ApiRequests.List<CargoViewModel>(url);
             return apiUrl;
         }
 
         public async Task<CargoViewModel> Find(int id)
         {
-            string url = "Cargoses/Find";
+            string url = "Cargos/Find";
             CargoViewModel apiUrl = await ApiRequests.Find<CargoViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(CargoViewModel model)
         {
-            string url = "Cargoses/Create";
+            string url = "Cargos/Create";
             return await ApiRequests.Create(url, model);
         }
 
         public async Task<Boolean> Edit(CargoViewModel model)
         {
-            string url = "Cargoses/Edit";
+            string url = "Cargos/Edit";
             return await ApiRequests.Edit(url, model);
         }
 
         public async Task<CargoViewModel> Exist(string value)
         {
-            string url = "Cargoses/Exist";
+            string url = "Cargos/Exist";
             return await ApiRequests.Exist<CargoViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
-            string url = "Cargoses/Remove";
+            string url = "Cargos/Remove";
             return await ApiRequests.Delete(url, id);
         }
     }
