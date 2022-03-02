@@ -41,9 +41,9 @@ $("#Niv_Id").on("change", function (e) {
         data:data,
         dataType: "json",
         success: function (response) {
-                
+            
             if (response != null) {
-                FillDropDown("#Cddl_CursoNiveles", response);
+                FillDropDown("#Cun_Id", response.data);
             }
             else {
             }
@@ -55,7 +55,7 @@ $("#Niv_Id").on("change", function (e) {
 });
 
 
-$("#Cddl_CursoNiveles").on("change", function (e) {
+$("#Cun_Id").on("change", function (e) {
     var valueSelected = $(this).val();
     var data = {
         id: valueSelected
@@ -68,7 +68,7 @@ $("#Cddl_CursoNiveles").on("change", function (e) {
         success: function (response) {
 
             if (response != null) {
-                FillDropDown("#Cddl_Modalidades", response);
+                FillDropDown("#Mda_Id", response.data);
             }
             else {
             }
@@ -80,7 +80,7 @@ $("#Cddl_CursoNiveles").on("change", function (e) {
 });
 
 
-$("#Cddl_Modalidades").on("change", function (e) {
+$("#Mda_Id").on("change", function (e) {
     var valueSelected = $(this).val();
     var data = {
         id: valueSelected
@@ -93,7 +93,7 @@ $("#Cddl_Modalidades").on("change", function (e) {
         success: function (response) {
 
             if (response != null) {
-                FillDropDown("#Cddl_Cursos", response.data.Cur_Id, response.data.Cur_Nombre);
+                FillDropDown("#Cur_Id", response.data);
             }
             else {
             }
@@ -104,7 +104,7 @@ $("#Cddl_Modalidades").on("change", function (e) {
     });
 });
 
-$("#Cddl_Cursos").on("change", function (e) {
+$("#Cur_Id").on("change", function (e) {
     var valueSelected = $(this).val();
     var data = {
         id: valueSelected
@@ -117,7 +117,8 @@ $("#Cddl_Cursos").on("change", function (e) {
         success: function (response) {
 
             if (response != null) {
-                FillDropDown("#Cddl_CursoSecciones", response.data.Sec_Id, response.data.Sec_Descripcion);
+                console.log(response);
+                FillDropDown("#Sec_Id", response.data);
             }
             else {
             }

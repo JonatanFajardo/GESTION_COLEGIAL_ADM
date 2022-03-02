@@ -61,21 +61,40 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Dur_Id, "Duración", htmlAttributes: new { @class = "control-label" })
+
                                     <div class="float-right">
                                         <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
                                                data-placement="right" title="Activo">
-                                            <input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" value="true" @(Model.Mat_EsActivo ? "checked=\"true\"" : "\"false\"") />
+
+                                            <input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo"  />
+
+                                            @*@Html.CheckBoxFor(model => model.Mat_EsActivo, htmlAttributes: new { @class = "float-right", @title = "Activo", id = "estadoCheckbox" })*@
+
+                                            @*@Html.CheckBoxFor(m => m.Mat_EsActivo)*@
+                                            @*@Html.CheckBox("Mat_EsActivo")*@
+                                            @*<input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" model.Mat_EsActivo />*@
                                             @*@Html.EditorFor(model => model.Mat_EsActivo, new { htmlAttributes = new { @class = "form-control", @type = "checkbox" } })*@
                                             @*<input type="checkbox" name="@Model.Mat_EsActivo" id="radio-6">*@
                                             @*<input type="checkbox" name="(model => model.Mat_EsActivo)" id="(model => model.Mat_EsActivo)">*@
-                                            @*@Html.CheckBoxFor(model => model.Mat_EsActivo)*@
-                                            @*@Html.CheckBox("Mat_EsActivo", new { @checked = "checked" })*@
-                                            @*@Html.CheckBoxFor(model => model.Mat_EsActivo, new { id = "radio-6" })*@
+                                            @*@Html.CheckBoxFor(model => model.Mat_EsActivo, new { id = "" })*@
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
+
+
                                     @Html.EditorFor(model => model.Dur_Id, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Dur_Id, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-12 ">
+                                <div class="form-group">
+                                    <label class="toggler toggler--is-active" id="filt-monthly">Estado</label>
+                                    <div class="toggle">
+                                        @*<input type="checkbox" id="switcher" class="check">*@
+                                        
+                                        <b class="b switch"></b>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

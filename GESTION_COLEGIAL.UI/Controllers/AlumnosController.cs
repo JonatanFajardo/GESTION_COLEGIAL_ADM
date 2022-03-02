@@ -37,6 +37,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await alumnosService.Find(id);
             //var model = _mapper.Map(result);
             var drop = await Dropdown(result);
+            //await GetModalidades(result.Cun_Id);
             return View("Create", drop);
         }
 
@@ -88,48 +89,52 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> GetCursosNiveles(int id)
         {
-            var cursoNiveles = await alumnosService.CursoNivelesDropdown(id);
-            IList<SelectListItem> cursosNivelesList = cursoNiveles.Select(x => new SelectListItem()
+            var result = await alumnosService.CursoNivelesDropdown(id);
+            IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
             {
-                Text = x.Cun_Descripcion,
-                Value = x.Cun_Id.ToString()
+                Value = x.Cun_Id.ToString(),
+                Text = x.Cun_Descripcion
             }).ToList();
-            //SelectList cursosNivelesList = cursoNiveles.Select(x => new SelectList()
-            //{
-            //    dataTextField = x.Cun_Descripcion,
-            //    Value = x.Cun_Id.ToString()
-            //}).ToList();
-            //var model = JsonConvert.DeserializeObject<List<MatrixModel.RootObject>>(json);
-            //var resultSerialize = JsonConvert.DeserializeObject<List<SelectListItem>>(cursosNivelesList);
-
-
-            //var json = JsonConvert.SerializeObject(new
-            //{
-            //    data = cursosNivelesList
-            //});
-
-            var jsonSerialiser = new JavaScriptSerializer();
-            var json = jsonSerialiser.Serialize(cursosNivelesList);
-            return AjaxResult(json);
-            //return Json(json, JsonRequestBehavior.AllowGet);
+            return AjaxResult(resultToSelectListItem);
         }
 
-        public JsonResult GetModalidades(int id)
+        public async Task<ActionResult> GetModalidades(int id)
         {
-            var modalidades = alumnosService.ModalidadesDropdown(id);
-            return Json(modalidades, JsonRequestBehavior.AllowGet);
+            var result = await alumnosService.ModalidadesDropdown(id);
+            IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
+            {
+                Value = x.Mda_Id.ToString(),
+                Text = x.Mda_Descripcion
+            }).ToList();
+            return AjaxResult(resultToSelectListItem);
         }
 
-        public JsonResult GetCursos(int id)
+        public async Task<ActionResult> GetCursos(int id)
         {
-            var cursos = alumnosService.CursosDropdown(id);
-            return Json(cursos, JsonRequestBehavior.AllowGet);
+            var result = await alumnosService.CursosDropdown(id);
+            IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
+            {
+                Value = x.Cur_Id.ToString(),
+                Text = x.Cur_Nombre
+            }).ToList();
+            return AjaxResult(resultToSelectListItem);
+            //return Json(resultToSelectListItem, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetSecciones(int id)
+        public async Task<ActionResult> GetSecciones(int id)
         {
-            var secciones = alumnosService.SeccionesDropdown(id);
-            return Json(secciones, JsonRequestBehavior.AllowGet);
+            var result = await alumnosService.SeccionesDropdown(id);
+            //Validamos error
+            if (result == null)
+            {
+                AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error al procesar la solicitud");
+            }
+            IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
+            {
+                Value = x.Sec_Id.ToString(),
+                Text = x.Sec_Descripcion
+            }).ToList();
+            return AjaxResult(resultToSelectListItem);
         }
 
         [HttpPost]
