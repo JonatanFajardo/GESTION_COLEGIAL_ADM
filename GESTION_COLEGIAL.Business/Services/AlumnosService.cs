@@ -19,6 +19,31 @@ namespace GESTION_COLEGIAL.Business.Services
         {
             string url = "Alumnos/Find";
             AlumnoViewModel apiUrl = await ApiRequests.Find<AlumnoViewModel>(url, id);
+            //AlumnoViewModel alumnoViewModel = new AlumnoViewModel();
+            //alumnoViewModel.Niv_Id = result.Niv_Id,
+            //    alumnoViewModel.Niv_Descripcion = result.Niv_Descripcion,
+            //    alumnoViewModel.Cun_Id = result.Cun_Id,
+            //    alumnoViewModel.Cun_Descripcion = result.Cun_Descripcion,
+            //    alumnoViewModel.Mda_Id = result.Mda_Id,
+            //    alumnoViewModel.Mda_Descripcion = result.Mda_Descripcion,
+            //    alumnoViewModel.Cur_Id = result.Cur_Id,
+            //    alumnoViewModel.Cur_Nombre = result.Cur_Nombre,
+            //    alumnoViewModel.Sec_Id = result.Sec_Id,
+            //    alumnoViewModel.Sec_Descripcion = result.Sec_Descripcion,
+            //    alumnoViewModel.Est_Id = result.Est_Id,
+            //    alumnoViewModel.Est_Descripcion = result.Est_Descripcion,
+            //    alumnoViewModel.Alu_Id = result.Alu_Id,
+            //    alumnoViewModel.Per.Per_Identidad = result.Per_Id.,
+            //    alumnoViewModel.Per.Per_PrimerNombre = result.Per_PrimerNombre,
+            //    alumnoViewModel.Per.Per_SegundoNombre = result.Per_SegundoNombre,
+            //    alumnoViewModel.Per.Per_ApellidoPaterno = result.Per_ApellidoPaterno,
+            //    alumnoViewModel.Per.Per_ApellidoMaterno = result.Per_ApellidoMaterno,
+            //    alumnoViewModel.Per.Per_FechaNacimiento = result.Per_FechaNacimiento,
+            //    alumnoViewModel.Per.Per_CorreoElectronico = result.Per_CorreoElectronico,
+            //    alumnoViewModel.Per.Per_Telefono = result.Per_Telefono,
+            //    alumnoViewModel.Per.Per_Direccion = result.Per_Direccion,
+            //    alumnoViewModel.Per.Per_Sexo = result.Per_Sexo,
+            //    alumnoViewModel.Per.Per_EsEliminado = result.Per_EsEliminado
             return apiUrl;
         }
 

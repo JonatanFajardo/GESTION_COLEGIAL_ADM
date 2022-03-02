@@ -73,6 +73,7 @@
     <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="Extensions\ValidationResults.cs" />
     <Compile Include="Helpers\SendHttpClient.cs" />
+    <Compile Include="Models\AlumnoFindViewModel.cs" />
     <Compile Include="Models\AlumnoViewModel.cs" />
     <Compile Include="Models\AulaViewModel.cs" />
     <Compile Include="Models\BaseViewModel.cs" />

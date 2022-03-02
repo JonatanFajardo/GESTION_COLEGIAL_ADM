@@ -4,11 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
 {
-    partial class PersonaViewModel : BaseViewModel
+    public class PersonaViewModel : BaseViewModel
     {
-        [Key]
-        public int Per_Id { get; set; }
-
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo debe contener 13 digitos")]
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe debe ser numerico")]
         [Display(Name = "Identidad")]
@@ -37,10 +34,14 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha nacimiento")]
         [Required(ErrorMessage = "El campo es requerido")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Per_FechaNacimiento { get; set; }
 
         [StringLength(150)]
         [Display(Name = "Correo electrónico")]
+        [EmailAddress(ErrorMessage = "Ingrese un correo valido")]
         [Required(ErrorMessage = "El campo es requerido")]
         public string Per_CorreoElectronico { get; set; }
 
@@ -62,8 +63,9 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public bool? EsActivo { get; set; }
-        public string Per_EsActivo { get; set; }
+
+        public bool Per_EsActivo { get; set; }
+        public string EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
         public int Per_UsuarioRegistra { get; set; }

@@ -48,6 +48,7 @@ namespace GESTION_COLEGIAL.Business.Models
         public int Est_Id { get; set; }
         public string Est_Descripcion { get; set; }
 
+        //Persona
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo debe contener 13 digitos")]
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe debe ser numerico")]
         [Display(Name = "Identidad")]
@@ -106,8 +107,8 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
 
-        public string EsActivo { get; set; }
         public bool Per_EsActivo { get; set; }
+        public string EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
         public int Per_UsuarioRegistra { get; set; }
@@ -125,7 +126,8 @@ namespace GESTION_COLEGIAL.Business.Models
         public string Per_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
-        public DateTime? Per_FechaModifica { get; set; }
+        public DateTime? Per_FechaModifica { get; set; }    
+
 
         // Propiedad con listado de niveles educativos.
         public SelectList NivelesEducativosList { get; set; }

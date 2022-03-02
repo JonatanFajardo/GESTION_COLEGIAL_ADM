@@ -280,6 +280,7 @@
     <Content Include="Content\css\scrollspyNav.css" />
     <Content Include="Content\css\structure.css" />
     <Content Include="Content\css\tables\table-basic.css" />
+    <Content Include="Content\css\toggleUnic.css" />
     <Content Include="Content\css\users\account-setting.css" />
     <Content Include="Content\css\users\user-profile.css" />
     <Content Include="Content\css\widgets\modules-widgets.css" />
@@ -385,6 +386,7 @@
     <Content Include="Content\js\pages\semestres.js" />
     <Content Include="Content\js\pages\titulos.js" />
     <Content Include="Content\js\pages\usuarios.js" />
+    <Content Include="Content\js\toggleUnic.js" />
     <Content Include="Content\js\scrollspyNav.js" />
     <Content Include="Content\js\users\account-settings.js" />
     <Content Include="Content\js\widgets\modules-widgets.js" />
@@ -1463,6 +1465,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
