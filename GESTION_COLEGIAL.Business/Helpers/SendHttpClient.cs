@@ -12,7 +12,8 @@ namespace GESTION_COLEGIAL.Business.Helpers
     /// </summary>
     public static class SendHttpClient
     {
-        private const string baseUrl = "https://localhost:44341/api/";
+        //private const string baseUrl = "https://localhost:44341/api/";
+        private const string baseUrl = "http://gestioncolegialapi.somee.com/api/";
 
         /// <summary>
         /// Obtiene valores del servicio.
