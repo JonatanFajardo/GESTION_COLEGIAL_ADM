@@ -4,131 +4,132 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container">
+    <div class="card">
+        <div class="card-header" style="background-color:white;">
+            <div class="row space-between">
+                <div class="col-md-9"><h3>Listado de niveles educativos</h3></div>
+                <div class="col-md-3"><button class="btn btn-primary mdi mdi-plus-circle-outline float-right" id="add-btn" data-toggle="modal" data-target="#edit-modal">  Nuevo</button></div>
 
-<div class="card">
-    <div class="card-header" style="background-color:white;">
-        <div class="row space-between">
-            <div class="col-md-9"><h3>Listado de niveles educativos</h3></div>
-            <div class="col-md-3"><button class="btn btn-primary mdi mdi-plus-circle-outline float-right" id="add-btn" data-toggle="modal" data-target="#edit-modal">  Nuevo</button></div>
-
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-bordered nowrap" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
-    <div class="card-body">
-        <table class="table table-striped table-bordered nowrap" id="datatable">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
 
-<!-- Modal -->
-<div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <!-- Modal -->
+    <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Ajax.BeginForm("Create", "NivelesEducativos", new AjaxOptions
+                {
+                    HttpMethod = "Post",
+                    OnBegin = "Catalogs.begin",
+                    OnComplete = "Catalogs.complete",
+                    OnFailure = "Catalogs.failure",
+                    OnSuccess = "Catalogs.success"
+
+                }))
+                {
+                    <div class="container">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @Html.HiddenFor(model => model.Niv_Id, new { @id = "item-id" })
+                        <div class="modal-body">
+                            <div class="form-row">
+                                @* Columna Descripción *@
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Niv_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                        <div class="float-right">
+                                            <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
+                                                   data-placement="right" title="Activo">
+                                                @*<input type="checkbox" name="Niv_EsActivo">*@
+                                                @*<input type="checkbox" value="@Model.EsActivo" checked="@Model.EsActivo" id="radio-6" name="Niv_EsActivo">*@
+                                                @*<input type="checkbox" id="radio-6" name="Niv_EsActivo" value="@Model.Niv_EsActivo" checked="@Model.Niv_EsActivo">*@
+                                                @*@Html.CheckBoxFor(model => model.EsActivo, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
+                                                @*@Html.CheckBox("EsActivo", new { value = Model.EsActivo } );*@
+                                                @*@Html.CheckBox("EsActivo", true, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
+                                                @*@Html.CheckBox("EsActivo", true, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        @Html.EditorFor(model => model.Niv_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Niv_Descripcion, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.CheckBoxFor(model => model.Niv_EsActivo)
+                                @*@Html.CheckBoxFor(x => Model.Niv_EsActivo)*@
+                                @*@Html.CheckBox("Niv_EsActivo", new { value = Model.Niv_EsActivo});*@
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
+                        </div>
+                    </div>
+                }
             </div>
-            @using (Ajax.BeginForm("Create", "NivelesEducativos", new AjaxOptions
+        </div>
+    </div>
+    <!-- Fin Modal -->
+    <!-- Modal Delete-->
+    <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            @using (Ajax.BeginForm("Delete", "NivelesEducativos", new AjaxOptions
             {
                 HttpMethod = "Post",
                 OnBegin = "Catalogs.begin",
                 OnComplete = "Catalogs.complete",
                 OnFailure = "Catalogs.failure",
                 OnSuccess = "Catalogs.success"
-
             }))
             {
-                <div class="container">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    @Html.HiddenFor(model => model.Niv_Id, new { @id = "item-id" })
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="modal-body">
-                        <div class="form-row">
-                            @* Columna Descripción *@
+                        <h5>
+                        </h5>
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.Niv_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                    <div class="float-right">
-                                        <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
-                                               data-placement="right" title="Activo">
-                                            @*<input type="checkbox" name="Niv_EsActivo">*@
-                                            @*<input type="checkbox" value="@Model.EsActivo" checked="@Model.EsActivo" id="radio-6" name="Niv_EsActivo">*@
-                                            @*<input type="checkbox" id="radio-6" name="Niv_EsActivo" value="@Model.Niv_EsActivo" checked="@Model.Niv_EsActivo">*@
-                                            @*@Html.CheckBoxFor(model => model.EsActivo, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
-                                            @*@Html.CheckBox("EsActivo", new { value = Model.EsActivo } );*@
-                                            @*@Html.CheckBox("EsActivo", true, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
-                                            @*@Html.CheckBox("EsActivo", true, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    @Html.EditorFor(model => model.Niv_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Niv_Descripcion, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.Niv_Id, new { @id = "delete-item-id" })
+                                    <p>¿Está seguro de que desea eliminar este registro?</p>
                                 </div>
+
                             </div>
-                            @Html.CheckBoxFor(model => model.Niv_EsActivo)                            
-                            @*@Html.CheckBoxFor(x => Model.Niv_EsActivo)*@
-                            @*@Html.CheckBox("Niv_EsActivo", new { value = Model.Niv_EsActivo});*@
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
+                        <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
                     </div>
+
                 </div>
             }
         </div>
     </div>
+    <!-- Fin Modal -->
 </div>
-<!-- Fin Modal -->
-<!-- Modal Delete-->
-<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        @using (Ajax.BeginForm("Delete", "NivelesEducativos", new AjaxOptions
-        {
-            HttpMethod = "Post",
-            OnBegin = "Catalogs.begin",
-            OnComplete = "Catalogs.complete",
-            OnFailure = "Catalogs.failure",
-            OnSuccess = "Catalogs.success"
-        }))
-        {
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h5>
-                    </h5>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                @Html.HiddenFor(model => model.Niv_Id, new { @id = "delete-item-id" })
-                                <p>¿Está seguro de que desea eliminar este registro?</p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
-                </div>
-
-            </div>
-        }
-    </div>
-</div>
-<!-- Fin Modal -->
 
 @section Scripts{
     <script src="~/Content/js/pages/niveleseducativos.js"></script>
