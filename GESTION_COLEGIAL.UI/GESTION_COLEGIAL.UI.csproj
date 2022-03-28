@@ -400,6 +400,7 @@
     <Content Include="Content\img\fr.png" />
     <Content Include="Content\img\jp.png" />
     <Content Include="Content\img\mindset.svg" />
+    <Content Include="Content\img\mochila.jpg" />
     <Content Include="Content\index.html" />
     <Content Include="Content\js\app.js" />
     <Content Include="Content\js\apps\contact.js" />
