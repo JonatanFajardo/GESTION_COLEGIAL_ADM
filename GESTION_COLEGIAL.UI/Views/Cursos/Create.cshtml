@@ -10,233 +10,238 @@
     @using (Html.BeginForm("Save", "Cursos", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
 
-        <div class="card">
-            <div class="card-header">
-                <h3>Registro de Cursos</h3>
-            </div>
-            <div class="card-body">
-                @Html.HiddenFor(model => model.Cur_Id)
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card p-4">
-                            <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
-                                <h4>Opciones</h4>
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-9">
+                                <h3>Registro de Cursos</h3>
                             </div>
-
-                            <div id="toggleAccordion">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <section class="mb-0 mt-0">
-                                            <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionOne" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Materias
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div id="defaultAccordionOne" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="card-body">
-                                            @* Columna MateriasCheckList *@
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @for (int i = 0; i < Model.MateriasCheckList.Count; i++)
-                                                    {
-                                                        <ul class="list-group task-list-group">
-                                                            <li class="list-group-item list-group-item-action">
-                                                                <div class="n-chk">
-                                                                    <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
-                                                                        @Html.CheckBoxFor(model => model.MateriasCheckList[i].Selected)
-                                                                        <span class="new-control-indicator"></span>
-                                                                        <span class="ml-2">
-                                                                            @Html.DisplayFor(model => model.MateriasCheckList[i].Text)
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                        @Html.HiddenFor(model => model.MateriasCheckList[i].Text)
-                                                        @Html.HiddenFor(model => model.MateriasCheckList[i].Value)
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-header">
-                                        <section class="mb-0 mt-0">
-                                            <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionTwo" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Secciones
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div id="defaultAccordionTwo" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="card-body">
-
-                                            @* Columna SeccionesCheckList *@
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @* Itera y muestra ckebox con la respectiva descripción *@
-                                                    @for (int i = 0; i < Model.SeccionesCheckList.Count; i++)
-                                                    {
-                                                        <ul class="list-group task-list-group">
-                                                            <li class="list-group-item list-group-item-action">
-                                                                <div class="n-chk">
-                                                                    <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
-                                                                        @Html.CheckBoxFor(model => model.SeccionesCheckList[i].Selected)
-                                                                        <span class="new-control-indicator"></span>
-                                                                        <span class="ml-2">
-                                                                            @Html.DisplayFor(model => model.SeccionesCheckList[i].Text)
-                                                                            @* Columna Nivel *@
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
-                                                                                    @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
-                                                                                    @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
-                                                                                </div>
-                                                                            </div>
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                        @Html.HiddenFor(model => model.SeccionesCheckList[i].Text)
-                                                        @Html.HiddenFor(model => model.SeccionesCheckList[i].Value)
-                                                    }
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-header">
-                                        <section class="mb-0 mt-0">
-                                            <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionThree" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Modalidades
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div id="defaultAccordionThree" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="card-body">
-
-                                            @* Columna ModalidadesCheckList *@
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @* Itera y muestra ckebox con la respectiva descripción *@
-                                                    @for (int i = 0; i < Model.ModalidadesCheckList.Count; i++)
-                                                    {
-                                                        <ul class="list-group task-list-group">
-                                                            <li class="list-group-item list-group-item-action">
-                                                                <div class="n-chk">
-                                                                    <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
-                                                                        @Html.CheckBoxFor(model => model.ModalidadesCheckList[i].Selected)
-                                                                        <span class="new-control-indicator"></span>
-                                                                        <span class="ml-2">
-                                                                            @Html.DisplayFor(model => model.ModalidadesCheckList[i].Text)
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                        @Html.HiddenFor(model => model.ModalidadesCheckList[i].Text)
-                                                        @Html.HiddenFor(model => model.ModalidadesCheckList[i].Value)
-                                                    }
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card">
-                                    <div class="card-header">
-                                        <section class="mb-0 mt-0">
-                                            <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionFour" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Niveles
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div id="defaultAccordionFour" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="card-body">
-
-                                            @* Columna CursoNivel *@
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @* Itera y muestra ckebox con la respectiva descripción *@
-                                                    @for (int i = 0; i < Model.CursoNivelesCheckList.Count; i++)
-                                                    {
-                                                        <ul class="list-group task-list-group">
-                                                            <li class="list-group-item list-group-item-action">
-                                                                <div class="n-chk">
-                                                                    <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
-                                                                        @Html.CheckBoxFor(model => model.CursoNivelesCheckList[i].Selected)
-                                                                        <span class="new-control-indicator"></span>
-                                                                        <span class="ml-2">
-                                                                            @Html.DisplayFor(model => model.CursoNivelesCheckList[i].Text)
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                        @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Text)
-                                                        @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Value)
-                                                    }
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                            @* Columna Es Activo *@
+                            <div class="col-3 d-flex justify-content-end">
+                                <div class="custom-control custom-checkbox">
+                                    <label class="control-label" for="customCheck1">Estado</label>
+                                    @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @class = "" } })
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
-                    <div class="col-md-8 ">
-                        <div class="card">
-                            <div class="card-body">
-                                @* Columna Nivel *@
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
-                                        @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
-                                        @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                @* Columna Curso nombre *@
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Cur_Nombre, "Curso nombre", htmlAttributes: new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.Cur_Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Cur_Nombre, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                @* Columna Es activo *@
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Cur_EsActivo, "Es activo", htmlAttributes: new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Cur_EsActivo, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col ">
-                                <button type="submit" class="btn btn-primary float-right m-1"><i class="mdi mdi-content-save"></i> Guardar</button>
-                                @Html.ActionLink("Retornar", "Index", "Cursos", null, new { @class = "btn btn-primary-outline float-right m-1" })
+                <div class="card-body">
+                    @Html.HiddenFor(model => model.Cur_Id)
+                    <div class="row">
+                        <div class="col-md-12 col-lg-7">
+                            <div class="card p-4">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                                    <h4>Opciones</h4>
+                                </div>
+
+                                <div id="toggleAccordion">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <section class="mb-0 mt-0">
+                                                <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionOne" aria-expanded="true" aria-controls="defaultAccordionOne">
+                                                    Materias
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                        <div id="defaultAccordionOne" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
+                                            <div class="card-body">
+                                                @* Columna MateriasCheckList *@
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        @for (int i = 0; i < Model.MateriasCheckList.Count; i++)
+                                                        {
+                                                            <ul class="list-group task-list-group">
+                                                                <li class="list-group-item list-group-item-action">
+                                                                    <div class="n-chk">
+                                                                        <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
+                                                                            @Html.CheckBoxFor(model => model.MateriasCheckList[i].Selected)
+                                                                            <span class="new-control-indicator"></span>
+                                                                            <span class="ml-2">
+                                                                                @Html.DisplayFor(model => model.MateriasCheckList[i].Text)
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            @Html.HiddenFor(model => model.MateriasCheckList[i].Text)
+                                                            @Html.HiddenFor(model => model.MateriasCheckList[i].Value)
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <section class="mb-0 mt-0">
+                                                <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionTwo" aria-expanded="true" aria-controls="defaultAccordionOne">
+                                                    Secciones
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                        <div id="defaultAccordionTwo" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
+                                            <div class="card-body">
+
+                                                @* Columna SeccionesCheckList *@
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        @* Itera y muestra ckebox con la respectiva descripción *@
+                                                        @for (int i = 0; i < Model.SeccionesCheckList.Count; i++)
+                                                        {
+                                                            <ul class="list-group task-list-group">
+                                                                <li class="list-group-item list-group-item-action">
+                                                                    <div class="n-chk">
+                                                                        <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
+                                                                            @Html.CheckBoxFor(model => model.SeccionesCheckList[i].Selected)
+                                                                            <span class="new-control-indicator"></span>
+                                                                            <span class="ml-2">
+                                                                                @Html.DisplayFor(model => model.SeccionesCheckList[i].Text)
+                                                                                @* Columna Nivel *@
+                                                                                <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                        @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
+                                                                                        @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
+                                                                                        @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
+                                                                                    </div>
+                                                                                </div>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            @Html.HiddenFor(model => model.SeccionesCheckList[i].Text)
+                                                            @Html.HiddenFor(model => model.SeccionesCheckList[i].Value)
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <section class="mb-0 mt-0">
+                                                <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionThree" aria-expanded="true" aria-controls="defaultAccordionOne">
+                                                    Modalidades
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                        <div id="defaultAccordionThree" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
+                                            <div class="card-body">
+
+                                                @* Columna ModalidadesCheckList *@
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        @* Itera y muestra ckebox con la respectiva descripción *@
+                                                        @for (int i = 0; i < Model.ModalidadesCheckList.Count; i++)
+                                                        {
+                                                            <ul class="list-group task-list-group">
+                                                                <li class="list-group-item list-group-item-action">
+                                                                    <div class="n-chk">
+                                                                        <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
+                                                                            @Html.CheckBoxFor(model => model.ModalidadesCheckList[i].Selected)
+                                                                            <span class="new-control-indicator"></span>
+                                                                            <span class="ml-2">
+                                                                                @Html.DisplayFor(model => model.ModalidadesCheckList[i].Text)
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            @Html.HiddenFor(model => model.ModalidadesCheckList[i].Text)
+                                                            @Html.HiddenFor(model => model.ModalidadesCheckList[i].Value)
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <section class="mb-0 mt-0">
+                                                <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionFour" aria-expanded="true" aria-controls="defaultAccordionOne">
+                                                    Niveles
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                        <div id="defaultAccordionFour" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
+                                            <div class="card-body">
+
+                                                @* Columna CursoNivel *@
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        @* Itera y muestra ckebox con la respectiva descripción *@
+                                                        @for (int i = 0; i < Model.CursoNivelesCheckList.Count; i++)
+                                                        {
+                                                            <ul class="list-group task-list-group">
+                                                                <li class="list-group-item list-group-item-action">
+                                                                    <div class="n-chk">
+                                                                        <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
+                                                                            @Html.CheckBoxFor(model => model.CursoNivelesCheckList[i].Selected)
+                                                                            <span class="new-control-indicator"></span>
+                                                                            <span class="ml-2">
+                                                                                @Html.DisplayFor(model => model.CursoNivelesCheckList[i].Text)
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Text)
+                                                            @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Value)
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-5">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        @* Columna Nivel *@
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
+                                                @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
+                                                @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        @* Columna Curso nombre *@
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Cur_Nombre, "Curso nombre", htmlAttributes: new { @class = "control-label" })
+                                                @Html.EditorFor(model => model.Cur_Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Cur_Nombre, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col ">
+                                        <button type="submit" class="btn btn-primary float-right m-1"><i class="mdi mdi-content-save"></i> Guardar</button>
+                                        @Html.ActionLink("Retornar", "Index", "Cursos", null, new { @class = "btn btn-primary-outline float-right m-1" })
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    }
-</div>
+            }
+        </div>

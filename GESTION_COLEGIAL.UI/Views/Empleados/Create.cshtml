@@ -12,7 +12,22 @@
 
         <div class="card">
             <div class="card-header">
-                <h3>Registro de Empleados</h3>
+                <div class="row">
+                    <div class="col-9">
+                        <h3>Registro de Empleados</h3>
+                    </div>
+                    @* Columna Es Activo *@
+                    @if (Model.Emp_Id == 0)
+                    {
+
+                        <div class="col-3 d-flex justify-content-end">
+                            <div class="custom-control custom-checkbox">
+                                <label class="control-label" for="customCheck1">Estado</label>
+                                @Html.EditorFor(model => model.Per_EsActivo, new { htmlAttributes = new { @class = "" } })
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
 
             <div class="card-body">
@@ -27,14 +42,6 @@
                             @Html.ValidationMessageFor(model => model.Emp_Codigo, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    @* Columna Persona *@
-                    <!--<div class="col-md-6">
-                    <div class="form-group">-->
-                    @*@Html.LabelFor(model => model.Per_Id, "Id", htmlAttributes: new { @class = "control-label" })*@
-                    @*@Html.DropDownList("Per_Id", null, htmlAttributes: new { @class = "form-control" })*@
-                    @*@Html.ValidationMessageFor(model => model.Per_Id, "", new { @class = "text-danger" })*@
-                    <!--</div>
-                    </div>-->
                     @* Columna Título *@
                     <div class="col-md-6">
                         <div class="form-group">
@@ -143,20 +150,15 @@
                             @Html.ValidationMessageFor(model => model.Per_Sexo, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    @* Columna Es Activo *@
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Per_EsActivo, "Es Activo", htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Per_EsActivo, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Per_EsActivo, "", new { @class = "text-danger" })
+                    <!--Botones de accion en el formulario-->
+                    <div class="form-group col-md-6">
+                        <div class="float-right mt-4">
+                            <div class="btn mr-2">
+                                @Html.ActionLink("Cancelar", "Index", "Empleados")
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <div class="btn mr-2">
-                        @Html.ActionLink("Cancelar", "Index", "Empleados")
-                    </div>
-                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
                 </div>
             </div>
         </div>
