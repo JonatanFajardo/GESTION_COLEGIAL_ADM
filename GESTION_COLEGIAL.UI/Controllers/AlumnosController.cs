@@ -1,12 +1,10 @@
 ﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -26,9 +24,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View(drop);
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await alumnosService.List();
+            var result = await alumnosService.ListAsync();
             return AjaxResult(result);
         }
 
@@ -38,7 +36,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             //var model = _mapper.Map(result);
             var drop = await Dropdown(result);
             //await GetModalidades(result.Cun_Id);
-            return View("Create", drop);
+            return View("CreateAsync", drop);
         }
 
         [HttpPost]

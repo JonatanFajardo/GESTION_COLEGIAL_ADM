@@ -236,9 +236,9 @@ $(function() {
         $('#addListModal').modal('hide');
         $('#s-list-name').val('');
         $_taskSortable();
-        $_editList()
-        $_deleteList();
-        $_clearList();
+        $_editListAsync()
+        $_deleteListAsync();
+        $_clearListAsync();
         addTask();
         $_taskEdit();
         $_taskDelete();
@@ -246,13 +246,13 @@ $(function() {
 
     // Delete the whole list including tasks at on click
 
-    function $_deleteList() {
+    function $_deleteListAsync() {
         $('.list-delete').off('click').on('click', function(event) {
             event.preventDefault();
             $(this).parents('[data-connect]').remove();
         })
     }
-    function $_editList() {
+    function $_editListAsync() {
         $('.list-edit').off('click').on('click', function(event) {
 
             event.preventDefault();
@@ -287,7 +287,7 @@ $(function() {
 
     // Clear all task at on click
 
-    function $_clearList() {
+    function $_clearListAsync() {
         $('.list-clear-all').off('click').on('click', function(event) {
             event.preventDefault();
             $(this).parents('[data-connect="sorting"]').find('.connect-sorting-content .card').remove();
@@ -363,9 +363,9 @@ $(function() {
       })
     }
 
-$_editList();
-$_deleteList();
-$_clearList();
+$_editListAsync();
+$_deleteListAsync();
+$_clearListAsync();
 addTask();
 $_taskEdit();
 $_taskDelete();

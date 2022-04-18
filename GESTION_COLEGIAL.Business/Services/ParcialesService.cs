@@ -8,42 +8,42 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class ParcialesService
     {
-        public async Task<IEnumerable<ParcialViewModel>> List()
+        public async Task<IEnumerable<ParcialViewModel>> ListAsync()
         {
-            string url = "Modalidades/List";
-            IEnumerable<ParcialViewModel> apiUrl = await ApiRequests.List<ParcialViewModel>(url);
+            string url = "Modalidades/ListAsync";
+            IEnumerable<ParcialViewModel> apiUrl = await ApiRequests.ListAsync<ParcialViewModel>(url);
             return apiUrl;
         }
 
         public async Task<ParcialViewModel> Find(int id)
         {
-            string url = "Modalidades/Find";
-            ParcialViewModel apiUrl = await ApiRequests.Find<ParcialViewModel>(url, id);
+            string url = "Modalidades/FindAsync";
+            ParcialViewModel apiUrl = await ApiRequests.FindAsync<ParcialViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(ParcialViewModel model)
         {
-            string url = "Modalidades/Create";
-            return await ApiRequests.Create(url, model);
+            string url = "Modalidades/CreateAsync";
+            return await ApiRequests.CreateAsync(url, model);
         }
 
         public async Task<Boolean> Edit(ParcialViewModel model)
         {
-            string url = "Modalidades/Edit";
-            return await ApiRequests.Edit(url, model);
+            string url = "Modalidades/EditAsync";
+            return await ApiRequests.EditAsync(url, model);
         }
 
         public async Task<ParcialViewModel> Exist(string value)
         {
-            string url = "Modalidades/Exist";
-            return await ApiRequests.Exist<ParcialViewModel>(url, value);
+            string url = "Modalidades/ExistAsync";
+            return await ApiRequests.ExistAsync<ParcialViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
             string url = "Modalidades/Remove";
-            return await ApiRequests.Delete(url, id);
+            return await ApiRequests.DeleteAsync(url, id);
         }
     }
 }

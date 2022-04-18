@@ -15,6 +15,8 @@
                     FieldName: "Hor_Hora"
                 }
             ]
+            console.log('hola' + Direction)
+
             datatableCatalogs.init(Direction, header);
         })
     }

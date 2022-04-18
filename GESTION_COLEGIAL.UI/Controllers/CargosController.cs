@@ -18,12 +18,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public ActionResult Create()
         {
-            return View("Create");
+            return View("CreateAsync");
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await cargosService.List();
+            var result = await cargosService.ListAsync();
             return AjaxResult(result);
         }
 

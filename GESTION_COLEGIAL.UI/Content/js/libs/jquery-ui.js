@@ -17672,7 +17672,7 @@ $.widget( "ui.tabs", {
 			prevAnchors = this.anchors,
 			prevPanels = this.panels;
 
-		this.tablist = this._getList().attr( "role", "tablist" );
+		this.tablist = this._getListAsync().attr( "role", "tablist" );
 		this._addClass( this.tablist, "ui-tabs-nav",
 			"ui-helper-reset ui-helper-clearfix ui-widget-header" );
 

@@ -18,9 +18,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await cursosService.List();
+            var result = await cursosService.ListAsync();
             return AjaxResult(result);
         }
 
@@ -34,7 +34,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> Find(int id)
         {
             var result = await cursosService.Find(id);
-            return View("Create", result);
+            return View("CreateAsync", result);
         }
 
         [HttpPost]

@@ -14,7 +14,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(11)]
         [Display(Name = "Hora")]
         [Required(ErrorMessage = "El campo es requerido")]
-        [Remote(action: "Exist", controller: "Horas", HttpMethod = "POST", AdditionalFields = nameof(Hor_Id) + "," + nameof(Hor_Hora))]
+        [Remote(action: "ExistAsync", controller: "Horas", HttpMethod = "POST", AdditionalFields = nameof(Hor_Id) + "," + nameof(Hor_Hora))]
         public string Hor_Hora { get; set; }
 
         [Display(Name = "Usuario registra Id")]

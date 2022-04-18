@@ -8,42 +8,42 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class NivelesEducativosService
     {
-        public async Task<IEnumerable<NivelEducativoViewModel>> List()
+        public async Task<IEnumerable<NivelEducativoViewModel>> ListAsync()
         {
-            string url = "NivelesEducativos/List";
-            IEnumerable<NivelEducativoViewModel> apiUrl = await ApiRequests.List<NivelEducativoViewModel>(url);
+            string url = "NivelesEducativos/ListAsync";
+            IEnumerable<NivelEducativoViewModel> apiUrl = await ApiRequests.ListAsync<NivelEducativoViewModel>(url);
             return apiUrl;
         }
 
         public async Task<NivelEducativoViewModel> Find(int id)
         {
-            string url = "NivelesEducativos/Find";
-            NivelEducativoViewModel apiUrl = await ApiRequests.Find<NivelEducativoViewModel>(url, id);
+            string url = "NivelesEducativos/FindAsync";
+            NivelEducativoViewModel apiUrl = await ApiRequests.FindAsync<NivelEducativoViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(NivelEducativoViewModel model)
         {
-            string url = "NivelesEducativos/Create";
-            return await ApiRequests.Create(url, model);
+            string url = "NivelesEducativos/CreateAsync";
+            return await ApiRequests.CreateAsync(url, model);
         }
 
         public async Task<Boolean> Edit(NivelEducativoViewModel model)
         {
-            string url = "NivelesEducativos/Edit";
-            return await ApiRequests.Edit(url, model);
+            string url = "NivelesEducativos/EditAsync";
+            return await ApiRequests.EditAsync(url, model);
         }
 
         public async Task<NivelEducativoViewModel> Exist(string value)
         {
-            string url = "NivelesEducativos/Exist";
-            return await ApiRequests.Exist<NivelEducativoViewModel>(url, value);
+            string url = "NivelesEducativos/ExistAsync";
+            return await ApiRequests.ExistAsync<NivelEducativoViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
             string url = "NivelesEducativos/Remove";
-            return await ApiRequests.Delete(url, id);
+            return await ApiRequests.DeleteAsync(url, id);
         }
     }
 }

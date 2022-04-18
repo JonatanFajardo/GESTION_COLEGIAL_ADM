@@ -13,7 +13,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(150)]
         [Display(Name = "Nombre")]
         [Required(ErrorMessage = "El campo es requerido")]
-        [Remote(action: "Exist", controller: "Materias", HttpMethod = "POST", AdditionalFields = nameof(Mat_Id) + "," + nameof(Mat_Nombre))]
+        [Remote(action: "ExistAsync", controller: "Materias", HttpMethod = "POST", AdditionalFields = nameof(Mat_Id) + "," + nameof(Mat_Nombre))]
         public string Mat_Nombre { get; set; }
 
         [Display(Name = "Duración")]

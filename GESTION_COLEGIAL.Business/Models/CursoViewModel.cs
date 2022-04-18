@@ -79,7 +79,7 @@ namespace GESTION_COLEGIAL.Business.Models
         // Propiedad con la información de cursos materias.
         public IList<SelectListItem> MateriasCheckList { get; set; }
 
-        // Dropdown
+        // DropdownAsync
 
         // Propiedad con listado de niveles educativos.
         public SelectList NivelEducativoList { get; set; }

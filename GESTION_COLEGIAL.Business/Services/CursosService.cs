@@ -10,27 +10,27 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class CursosService
     {
-        public async Task<IEnumerable<CursoViewModel>> List()
+        public async Task<IEnumerable<CursoViewModel>> ListAsync()
         {
-            string url = "Cursos/List";
-            IEnumerable<CursoViewModel> apiUrl = await ApiRequests.List<CursoViewModel>(url);
+            string url = "Cursos/ListAsync";
+            IEnumerable<CursoViewModel> apiUrl = await ApiRequests.ListAsync<CursoViewModel>(url);
             return apiUrl;
         }
 
         public async Task<CursoViewModel> Find(int id)
         {
             // Url de peticion
-            string url = "Cursos/Find";
+            string url = "Cursos/FindAsync";
             string urlModalidades = "Cursos/CursosModalidadesFind";
             string urlMaterias = "Cursos/CursosMateriasFind";
             string urlCursosNiveles = "Cursos/CursosNivelesFind";
             string urlSecciones = "Cursos/CursosSeccionesFind";
             // Envio y recepcion de la peticion
-            var result = await ApiRequests.Find<CursoViewModel>(url, id);
-            var modalidades = await ApiRequests.FindAll<ModalidadViewModel>(urlModalidades, id);
-            var secciones = await ApiRequests.FindAll<SeccionViewModel>(urlSecciones, id);
-            var cursosniveles = await ApiRequests.FindAll<CursoNivelViewModel>(urlCursosNiveles, id);
-            var materias = await ApiRequests.FindAll<MateriaViewModel>(urlMaterias, id);
+            var result = await ApiRequests.FindAsync<CursoViewModel>(url, id);
+            var modalidades = await ApiRequests.FindAllAsync<ModalidadViewModel>(urlModalidades, id);
+            var secciones = await ApiRequests.FindAllAsync<SeccionViewModel>(urlSecciones, id);
+            var cursosniveles = await ApiRequests.FindAllAsync<CursoNivelViewModel>(urlCursosNiveles, id);
+            var materias = await ApiRequests.FindAllAsync<MateriaViewModel>(urlMaterias, id);
 
             var load = await Load(result);
 
@@ -77,17 +77,17 @@ namespace GESTION_COLEGIAL.Business.Services
             model.CursoNivelesCheckList = null;
             model.MateriasCheckList = null;
             // Direcciones.
-            string url = "Cursos/Create";
+            string url = "Cursos/CreateAsync";
             string urlModalidades = "Cursos/CursosModalidadesCreate";
             string urlCursosNiveles = "Cursos/CursosNivelesCreate";
             string urlMaterias = "Cursos/CursosMateriasCreate";
             string urlSecciones = "Cursos/CursosSeccionesCreate";
             // Envio y recepcion de la peticion
-            bool result = await ApiRequests.Create(url, model);
-            bool resultModalidades = await ApiRequests.Create(urlModalidades, model);
-            bool resultCursosNiveles = await ApiRequests.Create(urlCursosNiveles, model);
-            bool resultMaterias = await ApiRequests.Create(urlMaterias, model);
-            bool resultSecciones = await ApiRequests.Create(urlSecciones, model);
+            bool result = await ApiRequests.CreateAsync(url, model);
+            bool resultModalidades = await ApiRequests.CreateAsync(urlModalidades, model);
+            bool resultCursosNiveles = await ApiRequests.CreateAsync(urlCursosNiveles, model);
+            bool resultMaterias = await ApiRequests.CreateAsync(urlMaterias, model);
+            bool resultSecciones = await ApiRequests.CreateAsync(urlSecciones, model);
             // Comprobando el resultado de las peticiones.
             Boolean[] results = { result, resultModalidades, resultCursosNiveles, resultMaterias, resultSecciones };
             return ValidationResults.BooleanListIsTrue(results);
@@ -96,17 +96,17 @@ namespace GESTION_COLEGIAL.Business.Services
         public async Task<Boolean> Edit(CursoViewModel model)
         {
             // Direcciones.
-            string url = "Cursos/Edit";
+            string url = "Cursos/EditAsync";
             string urlModalidades = "Cursos/CursosModalidadesEdit";
             string urlCursosNiveles = "Cursos/CursosNivelesEdit";
             string urlMaterias = "Cursos/CursosMateriasEdit";
             string urlSecciones = "Cursos/CursosSeccionesEdit";
             // Envio y recepcion de la peticion
-            bool result = await ApiRequests.Edit(url, model);
-            bool resultModalidades = await ApiRequests.Edit(urlModalidades, model);
-            bool resultCursosNiveles = await ApiRequests.Edit(urlCursosNiveles, model);
-            bool resultMaterias = await ApiRequests.Edit(urlMaterias, model);
-            bool resultSecciones = await ApiRequests.Edit(urlSecciones, model);
+            bool result = await ApiRequests.EditAsync(url, model);
+            bool resultModalidades = await ApiRequests.EditAsync(urlModalidades, model);
+            bool resultCursosNiveles = await ApiRequests.EditAsync(urlCursosNiveles, model);
+            bool resultMaterias = await ApiRequests.EditAsync(urlMaterias, model);
+            bool resultSecciones = await ApiRequests.EditAsync(urlSecciones, model);
             // Comprobando el resultado de las peticiones.
             Boolean[] results = { result, resultModalidades, resultCursosNiveles, resultMaterias, resultSecciones };
             return ValidationResults.BooleanListIsTrue(results);
@@ -114,14 +114,14 @@ namespace GESTION_COLEGIAL.Business.Services
 
         public async Task<CursoViewModel> Exist(string value)
         {
-            string url = "Cursos/Exist";
-            return await ApiRequests.Exist<CursoViewModel>(url, value);
+            string url = "Cursos/ExistAsync";
+            return await ApiRequests.ExistAsync<CursoViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
             string url = "Cursos/Remove";
-            return await ApiRequests.Delete(url, id);
+            return await ApiRequests.DeleteAsync(url, id);
         }
 
         public async Task<CursoViewModel> Load(CursoViewModel model)
@@ -133,11 +133,11 @@ namespace GESTION_COLEGIAL.Business.Services
             string urlCursosNiveles = "Cursos/CursosNivelesList";
             string urlSecciones = "Cursos/SeccionesList";
             // Instancias.
-            var nivelesEducativosDropdown = await ApiRequests.Dropdown<NivelEducativoViewModel>(urlNivelesEducativos);
-            var modalidadesList = await ApiRequests.CheckList<ModalidadViewModel>(urlModalidades);
-            var materiasList = await ApiRequests.CheckList<MateriaViewModel>(urlMaterias);
-            var cursosNivelesList = await ApiRequests.CheckList<CursoNivelViewModel>(urlCursosNiveles);
-            var seccionesList = await ApiRequests.CheckList<SeccionViewModel>(urlSecciones);
+            var nivelesEducativosDropdown = await ApiRequests.DropdownAsync<NivelEducativoViewModel>(urlNivelesEducativos);
+            var modalidadesList = await ApiRequests.CheckListAsync<ModalidadViewModel>(urlModalidades);
+            var materiasList = await ApiRequests.CheckListAsync<MateriaViewModel>(urlMaterias);
+            var cursosNivelesList = await ApiRequests.CheckListAsync<CursoNivelViewModel>(urlCursosNiveles);
+            var seccionesList = await ApiRequests.CheckListAsync<SeccionViewModel>(urlSecciones);
             // Cargando en el modelo.
             model.LoadDropDownList(nivelesEducativosDropdown);
             model.LoadCheckList(modalidadesList, seccionesList, cursosNivelesList, materiasList);

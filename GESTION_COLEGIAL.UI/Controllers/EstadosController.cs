@@ -29,9 +29,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
 
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await estadosService.List();
+            var result = await estadosService.ListAsync();
             return AjaxResult(result);
         }
 
@@ -83,7 +83,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Estados/Exist";
+            string url = "Estados/ExistAsync";
             var result = await estadosService.Exist(Est_Descripcion);
             if (result != null)
             {

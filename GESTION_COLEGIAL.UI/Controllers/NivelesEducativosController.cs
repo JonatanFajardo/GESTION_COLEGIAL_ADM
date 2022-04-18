@@ -17,9 +17,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View(model);
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await nivelesEducativosService.List();
+            var result = await nivelesEducativosService.ListAsync();
             return AjaxResult(result);
         }
 

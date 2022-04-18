@@ -2,42 +2,42 @@
 {
     public class HorarioProfesoresService
     {
-        //public async Task<IEnumerable<HorarioProfesorViewModel>> List()
+        //public async Task<IEnumerable<HorarioProfesorViewModel>> ListAsync()
         //{
-        //    string url = "HorarioProfesores/List";
-        //    IEnumerable<HorarioProfesorViewModel> apiUrl = await ApiRequests.List<HorarioProfesorViewModel>(url);
+        //    string url = "HorarioProfesores/ListAsync";
+        //    IEnumerable<HorarioProfesorViewModel> apiUrl = await ApiRequests.ListAsync<HorarioProfesorViewModel>(url);
         //    return apiUrl;
         //}
 
-        //public async Task<HorarioProfesorViewModel> Find(int id)
+        //public async Task<HorarioProfesorViewModel> FindAsync(int id)
         //{
-        //    string url = "HorarioProfesores/Find";
-        //    HorarioProfesorViewModel apiUrl = await ApiRequests.Find<HorarioProfesorViewModel>(url, id);
+        //    string url = "HorarioProfesores/FindAsync";
+        //    HorarioProfesorViewModel apiUrl = await ApiRequests.FindAsync<HorarioProfesorViewModel>(url, id);
         //    return apiUrl;
         //}
 
-        //public async Task<Boolean> Create(HorarioProfesorViewModel model)
+        //public async Task<Boolean> CreateAsync(HorarioProfesorViewModel model)
         //{
-        //    string url = "HorarioProfesores/Create";
-        //    return await ApiRequests.Create(url, model);
+        //    string url = "HorarioProfesores/CreateAsync";
+        //    return await ApiRequests.CreateAsync(url, model);
         //}
 
-        //public async Task<Boolean> Edit(HorarioProfesorViewModel model)
+        //public async Task<Boolean> EditAsync(HorarioProfesorViewModel model)
         //{
-        //    string url = "HorarioProfesores/Edit";
-        //    return await ApiRequests.Edit(url, model);
+        //    string url = "HorarioProfesores/EditAsync";
+        //    return await ApiRequests.EditAsync(url, model);
         //}
 
-        //public async Task<HorarioProfesorViewModel> Exist(string value)
+        //public async Task<HorarioProfesorViewModel> ExistAsync(string value)
         //{
-        //    string url = "HorarioProfesores/Exist";
-        //    return await ApiRequests.Exist<HorarioProfesorViewModel>(url, value);
+        //    string url = "HorarioProfesores/ExistAsync";
+        //    return await ApiRequests.ExistAsync<HorarioProfesorViewModel>(url, value);
         //}
 
-        //public async Task<Boolean> Delete(int id)
+        //public async Task<Boolean> DeleteAsync(int id)
         //{
         //    string url = "HorarioProfesores/Remove";
-        //    return await ApiRequests.Delete(url, id);
+        //    return await ApiRequests.DeleteAsync(url, id);
         //}
     }
 }

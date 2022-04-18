@@ -13,7 +13,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(50)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo es requerido")]
-        [Remote(action: "Exist", controller: "CursosNiveles", HttpMethod = "POST", AdditionalFields = nameof(Cun_Id) + "," + nameof(Cun_Descripcion))]
+        [Remote(action: "ExistAsync", controller: "CursosNiveles", HttpMethod = "POST", AdditionalFields = nameof(Cun_Id) + "," + nameof(Cun_Descripcion))]
         public string Cun_Descripcion { get; set; }
 
         public int Niv_Id { get; set; }

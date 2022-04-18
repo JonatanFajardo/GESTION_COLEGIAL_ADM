@@ -17,9 +17,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await diasService.List();
+            var result = await diasService.ListAsync();
             return AjaxResult(result);
         }
 

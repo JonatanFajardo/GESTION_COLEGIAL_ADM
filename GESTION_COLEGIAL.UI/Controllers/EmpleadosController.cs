@@ -16,10 +16,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        //public async Task<ActionResult> List()
+        //public async Task<ActionResult> ListAsync()
         //{
-        //    string url = "NivelesEducativos/List";
-        //    var result = await empleadosService.List<NivelEducativoViewModel>(url);
+        //    string url = "NivelesEducativos/ListAsync";
+        //    var result = await empleadosService.ListAsync<NivelEducativoViewModel>(url);
         //    return AjaxResult(result);
         //}
 
@@ -30,9 +30,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View(load);
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await empleadosService.List();
+            var result = await empleadosService.ListAsync();
             return AjaxResult(result);
         }
 
@@ -42,7 +42,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             //var model = _mapper.Map<EmpleadoViewModel>(result);
             var load = await Load(result);
 
-            return View("Create", load);
+            return View("CreateAsync", load);
         }
 
         [HttpPost]

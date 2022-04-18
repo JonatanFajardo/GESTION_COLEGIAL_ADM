@@ -8,42 +8,42 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class ModalidadesService
     {
-        public async Task<IEnumerable<ModalidadViewModel>> List()
+        public async Task<IEnumerable<ModalidadViewModel>> ListAsync()
         {
-            string url = "Modalidades/List";
-            IEnumerable<ModalidadViewModel> apiUrl = await ApiRequests.List<ModalidadViewModel>(url);
+            string url = "Modalidades/ListAsync";
+            IEnumerable<ModalidadViewModel> apiUrl = await ApiRequests.ListAsync<ModalidadViewModel>(url);
             return apiUrl;
         }
 
         public async Task<ModalidadViewModel> Find(int id)
         {
-            string url = "Modalidades/Find";
-            ModalidadViewModel apiUrl = await ApiRequests.Find<ModalidadViewModel>(url, id);
+            string url = "Modalidades/FindAsync";
+            ModalidadViewModel apiUrl = await ApiRequests.FindAsync<ModalidadViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(ModalidadViewModel model)
         {
-            string url = "Modalidades/Create";
-            return await ApiRequests.Create(url, model);
+            string url = "Modalidades/CreateAsync";
+            return await ApiRequests.CreateAsync(url, model);
         }
 
         public async Task<Boolean> Edit(ModalidadViewModel model)
         {
-            string url = "Modalidades/Edit";
-            return await ApiRequests.Edit(url, model);
+            string url = "Modalidades/EditAsync";
+            return await ApiRequests.EditAsync(url, model);
         }
 
         public async Task<ModalidadViewModel> Exist(string value)
         {
-            string url = "Modalidades/Exist";
-            return await ApiRequests.Exist<ModalidadViewModel>(url, value);
+            string url = "Modalidades/ExistAsync";
+            return await ApiRequests.ExistAsync<ModalidadViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
             string url = "Modalidades/Remove";
-            return await ApiRequests.Delete(url, id);
+            return await ApiRequests.DeleteAsync(url, id);
         }
     }
 }

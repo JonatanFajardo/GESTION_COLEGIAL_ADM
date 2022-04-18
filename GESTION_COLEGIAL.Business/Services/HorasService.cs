@@ -8,42 +8,42 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class HorasService
     {
-        public async Task<IEnumerable<HoraViewModel>> List()
+        public async Task<IEnumerable<HoraViewModel>> ListAsync()
         {
-            string url = "Horas/List";
-            IEnumerable<HoraViewModel> apiUrl = await ApiRequests.List<HoraViewModel>(url);
+            string url = "Horas/ListAsync";
+            IEnumerable<HoraViewModel> apiUrl = await ApiRequests.ListAsync<HoraViewModel>(url);
             return apiUrl;
         }
 
         public async Task<HoraViewModel> Find(int id)
         {
-            string url = "Horas/Find";
-            HoraViewModel apiUrl = await ApiRequests.Find<HoraViewModel>(url, id);
+            string url = "Horas/FindAsync";
+            HoraViewModel apiUrl = await ApiRequests.FindAsync<HoraViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(HoraViewModel model)
         {
-            string url = "Horas/Create";
-            return await ApiRequests.Create(url, model);
+            string url = "Horas/CreateAsync";
+            return await ApiRequests.CreateAsync(url, model);
         }
 
         public async Task<Boolean> Edit(HoraViewModel model)
         {
-            string url = "Horas/Edit";
-            return await ApiRequests.Edit(url, model);
+            string url = "Horas/EditAsync";
+            return await ApiRequests.EditAsync(url, model);
         }
 
         public async Task<HoraViewModel> Exist(string value)
         {
-            string url = "Horas/Exist";
-            return await ApiRequests.Exist<HoraViewModel>(url, value);
+            string url = "Horas/ExistAsync";
+            return await ApiRequests.ExistAsync<HoraViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
             string url = "Horas/Remove";
-            return await ApiRequests.Delete(url, id);
+            return await ApiRequests.DeleteAsync(url, id);
         }
     }
 }

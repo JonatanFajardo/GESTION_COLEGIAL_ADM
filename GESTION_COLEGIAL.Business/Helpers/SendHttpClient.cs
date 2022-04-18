@@ -12,16 +12,17 @@ namespace GESTION_COLEGIAL.Business.Helpers
     /// </summary>
     public static class SendHttpClient
     {
-        //private const string baseUrl = "https://localhost:44341/api/";
-        private const string baseUrl = "http://gestioncolegialapi.somee.com/api/";
+        private const string baseUrl = "https://localhost:44341/api/";
+        //private const string baseUrl = "http://gestioncolegialapi.somee.com/api/";
 
+        #region Asincrono
         /// <summary>
         /// Obtiene valores del servicio.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static async Task<List<T>> Get<T>(string url/*, object model*/)
+        public static async Task<List<T>> GetAsync<T>(string url/*, object model*/)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             }
         }
 
-        public static async Task<List<T>> Dropdown<T>(string url, int id)
+        public static async Task<List<T>> DropdownAsync<T>(string url, int id)
         {
             try
             {
@@ -72,7 +73,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         /// <param name="url"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static async Task<bool> Post(string url, object model)
+        public static async Task<bool> PostAsync(string url, object model)
         {
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
@@ -94,7 +95,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         /// <param name="url"></param>
         /// <param name="id">Identificador del registro a eliminar.</param>
         /// <returns></returns>
-        public static async Task<bool> Delete(string url, int id)
+        public static async Task<bool> DeleteAsync(string url, int id)
         {
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(id);//se convierte a json el contenido a enviar
@@ -116,7 +117,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         /// <param name="url"></param>
         /// <param name="model">Entidad que encapsula los datos a actualizar.</param>
         /// <returns></returns>
-        public static async Task<bool> Put(string url, object model)
+        public static async Task<bool> PutAsync(string url, object model)
         {
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
@@ -139,7 +140,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         /// <param name="url"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static async Task<T> Exist<T>(string url, string value)
+        public static async Task<T> ExistAsync<T>(string url, string value)
         {
             try
             {
@@ -170,7 +171,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         /// <param name="url"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static async Task<T> Find<T>(string url, int value)
+        public static async Task<T> FindAsync<T>(string url, int value)
         {
             try
             {
@@ -194,7 +195,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             }
         }
 
-        public static async Task<List<T>> FindAll<T>(string url, int value)
+        public static async Task<List<T>> FindAllAsync<T>(string url, int value)
         {
             try
             {
@@ -217,5 +218,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 throw;
             }
         }
+        #endregion
     }
 }
