@@ -118,14 +118,14 @@
     <script src="~/Content/js/pages/duraciones.js"></script>
     <script>
         Duraciones.datatableCatalogs({
-            urlList: "@Url.Action("List")",
+            urlList: "@Url.Action("ListAsync")",
             urlDetail: "Detail"
         });
     </script>
     <script>
         Catalogs.configure({
             displayName: "duraciones",
-            urlUpdate: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("FindAsync")"
         });
     </script>
 }

@@ -120,14 +120,14 @@
     <script src="~/Content/js/pages/dias.js"></script>
     <script>
         Dias.datatableCatalogs({
-            urlList: "@Url.Action("List")",
+            urlList: "@Url.Action("ListAsync")",
             urlDetail: "Detail"
         });
     </script>
     <script>
         Catalogs.configure({
             displayName: "dias",
-            urlUpdate: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("FindAsync")"
         });
     </script>
 }

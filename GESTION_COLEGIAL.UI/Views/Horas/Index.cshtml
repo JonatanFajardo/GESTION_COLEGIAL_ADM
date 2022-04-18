@@ -117,14 +117,14 @@
     <script src="~/Content/js/pages/horas.js"></script>
     <script>
         Horas.datatableCatalogs({
-            urlList: "@Url.Action("List")",
+            urlList: "@Url.Action("ListAsync")",
             urlDetail: "Detail"
         });
     </script>
     <script>
         Catalogs.configure({
             displayName: "hora",
-            urlUpdate: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("FindAsync")"
         });
     </script>
 }

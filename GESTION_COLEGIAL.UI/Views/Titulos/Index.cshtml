@@ -117,14 +117,14 @@
     <script src="~/Content/js/pages/titulos.js"></script>
     <script>
         Titulos.datatableCatalogs({
-            urlList: "@Url.Action("List")",
+            urlList: "@Url.Action("ListAsync")",
             urlDetail: "Detail"
         });
     </script>
     <script>
         Catalogs.configure({
             displayName: "titulos",
-            urlUpdate: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("FindAsync")"
         });
     </script>
 }

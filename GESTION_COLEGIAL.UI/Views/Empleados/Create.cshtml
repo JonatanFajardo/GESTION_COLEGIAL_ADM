@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 @using (Html.BeginForm("Save", "Empleados", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="container">
@@ -169,9 +168,9 @@
     <script src="~/Content/js/pages/empleados.js"></script>
     <script>
         Empleados.datatable({
-            urlList: "@Url.Action("List")",
-            urlInsert: "@Url.Action("Create")",
-            urlUpdate: "@Url.Action("Find")",
+            urlList: "@Url.Action("ListAsync")",
+            urlInsert: "@Url.Action("CreateAsync")",
+            urlUpdate: "@Url.Action("FindAsync")",
             urlDetail: "Detail"
         });
     </script>
