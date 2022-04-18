@@ -119,14 +119,14 @@
     <script src="~/Content/js/pages/secciones.js"></script>
     <script>
         Secciones.datatableCatalogs({
-            urlList: "@Url.Action("List")",
+            urlList: "@Url.Action("ListAsync")",
             urlDetail: "Detail"
         });
     </script>
     <script>
         Catalogs.configure({
             displayName: "secciones",
-            urlUpdate: "@Url.Action("Find")"
+            urlUpdate: "@Url.Action("FindAsync")"
         });
     </script>
 }
