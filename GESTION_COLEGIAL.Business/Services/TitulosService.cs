@@ -8,42 +8,42 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class TitulosService
     {
-        public async Task<IEnumerable<TituloViewModel>> List()
+        public async Task<IEnumerable<TituloViewModel>> ListAsync()
         {
-            string url = "Titulos/List";
-            IEnumerable<TituloViewModel> apiUrl = await ApiRequests.List<TituloViewModel>(url);
+            string url = "Titulos/ListAsync";
+            IEnumerable<TituloViewModel> apiUrl = await ApiRequests.ListAsync<TituloViewModel>(url);
             return apiUrl;
         }
 
         public async Task<TituloViewModel> Find(int id)
         {
-            string url = "Titulos/Find";
-            TituloViewModel apiUrl = await ApiRequests.Find<TituloViewModel>(url, id);
+            string url = "Titulos/FindAsync";
+            TituloViewModel apiUrl = await ApiRequests.FindAsync<TituloViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(TituloViewModel model)
         {
-            string url = "Titulos/Create";
-            return await ApiRequests.Create(url, model);
+            string url = "Titulos/CreateAsync";
+            return await ApiRequests.CreateAsync(url, model);
         }
 
         public async Task<Boolean> Edit(TituloViewModel model)
         {
-            string url = "Titulos/Edit";
-            return await ApiRequests.Edit(url, model);
+            string url = "Titulos/EditAsync";
+            return await ApiRequests.EditAsync(url, model);
         }
 
         public async Task<TituloViewModel> Exist(string value)
         {
-            string url = "Titulos/Exist";
-            return await ApiRequests.Exist<TituloViewModel>(url, value);
+            string url = "Titulos/ExistAsync";
+            return await ApiRequests.ExistAsync<TituloViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
             string url = "Titulos/Remove";
-            return await ApiRequests.Delete(url, id);
+            return await ApiRequests.DeleteAsync(url, id);
         }
     }
 }

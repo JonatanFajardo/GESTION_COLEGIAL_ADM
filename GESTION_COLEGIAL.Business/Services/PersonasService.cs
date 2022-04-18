@@ -2,42 +2,42 @@
 {
     public class PersonasService
     {
-        //public async Task<IEnumerable<PersonaViewModel>> List()
+        //public async Task<IEnumerable<PersonaViewModel>> ListAsync()
         //{
-        //    string url = "Personas/List";
-        //    IEnumerable<PersonaViewModel> apiUrl = await ApiRequests.List<PersonaViewModel>(url);
+        //    string url = "Personas/ListAsync";
+        //    IEnumerable<PersonaViewModel> apiUrl = await ApiRequests.ListAsync<PersonaViewModel>(url);
         //    return apiUrl;
         //}
 
-        //public async Task<PersonaViewModel> Find(int id)
+        //public async Task<PersonaViewModel> FindAsync(int id)
         //{
-        //    string url = "Personas/Find";
-        //    PersonaViewModel apiUrl = await ApiRequests.Find<PersonaViewModel>(url, id);
+        //    string url = "Personas/FindAsync";
+        //    PersonaViewModel apiUrl = await ApiRequests.FindAsync<PersonaViewModel>(url, id);
         //    return apiUrl;
         //}
 
-        //public async Task<Boolean> Create(PersonaViewModel model)
+        //public async Task<Boolean> CreateAsync(PersonaViewModel model)
         //{
-        //    string url = "Personas/Create";
-        //    return await ApiRequests.Create(url, model);
+        //    string url = "Personas/CreateAsync";
+        //    return await ApiRequests.CreateAsync(url, model);
         //}
 
-        //public async Task<Boolean> Edit(PersonaViewModel model)
+        //public async Task<Boolean> EditAsync(PersonaViewModel model)
         //{
-        //    string url = "Personas/Edit";
-        //    return await ApiRequests.Edit(url, model);
+        //    string url = "Personas/EditAsync";
+        //    return await ApiRequests.EditAsync(url, model);
         //}
 
-        //public async Task<PersonaViewModel> Exist(string value)
+        //public async Task<PersonaViewModel> ExistAsync(string value)
         //{
-        //    string url = "Personas/Exist";
-        //    return await ApiRequests.Exist<PersonaViewModel>(url, value);
+        //    string url = "Personas/ExistAsync";
+        //    return await ApiRequests.ExistAsync<PersonaViewModel>(url, value);
         //}
 
-        //public async Task<Boolean> Delete(int id)
+        //public async Task<Boolean> DeleteAsync(int id)
         //{
         //    string url = "Personas/Remove";
-        //    return await ApiRequests.Delete(url, id);
+        //    return await ApiRequests.DeleteAsync(url, id);
         //}
     }
 }

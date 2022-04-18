@@ -8,42 +8,42 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class CargosService
     {
-        public async Task<IEnumerable<CargoViewModel>> List()
+        public async Task<IEnumerable<CargoViewModel>> ListAsync()
         {
-            string url = "Cargos/List";
-            IEnumerable<CargoViewModel> apiUrl = await ApiRequests.List<CargoViewModel>(url);
+            string url = "Cargos/ListAsync";
+            IEnumerable<CargoViewModel> apiUrl = await ApiRequests.ListAsync<CargoViewModel>(url);
             return apiUrl;
         }
 
         public async Task<CargoViewModel> Find(int id)
         {
-            string url = "Cargos/Find";
-            CargoViewModel apiUrl = await ApiRequests.Find<CargoViewModel>(url, id);
+            string url = "Cargos/FindAsync";
+            CargoViewModel apiUrl = await ApiRequests.FindAsync<CargoViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(CargoViewModel model)
         {
-            string url = "Cargos/Create";
-            return await ApiRequests.Create(url, model);
+            string url = "Cargos/CreateAsync";
+            return await ApiRequests.CreateAsync(url, model);
         }
 
         public async Task<Boolean> Edit(CargoViewModel model)
         {
-            string url = "Cargos/Edit";
-            return await ApiRequests.Edit(url, model);
+            string url = "Cargos/EditAsync";
+            return await ApiRequests.EditAsync(url, model);
         }
 
         public async Task<CargoViewModel> Exist(string value)
         {
-            string url = "Cargos/Exist";
-            return await ApiRequests.Exist<CargoViewModel>(url, value);
+            string url = "Cargos/ExistAsync";
+            return await ApiRequests.ExistAsync<CargoViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
             string url = "Cargos/Remove";
-            return await ApiRequests.Delete(url, id);
+            return await ApiRequests.DeleteAsync(url, id);
         }
     }
 }

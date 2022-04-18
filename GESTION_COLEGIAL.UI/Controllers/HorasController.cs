@@ -15,9 +15,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await horasService.List();
+            var result = await horasService.ListAsync();
             return AjaxResult(result);
         }
 
@@ -57,7 +57,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         //[HttpPost]
-        //public async Task<ActionResult> Exist(int? Hor_Id, string Hor_Descripcion)
+        //public async Task<ActionResult> ExistAsync(int? Hor_Id, string Hor_Descripcion)
         //{
         //    //Validaciones.
         //    ValidationModal validationModal = new ValidationModal();
@@ -70,8 +70,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //    }
 
         //    //Envío de datos.
-        //    string url = "Horas/Exist";
-        //    var result = await horasService.Exist(url, Hor_Descripcion);
+        //    string url = "Horas/ExistAsync";
+        //    var result = await horasService.ExistAsync(url, Hor_Descripcion);
         //    if (result != null)
         //    {
         //        int? firstValue = result.First().Hor_Id;

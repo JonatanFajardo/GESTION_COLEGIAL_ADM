@@ -8,42 +8,42 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class ParentescosService
     {
-        public async Task<IEnumerable<ParentescoViewModel>> List()
+        public async Task<IEnumerable<ParentescoViewModel>> ListAsync()
         {
-            string url = "Parentescos/List";
-            IEnumerable<ParentescoViewModel> apiUrl = await ApiRequests.List<ParentescoViewModel>(url);
+            string url = "Parentescos/ListAsync";
+            IEnumerable<ParentescoViewModel> apiUrl = await ApiRequests.ListAsync<ParentescoViewModel>(url);
             return apiUrl;
         }
 
         public async Task<ParentescoViewModel> Find(int id)
         {
-            string url = "Parentescos/Find";
-            ParentescoViewModel apiUrl = await ApiRequests.Find<ParentescoViewModel>(url, id);
+            string url = "Parentescos/FindAsync";
+            ParentescoViewModel apiUrl = await ApiRequests.FindAsync<ParentescoViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(ParentescoViewModel model)
         {
-            string url = "Parentescos/Create";
-            return await ApiRequests.Create(url, model);
+            string url = "Parentescos/CreateAsync";
+            return await ApiRequests.CreateAsync(url, model);
         }
 
         public async Task<Boolean> Edit(ParentescoViewModel model)
         {
-            string url = "Parentescos/Edit";
-            return await ApiRequests.Edit(url, model);
+            string url = "Parentescos/EditAsync";
+            return await ApiRequests.EditAsync(url, model);
         }
 
         public async Task<ParentescoViewModel> Exist(string value)
         {
-            string url = "Parentescos/Exist";
-            return await ApiRequests.Exist<ParentescoViewModel>(url, value);
+            string url = "Parentescos/ExistAsync";
+            return await ApiRequests.ExistAsync<ParentescoViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
             string url = "Parentescos/Remove";
-            return await ApiRequests.Delete(url, id);
+            return await ApiRequests.DeleteAsync(url, id);
         }
     }
 }

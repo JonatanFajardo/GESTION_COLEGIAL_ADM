@@ -8,7 +8,17 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class EncargadosController : BaseController
     {
+        public string count;
         EncargadosService encargadosService = new EncargadosService();
+        public EncargadosController()
+        {
+            //MyMethodAsync();
+        }
+
+        public async void MyMethodAsync()
+        {
+            //count = await encargadosService.Counts();
+        }
 
         // GET: Encargados
         public ActionResult Index()
@@ -21,16 +31,16 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> ListAsync()
         {
-            var result = await encargadosService.List();
+            var result = await encargadosService.ListAsync();
             return AjaxResult(result);
         }
 
         public async Task<ActionResult> Find(int id)
         {
             var result = await encargadosService.Find(id);
-            return View("Create", result);
+            return View("CreateAsync", result);
         }
 
         [HttpPost]
@@ -76,5 +86,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
+
+
     }
 }

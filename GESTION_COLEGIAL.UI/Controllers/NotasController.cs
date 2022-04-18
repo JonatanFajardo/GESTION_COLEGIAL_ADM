@@ -11,7 +11,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
         public ActionResult Create()
         {
-            return View("Create");
+            return View("CreateAsync");
         }
     }
 }
