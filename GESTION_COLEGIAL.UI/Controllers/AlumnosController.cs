@@ -17,7 +17,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        public async Task<ActionResult> Create()
+        public async Task<ActionResult> CreateAsync()
         {
             var model = new AlumnoViewModel();
             var drop = await Dropdown(model);
@@ -30,7 +30,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await alumnosService.Find(id);
             //var model = _mapper.Map(result);
@@ -136,7 +136,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(AlumnoViewModel model)
+        public async Task<ActionResult> DeleteAsync(AlumnoViewModel model)
         {
             bool result = await alumnosService.Delete(model.Alu_Id);
 

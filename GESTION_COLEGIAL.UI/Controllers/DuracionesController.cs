@@ -23,14 +23,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await duracionesService.Find(id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(DuracionViewModel model)
+        public async Task<ActionResult> CreateAsync(DuracionViewModel model)
         {
             if (model.Dur_Id == 0)
             {
@@ -59,7 +59,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Dur_Id, string Dur_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? Dur_Id, string Dur_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -82,7 +82,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(DuracionViewModel model)
+        public async Task<ActionResult> DeleteAsync(DuracionViewModel model)
         {
             bool result = await duracionesService.Delete(model.Dur_Id);
 

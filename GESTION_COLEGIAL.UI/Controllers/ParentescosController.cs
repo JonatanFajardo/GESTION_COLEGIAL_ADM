@@ -22,14 +22,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await parentescosService.Find(id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(ParentescoViewModel model)
+        public async Task<ActionResult> CreateAsync(ParentescoViewModel model)
         {
             if (model.Par_Id == 0)
             {
@@ -58,7 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Par_Id, string Par_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? Par_Id, string Par_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -81,7 +81,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(ParentescoViewModel model)
+        public async Task<ActionResult> DeleteAsync(ParentescoViewModel model)
         {
             bool result = await parentescosService.Delete(model.Par_Id);
 

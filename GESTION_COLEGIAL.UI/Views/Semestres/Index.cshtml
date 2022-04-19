@@ -36,7 +36,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                @using (Ajax.BeginForm("Create", "Semestres", new AjaxOptions
+                @using (Ajax.BeginForm("CreateAsync", "Semestres", new AjaxOptions
                 {
                     HttpMethod = "Post",
                     OnBegin = "Catalogs.begin",
@@ -79,7 +79,7 @@
     <!-- Modal Delete-->
     <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            @using (Ajax.BeginForm("Delete", "Semestres", new AjaxOptions
+            @using (Ajax.BeginForm("DeleteAsync", "Semestres", new AjaxOptions
             {
                 HttpMethod = "Post",
                 OnBegin = "Catalogs.begin",

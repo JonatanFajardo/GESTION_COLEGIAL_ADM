@@ -35,14 +35,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await estadosService.Find(id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(EstadoViewModel model)
+        public async Task<ActionResult> CreateAsync(EstadoViewModel model)
         {
             if (model.Est_Id == 0)
             {
@@ -70,7 +70,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Est_Id, string Est_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? Est_Id, string Est_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -94,7 +94,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(EstadoViewModel model)
+        public async Task<ActionResult> DeleteAsync(EstadoViewModel model)
         {
             bool result = await estadosService.Delete(model.Est_Id);
 

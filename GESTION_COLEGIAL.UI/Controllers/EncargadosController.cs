@@ -37,7 +37,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await encargadosService.Find(id);
             return View("CreateAsync", result);
@@ -75,7 +75,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(EncargadoViewModel model)
+        public async Task<ActionResult> DeleteAsync(EncargadoViewModel model)
         {
             bool result = await encargadosService.Delete(model.Enc_Id);
 

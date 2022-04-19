@@ -24,14 +24,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Create()
+        public async Task<ActionResult> CreateAsync()
         {
             var model = new CursoViewModel();
             var load = await Load(model);
             return View(load);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await cursosService.Find(id);
             return View("CreateAsync", result);
@@ -67,7 +67,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(CursoViewModel model)
+        public async Task<ActionResult> DeleteAsync(CursoViewModel model)
         {
             bool result = await cursosService.Delete(model.Cur_Id);
 

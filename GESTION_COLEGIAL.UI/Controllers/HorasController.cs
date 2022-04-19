@@ -22,7 +22,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(HoraViewModel model)
+        public async Task<ActionResult> CreateAsync(HoraViewModel model)
         {
             if (model.Hor_Id == 0)
             {
@@ -50,7 +50,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await horasService.Find(id);
             return AjaxResult(result, true);
@@ -81,7 +81,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //}
 
         [HttpPost]
-        public async Task<ActionResult> Delete(HoraViewModel model)
+        public async Task<ActionResult> DeleteAsync(HoraViewModel model)
         {
             bool result = await horasService.Delete(model.Hor_Id);
 

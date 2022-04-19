@@ -22,14 +22,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await semestresService.Find(id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(SemestreViewModel model)
+        public async Task<ActionResult> CreateAsync(SemestreViewModel model)
         {
             if (model.Sem_Id == 0)
             {
@@ -57,7 +57,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Sem_Id, string Sem_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? Sem_Id, string Sem_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -80,7 +80,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(SemestreViewModel model)
+        public async Task<ActionResult> DeleteAsync(SemestreViewModel model)
         {
             bool result = await semestresService.Delete(model.Sem_Id);
 

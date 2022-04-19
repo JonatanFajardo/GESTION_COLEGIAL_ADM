@@ -36,7 +36,7 @@
 
         //public async Task<Boolean> DeleteAsync(int id)
         //{
-        //    string url = "Personas/Remove";
+        //    string url = "Personas/RemoveAsync";
         //    return await ApiRequests.DeleteAsync(url, id);
         //}
     }
