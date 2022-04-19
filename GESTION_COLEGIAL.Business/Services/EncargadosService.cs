@@ -44,7 +44,7 @@ namespace GESTION_COLEGIAL.Business.Services
 
         public async Task<Boolean> Delete(int id)
         {
-            string url = "Encargados/Remove";
+            string url = "Encargados/RemoveAsync";
             return await ApiRequests.DeleteAsync(url, id);
         }
 

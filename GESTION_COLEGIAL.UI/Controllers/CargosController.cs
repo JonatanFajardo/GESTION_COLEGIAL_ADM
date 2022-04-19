@@ -27,14 +27,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await cargosService.Find(id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(CargoViewModel model)
+        public async Task<ActionResult> CreateAsync(CargoViewModel model)
         {
             if (model.Car_Id == 0)
             {
@@ -63,7 +63,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Car_Id, string Car_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? Car_Id, string Car_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -88,7 +88,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(CargoViewModel model)
+        public async Task<ActionResult> DeleteAsync(CargoViewModel model)
         {
             bool result = await cargosService.Delete(model.Car_Id);
 

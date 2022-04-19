@@ -23,14 +23,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await modalidadesService.Find(id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(ModalidadViewModel model)
+        public async Task<ActionResult> CreateAsync(ModalidadViewModel model)
         {
             if (model.Mda_Id == 0)
             {
@@ -58,7 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Mda_Id, string Mda_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? Mda_Id, string Mda_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -81,7 +81,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(ModalidadViewModel model)
+        public async Task<ActionResult> DeleteAsync(ModalidadViewModel model)
         {
             bool result = await modalidadesService.Delete(model.Mda_Id);
 

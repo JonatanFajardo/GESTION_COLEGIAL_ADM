@@ -23,7 +23,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         //    return AjaxResult(result);
         //}
 
-        public async Task<ActionResult> Create()
+        public async Task<ActionResult> CreateAsync()
         {
             var model = new EmpleadoViewModel();
             var load = await Load(model);
@@ -36,7 +36,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await empleadosService.Find(id);
             //var model = _mapper.Map<EmpleadoViewModel>(result);
@@ -77,7 +77,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(EmpleadoViewModel model)
+        public async Task<ActionResult> DeleteAsync(EmpleadoViewModel model)
         {
             bool result = await empleadosService.Delete(model.Emp_Id);
 

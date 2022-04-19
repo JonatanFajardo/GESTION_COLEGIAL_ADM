@@ -23,14 +23,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await nivelesEducativosService.Find(id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(NivelEducativoViewModel model)
+        public async Task<ActionResult> CreateAsync(NivelEducativoViewModel model)
         {
             if (model.Niv_Id == 0)
             {
@@ -58,7 +58,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Niv_Id, string Niv_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? Niv_Id, string Niv_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -81,7 +81,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(NivelEducativoViewModel model)
+        public async Task<ActionResult> DeleteAsync(NivelEducativoViewModel model)
         {
             bool result = await nivelesEducativosService.Delete(model.Niv_Id);
 

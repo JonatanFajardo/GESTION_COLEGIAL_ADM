@@ -28,7 +28,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(MateriaViewModel model)
+        public async Task<ActionResult> CreateAsync(MateriaViewModel model)
         {
             if (model.Mat_Id == 0)
             {
@@ -39,7 +39,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 {
                     return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
                 }
-                
+
                 //ModelState.Remove("Mat_EsActivo");
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessInsert);
             }
@@ -59,7 +59,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await materiasService.Find(id);
             //ViewBag.Mat_EsActivo = result.Mat_EsActivo;
@@ -67,7 +67,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Mat_Id, string Mat_Nombre)
+        public async Task<ActionResult> ExistAsync(int? Mat_Id, string Mat_Nombre)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -90,7 +90,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(MateriaViewModel model)
+        public async Task<ActionResult> DeleteAsync(MateriaViewModel model)
         {
             bool result = await materiasService.Delete(model.Mat_Id);
 

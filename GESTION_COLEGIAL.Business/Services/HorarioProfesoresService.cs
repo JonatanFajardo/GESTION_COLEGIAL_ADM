@@ -36,7 +36,7 @@
 
         //public async Task<Boolean> DeleteAsync(int id)
         //{
-        //    string url = "HorarioProfesores/Remove";
+        //    string url = "HorarioProfesores/RemoveAsync";
         //    return await ApiRequests.DeleteAsync(url, id);
         //}
     }

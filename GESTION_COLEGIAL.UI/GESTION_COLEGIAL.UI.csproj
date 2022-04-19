@@ -1194,29 +1194,23 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Modalidades\Index.cshtml" />
     <Content Include="Views\Semestres\Index.cshtml" />
-    <Content Include="Views\Notas\Create.cshtml" />
     <Content Include="Views\Secciones\Index.cshtml" />
     <Content Include="Views\Parentescos\Index.cshtml" />
     <Content Include="Views\Parciales\Index.cshtml" />
     <Content Include="Views\NivelesEducativos\Index.cshtml" />
     <Content Include="Views\Cargos\Index.cshtml" />
-    <Content Include="Views\Cursos\Create.cshtml" />
     <Content Include="Views\Titulos\Index.cshtml" />
-    <Content Include="Views\HorarioAlumnos\Create.cshtml" />
     <Content Include="Views\Estados\Index.cshtml" />
-    <Content Include="Views\Encargados\Create.cshtml" />
-    <Content Include="Views\Empleados\Create.cshtml" />
     <Content Include="Views\Duraciones\Index.cshtml" />
     <Content Include="Views\Dias\Index.cshtml" />
     <Content Include="Views\Materias\Index.cshtml" />
-    <Content Include="Views\Alumnos\Create.cshtml" />
+    <Content Include="Views\Alumnos\CreateAsync.cshtml" />
     <Content Include="Views\Alumnos\Index.cshtml" />
     <Content Include="Views\Cursos\Index.cshtml" />
     <Content Include="Views\Empleados\Index.cshtml" />
     <Content Include="Views\Encargados\Index.cshtml" />
     <Content Include="Views\HorarioAlumnos\Index.cshtml" />
     <Content Include="Views\HorarioProfesores\Index.cshtml" />
-    <Content Include="Views\HorarioProfesores\Create.cshtml" />
     <Content Include="Views\Notas\Index.cshtml" />
     <Content Include="Views\Shared\_sidebar.cshtml" />
     <Content Include="Views\Shared\_header.cshtml" />
@@ -1224,6 +1218,12 @@
     <Content Include="Views\CursosNiveles\Index.cshtml" />
     <Content Include="Views\Horas\Index.cshtml" />
     <Content Include="Views\PageError404\Index.cshtml" />
+    <Content Include="Views\Cursos\CreateAsync.cshtml" />
+    <Content Include="Views\Empleados\CreateAsync.cshtml" />
+    <Content Include="Views\Encargados\CreateAsync.cshtml" />
+    <Content Include="Views\HorarioAlumnos\CreateAsync.cshtml" />
+    <Content Include="Views\HorarioProfesores\CreateAsync.cshtml" />
+    <Content Include="Views\Notas\CreateAsync.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -22,14 +22,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> Find(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
             var result = await parcialesService.Find(id);
             return AjaxResult(result, true);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(ParcialViewModel model)
+        public async Task<ActionResult> CreateAsync(ParcialViewModel model)
         {
             if (model.Pac_Id == 0)
             {
@@ -57,7 +57,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Exist(int? Pac_Id, string Pac_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? Pac_Id, string Pac_Descripcion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
@@ -80,7 +80,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(ParcialViewModel model)
+        public async Task<ActionResult> DeleteAsync(ParcialViewModel model)
         {
             bool result = await parcialesService.Delete(model.Pac_Id);
 

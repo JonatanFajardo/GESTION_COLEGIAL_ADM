@@ -42,7 +42,7 @@ namespace GESTION_COLEGIAL.Business.Services
 
         public async Task<Boolean> Delete(int id)
         {
-            string url = "Titulos/Remove";
+            string url = "Titulos/RemoveAsync";
             return await ApiRequests.DeleteAsync(url, id);
         }
     }
