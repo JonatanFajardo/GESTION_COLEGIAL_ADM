@@ -209,7 +209,7 @@ var datatable = (function () {
                             'data-toggle': "modal",
                             'data-target': "#edit-modal"
                         },
-                        text: '<i class="mdi mdi-plus-thick ladda-button"> Nuevo</i>'
+                        text: '<span><i class="mdi mdi-plus-thick ladda-button"> Nuevo</i></span>'
 
 
                         //text: 'Nuevo <i class="mdi mdi-plus-thick"></i>',
