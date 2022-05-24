@@ -10,39 +10,39 @@ namespace GESTION_COLEGIAL.Business.Services
     {
         public async Task<IEnumerable<DiaViewModel>> ListAsync()
         {
-            string url = "Diaes/ListAsync";
+            string url = "Dias/ListAsync";
             IEnumerable<DiaViewModel> apiUrl = await ApiRequests.ListAsync<DiaViewModel>(url);
             return apiUrl;
         }
 
         public async Task<DiaViewModel> Find(int id)
         {
-            string url = "Diaes/FindAsync";
+            string url = "Dias/FindAsync";
             DiaViewModel apiUrl = await ApiRequests.FindAsync<DiaViewModel>(url, id);
             return apiUrl;
         }
 
         public async Task<Boolean> Create(DiaViewModel model)
         {
-            string url = "Diaes/CreateAsync";
+            string url = "Dias/CreateAsync";
             return await ApiRequests.CreateAsync(url, model);
         }
 
         public async Task<Boolean> Edit(DiaViewModel model)
         {
-            string url = "Diaes/EditAsync";
+            string url = "Dias/EditAsync";
             return await ApiRequests.EditAsync(url, model);
         }
 
         public async Task<DiaViewModel> Exist(string value)
         {
-            string url = "Diaes/ExistAsync";
+            string url = "Dias/ExistAsync";
             return await ApiRequests.ExistAsync<DiaViewModel>(url, value);
         }
 
         public async Task<Boolean> Delete(int id)
         {
-            string url = "Diaes/RemoveAsync";
+            string url = "Dias/RemoveAsync";
             return await ApiRequests.DeleteAsync(url, id);
         }
     }

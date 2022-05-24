@@ -1,5 +1,5 @@
 ﻿var Dias = (function () {
-
+    console.log("sss")
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
