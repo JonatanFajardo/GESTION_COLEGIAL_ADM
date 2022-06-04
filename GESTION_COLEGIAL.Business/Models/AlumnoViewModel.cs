@@ -126,7 +126,7 @@ namespace GESTION_COLEGIAL.Business.Models
         public string Per_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
-        public DateTime? Per_FechaModifica { get; set; }    
+        public DateTime? Per_FechaModifica { get; set; }
 
 
         // Propiedad con listado de niveles educativos.
@@ -149,7 +149,7 @@ namespace GESTION_COLEGIAL.Business.Models
 
         #region Dropdown
 
-        public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults, 
+        public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults,
             IEnumerable<EstadoViewModel> estadoDropdownResults)
         {
             EstadosList = new SelectList(estadoDropdownResults, "Est_Id", "Est_Descripcion");

@@ -9,7 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class DuracionesController : BaseController
     {
-        DuracionesService duracionesService = new DuracionesService();
+        private readonly DuracionesService duracionesService = new DuracionesService();
 
         // GET: Duraciones
         public ActionResult Index()

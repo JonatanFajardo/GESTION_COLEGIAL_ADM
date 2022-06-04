@@ -10,7 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
     public class CursosController : BaseController
     {
-        CursosService cursosService = new CursosService();
+        private readonly CursosService cursosService = new CursosService();
 
         // GET: Cursos
         public ActionResult Index()

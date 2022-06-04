@@ -10,7 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class AlumnosController : BaseController
     {
-        AlumnosService alumnosService = new AlumnosService();
+        readonly AlumnosService alumnosService = new AlumnosService();
         // GET: Alumnos
         public ActionResult Index()
         {

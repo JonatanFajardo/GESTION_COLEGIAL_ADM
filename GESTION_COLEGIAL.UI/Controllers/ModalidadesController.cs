@@ -9,7 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class ModalidadesController : BaseController
     {
-        ModalidadesService modalidadesService = new ModalidadesService();
+        private readonly ModalidadesService modalidadesService = new ModalidadesService();
 
         // GET: Modalidades
         public ActionResult Index()

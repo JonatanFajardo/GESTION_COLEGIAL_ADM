@@ -9,7 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class EncargadosController : BaseController
     {
         public string count;
-        EncargadosService encargadosService = new EncargadosService();
+        private readonly EncargadosService encargadosService = new EncargadosService();
         public EncargadosController()
         {
             //MyMethodAsync();

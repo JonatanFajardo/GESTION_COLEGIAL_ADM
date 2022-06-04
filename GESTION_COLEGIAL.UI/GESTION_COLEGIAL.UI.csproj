@@ -26,6 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>4.1</TypeScriptToolsVersion>
+    <SonarQubeTestProject>
+    </SonarQubeTestProject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -145,7 +147,6 @@
     <Compile Include="Controllers\PersonasController.cs" />
     <Compile Include="Controllers\SeccionesController.cs" />
     <Compile Include="Controllers\SemestresController.cs" />
-    <Compile Include="Controllers\SubMenuController.cs" />
     <Compile Include="Controllers\TitulosController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Extensions\AlertMessage.cs" />
