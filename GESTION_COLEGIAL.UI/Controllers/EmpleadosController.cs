@@ -8,7 +8,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class EmpleadosController : BaseController
     {
-        EmpleadosService empleadosService = new EmpleadosService();
+        private readonly EmpleadosService empleadosService = new EmpleadosService();
 
         // GET: Empleados
         public ActionResult Index()

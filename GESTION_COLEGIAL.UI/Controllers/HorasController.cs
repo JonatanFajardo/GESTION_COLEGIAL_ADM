@@ -8,7 +8,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class HorasController : BaseController
     {
-        HorasService horasService = new HorasService();
+        private readonly HorasService horasService = new HorasService();
         // GET: Horas
         public ActionResult Index()
         {

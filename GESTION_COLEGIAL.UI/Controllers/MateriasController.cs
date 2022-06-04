@@ -9,7 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class MateriasController : BaseController
     {
-        MateriasService materiasService = new MateriasService();
+        private readonly MateriasService materiasService = new MateriasService();
         // GET: Materias
         public ActionResult Index()
         {

@@ -9,7 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class ParentescosController : BaseController
     {
-        ParentescosService parentescosService = new ParentescosService();
+        private readonly ParentescosService parentescosService = new ParentescosService();
         // GET: Parentescos
         public ActionResult Index()
         {

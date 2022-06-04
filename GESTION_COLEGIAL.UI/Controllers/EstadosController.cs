@@ -9,7 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class EstadosController : BaseController
     {
-        EstadosService estadosService = new EstadosService();
+        private readonly EstadosService estadosService = new EstadosService();
 
 
         // GET: Estados

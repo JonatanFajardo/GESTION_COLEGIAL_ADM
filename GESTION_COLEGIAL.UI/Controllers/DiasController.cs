@@ -9,7 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class DiasController : BaseController
     {
-        DiasService diasService = new DiasService();
+        private readonly DiasService diasService = new DiasService();
 
         // GET: Dias
         public ActionResult Index()

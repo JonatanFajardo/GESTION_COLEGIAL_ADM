@@ -9,7 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class CargosController : BaseController
     {
-        CargosService cargosService = new CargosService();
+        private readonly CargosService cargosService = new CargosService();
         // GET: Cargos
         public ActionResult Index()
         {
