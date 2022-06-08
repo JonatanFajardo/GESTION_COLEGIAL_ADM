@@ -83,7 +83,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            string url = "Estados/ExistAsync";
             var result = await estadosService.Exist(Est_Descripcion);
             if (result != null)
             {

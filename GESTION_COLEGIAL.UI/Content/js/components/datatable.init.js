@@ -9,8 +9,6 @@ var Modals = (function () {
         table,
         $deleteModal;
 
-    //obj.NewModal
-
     table = $("#datatable");
 
     function deleteModal(params) {
@@ -39,8 +37,6 @@ var Modals = (function () {
 
     obj.configure = function (params) {
         console.log(params);
-        //if (params.dataTableId === undefined)
-        //    params.dataTableId = "#datatable";
         if (params.editModalId === undefined)
             params.editModalId = "#edit-modal";
 
@@ -48,10 +44,7 @@ var Modals = (function () {
             params.deleteModalId = "#delete-modal-secondary";
 
         $(function () {
-            //createDataTable(params);
             typeModal(params);
-            //createModal(params);
-            //createEditModal(params);
         });
     };
 
@@ -66,11 +59,9 @@ var Modals = (function () {
     };
 
     obj.success = function (data, status, xhr) {
-        //console.log(data);
         if (data.success) {
             //$editModal.modal("hide");
             $deleteModal.modal("hide");
-            /*alertConfig.alert("Success", data.type);*/
             table.DataTable().ajax.reload(null, false);
         }
         else {
@@ -95,9 +86,6 @@ var Modals = (function () {
 
 var datatable = (function () {
     var obj = {};
-    //serverSide
-
-
 
     /**
      * Inicializa y configura el DataTable 
@@ -155,22 +143,23 @@ var datatable = (function () {
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
             var table = $('#datatable').DataTable({
                 responsive: true,
+                deferRender: true,
                 //serverSide: true,
                 buttons: [
-                    //{
-                    //text: '<i class="mdi mdi-refresh"> Recargar</i>',
-                    //titleAttr: 'Recargar tabla',
-                    //action: function (e, dt, config) {
-                    //    dt.ajax.reload();
-                    //}
-                    //},
                     {
-                        title: "Exportar a CSV",
-                        extend: "csvHtml5",
-                        text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
-                        className: "btn-secondary",
-                        exportOptions: exportOptions
+                    text: '<i class="mdi mdi-refresh"> Recargar</i>',
+                    titleAttr: 'Recargar tabla',
+                    action: function (e, dt, config) {
+                        dt.ajax.reload();
+                    }
                     },
+                    //{
+                    //    title: "Exportar a CSV",
+                    //    extend: "csvHtml5",
+                    //    text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
+                    //    className: "btn-secondary",
+                    //    exportOptions: exportOptions
+                    //},
                     {
                         extend: "pdfHtml5",
                         title: "Exportar a PDF",
@@ -186,21 +175,6 @@ var datatable = (function () {
                         exportOptions: exportOptions
                     },
                     {
-
-                        //attr: 
-                        //    'data-toggle': "modal",
-                        //    'data-target': "#edit-modal"
-                        //},
-                        //text: 'Nuevo',
-                        //class: "btn btn-primary",
-                        //attr: {
-                        //    title: "Añadir nuevo elemento",
-                        //    id: "add-btn",
-                        //    //onclick: "nuevo()",
-                        //    'data-toggle': "modal",
-                        //    'data-target': "#edit-modal"
-                        //    /*onclick: "nuevo()"*/
-                        //}
                         attr: {
                             title: "Añadir nuevo elemento",
                             id: "add-btn",
@@ -210,15 +184,7 @@ var datatable = (function () {
                             'data-target': "#edit-modal"
                         },
                         text: '<span><i class="mdi mdi-plus-thick ladda-button"> Nuevo</i></span>'
-
-
-                        //text: 'Nuevo <i class="mdi mdi-plus-thick"></i>',
-                        //className: "btn btn-success",
-                        //attr: {
-                        //    title: "Añadir componente nuevo",
-                        //    onclick: "Modal()"
-                        //}
-
+                         
                     }
                 ],
                 ajax: function (data, callback, settings) {
@@ -253,23 +219,6 @@ var datatable = (function () {
                     displayName: "empleado",
                     type: "delete"
                 });
-                //$(function () {
-                //    Modals.configure({
-                //        displayName: "empleado",
-                //        type: "delete"
-                //    });
-                //})
-                //var obj = {};
-
-                //obj.Modals = function () {
-                //    $(function () {
-                //        Modals.configure({
-                //            displayName: "empleado",
-                //            type: "delete"
-                //        });
-                //    })
-                //}
-                //return obj;
 
             });
 
@@ -291,14 +240,6 @@ var datatable = (function () {
         });
 
     };
-
-    //obj.RedirectNew = function (tabla) {
-    //    $(function () {
-    //        window.location = '/' + tabla + '/Agregar';
-
-    //    })
-    //}
-
 
     /**
      * Configura el header del DataTable

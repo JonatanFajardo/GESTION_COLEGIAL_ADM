@@ -4,9 +4,6 @@
 
 var datatableCatalogs = (function () {
     var obj = {};
-    //serverSide
-
-
 
     /**
      * Inicializa y configura el DataTable 
@@ -60,28 +57,25 @@ var datatableCatalogs = (function () {
                 }
             });
 
-
-
-
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
-            var table = $('#datatable').DataTable({
+            $('#datatable').DataTable({
                 responsive: true,
+                deferRender: true,
                 //serverSide: true,
                 buttons: [
-                    //{
-                    //text: '<i class="mdi mdi-refresh"> Recargar</i>',
-                    //titleAttr: 'Recargar tabla',
-                    //action: function (e, dt, config) {
-                    //    dt.ajax.reload();
-                    //}
-                    //},
                     {
-                        title: "Exportar a CSV",
-                        extend: "csvHtml5",
-                        text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
-                        className: "btn-secondary",
-                        exportOptions: exportOptions
-                    },
+                    text: '<i class="mdi mdi-refresh"> Recargar</i>',
+                    titleAttr: 'Recargar tabla',
+                    action: function (e, dt, config) {
+                        dt.ajax.reload();
+                    }},
+                    //{
+                    //    title: "Exportar a CSV",
+                    //    extend: "csvHtml5",
+                    //    text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
+                    //    className: "btn-secondary",
+                    //    exportOptions: exportOptions
+                    //},
                     {
                         extend: "pdfHtml5",
                         title: "Exportar a PDF",
@@ -97,21 +91,6 @@ var datatableCatalogs = (function () {
                         exportOptions: exportOptions
                     },
                     {
-
-                        //attr: 
-                        //    'data-toggle': "modal",
-                        //    'data-target': "#edit-modal"
-                        //},
-                        //text: 'Nuevo',
-                        //class: "btn btn-primary",
-                        //attr: {
-                        //    title: "Añadir nuevo elemento",
-                        //    id: "add-btn",
-                        //    //onclick: "nuevo()",
-                        //    'data-toggle': "modal",
-                        //    'data-target': "#edit-modal"
-                        //    /*onclick: "nuevo()"*/
-                        //}
                         attr: {
                             title: "Añadir nuevo elemento",
                             id: "add-btn",
@@ -121,15 +100,6 @@ var datatableCatalogs = (function () {
                             'data-target': "#edit-modal"
                         },
                         text: '<i class="mdi mdi-plus-thick ladda-button"> Nuevo</i>'
-                        
-
-                        //text: 'Nuevo <i class="mdi mdi-plus-thick"></i>',
-                        //className: "btn btn-success",
-                        //attr: {
-                        //    title: "Añadir componente nuevo",
-                        //    onclick: "Modal()"
-                        //}
-
                     }
                 ],
                 ajax: function (data, callback, settings) {
@@ -164,15 +134,6 @@ var datatableCatalogs = (function () {
 
     };
 
-
-    //obj.RedirectNew = function (tabla) {
-    //    $(function () {
-    //        window.location = '/' + tabla + '/Agregar';
-
-    //    })
-    //}
-
-
     /**
      * Configura el header del DataTable
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
@@ -180,7 +141,7 @@ var datatableCatalogs = (function () {
      */
     obj.dataHeader = function (header) {
         var _header = header;
-        head = [];
+        var head = [];
         var i = 0;
         for (i; i < _header.length; i++) {
 
@@ -203,11 +164,9 @@ var datatableCatalogs = (function () {
             className: "text-center",
             width: 80,
             render: function (data, type, row) {
-                botones = "";
-                var head = _header[0].FieldName;
+                var botones = "";
+                head = _header[0].FieldName;
                 if (type == "display") {
-                    //botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
-                    //botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="ion-trash-a"></i></span></button>';
                     botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-id="' + row[head] + '" class="bs-tooltip edit-btn text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
                     botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
                 }
@@ -216,9 +175,6 @@ var datatableCatalogs = (function () {
         })
         return head;
     };
-
-    
-
     
     return obj;
 }());

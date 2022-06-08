@@ -52,7 +52,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 {
                     return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
                 }
-                //ModelState.Clear();
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
         }

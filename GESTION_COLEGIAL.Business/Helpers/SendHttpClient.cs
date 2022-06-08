@@ -81,7 +81,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);//
             //httpResponse.Wait();
 
-            //var postJob = httpResponse.Result;
             if (!httpResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -101,9 +100,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var content = JsonConvert.SerializeObject(id);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
             var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?value={id}", contentSerialized);//
-            //httpResponse.Wait();
 
-            //var postJob = httpResponse.Result;
             if (!httpResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -123,9 +120,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
             var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}", contentSerialized);
-            //httpResponse.Wait();
 
-            //var postJob = httpResponse.Result;
             if (!httpResponse.IsSuccessStatusCode)
             {
                 return true;
@@ -179,10 +174,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var httpclient = new HttpClient();
                 var httpResponse = await httpclient.GetAsync(direction);
 
-                //if (!httpResponse.IsSuccessStatusCode)
-                //{
-                //    return null;
-                //}
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<T>(content);
                 return resultSerialize;
@@ -203,10 +194,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var httpclient = new HttpClient();
                 var httpResponse = await httpclient.GetAsync(direction);
 
-                //if (!httpResponse.IsSuccessStatusCode)
-                //{
-                //    return null;
-                //}
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
                 return resultSerialize;

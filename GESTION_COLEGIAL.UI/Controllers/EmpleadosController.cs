@@ -16,13 +16,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        //public async Task<ActionResult> ListAsync()
-        //{
-        //    string url = "NivelesEducativos/ListAsync";
-        //    var result = await empleadosService.ListAsync<NivelEducativoViewModel>(url);
-        //    return AjaxResult(result);
-        //}
-
         public async Task<ActionResult> CreateAsync()
         {
             var model = new EmpleadoViewModel();
@@ -39,7 +32,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> FindAsync(int id)
         {
             var result = await empleadosService.Find(id);
-            //var model = _mapper.Map<EmpleadoViewModel>(result);
             var load = await Load(result);
 
             return View("CreateAsync", load);

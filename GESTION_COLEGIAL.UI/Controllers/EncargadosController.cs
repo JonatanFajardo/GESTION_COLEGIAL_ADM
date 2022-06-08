@@ -12,12 +12,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
         private readonly EncargadosService encargadosService = new EncargadosService();
         public EncargadosController()
         {
-            //MyMethodAsync();
-        }
-
-        public async void MyMethodAsync()
-        {
-            //count = await encargadosService.Counts();
         }
 
         // GET: Encargados

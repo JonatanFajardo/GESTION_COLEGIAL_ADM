@@ -13,7 +13,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
         // GET: Materias
         public ActionResult Index()
         {
-            var model = new MateriaViewModel();
             return View();
         }
         public ActionResult Create()
@@ -40,7 +39,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
                     return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
                 }
 
-                //ModelState.Remove("Mat_EsActivo");
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessInsert);
             }
             else
@@ -53,7 +51,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
                     return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
                 }
 
-                //ModelState.Remove("Mat_EsActivo");
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
 
@@ -62,7 +59,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> FindAsync(int id)
         {
             var result = await materiasService.Find(id);
-            //ViewBag.Mat_EsActivo = result.Mat_EsActivo;
             return AjaxResult(result, true);
         }
 
