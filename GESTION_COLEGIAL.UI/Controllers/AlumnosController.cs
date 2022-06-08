@@ -33,9 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> FindAsync(int id)
         {
             var result = await alumnosService.Find(id);
-            //var model = _mapper.Map(result);
             var drop = await Dropdown(result);
-            //await GetModalidades(result.Cun_Id);
             return View("CreateAsync", drop);
         }
 
@@ -77,13 +75,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return await alumnosService.Dropdown(model);
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult> GetCursosNiveles(int id)
-        //{
-        //    var cursoNiveles = await alumnosService.CursoNivelesDropdown(id);
-        //    return AjaxResult(cursoNiveles);
-        //}
-
         [HttpGet]
         public async Task<ActionResult> GetCursosNiveles(int id)
         {
@@ -116,7 +107,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 Text = x.Cur_Nombre
             }).ToList();
             return AjaxResult(resultToSelectListItem);
-            //return Json(resultToSelectListItem, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> GetSecciones(int id)

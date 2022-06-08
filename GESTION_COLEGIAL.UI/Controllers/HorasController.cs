@@ -56,29 +56,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result, true);
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult> ExistAsync(int? Hor_Id, string Hor_Descripcion)
-        //{
-        //    //Validaciones.
-        //    ValidationModal validationModal = new ValidationModal();
-        //    validationModal.SendMessage = Hor_Descripcion;
-        //    validationModal.BlankSpaces();
-        //    validationModal.SpecialCharacters();
-        //    if (validationModal.RequestMessage != null)
-        //    {
-        //        return Json(validationModal.RequestMessage);
-        //    }
-
-        //    //Envío de datos.
-        //    string url = "Horas/ExistAsync";
-        //    var result = await horasService.ExistAsync(url, Hor_Descripcion);
-        //    if (result != null)
-        //    {
-        //        int? firstValue = result.First().Hor_Id;
-        //        return (firstValue == Hor_Id) ? Json(true) : Json(msjExist);
-        //    }
-        //    return Json(true);
-        //}
 
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(HoraViewModel model)

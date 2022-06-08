@@ -82,17 +82,9 @@ namespace GESTION_COLEGIAL.Business.Services
         }
         public async Task<IEnumerable<CursoNivelDropViewModel>> CursoNivelesDropdown(int id)
         {
-            try
-            {
-                string urlCursosNiveles = "Alumnos/CursosNivelesDropdown";
-                var cursosNivelesDropdown = await ApiRequests.DropdownAsync<CursoNivelDropViewModel>(urlCursosNiveles, id);
-                return cursosNivelesDropdown;
-            }
-            catch (Exception error)
-            {
-
-                throw;
-            }
+            string urlCursosNiveles = "Alumnos/CursosNivelesDropdown";
+            var cursosNivelesDropdown = await ApiRequests.DropdownAsync<CursoNivelDropViewModel>(urlCursosNiveles, id);
+            return cursosNivelesDropdown;
         }
 
         public async Task<IEnumerable<ModalidadViewModel>> ModalidadesDropdown(int id)
