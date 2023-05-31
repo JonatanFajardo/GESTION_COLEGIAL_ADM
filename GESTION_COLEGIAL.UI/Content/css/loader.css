@@ -9,15 +9,16 @@
 	===============================
 */
 div#load_screen {
-  background: #ecefff;
-  opacity: 1;
-  position: fixed;
-  z-index: 999999;
-  top: 0px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%; }
+	background: #fff6ec;
+	opacity: 1;
+	position: fixed;
+	z-index: 999999;
+	top: 0px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+}
   div#load_screen .loader {
     display: flex;
     justify-content: center;
@@ -27,4 +28,5 @@ div#load_screen {
     align-self: center; }
 
 .spinner-grow {
-  color: #304aca; }
+	color: #ca8c30;
+}
