@@ -8,8 +8,15 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.Business.Services
 {
+    /// <summary>
+    /// Servicio para gestionar los cursos.
+    /// </summary>
     public class CursosService
     {
+        /// <summary>
+        /// Obtiene una lista de los cursos de forma asincrónica.
+        /// </summary>
+        /// <returns>Una colección de objetos CursoViewModel.</returns>
         public async Task<IEnumerable<CursoViewModel>> ListAsync()
         {
             string url = "Cursos/ListAsync";
@@ -17,15 +24,20 @@ namespace GESTION_COLEGIAL.Business.Services
             return apiUrl;
         }
 
+        /// <summary>
+        /// Busca un curso por su identificador de forma asincrónica.
+        /// </summary>
+        /// <param name="id">El identificador del curso.</param>
+        /// <returns>El objeto CursoViewModel encontrado.</returns>
         public async Task<CursoViewModel> Find(int id)
         {
-            // Url de peticion
+            // Url de petición
             string url = "Cursos/FindAsync";
             string urlModalidades = "Cursos/CursosModalidadesFind";
             string urlMaterias = "Cursos/CursosMateriasFind";
             string urlCursosNiveles = "Cursos/CursosNivelesFind";
             string urlSecciones = "Cursos/CursosSeccionesFind";
-            // Envio y recepcion de la peticion
+            // Envío y recepción de la petición
             var result = await ApiRequests.FindAsync<CursoViewModel>(url, id);
             var modalidades = await ApiRequests.FindAllAsync<ModalidadViewModel>(urlModalidades, id);
             var secciones = await ApiRequests.FindAllAsync<SeccionViewModel>(urlSecciones, id);
@@ -64,6 +76,11 @@ namespace GESTION_COLEGIAL.Business.Services
             return load;
         }
 
+        /// <summary>
+        /// Crea un nuevo curso de forma asincrónica.
+        /// </summary>
+        /// <param name="model">El objeto CursoViewModel a crear.</param>
+        /// <returns>true si la creación fue exitosa, de lo contrario false.</returns>
         public async Task<Boolean> Create(CursoViewModel model)
         {
             model.Modalidades = model.ModalidadesCheckList.Where(x => x.Selected == true).Select(x => Convert.ToInt32(x.Value)).ToArray();
@@ -80,7 +97,7 @@ namespace GESTION_COLEGIAL.Business.Services
             string urlCursosNiveles = "Cursos/CursosNivelesCreate";
             string urlMaterias = "Cursos/CursosMateriasCreate";
             string urlSecciones = "Cursos/CursosSeccionesCreate";
-            // Envio y recepcion de la peticion
+            // Envío y recepción de la petición
             bool result = await ApiRequests.CreateAsync(url, model);
             bool resultModalidades = await ApiRequests.CreateAsync(urlModalidades, model);
             bool resultCursosNiveles = await ApiRequests.CreateAsync(urlCursosNiveles, model);
@@ -91,6 +108,11 @@ namespace GESTION_COLEGIAL.Business.Services
             return ValidationResults.BooleanListIsTrue(results);
         }
 
+        /// <summary>
+        /// Edita un curso existente de forma asincrónica.
+        /// </summary>
+        /// <param name="model">El objeto CursoViewModel a editar.</param>
+        /// <returns>true si la edición fue exitosa, de lo contrario false.</returns>
         public async Task<Boolean> Edit(CursoViewModel model)
         {
             // Direcciones.
@@ -99,7 +121,7 @@ namespace GESTION_COLEGIAL.Business.Services
             string urlCursosNiveles = "Cursos/CursosNivelesEdit";
             string urlMaterias = "Cursos/CursosMateriasEdit";
             string urlSecciones = "Cursos/CursosSeccionesEdit";
-            // Envio y recepcion de la peticion
+            // Envío y recepción de la petición
             bool result = await ApiRequests.EditAsync(url, model);
             bool resultModalidades = await ApiRequests.EditAsync(urlModalidades, model);
             bool resultCursosNiveles = await ApiRequests.EditAsync(urlCursosNiveles, model);
@@ -110,18 +132,33 @@ namespace GESTION_COLEGIAL.Business.Services
             return ValidationResults.BooleanListIsTrue(results);
         }
 
+        /// <summary>
+        /// Verifica si un curso existe de forma asincrónica.
+        /// </summary>
+        /// <param name="value">El valor a verificar.</param>
+        /// <returns>El objeto CursoViewModel si existe, de lo contrario null.</returns>
         public async Task<CursoViewModel> Exist(string value)
         {
             string url = "Cursos/ExistAsync";
             return await ApiRequests.ExistAsync<CursoViewModel>(url, value);
         }
 
+        /// <summary>
+        /// Elimina un curso por su identificador de forma asincrónica.
+        /// </summary>
+        /// <param name="id">El identificador del curso a eliminar.</param>
+        /// <returns>true si la eliminación fue exitosa, de lo contrario false.</returns>
         public async Task<Boolean> Delete(int id)
         {
             string url = "Cursos/RemoveAsync";
             return await ApiRequests.DeleteAsync(url, id);
         }
 
+        /// <summary>
+        /// Carga datos adicionales en un objeto CursoViewModel de forma asincrónica.
+        /// </summary>
+        /// <param name="model">El objeto CursoViewModel a cargar.</param>
+        /// <returns>El objeto CursoViewModel con los datos adicionales cargados.</returns>
         public async Task<CursoViewModel> Load(CursoViewModel model)
         {
             // Direcciones.

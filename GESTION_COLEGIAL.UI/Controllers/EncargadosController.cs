@@ -48,10 +48,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 //Validamos error
                 if (result)
                 {
-                    //AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
                     return RedirectToAction("Index");
                 }
-                //AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Insertado exitosamente");
                 return RedirectToAction("Index");
             }
             else
@@ -61,10 +59,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 //Validamos error
                 if (result)
                 {
-                    //AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
                     return RedirectToAction("Index");
                 }
-                //AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Editado exitosamente");
                 return RedirectToAction("Index");
             }
         }

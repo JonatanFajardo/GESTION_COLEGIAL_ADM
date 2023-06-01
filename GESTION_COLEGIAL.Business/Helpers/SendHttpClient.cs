@@ -78,7 +78,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
             var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);//
-            //httpResponse.Wait();
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -150,7 +149,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var resultSerialize = JsonConvert.DeserializeObject<T>(content);
                 return resultSerialize;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

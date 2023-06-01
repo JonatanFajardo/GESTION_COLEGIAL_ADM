@@ -16,7 +16,6 @@ namespace GESTION_COLEGIAL.Business.Models
                 if (!string.IsNullOrWhiteSpace(stringValue))
                 {
                     value = stringValue.Trim();
-                    var ss = value;
                 }
                 else
                 {

@@ -38,7 +38,5 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Niv_FechaModifica { get; set; }
-
-        //public bool IsSelected { get; set; }
     }
 }

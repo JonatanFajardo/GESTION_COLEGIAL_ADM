@@ -2,11 +2,6 @@
 {
     public static class AlertMessage
     {
-        //public string Show()
-        //{
-
-        //    return ViewBag.JavaScriptFunction = string.Format("alertConfig.alert('{0}', '{1}');", "Ingresado :p", "success"); ;
-        //}
 
         /// <summary>
         /// Muestra una alerta en pantalla.
@@ -38,7 +33,6 @@
             }
             return result;
 
-            //ViewBag.JavaScriptFunction = string.Format($"alertConfig.alert('{message}', '{type}');");
         }
 
         /// <summary>
@@ -63,15 +57,6 @@
 
             }
         }
-
-        //public enum AlertMessageType
-        //{
-        //    Success = 0,
-        //    Info = 1,
-        //    Warning = 2,
-        //    Error = 3
-
-        //}
 
         public enum AlertMessageType
         {

@@ -122,7 +122,6 @@
     <Compile Include="Services\EncargadosService.cs" />
     <Compile Include="Services\EstadosService.cs" />
     <Compile Include="Services\HorarioAlumnosService.cs" />
-    <Compile Include="Services\HorarioProfesoresService.cs" />
     <Compile Include="Extensions\ApiRequests.cs" />
     <Compile Include="Services\HorasService.cs" />
     <Compile Include="Services\MateriasService.cs" />

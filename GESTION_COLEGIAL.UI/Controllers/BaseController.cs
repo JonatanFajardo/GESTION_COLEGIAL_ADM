@@ -8,16 +8,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
     {
         protected string msjExist = $"El registro ya está en uso.";
 
-        ///// <summary>
-        ///// Muestra una alerta en pantalla.
-        ///// </summary>
-        ///// <param name="type">Tipo de mensaje.</param>
-        ///// <param name="message">Descripción a mostrar.</param>
-        //protected void Show(AlertMessageType type, string message = null)
-        //{
-        //    ViewBag.JavaScriptFunction = string.Format($"alertConfig.alert('{message}', '{type}');");
-        //}
-
         #region Result
 
         public ActionResult AjaxResult(dynamic item, bool success)
@@ -83,18 +73,5 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         #endregion CustomResult
 
-        //public ActionResult PageError404()
-        //{
-        //}
-
-        //case AlertMessageType.Success:
-        //    Show(AlertMessageType.Success, "Registro guardado exitosamente.");//satifactoriamente
-        //    break;
-        //case AlertMessageType.Warning:
-        //    Show(AlertMessageType.Warning, "Ha ocurrido un problema.");
-        //    break;
-        //case AlertMessageType.Error:
-        //    Show(AlertMessageType.Error, "Se produjo un error inesperado.");
-        //    break;
     }
 }
