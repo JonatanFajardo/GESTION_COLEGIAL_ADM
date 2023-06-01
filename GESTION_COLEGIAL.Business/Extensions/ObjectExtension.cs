@@ -5,20 +5,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
 {
     public static class ObjectExtension
     {
-        //public static bool[] EqualsBoolean(int[] obj1, int[] obj2)
-        //{
-        //    bool[] result;
-        //    foreach (var arr1 in obj1)
-        //    {
-        //        if (arr1.)
-        //        {
-        //        }
-        //    }
-
-        //    if ()
-        //    {
-        //    }
-        //}
         /// <summary>
         /// Compara una propiedad específica de dos objetos.
         /// </summary>
@@ -50,20 +36,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
                 }
                 result.Add(status);
             }
-            //foreach (var item in list2)
-            //{
-            //    foreach (var item2 in list1)
-            //    {
-            //        if (Convert.ToInt32(item) == Convert.ToInt32(item2))
-            //        {
-            //            result.Add(true);
-            //        }
-            //        else
-            //        {
-            //            result.Add(false);
-            //        }
-            //    }
-            //}
             SetValueToProperty<T>(obj2, NameReturn, result);
             return result;
         }
@@ -85,25 +57,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
                     var property2 = obj[i].GetType().GetProperty(name);
                     property2.SetValue(obj[i], newValues[i], null);
                 }
-                //foreach (var item in obj)
-                //{
-                //    foreach (var newValue in newValues)
-                //    {
-                //        try
-                //        {
-                //            var property2 = item.GetType().GetProperty(name);
-                //            property2.SetValue(item, newValue, null);
-
-                //        }
-                //        catch (Exception e)
-                //        {
-                //            throw;
-                //        }
-
-                //        //var value2 = property2.GetValue(item, null);
-                //    }
-                //    //int i = item;
-                //}
             }
             return newObject;
         }
@@ -117,7 +70,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
         public static List<dynamic> GetValueProperty(dynamic obj, string name)
         {
             List<dynamic> listValues = new List<dynamic>();
-            //Type temp = typeof(T);
             //IfNotExist
             if (obj != null)
             {
@@ -126,24 +78,10 @@ namespace GESTION_COLEGIAL.Business.Extensions
                     var property2 = item.GetType().GetProperty(name);
                     var value2 = property2.GetValue(item, null);
                     listValues.Add(value2);
-                    //int i = item;
                 }
             }
 
-            //foreach (var item in obj.GetType().GetProperties())
-            //{
-            //}
-            //var property = obj.GetType().GetProperty(name);
-            //var value = property.GetValue(obj, null);
-
             return listValues;
-            //foreach (PropertyInfo property in temp.GetProperties())
-            //{
-            //    if (property.Name == name)
-            //    {
-            //        list.Add(property.GetValue);
-            //    }
-            //}
         }
     }
 }

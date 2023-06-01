@@ -37,7 +37,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Usuario modifica Id")]
         public int? Mat_UsuarioModifica { get; set; }
 
-        [Display(Name = "Usuario registra Nombre")]
+        [Display(Name = "Usuario modifica Nombre")]
         public string Mat_UsuarioModificaNombre { get; set; }
 
         [Display(Name = "Fecha modifica")]
