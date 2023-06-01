@@ -4,7 +4,6 @@
  * Knob Js
  */
 $(function($) {
-
   $(".knob").knob({
       change : function (value) {
           //console.log("change : " + value);
@@ -20,10 +19,8 @@ $(function($) {
        return value + '%';
        },*/
       draw : function () {
-
           // "tron" case
           if(this.$.data('skin') == 'tron') {
-
               this.cursorExt = 0.3;
 
               var a = this.arc(this.cv)  // Arc
@@ -84,7 +81,6 @@ $(function($) {
               v = this.cv;
           }
         });
-        
 });
 function clock() {
   var $s = $(".second"),

@@ -4,9 +4,7 @@
  * chartist Js
  */
 
- 
 //smil-animations Chart
-
 
 var chart = new Chartist.Line('#smil-animations', {
   labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -138,8 +136,6 @@ chart.on('created', function() {
   window.__exampleAnimateTimeout = setTimeout(chart.update.bind(chart), 12000);
 });
 
-
-
 //Simple line chart
 new Chartist.Line('#simple-line-chart', {
   labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -157,9 +153,6 @@ new Chartist.Line('#simple-line-chart', {
     Chartist.plugins.tooltip()
   ]
 });
-
-
-
 
 //Line Scatter Diagram
 var times = function(n) {
@@ -199,8 +192,6 @@ var responsiveOptions = [
 
 new Chartist.Line('#scatter-diagram', data, options, responsiveOptions);
 
-
-
 //Line chart with area
 
 new Chartist.Line('#chart-with-area', {
@@ -215,7 +206,6 @@ new Chartist.Line('#chart-with-area', {
     Chartist.plugins.tooltip()
   ]
 });
-
 
 //Overlapping bars on mobile
 
@@ -244,9 +234,6 @@ var responsiveOptions = [
 
 new Chartist.Bar('#overlapping-bars', data, options, responsiveOptions);
 
-
-
-
 //Stacked bar chart
 
 new Chartist.Bar('#stacked-bar-chart', {
@@ -273,10 +260,6 @@ new Chartist.Bar('#stacked-bar-chart', {
     });
   }
 });
-
-
-
-
 
 //Animating a Donut with Svg.animate
 
@@ -338,9 +321,6 @@ chart.on('created', function() {
   }
   window.__anim21278907124 = setTimeout(chart.update.bind(chart), 10000);
 });
-
-
-
 
 //Simple pie chart
 

@@ -24,14 +24,12 @@ $("input[name='demo2']").TouchSpin({
     buttonup_class: "btn btn-classic btn-primary"
 });
 
-
 // Multiple select boxes
 $("input[name='demo_vertical']").TouchSpin({
     verticalbuttons: true,
     buttondown_class: "btn btn-classic btn-outline-info",
     buttonup_class: "btn btn-classic btn-outline-danger"
 });
-
 
 // Vertical buttons with custom icons
 $("input[name='demo_vertical2']").TouchSpin({

@@ -4,11 +4,10 @@
 |           Scroll To Top               |
 |                                       |
 =========================================
-*/ 
+*/
 $('.scrollTop').click(function() {
     $("html, body").animate({scrollTop: 0});
 });
-
 
 $('.navbar .dropdown.notification-dropdown > .dropdown-menu, .navbar .dropdown.message-dropdown > .dropdown-menu ').click(function(e) {
     e.stopPropagation();
@@ -23,16 +22,13 @@ $('.navbar .dropdown.notification-dropdown > .dropdown-menu, .navbar .dropdown.m
 */
 
 function checkall(clickchk, relChkbox) {
-
     var checker = $('#' + clickchk);
     var multichk = $('.' + relChkbox);
 
-
     checker.click(function () {
         multichk.prop('checked', $(this).prop('checked'));
-    });    
+    });
 }
-
 
 /*
 =========================================
@@ -67,14 +63,12 @@ function multiCheck(tb_var) {
 */
 
 function checkall(clickchk, relChkbox) {
-
     var checker = $('#' + clickchk);
     var multichk = $('.' + relChkbox);
 
-
     checker.click(function () {
         multichk.prop('checked', $(this).prop('checked'));
-    });    
+    });
 }
 
 /*
@@ -97,7 +91,6 @@ $('.bs-tooltip').tooltip();
 
 $('.bs-popover').popover();
 
-
 /*
 ================================================
 |                                              |
@@ -110,7 +103,6 @@ $('.t-dot').tooltip({
     template: '<div class="tooltip status rounded-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
 })
 
-
 /*
 ================================================
 |            IE VERSION Dector                 |
@@ -122,11 +114,11 @@ function GetIEVersion() {
   var Idx = sAgent.indexOf("MSIE");
 
   // If IE, return version number.
-  if (Idx > 0) 
+  if (Idx > 0)
     return parseInt(sAgent.substring(Idx+ 5, sAgent.indexOf(".", Idx)));
 
   // If IE 11 then look for Updated user agent string.
-  else if (!!navigator.userAgent.match(/Trident\/7\./)) 
+  else if (!!navigator.userAgent.match(/Trident\/7\./))
     return 11;
 
   else

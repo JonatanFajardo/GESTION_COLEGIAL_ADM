@@ -4,7 +4,6 @@
  * Peity Js
  */
 
-
 !function ($) {
     "use strict";
 
@@ -12,7 +11,6 @@
     };
 
     PeietyCharts.prototype.init = function () {
-
         // line
         $('.peity-line').each(function () {
             $(this).peity("line", $(this).data());
@@ -32,10 +30,8 @@
         $('.peity-donut').each(function () {
             $(this).peity("donut", $(this).data());
         });
-
     },
         $.PeietyCharts = new PeietyCharts, $.PeietyCharts.Constructor = PeietyCharts
-
 }(window.jQuery),
 
 //initializing
@@ -43,8 +39,3 @@
         "use strict";
         $.PeietyCharts.init()
     }(window.jQuery);
-
-
-
-
-

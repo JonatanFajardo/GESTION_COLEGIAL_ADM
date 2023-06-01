@@ -1,6 +1,4 @@
-﻿
-
-@model GESTION_COLEGIAL.Business.Models.EstadoViewModel
+﻿@model GESTION_COLEGIAL.Business.Models.EstadoViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -26,7 +24,6 @@
             </table>
         </div>
     </div>
-
 
     <!-- Modal -->
     <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
@@ -69,7 +66,6 @@
                     </div>
                 </div>
             }
-
             </div>
         </div>
     </div>
@@ -102,7 +98,6 @@
                                 @Html.HiddenFor(model => model.Est_Id, new { @id = "delete-item-id" })
                                 <p>¿Está seguro de que desea eliminar este registro?</p>
                             </div>
-
                         </div>
                     </div>
                 </div>

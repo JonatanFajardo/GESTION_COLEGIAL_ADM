@@ -1,7 +1,6 @@
 namespace GESTION_COLEGIAL.Business.Models
 {
-
-    partial class SeccionCursoViewModel
+    internal partial class SeccionCursoViewModel
     {
         public int Cur_Id { get; set; }
         public int Sec_Id { get; set; }

@@ -1,6 +1,4 @@
 try {
-
-
   /*
       ==============================
       |    @Options Charts Script   |
@@ -13,7 +11,6 @@ try {
       ======================================
   */
 
-  
   // Total Visits
 
   var spark1 = {
@@ -152,7 +149,6 @@ try {
       }
       ]
   }
-  
 
   /*
       ===================================
@@ -173,7 +169,7 @@ try {
           bar: {
               horizontal: false,
               columnWidth: '55%',
-              endingShape: 'rounded'  
+              endingShape: 'rounded'
           },
       },
       dataLabels: {
@@ -330,15 +326,11 @@ try {
     }
   }
 
-  
-
-
   /*
       ==============================
       |    @Render Charts Script    |
       ==============================
   */
-
 
   /*
       ======================================
@@ -372,7 +364,6 @@ try {
       ==============================
   */
 
-
   // Followers
 
   var d_1C_5 = new ApexCharts(document.querySelector("#hybrid_followers"), d_1options3);
@@ -388,16 +379,12 @@ try {
   var d_1C_7 = new ApexCharts(document.querySelector("#hybrid_followers3"), d_1options5);
   d_1C_7.render()
 
-
-
 /*
     =============================================
         Perfect Scrollbar | Notifications
     =============================================
 */
 const ps = new PerfectScrollbar(document.querySelector('.mt-container'));
-
-
 } catch(e) {
 // statements
 console.log(e);

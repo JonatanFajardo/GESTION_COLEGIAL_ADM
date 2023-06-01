@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
@@ -36,7 +35,6 @@ namespace GESTION_COLEGIAL.Business.Models
         [Required(ErrorMessage = "El campo es requerido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Per_FechaNacimiento { get; set; }
 
         [StringLength(150)]
@@ -63,8 +61,8 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
-
         public bool Per_EsActivo { get; set; }
+
         public string EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
@@ -84,6 +82,5 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Per_FechaModifica { get; set; }
-
     }
 }

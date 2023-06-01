@@ -11,23 +11,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
     {
         private readonly EstadosService estadosService = new EstadosService();
 
-
         // GET: Estados
         public ActionResult Index()
         {
             return View();
         }
-        /// <summary>
-        /// 
-        /// 
-        /// 
-        /// En proceso de revision.
-        /// 
-        /// 
-        /// 
-        /// 
-        /// </summary>
 
+        /// <summary>
+        ///
+        ///
+        ///
+        /// En proceso de revision.
+        ///
+        ///
+        ///
+        ///
+        /// </summary>
 
         public async Task<ActionResult> ListAsync()
         {

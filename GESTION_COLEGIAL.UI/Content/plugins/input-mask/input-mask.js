@@ -1,17 +1,14 @@
 $(document).ready(function(){
-
     // Static Mask
 
     $('#static-mask1').inputmask("99-9999999");  //static mask
     $('#static-mask2').inputmask({mask: "aa-9999"});  //static mask
-
 
     // Dynamic Syntax
 
     $('#dynamic-syntax-1').inputmask("9-a{1,3}9{1,3}"); //mask with dynamic syntax
     $('#dynamic-syntax-2').inputmask("aa-9{4}");  //static mask with dynamic syntax
     $('#dynamic-syntax-3').inputmask("aa-9{1,4}");  //dynamic mask ~ the 9 def can be occur 1 to 4 times
-
 
     // Aleternate Mask
 
@@ -25,7 +22,6 @@ $(document).ready(function(){
       }
     });
 
-
     $("#alternate-masks2").inputmask("(99.9)|(X)", {
       definitions: {
         "X": {
@@ -35,13 +31,11 @@ $(document).ready(function(){
       }
     });
 
-
-    // Date 
+    // Date
 
     $("#date").inputmask("99/99/9999");
     $("#date2").inputmask("99-99-9999");
     $("#date3").inputmask("99 December, 9999");
-
 
     // Email
 
@@ -74,22 +68,17 @@ $(document).ready(function(){
     ==================
     */
 
-
     // On Complete
     $("#oncomplete").inputmask("99/99/9999",{ oncomplete: function(){ $('#oncompleteHelp').css('display', 'block'); } });
-
 
     // On InComplete
     $("#onincomplete").inputmask("99/99/9999",{ onincomplete: function(){ $('#onincompleteHelp').css('display', 'block'); } });
 
-    
     // On Cleared
     $("#oncleared").inputmask("99/99/9999",{ oncleared: function(){ $('#onclearedHelp').css('display', 'block'); } });
 
-
     // Repeater
     $("#repeater").inputmask({ "mask": "2", "repeat": 4});  // ~ mask "9999999999"
-    
 
     // isComplete
 
@@ -108,7 +97,6 @@ $(document).ready(function(){
         }
     });
 
-
     // Set Default Value
 
     $("#setVal").inputmask({
@@ -125,6 +113,4 @@ $(document).ready(function(){
     $('#setVal').on('focus', function(event) {
         $(this).inputmask("setvalue", 'test@mail.com');
     });
-
-
 });

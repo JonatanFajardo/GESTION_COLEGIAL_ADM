@@ -5,7 +5,6 @@
  */
 
 document.addEventListener("DOMContentLoaded", function(event) {
-
   var dflt = {
     min: 0,
     max: 200,
@@ -27,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     title: 'data-attributes',
     defaults: dflt
   });
-
 
   var Counter = new JustGage({
       id: "Counter",
@@ -197,5 +195,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
       id: "jg6",
       defaults: defs2
   });
-
 });

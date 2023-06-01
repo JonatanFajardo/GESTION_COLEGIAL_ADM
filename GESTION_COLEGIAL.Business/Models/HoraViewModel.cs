@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -7,7 +6,6 @@ namespace GESTION_COLEGIAL.Business.Models
 {
     public class HoraViewModel : BaseViewModel
     {
-
         [Key]
         public int Hor_Id { get; set; }
 
@@ -35,5 +33,4 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Fecha modifica")]
         public DateTime? Hor_FechaModifica { get; set; }
     }
-
 }

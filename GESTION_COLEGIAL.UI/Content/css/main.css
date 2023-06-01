@@ -10,7 +10,6 @@
 	===============================
 */
 
-
 html {
     min-height: 100%;
 }
@@ -208,15 +207,15 @@ a {
     outline: none;
 }
 
-a:hover {
-color: white;
-text-decoration: none;
-}
+    a:hover {
+        color: white;
+        text-decoration: none;
+    }
 
-a:focus {
-outline: none;
-text-decoration: none;
-}
+    a:focus {
+        outline: none;
+        text-decoration: none;
+    }
 
 button:focus {
     outline: none;
@@ -2097,7 +2096,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 
 .table > thead > tr > th {
     color: white;
-    background-color:#2C343B;
+    background-color: #2C343B;
     font-weight: 700;
     font-size: 13px;
     letter-spacing: 1px;
@@ -2307,13 +2306,13 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
     color: #fff;
 }
 
-/*  
+/*
     ==========================
-        Background Colors  
+        Background Colors
     ==========================
 */
-/*  
-    Default  
+/*
+    Default
 */
 .bg-primary {
     background-color: var(--primary-color);
@@ -2357,8 +2356,8 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
     color: #fff;
 }
 
-/*  
-    Light Background  
+/*
+    Light Background
 */
 .bg-light-primary {
     background-color: #eaf1ff !important;
@@ -2402,7 +2401,7 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
     color: #fff;
 }
 
-/*  
+/*
     Progress Bar
 */
 .progress {

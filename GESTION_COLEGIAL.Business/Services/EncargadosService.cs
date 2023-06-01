@@ -4,12 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
 namespace GESTION_COLEGIAL.Business.Services
 {
     public class EncargadosService
     {
-
         public async Task<IEnumerable<EncargadoViewModel>> ListAsync()
         {
             string url = "Encargados/ListAsync";

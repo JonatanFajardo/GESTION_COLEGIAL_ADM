@@ -6,7 +6,6 @@
 
  // Tickets Data
 
-  
  var options = {
   chart: {
       height: 325,
@@ -21,7 +20,7 @@
         color: '#45404a2e',
         opacity: 0.35
       },
-  }, 
+  },
   stroke: {
     show: true,
     width: 2,
@@ -60,7 +59,6 @@ var chart = new ApexCharts(
 
 chart.render();
 
-
 // apex-bar-1
 
 var options = {
@@ -90,7 +88,7 @@ var options = {
     }
   },
   dataLabels: {
-    enabled: false,    
+    enabled: false,
   },
   series: [{
       data: [40, 48, 70, 50, 80, 60, 90],
@@ -100,14 +98,14 @@ colors: ['#506ee4'],
       axisBorder: {
           show: true,
           color: '#bec7e0',
-        },  
+        },
         axisTicks: {
           show: true,
           color: '#bec7e0',
-      }, 
+      },
   },
   xaxis: {
-      categories: ['Upgrade Req.', 'Installation Req.', 'Code Req.', 'Bug Fix', 'Production', 'Web', 'Insurance'],        
+      categories: ['Upgrade Req.', 'Installation Req.', 'Code Req.', 'Bug Fix', 'Production', 'Web', 'Insurance'],
   },
   stroke: {
     show: true,
@@ -131,7 +129,6 @@ var chart = new ApexCharts(
 );
 
 chart.render();
-
 
 // Datatable
 $('#datatable').DataTable();

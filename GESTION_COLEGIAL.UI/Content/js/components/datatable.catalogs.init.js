@@ -6,14 +6,12 @@ var datatableCatalogs = (function () {
     var obj = {};
 
     /**
-     * Inicializa y configura el DataTable 
+     * Inicializa y configura el DataTable
      * @param {Object} DirectionUrls Direccion al que se enviaran los datos
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
     obj.init = function (DirectionUrls, header) {
         $(function () {
-
-
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
                 dom: "<'row mb-3'<'col-md-7'f> <'col-md-5 d-flex justify-content-end custom-buttons'B>>" +
@@ -64,11 +62,12 @@ var datatableCatalogs = (function () {
                 //serverSide: true,
                 buttons: [
                     {
-                    text: '<i class="mdi mdi-refresh"> Recargar</i>',
-                    titleAttr: 'Recargar tabla',
-                    action: function (e, dt, config) {
-                        dt.ajax.reload();
-                    }},
+                        text: '<i class="mdi mdi-refresh"> Recargar</i>',
+                        titleAttr: 'Recargar tabla',
+                        action: function (e, dt, config) {
+                            dt.ajax.reload();
+                        }
+                    },
                     //{
                     //    title: "Exportar a CSV",
                     //    extend: "csvHtml5",
@@ -116,9 +115,7 @@ var datatableCatalogs = (function () {
                     });
                 },
                 columnDefs: obj.dataHeader(header)
-
             });
-
         });
         $('#datatable').on('init.dt', function () {
             $('#add-btn')
@@ -129,22 +126,19 @@ var datatableCatalogs = (function () {
         //Eliminamos la agrupaciond de los botones.
         $(function () {
             $(".dt-buttons").removeClass("btn-group");
-
         });
-
     };
 
     /**
      * Configura el header del DataTable
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
-     * @returns 
+     * @returns
      */
     obj.dataHeader = function (header) {
         var _header = header;
         var head = [];
         var i = 0;
         for (i; i < _header.length; i++) {
-
             head.push({
                 targets: i,
                 data: _header[i].FieldName
@@ -175,6 +169,6 @@ var datatableCatalogs = (function () {
         })
         return head;
     };
-    
+
     return obj;
 }());

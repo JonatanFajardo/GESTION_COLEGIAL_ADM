@@ -9,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class HorasController : BaseController
     {
         private readonly HorasService horasService = new HorasService();
+
         // GET: Horas
         public ActionResult Index()
         {
@@ -47,7 +48,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
         }
 
         public async Task<ActionResult> FindAsync(int id)
@@ -55,7 +55,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await horasService.Find(id);
             return AjaxResult(result, true);
         }
-
 
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(HoraViewModel model)

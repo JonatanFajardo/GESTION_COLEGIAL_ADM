@@ -1,5 +1,4 @@
 ﻿var alertConfig = (function () {
-    
     var obj = {};
     obj.alert = function (message, type) {
         $(function () {
@@ -24,7 +23,6 @@
             toastr.remove();
 
             switch (type) {
-
                 default:
                 case "Info":
                 case 0:
@@ -43,12 +41,8 @@
                     toastr.error('<i class="mdi mdi-close-circle-outline"> </i><span>' + message + '</span>')
                     break;
             }
-
-
-
         });
     }
- 
-    return obj;
 
+    return obj;
 }());

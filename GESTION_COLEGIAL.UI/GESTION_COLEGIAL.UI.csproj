@@ -1236,7 +1236,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\assets\" />
     <Folder Include="Content\pages\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Aulas\" />
     <Folder Include="Views\SubMenu\" />
     <Folder Include="Views\Usuarios\" />

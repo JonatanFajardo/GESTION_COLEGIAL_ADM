@@ -5,7 +5,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
 {
     public static class ObjectExtension
     {
-
         //public static bool[] EqualsBoolean(int[] obj1, int[] obj2)
         //{
         //    bool[] result;
@@ -13,14 +12,11 @@ namespace GESTION_COLEGIAL.Business.Extensions
         //    {
         //        if (arr1.)
         //        {
-
         //        }
         //    }
 
-
         //    if ()
         //    {
-
         //    }
         //}
         /// <summary>
@@ -40,7 +36,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
             List<bool> result = new List<bool>();
             List<dynamic> list1 = GetValueProperty(obj, nameProperty); //Datos seleccionados en la base de datos
             List<dynamic> list2 = GetValueProperty(obj2, nameProperty2); //Datos de la SelectList
-
 
             bool status = false;
             for (int i = 0; i < list2.Count; i++)
@@ -71,9 +66,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
             //}
             SetValueToProperty<T>(obj2, NameReturn, result);
             return result;
-
-
-
         }
 
         /// <summary>
@@ -105,7 +97,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
                 //        }
                 //        catch (Exception e)
                 //        {
-
                 //            throw;
                 //        }
 
@@ -141,7 +132,6 @@ namespace GESTION_COLEGIAL.Business.Extensions
 
             //foreach (var item in obj.GetType().GetProperties())
             //{
-
             //}
             //var property = obj.GetType().GetProperty(name);
             //var value = property.GetValue(obj, null);

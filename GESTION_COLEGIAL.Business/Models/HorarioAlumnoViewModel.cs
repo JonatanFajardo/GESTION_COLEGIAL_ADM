@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
@@ -50,6 +49,5 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? HoAl_FechaModifica { get; set; }
-
     }
 }

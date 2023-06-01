@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -39,6 +38,5 @@ namespace GESTION_COLEGIAL.Business.Models
         public DateTime? Cun_FechaModifica { get; set; }
 
         public bool IsSelected { get; set; }
-
     }
 }

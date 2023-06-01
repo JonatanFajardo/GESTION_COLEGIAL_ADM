@@ -10,6 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     {
         public string count;
         private readonly EncargadosService encargadosService = new EncargadosService();
+
         public EncargadosController()
         {
         }
@@ -80,7 +81,5 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
-
-
     }
 }

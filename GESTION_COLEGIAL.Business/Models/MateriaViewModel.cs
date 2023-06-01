@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -23,6 +22,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
         public bool Mat_EsActivo { get; set; }
+
         public string EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
@@ -44,6 +44,5 @@ namespace GESTION_COLEGIAL.Business.Models
         public DateTime? Mat_FechaModifica { get; set; }
 
         public bool IsSelected { get; set; }
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿var Materias = (function () {
-
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {

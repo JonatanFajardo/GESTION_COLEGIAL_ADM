@@ -298,8 +298,6 @@ define('tinymce/inlite/alien/Bookmark', [
 	};
 });
 
-
-
 defineGlobal("global!tinymce.dom.TreeWalker", tinymce.dom.TreeWalker);
 defineGlobal("global!tinymce.dom.RangeUtils", tinymce.dom.RangeUtils);
 /**
@@ -519,8 +517,6 @@ define('tinymce/inlite/core/UrlType', [
 		isAbsolute: isAbsolute
 	};
 });
-
-
 
 /**
  * Forms.js
@@ -1071,8 +1067,6 @@ define('tinymce/inlite/file/Conversions', [
 	};
 });
 
-
-
 /**
  * Picker.js
  *
@@ -1111,8 +1105,6 @@ define('tinymce/inlite/file/Picker', [
 		pickFile: pickFile
 	};
 });
-
-
 
 /**
  * Buttons.js
@@ -1239,8 +1231,6 @@ define('tinymce/inlite/core/SkinLoader', [
 		load: load
 	};
 });
-
-
 
 /**
  * Matcher.js

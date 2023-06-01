@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     /*
         Column Filter
     */
@@ -25,11 +24,10 @@ $(document).ready(function() {
         },
         "stripeClasses": [],
         "lengthMenu": [7, 10, 20, 50],
-        "pageLength": 7 
+        "pageLength": 7
     });
 
     multiCheck(cf);
-
 
     /*
         Individual Column Search
@@ -55,13 +53,13 @@ $(document).ready(function() {
         },
         "stripeClasses": [],
         "lengthMenu": [7, 10, 20, 50],
-        "pageLength": 7 
+        "pageLength": 7
     });
- 
+
     // Apply the search
     table.columns().every( function () {
         var that = this;
- 
+
         $( 'input', this.footer() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
@@ -70,8 +68,6 @@ $(document).ready(function() {
             }
         } );
     } );
-
-
 
     /*
         Show Hide column
@@ -142,5 +138,4 @@ $(document).ready(function() {
         "lengthMenu": [7, 10, 20, 50],
         "pageLength": 7
     } );
-
 } );

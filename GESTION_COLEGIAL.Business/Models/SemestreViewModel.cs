@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -7,7 +6,6 @@ namespace GESTION_COLEGIAL.Business.Models
 {
     public class SemestreViewModel : BaseViewModel
     {
-
         [Key]
         public int Sem_Id { get; set; }
 
@@ -20,6 +18,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
         public bool? EsActivo { get; set; }
+
         public string Sem_EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
@@ -39,6 +38,5 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Sem_FechaModifica { get; set; }
-
     }
 }

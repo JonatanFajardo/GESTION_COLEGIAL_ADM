@@ -4,7 +4,6 @@
  * Timeout Js
  */
 
-
 $.sessionTimeout({
   message: 'Your session will be locked in 30 seconds.',
   keepAliveUrl: '../pages/pages-starter.html',

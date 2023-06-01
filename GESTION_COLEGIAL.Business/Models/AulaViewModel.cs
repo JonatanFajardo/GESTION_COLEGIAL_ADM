@@ -1,12 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
 {
     public class AulaViewModel : BaseViewModel
     {
-
         [Key]
         public int Aul_Id { get; set; }
 
@@ -32,7 +30,5 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Aul_FechaModifica { get; set; }
-
-
     }
 }

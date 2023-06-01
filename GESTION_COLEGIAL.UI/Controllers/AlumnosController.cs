@@ -10,7 +10,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     public class AlumnosController : BaseController
     {
-        readonly AlumnosService alumnosService = new AlumnosService();
+        private readonly AlumnosService alumnosService = new AlumnosService();
+
         // GET: Alumnos
         public ActionResult Index()
         {
@@ -70,8 +71,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<AlumnoViewModel> Dropdown(AlumnoViewModel model)
         {
-
-
             return await alumnosService.Dropdown(model);
         }
 

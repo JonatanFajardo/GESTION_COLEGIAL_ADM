@@ -9,7 +9,7 @@ $('.dropify').dropify();
 $("#portfolio_detail_tab").click(function(){
     setTimeout(function(){
         var $container = $('.projects-wrapper');
-        // Initialize isotope 
+        // Initialize isotope
         $container.isotope({
             filter: '*',
             layoutMode: 'masonry',
@@ -22,11 +22,11 @@ $("#portfolio_detail_tab").click(function(){
 });
 
 $(window).on('load', function() {
-  // Filter 
-  //PORTFOLIO FILTER 
+  // Filter
+  //PORTFOLIO FILTER
   var $container = $('.projects-wrapper');
   var $filter = $('#filter');
-  // Initialize isotope 
+  // Initialize isotope
   $container.isotope({
       filter: '*',
       layoutMode: 'masonry',
@@ -60,10 +60,9 @@ $('.mfp-image').magnificPopup({
       enabled: true,
       navigateByImgClick: true,
       preload: [0, 1]
-          // Will preload 0 - before current, and 1 after the current image 
+          // Will preload 0 - before current, and 1 after the current image
   }
 });
-
 
 (function($) {
     'use strict';
@@ -71,7 +70,7 @@ $('.mfp-image').magnificPopup({
     if ($("#bar").length) {
         var currentChartCanvas = $("#bar").get(0).getContext("2d");
         var currentChart = new Chart(currentChartCanvas, {
-            type: 'bar',    
+            type: 'bar',
             data: {
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [{
@@ -83,18 +82,18 @@ $('.mfp-image').magnificPopup({
                     hoverBackgroundColor: "#00d8c2",
                     hoverBorderColor: "transparent",
                     data: [30, 39, 20, 31, 41, 25, 20, 39, 20, 31, 41, 25],
-                }]        
+                }]
             },
-            
+
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
                 legend : {
                     display: false,
                     labels : {
-                        fontColor : '#50649c'  
+                        fontColor : '#50649c'
                     }
-                },  
+                },
                 tooltips: {
                     enabled: true,
                     callbacks: {
@@ -103,7 +102,7 @@ $('.mfp-image').magnificPopup({
                         }
                     }
                 },
-                
+
                 scales: {
                     xAxes: [{
                         barPercentage: 0.35,
@@ -111,29 +110,28 @@ $('.mfp-image').magnificPopup({
                         display: true,
                         gridLines: {
                             color: "transparent",
-                            borderDash: [0],       
+                            borderDash: [0],
                             zeroLineColor: "transparent",
                             zeroLineBorderDash: [2],
-                            zeroLineBorderDashOffset: [2] ,         
+                            zeroLineBorderDashOffset: [2] ,
                         },
                         ticks: {
                             fontColor: '#a4abc5',
                             beginAtZero: true,
                             padding: 12,
                         },
-                        
                     }],
                     yAxes: [{
                         gridLines: {
-                            color: "#8997bd29", 
+                            color: "#8997bd29",
                             borderDash: [3],
                             drawBorder: false,
                             drawTicks: false,
                             zeroLineColor: "#8997bd29",
                             zeroLineBorderDash: [2],
-                            zeroLineBorderDashOffset: [2] ,           
+                            zeroLineBorderDashOffset: [2] ,
                         },
-                        ticks: {                           
+                        ticks: {
                             fontColor: '#a4abc5',
                             beginAtZero: true,
                             padding: 12,
@@ -142,19 +140,17 @@ $('.mfp-image').magnificPopup({
                                     return '$' + value + 'k'
                                 }
                             }
-                        },                        
+                        },
                     }]
                 },
-                
             }
         });
     }
-    
     });
 })(jQuery);
 
 // light_datepick
 new Lightpick({
     field: document.getElementById('light_datepick'),
-    inline: true,                
+    inline: true,
 });

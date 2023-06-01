@@ -55,7 +55,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
         }
 
         [HttpPost]

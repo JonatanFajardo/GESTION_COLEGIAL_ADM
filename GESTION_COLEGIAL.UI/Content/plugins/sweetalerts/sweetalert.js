@@ -425,11 +425,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
-
-
-
-
-
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
@@ -1623,6 +1618,5 @@ sweetAlert.version = '6.6.5';
 sweetAlert.default = sweetAlert;
 
 return sweetAlert;
-
 })));
 if (window.Sweetalert2) window.sweetAlert = window.swal = window.Sweetalert2;

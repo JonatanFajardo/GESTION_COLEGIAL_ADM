@@ -4,7 +4,6 @@
  * Form Wizard
  */
 
-
 $(function ()
 {
     $("#form-horizontal").steps({
@@ -19,4 +18,3 @@ $(function ()
         stepsOrientation: "vertical"
     });
 });
-
