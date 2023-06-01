@@ -4,7 +4,6 @@
  * Dashboard Js
  */
 
-
 var options = {
   chart: {
     height: 350,
@@ -42,7 +41,7 @@ var options = {
       size: 4
     }]
   },
-  
+
   stroke: {
       show: true,
       curve: 'smooth',
@@ -57,11 +56,11 @@ var options = {
       data: [0, 100, 90, 220, 100, 180, 140, 315, 130, 105, 165, 120]
   }],
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-  
+
   yaxis: {
-    labels: {      
+    labels: {
       offsetX: -12,
-      offsetY: 0,      
+      offsetY: 0,
     }
   },
   grid: {
@@ -71,13 +70,13 @@ var options = {
         lines: {
             show: true
         }
-    },   
+    },
     yaxis: {
         lines: {
             show: false,
         }
     },
-  }, 
+  },
   legend: {
    show: false
   },
@@ -101,20 +100,16 @@ var options = {
       }
   },
   responsive: [{
-    breakpoint: 575,    
+    breakpoint: 575,
   }]
 };
 
 var chart = new ApexCharts(document.querySelector("#Tickets_Status"), options);
 chart.render();
 
- 
-
 // saprkline chart
 
-
 var dash_spark_1 = {
-    
   chart: {
       type: 'area',
       height: 60,
@@ -159,9 +154,7 @@ var dash_spark_1 = {
 }
 new ApexCharts(document.querySelector("#dash_spark_1"), dash_spark_1).render();
 
-
 var dash_spark_2 = {
-    
   chart: {
       type: 'area',
       height: 60,
@@ -206,10 +199,7 @@ var dash_spark_2 = {
 }
 new ApexCharts(document.querySelector("#dash_spark_2"), dash_spark_2).render();
 
-
-
 //Device-widget
-
 
 var options = {
   chart: {
@@ -225,7 +215,7 @@ var options = {
         color: '#45404a2e',
         opacity: 0.15
     },
-  }, 
+  },
   plotOptions: {
     pie: {
       donut: {
@@ -235,7 +225,7 @@ var options = {
   },
   dataLabels: {
     enabled: false,
-  }, 
+  },
   stroke: {
     show: true,
     width: 2,
@@ -254,7 +244,7 @@ var options = {
   },
   labels: [ "Excellent", "Very Good", "Good", "Fair"],
   colors: ["#1ccab8", "#506ee4", "#ff9f43", "#fd3c97"],
- 
+
   responsive: [{
       breakpoint: 600,
       options: {
@@ -262,7 +252,7 @@ var options = {
             donut: {
               customScale: 0.2
             }
-          },        
+          },
           chart: {
               height: 240
           },
@@ -279,7 +269,6 @@ var options = {
         }
     }
   }
-  
 }
 
 var chart = new ApexCharts(

@@ -5,7 +5,6 @@
  */
 
 (function(){
-
   var tour = {
     id: "welcome_tour",
     steps: [
@@ -29,5 +28,3 @@
   // Start the tour!
   hopscotch.startTour(tour);
 })();
-
-  

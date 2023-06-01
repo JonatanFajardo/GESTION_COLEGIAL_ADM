@@ -10,6 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class SemestresController : BaseController
     {
         private readonly SemestresService semestresService = new SemestresService();
+
         // GET: Semestres
         public ActionResult Index()
         {

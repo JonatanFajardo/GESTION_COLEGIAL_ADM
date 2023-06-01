@@ -56,7 +56,6 @@ $(function() {
           showSelectedRating: false
       });
 
-
       var currentRating = $('#example-fontawesome-o').data('current-rating');
 
       $('.stars-example-fontawesome-o .current-rating')

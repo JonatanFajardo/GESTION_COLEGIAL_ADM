@@ -10,6 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class ParcialesController : BaseController
     {
         private readonly ParcialesService parcialesService = new ParcialesService();
+
         // GET: Parciales
         public ActionResult Index()
         {

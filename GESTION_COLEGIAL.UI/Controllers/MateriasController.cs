@@ -10,11 +10,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class MateriasController : BaseController
     {
         private readonly MateriasService materiasService = new MateriasService();
+
         // GET: Materias
         public ActionResult Index()
         {
             return View();
         }
+
         public ActionResult Create()
         {
             return View("CreateAsync");
@@ -53,7 +55,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
         }
 
         public async Task<ActionResult> FindAsync(int id)

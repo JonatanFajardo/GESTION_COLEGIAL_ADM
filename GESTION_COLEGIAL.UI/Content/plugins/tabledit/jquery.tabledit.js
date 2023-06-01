@@ -575,7 +575,7 @@ if (typeof jQuery === 'undefined') {
 
         /**
          * Keyup event on table element.
-         * 
+         *
          * @param {object} event
          */
         $table.on('keyup', function(event) {

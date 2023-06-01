@@ -7,7 +7,6 @@ namespace GESTION_COLEGIAL.Business.Models
 {
     public class AlumnoViewModel : BaseViewModel
     {
-
         [Key]
         public int Alu_Id { get; set; }
 
@@ -18,27 +17,32 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Nivel educativo")]
         [Required(ErrorMessage = "El campo es requerido")]
         public int Niv_Id { get; set; }
+
         public string Niv_Descripcion { get; set; }
 
         [Display(Name = "Curso nivel")]
         [Required(ErrorMessage = "El campo es requerido")]
         public int Cun_Id { get; set; }
+
         public string Cun_Descripcion { get; set; }
 
         [Display(Name = "Modalidad")]
         [Required(ErrorMessage = "El campo es requerido")]
         public int Mda_Id { get; set; }
+
         public string Mda_Descripcion { get; set; }
         public string Cno_Descripcion { get; set; }
 
         [Display(Name = "Curso")]
         [Required(ErrorMessage = "El campo es requerido")]
         public int Cur_Id { get; set; }
+
         public string Cur_Descripcion { get; set; }
 
         [Display(Name = "Secciones")]
         [Required(ErrorMessage = "El campo es requerido")]
         public int Sec_Id { get; set; }
+
         public string Sec_Descripcion { get; set; }
 
         public string Alu_Nombre { get; set; }
@@ -46,6 +50,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Estado")]
         [Required(ErrorMessage = "El campo es requerido")]
         public int Est_Id { get; set; }
+
         public string Est_Descripcion { get; set; }
 
         //Persona
@@ -79,7 +84,6 @@ namespace GESTION_COLEGIAL.Business.Models
         [Required(ErrorMessage = "El campo es requerido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Per_FechaNacimiento { get; set; }
 
         [StringLength(150)]
@@ -106,8 +110,8 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
-
         public bool Per_EsActivo { get; set; }
+
         public string EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
@@ -127,7 +131,6 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Per_FechaModifica { get; set; }
-
 
         // Propiedad con listado de niveles educativos.
         public SelectList NivelesEducativosList { get; set; }
@@ -156,7 +159,6 @@ namespace GESTION_COLEGIAL.Business.Models
             NivelesEducativosList = new SelectList(nivelEducativoDropdownResults, "Niv_Id", "Niv_Descripcion");
         }
 
-
         //public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults,
         //                            IEnumerable<CursoNivelViewModel> cursoNivelDropdownResults,
         //                            IEnumerable<ModalidadViewModel> modalidadDropdownResults,
@@ -171,6 +173,7 @@ namespace GESTION_COLEGIAL.Business.Models
         //    SeccionesList = new SelectList(seccionDropdownResults, "Sec_Id", "Sec_Descripcion");
         //    EstadosList = new SelectList(estadoDropdownResults, "Est_Id", "Est_Descripcion");
         //}
+
         #endregion Dropdown
     }
 }

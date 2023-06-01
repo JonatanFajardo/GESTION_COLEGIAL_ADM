@@ -1,5 +1,4 @@
 (function () {
-
 var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
 
 // Used when there is no 'main' module.
@@ -380,8 +379,6 @@ define("s", [
 	};
 });
 
-
-
 defineGlobal("t", tinymce.dom.TreeWalker);
 defineGlobal("u", tinymce.dom.RangeUtils);
 /**
@@ -601,8 +598,6 @@ define("p", [
 		isAbsolute: isAbsolute
 	};
 });
-
-
 
 /**
  * Forms.js
@@ -1153,8 +1148,6 @@ define("i", [
 	};
 });
 
-
-
 /**
  * Picker.js
  *
@@ -1193,8 +1186,6 @@ define("j", [
 		pickFile: pickFile
 	};
 });
-
-
 
 /**
  * Buttons.js
@@ -1321,8 +1312,6 @@ define("5", [
 		load: load
 	};
 });
-
-
 
 /**
  * Matcher.js

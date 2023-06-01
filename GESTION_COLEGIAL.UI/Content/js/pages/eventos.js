@@ -1,5 +1,4 @@
 ﻿var Eventos = (function () {
-
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -33,5 +32,3 @@
     }
     return obj;
 }());
-
-

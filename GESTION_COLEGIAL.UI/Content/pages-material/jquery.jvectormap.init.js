@@ -4,7 +4,6 @@
  * Jvectormap Js
  */
 
- 
 !function($) {
   "use strict";
 
@@ -88,15 +87,13 @@
             fill: '#24bce3'
           }
         }});
-
 },
-
 
   //init
   $.VectorMap = new VectorMap, $.VectorMap.Constructor = VectorMap
 }(window.jQuery),
 
-//initializing 
+//initializing
 function($) {
   "use strict";
   $.VectorMap.init()

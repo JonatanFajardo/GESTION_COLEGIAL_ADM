@@ -1,5 +1,5 @@
 // NO UI SLIDER
-    
+
 var html5Slider = document.getElementById('html5');
 
 noUiSlider.create(html5Slider, {
@@ -19,7 +19,6 @@ var select = document.getElementById('input-select');
 // Append the option elements
 
 for ( var i = -20; i <= 40; i++ ){
-
     var option = document.createElement("option");
         option.text = i;
         option.value = i;
@@ -32,7 +31,6 @@ for ( var i = -20; i <= 40; i++ ){
 var inputNumber = document.getElementById('input-number');
 
 html5Slider.noUiSlider.on('update', function( values, handle ) {
-
     var value = values[handle];
 
     if ( handle ) {
@@ -80,7 +78,6 @@ nonLinearSlider.noUiSlider.on('update', function ( values, handle, unencoded, is
     nodes[handle].innerHTML = values[handle] + ' <span class="precentage-val">' + positions[handle].toFixed(2) + '% </span>';
 });
 
-
 /*-----Locking sliders together-----*/
 
 // setting up button clicks
@@ -104,11 +101,9 @@ lockButton.addEventListener('click', function(){
     this.textContent = lockedState ? 'unlock' : 'lock';
 });
 
-
 // cross updating
 
 function crossUpdate ( value, slider ) {
-
     // If the sliders aren't interlocked, don't
     // cross-update.
     if ( !lockedState ) return;

@@ -12,6 +12,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Required(ErrorMessage = "El campo es requerido")]
         [Remote(action: "ExistAsync", controller: "Modalidades", HttpMethod = "POST", AdditionalFields = nameof(Mda_Id) + "," + nameof(Mda_Descripcion))]
         public string Mda_Descripcion { get; set; }
+
         public bool IsSelected { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class CargosController : BaseController
     {
         private readonly CargosService cargosService = new CargosService();
+
         // GET: Cargos
         public ActionResult Index()
         {
@@ -59,7 +60,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
         }
 
         [HttpPost]

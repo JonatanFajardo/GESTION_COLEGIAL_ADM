@@ -126,5 +126,3 @@ define('tinymce/inlite/alien/Bookmark', [
 		resolve: resolve
 	};
 });
-
-

@@ -6,7 +6,7 @@
 $("#portfolio_detail_tab").click(function(){
     setTimeout(function(){
         var $container = $('.projects-wrapper');
-        // Initialize isotope 
+        // Initialize isotope
         $container.isotope({
             filter: '*',
             layoutMode: 'masonry',
@@ -19,11 +19,11 @@ $("#portfolio_detail_tab").click(function(){
 });
 
 $(window).on('load', function() {
-  // Filter 
-  //PORTFOLIO FILTER 
+  // Filter
+  //PORTFOLIO FILTER
   var $container = $('.projects-wrapper');
   var $filter = $('#filter');
-  // Initialize isotope 
+  // Initialize isotope
   $container.isotope({
       filter: '*',
       layoutMode: 'masonry',
@@ -57,6 +57,6 @@ $('.mfp-image').magnificPopup({
       enabled: true,
       navigateByImgClick: true,
       preload: [0, 1]
-          // Will preload 0 - before current, and 1 after the current image 
+          // Will preload 0 - before current, and 1 after the current image
   }
 });

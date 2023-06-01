@@ -48,7 +48,6 @@ $('.bottom-right').click(function() {
     });
 });
 
-
 // Action Button
 
 $('.no-action').click(function() {
@@ -79,7 +78,7 @@ $('.click-callback').click(function() {
         text: 'Custom callback when action button is clicked.',
         width: 'auto',
         onActionClick: function(element) {
-            //Set opacity of element to 0 to close Snackbar 
+            //Set opacity of element to 0 to close Snackbar
             $(element).css('opacity', 0);
             Snackbar.show({
                 text: 'Thanks for clicking the  <strong>Dismiss</strong>  button!',

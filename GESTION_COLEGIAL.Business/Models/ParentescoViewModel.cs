@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -8,8 +7,8 @@ namespace GESTION_COLEGIAL.Business.Models
     public class ParentescoViewModel : BaseViewModel
     {
         [Key]
-
         public int Par_Id { get; set; }
+
         [StringLength(100)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo es requerido")]

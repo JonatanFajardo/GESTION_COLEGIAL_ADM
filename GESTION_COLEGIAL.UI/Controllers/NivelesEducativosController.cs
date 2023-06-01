@@ -10,6 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class NivelesEducativosController : BaseController
     {
         private readonly NivelesEducativosService nivelesEducativosService = new NivelesEducativosService();
+
         // GET: NivelesEducativos
         public ActionResult Index()
         {

@@ -10,6 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class SeccionesController : BaseController
     {
         private readonly SeccionesService seccionesService = new SeccionesService();
+
         // GET: Secciones
         public ActionResult Index()
         {

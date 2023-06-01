@@ -7,7 +7,6 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
-
     public class CursosController : BaseController
     {
         private readonly CursosService cursosService = new CursosService();

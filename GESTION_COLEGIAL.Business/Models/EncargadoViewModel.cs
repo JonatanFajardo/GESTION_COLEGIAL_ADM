@@ -5,7 +5,6 @@ namespace GESTION_COLEGIAL.Business.Models
 {
     public class EncargadoViewModel : BaseViewModel
     {
-
         [Key]
         public int Enc_Id { get; set; }
 
@@ -75,8 +74,8 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
-
         public string EsActivo { get; set; }
+
         public bool Per_EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
@@ -96,6 +95,5 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Fecha modifica")]
         public DateTime? Per_FechaModifica { get; set; }
-
     }
 }

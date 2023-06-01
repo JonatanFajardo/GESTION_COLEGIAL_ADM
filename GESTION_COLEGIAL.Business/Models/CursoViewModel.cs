@@ -9,13 +9,13 @@ namespace GESTION_COLEGIAL.Business.Models
 {
     public class CursoViewModel : BaseViewModel
     {
-
         [Key]
         public int Cur_Id { get; set; }
 
         [Display(Name = "Curso nombre")]
         [Required(ErrorMessage = "El campo es requerido")]
         public string Cur_Nombre { get; set; }
+
         public int Mat_Id { get; set; }
         public string Mat_Descripcion { get; set; }
 
@@ -26,6 +26,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Nivel")]
         [Required(ErrorMessage = "El campo es requerido")]
         public int Niv_Id { get; set; }
+
         public string Niv_Descripcion { get; set; }
 
         [Display(Name = "Modalidad")]
@@ -35,6 +36,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
         public string EsActivo { get; set; }
+
         public bool Cur_EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
@@ -42,8 +44,8 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Usuario registra Nombre")]
         public string Cur_UsuarioRegistraNombre { get; set; }
-        [Column(TypeName = "datetime")]
 
+        [Column(TypeName = "datetime")]
         [Display(Name = "Fecha registra")]
         [Required(ErrorMessage = "El campo es requerido")]
         public DateTime Cur_FechaRegistra { get; set; }
@@ -54,8 +56,8 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Usuario modifica Nombre")]
         public string Cur_UsuarioModificaNombre { get; set; }
-        [Column(TypeName = "datetime")]
 
+        [Column(TypeName = "datetime")]
         [Display(Name = "Fecha modifica")]
         [Required(ErrorMessage = "El campo es requerido")]
         public DateTime? Cur_FechaModifica { get; set; }
@@ -85,6 +87,7 @@ namespace GESTION_COLEGIAL.Business.Models
         public SelectList NivelEducativoList { get; set; }
 
         #region CheckList
+
         /// <summary>
         /// Carga los datos solicitados.
         /// </summary>
@@ -126,9 +129,11 @@ namespace GESTION_COLEGIAL.Business.Models
                 Selected = x.IsSelected
             }).ToList();
         }
+
         #endregion CheckList
 
         #region Dropdown
+
         /// <summary>
         /// Carga los datos solicitados.
         /// </summary>
@@ -140,6 +145,7 @@ namespace GESTION_COLEGIAL.Business.Models
         {
             NivelEducativoList = new SelectList(nivelEducativoDropdownResults, "Niv_Id", "Niv_Descripcion");
         }
+
         #endregion Dropdown
     }
 }

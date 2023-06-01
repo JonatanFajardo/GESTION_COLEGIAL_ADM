@@ -89,6 +89,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
         public string EsActivo { get; set; }
+
         public bool Per_EsActivo { get; set; }
 
         [Display(Name = "Usuario registra Id")]
@@ -116,6 +117,7 @@ namespace GESTION_COLEGIAL.Business.Models
         public SelectList cargosList { get; set; }
 
         #region Dropdown
+
         /// <summary>
         /// Carga los datos solicitados.
         /// </summary>
@@ -130,6 +132,7 @@ namespace GESTION_COLEGIAL.Business.Models
             titulosList = new SelectList(tituloDropdownResults, "Tit_Id", "Tit_Descripcion");
             cargosList = new SelectList(cargoDropdownResults, "Car_Id", "Car_Descripcion");
         }
+
         #endregion Dropdown
     }
 }

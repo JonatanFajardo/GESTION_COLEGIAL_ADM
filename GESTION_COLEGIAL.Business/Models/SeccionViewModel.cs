@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -7,7 +6,6 @@ namespace GESTION_COLEGIAL.Business.Models
 {
     public class SeccionViewModel : BaseViewModel
     {
-
         [Key]
         public int Sec_Id { get; set; }
 

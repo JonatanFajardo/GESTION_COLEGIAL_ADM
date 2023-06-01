@@ -99,6 +99,7 @@ namespace GESTION_COLEGIAL.Business.Extensions
         //#endregion
 
         #region Sincrono
+
         public static async Task<IEnumerable<T>> ListAsync<T>(string url)
         {
             // Crea la peticion a la api
@@ -182,11 +183,13 @@ namespace GESTION_COLEGIAL.Business.Extensions
             // Crea la peticion a la api
             return await SendHttpClient.GetAsync<T>(url);
         }
+
         public static async Task<Boolean> DeleteAsync(string url, int id)
         {
             // Crea la peticion a la api
             return await SendHttpClient.DeleteAsync(url, id);
         }
-        #endregion
+
+        #endregion Sincrono
     }
 }

@@ -16,6 +16,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         //private const string baseUrl = "http://gestioncolegialapi.somee.com/api/";
 
         #region Asincrono
+
         /// <summary>
         /// Obtiene valores del servicio.
         /// </summary>
@@ -36,11 +37,9 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
                 return resultSerialize;
-
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }
@@ -150,11 +149,9 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<T>(content);
                 return resultSerialize;
-
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }
@@ -177,11 +174,9 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<T>(content);
                 return resultSerialize;
-
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }
@@ -197,14 +192,13 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
                 return resultSerialize;
-
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }
-        #endregion
+
+        #endregion Asincrono
     }
 }

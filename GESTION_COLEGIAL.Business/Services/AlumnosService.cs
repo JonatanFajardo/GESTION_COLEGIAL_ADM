@@ -80,6 +80,7 @@ namespace GESTION_COLEGIAL.Business.Services
             model.LoadDropDownList(nivelesEducativosDropdown, estadosDropdown);
             return model;
         }
+
         public async Task<IEnumerable<CursoNivelDropViewModel>> CursoNivelesDropdown(int id)
         {
             string urlCursosNiveles = "Alumnos/CursosNivelesDropdown";
@@ -107,6 +108,5 @@ namespace GESTION_COLEGIAL.Business.Services
             var seccionesDropdown = await ApiRequests.DropdownAsync<SeccionViewModel>(urlSecciones, id);
             return seccionesDropdown;
         }
-
     }
 }

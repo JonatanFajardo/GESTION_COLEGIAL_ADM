@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
@@ -39,6 +38,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
         public bool? EsActivo { get; set; }
+
         public string Usu_EsActivo { get; set; }
 
         [Display(Name = "Suspendido")]

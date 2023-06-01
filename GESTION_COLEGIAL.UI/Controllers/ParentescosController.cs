@@ -10,6 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class ParentescosController : BaseController
     {
         private readonly ParentescosService parentescosService = new ParentescosService();
+
         // GET: Parentescos
         public ActionResult Index()
         {
@@ -54,7 +55,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
         }
 
         [HttpPost]
