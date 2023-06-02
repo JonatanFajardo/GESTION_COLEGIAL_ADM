@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.Business.Models
 {
-    [Table("tbEstados", Schema = "app")]
+    /// <summary>
+    /// Representa el modelo de vista de un estado.
+    /// </summary>
     public class EstadoViewModel : BaseViewModel
     {
         /// <summary>

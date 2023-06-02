@@ -234,22 +234,34 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Fecha modifica")]
         public DateTime? Per_FechaModifica { get; set; }
 
-        // Propiedad con listado de niveles educativos.
+        /// <summary>
+        /// Propiedad con listado de niveles educativos.
+        /// </summary>
         public SelectList NivelesEducativosList { get; set; }
 
-        // Propiedad con listado de cursos niveles.
+        /// <summary>
+        /// Propiedad con listado de cursos niveles.
+        /// </summary>
         public IEnumerable<SelectListItem> CursosNivelesList { get; set; }
 
-        // Propiedad con listado de modalidades.
+        /// <summary>
+        /// Propiedad con listado de modalidades.
+        /// </summary>
         public IEnumerable<SelectListItem> ModalidadesList { get; set; }
 
-        // Propiedad con listado de cursos.
+        /// <summary>
+        /// Propiedad con listado de cursos.
+        /// </summary>
         public IEnumerable<SelectListItem> CursosList { get; set; }
 
-        // Propiedad con listado de secciones.
+        /// <summary>
+        /// Propiedad con listado de secciones.
+        /// </summary>
         public IEnumerable<SelectListItem> SeccionesList { get; set; }
 
-        // Propiedad con listado de estados.
+        /// <summary>
+        /// Propiedad con listado de estados.
+        /// </summary>
         public SelectList EstadosList { get; set; }
 
         #region Dropdown

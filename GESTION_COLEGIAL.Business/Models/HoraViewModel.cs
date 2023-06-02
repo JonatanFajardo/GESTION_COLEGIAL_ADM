@@ -4,6 +4,9 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.Business.Models
 {
+    /// <summary>
+    /// Representa un modelo de vista para la entidad "Hora".
+    /// </summary>
     public class HoraViewModel : BaseViewModel
     {
         /// <summary>

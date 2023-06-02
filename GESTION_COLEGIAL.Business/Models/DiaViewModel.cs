@@ -4,6 +4,9 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.Business.Models
 {
+    /// <summary>
+    /// Representa el modelo de vista de un día.
+    /// </summary>
     public class DiaViewModel : BaseViewModel
     {
         /// <summary>

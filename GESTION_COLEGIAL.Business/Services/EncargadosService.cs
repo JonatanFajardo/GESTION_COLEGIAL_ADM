@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.Business.Services
 {
+    /// <summary>
+    /// Clase que representa el servicio de encargados.
+    /// </summary>
     public class EncargadosService
     {
         /// <summary>
