@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.Business.Services
 {
+    /// <summary>
+    /// Clase que representa el servicio de las secciones.
+    /// 
     public class SeccionesService
     {
         public async Task<IEnumerable<SeccionViewModel>> ListAsync()

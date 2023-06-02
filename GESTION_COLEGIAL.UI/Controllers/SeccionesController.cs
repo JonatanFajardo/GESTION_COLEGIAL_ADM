@@ -7,28 +7,48 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
+    /// <summary>
+    /// Controlador para la gestión de las secciones.
+    /// </summary>
     public class SeccionesController : BaseController
     {
         private readonly SeccionesService seccionesService = new SeccionesService();
 
-        // GET: Secciones
+        /// <summary>
+        /// Acción para mostrar la vista principal de las secciones.
+        /// </summary>
+        /// <returns>Vista principal de las secciones.</returns>
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Acción asincrónica para obtener la lista de secciones.
+        /// </summary>
+        /// <returns>Resultado de la operación con la lista de secciones.</returns>
         public async Task<ActionResult> ListAsync()
         {
             var result = await seccionesService.ListAsync();
             return AjaxResult(result);
         }
 
+        /// <summary>
+        /// Acción asincrónica para obtener los detalles de una sección específica.
+        /// </summary>
+        /// <param name="id">ID de la sección.</param>
+        /// <returns>Vista de creación de sección con los detalles de la sección.</returns>
         public async Task<ActionResult> FindAsync(int id)
         {
             var result = await seccionesService.Find(id);
             return AjaxResult(result, true);
         }
 
+        /// <summary>
+        /// Acción asincrónica para crear o editar una sección.
+        /// </summary>
+        /// <param name="model">Modelo de vista de la sección.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> CreateAsync(SeccionViewModel model)
         {
@@ -57,6 +77,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Acción asincrónica para verificar si existe una sección con la descripción proporcionada.
+        /// </summary>
+        /// <param name="Sec_Id">ID de la sección.</param>
+        /// <param name="Sec_Descripcion">Descripción de la sección.</param>
+        /// <returns>Resultado de la verificación.</returns>
         [HttpPost]
         public async Task<ActionResult> ExistAsync(int? Sec_Id, string Sec_Descripcion)
         {
@@ -80,6 +106,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return Json(true);
         }
 
+        /// <summary>
+        /// Acción asincrónica para eliminar una sección.
+        /// </summary>
+        /// <param name="model">Modelo de vista de la sección.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(SeccionViewModel model)
         {

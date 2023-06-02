@@ -4,6 +4,9 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.Business.Models
 {
+    /// <summary>
+    /// Modelo de vista para la entidad "Duración"
+    /// </summary>
     public class DuracionViewModel : BaseViewModel
     {
         /// <summary>
