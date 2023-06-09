@@ -269,6 +269,11 @@ namespace GESTION_COLEGIAL.Business.Models
 
         #region Dropdown
 
+        /// <summary>
+        /// Carga los dropdown.
+        /// </summary>
+        /// <param name="nivelEducativoDropdownResults"></param>
+        /// <param name="estadoDropdownResults"></param>
         public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults,
             IEnumerable<EstadoViewModel> estadoDropdownResults)
         {
@@ -278,4 +283,4 @@ namespace GESTION_COLEGIAL.Business.Models
 
         #endregion Dropdown
     }
-}
+}   

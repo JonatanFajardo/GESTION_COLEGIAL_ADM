@@ -77,7 +77,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-            var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);//
+            var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -97,7 +97,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(id);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-            var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?value={id}", contentSerialized);//
+            var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?value={id}", contentSerialized);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
