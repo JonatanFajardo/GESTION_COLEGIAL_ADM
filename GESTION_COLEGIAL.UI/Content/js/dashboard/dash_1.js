@@ -1,11 +1,10 @@
 try {
-
   /*
       ==============================
       |    @Options Charts Script   |
       ==============================
   */
-  
+
   /*
       =============================
           Daily Sales | Options
@@ -62,7 +61,6 @@ try {
               bar: {
                   horizontal: false,
                   columnWidth: '25%',
-                  
               }
           },
           legend: {
@@ -80,15 +78,15 @@ try {
                 right: 0,
                 bottom: -40,
                 left: 0
-              }, 
+              },
           },
       }
-  
+
   /*
       =============================
           Total Orders | Options
       =============================
-  */ 
+  */
   var d_2options2 = {
     chart: {
       id: 'sparkline1',
@@ -120,7 +118,7 @@ try {
         right: 0,
         bottom: 0,
         left: 0
-      }, 
+      },
     },
     tooltip: {
       x: {
@@ -131,7 +129,6 @@ try {
     colors: ['#1abc9c']
   }
 
-  
   /*
       =================================
           Revenue Monthly | Options
@@ -159,7 +156,7 @@ try {
         mounted: function(ctx, config) {
           const highest1 = ctx.getHighestValueInSeries(0);
           const highest2 = ctx.getHighestValueInSeries(1);
-  
+
           ctx.addPointAnnotation({
             x: new Date(ctx.w.globals.seriesX[0][ctx.w.globals.series[0].indexOf(highest1)]).getTime(),
             y: highest1,
@@ -175,7 +172,7 @@ try {
                 offsetY: 5
             }
           })
-  
+
           ctx.addPointAnnotation({
             x: new Date(ctx.w.globals.seriesX[1][ctx.w.globals.series[1].indexOf(highest2)]).getTime(),
             y: highest2,
@@ -292,7 +289,7 @@ try {
           lines: {
               show: true
           }
-      },   
+      },
       yaxis: {
           lines: {
               show: false,
@@ -303,8 +300,8 @@ try {
         right: 0,
         bottom: 0,
         left: -10
-      }, 
-    }, 
+      },
+    },
     legend: {
       position: 'top',
       horizontalAlign: 'right',
@@ -321,7 +318,7 @@ try {
         onClick: undefined,
         offsetX: 0,
         offsetY: 0
-      },    
+      },
       itemMargin: {
         horizontal: 0,
         vertical: 20
@@ -356,7 +353,7 @@ try {
       },
     }]
   }
-  
+
   /*
       ==================================
           Sales By Category | Options
@@ -441,7 +438,7 @@ try {
                     position: 'bottom'
                 }
             },
-    
+
             breakpoint: 1439,
             options: {
                 chart: {
@@ -461,14 +458,13 @@ try {
             },
         }]
   }
-  
+
   /*
       ==============================
       |    @Render Charts Script    |
       ==============================
   */
-  
-  
+
   /*
       ============================
           Daily Sales | Render
@@ -476,7 +472,7 @@ try {
   */
   var d_2C_1 = new ApexCharts(document.querySelector("#daily-sales"), d_2options1);
   d_2C_1.render();
-  
+
   /*
       ============================
           Total Orders | Render
@@ -484,7 +480,7 @@ try {
   */
   var d_2C_2 = new ApexCharts(document.querySelector("#total-orders"), d_2options2);
   d_2C_2.render();
-  
+
   /*
       ================================
           Revenue Monthly | Render
@@ -494,9 +490,9 @@ try {
       document.querySelector("#revenueMonthly"),
       options1
   );
-  
+
   chart1.render();
-  
+
   /*
       =================================
           Sales By Category | Render
@@ -506,25 +502,23 @@ try {
       document.querySelector("#chart-2"),
       options
   );
-  
+
   chart.render();
-  
+
   /*
       =============================================
           Perfect Scrollbar | Recent Activities
       =============================================
   */
  $('.mt-container').each(function(){ const ps = new PerfectScrollbar($(this)[0]); });
-  
+
   const topSellingProduct = new PerfectScrollbar('.widget-table-three .table-scroll table', {
     wheelSpeed:.5,
     swipeEasing:!0,
     minScrollbarLength:40,
     maxScrollbarLength:100,
     suppressScrollY: true
-  
   });
-  
   } catch(e) {
       console.log(e);
   }

@@ -122,7 +122,6 @@
     <Compile Include="Services\EncargadosService.cs" />
     <Compile Include="Services\EstadosService.cs" />
     <Compile Include="Services\HorarioAlumnosService.cs" />
-    <Compile Include="Services\HorarioProfesoresService.cs" />
     <Compile Include="Extensions\ApiRequests.cs" />
     <Compile Include="Services\HorasService.cs" />
     <Compile Include="Services\MateriasService.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Services\NotasService.cs" />
     <Compile Include="Services\ParcialesService.cs" />
     <Compile Include="Services\ParentescosService.cs" />
-    <Compile Include="Services\PersonasService.cs" />
     <Compile Include="Services\SeccionesService.cs" />
     <Compile Include="Services\SemestresService.cs" />
     <Compile Include="Services\TitulosService.cs" />

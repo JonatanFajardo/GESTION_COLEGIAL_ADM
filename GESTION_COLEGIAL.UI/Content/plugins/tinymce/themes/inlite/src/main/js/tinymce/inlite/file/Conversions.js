@@ -27,5 +27,3 @@ define('tinymce/inlite/file/Conversions', [
 		blobToBase64: blobToBase64
 	};
 });
-
-

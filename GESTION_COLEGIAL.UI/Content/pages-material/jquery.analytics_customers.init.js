@@ -4,8 +4,6 @@
  * Customers Js
  */
 
-
- 
 var options = {
   chart: {
     height: 374,
@@ -38,11 +36,11 @@ var options = {
     axisBorder: {
       show: true,
       color: '#bec7e0',
-    },  
+    },
     axisTicks: {
       show: true,
       color: '#bec7e0',
-    },    
+    },
   },
   fill: {
     type: 'gradient',

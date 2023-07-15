@@ -16,6 +16,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
         //private const string baseUrl = "http://gestioncolegialapi.somee.com/api/";
 
         #region Asincrono
+
         /// <summary>
         /// Obtiene valores del servicio.
         /// </summary>
@@ -36,11 +37,9 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
                 return resultSerialize;
-
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }
@@ -78,8 +77,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-            var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);//
-            //httpResponse.Wait();
+            var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -99,7 +97,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
             var httpclient = new HttpClient();
             var content = JsonConvert.SerializeObject(id);//se convierte a json el contenido a enviar
             var contentSerialized = new StringContent(content, Encoding.Default, "application/json");//Agregamos informacion adicional al json
-            var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?value={id}", contentSerialized);//
+            var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?value={id}", contentSerialized);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -150,11 +148,9 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<T>(content);
                 return resultSerialize;
-
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
                 throw;
             }
         }
@@ -177,11 +173,9 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<T>(content);
                 return resultSerialize;
-
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }
@@ -197,14 +191,13 @@ namespace GESTION_COLEGIAL.Business.Helpers
                 var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
                 var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
                 return resultSerialize;
-
             }
             catch (Exception e)
             {
-
                 throw;
             }
         }
-        #endregion
+
+        #endregion Asincrono
     }
 }

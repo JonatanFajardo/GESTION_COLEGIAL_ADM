@@ -138,7 +138,7 @@
         if (!currentValue) {
             return suggestion.value;
         }
-        
+
         var pattern = '(' + utils.escapeRegExChars(currentValue) + ')';
 
         return suggestion.value
@@ -155,7 +155,6 @@
     };
 
     Autocomplete.prototype = {
-
         initialize: function () {
             var that = this,
                 suggestionSelector = '.' + that.classes.suggestion,
@@ -191,7 +190,6 @@
                 that.selectedIndex = -1;
                 container.children('.' + selected).removeClass(selected);
             });
-
 
             // Listen for click event on suggestions list:
             container.on('click.autocomplete', suggestionSelector, function () {
@@ -237,7 +235,7 @@
                 that.hide();
             }, 200);
         },
-        
+
         abortAjax: function () {
             var that = this;
             if (that.currentRequest) {
@@ -267,7 +265,6 @@
                 'z-index': options.zIndex
             });
         },
-
 
         clearCache: function () {
             this.cachedResponse = {};
@@ -704,7 +701,7 @@
             noSuggestionsContainer.detach();
 
             // clean suggestions if any
-            container.empty(); 
+            container.empty();
             container.append(noSuggestionsContainer);
 
             if ($.isFunction(beforeRender)) {

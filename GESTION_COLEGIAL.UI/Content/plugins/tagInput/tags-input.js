@@ -18,14 +18,12 @@
 */
 
 (function( factory){
-
     if(typeof module == 'object' && typeof module.exports == 'object' )
         module.exports = factory();
     else if( typeof window == 'object')
         window.TagsInput = factory();
     else
         console.error('To use this library you need to either use browser or node.js [require()]');
-
 })(function(){
     "use strict"
 
@@ -43,7 +41,7 @@
 
         if(initialized)
             this.destroy();
-            
+
         if(!(this.orignal_input = document.getElementById(this.options.selector)) ){
             console.error("tags-input couldn't find an element with the specified ID");
             return this;
@@ -61,7 +59,6 @@
 
     // Add Tags
     TagsInput.prototype.addTag = function(string){
-
         if(this.anyErrors(string))
             return ;
 
@@ -74,7 +71,7 @@
 
         var closeIcon = document.createElement('a');
         closeIcon.innerHTML = '&times;';
-        
+
         // delete the tag when icon is clicked
         closeIcon.addEventListener('click' , function(e){
             e.preventDefault();
@@ -85,7 +82,6 @@
                     tagInput.deleteTag(tag , i);
             }
         })
-
 
         tag.appendChild(closeIcon);
         this.wrapper.insertBefore(tag , this.input);
@@ -108,7 +104,7 @@
             console.log('max tags limit reached');
             return true;
         }
-        
+
         if(!this.options.duplicate && this.arr.indexOf(string) != -1 ){
             console.log('duplicate found " '+string+' " ')
             return true;
@@ -117,10 +113,10 @@
         return false;
     }
 
-    // Add tags programmatically 
+    // Add tags programmatically
     TagsInput.prototype.addData = function(array){
         var plugin = this;
-        
+
         array.forEach(function(string){
             plugin.addTag(string);
         })
@@ -132,18 +128,17 @@
         return this.arr.join(',');
     }
 
-
     // destroy the plugin
     TagsInput.prototype.destroy = function(){
         this.orignal_input.removeAttribute('hidden');
 
         delete this.orignal_input;
         var self = this;
-        
+
         Object.keys(this).forEach(function(key){
             if(self[key] instanceof HTMLElement)
                 self[key].remove();
-            
+
             if(key != 'options')
                 delete self[key];
         });
@@ -162,13 +157,11 @@
     // initialize the Events
     function initEvents(tags){
         tags.wrapper.addEventListener('click' ,function(){
-            tags.input.focus();           
+            tags.input.focus();
         });
-        
 
         tags.input.addEventListener('keydown' , function(e){
-
-            var str = tags.input.value.trim(); 
+            var str = tags.input.value.trim();
 
             if( !!(~[9 , 13 , 188].indexOf( e.keyCode ))  )
             {
@@ -176,10 +169,8 @@
                 if(str != "")
                     tags.addTag(str);
             }
-
         });
     }
-
 
     // Set All the Default Values
     TagsInput.defaults = {

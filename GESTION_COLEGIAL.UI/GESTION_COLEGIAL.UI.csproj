@@ -123,7 +123,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AlumnosController.cs" />
-    <Compile Include="Controllers\AulasController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CargosController.cs" />
     <Compile Include="Controllers\CursosController.cs" />
@@ -134,21 +133,16 @@
     <Compile Include="Controllers\EncargadosController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\HorarioAlumnosController.cs" />
-    <Compile Include="Controllers\HorarioProfesoresController.cs" />
     <Compile Include="Controllers\HorasController.cs" />
     <Compile Include="Controllers\MateriasController.cs" />
     <Compile Include="Controllers\ModalidadesController.cs" />
     <Compile Include="Controllers\NivelesEducativosController.cs" />
-    <Compile Include="Controllers\NotasController.cs" />
     <Compile Include="Controllers\PageError404Controller.cs" />
     <Compile Include="Controllers\ParcialesController.cs" />
     <Compile Include="Controllers\ParentescosController.cs" />
-    <Compile Include="Controllers\PersonasController.cs" />
     <Compile Include="Controllers\SeccionesController.cs" />
     <Compile Include="Controllers\SemestresController.cs" />
     <Compile Include="Controllers\TitulosController.cs" />
-    <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Extensions\AlertMessage.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1236,10 +1230,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\assets\" />
     <Folder Include="Content\pages\" />
-    <Folder Include="Models\" />
-    <Folder Include="Views\Aulas\" />
-    <Folder Include="Views\SubMenu\" />
-    <Folder Include="Views\Usuarios\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GESTION_COLEGIAL.Business\GESTION_COLEGIAL.Business.csproj">

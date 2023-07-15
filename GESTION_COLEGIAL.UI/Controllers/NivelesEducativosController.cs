@@ -7,28 +7,50 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
+    /// <summary>
+    /// Controlador para la gestión de los Niveles Educativos.
+    /// </summary>
     public class NivelesEducativosController : BaseController
     {
         private readonly NivelesEducativosService nivelesEducativosService = new NivelesEducativosService();
+
         // GET: NivelesEducativos
+        /// <summary>
+        /// Acción para mostrar la vista principal de los Niveles Educativos.
+        /// </summary>
+        /// <returns>Vista principal de los Niveles Educativos.</returns>
         public ActionResult Index()
         {
             NivelEducativoViewModel model = new NivelEducativoViewModel();
             return View(model);
         }
 
+        /// <summary>
+        /// Acción asincrónica para obtener la lista de Niveles Educativos.
+        /// </summary>
+        /// <returns>Resultado de la operación con la lista de Niveles Educativos.</returns>
         public async Task<ActionResult> ListAsync()
         {
             var result = await nivelesEducativosService.ListAsync();
             return AjaxResult(result);
         }
 
+        /// <summary>
+        /// Acción asincrónica para obtener los detalles de un Nivel Educativo específico.
+        /// </summary>
+        /// <param name="id">ID del Nivel Educativo.</param>
+        /// <returns>Vista de los detalles del Nivel Educativo.</returns>
         public async Task<ActionResult> FindAsync(int id)
         {
             var result = await nivelesEducativosService.Find(id);
             return AjaxResult(result, true);
         }
 
+        /// <summary>
+        /// Acción asincrónica para crear o editar un Nivel Educativo.
+        /// </summary>
+        /// <param name="model">Modelo de vista del Nivel Educativo.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> CreateAsync(NivelEducativoViewModel model)
         {
@@ -56,6 +78,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Acción asincrónica para verificar si un Nivel Educativo ya existe.
+        /// </summary>
+        /// <param name="Niv_Id">ID del Nivel Educativo.</param>
+        /// <param name="Niv_Descripcion">Descripción del Nivel Educativo.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> ExistAsync(int? Niv_Id, string Niv_Descripcion)
         {
@@ -79,6 +107,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return Json(true);
         }
 
+        /// <summary>
+        /// Acción asincrónica para eliminar un Nivel Educativo.
+        /// </summary>
+        /// <param name="model">Modelo de vista del Nivel Educativo.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(NivelEducativoViewModel model)
         {

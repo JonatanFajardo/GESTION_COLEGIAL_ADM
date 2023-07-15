@@ -1,5 +1,4 @@
 ﻿var Cargos = (function () {
-
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {

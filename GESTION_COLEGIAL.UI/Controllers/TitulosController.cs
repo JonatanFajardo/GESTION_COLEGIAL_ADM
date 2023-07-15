@@ -10,6 +10,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class TitulosController : BaseController
     {
         private readonly TitulosService titulosService = new TitulosService();
+
         // GET: Titulos
         public ActionResult Index()
         {

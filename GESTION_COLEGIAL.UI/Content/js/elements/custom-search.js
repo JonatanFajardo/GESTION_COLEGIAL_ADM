@@ -8,7 +8,6 @@ $('#input-search').on('keyup', function() {
     }).show();
 });
 
-
 // Search 2
 document.getElementsByClassName('full-search')[0].addEventListener('click', function() {
     this.classList.add("input-focused");

@@ -36,5 +36,3 @@ define('tinymce/inlite/file/Picker', [
 		pickFile: pickFile
 	};
 });
-
-

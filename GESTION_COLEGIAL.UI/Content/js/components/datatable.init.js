@@ -2,7 +2,6 @@
 //Recorre el arreglo de encabezados
 //==================================================
 
-
 var Modals = (function () {
     var obj = {},
         action,
@@ -12,20 +11,17 @@ var Modals = (function () {
     table = $("#datatable");
 
     function deleteModal(params) {
-
         $deleteModal = $(params.deleteModalId);
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", deleteBtnText = "Aceptar";
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
             $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + deleteBtnText);
-
         });
         $deleteModal.on("hidden.bs.modal", function () { });
     }
 
     function typeModal(params) {
         switch (params.type) {
-
             case 'delete':
                 $(function () {
                     deleteModal(params);
@@ -82,20 +78,16 @@ var Modals = (function () {
     return obj;
 }());
 
-
-
 var datatable = (function () {
     var obj = {};
 
     /**
-     * Inicializa y configura el DataTable 
+     * Inicializa y configura el DataTable
      * @param {Object} DirectionUrls Direccion al que se enviaran los datos
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      */
     obj.init = function (DirectionUrls, header) {
         $(function () {
-
-
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
                 dom: "<'row mb-3'<'col-md-7'f> <'col-md-5 d-flex justify-content-end custom-buttons'B>>" +
@@ -138,7 +130,6 @@ var datatable = (function () {
                     }
                 }
             });
-
 
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
             var table = $('#datatable').DataTable({
@@ -184,7 +175,6 @@ var datatable = (function () {
                             'data-target': "#edit-modal"
                         },
                         text: '<span><i class="mdi mdi-plus-thick ladda-button"> Nuevo</i></span>'
-                         
                     }
                 ],
                 ajax: function (data, callback, settings) {
@@ -201,7 +191,6 @@ var datatable = (function () {
                     });
                 },
                 columnDefs: obj.dataHeader(header)
-
             });
 
             // Evento click que Redirecciona.
@@ -219,7 +208,6 @@ var datatable = (function () {
                     displayName: "empleado",
                     type: "delete"
                 });
-
             });
 
             // Evento click de clase .add-btn.
@@ -228,30 +216,24 @@ var datatable = (function () {
             addBtn.click(function () {
                 window.location = `${DirectionUrls.urlInsert}`;
             });
-
-
-
         });
 
         //Eliminamos la agrupaciond de los botones.
         $(function () {
             $(".dt-buttons").removeClass("btn-group");
-
         });
-
     };
 
     /**
      * Configura el header del DataTable
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
-     * @returns 
+     * @returns
      */
     obj.dataHeader = function (header) {
         var _header = header;
         head = [];
         var i = 0;
         for (i; i < _header.length; i++) {
-
             head.push({
                 targets: i,
                 data: _header[i].FieldName
@@ -279,7 +261,6 @@ var datatable = (function () {
 
                     botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-id="' + row[head] + '" class="bs-tooltip edit-btn text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
                     botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn text-muted" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
-
                 }
                 return botones;
             }
@@ -287,10 +268,5 @@ var datatable = (function () {
         return head;
     };
 
-
-
-
     return obj;
 }());
-
-

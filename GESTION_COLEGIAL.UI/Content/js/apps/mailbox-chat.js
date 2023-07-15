@@ -47,8 +47,6 @@ const ps = new PerfectScrollbar('.people', {
   suppressScrollX : true
 });
 
-
-
 $('.mail-write-box').on('keydown', function(event) {
     if(event.key === 'Enter') {
         var chatInput = $(this);
