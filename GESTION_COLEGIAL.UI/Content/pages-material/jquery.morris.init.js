@@ -4,8 +4,6 @@
  * Morris Chart Js
  */
 
-
- 
 !function($) {
   "use strict";
 
@@ -71,9 +69,8 @@
           backgroundColor: 'transparent',
       });
   },
-  
-  MorrisCharts.prototype.init = function() {
 
+  MorrisCharts.prototype.init = function() {
       //create line chart
       var $data  = [
           { y: '2009', a: 3, b: 5 },
@@ -124,7 +121,7 @@
   $.MorrisCharts = new MorrisCharts, $.MorrisCharts.Constructor = MorrisCharts
 }(window.jQuery),
 
-//initializing 
+//initializing
 function($) {
   "use strict";
   $.MorrisCharts.init();

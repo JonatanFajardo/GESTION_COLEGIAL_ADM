@@ -1,0 +1,6 @@
+{
+    "docwriter.progress.trackMethods": false,
+    "docwriter.progress.trackTypes": true,
+    "docwriter.progress.trackClasses": true,
+    "docwriter.style": "XML"
+}

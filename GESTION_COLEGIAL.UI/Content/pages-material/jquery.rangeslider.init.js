@@ -4,16 +4,12 @@
  * Rangeslider Js
  */
 
-
- 
 $(document).ready(function () {
-  
-
   var $range1 = $("#range_01");
     var min = 100;
     var max = 1000;
     var marks = [700, 900];
-    
+
     $range1.ionRangeSlider({
         skin: "modern",
         type: "single",
@@ -24,17 +20,17 @@ $(document).ready(function () {
             addMarks(data.slider);
         }
     });
-    
+
     function convertToPercent(num) {
         return (num - min) / (max - min) * 100;
     }
-    
+
     function addMarks($slider) {
         var html = '';
         var left = 0;
         var left_p = "";
         var i;
-    
+
         for (i = 0; i < marks.length; i++) {
             left = convertToPercent(marks[i]);
             left_p = left + "%";
@@ -42,17 +38,17 @@ $(document).ready(function () {
             html += marks[i];
             html += '</span>';
         }
-    
+
         $slider.append(html);
     }
-  
+
   $("#range_02").ionRangeSlider({
       min: 100,
       skin: "modern",
       max: 1000,
       from: 550
   });
-  
+
   $("#range_03").ionRangeSlider({
       type: "double",
       grid: true,
@@ -63,7 +59,7 @@ $(document).ready(function () {
       to: 800,
       prefix: "$"
   });
- 
+
   $("#range_04").ionRangeSlider({
       type: "double",
       skin: "modern",
@@ -73,7 +69,7 @@ $(document).ready(function () {
       from: -500,
       to: 500
   });
-  
+
   $("#range_05").ionRangeSlider({
       type: "double",
       skin: "modern",
@@ -84,14 +80,14 @@ $(document).ready(function () {
       to: 500,
       step: 250
   });
-  
+
   $("#range_06").ionRangeSlider({
       grid: true,
       skin: "modern",
       from: 3,
       values: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   });
-  
+
   $("#range_07").ionRangeSlider({
       grid: true,
       skin: "modern",
@@ -101,7 +97,7 @@ $(document).ready(function () {
       step: 1000,
       prettify_enabled: true
   });
-  
+
   $("#range_08").ionRangeSlider({
       min: 100,
       skin: "modern",

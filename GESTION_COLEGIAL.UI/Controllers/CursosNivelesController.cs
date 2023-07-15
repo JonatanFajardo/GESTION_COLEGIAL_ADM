@@ -7,27 +7,48 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
+    /// <summary>
+    /// Controlador para la gestión de los cursos niveles.
+    /// </summary>
     public class CursosNivelesController : BaseController
     {
         private readonly CursosNivelesService cursosNivelesService = new CursosNivelesService();
-        // GET: CursosNiveles
+
+        /// <summary>
+        /// Acción para mostrar la vista principal de los cursos niveles.
+        /// </summary>
+        /// <returns>Vista principal de los cursos niveles.</returns>
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Acción asincrónica para obtener la lista de cursos niveles.
+        /// </summary>
+        /// <returns>Resultado de la operación con la lista de cursos niveles.</returns>
         public async Task<ActionResult> ListAsync()
         {
             var result = await cursosNivelesService.ListAsync();
             return AjaxResult(result);
         }
 
+        /// <summary>
+        /// Acción asincrónica para obtener los detalles de un curso nivel específico.
+        /// </summary>
+        /// <param name="id">ID del curso nivel.</param>
+        /// <returns>Vista de creación de curso nivel con los detalles del curso nivel.</returns>
         public async Task<ActionResult> FindAsync(int id)
         {
             var result = await cursosNivelesService.Find(id);
             return AjaxResult(result, true);
         }
 
+        /// <summary>
+        /// Acción asincrónica para crear o editar un curso nivel.
+        /// </summary>
+        /// <param name="model">Modelo de vista del curso nivel.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> CreateAsync(CursoNivelViewModel model)
         {
@@ -54,9 +75,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
-
         }
 
+        /// <summary>
+        /// Acción asincrónica para verificar si un curso nivel ya existe.
+        /// </summary>
+        /// <param name="Cun_Id">ID del curso nivel.</param>
+        /// <param name="Cun_Descripcion">Descripción del curso nivel.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> ExistAsync(int? Cun_Id, string Cun_Descripcion)
         {
@@ -80,6 +106,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return Json(true);
         }
 
+        /// <summary>
+        /// Acción asincrónica para eliminar un curso nivel.
+        /// </summary>
+        /// <param name="model">Modelo de vista del curso nivel.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(CursoNivelViewModel model)
         {

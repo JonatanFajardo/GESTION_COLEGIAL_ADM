@@ -1,5 +1,4 @@
 ﻿var Cursos = (function () {
-
     var obj = {};
 
     obj.datatable = function (Direction) {
@@ -22,14 +21,11 @@
                 }
             ]
             datatable.init(Direction, header);
-            console.log("di:"+Direction);
+            console.log("di:" + Direction);
         })
     }
     return obj;
 }());
-
-
-
 
 document.ready(function () {
     $('#Niv_Id').change(function () {

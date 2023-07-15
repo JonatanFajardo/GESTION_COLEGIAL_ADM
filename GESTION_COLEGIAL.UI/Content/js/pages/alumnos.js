@@ -1,5 +1,4 @@
 ﻿var Alumnos = (function () {
-
     var obj = {};
 
     obj.datatable = function (Direction) {
@@ -9,7 +8,7 @@
             header = [
                 {
                     FieldName: "Alu_Id",
-                    Size: 200   
+                    Size: 200
                 },
                 {
                     FieldName: "Per_Identidad"
@@ -38,22 +37,20 @@ $("#Niv_Id").on("change", function (e) {
     $.ajax({
         type: "GET",
         url: 'GetCursosNiveles/',
-        data:data,
+        data: data,
         dataType: "json",
         success: function (response) {
-            
             if (response != null) {
                 FillDropDown("#Cun_Id", response.data);
             }
             else {
             }
-        }, 
+        },
         error: function (request, status, error) {
             console.log('Error: ' + request.responseText);
         }
-    });    
+    });
 });
-
 
 $("#Cun_Id").on("change", function (e) {
     var valueSelected = $(this).val();
@@ -66,7 +63,6 @@ $("#Cun_Id").on("change", function (e) {
         data: data,
         dataType: "json",
         success: function (response) {
-
             if (response != null) {
                 FillDropDown("#Mda_Id", response.data);
             }
@@ -79,7 +75,6 @@ $("#Cun_Id").on("change", function (e) {
     });
 });
 
-
 $("#Mda_Id").on("change", function (e) {
     var valueSelected = $(this).val();
     var data = {
@@ -91,7 +86,6 @@ $("#Mda_Id").on("change", function (e) {
         data: data,
         dataType: "json",
         success: function (response) {
-
             if (response != null) {
                 FillDropDown("#Cur_Id", response.data);
             }
@@ -115,7 +109,6 @@ $("#Cur_Id").on("change", function (e) {
         data: data,
         dataType: "json",
         success: function (response) {
-
             if (response != null) {
                 console.log(response);
                 FillDropDown("#Sec_Id", response.data);
@@ -141,16 +134,16 @@ function FillDropDown(dropDownId, list) {
     console.log(list);
     $.each(list, function (index, row) {
         console.log(row);
-            //console.log(row[]);
-        //if (index != 0) { 
+        //console.log(row[]);
+        //if (index != 0) {
         //    $(dropDownId).append("<option value='" + list["data"][0] + "' selected='selected'>" + Text + "</option>");
         //} else {
         //    $(dropDownId).append("<option value='" + Value + "'>" + Text + "</option>")
         //}
-         if (index != 0) { 
-             $(dropDownId).append("<option value='" + row.Value + "' selected='selected'>" + row.Text + "</option>");
+        if (index != 0) {
+            $(dropDownId).append("<option value='" + row.Value + "' selected='selected'>" + row.Text + "</option>");
         } else {
-             $(dropDownId).append("<option value='" + row.Value + "'>" + row.Text + "</option>")
+            $(dropDownId).append("<option value='" + row.Value + "'>" + row.Text + "</option>")
         }
     });
 }

@@ -4,9 +4,6 @@
  * Exchange Js
  */
 
-
-
- 
 var options = {
   chart: {
     height: 350,
@@ -268,17 +265,17 @@ var options = {
       },
     ]
   }],
-  
+
   xaxis: {
     type: 'datetime',
     axisBorder: {
       show: true,
       color: '#bec7e0',
-    },  
+    },
     axisTicks: {
       show: true,
       color: '#bec7e0',
-    },    
+    },
   },
   yaxis: {
       labels: {
@@ -301,8 +298,6 @@ var chart = new ApexCharts(
 );
 
 chart.render();
-
- 
 
   // Datatable
  $('#datatable').DataTable();

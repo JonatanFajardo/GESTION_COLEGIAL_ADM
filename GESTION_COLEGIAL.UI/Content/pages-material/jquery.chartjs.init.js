@@ -4,7 +4,6 @@
  * Chart Js
  */
 
-
 !function($) {
     "use strict";
 
@@ -44,7 +43,6 @@
                     break;
             }
             // Initiate new chart or Redraw
-
         };
         // run function - render chart at first load
         generateChart();
@@ -87,9 +85,9 @@
             },
             legend : {
                 labels : {
-                  fontColor : '#8997bd'  
+                  fontColor : '#8997bd'
                 }
-            },   
+            },
             scales: {
                 xAxes: [{
                     display: true,
@@ -106,7 +104,7 @@
                 }],
                 yAxes: [{
                     gridLines: {
-                        color: 'rgba(137, 151, 189, 0.15)',                      
+                        color: 'rgba(137, 151, 189, 0.15)',
                     },
                     ticks: {
                         max: 100,
@@ -128,7 +126,7 @@
                 "Litecoin",
                 "Dashcoin",
             ],
-           
+
             datasets: [
                 {
                     data: [80, 50, 100,121],
@@ -147,9 +145,7 @@
                         "#1c75bc",
                     ],
                     hoverBorderColor: "transparent",
-                   
                 }],
-               
         };
 
         var donutOpts = {
@@ -157,15 +153,12 @@
             cutoutPercentage: 80,
             legend : {
                 labels : {
-                  fontColor : '#8997bd'  
+                  fontColor : '#8997bd'
                 }
-            }    
+            }
         };
 
-       
-        
         this.respChart($("#doughnut"),'Doughnut',donutChart, donutOpts);
-
 
         //Pie chart
         var pieChart = {
@@ -194,15 +187,14 @@
                     hoverBorderColor: "#ffffff"
                 }]
         };
-        var pieChartOpts = {  
+        var pieChartOpts = {
             legend : {
                 labels : {
-                  fontColor : '#8997bd'  
+                  fontColor : '#8997bd'
                 }
-            }      
+            }
         };
         this.respChart($("#pie"),'Pie',pieChart, pieChartOpts);
-
 
         //barchart
         var barChart = {
@@ -225,9 +217,9 @@
             responsive: true,
             legend : {
                 labels : {
-                  fontColor : '#8997bd'  
+                  fontColor : '#8997bd'
                 }
-            },  
+            },
             scales: {
                 xAxes: [
                     {
@@ -243,17 +235,15 @@
                     }],
                     yAxes: [{
                         gridLines: {
-                            color: 'rgba(137, 151, 189, 0.15)',                        
+                            color: 'rgba(137, 151, 189, 0.15)',
                         },
-                        ticks: {                           
+                        ticks: {
                             fontColor: '#8997bd'
                         }
                     }]
             }
-            
         };
         this.respChart($("#bar"),'Bar',barChart, barOpts);
-
 
         //radar chart
         var radarChart = {
@@ -281,13 +271,13 @@
                 }
             ]
         };
-        var radarOpts = { 
+        var radarOpts = {
             legend : {
                 labels : {
-                  fontColor : '#8997bd'  
+                  fontColor : '#8997bd'
                 }
-            },           
-            scale: {                
+            },
+            scale: {
                 gridLines: {
                   color: 'rgba(137, 151, 189, 0.15)',
                 },
@@ -302,8 +292,8 @@
                     fontColor: '#8997bd',
                     beginAtZero: true,
                     fontSize: 10,
-                  }      
-            },                
+                  }
+            },
         };
         this.respChart($("#radar"),'Radar',radarChart, radarOpts);
 
@@ -333,25 +323,24 @@
                 "Series 4"
             ]
         };
-        var polarAreaOpts = {  
+        var polarAreaOpts = {
             legend : {
                 labels : {
-                  fontColor : '#8997bd'  
+                  fontColor : '#8997bd'
                 }
-            },        
-            scale: {                
+            },
+            scale: {
                 gridLines: {
                   color: 'rgba(137, 151, 189, 0.15)',
                 },
                 angleLines: {
                   color: 'rgba(137, 151, 189, 0.15)', // lines radiating from the center
                 }
-              }            
+              }
         };
         this.respChart($("#polarArea"),'PolarArea',polarChart, polarAreaOpts);
     },
     $.ChartJs = new ChartJs, $.ChartJs.Constructor = ChartJs
-
 }(window.jQuery),
 
 //initializing
@@ -359,5 +348,3 @@ function($) {
     "use strict";
     $.ChartJs.init()
 }(window.jQuery);
-
-

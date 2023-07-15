@@ -4,7 +4,6 @@
  * Clipboard Js
  */
 
-
 var clipboard = new ClipboardJS('.btn');
 
 clipboard.on('success', function(e) {

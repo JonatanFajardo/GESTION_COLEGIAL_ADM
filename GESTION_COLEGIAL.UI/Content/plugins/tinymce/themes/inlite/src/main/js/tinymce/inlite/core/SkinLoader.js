@@ -41,5 +41,3 @@ define('tinymce/inlite/core/SkinLoader', [
 		load: load
 	};
 });
-
-

@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
           end: '2020-04-29',
           className: 'bg-soft-primary',
         },
-        
 
         // areas where "Meeting" must be dropped
         {
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         // red areas where no events can be dropped
-        
+
         {
           start: '2020-04-06',
           end: '2020-04-08',

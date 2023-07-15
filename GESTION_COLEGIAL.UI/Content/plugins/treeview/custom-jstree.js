@@ -1,4 +1,3 @@
-
 // Custom 1
 
 var toggler = document.getElementsByClassName("caret");

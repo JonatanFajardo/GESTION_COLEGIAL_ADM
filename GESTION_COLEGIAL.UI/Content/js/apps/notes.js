@@ -68,7 +68,7 @@ $(document).ready(function() {
           $('#ct > div').not($el).hide();
         }
         $btns.removeClass('active');
-        $(this).addClass('active');  
+        $(this).addClass('active');
     })
 
     $('#btn-add-notes').on('click', function(event) {
@@ -153,7 +153,6 @@ var $_getValidationField = document.getElementsByClassName('validation-text');
 getNoteTitleInput = document.getElementById('n-title');
 
 getNoteTitleInput.addEventListener('input', function() {
-
     getNoteTitleInputValue = this.value;
 
     if (getNoteTitleInputValue == "") {
@@ -167,7 +166,6 @@ getNoteTitleInput.addEventListener('input', function() {
 getNoteDescriptionInput = document.getElementById('n-description');
 
 getNoteDescriptionInput.addEventListener('input', function() {
-
   getNoteDescriptionInputValue = this.value;
 
   if (getNoteDescriptionInputValue == "") {
@@ -176,5 +174,4 @@ getNoteDescriptionInput.addEventListener('input', function() {
   } else {
     $_getValidationField[1].style.display = 'none';
   }
-
 })

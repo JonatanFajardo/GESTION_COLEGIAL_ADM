@@ -63,7 +63,6 @@ var options = {
     lineCap: 'round'
   },
   labels: ['Leads Won'],
-
 }
 
 var chart = new ApexCharts(

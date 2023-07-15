@@ -4,28 +4,24 @@
  * Form Advanced Js
  */
 
-
-
-
-
 !function($) {
   "use strict";
 
   var AdvancedForm = function() {};
-  
+
   AdvancedForm.prototype.init = function() {
     // Date range picker
     $('input[name="dates"]').daterangepicker({
         "alwaysShowCalendars": true,
       });
       $('.open_picker').show();
-      
+
       $('input[name="daterange"]').daterangepicker({
         opens: 'left'
       }, function(start, end, label) {
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
       });
-    
+
       $('input[name="datetimes"]').daterangepicker({
         timePicker: true,
         startDate: moment().startOf('hour'),
@@ -34,7 +30,7 @@
           format: 'M/DD hh:mm A'
         }
       });
-    
+
       $('input[name="birthday"]').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
@@ -44,14 +40,14 @@
         var years = moment().diff(start, 'years');
         alert("You are " + years + " years old!");
       });
-    
+
       var start = moment().subtract(29, 'days');
       var end = moment();
-    
+
       function cb(start, end) {
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
       }
-    
+
       $('#reportrange').daterangepicker({
           startDate: start,
           endDate: end,
@@ -64,7 +60,7 @@
              'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
           }
       }, cb);
-    
+
       // Select2
         $(".select2").select2({
             width: '100%'
@@ -73,21 +69,20 @@
         //colorpicker start
         $('#b_color-default, #b_color_rgb, #b_color_hsl').colorpicker();
 
-
-        // MAterial Date picker    
+        // MAterial Date picker
         $('#mdate').bootstrapMaterialDatePicker({
-            weekStart : 0, time: false 
+            weekStart : 0, time: false
         });
-        $('#timepicker').bootstrapMaterialDatePicker({ 
-            format : 'HH:mm', time: true, date: false 
+        $('#timepicker').bootstrapMaterialDatePicker({
+            format : 'HH:mm', time: true, date: false
         });
-        $('#date-format').bootstrapMaterialDatePicker({ 
-            format : 'dddd DD MMMM YYYY - HH:mm' 
-        });  
-        $('#min-date').bootstrapMaterialDatePicker({ 
-            format : 'DD/MM/YYYY HH:mm', minDate : new Date() 
+        $('#date-format').bootstrapMaterialDatePicker({
+            format : 'dddd DD MMMM YYYY - HH:mm'
         });
-        
+        $('#min-date').bootstrapMaterialDatePicker({
+            format : 'DD/MM/YYYY HH:mm', minDate : new Date()
+        });
+
         $('#date-end').bootstrapMaterialDatePicker
         ({
             weekStart: 0, format: 'DD/MM/YYYY HH:mm'
@@ -100,9 +95,8 @@
             $('#date-end').bootstrapMaterialDatePicker('setMinDate', date);
         });
 
-      
       //Bootstrap-MaxLength
-      
+
       $('input#defaultconfig').maxlength({
           warningClass: "badge badge-info",
           limitReachedClass: "badge badge-warning"
@@ -196,7 +190,7 @@
       $("input[name='demo0']").TouchSpin({
           buttondown_class: 'btn btn-gradient-primary',
           buttonup_class: 'btn btn-gradient-primary'
-      });    
+      });
   },
   //init
   $.AdvancedForm = new AdvancedForm, $.AdvancedForm.Constructor = AdvancedForm

@@ -4,7 +4,7 @@
  * Reports Js
  */
 //colunm-1
-  
+
 var options = {
   chart: {
       height: 420,
@@ -41,7 +41,7 @@ var options = {
   colors: ["#1ccab8", '#2a76f4'],
   series: [{
       name: 'New Tickets',
-      data: [68, 44, 55, 57, 56, 61, 58, 63, 60, 66] 
+      data: [68, 44, 55, 57, 56, 61, 58, 63, 60, 66]
   }, {
       name: 'Solved Tickets',
       data: [51, 76, 85, 101, 98, 87, 105, 91, 114, 94]
@@ -50,10 +50,10 @@ var options = {
       categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
       axisBorder: {
         show: true,
-      },  
+      },
       axisTicks: {
         show: true,
-      },    
+      },
   },
   legend: {
     offsetY: 6,
@@ -93,12 +93,9 @@ var chart = new ApexCharts(
 
 chart.render();
 
-
 // saprkline chart
 
-
 var dash_spark_1 = {
-    
   chart: {
       type: 'area',
       height: 60,
@@ -143,9 +140,7 @@ var dash_spark_1 = {
 }
 new ApexCharts(document.querySelector("#dash_spark_1"), dash_spark_1).render();
 
-
 var dash_spark_2 = {
-    
   chart: {
       type: 'area',
       height: 60,
@@ -189,4 +184,3 @@ var dash_spark_2 = {
   colors: ['#fd3c97'],
 }
 new ApexCharts(document.querySelector("#dash_spark_2"), dash_spark_2).render();
-
