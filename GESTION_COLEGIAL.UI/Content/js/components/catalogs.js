@@ -106,7 +106,6 @@
 
     // Assing ajax values to inputs in edit form
     var assignValue = function (n, v) {
-
         // obtiene el input con el name de la propiedad enviada
         var $input = $('#edit-modal form input[name="' + n + '" i]');
         if ($input.length > 0) {
@@ -132,7 +131,6 @@
             }
         }
     }
-
 
     var assignSettings = function (list, prefix) {
         //viene indefinido cuando se ejecuta desde el edit entonces se instancia el prefix como un string
@@ -178,7 +176,6 @@
             }, 500);
         });
 
-
         $editModal.on("hidden.bs.modal", function () {
             $(":input", formId).not(':button, :submit, :reset, input[name="__RequestVerificationToken"]').val("").removeAttr("readonly");
 
@@ -193,8 +190,6 @@
             validator.reset();
             $(".input-validation-error").removeClass("input-validation-error");
         });
-
-
     }
 
     /**
@@ -202,15 +197,13 @@
      * @param {any} params
      */
     function createDeleteModal(params) {
-
         $deleteModal = $(params.deleteModalId);
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", saveBtnText = "Aceptar";
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
             $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
-
         });
-        $deleteModal.on("hidden.bs.modal", function () {});
+        $deleteModal.on("hidden.bs.modal", function () { });
     }
 
     obj.configure = function (params) {
@@ -240,7 +233,6 @@
     };
 
     obj.success = function (data, status, xhr) {
-        
         if (data.success) {
             $editModal.modal("hide");
             $deleteModal.modal("hide");
@@ -265,6 +257,3 @@
 
     return obj;
 }());
-
-
-

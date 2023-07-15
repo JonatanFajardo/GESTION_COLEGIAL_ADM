@@ -4,7 +4,6 @@
  * Hospital Dashboard Js
  */
 
-
 var options = {
   chart: {
       height: 355,
@@ -62,11 +61,11 @@ var options = {
       axisBorder: {
         show: true,
         color: '#45404a2e',
-      },  
+      },
       axisTicks: {
         show: true,
         color: '#45404a2e',
-      },                  
+      },
   },
 
   fill: {
@@ -93,10 +92,8 @@ var chart = new ApexCharts(
 
 chart.render();
 
-
-
  //colunm-1
-  
+
   var options = {
     chart: {
         height: 200,
@@ -133,21 +130,20 @@ chart.render();
         axisBorder: {
           show: true,
           color: '#bec7e0',
-        },  
+        },
         axisTicks: {
           show: true,
           color: '#bec7e0',
-        },    
+        },
     },
     legend: {
       show: false,
       position: 'top',
       horizontalAlign: 'right',
     },
-   
+
     fill: {
         opacity: 1
-  
     },
     // legend: {
     //     floating: true
@@ -163,30 +159,26 @@ chart.render();
     tooltip: {
         y: {
             formatter: function (val) {
-                return "" + val 
+                return "" + val
             }
         }
     }
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#patient_dash_report"),
     options
   );
-  
+
   chart.render();
 
-
-  
-
 //Medicine-widget
-
 
 var options = {
   chart: {
       height: 235,
       type: 'donut',
-  }, 
+  },
   plotOptions: {
     pie: {
       donut: {
@@ -202,7 +194,7 @@ var options = {
     width: 2,
     colors: ['transparent']
   },
- 
+
   series: [10, 65, 25,],
   legend: {
       show: true,
@@ -216,7 +208,7 @@ var options = {
   },
   labels: [ "Syrup", "Tablets", "Injections"],
   colors: ["#fa7901", "#18b2ce", "#ec523f"],
- 
+
   responsive: [{
       breakpoint: 600,
       options: {
@@ -224,7 +216,7 @@ var options = {
             donut: {
               customScale: 0.2
             }
-          },        
+          },
           chart: {
               height: 240
           },
@@ -241,7 +233,6 @@ var options = {
         }
     }
   }
-  
 }
 
 var chart = new ApexCharts(
@@ -252,8 +243,6 @@ var chart = new ApexCharts(
 chart.render();
 
 // Datepicker
-
-
 
 // Datatable
 $('#datatable').DataTable();

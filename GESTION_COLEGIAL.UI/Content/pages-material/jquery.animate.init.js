@@ -10,8 +10,6 @@ function testAnim(x) {
     });
   };
 
-  
-
   $(document).ready(function(){
     $('.js--triggerAnimation').click(function(e){
       e.preventDefault();

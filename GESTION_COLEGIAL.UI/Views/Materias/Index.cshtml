@@ -1,5 +1,4 @@
-﻿
-@model GESTION_COLEGIAL.Business.Models.MateriaViewModel
+﻿@model GESTION_COLEGIAL.Business.Models.MateriaViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -46,64 +45,62 @@
 
                 }))
                 {
-                    <div class="container">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        @Html.HiddenFor(model => model.Mat_Id, new { @id = "item-id" })
-                        <div class="modal-body">
-                            <div class="form-row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Mat_Nombre, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.Mat_Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Mat_Nombre, "", new { @class = "text-danger" })
-                                    </div>
+                <div class="container">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.HiddenFor(model => model.Mat_Id, new { @id = "item-id" })
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Mat_Nombre, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Mat_Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Mat_Nombre, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Dur_Id, "Duración", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Dur_Id, "Duración", htmlAttributes: new { @class = "control-label" })
 
-                                        <div class="float-right">
-                                            <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
-                                                   data-placement="right" title="Activo">
+                                    <div class="float-right">
+                                        <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
+                                               data-placement="right" title="Activo">
 
-                                                <input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" />
+                                            <input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" />
 
-                                                @*@Html.CheckBoxFor(model => model.Mat_EsActivo, htmlAttributes: new { @class = "float-right", @title = "Activo", id = "estadoCheckbox" })*@
+                                            @*@Html.CheckBoxFor(model => model.Mat_EsActivo, htmlAttributes: new { @class = "float-right", @title = "Activo", id = "estadoCheckbox" })*@
 
-                                                @*@Html.CheckBoxFor(m => m.Mat_EsActivo)*@
-                                                @*@Html.CheckBox("Mat_EsActivo")*@
-                                                @*<input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" model.Mat_EsActivo />*@
-                                                @*@Html.EditorFor(model => model.Mat_EsActivo, new { htmlAttributes = new { @class = "form-control", @type = "checkbox" } })*@
-                                                @*<input type="checkbox" name="@Model.Mat_EsActivo" id="radio-6">*@
-                                                @*<input type="checkbox" name="(model => model.Mat_EsActivo)" id="(model => model.Mat_EsActivo)">*@
-                                                @*@Html.CheckBoxFor(model => model.Mat_EsActivo, new { id = "" })*@
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-
-
-                                        @Html.EditorFor(model => model.Dur_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Dur_Id, "", new { @class = "text-danger" })
+                                            @*@Html.CheckBoxFor(m => m.Mat_EsActivo)*@
+                                            @*@Html.CheckBox("Mat_EsActivo")*@
+                                            @*<input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" model.Mat_EsActivo />*@
+                                            @*@Html.EditorFor(model => model.Mat_EsActivo, new { htmlAttributes = new { @class = "form-control", @type = "checkbox" } })*@
+                                            @*<input type="checkbox" name="@Model.Mat_EsActivo" id="radio-6">*@
+                                            @*<input type="checkbox" name="(model => model.Mat_EsActivo)" id="(model => model.Mat_EsActivo)">*@
+                                            @*@Html.CheckBoxFor(model => model.Mat_EsActivo, new { id = "" })*@
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
+
+                                    @Html.EditorFor(model => model.Dur_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Dur_Id, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-12 ">
-                                    <div class="form-group">
-                                        <label class="toggler toggler--is-active" id="filt-monthly">Estado</label>
-                                        <div class="toggle">
-                                            @*<input type="checkbox" id="switcher" class="check">*@
+                            </div>
+                            <div class="col-12 ">
+                                <div class="form-group">
+                                    <label class="toggler toggler--is-active" id="filt-monthly">Estado</label>
+                                    <div class="toggle">
+                                        @*<input type="checkbox" id="switcher" class="check">*@
 
-                                            <b class="b switch"></b>
-                                        </div>
-
+                                        <b class="b switch"></b>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
-                        </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
+                    </div>
+                </div>
                 }
             </div>
         </div>
@@ -121,38 +118,35 @@
                 OnSuccess = "Catalogs.success"
             }))
             {
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h5>
-                        </h5>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.HiddenFor(model => model.Mat_Id, new { @id = "delete-item-id" })
-                                    <p>¿Está seguro de que desea eliminar este registro?</p>
-                                </div>
-
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.Mat_Id, new { @id = "delete-item-id" })
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
-                    </div>
-
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                </div>
+            </div>
             }
         </div>
     </div>
     <!-- Fin Modal -->
 </div>
-
 
 @section Scripts{
     <script src="~/Content/js/pages/materias.js"></script>

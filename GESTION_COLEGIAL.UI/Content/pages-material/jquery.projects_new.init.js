@@ -5,13 +5,13 @@
  */
 
 var picker = new Lightpick({
-  field: document.getElementById('pro-start-date'),
-  secondField: document.getElementById('pro-end-date'),
-  singleDate: false,
-  onSelect: function(start, end){
-      var str = '';
-      str += start ? start.format('Do MMMM YYYY') + ' to ' : '';
-      str += end ? end.format('Do MMMM YYYY') : '...';
-      document.getElementById('result-3').innerHTML = str;
-  }
+    field: document.getElementById('pro-start-date'),
+    secondField: document.getElementById('pro-end-date'),
+    singleDate: false,
+    onSelect: function (start, end) {
+        var str = '';
+        str += start ? start.format('Do MMMM YYYY') + ' to ' : '';
+        str += end ? end.format('Do MMMM YYYY') : '...';
+        document.getElementById('result-3').innerHTML = str;
+    }
 });

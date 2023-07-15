@@ -1,5 +1,4 @@
 ﻿var Encargados = (function () {
-
     var obj = {};
 
     obj.datatable = function (Direction) {

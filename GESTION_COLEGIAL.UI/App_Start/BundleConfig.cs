@@ -1,5 +1,4 @@
-﻿
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace GESTION_COLEGIAL.UI
 {
@@ -41,8 +40,6 @@ namespace GESTION_COLEGIAL.UI
             //          "~/Content/plugins/datatables.net-buttons/js/buttons.colVis.min.js",
             //          "~/Content/js/components/datatable.init.js"
             //          ));
-
-
         }
     }
 }

@@ -782,7 +782,6 @@ var
 
         if (value === undefined || value === null || value === '' // check if the field value is not set (undefined, null or empty string treated at client as null at server)
             || (!/\S/.test(value) && !params.allowEmpty)) {
-
             if (exprVal !== undefined) {
                 return {
                     valid: !exprVal,
@@ -874,5 +873,4 @@ var
     });
 
     window.ea = api; // expose some tiny api to the ea global object
-
 }(jQuery, window));

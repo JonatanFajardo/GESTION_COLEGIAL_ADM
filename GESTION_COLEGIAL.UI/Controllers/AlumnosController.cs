@@ -8,15 +8,26 @@ using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
+    /// <summary>
+    /// Controlador para gestionar la entidad Alumnos.
+    /// </summary>
     public class AlumnosController : BaseController
     {
-        readonly AlumnosService alumnosService = new AlumnosService();
-        // GET: Alumnos
+        private readonly AlumnosService alumnosService = new AlumnosService();
+
+        /// <summary>
+        /// Muestra la vista del índice.
+        /// </summary>
+        /// <returns>La vista del índice.</returns>
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Muestra la vista de creación de forma asíncrona.
+        /// </summary>
+        /// <returns>La vista de creación.</returns>
         public async Task<ActionResult> CreateAsync()
         {
             var model = new AlumnoViewModel();
@@ -24,12 +35,21 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View(drop);
         }
 
+        /// <summary>
+        /// Obtiene una lista de alumnos de forma asíncrona.
+        /// </summary>
+        /// <returns>El resultado en formato Ajax.</returns>
         public async Task<ActionResult> ListAsync()
         {
             var result = await alumnosService.ListAsync();
             return AjaxResult(result);
         }
 
+        /// <summary>
+        /// Busca un alumno por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">ID del alumno.</param>
+        /// <returns>La vista de creación con el alumno encontrado.</returns>
         public async Task<ActionResult> FindAsync(int id)
         {
             var result = await alumnosService.Find(id);
@@ -37,6 +57,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View("CreateAsync", drop);
         }
 
+        /// <summary>
+        /// Guarda los cambios realizados en un alumno.
+        /// </summary>
+        /// <param name="model">El modelo del alumno.</param>
+        /// <returns>El resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> Save(AlumnoViewModel model)
         {
@@ -44,7 +69,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             {
                 bool result = await alumnosService.Create(model);
 
-                //Validamos error
+                // Validamos error
                 if (result)
                 {
                     AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
@@ -57,7 +82,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             {
                 bool result = await alumnosService.Edit(model);
 
-                //Validamos error
+                // Validamos error
                 if (result)
                 {
                     AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
@@ -68,13 +93,21 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Obtiene los datos para llenar un dropdown de opciones relacionadas con los alumnos.
+        /// </summary>
+        /// <param name="model">El modelo del alumno.</param>
+        /// <returns>El modelo del alumno actualizado con los datos del dropdown.</returns>
         public async Task<AlumnoViewModel> Dropdown(AlumnoViewModel model)
         {
-
-
             return await alumnosService.Dropdown(model);
         }
 
+        /// <summary>
+        /// Obtiene los cursos y niveles relacionados con un alumno.
+        /// </summary>
+        /// <param name="id">ID del alumno.</param>
+        /// <returns>El resultado en formato Ajax.</returns>
         [HttpGet]
         public async Task<ActionResult> GetCursosNiveles(int id)
         {
@@ -87,6 +120,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(resultToSelectListItem);
         }
 
+        /// <summary>
+        /// Obtiene las modalidades relacionadas con un alumno.
+        /// </summary>
+        /// <param name="id">ID del alumno.</param>
+        /// <returns>El resultado en formato Ajax.</returns>
         public async Task<ActionResult> GetModalidades(int id)
         {
             var result = await alumnosService.ModalidadesDropdown(id);
@@ -98,6 +136,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(resultToSelectListItem);
         }
 
+        /// <summary>
+        /// Obtiene los cursos relacionados con un alumno.
+        /// </summary>
+        /// <param name="id">ID del alumno.</param>
+        /// <returns>El resultado en formato Ajax.</returns>
         public async Task<ActionResult> GetCursos(int id)
         {
             var result = await alumnosService.CursosDropdown(id);
@@ -109,10 +152,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(resultToSelectListItem);
         }
 
+        /// <summary>
+        /// Obtiene las secciones relacionadas con un alumno.
+        /// </summary>
+        /// <param name="id">ID del alumno.</param>
+        /// <returns>El resultado en formato Ajax.</returns>
         public async Task<ActionResult> GetSecciones(int id)
         {
             var result = await alumnosService.SeccionesDropdown(id);
-            //Validamos error
+            // Validamos error
             if (result == null)
             {
                 AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error al procesar la solicitud");
@@ -125,12 +173,17 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(resultToSelectListItem);
         }
 
+        /// <summary>
+        /// Elimina un alumno de forma asíncrona.
+        /// </summary>
+        /// <param name="model">El modelo del alumno.</param>
+        /// <returns>El resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(AlumnoViewModel model)
         {
             bool result = await alumnosService.Delete(model.Alu_Id);
 
-            //Validamos error
+            // Validamos error
             if (result)
             {
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);

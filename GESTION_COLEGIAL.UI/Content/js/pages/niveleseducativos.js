@@ -1,5 +1,4 @@
 ﻿var NivelesEducativos = (function () {
-
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {

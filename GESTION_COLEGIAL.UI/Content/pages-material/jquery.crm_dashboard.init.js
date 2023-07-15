@@ -61,11 +61,11 @@ var options = {
       axisBorder: {
         show: true,
         color: '#45404a2e',
-      },  
+      },
       axisTicks: {
         show: true,
         color: '#45404a2e',
-      },                  
+      },
   },
 
   fill: {
@@ -92,7 +92,6 @@ var chart = new ApexCharts(
 
 chart.render();
 
-
 var options = {
   chart: {
       height: 300,
@@ -114,7 +113,7 @@ var options = {
           endAngle: 135,
           track: {
             background: '#b9c1d4',
-            opacity: 0.3,            
+            opacity: 0.3,
           },
           dataLabels: {
               name: {

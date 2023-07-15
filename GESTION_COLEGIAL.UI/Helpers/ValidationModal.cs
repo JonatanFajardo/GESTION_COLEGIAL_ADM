@@ -6,11 +6,9 @@ namespace GESTION_COLEGIAL.UI.Helpers
     {
         public ValidationModal()
         {
-
         }
 
         private string sendMessage;
-
 
         /// <summary>
         /// Contenido a validar.

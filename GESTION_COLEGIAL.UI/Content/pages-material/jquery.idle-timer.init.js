@@ -4,7 +4,6 @@
  * Idle-timer Js
  */
 
-
         /*
         scrollToBottom plugin, chainable
         */
@@ -147,14 +146,9 @@
                     .scrollToBottom();
             }
 
-
             //For demo purposes, display the actual timeout on the page
             $('#docTimeout').text(docTimeout / 1000);
-
-
         })(jQuery);
-
-
 
         /*
         Code for element idle timer
@@ -179,7 +173,6 @@
                 .removeClass("alert-soft-success")
                 .addClass("alert-soft-secondary")
                 .scrollToBottom();
-
         });
         $('#elStatus').on("active.idleTimer", function (event) {
             //If you dont stop propagation it will bubble up to document event handler
@@ -273,5 +266,4 @@
 
         // Display the actual timeout on the page
         $('#elTimeout').text(taTimeout / 1000);
-
     })(jQuery);

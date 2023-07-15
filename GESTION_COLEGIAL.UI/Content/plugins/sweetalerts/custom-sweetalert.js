@@ -1,4 +1,3 @@
-
 $('.widget-content .message').on('click', function () {
   swal({
       title: 'Saved succesfully',
@@ -13,7 +12,6 @@ $('.widget-content .success').on('click', function () {
       type: 'success',
       padding: '2em'
     })
-
 })
 
 $('.widget-content .html-jquery').on('click', function () {
@@ -32,7 +30,6 @@ $('.widget-content .title-text').on('click', function () {
       type: 'question',
       padding: '2em'
   })
-
 })
 
 $('.widget-content .custom-width-padding-background').on('click', function () {
@@ -119,7 +116,6 @@ $('.widget-content .html').on('click', function () {
     cancelButtonAriaLabel: 'Thumbs down',
     padding: '2em'
   })
-
 })
 
 $('.widget-content .custom-image').on('click', function () {
@@ -194,7 +190,7 @@ $('.widget-content .dynamic-queue').on('click', function () {
     showLoaderOnConfirm: true,
     preConfirm: function() {
       return fetch(ipAPI)
-        .then(function (response) { 
+        .then(function (response) {
             return response.json();
         })
         .then(function(data) {
@@ -208,7 +204,6 @@ $('.widget-content .dynamic-queue').on('click', function () {
         })
     }
   }])
-
 })
 
 $('.widget-content .footer').on('click', function () {
@@ -231,7 +226,6 @@ $('.widget-content .RTL').on('click', function () {
     padding: '2em',
     target: document.getElementById('rtl-container')
   })
-
 })
 
 $('.widget-content .mixin').on('click', function () {
@@ -247,5 +241,4 @@ $('.widget-content .mixin').on('click', function () {
     title: 'Signed in successfully',
     padding: '2em',
   })
-
 })

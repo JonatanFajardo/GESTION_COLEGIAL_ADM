@@ -4,18 +4,15 @@
  File: Sparkline chart
  */
 
-
-
 $(document).ready(function() {
     var SparklineCharts = function() {
-  
       $('#sparkline1').sparkline([20, 40, 30], {
         type: 'pie',
         height: '100',
         resize: true,
         sliceColors: ['#4d79f6', '#4ac7ec', '#eff2f9']
       });
-  
+
       $("#sparkline2").sparkline([5,6,2,8,9,4,7,10,11,12,10,4,7,10], {
         type: 'bar',
         height: '100',
@@ -23,7 +20,7 @@ $(document).ready(function() {
         barSpacing: 7,
         barColor: '#4d79f6'
       });
-  
+
       $('#sparkline3').sparkline([5, 6, 2, 9, 4, 7, 10, 12,4,7,10], {
         type: 'bar',
         height: '100',
@@ -42,7 +39,7 @@ $(document).ready(function() {
         highlightLineColor: 'rgba(0,0,0,.1)',
         highlightSpotColor: 'rgba(0,0,0,.2)'
       });
-  
+
       $("#sparkline4").sparkline([0, 23, 43, 35, 44, 45, 56, 37, 40, 45, 56, 7, 10], {
         type: 'line',
         width: '100%',
@@ -67,7 +64,7 @@ $(document).ready(function() {
         highlightLineColor: 'rgba(0,0,0,.1)',
         highlightSpotColor: 'rgba(0,0,0,.2)',
       });
-  
+
       $('#sparkline5').sparkline([0, 13, 10, 14, 15, 10, 18, 20, 0], {
         type: 'line',
         width: '100%',
@@ -80,14 +77,14 @@ $(document).ready(function() {
         highlightLineColor: 'rgba(0,0,0,.1)',
         highlightSpotColor: 'rgba(0,0,0,.2)',
       });
-  
+
       $("#sparkline6").sparkline([4, 6, 7, 7, 4, 3, 2, 1, 4, 4, 5, 6, 3, 4, 5, 8, 7, 6, 9, 3, 2, 4, 1, 5, 6, 4, 3, 7], {
         type: 'discrete',
         width: '250',
         height: '100',
         lineColor: '#ffffff'
       });
-  
+
       $('#sparkline7').sparkline([10,12,12,9,7], {
         type: 'bullet',
         width: '100%',
@@ -117,14 +114,12 @@ $(document).ready(function() {
         barSpacing: 3,
         zeroAxis: false
       });
-  
     }
     var sparkResize;
-  
+
     $(window).resize(function(e) {
       clearTimeout(sparkResize);
       sparkResize = setTimeout(SparklineCharts, 500);
     });
     SparklineCharts();
-  
   });

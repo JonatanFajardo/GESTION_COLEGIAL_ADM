@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.Business.Services
 {
+    /// <summary>
+    /// Clase que representa el servicio de alumnos.
+    /// </summary>
     public class AlumnosService
     {
+        /// <summary>
+        /// Obtiene una lista de alumnos de forma asíncrona.
+        /// </summary>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de alumnos.</returns>
         public async Task<IEnumerable<AlumnoViewModel>> ListAsync()
         {
             string url = "Alumnos/ListAsync";
@@ -15,62 +22,67 @@ namespace GESTION_COLEGIAL.Business.Services
             return apiUrl;
         }
 
+        /// <summary>
+        /// Busca un alumno por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID del alumno.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el alumno encontrado.</returns>
         public async Task<AlumnoViewModel> Find(int id)
         {
             string url = "Alumnos/FindAsync";
             AlumnoViewModel apiUrl = await ApiRequests.FindAsync<AlumnoViewModel>(url, id);
-            //AlumnoViewModel alumnoViewModel = new AlumnoViewModel();
-            //alumnoViewModel.Niv_Id = result.Niv_Id,
-            //    alumnoViewModel.Niv_Descripcion = result.Niv_Descripcion,
-            //    alumnoViewModel.Cun_Id = result.Cun_Id,
-            //    alumnoViewModel.Cun_Descripcion = result.Cun_Descripcion,
-            //    alumnoViewModel.Mda_Id = result.Mda_Id,
-            //    alumnoViewModel.Mda_Descripcion = result.Mda_Descripcion,
-            //    alumnoViewModel.Cur_Id = result.Cur_Id,
-            //    alumnoViewModel.Cur_Nombre = result.Cur_Nombre,
-            //    alumnoViewModel.Sec_Id = result.Sec_Id,
-            //    alumnoViewModel.Sec_Descripcion = result.Sec_Descripcion,
-            //    alumnoViewModel.Est_Id = result.Est_Id,
-            //    alumnoViewModel.Est_Descripcion = result.Est_Descripcion,
-            //    alumnoViewModel.Alu_Id = result.Alu_Id,
-            //    alumnoViewModel.Per.Per_Identidad = result.Per_Id.,
-            //    alumnoViewModel.Per.Per_PrimerNombre = result.Per_PrimerNombre,
-            //    alumnoViewModel.Per.Per_SegundoNombre = result.Per_SegundoNombre,
-            //    alumnoViewModel.Per.Per_ApellidoPaterno = result.Per_ApellidoPaterno,
-            //    alumnoViewModel.Per.Per_ApellidoMaterno = result.Per_ApellidoMaterno,
-            //    alumnoViewModel.Per.Per_FechaNacimiento = result.Per_FechaNacimiento,
-            //    alumnoViewModel.Per.Per_CorreoElectronico = result.Per_CorreoElectronico,
-            //    alumnoViewModel.Per.Per_Telefono = result.Per_Telefono,
-            //    alumnoViewModel.Per.Per_Direccion = result.Per_Direccion,
-            //    alumnoViewModel.Per.Per_Sexo = result.Per_Sexo,
-            //    alumnoViewModel.Per.Per_EsEliminado = result.Per_EsEliminado
             return apiUrl;
         }
 
+        /// <summary>
+        /// Crea un nuevo alumno de forma asíncrona.
+        /// </summary>
+        /// <param name="model">El modelo de alumno a crear.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se creó el alumno correctamente.</returns>
         public async Task<Boolean> Create(AlumnoViewModel model)
         {
             string url = "Alumnos/CreateAsync";
             return await ApiRequests.CreateAsync(url, model);
         }
 
+        /// <summary>
+        /// Edita un alumno existente de forma asíncrona.
+        /// </summary>
+        /// <param name="model">El modelo de alumno a editar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se editó el alumno correctamente.</returns>
         public async Task<Boolean> Edit(AlumnoViewModel model)
         {
             string url = "Alumnos/EditAsync";
             return await ApiRequests.EditAsync(url, model);
         }
 
+        /// <summary>
+        /// Verifica si existe un alumno con el valor especificado de forma asíncrona.
+        /// </summary>
+        /// <param name="value">El valor a verificar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el alumno encontrado.</returns>
         public async Task<AlumnoViewModel> Exist(string value)
         {
             string url = "Alumnos/ExistAsync";
             return await ApiRequests.ExistAsync<AlumnoViewModel>(url, value);
         }
 
+        /// <summary>
+        /// Elimina un alumno por su ID de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID del alumno a eliminar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó el alumno correctamente.</returns>
         public async Task<Boolean> Delete(int id)
         {
             string url = "Alumnos/RemoveAsync";
             return await ApiRequests.DeleteAsync(url, id);
         }
 
+        /// <summary>
+        /// Obtiene un modelo de alumno con las listas desplegables cargadas de forma asíncrona.
+        /// </summary>
+        /// <param name="model">El modelo de alumno.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el modelo de alumno con las listas desplegables cargadas.</returns>
         public async Task<AlumnoViewModel> Dropdown(AlumnoViewModel model)
         {
             string urlNivelesEducativos = "Alumnos/NivelesEducativosDropdown";
@@ -80,6 +92,12 @@ namespace GESTION_COLEGIAL.Business.Services
             model.LoadDropDownList(nivelesEducativosDropdown, estadosDropdown);
             return model;
         }
+
+        /// <summary>
+        /// Obtiene una lista de cursos y niveles desplegables para un ID específico de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID de referencia.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de cursos y niveles desplegables.</returns>
         public async Task<IEnumerable<CursoNivelDropViewModel>> CursoNivelesDropdown(int id)
         {
             string urlCursosNiveles = "Alumnos/CursosNivelesDropdown";
@@ -87,6 +105,11 @@ namespace GESTION_COLEGIAL.Business.Services
             return cursosNivelesDropdown;
         }
 
+        /// <summary>
+        /// Obtiene una lista de modalidades desplegables para un ID específico de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID de referencia.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de modalidades desplegables.</returns>
         public async Task<IEnumerable<ModalidadViewModel>> ModalidadesDropdown(int id)
         {
             string urlModalidades = "Alumnos/ModalidadesDropdown";
@@ -94,6 +117,11 @@ namespace GESTION_COLEGIAL.Business.Services
             return modalidadesDropdown;
         }
 
+        /// <summary>
+        /// Obtiene una lista de cursos desplegables para un ID específico de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID de referencia.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de cursos desplegables.</returns>
         public async Task<IEnumerable<CursoViewModel>> CursosDropdown(int id)
         {
             string urlCursos = "Alumnos/CursosDropdown";
@@ -101,12 +129,16 @@ namespace GESTION_COLEGIAL.Business.Services
             return cursosDropdown;
         }
 
+        /// <summary>
+        /// Obtiene una lista de secciones desplegables para un ID específico de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El ID de referencia.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de secciones desplegables.</returns>
         public async Task<IEnumerable<SeccionViewModel>> SeccionesDropdown(int id)
         {
             string urlSecciones = "Alumnos/SeccionesDropdown";
             var seccionesDropdown = await ApiRequests.DropdownAsync<SeccionViewModel>(urlSecciones, id);
             return seccionesDropdown;
         }
-
     }
 }

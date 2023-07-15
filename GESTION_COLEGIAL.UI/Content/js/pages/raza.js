@@ -1,5 +1,4 @@
 ﻿var raza = (function () {
-   
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -28,11 +27,7 @@
         })
     }
     return obj;
-
 }());
 
 $(function () {
-
 });
-
-           

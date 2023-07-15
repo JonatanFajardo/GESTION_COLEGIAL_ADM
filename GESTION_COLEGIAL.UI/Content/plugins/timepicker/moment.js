@@ -661,7 +661,6 @@ var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
 // includes scottish gaelic two word and hyphenated months
 var matchWord = /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i;
 
-
 var regexes = {};
 
 function addRegexToken (token, regex, strictRegex) {
@@ -832,7 +831,6 @@ function stringGet (units) {
     }
     return this;
 }
-
 
 function stringSet (units, value) {
     if (typeof units === 'object') {
@@ -1598,7 +1596,6 @@ function weekdaysMinRegex (isStrict) {
     }
 }
 
-
 function computeWeekdaysParse () {
     function cmpLenRev(a, b) {
         return b.length - a.length;
@@ -1765,7 +1762,6 @@ function localeMeridiem (hours, minutes, isLower) {
     }
 }
 
-
 // MOMENTS
 
 // Setting the hour should keep the time, because the user explicitly
@@ -1908,7 +1904,6 @@ function defineLocale (name, config) {
         // make sure we set the locale AFTER all child locales have been
         // created, so we won't end up with the child locale set.
         getSetGlobalLocale(name);
-
 
         return locales[name];
     } else {
@@ -2453,7 +2448,6 @@ function configFromStringAndFormat(config) {
     configFromArray(config);
     checkOverflow(config);
 }
-
 
 function meridiemFixWrap (locale, hour, meridiem) {
     var isPm;
@@ -3551,7 +3545,6 @@ addUnitAlias('isoWeekYear', 'GG');
 addUnitPriority('weekYear', 1);
 addUnitPriority('isoWeekYear', 1);
 
-
 // PARSING
 
 addRegexToken('G',      matchSigned);
@@ -3776,7 +3769,6 @@ addFormatToken(0, ['SSSSSSSS', 8], 0, function () {
 addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
     return this.millisecond() * 1000000;
 });
-
 
 // ALIASES
 
@@ -4390,7 +4382,6 @@ function toISOString$1() {
     years  = absFloor(months / 12);
     months %= 12;
 
-
     // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
     var Y = years;
     var M = months;
@@ -4479,7 +4470,6 @@ addParseToken('x', function (input, array, config) {
 
 // Side effect imports
 
-
 hooks.version = '2.19.4';
 
 setHookCallback(createLocal);
@@ -4513,5 +4503,4 @@ hooks.calendarFormat        = getCalendarFormat;
 hooks.prototype             = proto;
 
 return hooks;
-
 })));

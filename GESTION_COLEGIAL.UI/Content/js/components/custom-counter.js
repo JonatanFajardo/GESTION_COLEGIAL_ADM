@@ -30,7 +30,6 @@ $('.s-counter4').countTo({
     }
 });
 
-
 // With Icon
 
 var value = $('.ico-counter1').text();
@@ -60,7 +59,6 @@ $('.ico-counter3').countTo({
         return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
     }
 });
-
 
 // Circle
 

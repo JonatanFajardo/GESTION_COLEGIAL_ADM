@@ -1,5 +1,4 @@
 ﻿var Parentescos = (function () {
-
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {

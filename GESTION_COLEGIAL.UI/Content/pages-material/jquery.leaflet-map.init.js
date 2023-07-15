@@ -4,9 +4,7 @@
  * Leaflet Map Js
  */
 
-
 $(function(){
-
 	var mymap = L.map('Leaf_default').setView([51.505, -0.09], 13);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -32,7 +30,6 @@ $(function(){
 		[51.51, -0.047]
 	]).addTo(mymap).bindPopup("I am a polygon.");
 
-
 	var popup = L.popup();
 
 	function onMapClick(e) {
@@ -43,7 +40,6 @@ $(function(){
 	}
 
 	mymap.on('click', onMapClick);
-
 
     //  Map -2
 
@@ -69,10 +65,6 @@ $(function(){
     var marker = new L.Marker(latLng);
 
     map.addLayer(rectangle1).addLayer(rectangle2).addLayer(marker);
-
-
-
-
 
     function boundsExtendBounds() {
         if  (rectangle3) {
@@ -115,7 +107,6 @@ $(function(){
     }
 
 // Map-3
-
 
 var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -166,9 +157,8 @@ var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 		map.addLayer(poly);
 
         path.bindPopup("Hello world");
-        
-        // Map-4
 
+        // Map-4
 
         var osmUrl = 'https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
 			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -198,9 +188,8 @@ var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 		}
 
         update();
-        
-        // Map-5
 
+        // Map-5
 
         var map = L.map('Array_Map', {
 			center: [20, 20],
@@ -221,12 +210,10 @@ var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 L.polygon([points, []], {dashArray: '5, 5'}).addTo(map);
                 L.circleMarker([42, 0], {color: 'red'}).addTo(map);
 
-
                 // Map-6
 
-
                 var map = L.map('V_Simple');
-		
+
 		map.setView([51.505, -0.09], 13);
 
 		var marker = L.marker([51.5, -0.09])
@@ -247,5 +234,4 @@ var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 		var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}).addTo(map);
-    
 })

@@ -1,15 +1,15 @@
 var SessionTimeout=function() {
     var e=function() {
         $.sessionTimeout( {
-            title:"Session Timeout Notification", 
-            message:"Your session is about to expire.", 
-            keepAliveUrl:"", 
-            redirUrl:"auth_lockscreen.html", 
-            logoutUrl:"auth_login.html", 
-            warnAfter:3e3, 
-            redirAfter:21e3, 
-            ignoreUserActivity:!0, 
-            countdownMessage:"Redirecting in {timer}.", 
+            title:"Session Timeout Notification",
+            message:"Your session is about to expire.",
+            keepAliveUrl:"",
+            redirUrl:"auth_lockscreen.html",
+            logoutUrl:"auth_login.html",
+            warnAfter:3e3,
+            redirAfter:21e3,
+            ignoreUserActivity:!0,
+            countdownMessage:"Redirecting in {timer}.",
             countdownBar: !0
         }
         )

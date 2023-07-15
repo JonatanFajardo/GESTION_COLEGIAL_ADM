@@ -943,7 +943,7 @@ loader.executor.injector = def(
       // Injection does not fire events, but execution happens synchronously,
       // so we just make an explicit callback
       script.insert(inject, noop);
-      onsuccess(); 
+      onsuccess();
     };
 
     return {
@@ -1476,7 +1476,6 @@ module.bootstrap.install = def(
     };
   }
 );
-
 })(Function('return this')());
 (function (global) {
   var obj = ephox.bolt.kernel.fp.object;

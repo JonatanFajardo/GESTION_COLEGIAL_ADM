@@ -1,5 +1,4 @@
 ﻿var Secciones = (function () {
-
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.Business.Services
 {
+    /// <summary>
+    /// Clase que representa el servicio de los parentescos.
+    /// </summary>
     public class ParentescosService
     {
         public async Task<IEnumerable<ParentescoViewModel>> ListAsync()
