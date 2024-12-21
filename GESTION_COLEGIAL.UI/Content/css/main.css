@@ -2743,3 +2743,22 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
 .cursor-pointer {
     cursor: pointer;
 }
+
+
+
+/*HomeDashboard*/
+
+#HomeAndCharts {
+    border-collapse: collapse; /* Compacta los bordes */
+    width: 100%; /* Ajusta al contenedor */
+}
+
+#HomeAndCharts th, #HomeAndCharts td {
+    padding: 4px 8px; /* Reduce espacio interno */
+    font-size: 14px; /* Fuente más pequeña */
+}
+
+#HomeAndCharts tr {
+    line-height: 1; /* Compacta las filas */
+}
+ 
