@@ -88,6 +88,8 @@
     <Compile Include="Models\EmpleadoViewModel.cs" />
     <Compile Include="Models\EncargadoViewModel.cs" />
     <Compile Include="Models\EstadoViewModel.cs" />
+    <Compile Include="Models\ObtenerCantidadAlumnosPorCursoViewModel.cs" />
+    <Compile Include="Models\HomeAndChartsViewModel.cs" />
     <Compile Include="Models\HorarioAlumnoViewModel.cs" />
     <Compile Include="Models\HorarioProfesorViewModel.cs" />
     <Compile Include="Models\HoraViewModel.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Services\EmpleadosService.cs" />
     <Compile Include="Services\EncargadosService.cs" />
     <Compile Include="Services\EstadosService.cs" />
+    <Compile Include="Services\HomeAndChartsService.cs" />
     <Compile Include="Services\HorarioAlumnosService.cs" />
     <Compile Include="Extensions\ApiRequests.cs" />
     <Compile Include="Services\HorasService.cs" />

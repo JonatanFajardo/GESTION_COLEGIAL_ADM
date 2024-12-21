@@ -132,6 +132,7 @@
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\EncargadosController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
+    <Compile Include="Controllers\HomeAndChartsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HorasController.cs" />
     <Compile Include="Controllers\MateriasController.cs" />
@@ -303,6 +304,7 @@
     <Content Include="Content\js\pages\faq\faq.js" />
     <Content Include="Content\js\pages\faq\faq2.js" />
     <Content Include="Content\js\pages\helpdesk.js" />
+    <Content Include="Content\js\pages\home.js" />
     <Content Include="Content\js\pages\horarioalumnos.js" />
     <Content Include="Content\js\pages\horarioprofesores.js" />
     <Content Include="Content\js\pages\horas.js" />
