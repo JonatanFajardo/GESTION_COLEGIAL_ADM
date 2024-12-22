@@ -15,7 +15,7 @@ html {
 }
 
 body {
-    color: #888ea8;
+    /*color: #888ea8;*/
     height: 100%;
     font-size: 0.875rem;
     background: #fafafa;
@@ -102,7 +102,7 @@ code {
 #content {
     width: 50%;
     flex-grow: 8;
-    margin-top: 80px;
+    margin-top: 60px;
     margin-bottom: 0;
     margin-left: 255px;
     -webkit-transition: 0.3s ease all;
@@ -221,7 +221,7 @@ code {
 
 .navbar {
     padding: 0;
-    min-height: 80px;
+    min-height: 60px;
     background: var(--primary-color);
     -webkit-transition: 0.3s ease all;
     transition: 0.3s ease all;
@@ -261,7 +261,7 @@ code {
 
 .header-container .navbar-nav.theme-brand {
     width: 255px;
-    height: 80px;
+    height: 60px;
     display: flex;
     justify-content: space-around;
     background: #fff;
@@ -1084,7 +1084,7 @@ code {
     position: fixed;
     z-index: 1030;
     transition: 0.55s;
-    top: 80px;
+    top: 60px;
     height: 100vh;
     touch-action: none;
     user-select: none;
@@ -1956,3 +1956,54 @@ code {
         display: none;
     }
 }
+
+
+
+
+/* General styles for the sidebar */
+.sidebar-wrapper {
+    width: 250px;
+    background-color: #2c2c2c;
+    color: #fff;
+    height: 100vh;
+    position: fixed;
+}
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .menu a {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #fff;
+        transition: all 0.3s ease;
+    }
+
+        .menu a .menu-icon {
+            margin-right: 10px;
+        }
+
+        .menu a:hover {
+            background-color: #1e1e1e;
+            color: #ffcc00; /* Color del texto al hacer hover */
+        }
+
+    .menu .menu-link {
+        position: relative;
+    }
+
+        .menu .menu-link:hover::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background-color: #ffcc00; /* Color del indicador de hover */
+            border-radius: 0 5px 5px 0;
+        }
