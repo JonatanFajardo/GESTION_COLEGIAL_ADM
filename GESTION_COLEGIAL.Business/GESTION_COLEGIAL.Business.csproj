@@ -99,6 +99,7 @@
     <Compile Include="Models\ModalidadViewModel.cs" />
     <Compile Include="Models\NivelEducativoViewModel.cs" />
     <Compile Include="Models\NotaViewModel.cs" />
+    <Compile Include="Models\ObtenerPromedioCursoUltimosAniosViewModel.cs" />
     <Compile Include="Models\ParcialViewModel.cs" />
     <Compile Include="Models\ParentescoViewModel.cs" />
     <Compile Include="Models\PersonaViewModel.cs" />

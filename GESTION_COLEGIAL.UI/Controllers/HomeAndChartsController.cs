@@ -43,5 +43,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
             var result = await homeAndChartsService.ObtenerCantidadAlumnosPorCursoList();
             return AjaxResult(result);
         }
+
+        /// <summary>
+        /// Obtiene una lista de alumnos de forma asíncrona.
+        /// </summary>
+        /// <returns>El resultado en formato Ajax.</returns>
+        public async Task<ActionResult> ObtenerPromedioCursoUltimosAnios()
+        {
+            var result = await homeAndChartsService.ObtenerPromedioCursoUltimosAnios();
+            return AjaxResult(result);
+        }
     }
 }
