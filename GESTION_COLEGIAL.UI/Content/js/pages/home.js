@@ -82,15 +82,15 @@ $(document).ready(function () {
                         label: 'Cantidad de Alumnos',
                         data: cantidades,
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 159, 64, 0.6)',
-                            'rgba(201, 203, 207, 0.6)',
-                            'rgba(0, 123, 255, 0.6)',
-                            'rgba(128, 0, 128, 0.6)'
+                            'rgba(255, 255, 0, 0.6)',
+                            'rgba(255, 204, 0, 0.6)',
+                            'rgba(255, 235, 59, 0.6)',
+                            'rgba(255, 193, 7, 0.6)',
+                            'rgba(255, 167, 38, 0.6)',
+                            'rgba(205, 220, 57, 0.6)',
+                            'rgba(255, 245, 157, 0.6)',
+                            'rgba(245, 124, 0, 0.6)',
+                            'rgba(255, 224, 130, 0.6)'
                         ],
                         borderWidth: 1
                     }]
@@ -119,11 +119,12 @@ $(document).ready(function () {
 
 
 
+    ////const apiKey = '565c6073a5c841bd81385441242012'; // Reemplaza con tu clave real
     //const apiKey = '565c6073a5c841bd81385441242012'; // Reemplaza con tu clave real
-    //const query = 'Honduras'; // You can change the query here
-
+    //const query = 'Honduras'; // Puedes cambiar la ubicación aquí
     //const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
 
+    //// Elementos del DOM
     //const locationElement = $('#location');
     //const weatherIcon = $('#weather-icon');
     //const tempC = $('#temp-c');
@@ -135,10 +136,18 @@ $(document).ready(function () {
     //const visibility = $('#visibility');
     //const errorMessage = $('#error-message');
 
-    //$.ajax({
-    //    url: weatherUrl,
-    //    dataType: 'json',
-    //    success: function (data) {
+    //// Función asíncrona para obtener el clima usando AJAX
+    //async function obtenerDatosClima() {
+    //    try {
+    //        // Realizamos la solicitud AJAX con await
+    //        const data = await $.ajax({
+    //            url: weatherUrl,
+    //            dataType: 'json'
+    //        });
+
+    //        console.log(data);
+
+    //        // Actualizamos el DOM con los datos del clima
     //        locationElement.text(`${data.location.name}, ${data.location.country}`);
     //        weatherIcon.attr('src', data.current.condition.icon);
     //        weatherIcon.attr('alt', data.current.condition.text);
@@ -149,14 +158,79 @@ $(document).ready(function () {
     //        windSpeed.text(data.current.wind_kph);
     //        windDirection.text(data.current.wind_dir);
     //        visibility.text(data.current.vis_km);
+
+    //        // Limpiamos el mensaje de error si la llamada fue exitosa
     //        errorMessage.text("");
-    //    },
-    //    error: function (jqXHR, textStatus, errorThrown) {
-    //        console.error('Error fetching data:', textStatus, errorThrown);
+    //    } catch (error) {
+    //        // Si ocurre algún error, mostramos un mensaje en el DOM
+    //        console.error('Error al obtener los datos del clima:', error);
     //        errorMessage.text("Error al obtener los datos del clima. Por favor, inténtelo de nuevo más tarde.");
     //        locationElement.text("Error");
     //    }
-    //});
+    //}
+
+    //// Llamar a la función al cargar la página
+    //obtenerDatosClima();
+    async function ObtenerPromedioCursoUltimosAnios() {
+        const ctx = document.getElementById('ObtenerPromedioCursoUltimosAnios').getContext('2d');
+        const mensajeErrorDiv = document.getElementById('mensajeError');
+
+        try {
+            await $.ajax({
+                url: 'HomeAndCharts/ObtenerPromedioCursoUltimosAnios',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    // Procesar los datos
+                    const anios = response.data.map(item => item.AnioCursado);
+                    const promedios = response.data.map(item => item.PromedioAnual);
+
+                    // Crear la gráfica con Chart.js
+                    //const ctx = document.getElementById('graficaLineal').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line', // Tipo de gráfica: lineal
+                        data: {
+                            labels: anios, // Etiquetas del eje X (Años)
+                            datasets: [{
+                                label: 'Promedio Anual',
+                                data: promedios, // Datos para el eje Y
+                                borderColor: 'rgba(253, 206, 128, 1)', // Color de la línea rgb()
+                                backgroundColor: 'rgba(253, 206, 128, 0.2)', // Color de fondo de los puntos
+                                fill: true, // No llenar el área bajo la línea
+                                tension: 0.1 // Curvatura de la línea
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Years'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Promedio Anual'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }, // Cierre de la función success
+                error: function (error) {
+                    console.error("Error al obtener los datos", error);
+                    mensajeErrorDiv.style.display = 'block'; // Mostrar mensaje de error si lo hay
+                }
+            }); // Cierre de la llamada AJAX
+        } catch (error) {
+            console.error("Error en la función async", error);
+        }
+    }
+
+
+    ObtenerPromedioCursoUltimosAnios();
 
 
 });

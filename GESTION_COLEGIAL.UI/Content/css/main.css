@@ -15,7 +15,7 @@ html {
 }
 
 body {
-    color: #888ea8;
+    /*color: #888ea8;*/
     height: 100%;
     font-size: 0.875rem;
     background: #f1f2f3;
@@ -2628,10 +2628,10 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
 .border {
     border: 1px solid !important;
 }
-
+/*
 .border-bottom {
     border-bottom: 1px solid !important;
-}
+}*/
 
 .border-top {
     border-top: 1px solid !important;

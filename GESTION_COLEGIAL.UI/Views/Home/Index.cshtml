@@ -21,168 +21,213 @@
     @*<div class="row align-items-center d-flex mb-3 rounded shadow" style="background-color: #FFE5D2; max-height:400px;">*@
     @*<h1 class="">Bienvenido!</h1>*@
 
-    <!--<div class="row align-items-center d-flex mb-3 rounded shadow" style="background-color: #FFE5D2; max-height:150px;">
-        <div class="col-4 text-center ">
-            <h1 class="">Bienvenido</h1>
-            <p class="">Disfruta de tu gestión online, manten todo organizado a un clic</p>
-            <p class=""></p>
-        </div>
-        <div class="col-8 justify-content-end img-fluid rounded d-flex text-center">-->
-    @*<img src="~/Content/img/mochila.jpg" class="" style="max-height:200px;" alt="coming_soon">*@
-    <!--<img src="~/Content/img/mochila.jpg" class="" style="max-height:150px;" alt="coming_soon">
-            <div class="img-content">
-            </div>
-        </div>
-    </div>-->
 
+    <div class="row mb-3">
+
+        <div class="col-md-6 col-xl-7 " >
+            <div class="card rounded shadow-sm" style="background-color: #FFE5D2; ">
+                <div class="card-body">
+
+            <div class="row align-items-center d-flex" style="height: 175px;">
+
+                <div class="col-7 text-center ">
+                    <h1 class="">Bienvenido</h1>
+                    <p class="">Disfruta de tu gestión online, manten todo organizado a un clic</p>
+                    <p class=""></p>
+                </div>
+                <div class="col-5 justify-content-end img-fluid rounded d-flex text-center">
+                    @*<img src="~/Content/img/mochila.jpg" class="" style="max-height:200px;" alt="coming_soon">*@
+                    <img src="~/Content/img/mochila.jpg" class="" style="max-height:150px;" alt="coming_soon">
+                    <div class="img-content">
+                    </div>
+                </div>
+            </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 col-xl-5">
+
+            <div class="row gx-1 mb-6">
+                <div class="col-xl-6 col-sm-6 col-12 mb-2">
+                    <div class="card shadow-sm ">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col border-bottom">
+                                    <span class="h6 font-semibold text-warning text-sm d-block mb-2">
+                                        <i class="icon icon-shape text-warning text-lg rounded-circle fa-solid fa-children fa-xl"></i>
+                                        Encargados
+                                    </span>
+
+                                </div>
+                                <div class="col-auto">
+                                    <span class="h3 font-bold mb-0">4000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-sm-6 col-12 mb-2">
+                    <div class="card shadow-sm ">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col border-bottom">
+                                    <span class="h6 font-semibold text-warning text-sm d-block mb-2">
+                                        <i class="icon icon-shape text-warning text-lg rounded-circle fa-solid fa-children fa-xl"></i>
+                                        Encargados
+                                    </span>
+
+                                </div>
+                                <div class="col-auto">
+                                    <span class="h3 font-bold mb-0">4000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xl-6 col-sm-6 col-12 mb-2">
+                    <div class="card shadow-sm ">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col border-bottom">
+                                    <span class="h6 font-semibold text-warning text-sm d-block mb-2">
+                                        <i class="icon icon-shape text-warning text-lg rounded-circle fa-solid fa-children fa-xl"></i>
+                                        Encargados
+                                    </span>
+
+                                </div>
+                                <div class="col-auto">
+                                    <span class="h3 font-bold mb-0">4000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-sm-6 col-12 mb-2">
+                    <div class="card shadow-sm ">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col border-bottom">
+                                    <span class="h6 font-semibold text-warning text-sm d-block mb-2">
+                                        <i class="icon icon-shape text-warning text-lg rounded-circle fa-solid fa-children fa-xl"></i>
+                                        Encargados
+                                    </span>
+
+                                </div>
+                                <div class="col-auto">
+                                    <span class="h3 font-bold mb-0">4000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+    </div>
+    </div>
 
     @*<div class="weather-container">
-        <h1 id="location">Tegucigalpa, Honduras</h1>
-        <div class="weather-info">
-            <img id="weather-icon" src="" alt="Weather Icon">
-            <div class="temperature">
-                <span id="temp-c"></span> °C
+            <h1 id="location">Tegucigalpa, Honduras</h1>
+            <div class="weather-info">
+                <img id="weather-icon" src="" alt="Weather Icon">
+                <div class="temperature">
+                    <span id="temp-c"></span> °C
+                </div>
+                <p id="weather-condition"></p>
             </div>
-            <p id="weather-condition"></p>
+            <div class="additional-info">
+                <p>Feels Like: <span id="feels-like"></span> °C</p>
+                <p>Humidity: <span id="humidity"></span>%</p>
+                <p>Wind: <span id="wind-speed"></span> <span id="wind-direction"></span></p>
+                <p>Visibility: <span id="visibility"></span> km</p>
+            </div>
         </div>
-        <div class="additional-info">
-            <p>Feels Like: <span id="feels-like"></span> °C</p>
-            <p>Humidity: <span id="humidity"></span>%</p>
-            <p>Wind: <span id="wind-speed"></span> <span id="wind-direction"></span></p>
-            <p>Visibility: <span id="visibility"></span> km</p>
-        </div>
-    </div>*@
 
 
+    *@
     @*cards*@
 
 
+    @*tabla variacion anual*@
 
-    <div class="row g-6 mb-6 py-3">
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Encargados</span>
-                            <span class="h3 font-bold mb-0">4000</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape text-muted text-lg rounded-circle">
-                                <i class="fa-solid fa-children fa-xl"></i>
-                            </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                    <div class="border-bottom border-warning">
+
+                        <span class="card-title text-warning">Cantidad de Alumnos por Curso</span>
+                    </div>
+                        <div>
+                        <canvas id="obtenerCantidadAlumnosPorCurso" style="height: 200px !important;"></canvas>
+
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
+
+        <div class="col-md-5">
+
+            <div class="card shadow-sm h-100">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Alumnos</span>
-                            <span class="h3 font-bold mb-0">215</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape text-muted text-lg rounded-circle">
-                                <i class="fa-solid fa-graduation-cap fa-xl"></i>
-                            </div>
-                        </div>
+                    @*<span class="text-warning">Cantidad de Alumnos por Curso</span>*@
+                    <div class="border-bottom border-warning mb-3">
+                        <span class="card-title text-warning">Matrícula: Variación Anual por Curso</span>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Empleados</span>
-                            <span class="h3 font-bold mb-0">1.400</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape text-muted text-lg rounded-circle">
-                                <i class="fa-solid fa-briefcase fa-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <span class="h6 font-semibold text-muted text-sm d-block mb-2">Work load</span>
-                            <span class="h3 font-bold mb-0">300</span>
-                        </div>
-                        <div class="col-auto">
-                            <div class="icon icon-shape bg-warning text-white text-lg rounded-circle">
-                                <i class="bi bi-minecart-loaded"></i>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table table-borderless align-middle" style="height: 200px" id="HomeAndCharts">
+
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    @*tabla variacion anual*@
-
     <div class="row mt-4">
-        <div class="col-md-7">
-            <div class="card shadow">
-                <div class="card-body">
-                    <canvas id="obtenerCantidadAlumnosPorCurso" style="height: 278px !important;"></canvas>
-                </div>
-            </div>
+        <div class="col-md-12">
+
+        <div class="card shadow-sm border-warning">
+
+            <canvas id="ObtenerPromedioCursoUltimosAnios" style="height: 478px !important;"></canvas>
         </div>
-
-                <div class="col-md-5">
-
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <h5 class="card-title">Matrícula: Variación Anual por Curso</h5>
-                            <table class="table table-borderless align-middle" id="HomeAndCharts">
-
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <br />
-            <br />
-
-            @* Listado *@
-            <!--<div class="card py-3 shadow border-0">
-                <div class="card-header" style="background-color:white;">
-                    <div class="row space-between">
-                        <div class="col-md-9"><h3>Listado de empleados</h3></div>-->
-                        @* <div class="col-md-3"><button class="btn btn-primary mdi mdi-plus-circle-outline float-right" id="add-btn" data-toggle="modal" data-target="#edit-modal">  Nuevo</button></div> *@
-                    <!--</div>
-                </div>
-                <div class="card-body">
-                    Cursos
-                    <table class="table table-striped table-bordered nowrap" id="datatable">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Nombre</th>
-                                <th>Informacion</th>
-                                <th>Fecha</th>
-                                <th>Hora</th>
-                                <th>Concluido</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>-->
         </div>
+    </div>
+
+
+    @* Listado *@
+    <!--<div class="card py-3 shadow border-0">
+        <div class="card-header" style="background-color:white;">
+            <div class="row space-between">
+                <div class="col-md-9"><h3>Listado de empleados</h3></div>-->
+    @* <div class="col-md-3"><button class="btn btn-primary mdi mdi-plus-circle-outline float-right" id="add-btn" data-toggle="modal" data-target="#edit-modal">  Nuevo</button></div> *@
+    <!--</div>
+        </div>
+        <div class="card-body">
+            Cursos
+            <table class="table table-striped table-bordered nowrap" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Informacion</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Concluido</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>-->
+</div>
 
     @section Scripts{
         <script src="~/Content/js/pages/eventos.js"></script>
