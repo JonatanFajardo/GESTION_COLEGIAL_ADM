@@ -27,8 +27,6 @@ $(document).ready(function () {
                 const row = $('<tr>');
                 const test = 'test';
 
-
-
                 // 5. Handle trend indicator conditionally
                 let trendIndicator = '';
                 if (course.PorcentajeDiferencia > 0) {
@@ -39,8 +37,17 @@ $(document).ready(function () {
 
                 row.append(`<td>${trendIndicator} ${course.PorcentajeDiferencia}%</td>`);
                 row.append(`<td>${course.NombreCurso}</td>`);
-                table.find('tbody').append(row);
+
+                // Agregar clase de animación o estilo para resaltar la fila mientras se carga
+                row.addClass('loading-row');  // Puedes definir este estilo en tu CSS
+
+                // Usar setTimeout para simular el retraso de carga
+                setTimeout(function () {
+                    table.find('tbody').append(row);
+                    row.removeClass('loading-row');  // Remover clase de animación después de añadir la fila
+                }, index * 100); // El retraso depende del índice, creando un efecto secuencial
             });
+
         } catch (error) {
             console.error('Error fetching data:', error);
             // Handle errors appropriately (e.g., display an error message)
@@ -103,7 +110,16 @@ $(document).ready(function () {
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'right'
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true, // Esto cambia la forma de la leyenda a círculos
+                                pointStyle: 'circle', // Define el estilo como círculo
+                                font: {
+                                    size: 12, // Tamaño de la fuente
+                                    weight: '300', // Cambia a light (peso ligero)
+                                    family: 'Arial, sans-serif' // Define la familia de la fuente
+                                },
+                            }
                         }
                     }
                 }
@@ -235,6 +251,52 @@ $(document).ready(function () {
 
     ObtenerPromedioCursoUltimosAnios();
 
+
+    // Función para animar números
+    function animateNumbers() {
+        const counters = document.querySelectorAll('.number');
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target'); // Obtiene el número final
+            const increment = target / 200; // Ajusta este valor para la velocidad de incremento
+            let current = 0;
+
+            function updateCounter() {
+                current += increment;
+                if (current < target) {
+                    counter.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter); // Continuar la animación
+                } else {
+                    counter.textContent = target; // Asegura que termina en el número exacto
+                }
+            }
+
+            updateCounter();
+        });
+    }
+
+    animateNumbers();
+
+    async function LoadCards() {
+
+        result = await $.ajax({
+            url: 'HomeAndCharts/CardsInHomeList',
+            dataType: 'json',
+            success: function (response) {
+                // Actualizar cards con los valores obtenidos
+                console.log(response.data[0].Graduados);
+                $('#graduados').text(response.data[0].Graduados);
+                $('#diferenciaPromedioAnual').text(response.data[0].DiferenciaPromedioAnual);
+                $('#actualPromedioAnual').text(response.data[0].ActualPromedioAnual);
+                $('#diferenciaNuevoIngreso').text(response.data[0].DiferenciaNuevoIngreso);
+            },
+            error: function () {
+                console.log("Error al cargar los datos.");
+            }
+        });
+
+    }
+
+    LoadCards();
 
 });
 

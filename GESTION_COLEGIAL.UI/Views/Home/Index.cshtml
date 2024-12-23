@@ -22,7 +22,7 @@
     @*<h1 class="">Bienvenido!</h1>*@
 
 
-    <div class="row mb-3">
+    <div class="row mb-1">
 
         <div class="col-md-6 col-xl-7 " >
             <div class="card rounded shadow-sm" style="background-color: #FFE5D2; ">
@@ -55,18 +55,17 @@
 
             <div class="row gx-1 mb-6">
                 <div class="col-xl-6 col-sm-6 col-12 mb-2">
-                    <div class="card shadow-sm ">
+                    <div class="card shadow-sm">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col border-bottom">
-                                    <span class="h6 font-semibold text-warning text-sm d-block mb-2">
-                                        <i class="icon icon-shape text-warning text-lg rounded-circle fa-solid fa-children fa-xl"></i>
-                                        Encargados
+                                    <span class="text-primary text-sm d-block mb-2">
+                                        <i class="icon icon-shape text-primary text-lg rounded-circle fa-solid fa-graduation-cap fa-xl"></i>
+                                        Graduados
                                     </span>
-
                                 </div>
                                 <div class="col-auto">
-                                    <span class="h3 font-bold mb-0">4000</span>
+                                    <span class="h3 font-bold mb-0" id="graduados">4000</span>
                                 </div>
                             </div>
                         </div>
@@ -74,38 +73,17 @@
                 </div>
 
                 <div class="col-xl-6 col-sm-6 col-12 mb-2">
-                    <div class="card shadow-sm ">
+                    <div class="card shadow-sm">
                         <div class="card-body">
-                            <div class="row">
                                 <div class="col border-bottom">
-                                    <span class="h6 font-semibold text-warning text-sm d-block mb-2">
-                                        <i class="icon icon-shape text-warning text-lg rounded-circle fa-solid fa-children fa-xl"></i>
-                                        Encargados
+                                    <span class="text-primary text-sm d-block mb-2">
+                                        <i class="icon icon-shape text-primary text-lg rounded-circle fa-solid fa-chart-line fa-xl"></i>
+                                        Diferencia Promedio Anual
                                     </span>
-
                                 </div>
-                                <div class="col-auto">
-                                    <span class="h3 font-bold mb-0">4000</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-xl-6 col-sm-6 col-12 mb-2">
-                    <div class="card shadow-sm ">
-                        <div class="card-body">
                             <div class="row">
-                                <div class="col border-bottom">
-                                    <span class="h6 font-semibold text-warning text-sm d-block mb-2">
-                                        <i class="icon icon-shape text-warning text-lg rounded-circle fa-solid fa-children fa-xl"></i>
-                                        Encargados
-                                    </span>
-
-                                </div>
                                 <div class="col-auto">
-                                    <span class="h3 font-bold mb-0">4000</span>
+                                    <span class="h3 font-bold mb-0" id="diferenciaPromedioAnual"></span>
                                 </div>
                             </div>
                         </div>
@@ -113,30 +91,43 @@
                 </div>
 
                 <div class="col-xl-6 col-sm-6 col-12 mb-2">
-                    <div class="card shadow-sm ">
+                    <div class="card shadow-sm">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col border-bottom">
-                                    <span class="h6 font-semibold text-warning text-sm d-block mb-2">
-                                        <i class="icon icon-shape text-warning text-lg rounded-circle fa-solid fa-children fa-xl"></i>
-                                        Encargados
+                                    <span class="text-primary text-sm d-block mb-2">
+                                        <i class="icon icon-shape text-primary text-lg rounded-circle fa-solid fa-chart-pie fa-xl"></i>
+                                        Promedio Anual Actual
                                     </span>
-
                                 </div>
                                 <div class="col-auto">
-                                    <span class="h3 font-bold mb-0">4000</span>
+                                    <span class="h3 font-bold mb-0" id="actualPromedioAnual"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
-
-
-
+                <div class="col-xl-6 col-sm-6 col-12 mb-2">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col border-bottom">
+                                    <span class="text-primary text-sm d-block mb-2">
+                                        <i class="icon icon-shape text-primary text-lg rounded-circle fa-solid fa-user-plus fa-xl"></i>
+                                        Diferencia Nuevo Ingreso
+                                    </span>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="h3 font-bold mb-0" id="diferenciaNuevoIngreso"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-    </div>
+
+        </div>
     </div>
 
     @*<div class="weather-container">
@@ -164,30 +155,15 @@
     @*tabla variacion anual*@
 
     <div class="row">
-        <div class="col-md-7">
-            <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                    <div class="border-bottom border-warning">
-
-                        <span class="card-title text-warning">Cantidad de Alumnos por Curso</span>
-                    </div>
-                        <div>
-                        <canvas id="obtenerCantidadAlumnosPorCurso" style="height: 200px !important;"></canvas>
-
-                        </div>
-                    </div>
-                </div>
-        </div>
-
         <div class="col-md-5">
 
             <div class="card shadow-sm h-100">
                 <div class="card-body">
-                    @*<span class="text-warning">Cantidad de Alumnos por Curso</span>*@
-                    <div class="border-bottom border-warning mb-3">
-                        <span class="card-title text-warning">Matrícula: Variación Anual por Curso</span>
+                    @*<span class="text-primary">Cantidad de Alumnos por Curso</span>*@
+                    <div class="border-bottom border-primary mb-3">
+                        <span class="card-title text-primary">Matrícula: Variación Anual por Curso</span>
                     </div>
-                    <table class="table table-borderless align-middle" style="height: 200px" id="HomeAndCharts">
+                    <table class="table table-borderless align-middle loading-row" style="height: 200px" id="HomeAndCharts">
 
                         <tbody>
                         </tbody>
@@ -195,12 +171,27 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-7">
+            <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                    <div class="border-bottom border-primary mb-3">
+
+                        <span class="card-title text-primary">Cantidad de Alumnos por Curso</span>
+                    </div>
+                        <div>
+                        <canvas id="obtenerCantidadAlumnosPorCurso" style="height: 220px !important;"></canvas>
+
+                        </div>
+                    </div>
+                </div>
+        </div>
+
     </div>
 
     <div class="row mt-4">
         <div class="col-md-12">
 
-        <div class="card shadow-sm border-warning">
+        <div class="card shadow-sm border-primary">
 
             <canvas id="ObtenerPromedioCursoUltimosAnios" style="height: 478px !important;"></canvas>
         </div>
