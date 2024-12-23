@@ -43,5 +43,17 @@ namespace GESTION_COLEGIAL.Business.Services
             IEnumerable<ObtenerPromedioCursoUltimosAniosViewModel> apiUrl = await ApiRequests.ListAsync<ObtenerPromedioCursoUltimosAniosViewModel>(url);
             return apiUrl;
         }
+
+
+        /// <summary>
+        /// Obtiene una lista de alumnos de forma asíncrona.
+        /// </summary>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de alumnos.</returns>
+        public async Task<IEnumerable<CardsInHomeViewModel>> CardsInHomeList()
+        {
+            string url = "HomeAndCharts/CardsInHomeList";
+            IEnumerable<CardsInHomeViewModel> apiUrl = await ApiRequests.ListAsync<CardsInHomeViewModel>(url);
+            return apiUrl;
+        }
     }
 }

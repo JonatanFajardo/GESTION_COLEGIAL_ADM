@@ -1566,7 +1566,7 @@ select.form-control.form-custom {
 
 .btn-outline-primary {
     border: 1px solid var(--primary-color) !important;
-    color: var(primary-color) !important;
+    color: var(--primary-color) !important;
     background-color: transparent;
     box-shadow: none;
 }
@@ -2585,7 +2585,7 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
 
 /*-------text-colors------*/
 .text-primary {
-    color: var(primary-color) !important;
+    color: var(--primary-color) !important;
 }
 
 .text-success {
@@ -2646,7 +2646,7 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
 }
 
 .border-primary {
-    border-color: var(primary-color) !important;
+    border-color: var(--primary-color) !important;
 }
 
 .border-info {

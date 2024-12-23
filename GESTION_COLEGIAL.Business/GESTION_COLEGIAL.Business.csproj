@@ -78,6 +78,7 @@
     <Compile Include="Models\AlumnoViewModel.cs" />
     <Compile Include="Models\AulaViewModel.cs" />
     <Compile Include="Models\BaseViewModel.cs" />
+    <Compile Include="Models\CardsInHomeViewModel.cs" />
     <Compile Include="Models\CargoViewModel.cs" />
     <Compile Include="Models\CursoNivelCursoViewModel.cs" />
     <Compile Include="Models\CursoNivelDropViewModel.cs" />

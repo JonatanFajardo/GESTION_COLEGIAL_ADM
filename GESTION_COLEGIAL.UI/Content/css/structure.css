@@ -260,13 +260,13 @@ code {
 }
 
 .header-container .navbar-nav.theme-brand {
-    width: 255px;
+    width: 250px;
     height: 60px;
     display: flex;
     justify-content: space-around;
     background: #fff;
     border-right: 1px solid var(--primary-color);
-    background-color: #2C343B;
+    background-color: #354051;
 }
 
     .header-container .navbar-nav.theme-brand .theme-logo {
@@ -1215,7 +1215,7 @@ code {
 
 #sidebar ul.menu-categories {
     position: relative;
-    padding: 20px 0 20px 0;
+    padding: 20px;
     margin: auto;
     width: 100%;
     overflow: auto;
@@ -1963,7 +1963,7 @@ code {
 /* General styles for the sidebar */
 .sidebar-wrapper {
     width: 250px;
-    background-color: #2c2c2c;
+    background-color: #354051;
     color: #fff;
     height: 100vh;
     position: fixed;
@@ -2007,3 +2007,22 @@ code {
             background-color: #ffcc00; /* Color del indicador de hover */
             border-radius: 0 5px 5px 0;
         }
+
+
+
+/*carga del table para animacion*/
+
+.loading-row {
+    opacity: 0.5;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
