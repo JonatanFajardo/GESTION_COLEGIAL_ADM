@@ -27,6 +27,8 @@ $(document).ready(function () {
                 const row = $('<tr>');
                 const test = 'test';
 
+
+
                 // 5. Handle trend indicator conditionally
                 let trendIndicator = '';
                 if (course.PorcentajeDiferencia > 0) {
@@ -119,58 +121,59 @@ $(document).ready(function () {
 
 
 
-    ////const apiKey = '565c6073a5c841bd81385441242012'; // Reemplaza con tu clave real
     //const apiKey = '565c6073a5c841bd81385441242012'; // Reemplaza con tu clave real
-    //const query = 'Honduras'; // Puedes cambiar la ubicación aquí
-    //const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
+    const apiKey = '565c6073a5c841bd81385441242012'; // Reemplaza con tu clave real
+    const query = 'Honduras'; // Puedes cambiar la ubicación aquí
+    const weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
 
-    //// Elementos del DOM
-    //const locationElement = $('#location');
-    //const weatherIcon = $('#weather-icon');
-    //const tempC = $('#temp-c');
-    //const weatherCondition = $('#weather-condition');
-    //const feelsLike = $('#feels-like');
-    //const humidity = $('#humidity');
-    //const windSpeed = $('#wind-speed');
-    //const windDirection = $('#wind-direction');
-    //const visibility = $('#visibility');
-    //const errorMessage = $('#error-message');
+    // Elementos del DOM
+    const locationElement = $('#location');
+    const weatherIcon = $('#weather-icon');
+    const tempC = $('#temp-c');
+    const weatherCondition = $('#weather-condition');
+    const feelsLike = $('#feels-like');
+    const humidity = $('#humidity');
+    const windSpeed = $('#wind-speed');
+    const windDirection = $('#wind-direction');
+    const visibility = $('#visibility');
+    const errorMessage = $('#error-message');
 
-    //// Función asíncrona para obtener el clima usando AJAX
-    //async function obtenerDatosClima() {
-    //    try {
-    //        // Realizamos la solicitud AJAX con await
-    //        const data = await $.ajax({
-    //            url: weatherUrl,
-    //            dataType: 'json'
-    //        });
+    // Función asíncrona para obtener el clima usando AJAX
+    async function obtenerDatosClima() {
+        //console.log('entro');
+        try {
+            // Realizamos la solicitud AJAX con await
+            const data = await $.ajax({
+                url: weatherUrl,
+                dataType: 'json'
+            });
 
-    //        console.log(data);
+            //console.log(data);
 
-    //        // Actualizamos el DOM con los datos del clima
-    //        locationElement.text(`${data.location.name}, ${data.location.country}`);
-    //        weatherIcon.attr('src', data.current.condition.icon);
-    //        weatherIcon.attr('alt', data.current.condition.text);
-    //        tempC.text(data.current.temp_c);
-    //        weatherCondition.text(data.current.condition.text);
-    //        feelsLike.text(data.current.feelslike_c);
-    //        humidity.text(data.current.humidity);
-    //        windSpeed.text(data.current.wind_kph);
-    //        windDirection.text(data.current.wind_dir);
-    //        visibility.text(data.current.vis_km);
+            // Actualizamos el DOM con los datos del clima
+            locationElement.text(`${data.location.name}, ${data.location.country}`);
+            weatherIcon.attr('src', data.current.condition.icon);
+            weatherIcon.attr('alt', data.current.condition.text);
+            tempC.text(data.current.temp_c);
+            weatherCondition.text(data.current.condition.text);
+            feelsLike.text(data.current.feelslike_c);
+            humidity.text(data.current.humidity);
+            windSpeed.text(data.current.wind_kph);
+            windDirection.text(data.current.wind_dir);
+            visibility.text(data.current.vis_km);
 
-    //        // Limpiamos el mensaje de error si la llamada fue exitosa
-    //        errorMessage.text("");
-    //    } catch (error) {
-    //        // Si ocurre algún error, mostramos un mensaje en el DOM
-    //        console.error('Error al obtener los datos del clima:', error);
-    //        errorMessage.text("Error al obtener los datos del clima. Por favor, inténtelo de nuevo más tarde.");
-    //        locationElement.text("Error");
-    //    }
-    //}
+            // Limpiamos el mensaje de error si la llamada fue exitosa
+            errorMessage.text("");
+        } catch (error) {
+            // Si ocurre algún error, mostramos un mensaje en el DOM
+            console.error('Error al obtener los datos del clima:', error);
+            errorMessage.text("Error al obtener los datos del clima. Por favor, inténtelo de nuevo más tarde.");
+            locationElement.text("Error");
+        }
+    }
 
-    //// Llamar a la función al cargar la página
-    //obtenerDatosClima();
+    // Llamar a la función al cargar la página
+    obtenerDatosClima();
     async function ObtenerPromedioCursoUltimosAnios() {
         const ctx = document.getElementById('ObtenerPromedioCursoUltimosAnios').getContext('2d');
         const mensajeErrorDiv = document.getElementById('mensajeError');
