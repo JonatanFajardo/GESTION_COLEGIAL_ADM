@@ -26,7 +26,6 @@
                     FieldName: "even_Concluido"
                 }
             ]
-            console.log(Direction)
             datatableCatalogs.init(Direction, header);
         })
     }

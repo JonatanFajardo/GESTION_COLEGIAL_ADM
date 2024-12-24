@@ -102,7 +102,7 @@ code {
 #content {
     width: 50%;
     flex-grow: 8;
-    margin-top: 60px;
+    margin-top: 40px;
     margin-bottom: 0;
     margin-left: 255px;
     -webkit-transition: 0.3s ease all;

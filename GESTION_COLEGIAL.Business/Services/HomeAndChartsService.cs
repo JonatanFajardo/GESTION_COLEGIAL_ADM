@@ -11,9 +11,9 @@ namespace GESTION_COLEGIAL.Business.Services
     public class HomeAndChartsService
     {
         /// <summary>
-        /// Obtiene una lista de alumnos de forma asíncrona.
+        /// Recupera una lista de datos para la página principal y gráficos de forma asíncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de alumnos.</returns>
+        /// <returns>Una tarea asincrónica que contiene una colección de datos para la página principal y gráficos.</returns>
         public async Task<IEnumerable<HomeAndChartsViewModel>> HomeAndCharts()
         {
             string url = "HomeAndCharts/HomeAndChartsList";
@@ -22,9 +22,9 @@ namespace GESTION_COLEGIAL.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de alumnos de forma asíncrona.
+        /// Obtiene la cantidad de alumnos por curso de forma asíncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de alumnos.</returns>
+        /// <returns>Una tarea asincrónica que contiene una lista con el número de alumnos por curso.</returns>
         public async Task<IEnumerable<ObtenerCantidadAlumnosPorCursoViewModel>> ObtenerCantidadAlumnosPorCursoList()
         {
             string url = "HomeAndCharts/ObtenerCantidadAlumnosPorCursoList";
@@ -32,11 +32,10 @@ namespace GESTION_COLEGIAL.Business.Services
             return apiUrl;
         }
 
-
         /// <summary>
-        /// Obtiene una lista de alumnos de forma asíncrona.
+        /// Recupera el promedio de calificaciones de los cursos en los últimos años de forma asíncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de alumnos.</returns>
+        /// <returns>Una tarea asincrónica que contiene una lista con los promedios de curso en los últimos años.</returns>
         public async Task<IEnumerable<ObtenerPromedioCursoUltimosAniosViewModel>> ObtenerPromedioCursoUltimosAnios()
         {
             string url = "HomeAndCharts/ObtenerPromedioCursoUltimosAnios";
@@ -44,16 +43,16 @@ namespace GESTION_COLEGIAL.Business.Services
             return apiUrl;
         }
 
-
         /// <summary>
-        /// Obtiene una lista de alumnos de forma asíncrona.
+        /// Recupera una lista de tarjetas con información destacada para la página principal de forma asíncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de alumnos.</returns>
+        /// <returns>Una tarea asincrónica que contiene una lista de tarjetas informativas para la página principal.</returns>
         public async Task<IEnumerable<CardsInHomeViewModel>> CardsInHomeList()
         {
             string url = "HomeAndCharts/CardsInHomeList";
             IEnumerable<CardsInHomeViewModel> apiUrl = await ApiRequests.ListAsync<CardsInHomeViewModel>(url);
             return apiUrl;
         }
+
     }
 }
