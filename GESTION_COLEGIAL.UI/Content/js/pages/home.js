@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    console.log('aksjdnkajsbdkb');
-
-
 
     async function HomeAndChartsList() {
         // 1. Define the AJAX request details
@@ -17,7 +14,6 @@ $(document).ready(function () {
 
             // 3. Handle successful data retrieval
             const table = $('#HomeAndCharts');
-            console.log(response.data);
 
             // Clear existing table content (optional, adjust as needed)
             table.find('tbody').empty();
@@ -56,10 +52,10 @@ $(document).ready(function () {
 
     }
 
-    HomeAndChartsList();
     async function obtenerCantidadAlumnosPorCurso() {
         const url = 'HomeAndCharts/ObtenerCantidadAlumnosPorCursoList'; // La URL de tu servicio
         const ctx = document.getElementById('obtenerCantidadAlumnosPorCurso').getContext('2d'); // Contexto del canvas para el gráfico
+        let delayed;
 
         try {
             // Realizamos la solicitud fetch para obtener los datos
@@ -77,7 +73,6 @@ $(document).ready(function () {
 
             // Parseamos la respuesta JSON
             const data = await response.json();
-
             // Obtenemos las etiquetas y cantidades
             const labels = data.data.map(item => item.Cur_Nombre);
             const cantidades = data.data.map(item => parseInt(item.CantidadAlumnos));
@@ -115,13 +110,25 @@ $(document).ready(function () {
                                 usePointStyle: true, // Esto cambia la forma de la leyenda a círculos
                                 pointStyle: 'circle', // Define el estilo como círculo
                                 font: {
-                                    size: 12, // Tamaño de la fuente
-                                    weight: '300', // Cambia a light (peso ligero)
+                                    size: 10, // Tamaño de la fuente
+                                    weight: '100', // Cambia a light (peso ligero)
                                     family: 'Arial, sans-serif' // Define la familia de la fuente
                                 },
                             }
                         }
-                    }
+                    },
+                    animation: {
+                        onComplete: () => {
+                            delayed = true;
+                        },
+                        delay: (context) => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                                delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                            }
+                            return delay;
+                        },
+                    },
                 }
             });
         } catch (error) {
@@ -132,7 +139,6 @@ $(document).ready(function () {
     }
 
     // Llamada a la función
-    obtenerCantidadAlumnosPorCurso();
 
 
 
@@ -155,16 +161,14 @@ $(document).ready(function () {
     const errorMessage = $('#error-message');
 
     // Función asíncrona para obtener el clima usando AJAX
-    async function obtenerDatosClima() {
-        //console.log('entro');
+    async function obtenerDatosClima() { 
         try {
             // Realizamos la solicitud AJAX con await
             const data = await $.ajax({
                 url: weatherUrl,
                 dataType: 'json'
             });
-
-            //console.log(data);
+ 
 
             // Actualizamos el DOM con los datos del clima
             locationElement.text(`${data.location.name}, ${data.location.country}`);
@@ -189,17 +193,16 @@ $(document).ready(function () {
     }
 
     // Llamar a la función al cargar la página
-    obtenerDatosClima();
     async function ObtenerPromedioCursoUltimosAnios() {
         const ctx = document.getElementById('ObtenerPromedioCursoUltimosAnios').getContext('2d');
         const mensajeErrorDiv = document.getElementById('mensajeError');
+        let delayed;
 
         try {
             await $.ajax({
                 url: 'HomeAndCharts/ObtenerPromedioCursoUltimosAnios',
                 dataType: 'json',
-                success: function (response) {
-                    console.log(response);
+                success: function (response) { 
                     // Procesar los datos
                     const anios = response.data.map(item => item.AnioCursado);
                     const promedios = response.data.map(item => item.PromedioAnual);
@@ -234,7 +237,19 @@ $(document).ready(function () {
                                         text: 'Promedio Anual'
                                     }
                                 }
-                            }
+                            },
+                            animation: {
+                                onComplete: () => {
+                                    delayed = true;
+                                },
+                                delay: (context) => {
+                                    let delay = 0;
+                                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                                        delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                                    }
+                                    return delay;
+                                },
+                            },
                         }
                     });
                 }, // Cierre de la función success
@@ -249,7 +264,6 @@ $(document).ready(function () {
     }
 
 
-    ObtenerPromedioCursoUltimosAnios();
 
 
     // Función para animar números
@@ -283,11 +297,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 // Actualizar cards con los valores obtenidos
-                console.log(response.data[0].Graduados);
                 $('#graduados').text(response.data[0].Graduados);
-                $('#diferenciaPromedioAnual').text(response.data[0].DiferenciaPromedioAnual);
+                $('#diferenciaPromedioAnual').text(response.data[0].DiferenciaPromedioAnual+"%");
                 $('#actualPromedioAnual').text(response.data[0].ActualPromedioAnual);
-                $('#diferenciaNuevoIngreso').text(response.data[0].DiferenciaNuevoIngreso);
+                $('#diferenciaNuevoIngreso').text(response.data[0].DiferenciaNuevoIngreso + "%");
             },
             error: function () {
                 console.log("Error al cargar los datos.");
@@ -296,6 +309,11 @@ $(document).ready(function () {
 
     }
 
+    //Llamando funciones
+    HomeAndChartsList();
+    obtenerCantidadAlumnosPorCurso();
+    obtenerDatosClima();
+    ObtenerPromedioCursoUltimosAnios();
     LoadCards();
 
 });
