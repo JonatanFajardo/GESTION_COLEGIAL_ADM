@@ -7,7 +7,7 @@
     EncargadosController encargado = new EncargadosController();
 
 }
-<div class="container"> 
+<div class="container">
 
     <div class="row mb-2">
 
@@ -28,7 +28,7 @@
                             <p class="h6"> <i class="bi bi-cloud-fog"></i>  <span id="humidity"></span>% Humedad</p>
                         </div>
                         <div class="col-5 justify-content-end img-fluid rounded d-flex text-center">
-                             <img src="~/Content/img/mochila.jpg" class="" style="max-height:150px;" alt="coming_soon">
+                            <img src="~/Content/img/mochila.jpg" class="" style="max-height:150px;" alt="coming_soon">
                             <div class="img-content">
                             </div>
                         </div>
@@ -40,24 +40,24 @@
         <div class="col-md-6 col-xl-6 px-2" style="height: 213px">
 
             <div class="card shadow-sm h-100">
-                <div class="card-body py-2"> 
+                <div class="card-body py-2">
                     <div class="border-bottom border-primary mb-2">
                         <span class="card-title text-primary"><i class="bi bi-graph-up-arrow"></i> Matrícula: Variación Anual por Curso</span>
                     </div>
                     <div style="max-height: 150px; overflow-y: auto;">
 
-                        <table class="table table-borderless align-middle loading-row"  id="HomeAndCharts">
+                        <table class="table table-borderless align-middle loading-row" id="HomeAndCharts">
 
                             <tbody>
                             </tbody>
                         </table>
                     </div>
-                    </div>
                 </div>
+            </div>
 
         </div>
     </div>
-     
+
 
     @*cards*@
 
@@ -87,12 +87,12 @@
             <div class="card shadow-sm">
                 <div class="card-body py-2">
                     <div class="row">
-                    <div class="col">
-                        <span class="text-primary text-sm d-block mb-2">
-                            <i class="icon icon-shape text-primary text-lg rounded-circle fa-solid fa-chart-line fa-xl"></i>
-                            Diferencia Promedio Anual
-                        </span>
-                    </div>
+                        <div class="col">
+                            <span class="text-primary text-sm d-block mb-2">
+                                <i class="icon icon-shape text-primary text-lg rounded-circle fa-solid fa-chart-line fa-xl"></i>
+                                Diferencia Promedio Anual
+                            </span>
+                        </div>
                         <div class="col-auto">
                             <span class="h3 font-bold mb-0" id="diferenciaPromedioAnual"></span>
                         </div>
@@ -163,25 +163,18 @@
 
     </div>
 
-    <div class="row mt-4">
-        <div class="col-md-12">
 
-           
-        </div>
-    </div>
-
-     
 </div>
 
-    @section Scripts{
-        <script src="~/Content/js/pages/eventos.js"></script>
-        <script src="~/Content/js/pages/home.js"></script>
-        <script>
+@section Scripts{
+    <script src="~/Content/js/pages/eventos.js"></script>
+    <script src="~/Content/js/pages/home.js"></script>
+    <script>
         Eventos.datatableCatalogs({
             urlList: "@Url.Action("ListAsync")",
             urlInsert: "@Url.Action("CreateAsync")",
             urlUpdate: "@Url.Action("FindAsync")",
             urlDetail: "Detail"
         });
-        </script>
-    }
+    </script>
+}

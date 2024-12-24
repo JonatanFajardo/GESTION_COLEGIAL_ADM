@@ -283,4 +283,4 @@ namespace GESTION_COLEGIAL.Business.Models
 
         #endregion Dropdown
     }
-}   
+}
