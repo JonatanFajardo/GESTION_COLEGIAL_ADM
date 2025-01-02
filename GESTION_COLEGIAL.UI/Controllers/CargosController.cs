@@ -27,7 +27,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Acción para mostrar la vista de creación de un nuevo cargo.
         /// </summary>
         /// <returns>Vista de creación de cargo.</returns>
-        public ActionResult Create()
+        public ActionResult CreateAsync()
         {
             return View("CreateAsync");
         }
