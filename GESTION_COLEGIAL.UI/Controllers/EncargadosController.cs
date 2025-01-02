@@ -29,7 +29,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Acción para mostrar la vista de creación de Encargados.
         /// </summary>
         /// <returns>Vista de creación de Encargados.</returns>
-        public ActionResult Create()
+        public ActionResult CreateAsync()
         {
             return View();
         }
