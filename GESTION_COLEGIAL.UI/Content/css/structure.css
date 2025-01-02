@@ -40,12 +40,12 @@ h6 {
 
 ::-moz-selection {
     /* Code for Firefox */
-    color: #4361ee;
+    color: var(--primary-color);
     background: transparent;
 }
 
 ::selection {
-    color: #4361ee;
+    color: var(--primary-color);
     background: transparent;
 }
 
@@ -597,7 +597,7 @@ code {
 
 .navbar .dropdown:not(.custom-dropdown-icon):not(.custom-dropdown).language-dropdown .custom-dropdown-icon .dropdown-menu a:hover {
     background-color: transparent;
-    color: #4361ee;
+    color: var(--primary-color);
 }
 
 .navbar .language-dropdown .custom-dropdown-icon .dropdown-menu img {
@@ -846,7 +846,7 @@ code {
             }
 
         .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .dropdown-item:hover .data-info h6 {
-            color: #4361ee;
+            color: var(--primary-color);
         }
 
         .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .data-info p {

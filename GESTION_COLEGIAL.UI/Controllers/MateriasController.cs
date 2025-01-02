@@ -28,7 +28,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Acción para mostrar la vista de creación de Materias.
         /// </summary>
         /// <returns>Vista de creación de Materias.</returns>
-        public ActionResult Create()
+        public ActionResult CreateAsync()
         {
             return View("CreateAsync");
         }
