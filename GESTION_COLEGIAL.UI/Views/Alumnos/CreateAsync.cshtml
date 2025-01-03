@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
+<div class="fluid-container">
     @using (Html.BeginForm("Save", "Alumnos", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
     <div class="row">
@@ -14,7 +14,7 @@
                     <h3>Informción personal</h3>
                 </div>
 
-                <div class="card-body">
+                <div class="table-responsive">
                     @Html.HiddenFor(model => model.Alu_Id)
                     @Html.HiddenFor(model => model.Per_Id)
 
@@ -124,7 +124,7 @@
                     <h3>Informción del empleado</h3>
                 </div>
 
-                <div class="card-body">
+                <div class="table-responsive">
                     <div class="form-row">
                         @* Columna Nivel Educativo *@
                         <div class="col-md-6 col-lg-12">
