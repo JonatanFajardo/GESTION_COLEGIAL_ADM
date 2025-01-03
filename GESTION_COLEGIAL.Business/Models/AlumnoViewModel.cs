@@ -108,6 +108,14 @@ namespace GESTION_COLEGIAL.Business.Models
         //Persona
 
         /// <summary>
+        /// Obtiene o establece la imagen.
+        /// </summary>
+        [StringLength(50)]
+        [Display(Name = "Imagen")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public string Per_Imagen { get; set; }
+
+        /// <summary>
         /// Obtiene o establece la identidad de la Persona.
         /// </summary>
         [StringLength(13, MinimumLength = 13, ErrorMessage = "El campo debe contener 13 dígitos")]
