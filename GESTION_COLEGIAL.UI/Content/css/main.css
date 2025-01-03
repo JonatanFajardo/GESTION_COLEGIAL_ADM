@@ -2096,7 +2096,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 
 .table > thead > tr > th {
     color: white;
-    background-color: #2C343B;
+    background-color: var(--secondary-color);
     font-weight: 700;
     font-size: 13px;
     letter-spacing: 1px;

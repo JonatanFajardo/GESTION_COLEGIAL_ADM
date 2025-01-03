@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
+<div class="fluid-container">
     @using (Html.BeginForm("Save", "Cursos", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
 
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="card-body">
+        <div class="table-responsive">
             @Html.HiddenFor(model => model.Cur_Id)
             <div class="row">
                 <div class="col-md-12 col-lg-7">
@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div id="defaultAccordionOne" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                    <div class="card-body">
+                                    <div class="table-responsive">
                                         @* Columna MateriasCheckList *@
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div id="defaultAccordionTwo" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                    <div class="card-body">
+                                    <div class="table-responsive">
 
                                         @* Columna SeccionesCheckList *@
                                         <div class="col-md-12">
@@ -130,7 +130,7 @@
                                 </div>
 
                                 <div id="defaultAccordionThree" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                    <div class="card-body">
+                                    <div class="table-responsive">
 
                                         @* Columna ModalidadesCheckList *@
                                         <div class="col-md-12">
@@ -170,7 +170,7 @@
                                 </div>
 
                                 <div id="defaultAccordionFour" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                    <div class="card-body">
+                                    <div class="table-responsive">
 
                                         @* Columna CursoNivel *@
                                         <div class="col-md-12">
@@ -205,7 +205,7 @@
 
                 <div class="col-md-12 col-lg-5">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="table-responsive">
                             <div class="form-row">
                                 @* Columna Nivel *@
                                 <div class="col-md-12">

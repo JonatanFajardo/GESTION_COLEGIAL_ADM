@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="container">
+<div class="fluid-container">
     @* Listado *@
     <div class="card">
         <div class="card-header" style="background-color:white;">
@@ -12,7 +12,7 @@
                 @* <div class="col-md-3"><button class="btn btn-primary mdi mdi-plus-circle-outline float-right" id="add-btn" data-toggle="modal" data-target="#edit-modal">  Nuevo</button></div> *@
             </div>
         </div>
-        <div class="card-body">
+        <div class="table-responsive">
             <table class="table table-striped table-bordered nowrap" id="datatable">
                 <thead>
                     <tr>
@@ -46,7 +46,7 @@
 
             }))
             {
-                <div class="container">
+                <div class="fluid-container">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @Html.HiddenFor(model => model.Est_Id, new { @id = "item-id" })
                     <div class="modal-body">
