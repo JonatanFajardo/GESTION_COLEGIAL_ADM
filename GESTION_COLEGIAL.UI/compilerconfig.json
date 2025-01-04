@@ -4,11 +4,11 @@
     "inputFile": "Content/scss/components/_forms.scss"
   },
   {
-    "outputFile": "Content/scss/app.css",
+    "outputFile": "Content/css/app.css",
     "inputFile": "Content/scss/app.scss"
   },
   {
-    "outputFile": "Content/scss/_general.css",
+    "outputFile": "Content/css/_general.css",
     "inputFile": "Content/scss/app.scss"
   },
   {
@@ -18,6 +18,21 @@
   {
     "outputFile": "Content/css/main.css",
     "inputFile": "Content/scss/assets/main.scss"
+  },
+  {
+    "outputFile": "Content/css/main.css",
+    "inputFile": "Content/sass/assets/main.scss"
+  },
+  {
+    "outputFile": "Content/css/loader.css",
+    "inputFile": "Content/sass/assets/loader.scss"
+  },
+  {
+    "outputFile": "Content/css/scrollspyNav.css",
+    "inputFile": "Content/sass/assets/scrollspyNav.scss"
+  },
+  {
+    "outputFile": "Content/css/structure.css",
+    "inputFile": "Content/sass/assets/structure.scss"
   }
-
 ]
