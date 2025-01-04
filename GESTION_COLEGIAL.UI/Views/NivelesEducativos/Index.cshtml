@@ -3,7 +3,19 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Niveles Educativos</li>
+        </ol>
+    </nav>
+</div>
+
 <div class="fluid-container">
+    @* Listado *@
     <div class="card">
         <div class="card-header" style="background-color:white;">
             <div class="row space-between">
@@ -44,42 +56,42 @@
 
                 }))
                 {
-                <div class="fluid-container">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    @Html.HiddenFor(model => model.Niv_Id, new { @id = "item-id" })
-                    <div class="modal-body">
-                        <div class="form-row">
-                            @* Columna Descripción *@
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.Niv_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                    <div class="float-right">
-                                        <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
-                                               data-placement="right" title="Activo">
-                                            @*<input type="checkbox" name="Niv_EsActivo">*@
-                                            @*<input type="checkbox" value="@Model.EsActivo" checked="@Model.EsActivo" id="radio-6" name="Niv_EsActivo">*@
-                                            @*<input type="checkbox" id="radio-6" name="Niv_EsActivo" value="@Model.Niv_EsActivo" checked="@Model.Niv_EsActivo">*@
-                                            @*@Html.CheckBoxFor(model => model.EsActivo, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
-                                            @*@Html.CheckBox("EsActivo", new { value = Model.EsActivo } );*@
-                                            @*@Html.CheckBox("EsActivo", true, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
-                                            @*@Html.CheckBox("EsActivo", true, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
-                                            <span class="slider round"></span>
-                                        </label>
+                    <div class="fluid-container">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @Html.HiddenFor(model => model.Niv_Id, new { @id = "item-id" })
+                        <div class="modal-body">
+                            <div class="form-row">
+                                @* Columna Descripción *@
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Niv_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                        <div class="float-right">
+                                            <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
+                                                   data-placement="right" title="Activo">
+                                                @*<input type="checkbox" name="Niv_EsActivo">*@
+                                                @*<input type="checkbox" value="@Model.EsActivo" checked="@Model.EsActivo" id="radio-6" name="Niv_EsActivo">*@
+                                                @*<input type="checkbox" id="radio-6" name="Niv_EsActivo" value="@Model.Niv_EsActivo" checked="@Model.Niv_EsActivo">*@
+                                                @*@Html.CheckBoxFor(model => model.EsActivo, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
+                                                @*@Html.CheckBox("EsActivo", new { value = Model.EsActivo } );*@
+                                                @*@Html.CheckBox("EsActivo", true, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
+                                                @*@Html.CheckBox("EsActivo", true, new { htmlAttributes = new { @class = "form-control", @id = "radio-6" } })*@
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        @Html.EditorFor(model => model.Niv_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Niv_Descripcion, "", new { @class = "text-danger" })
                                     </div>
-                                    @Html.EditorFor(model => model.Niv_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Niv_Descripcion, "", new { @class = "text-danger" })
                                 </div>
+                                @Html.CheckBoxFor(model => model.Niv_EsActivo)
+                                @*@Html.CheckBoxFor(x => Model.Niv_EsActivo)*@
+                                @*@Html.CheckBox("Niv_EsActivo", new { value = Model.Niv_EsActivo});*@
                             </div>
-                            @Html.CheckBoxFor(model => model.Niv_EsActivo)
-                            @*@Html.CheckBoxFor(x => Model.Niv_EsActivo)*@
-                            @*@Html.CheckBox("Niv_EsActivo", new { value = Model.Niv_EsActivo});*@
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
-                    </div>
-                </div>
                 }
             </div>
         </div>
@@ -97,30 +109,30 @@
                 OnSuccess = "Catalogs.success"
             }))
             {
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h5>
-                    </h5>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                @Html.HiddenFor(model => model.Niv_Id, new { @id = "delete-item-id" })
-                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.HiddenFor(model => model.Niv_Id, new { @id = "delete-item-id" })
+                                    <p>¿Está seguro de que desea eliminar este registro?</p>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
-                </div>
-            </div>
             }
         </div>
     </div>
