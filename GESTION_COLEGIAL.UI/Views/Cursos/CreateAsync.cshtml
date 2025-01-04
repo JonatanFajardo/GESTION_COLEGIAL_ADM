@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="fluid-container">
                 @Html.HiddenFor(model => model.Cur_Id)
                 <div class="row">
                     <div class="col-md-12 col-lg-7">
@@ -51,38 +51,38 @@
                                     <div class="card-header">
                                         <section class="mb-0 mt-0">
                                             <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionOne" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Materias
+                                                Materias  <div class="icons"><svg> ... </svg></div>
                                             </div>
                                         </section>
                                     </div>
 
-                                    <div id="defaultAccordionOne" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
+                                    <div id="defaultAccordionOne" class="collapse show" aria-labelledby="..." data-parent="#toggleAccordion">
                                         <div class="table-responsive">
-                                            @* Columna MateriasCheckList *@
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @for (int i = 0; i < Model.MateriasCheckList.Count; i++)
-                                                    {
-                                                        <ul class="list-group task-list-group">
-                                                            <li class="list-group-item list-group-item-action">
-                                                                <div class="n-chk">
-                                                                    <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
-                                                                        @Html.CheckBoxFor(model => model.MateriasCheckList[i].Selected)
-                                                                        <span class="new-control-indicator"></span>
-                                                                        <span class="ml-2">
-                                                                            @Html.DisplayFor(model => model.MateriasCheckList[i].Text)
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                        @Html.HiddenFor(model => model.MateriasCheckList[i].Text)
-                                                        @Html.HiddenFor(model => model.MateriasCheckList[i].Value)
-                                                    }
-                                                </div>
+                                            <!-- Columna MateriasCheckList -->
+                                            <div class="d-flex flex-wrap mb-3 ">
+                                                @for (int i = 0; i < Model.MateriasCheckList.Count; i++)
+                                                {
+                                                    <div class="badge outline-badge-primary px-1 m-2" style="cursor: pointer;">
+                                                        <div class="n-chk">
+                                                            <label class="m-0 new-control new-checkbox checkbox-warning">
+                                                                @Html.CheckBoxFor(model => model.MateriasCheckList[i].Selected,
+                                                                    new { @class = "new-control-input", id = "materia-" + i })
+                                                                <span class="new-control-indicator"></span>
+                                                                <span class="form-check-label text-primary m-0" style="cursor: pointer;">
+                                                                    @Html.DisplayFor(model => model.MateriasCheckList[i].Text)
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    @Html.HiddenFor(model => model.MateriasCheckList[i].Text)
+                                                    @Html.HiddenFor(model => model.MateriasCheckList[i].Value)
+
+                                                }
                                             </div>
                                         </div>
                                     </div>
+
+
                                 </div>
 
                                 <div class="card cursor-pointer">
@@ -104,7 +104,7 @@
                                                     @for (int i = 0; i < Model.SeccionesCheckList.Count; i++)
                                                     {
                                                         <ul class="list-group task-list-group">
-                                                            <li class="list-group-item list-group-item-action">
+                                                            <li class="list-group-item border-0  list-group-item border-0 -action">
                                                                 <div class="n-chk">
                                                                     <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
                                                                         @Html.CheckBoxFor(model => model.SeccionesCheckList[i].Selected)
@@ -144,32 +144,28 @@
 
                                     <div id="defaultAccordionThree" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
                                         <div class="table-responsive">
-
-                                            @* Columna ModalidadesCheckList *@
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @* Itera y muestra ckebox con la respectiva descripción *@
-                                                    @for (int i = 0; i < Model.ModalidadesCheckList.Count; i++)
-                                                    {
-                                                        <ul class="list-group task-list-group">
-                                                            <li class="list-group-item list-group-item-action">
-                                                                <div class="n-chk">
-                                                                    <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
-                                                                        @Html.CheckBoxFor(model => model.ModalidadesCheckList[i].Selected)
-                                                                        <span class="new-control-indicator"></span>
-                                                                        <span class="ml-2">
-                                                                            @Html.DisplayFor(model => model.ModalidadesCheckList[i].Text)
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                        @Html.HiddenFor(model => model.ModalidadesCheckList[i].Text)
-                                                        @Html.HiddenFor(model => model.ModalidadesCheckList[i].Value)
-                                                    }
-                                                </div>
+                                            <!-- Columna ModalidadesCheckList -->
+                                            <div class="d-flex flex-wrap mb-3">
+                                                @for (int i = 0; i < Model.ModalidadesCheckList.Count; i++)
+                                                {
+                                                    <div class="badge outline-badge-primary px-1 m-2" style="cursor: pointer;">
+                                                        <div class="n-chk">
+                                                            <label class="m-0 new-control new-checkbox checkbox-warning">
+                                                                @Html.CheckBoxFor(model => model.ModalidadesCheckList[i].Selected,
+                                                                     new { @class = "new-control-input", id = "modalidad-" + i })
+                                                                <span class="new-control-indicator"></span>
+                                                                <span class="form-check-label text-primary m-0" style="cursor: pointer;">
+                                                                    @Html.DisplayFor(model => model.ModalidadesCheckList[i].Text)
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    @Html.HiddenFor(model => model.ModalidadesCheckList[i].Text)
+                                                    @Html.HiddenFor(model => model.ModalidadesCheckList[i].Value)
+                                                }
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -183,7 +179,7 @@
                                     </div>
 
                                     <div id="defaultAccordionFour" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="table-responsive">
+                                        <div class="card-body">
 
                                             @* Columna CursoNivel *@
                                             <div class="col-md-12">
@@ -191,19 +187,18 @@
                                                     @* Itera y muestra ckebox con la respectiva descripción *@
                                                     @for (int i = 0; i < Model.CursoNivelesCheckList.Count; i++)
                                                     {
-                                                        <ul class="list-group task-list-group">
-                                                            <li class="list-group-item list-group-item-action">
-                                                                <div class="n-chk">
-                                                                    <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
-                                                                        @Html.CheckBoxFor(model => model.CursoNivelesCheckList[i].Selected)
-                                                                        <span class="new-control-indicator"></span>
-                                                                        <span class="ml-2">
-                                                                            @Html.DisplayFor(model => model.CursoNivelesCheckList[i].Text)
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
+                                                        <div class="badge outline-badge-primary px-1 m-2" style="cursor: pointer;">
+                                                            <div class="n-chk">
+                                                                <label class="m-0 new-control new-checkbox checkbox-warning">
+                                                                    @Html.CheckBoxFor(model => model.CursoNivelesCheckList[i].Selected,
+                                                                         new { @class = "new-control-input", id = "curso-nivel-" + i })
+                                                                    <span class="new-control-indicator"></span>
+                                                                    <span class="form-check-label text-primary m-0" style="cursor: pointer;">
+                                                                        @Html.DisplayFor(model => model.CursoNivelesCheckList[i].Text)
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                         @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Text)
                                                         @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Value)
                                                     }
@@ -218,7 +213,7 @@
 
                     <div class="col-md-12 col-lg-5">
                         <div class="card">
-                            <div class="table-responsive">
+                            <div class="card-body">
                                 <div class="form-row">
                                     @* Columna Nivel *@
                                     <div class="col-md-12">
