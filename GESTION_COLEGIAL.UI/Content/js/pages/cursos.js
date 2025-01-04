@@ -21,7 +21,7 @@
                 }
             ]
             datatable.init(Direction, header);
-            console.log("di:" + Direction);
+            console.log("di:" + Direction.urlList);
         })
     }
     return obj;
