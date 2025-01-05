@@ -40,7 +40,7 @@
   .arrow {
     &:after, &:before {
       display: none;
-      border-top-color: #4361ee;
+      border-top-color: $text_2;
     }
   }
 
@@ -98,7 +98,7 @@
   }
 
   &.label-primary:before {
-    background: #4361ee;
+    background: $text_2;
   }
 
   &.label-warning:before {
@@ -115,7 +115,7 @@
 }
 
 .radio-primary span.new-control-indicator {
-  border: 2px solid #4361ee;
+  border: 2px solid $text_2;
 }
 
 .radio-warning span.new-control-indicator {
@@ -287,10 +287,10 @@ input[readonly] {
   }
 
   #add-e {
-    background-color: #4361ee;
+    background-color: $text_2;
     color: #fff;
     font-weight: 600;
-    border: 1px solid #4361ee;
+    border: 1px solid $text_2;
     padding: 10px 25px;
   }
 
@@ -304,7 +304,7 @@ input[readonly] {
 
   [data-dismiss="modal"] {
     background-color: #fff;
-    color: #4361ee;
+    color: $text_2;
     font-weight: 700;
     border: 1px solid #e8e8e8;
     padding: 10px 25px;
@@ -312,7 +312,7 @@ input[readonly] {
 }
 
 td.fc-today.fc-state-highlight span {
-  background: #4361ee;
+  background: $text_2;
   border-radius: 50%;
   color: #fff;
   display: inline-block !important;
@@ -333,7 +333,7 @@ td.fc-today.fc-state-highlight span {
   }
 
   &.bg-primary .fc-content:before {
-    background: #4361ee;
+    background: $text_2;
   }
 
   &.bg-success .fc-content:before {

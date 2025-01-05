@@ -9,6 +9,26 @@
 			@Import	Mixins
 	===============================
 */
+#datatable_filter label {
+  width: 100%;
+}
+
+.breadcrumb {
+  background-color: #fcead4;
+}
+
+.breadcrumb-item.active {
+  color: #655b51;
+}
+
+#card-home {
+  background-color: #F7A400;
+}
+
+h1, h6, p {
+  color: white;
+}
+
 html {
   min-height: 100%;
 }
