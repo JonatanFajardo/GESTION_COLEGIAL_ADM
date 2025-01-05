@@ -65,6 +65,11 @@ namespace GESTION_COLEGIAL.Business.Models
         public string Cno_Descripcion { get; set; }
 
         /// <summary>
+        /// Obtiene o establece el anio cursado.
+        /// </summary>
+        public int? AnioCursado { get; set; }
+
+        /// <summary>
         /// Obtiene o establece el Id del Curso.
         /// </summary>
         [Display(Name = "Curso")]

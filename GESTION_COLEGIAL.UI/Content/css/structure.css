@@ -33,12 +33,12 @@ h1, h2, h3, h4, h5, h6 {
 
 ::-moz-selection {
   /* Code for Firefox */
-  color: #4361ee;
+  color: #F7A400;
   background: transparent;
 }
 
 ::selection {
-  color: #4361ee;
+  color: #F7A400;
   background: transparent;
 }
 
@@ -243,7 +243,7 @@ code {
   justify-content: space-between;
   cursor: pointer;
   font-size: 13px;
-  color: #555555;
+  color: #655b51;
   padding: 14px 10px;
   font-weight: 600;
   transition: 0.6s;
@@ -252,11 +252,11 @@ code {
 }
 
 .sidebar.active a {
-  color: #515365 !important;
+  color: #655b51 !important;
 }
 .sidebar.span {
   vertical-align: sub;
-  color: #515365 !important;
+  color: #655b51 !important;
 }
 
 .navbar {
@@ -410,7 +410,7 @@ code {
   font-weight: 600;
 }
 .header-container .navbar .language-dropdown:not(.custom-dropdown-icon):not(.custom-dropdown) .dropdown-menu .dropdown-item:hover span {
-  color: #4361ee;
+  color: #F7A400;
 }
 
 /*   Language   */
@@ -440,7 +440,7 @@ code {
   padding: 1px 5px 0px;
   font-size: 10px;
   color: #fff !important;
-  background: #4361ee;
+  background: #F7A400;
   border: 1px solid #e0e6ed;
   top: 10px;
   right: -8px;
@@ -512,7 +512,7 @@ code {
   font-weight: 600;
 }
 .navbar .navbar-item .nav-item.dropdown.message-dropdown .dropdown-menu .dropdown-item:hover .media-body h5.usr-name {
-  color: #4361ee;
+  color: #F7A400;
 }
 .navbar .navbar-item .nav-item.dropdown.message-dropdown .dropdown-menu .media .media-body {
   align-self: center;
@@ -756,7 +756,7 @@ code {
   padding: 9px 14px;
 }
 .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item:hover a {
-  color: #4361ee;
+  color: #F7A400;
 }
 .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item.active, .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item:active {
   background-color: transparent;
@@ -1040,7 +1040,7 @@ code {
   justify-content: space-between;
   cursor: pointer;
   font-size: 13px;
-  color: #0e1726;
+  color: #655b51;
   padding: 11px 14px;
   transition: 0.6s;
   margin-bottom: 4px;
@@ -1065,25 +1065,25 @@ code {
   background: #fff;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   border-radius: 6px;
-  color: #0e1726;
+  color: #F7A400;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[data-active=true] svg {
-  color: #030305;
+  color: #F7A400;
   fill: #e0e6ed;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[data-active=true]:hover svg, #sidebar ul.menu-categories li.menu > .dropdown-toggle[data-active=true] span {
-  color: #030305;
+  color: #F7A400;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle:hover, #sidebar ul.menu-categories li.menu > .dropdown-toggle.dropdown-toggle:not([data-active=true]):not([aria-expanded=true]):hover {
-  background: #bfc9d4;
+  background: #fcead4;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   border-radius: 6px;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=true]:not([data-active=true]) {
-  background: #bfc9d4;
+  background: #fcead4;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   border-radius: 6px;
-  color: #0e1726;
+  color: #F7A400;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle:hover svg {
   color: #030305;
@@ -1229,7 +1229,7 @@ code {
   animation-name: e-fadeInUp;
 }
 
-#sidebar ul.menu-categories .ps__rail-y {
+#sidebar .ps__rail-y {
   right: -4px !important;
 }
 

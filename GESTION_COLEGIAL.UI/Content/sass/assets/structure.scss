@@ -33,12 +33,12 @@ h1, h2, h3, h4, h5, h6 {
 
 ::-moz-selection {
   /* Code for Firefox */
-  color: #4361ee;
+  color: $text_2;
   background: transparent;
 }
 
 ::selection {
-  color: #4361ee;
+  color: $text_2;
   background: transparent;
 }
 

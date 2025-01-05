@@ -9,14 +9,14 @@ html {
 }
 
 body {
-  color: #888ea8;
-  height: 100%;
-  font-size: 0.875rem;
-  background: #f1f2f3;
-  overflow-x: hidden;
-  overflow-y: auto;
-  letter-spacing: 0.0312rem;
-  font-family: 'Nunito', sans-serif;
+    color: #888ea8;
+    height: 100%;
+    font-size: 0.875rem;
+    background: $m-color_1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    letter-spacing: 0.0312rem;
+    font-family: 'Nunito', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -41,13 +41,13 @@ h1, h2, h3, h4, h5, h6 {
 p {
   margin-top: 0;
   margin-bottom: 0.625rem;
-  color: #515365;
+  color: $text_1;
 }
 
 hr {
   margin-top: 20px;
   margin-bottom: 20px;
-  border-top: 1px solid #f1f2f3;
+  border-top: 1px solid $m-color_2;
 }
 
 strong {
@@ -78,7 +78,7 @@ select.form-custom::-ms-expand {
 }
 
 .jumbotron {
-  background-color: #f1f2f3;
+  background-color: $m-color_2;
 }
 
 .mark, mark {
@@ -197,13 +197,13 @@ blockquote {
   .list-text {
     font-size: 14px;
     font-weight: 600;
-    color: #515365;
+    color: $text_1;
     letter-spacing: 1px;
   }
 }
 
 a {
-  color: #515365;
+  color: $text_1;
   outline: none;
 
   &:hover {
@@ -307,12 +307,12 @@ span {
 
 .custom-select {
   height: auto;
-  border: 1px solid #f1f2f3;
+  border: 1px solid $m-color_2;
   color: #3b3f5c;
   font-size: 15px;
   padding: 8px 10px;
   letter-spacing: 1px;
-  background-color: #f1f2f3;
+  background-color: $m-color_2;
 
   &.custom-select-lg {
     font-size: 18px;
@@ -414,17 +414,17 @@ select.form-control.form-custom {
 
 .custom-file-label {
   height: auto;
-  border: 1px solid #f1f2f3;
+  border: 1px solid $m-color_2;
   color: #3b3f5c;
   font-size: 15px;
   padding: 8px 10px;
   letter-spacing: 1px;
-  background-color: #f1f2f3;
+  background-color: $m-color_2;
 
   &::after {
     height: auto;
     padding: 8px 12px;
-    color: #515365;
+    color: $text_1;
   }
 }
 
@@ -478,7 +478,7 @@ select.form-control.form-custom {
 
   .input-group-prepend .input-group-text {
     border: 1px solid #bfc9d4;
-    background-color: #f1f2f3;
+    background-color: $m-color_2;
 
     svg {
       color: #888ea8;
@@ -492,7 +492,7 @@ select.form-control.form-custom {
 
   .input-group-append .input-group-text {
     border: 1px solid #bfc9d4;
-    background-color: #f1f2f3;
+    background-color: $m-color_2;
 
     svg {
       color: #888ea8;
@@ -578,7 +578,7 @@ select.form-control.form-custom {
   transition: .2s ease-out;
   touch-action: manipulation;
   cursor: pointer;
-  background-color: #f1f2f3;
+  background-color: $m-color_2;
   box-shadow: 0px 5px 20px 0 rgba(0, 0, 0, 0.1);
   will-change: opacity, transform;
   transition: all 0.3s ease-out;
@@ -598,7 +598,7 @@ select.form-control.form-custom {
 
   &:hover, &:focus {
     color: #3b3f5c;
-    background-color: #f1f2f3;
+    background-color: $m-color_2;
     border-color: #d3d3d3;
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -618,7 +618,7 @@ select.form-control.form-custom {
 
 .btn {
   &.disabled, &.btn[disabled] {
-    background-color: #f1f2f3;
+    background-color: $m-color_2;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -2178,14 +2178,14 @@ select.form-control.form-custom {
 .custom-dropdown .dropdown-item {
   &.active, &:active, &:hover {
     color: #888ea8;
-    background-color: #f1f2f3;
+    background-color: $m-color_2;
   }
 }
 
 .custom-dropdown-icon .dropdown-item {
   &.active, &:active, &:hover {
     color: #888ea8;
-    background-color: #f1f2f3;
+    background-color: $m-color_2;
   }
 }
 
@@ -2252,7 +2252,7 @@ select.form-control.form-custom {
 
 input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
   cursor: not-allowed;
-  background-color: #f1f2f3 !important;
+  background-color: $m-color_2 !important;
   color: #bfc9d4;
 }
 
@@ -2271,24 +2271,24 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 /*  Table   */
 
 .table-bordered {
-  border: 1px solid #f1f2f3;
+  border: 1px solid $m-color_2;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f1f2f3 !important;
+  background-color: $m-color_2 !important;
 }
 
 .table > {
     tbody > tr > td {
         vertical-align: middle;
-        color: #515365;
+        color: $text_1;
         font-size: 13px;
         letter-spacing: 1px;
     }
 
     thead > tr > th {
         color: $primary;
-        background-color: $m-color_2;
+        background-color: $m-color_3;
         font-weight: 700;
         font-size: 13px;
         letter-spacing: 1px;
@@ -2310,7 +2310,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 
         .admin-name {
             font-weight: 700;
-            color: #515365;
+            color: $text_1;
         }
 
         .progress {
@@ -2359,7 +2359,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 }
 
 .table-hover:not(.table-dark) tbody tr:hover {
-  background-color: #f1f2f3 !important;
+  background-color: $m-color_2 !important;
 }
 
 .table-controls > li > a svg {
@@ -2499,11 +2499,11 @@ table {
   border-bottom: 1px solid rgba(33, 150, 243, 0.3411764706);
 
   .meta-time {
-    color: #f1f2f3;
+    color: $m-color_2;
   }
 
   .close {
-    color: #f1f2f3;
+    color: $m-color_2;
     opacity: 1;
     text-shadow: none;
   }
@@ -2623,7 +2623,7 @@ table {
   background-color: #ebedf2;
   margin-bottom: 1.25rem;
   height: 16px;
-  box-shadow: 1px 3px 20px 3px #f1f2f3;
+  box-shadow: 1px 3px 20px 3px $m-color_2;
 
   &.progress-bar-stack .progress-bar:last-child {
     border-top-right-radius: 16px;
@@ -2788,7 +2788,7 @@ table {
   }
 
   .closebtn {
-    color: #f1f2f3;
+    color: $m-color_2;
     font-weight: bold;
     float: right;
     font-size: 20px;
