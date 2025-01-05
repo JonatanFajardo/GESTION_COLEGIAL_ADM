@@ -138,7 +138,7 @@ var datatable = (function () {
                 //serverSide: true,
                 buttons: [
                     {
-                    text: '<i class="mdi mdi-refresh"> Recargar</i>',
+                    text: '<i class="fa-solid fa-rotate-right"></i>',
                     titleAttr: 'Recargar tabla',
                     action: function (e, dt, config) {
                         dt.ajax.reload();
