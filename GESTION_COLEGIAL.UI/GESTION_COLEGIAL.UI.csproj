@@ -228,6 +228,7 @@
     <Content Include="Content\css\tables\table-basic.css" />
     <Content Include="Content\css\users\account-setting.css" />
     <Content Include="Content\css\users\user-profile.css" />
+    <Content Include="Content\css\custom.css" />
     <Content Include="Content\css\variables.css" />
     <Content Include="Content\css\widgets\modules-widgets.css" />
     <Content Include="Content\img\120x120.jpg" />
