@@ -36,22 +36,24 @@
 
 
 .sidebar-wrapper {
-  width: 212px;
-  position: fixed;
-  z-index: 1028;
-  border-radius: 6px 6px 0 0;
-  transition: .600s;
-  height: 100vh;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  top: 106px;
-  left: 16px;
+    width: 212px;
+    position: fixed;
+    z-index: 1028;
+    border-radius: 6px 6px 0 0;
+    transition: .600s;
+    height: 100vh;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    top: 70px;
+    left: 16px;
+    max-height: 87%;
+    padding:15px;
 }
 
 .sidebar-theme {
-  background: transparent;
+    background: $secondary;
 }
 
 .sidebar-closed {
@@ -159,7 +161,7 @@
                     justify-content: space-between;
                     cursor: pointer;
                     font-size: 13px;
-                    color: $text_1;
+                    color: $text_1_sidebar;
                     padding: 11px 14px;
                     transition: .600s;
                     margin-bottom: 4px;

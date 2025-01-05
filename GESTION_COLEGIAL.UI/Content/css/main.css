@@ -25,8 +25,12 @@
   background-color: #F7A400;
 }
 
-h1, h6, p {
+#card-home h1, h6, p {
   color: white;
+}
+
+.card-header {
+  background-color: white;
 }
 
 html {
@@ -34,7 +38,7 @@ html {
 }
 
 body {
-  color: #888ea8;
+  color: black;
   height: 100%;
   font-size: 0.875rem;
   background: #f7f2ed;
@@ -119,7 +123,7 @@ select.form-custom::-ms-expand {
   background-color: transparent !important;
   padding: 0px !important;
   box-shadow: none !important;
-  color: #888ea8 !important;
+  color: #655b51 !important;
   margin-bottom: -24px;
   border-bottom: 1px dashed #bfc9d4;
   border-radius: 0;
@@ -252,7 +256,7 @@ span.red {
 /*      Form Group Label       */
 .form-group label, label {
   font-size: 15px;
-  color: #888ea8;
+  color: #655b51;
   letter-spacing: 1px;
 }
 
@@ -454,7 +458,7 @@ select.form-control.form-custom {
   background-color: #fcead4;
 }
 .input-group .input-group-prepend .input-group-text svg {
-  color: #888ea8;
+  color: #655b51;
 }
 .input-group:hover .input-group-prepend .input-group-text svg {
   color: #F7A400;
@@ -465,7 +469,7 @@ select.form-control.form-custom {
   background-color: #fcead4;
 }
 .input-group .input-group-append .input-group-text svg {
-  color: #888ea8;
+  color: #655b51;
 }
 .input-group:hover .input-group-append .input-group-text svg {
   color: #F7A400;
@@ -654,7 +658,7 @@ select.form-control.form-custom {
 }
 .btn-group .dropdown-menu a.dropdown-item svg {
   cursor: pointer;
-  color: #888ea8;
+  color: #655b51;
   margin-right: 6px;
   vertical-align: middle;
   width: 20px;
@@ -714,7 +718,7 @@ select.form-control.form-custom {
   height: 18px;
   margin-right: 4px;
   vertical-align: bottom;
-  color: #888ea8;
+  color: #655b51;
 }
 .dropdown:not(.custom-dropdown-icon):not(.custom-dropdown) .dropdown-menu a.dropdown-item:hover svg {
   color: #2196f3;
@@ -1883,18 +1887,18 @@ select.form-control.form-custom {
 }
 
 .custom-dropdown .dropdown-item.active, .custom-dropdown .dropdown-item:active, .custom-dropdown .dropdown-item:hover {
-  color: #888ea8;
+  color: #655b51;
   background-color: #fcead4;
 }
 
 .custom-dropdown-icon .dropdown-item.active, .custom-dropdown-icon .dropdown-item:active, .custom-dropdown-icon .dropdown-item:hover {
-  color: #888ea8;
+  color: #655b51;
   background-color: #fcead4;
 }
 
 .custom-dropdown .dropdown-item {
   font-size: 13px;
-  color: #888ea8;
+  color: #655b51;
   display: block;
   font-weight: 700;
   padding: 11px 8px;
@@ -1903,7 +1907,7 @@ select.form-control.form-custom {
 
 .custom-dropdown-icon .dropdown-item {
   font-size: 13px;
-  color: #888ea8;
+  color: #655b51;
   display: block;
   font-weight: 700;
   padding: 11px 8px;
@@ -1913,7 +1917,7 @@ select.form-control.form-custom {
   width: 20px;
   height: 20px;
   margin-right: 3px;
-  color: #888ea8;
+  color: #655b51;
 }
 
 .custom-dropdown .dropdown-item.active svg, .custom-dropdown .dropdown-item:active svg, .custom-dropdown .dropdown-item:hover svg {
@@ -2052,7 +2056,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 }
 
 .table-controls > li > a svg {
-  color: #888ea8;
+  color: #655b51;
   width: 21px;
 }
 
@@ -2465,7 +2469,7 @@ table .badge-success, table .badge-primary, table .badge-warning, table .badge-d
 }
 
 .text-muted {
-  color: #888ea8 !important;
+  color: #655b51 !important;
 }
 
 .text-white {
