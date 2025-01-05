@@ -9,7 +9,7 @@ html {
 }
 
 body {
-    color: #888ea8;
+    color: black;
     height: 100%;
     font-size: 0.875rem;
     background: $m-color_1;
@@ -95,7 +95,7 @@ select.form-custom::-ms-expand {
   background-color: transparent !important;
   padding: 0px !important;
   box-shadow: none !important;
-  color: #888ea8 !important;
+  color: $text_1 !important;
   margin-bottom: -24px;
   border-bottom: 1px dashed #bfc9d4;
   border-radius: 0;
@@ -250,9 +250,9 @@ span {
 /*      Form Group Label       */
 
 .form-group label, label {
-  font-size: 15px;
-  color: #888ea8;
-  letter-spacing: 1px;
+    font-size: 15px;
+    color: $text_1;
+    letter-spacing: 1px;
 }
 
 /*  Disable forms     */
@@ -481,7 +481,7 @@ select.form-control.form-custom {
     background-color: $m-color_2;
 
     svg {
-      color: #888ea8;
+      color: $text_1;
     }
   }
 
@@ -495,7 +495,7 @@ select.form-control.form-custom {
     background-color: $m-color_2;
 
     svg {
-      color: #888ea8;
+      color: $text_1;
     }
   }
 
@@ -717,7 +717,7 @@ select.form-control.form-custom {
 
       svg {
         cursor: pointer;
-        color: #888ea8;
+        color: $text_1;
         margin-right: 6px;
         vertical-align: middle;
         width: 20px;
@@ -784,7 +784,7 @@ select.form-control.form-custom {
       height: 18px;
       margin-right: 4px;
       vertical-align: bottom;
-      color: #888ea8;
+      color: $text_1;
     }
 
     &:hover svg {
@@ -2177,21 +2177,21 @@ select.form-control.form-custom {
 
 .custom-dropdown .dropdown-item {
   &.active, &:active, &:hover {
-    color: #888ea8;
+    color: $text_1;
     background-color: $m-color_2;
   }
 }
 
 .custom-dropdown-icon .dropdown-item {
   &.active, &:active, &:hover {
-    color: #888ea8;
+    color: $text_1;
     background-color: $m-color_2;
   }
 }
 
 .custom-dropdown .dropdown-item {
   font-size: 13px;
-  color: #888ea8;
+  color: $text_1;
   display: block;
   font-weight: 700;
   padding: 11px 8px;
@@ -2201,7 +2201,7 @@ select.form-control.form-custom {
 .custom-dropdown-icon {
   .dropdown-item {
     font-size: 13px;
-    color: #888ea8;
+    color: $text_1;
     display: block;
     font-weight: 700;
     padding: 11px 8px;
@@ -2212,7 +2212,7 @@ select.form-control.form-custom {
     width: 20px;
     height: 20px;
     margin-right: 3px;
-    color: #888ea8;
+    color: $text_1;
   }
 }
 
@@ -2374,7 +2374,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 }
 
 .table-controls > li > a svg {
-  color: #888ea8;
+  color: $text_1;
   width: 21px;
 }
 
@@ -2831,7 +2831,7 @@ table {
 }
 
 .text-muted {
-  color: #888ea8 !important;
+  color: $text_1 !important;
 }
 
 .text-white {
