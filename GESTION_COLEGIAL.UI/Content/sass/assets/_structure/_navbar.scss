@@ -6,7 +6,7 @@
 
 .header-container {
   z-index: 1030;
-  border-bottom: 1px solid $primary;
+  border-bottom: 1px solid $text_2;
 
   .navbar {
     padding: 4px 0;
@@ -18,7 +18,7 @@
     justify-content: space-between;
     cursor: pointer;
     font-size: 13px;
-    color: #555555;
+    color: $text_1;
     padding: 14px 10px;
     font-weight: 600;
     transition: .600s;
@@ -28,12 +28,12 @@
 
 .sidebar {
     &.active a {
-        color: #515365 !important;
+        color: $text_1 !important;
     }
 
     &.span {
         vertical-align: sub;
-        color: #515365 !important;
+        color: $text_1 !important;
     }
 }
 .navbar {
@@ -234,7 +234,7 @@
     }
 
     &:not(.custom-dropdown-icon):not(.custom-dropdown) .dropdown-menu .dropdown-item:hover span {
-      color: #4361ee;
+      color: $text_2;
     }
   }
 }
@@ -273,7 +273,7 @@
           padding: 1px 5px 0px;
           font-size: 10px;
           color: #fff !important;
-          background: #4361ee;
+          background: $text_2;
           border: 1px solid #e0e6ed;
           top: 10px;
           right: -8px;
@@ -359,7 +359,7 @@
         }
 
         .dropdown-item:hover .media-body h5.usr-name {
-          color: #4361ee;
+          color: $text_2;
         }
 
         .media .media-body {
@@ -663,7 +663,7 @@
         }
 
         &:hover a {
-          color: #4361ee;
+          color: $text_2;
         }
 
         &.active, &:active {
