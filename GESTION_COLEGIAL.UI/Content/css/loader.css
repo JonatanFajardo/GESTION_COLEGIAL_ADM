@@ -24,8 +24,12 @@
   background-color: #F7A400;
 }
 
-h1, h6, p {
+#card-home h1, h6, p {
   color: white;
+}
+
+.card-header {
+  background-color: white;
 }
 
 div#load_screen {

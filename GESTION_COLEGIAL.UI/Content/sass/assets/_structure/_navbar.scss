@@ -6,7 +6,7 @@
 
 .header-container {
   z-index: 1030;
-  border-bottom: 1px solid $text_2;
+  border-bottom: 1px solid $text_2_sidebar;
 
   .navbar {
     padding: 4px 0;
@@ -18,7 +18,7 @@
     justify-content: space-between;
     cursor: pointer;
     font-size: 13px;
-    color: $text_1;
+    color: $text_1_sidebar;
     padding: 14px 10px;
     font-weight: 600;
     transition: .600s;
@@ -28,12 +28,12 @@
 
 .sidebar {
     &.active a {
-        color: $text_1 !important;
+        color: $text_1_sidebar !important;
     }
 
     &.span {
         vertical-align: sub;
-        color: $text_1 !important;
+        color: $text_1_sidebar !important;
     }
 }
 .navbar {
@@ -234,7 +234,7 @@
     }
 
     &:not(.custom-dropdown-icon):not(.custom-dropdown) .dropdown-menu .dropdown-item:hover span {
-      color: $text_2;
+      color: $text_2_sidebar;
     }
   }
 }
@@ -273,7 +273,7 @@
           padding: 1px 5px 0px;
           font-size: 10px;
           color: #fff !important;
-          background: $text_2;
+          background: $text_2_sidebar;
           border: 1px solid #e0e6ed;
           top: 10px;
           right: -8px;
@@ -359,7 +359,7 @@
         }
 
         .dropdown-item:hover .media-body h5.usr-name {
-          color: $text_2;
+          color: $text_2_sidebar;
         }
 
         .media .media-body {
@@ -368,7 +368,7 @@
           p.msg-title {
             font-size: 10px;
             font-weight: 700;
-            color: #888ea8;
+            color: $text_1_sidebar;
             margin-bottom: 0;
             letter-spacing: 0;
           }
@@ -513,7 +513,7 @@
           margin-bottom: 0;
           font-size: 13px;
           font-weight: 600;
-          color: #888ea8;
+          color: $text_1_sidebar;
         }
 
         .icon-status {
@@ -555,7 +555,7 @@
       font-weight: 600;
       margin: 0 9.6px;
       cursor: pointer;
-      color: #888ea8;
+      color: $text_1_sidebar;
       position: absolute;
       width: 18px;
       height: 18px;
@@ -571,7 +571,7 @@
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    color: #888ea8;
+    color: $text_1_sidebar;
     letter-spacing: 1px;
     padding: 0px 4px 0px 35px;
     height: 36px;
@@ -591,7 +591,7 @@
 
   form.form-inline input.search-form-control {
     &::-webkit-input-placeholder, &::-ms-input-placeholder, &::-moz-placeholder {
-      color: #888ea8;
+      color: $text_1_sidebar;
       letter-spacing: 1px;
       font-size: 13px;
     }
@@ -663,7 +663,7 @@
         }
 
         &:hover a {
-          color: $text_2;
+          color: $text_2_sidebar;
         }
 
         &.active, &:active {
@@ -815,7 +815,7 @@
                 position: absolute;
                 right: 15px;
                 top: 11px;
-                color: #888ea8;
+                color: $text_1_sidebar;
                 width: 13px;
                 height: 13px;
                 margin: 0;
