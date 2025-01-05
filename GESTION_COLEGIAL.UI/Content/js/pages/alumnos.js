@@ -244,8 +244,8 @@ var datatableAlumnos = (function () {
                 //bInfo: false,
                 processing: true,
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLenght: 10,
-                displayLength: 10,
+                pageLenght: 20,
+                displayLength: 20,
                 language: {
                     processing: "Procesando...",
                     lengthMenu: " _MENU_ ",
@@ -280,7 +280,7 @@ var datatableAlumnos = (function () {
                 //serverSide: true,
                 buttons: [
                     {
-                        text: '<i class="mdi mdi-refresh"> Recargar</i>',
+                        text: '<i class="fa-solid fa-rotate-right"></i>',
                         titleAttr: 'Recargar tabla',
                         action: function (e, dt, config) {
                             dt.ajax.reload();
@@ -359,6 +359,23 @@ var datatableAlumnos = (function () {
                         targets: 4,
                     },
                     {
+                        data: "Mda_Descripcion",
+                        targets: 5,
+                    },
+                    {
+                        data: "Niv_Descripcion",
+                        targets: 5,
+                    },
+                    {
+                        data: "Sec_Descripcion",
+                        targets: 5,
+                    },
+                    {
+                        data: "AnioCursado",
+                        targets: 6,
+                    },
+
+                    {
                         data: "Est_Descripcion",
                         render: function (data, type, row) {
                             // Determinar el color basado en el estado usando switch
@@ -378,7 +395,7 @@ var datatableAlumnos = (function () {
 
                             return `<span class="${colorClass}">${data}</span>`;
                         },
-                        targets: 5,
+                        targets: 7,
                        
                     },
                     {
@@ -398,7 +415,7 @@ var datatableAlumnos = (function () {
                             }
                             return botones;
                         },
-                        targets: 6,
+                        targets: 8,
                     }
 
                 ]
