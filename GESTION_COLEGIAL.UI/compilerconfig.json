@@ -34,5 +34,9 @@
   {
     "outputFile": "Content/css/structure.css",
     "inputFile": "Content/sass/assets/structure.scss"
+  },
+  {
+    "outputFile": "Content/css/custom.css",
+    "inputFile": "Content/sass/assets/custom.scss"
   }
 ]

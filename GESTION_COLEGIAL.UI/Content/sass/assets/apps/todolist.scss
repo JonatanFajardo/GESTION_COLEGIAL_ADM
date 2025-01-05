@@ -108,7 +108,7 @@
   border-right: 1px solid #e0e6ed;
 
   svg.feather-clipboard {
-    color: #4361ee;
+    color: $text_2;
     fill: rgba(27, 85, 226, 0.2392156863);
     margin-bottom: 13px;
   }
@@ -129,7 +129,7 @@
     color: #fff;
     bottom: 32px;
     left: 17%;
-    background-color: #4361ee;
+    background-color: $text_2;
 
     svg {
       margin-right: 5px;
@@ -157,13 +157,13 @@
   .nav-pills {
     .nav-link.active {
       svg {
-        color: #4361ee;
+        color: $text_2;
         fill: rgba(27, 85, 226, 0.2392156863);
       }
 
       background-color: transparent;
-      color: #4361ee;
-      color: #4361ee;
+      color: $text_2;
+      color: $text_2;
       background: #ebedf2;
       border-top-right-radius: 30px;
       border-bottom-right-radius: 30px;
@@ -200,16 +200,16 @@
         padding: 0 !important;
         font-size: 15px;
         top: 11px;
-        color: #4361ee !important;
+        color: $text_2 !important;
       }
     }
 
     a.nav-link {
       &:hover {
-        color: #4361ee;
+        color: $text_2;
 
         svg {
-          color: #4361ee;
+          color: $text_2;
           fill: rgba(27, 85, 226, 0.2392156863);
         }
       }
@@ -513,7 +513,7 @@
     background: #fff;
     border-radius: 5px;
     opacity: 1;
-    color: #4361ee;
+    color: $text_2;
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: .600s;
@@ -574,7 +574,7 @@
 
 #todoShowListItem .modal-footer .btn[data-dismiss="modal"] {
   background-color: #fff;
-  color: #4361ee;
+  color: $text_2;
   font-weight: 700;
   border: 1px solid #e8e8e8;
   padding: 10px 25px;
@@ -592,7 +592,7 @@
     align-self: center;
     font-size: 19px;
     margin-right: 14px;
-    color: #4361ee;
+    color: $text_2;
     font-weight: 600;
   }
 
@@ -618,17 +618,17 @@
   .btn {
     &[data-dismiss="modal"] {
       background-color: #fff;
-      color: #4361ee;
+      color: $text_2;
       font-weight: 700;
       border: 1px solid #e8e8e8;
       padding: 10px 25px;
     }
 
     &.add-tsk {
-      background-color: #4361ee;
+      background-color: $text_2;
       color: #fff;
       font-weight: 600;
-      border: 1px solid #4361ee;
+      border: 1px solid $text_2;
       padding: 10px 25px;
     }
 

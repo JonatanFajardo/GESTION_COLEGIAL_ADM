@@ -268,7 +268,7 @@
 
         ul.submenu > li {
             &.active a {
-                color: #4361ee;
+                color: $text_2;
                 border-top-left-radius: 10px;
                 border-bottom-left-radius: 10px;
                 font-weight: 600;
@@ -280,7 +280,7 @@
         }
 
         li.menu ul.submenu > li.active a:before {
-            background-color: #4361ee;
+            background-color: $text_2;
         }
 
         ul.submenu {
@@ -291,10 +291,10 @@
 
                 a {
                     &:hover {
-                        color: #4361ee;
+                        color: $text_2;
 
                         &:before {
-                            background-color: #4361ee !important;
+                            background-color: $text_2 !important;
                         }
                     }
 
@@ -308,16 +308,16 @@
             li > {
                 [data-active="true"] {
                     i {
-                        color: #4361ee;
+                        color: $text_2;
                     }
 
                     &:before {
-                        background-color: #4361ee !important;
+                        background-color: $text_2 !important;
                     }
                 }
 
                 a[data-active="true"] {
-                    color: #4361ee;
+                    color: $text_2;
                 }
             }
 
@@ -337,7 +337,7 @@
 
                 a {
                     &:hover {
-                        color: #4361ee;
+                        color: $text_2;
                     }
 
                     &:before {
@@ -346,7 +346,7 @@
                 }
 
                 &.active a:before {
-                    background-color: #4361ee;
+                    background-color: $text_2;
                 }
             }
         }
