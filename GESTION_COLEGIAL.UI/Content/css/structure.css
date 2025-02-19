@@ -945,7 +945,7 @@ code {
   width: 212px;
   position: fixed;
   z-index: 1028;
-  border-radius: 6px 6px 0 0;
+  border-radius: 6px;
   transition: 0.6s;
   height: 100vh;
   touch-action: none;
@@ -972,6 +972,9 @@ code {
   margin-left: 0;
 }
 
+#sidebar a {
+  color: white;
+}
 #sidebar .navbar-brand .img-fluid {
   display: inline;
   width: 44px;
@@ -1105,7 +1108,7 @@ code {
 #sidebar ul.menu-categories li.menu > a span:not(.badge) {
   vertical-align: middle;
 }
-#sidebar ul.menu-categories ul.submenu > li a {
+#sidebar ul.menu-categories ul > li a {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -1113,7 +1116,7 @@ code {
   padding-left: 24px;
   margin-left: 36px;
   font-size: 13px;
-  color: #515365;
+  color: white;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li a:before {
   content: "";
