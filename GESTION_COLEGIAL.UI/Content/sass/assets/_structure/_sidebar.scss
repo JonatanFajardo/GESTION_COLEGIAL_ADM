@@ -39,7 +39,7 @@
     width: 212px;
     position: fixed;
     z-index: 1028;
-    border-radius: 6px 6px 0 0;
+    border-radius: 6px;
     transition: .600s;
     height: 100vh;
     touch-action: none;
@@ -73,6 +73,9 @@
 }
 
 #sidebar {
+    a{
+        color:white;
+    }
   .navbar-brand .img-fluid {
     display: inline;
     width: 44px;
@@ -246,7 +249,7 @@
             }
         }
 
-        ul.submenu > li a {
+        ul > li a {
             position: relative;
             display: flex;
             justify-content: space-between;
@@ -254,7 +257,7 @@
             padding-left: 24px;
             margin-left: 36px;
             font-size: 13px;
-            color: #515365;
+            color: white;
         }
 
         li.menu ul.submenu > li a:before {
