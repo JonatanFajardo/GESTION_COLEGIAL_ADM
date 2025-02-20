@@ -374,9 +374,6 @@
     <Content Include="Content\js\widgets\modules-widgets.js" />
     <Content Include="Content\index.html" />
     <Content Include="Content\plugins\animate\animate.css" />
-    <Content Include="Content\plugins\apex\apexcharts.css" />
-    <Content Include="Content\plugins\apex\apexcharts.min.js" />
-    <Content Include="Content\plugins\apex\custom-apexcharts.js" />
     <Content Include="Content\plugins\autocomplete\autocomplete.css" />
     <Content Include="Content\plugins\autocomplete\countries.js" />
     <Content Include="Content\plugins\autocomplete\demo.js" />
@@ -1353,19 +1350,6 @@
     <Content Include="Content\sass\plugins\table\datatable\dt-global_style.scss" />
     <Content Include="Content\sass\plugins\tagInput\tags-input.scss" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
-    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1413,13 +1397,13 @@
     <Content Include="Views\ds HorarioProfesores\CreateAsync.cshtml" />
     <Content Include="Views\ds Notas\CreateAsync.cshtml" />
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\assets\" />
     <Folder Include="Content\pages\" />
+    <Folder Include="Content\plugins\apex\" />
+    <Folder Include="Scripts\" />
     <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
