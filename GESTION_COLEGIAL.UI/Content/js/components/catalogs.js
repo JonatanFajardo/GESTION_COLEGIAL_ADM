@@ -90,7 +90,7 @@
                 success: function (response) {
                     if (response.success) {
                         $("#delete-item-id").val(id);
-                        alertConfig.alert('Eliminado correctamente.', 'success');
+                        //alertConfig.alert('Eliminado correctamente.', 'success');
                         $deleteModal.modal("show");
                     }
                     else {

@@ -153,9 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\apps\contacts.css" />
     <Content Include="Content\css\apps\invoice-add.css" />
     <Content Include="Content\css\apps\invoice-edit.css" />
@@ -370,6 +368,7 @@
     <Content Include="Content\js\pages\titulos.js" />
     <Content Include="Content\js\pages\usuarios.js" />
     <Content Include="Content\js\scrollspyNav.js" />
+    <Content Include="Content\js\toggleUnic.js" />
     <Content Include="Content\js\users\account-settings.js" />
     <Content Include="Content\js\widgets\modules-widgets.js" />
     <Content Include="Content\index.html" />
@@ -1180,7 +1179,6 @@
     <Content Include="Content\plugins\toastr\toastr.min.js" />
     <None Include="Content\sass\base\_custom.scss" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -1202,14 +1200,6 @@
     <Content Include="Content\plugins\font-icons\fontawesome\webfonts\fa-regular-400.ttf" />
     <Content Include="Content\plugins\font-icons\fontawesome\webfonts\fa-regular-400.woff" />
     <Content Include="Content\plugins\font-icons\fontawesome\webfonts\fa-regular-400.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\sass\assets\apps\contacts.scss" />
     <Content Include="Content\sass\assets\apps\invoice-add.scss" />
     <Content Include="Content\sass\assets\apps\invoice-edit.scss" />
