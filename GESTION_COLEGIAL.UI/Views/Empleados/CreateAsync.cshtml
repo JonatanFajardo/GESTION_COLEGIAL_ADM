@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="card-body">
                 @Html.HiddenFor(model => model.Emp_Id)
                 @Html.HiddenFor(model => model.Per_Id)
                 <div class="form-row">
@@ -164,7 +164,7 @@
                     <!--Botones de accion en el formulario-->
                     <div class="form-group col-md-6">
                         <div class="float-right mt-4">
-                            <div class="btn mr-2 btn-secondary">
+                            <div class="btn mr-2 btn-primary-outline">
                                 @Html.ActionLink("Cancelar", "Index", "Empleados")
                             </div>
                             <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Guardar</button>
