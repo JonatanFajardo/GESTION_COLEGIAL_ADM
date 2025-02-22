@@ -7,8 +7,7 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Enc_Id",
-                    Size: 200
+                    FieldName: "Enc_Id"
                 },
                 {
                     FieldName: "Per_Identidad"

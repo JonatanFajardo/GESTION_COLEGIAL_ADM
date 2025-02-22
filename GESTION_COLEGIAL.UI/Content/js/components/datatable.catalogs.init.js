@@ -29,7 +29,7 @@ var datatableCatalogs = (function () {
                 pageLenght: 10,
                 displayLength: 10,
                 language: {
-                    processing: "Procesando...",
+                    processing: '<div class="d-flex justify-content-center py-3"><i class="fa-solid fa-spinner fa-spin-pulse fa-3x" style="color: #F7A400;"></i></div>',
                     lengthMenu: " _MENU_ ",
                     zeroRecords: "No se encontraron resultados",
                     emptyTable: "Ningún dato disponible en esta tabla",
