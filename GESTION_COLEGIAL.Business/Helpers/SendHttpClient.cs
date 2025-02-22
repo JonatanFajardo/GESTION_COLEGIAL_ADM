@@ -32,6 +32,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
 
 				if (!httpResponse.IsSuccessStatusCode)
 				{
+					var errorContent = await httpResponse.Content.ReadAsStringAsync();
 					return null;
 				}
 				var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
