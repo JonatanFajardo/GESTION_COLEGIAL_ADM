@@ -149,7 +149,12 @@
                         <div class="col-md-6 col-lg-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Cun_Id, "Curso niveles", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("Cun_Id", new List<SelectListItem>(), "-- Seleccionar Curso --", htmlAttributes: new { @class = "form-control" })
+                                @*@Html.DropDownList("Cun_Id", ViewBag.Niveles as List<SelectListItem>, "-- Seleccionar Curso --", htmlAttributes: new { @class = "form-control" })*@
+                                @Html.DropDownListFor(model => model.Cun_Id,
+                                ViewBag.Niveles as List<SelectListItem> ?? new List<SelectListItem>(),
+                                "-- Seleccionar Curso --",
+                                new { @class = "form-control" })
+
                                 @Html.ValidationMessageFor(model => model.Cun_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -159,7 +164,11 @@
                         <div class="col-md-6 col-lg-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Mda_Id, "Modalidad", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("Mda_Id", new List<SelectListItem>(), "-- Seleccionar Modalidad --", htmlAttributes: new { @class = "form-control" })
+                                @*@Html.DropDownList("Mda_Id", ViewBag.Modalidades as List<SelectListItem>, "-- Seleccionar Modalidad --", htmlAttributes: new { @class = "form-control" })*@
+                                @Html.DropDownListFor(model => model.Mda_Id,
+                                ViewBag.Modalidades as List<SelectListItem> ?? new List<SelectListItem>(),
+                                "-- Seleccionar Modalidad --",
+                                new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Mda_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -167,7 +176,11 @@
                         <div class="col-md-6 col-lg-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Cur_Id, "Cursos", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("Cur_Id", new List<SelectListItem>(), "-- Seleccionar Curso --", htmlAttributes: new { @class = "form-control" })
+                                @*@Html.DropDownList("Cur_Id", ViewBag.Cursos as List<SelectListItem>, "-- Seleccionar Curso --", htmlAttributes: new { @class = "form-control" })*@
+                                @Html.DropDownListFor(model => model.Cur_Id,
+                                ViewBag.Cursos as List<SelectListItem> ?? new List<SelectListItem>(),
+                                "-- Seleccionar Cursos --",
+                                new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Cur_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -177,7 +190,11 @@
                         <div class="col-md-6 col-lg-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Sec_Id, "Curso secciones", htmlAttributes: new { @class = "control-label" })
-                                @Html.DropDownList("Sec_Id", new List<SelectListItem>(), "-- Seleccionar seccion --", htmlAttributes: new { @class = "form-control" })
+                                @*@Html.DropDownList("Sec_Id", ViewBag.Secciones as List<SelectListItem>, "-- Seleccionar seccion --", htmlAttributes: new { @class = "form-control" })*@
+                                @Html.DropDownListFor(model => model.Sec_Id,
+                                ViewBag.Secciones as List<SelectListItem> ?? new List<SelectListItem>(),
+                                "-- Seleccionar Curso secciones --",
+                                new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Sec_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
