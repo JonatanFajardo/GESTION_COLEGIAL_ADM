@@ -12,8 +12,8 @@ namespace GESTION_COLEGIAL.Business.Helpers
 	/// </summary>
 	public static class SendHttpClient
 	{
-		private const string baseUrl = "https://localhost:44325/api/v1/";
-		//private const string baseUrl = "http://gestioncolegialapi.somee.com/api/";
+		//private const string baseUrl = "https://localhost:44325/api/v1/";
+		private const string baseUrl = "http://www.gestioncolegialapi.somee.com/api/v1/";
 
 		#region Asincrono
 
