@@ -1,29 +1,242 @@
 $(document).ready(function () {
 
+    // Sistema de notificaciones mejorado
+    const NotificationManager = {
+        errors: [],
+        maxErrors: 3, // Máximo de errores antes de mostrar resumen
+        showTimeout: null,
+
+        // Agregar error al stack
+        addError(title, message, severity = 'error') {
+            this.errors.push({ title, message, severity, timestamp: Date.now() });
+            this.processErrors();
+        },
+
+        // Procesar errores acumulados
+        processErrors() {
+            clearTimeout(this.showTimeout);
+
+            // Esperar 2 segundos para acumular errores similares
+            this.showTimeout = setTimeout(() => {
+                this.showNotifications();
+            }, 2000);
+        },
+
+        // Mostrar notificaciones de forma inteligente
+        showNotifications() {
+            if (this.errors.length === 0) return;
+
+            if (this.errors.length === 1) {
+                // Solo un error - mostrar normal
+                this.showSingleNotification(this.errors[0]);
+            } else if (this.errors.length <= this.maxErrors) {
+                // Pocos errores - mostrar toast discreto
+                this.showMultipleErrorsToast();
+            } else {
+                // Muchos errores - mostrar resumen
+                this.showErrorSummary();
+            }
+
+            this.errors = []; // Limpiar errores procesados
+        },
+
+        // Mostrar una sola notificación
+        showSingleNotification(error) {
+            if (typeof toastr !== 'undefined') {
+                toastr.error(error.message, error.title, {
+                    timeOut: 5000,
+                    closeButton: true,
+                    progressBar: true
+                });
+            } else if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'error',
+                    title: error.title,
+                    text: error.message,
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true
+                });
+            } else {
+                this.showInPageNotification(error.title, error.message, 'error');
+            }
+        },
+
+        // Mostrar toast discreto para múltiples errores
+        showMultipleErrorsToast() {
+            const message = `Se encontraron ${this.errors.length} problemas al cargar algunos elementos de la página.`;
+
+            if (typeof toastr !== 'undefined') {
+                toastr.warning(message, 'Algunos componentes no se cargaron', {
+                    timeOut: 7000,
+                    closeButton: true,
+                    progressBar: true,
+                    onclick: () => this.showErrorDetails()
+                });
+            } else if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Algunos componentes no se cargaron',
+                    text: message + ' Haz clic para ver detalles.',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ver detalles',
+                    timer: 7000,
+                    timerProgressBar: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.showErrorDetails();
+                    }
+                });
+            } else {
+                this.showInPageNotification(
+                    'Algunos componentes no se cargaron',
+                    message,
+                    'warning'
+                );
+            }
+        },
+
+        // Mostrar resumen de errores
+        showErrorSummary() {
+            const message = `Se encontraron ${this.errors.length} problemas al cargar la pagina. Algunos elementos pueden no estar disponibles.`;
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Problemas de Carga Detectados',
+                    text: message,
+                    showCancelButton: true,
+                    confirmButtonText: 'Ver detalles',
+                    cancelButtonText: 'Continuar',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.showErrorDetails();
+                    }
+                });
+            } else {
+                this.showInPageNotification(
+                    'Problemas de Carga Detectados',
+                    message,
+                    'warning'
+                );
+            }
+        },
+
+        // Mostrar detalles de errores
+        showErrorDetails() {
+            let detailsHtml = '<div class="error-details" style="text-align: left; max-height: 300px; overflow-y: auto;">';
+
+            this.errors.forEach((error, index) => {
+                detailsHtml += `
+                    <div style="margin-bottom: 10px; padding: 8px; border-left: 3px solid #dc3545; background: #f8f9fa;">
+                        <strong>${error.title}</strong><br>
+                        <small>${error.message}</small>
+                    </div>
+                `;
+            });
+
+            detailsHtml += '</div>';
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'Detalles de los Errores',
+                    html: detailsHtml,
+                    width: '600px',
+                    confirmButtonText: 'Entendido'
+                });
+            } else {
+                alert('Detalles de errores:\n' + this.errors.map(e => `${e.title}: ${e.message}`).join('\n'));
+            }
+        },
+
+        // Notificación in-page como fallback
+        showInPageNotification(title, message, type = 'error') {
+            // Crear contenedor si no existe
+            let container = document.getElementById('notification-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'notification-container';
+                container.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 9999;
+                    max-width: 350px;
+                `;
+                document.body.appendChild(container);
+            }
+
+            // Crear notificación
+            const notification = document.createElement('div');
+            const bgColor = type === 'error' ? '#dc3545' : '#ffc107';
+            const textColor = type === 'error' ? 'white' : '#212529';
+
+            notification.style.cssText = `
+                background-color: ${bgColor};
+                color: ${textColor};
+                padding: 15px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            `;
+
+            notification.innerHTML = `
+                <strong>${title}</strong><br>
+                <small>${message}</small>
+                <div style="position: absolute; top: 5px; right: 10px; font-size: 18px;">&times;</div>
+            `;
+
+            // Auto-eliminar después de 5 segundos
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+
+            // Eliminar al hacer clic
+            notification.onclick = () => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            };
+
+            container.appendChild(notification);
+        }
+    };
+
+    // funcion para reportar errores
+    function reportError(title, message, severity = 'error') {
+        // Log para desarrolladores
+        console.error(`${title}: ${message}`);
+
+        // Agregar al sistema de notificaciones
+        NotificationManager.addError(title, message, severity);
+    }
+
+    // Funciones principales con manejo de errores mejorado
     async function HomeAndChartsList() {
-        // 1. Define the AJAX request details
-        const url = 'HomeAndCharts/HomeAndChartsList'; // Replace with the actual URL for your data source
-        const dataType = 'json'; // Assuming your data is in JSON format
+        const url = 'HomeAndCharts/HomeAndChartsList';
+        const dataType = 'json';
 
         try {
-            // 2. Initiate the AJAX request
             const response = await $.ajax({
                 url: url,
                 dataType: dataType,
             });
 
-            // 3. Handle successful data retrieval
             const table = $('#HomeAndCharts');
-
-            // Clear existing table content (optional, adjust as needed)
             table.find('tbody').empty();
 
-            // 4. Loop through data and build table rows dynamically
             $.each(response.data, function (index, course) {
                 const row = $('<tr>');
-                const test = 'test';
 
-                // 5. Handle trend indicator conditionally
                 let trendIndicator = '';
                 if (course.PorcentajeDiferencia > 0) {
                     trendIndicator = '<i class="bi bi-caret-up-fill text-success"></i>';
@@ -33,51 +246,60 @@ $(document).ready(function () {
 
                 row.append(`<td>${trendIndicator} ${course.PorcentajeDiferencia}%</td>`);
                 row.append(`<td>${course.NombreCurso}</td>`);
+                row.addClass('loading-row');
 
-                // Agregar clase de animación o estilo para resaltar la fila mientras se carga
-                row.addClass('loading-row');  // Puedes definir este estilo en tu CSS
-
-                // Usar setTimeout para simular el retraso de carga
                 setTimeout(function () {
                     table.find('tbody').append(row);
-                    row.removeClass('loading-row');  // Remover clase de animación después de añadir la fila
-                }, index * 100); // El retraso depende del índice, creando un efecto secuencial
+                    row.removeClass('loading-row');
+                }, index * 100);
             });
 
         } catch (error) {
-            console.error('Error fetching data:', error);
-            // Handle errors appropriately (e.g., display an error message)
+            console.error('HomeAndChartsList - Error detallado:', error);
+
+            // Mostrar placeholder o mensaje discreto en la tabla
+            const table = $('#HomeAndCharts');
+            table.find('tbody').html(`
+                <tr>
+                    <td colspan="2" class="text-center text-muted">
+                        <i class="bi bi-exclamation-triangle"></i> 
+                        No se pudieron cargar los datos
+                    </td>
+                </tr>
+            `);
+
+            reportError(
+                'Lista de Cursos',
+                'No se pudieron cargar los datos de cursos'
+            );
         }
-
-
     }
 
     async function obtenerCantidadAlumnosPorCurso() {
-        const url = 'HomeAndCharts/ObtenerCantidadAlumnosPorCursoList'; // La URL de tu servicio
-        const ctx = document.getElementById('obtenerCantidadAlumnosPorCurso').getContext('2d'); // Contexto del canvas para el gráfico
+        const ctx = document.getElementById('obtenerCantidadAlumnosPorCurso')?.getContext('2d');
         let delayed;
 
+        if (!ctx) {
+            console.error('obtenerCantidadAlumnosPorCurso - Canvas element not found');
+            return;
+        }
+
         try {
-            // Realizamos la solicitud fetch para obtener los datos
-            const response = await fetch(url, {
-                method: 'GET', // o 'POST' si lo necesitas
+            const response = await fetch('HomeAndCharts/ObtenerCantidadAlumnosPorCursoList', {
+                method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json', // Si necesitas cabeceras
+                    'Content-Type': 'application/json',
                 }
             });
 
-            // Comprobamos si la respuesta fue exitosa (código de estado 200-299)
             if (!response.ok) {
-                throw new Error('Error en la solicitud');
+                throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
             }
 
-            // Parseamos la respuesta JSON
             const data = await response.json();
-            // Obtenemos las etiquetas y cantidades
             const labels = data.data.map(item => item.Cur_Nombre);
             const cantidades = data.data.map(item => parseInt(item.CantidadAlumnos));
 
-            // Crear el gráfico con los datos obtenidos
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -107,12 +329,12 @@ $(document).ready(function () {
                             display: true,
                             position: 'right',
                             labels: {
-                                usePointStyle: true, // Esto cambia la forma de la leyenda a círculos
-                                pointStyle: 'circle', // Define el estilo como círculo
+                                usePointStyle: true,
+                                pointStyle: 'circle',
                                 font: {
-                                    size: 10, // Tamaño de la fuente
-                                    weight: '100', // Cambia a light (peso ligero)
-                                    family: 'Arial, sans-serif' // Define la familia de la fuente
+                                    size: 10,
+                                    weight: '100',
+                                    family: 'Arial, sans-serif'
                                 },
                             }
                         }
@@ -132,20 +354,33 @@ $(document).ready(function () {
                 }
             });
         } catch (error) {
-            console.error('Error al obtener los datos:', error);
-            // Mostrar mensaje de error al usuario
-            alert("Error al cargar los datos. Por favor, inténtelo de nuevo más tarde.");
+            console.error('obtenerCantidadAlumnosPorCurso - Error detallado:', error);
+
+            // Mostrar mensaje en el canvas
+            const canvas = document.getElementById('obtenerCantidadAlumnosPorCurso');
+            if (canvas) {
+                canvas.style.display = 'none';
+                const container = canvas.parentElement;
+                if (container) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'text-center text-muted p-4';
+                    errorDiv.innerHTML = `
+                        <i class="bi bi-exclamation-triangle fs-1"></i><br>
+                        <small>Grafico no disponible</small>
+                    `;
+                    container.appendChild(errorDiv);
+                }
+            }
+
+            reportError(
+                'Grafico de Alumnos',
+                'No se pudo cargar el Grafico de cantidad de alumnos'
+            );
         }
     }
 
-    // Llamada a la función
-
-
-
-
-    //const apiKey = '565c6073a5c841bd81385441242012'; // Reemplaza con tu clave real
-    const apiKey = '565c6073a5c841bd81385441242012'; // Reemplaza con tu clave real
-    const query = 'Honduras'; // Puedes cambiar la ubicación aquí
+    const apiKey = '565c6073a5c841bd81385441242012';
+    const query = 'Honduras';
     const weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
 
     // Elementos del DOM
@@ -160,17 +395,13 @@ $(document).ready(function () {
     const visibility = $('#visibility');
     const errorMessage = $('#error-message');
 
-    // Función asíncrona para obtener el clima usando AJAX
-    async function obtenerDatosClima() { 
+    async function obtenerDatosClima() {
         try {
-            // Realizamos la solicitud AJAX con await
             const data = await $.ajax({
                 url: weatherUrl,
                 dataType: 'json'
             });
- 
 
-            // Actualizamos el DOM con los datos del clima
             locationElement.text(`${data.location.name}, ${data.location.country}`);
             weatherIcon.attr('src', data.current.condition.icon);
             weatherIcon.attr('alt', data.current.condition.text);
@@ -182,44 +413,59 @@ $(document).ready(function () {
             windDirection.text(data.current.wind_dir);
             visibility.text(data.current.vis_km);
 
-            // Limpiamos el mensaje de error si la llamada fue exitosa
             errorMessage.text("");
         } catch (error) {
-            // Si ocurre algún error, mostramos un mensaje en el DOM
-            console.error('Error al obtener los datos del clima:', error);
-            errorMessage.text("Error al obtener los datos del clima. Por favor, inténtelo de nuevo más tarde.");
-            locationElement.text("Error");
+            console.error('obtenerDatosClima - Error detallado:', error);
+
+            // Mostrar datos placeholder
+            locationElement.text("Honduras");
+            tempC.text("--");
+            weatherCondition.text("No disponible");
+            feelsLike.text("--");
+            humidity.text("--");
+            windSpeed.text("--");
+            windDirection.text("--");
+            visibility.text("--");
+
+            // Solo mostrar error en el elemento designado, no popup
+            errorMessage.text("Datos del clima no disponibles");
+
+            reportError(
+                'Datos del Clima',
+                'No se pudieron obtener los datos meteorológicos'
+            );
         }
     }
 
-    // Llamar a la función al cargar la página
     async function ObtenerPromedioCursoUltimosAnios() {
-        const ctx = document.getElementById('ObtenerPromedioCursoUltimosAnios').getContext('2d');
+        const ctx = document.getElementById('ObtenerPromedioCursoUltimosAnios')?.getContext('2d');
         const mensajeErrorDiv = document.getElementById('mensajeError');
         let delayed;
+
+        if (!ctx) {
+            console.error('ObtenerPromedioCursoUltimosAnios - Canvas element not found');
+            return;
+        }
 
         try {
             await $.ajax({
                 url: 'HomeAndCharts/ObtenerPromedioCursoUltimosAnios',
                 dataType: 'json',
-                success: function (response) { 
-                    // Procesar los datos
+                success: function (response) {
                     const anios = response.data.map(item => item.AnioCursado);
                     const promedios = response.data.map(item => item.PromedioAnual);
 
-                    // Crear la gráfica con Chart.js
-                    //const ctx = document.getElementById('graficaLineal').getContext('2d');
                     new Chart(ctx, {
-                        type: 'line', // Tipo de gráfica: lineal
+                        type: 'line',
                         data: {
-                            labels: anios, // Etiquetas del eje X (Años)
+                            labels: anios,
                             datasets: [{
                                 label: 'Promedio Anual',
-                                data: promedios, // Datos para el eje Y
-                                borderColor: 'rgba(253, 206, 128, 1)', // Color de la línea rgb()
-                                backgroundColor: 'rgba(253, 206, 128, 0.2)', // Color de fondo de los puntos
-                                fill: true, // No llenar el área bajo la línea
-                                tension: 0.1 // Curvatura de la línea
+                                data: promedios,
+                                borderColor: 'rgba(253, 206, 128, 1)',
+                                backgroundColor: 'rgba(253, 206, 128, 0.2)',
+                                fill: true,
+                                tension: 0.1
                             }]
                         },
                         options: {
@@ -252,35 +498,64 @@ $(document).ready(function () {
                             },
                         }
                     });
-                }, // Cierre de la función success
-                error: function (error) {
-                    console.error("Error al obtener los datos", error);
-                    mensajeErrorDiv.style.display = 'block'; // Mostrar mensaje de error si lo hay
+                },
+                error: function (xhr, status, error) {
+                    console.error("ObtenerPromedioCursoUltimosAnios - Error detallado:", {
+                        xhr: xhr,
+                        status: status,
+                        error: error
+                    });
+
+                    if (mensajeErrorDiv) {
+                        mensajeErrorDiv.style.display = 'block';
+                    }
+
+                    // Mostrar placeholder en el canvas
+                    const canvas = document.getElementById('ObtenerPromedioCursoUltimosAnios');
+                    if (canvas) {
+                        canvas.style.display = 'none';
+                        const container = canvas.parentElement;
+                        if (container) {
+                            const errorDiv = document.createElement('div');
+                            errorDiv.className = 'text-center text-muted p-4';
+                            errorDiv.innerHTML = `
+                                <i class="bi bi-exclamation-triangle fs-1"></i><br>
+                                <small>Grafico no disponible</small>
+                            `;
+                            container.appendChild(errorDiv);
+                        }
+                    }
+
+                    reportError(
+                        'Grafico de Promedios',
+                        'No se pudo cargar el Grafico de promedios'
+                    );
                 }
-            }); // Cierre de la llamada AJAX
+            });
         } catch (error) {
-            console.error("Error en la función async", error);
+            console.error("ObtenerPromedioCursoUltimosAnios - Error en funcion async:", error);
+
+            reportError(
+                'Grafico de Promedios',
+                'Error inesperado al cargar el Grafico de promedios'
+            );
         }
     }
 
-
-
-
-    // Función para animar números
     function animateNumbers() {
         const counters = document.querySelectorAll('.number');
         counters.forEach(counter => {
-            const target = +counter.getAttribute('data-target'); // Obtiene el número final
-            const increment = target / 200; // Ajusta este valor para la velocidad de incremento
+            const target = +counter.getAttribute('data-target');
+            const increment = target / 200;
             let current = 0;
 
             function updateCounter() {
                 current += increment;
                 if (current < target) {
                     counter.textContent = Math.floor(current);
-                    requestAnimationFrame(updateCounter); // Continuar la animación
+                    requestAnimationFrame(updateCounter);
                 } else {
-                    counter.textContent = target; // Asegura que termina en el número exacto
+                    counter.textContent = target;
                 }
             }
 
@@ -288,33 +563,65 @@ $(document).ready(function () {
         });
     }
 
-    animateNumbers();
-
     async function LoadCards() {
+        try {
+            const result = await $.ajax({
+                url: 'HomeAndCharts/CardsInHomeList',
+                dataType: 'json'
+            });
 
-        result = await $.ajax({
-            url: 'HomeAndCharts/CardsInHomeList',
-            dataType: 'json',
-            success: function (response) {
-                // Actualizar cards con los valores obtenidos
-                $('#graduados').text(response.data[0].Graduados);
-                $('#diferenciaPromedioAnual').text(response.data[0].DiferenciaPromedioAnual+"%");
-                $('#actualPromedioAnual').text(response.data[0].ActualPromedioAnual);
-                $('#diferenciaNuevoIngreso').text(response.data[0].DiferenciaNuevoIngreso + "%");
-            },
-            error: function () {
-                console.log("Error al cargar los datos.");
-            }
-        });
+            $('#graduados').text(result.data[0].Graduados);
+            $('#diferenciaPromedioAnual').text(result.data[0].DiferenciaPromedioAnual + "%");
+            $('#actualPromedioAnual').text(result.data[0].ActualPromedioAnual);
+            $('#diferenciaNuevoIngreso').text(result.data[0].DiferenciaNuevoIngreso + "%");
 
+        } catch (error) {
+            console.error("LoadCards - Error detallado:", error);
+
+            // Mostrar valores placeholder en las tarjetas
+            $('#graduados').text('--');
+            $('#diferenciaPromedioAnual').text('--%');
+            $('#actualPromedioAnual').text('--');
+            $('#diferenciaNuevoIngreso').text('--%');
+
+            reportError(
+                'Tarjetas de Datos',
+                'No se pudieron cargar los datos de las tarjetas'
+            );
+        }
     }
 
-    //Llamando funciones
-    HomeAndChartsList();
-    obtenerCantidadAlumnosPorCurso();
-    obtenerDatosClima();
-    ObtenerPromedioCursoUltimosAnios();
-    LoadCards();
+    // Inicializar animación de números
+    animateNumbers();
+
+    // Llamar funciones de forma secuencial para mejor control
+    async function initializePage() {
+        const functions = [
+            { name: 'HomeAndChartsList', fn: HomeAndChartsList },
+            { name: 'obtenerCantidadAlumnosPorCurso', fn: obtenerCantidadAlumnosPorCurso },
+            { name: 'obtenerDatosClima', fn: obtenerDatosClima },
+            { name: 'ObtenerPromedioCursoUltimosAnios', fn: ObtenerPromedioCursoUltimosAnios },
+            { name: 'LoadCards', fn: LoadCards }
+        ];
+
+        // Ejecutar todas las funciones
+        const promises = functions.map(({ fn }) =>
+            fn().catch(error => {
+                console.error(`Error in function:`, error);
+                return null; // Continuar con otras funciones
+            })
+        );
+
+        await Promise.allSettled(promises);
+    }
+
+    // Inicializar página
+    initializePage().catch(error => {
+        console.error('Error global al inicializar:', error);
+        reportError(
+            'Error de Inicialización',
+            'Error inesperado al cargar la página'
+        );
+    });
 
 });
-
