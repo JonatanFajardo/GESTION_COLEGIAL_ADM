@@ -21,13 +21,12 @@
                 }
             ]
             datatable.init(Direction, header);
-            console.log("di:" + Direction.urlList);
         })
     }
     return obj;
 }());
 
-document.ready(function () {
+$(document).ready(function () {
     $('#Niv_Id').change(function () {
         var Niv_Id = $(this).val();
         debugger
