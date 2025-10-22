@@ -133,9 +133,9 @@ var datatable = (function () {
 
             var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
             var table = $('#datatable').DataTable({
-                responsive: true,
+                serverSideresponsive: true,
+                serverSide: true, 
                 deferRender: true,
-                //serverSide: true,
                 buttons: [
                     {
                     text: '<i class="fa-solid fa-rotate-right"></i>',

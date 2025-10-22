@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/movie/Downloads/GC home/**)",
+      "Bash(dir \"C:\\Users\\movie\\Downloads\\GC home\")",
+      "Bash(dir \"C:\\Users\\movie\\Documents\\GitHub\\GESTION_COLEGIAL_ADM\\GESTION_COLEGIAL.UI\\Content\\css\" /b)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

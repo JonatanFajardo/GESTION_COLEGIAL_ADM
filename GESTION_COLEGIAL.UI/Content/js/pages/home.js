@@ -3,7 +3,7 @@ $(document).ready(function () {
     // Sistema de notificaciones mejorado
     const NotificationManager = {
         errors: [],
-        maxErrors: 3, // Máximo de errores antes de mostrar resumen
+        maxErrors: 3, // Mï¿½ximo de errores antes de mostrar resumen
         showTimeout: null,
 
         // Agregar error al stack
@@ -40,7 +40,7 @@ $(document).ready(function () {
             this.errors = []; // Limpiar errores procesados
         },
 
-        // Mostrar una sola notificación
+        // Mostrar una sola notificaciï¿½n
         showSingleNotification(error) {
             if (typeof toastr !== 'undefined') {
                 toastr.error(error.message, error.title, {
@@ -64,9 +64,9 @@ $(document).ready(function () {
             }
         },
 
-        // Mostrar toast discreto para múltiples errores
+        // Mostrar toast discreto para mï¿½ltiples errores
         showMultipleErrorsToast() {
-            const message = `Se encontraron ${this.errors.length} problemas al cargar algunos elementos de la página.`;
+            const message = `Se encontraron ${this.errors.length} problemas al cargar algunos elementos de la pï¿½gina.`;
 
             if (typeof toastr !== 'undefined') {
                 toastr.warning(message, 'Algunos componentes no se cargaron', {
@@ -154,7 +154,7 @@ $(document).ready(function () {
             }
         },
 
-        // Notificación in-page como fallback
+        // Notificaciï¿½n in-page como fallback
         showInPageNotification(title, message, type = 'error') {
             // Crear contenedor si no existe
             let container = document.getElementById('notification-container');
@@ -171,7 +171,7 @@ $(document).ready(function () {
                 document.body.appendChild(container);
             }
 
-            // Crear notificación
+            // Crear notificaciï¿½n
             const notification = document.createElement('div');
             const bgColor = type === 'error' ? '#dc3545' : '#ffc107';
             const textColor = type === 'error' ? 'white' : '#212529';
@@ -193,7 +193,7 @@ $(document).ready(function () {
                 <div style="position: absolute; top: 5px; right: 10px; font-size: 18px;">&times;</div>
             `;
 
-            // Auto-eliminar después de 5 segundos
+            // Auto-eliminar despuï¿½s de 5 segundos
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.style.opacity = '0';
@@ -231,41 +231,40 @@ $(document).ready(function () {
                 dataType: dataType,
             });
 
-            const table = $('#HomeAndCharts');
-            table.find('tbody').empty();
+            const container = $('#HomeAndCharts');
+            container.empty();
 
             $.each(response.data, function (index, course) {
-                const row = $('<tr>');
+                const changeClass = course.PorcentajeDiferencia < 0 ? 'negative' : 'positive';
+                const icon = course.PorcentajeDiferencia < 0 ?
+                    '<i class="bi bi-graph-down-arrow"></i>' :
+                    '<i class="bi bi-graph-up-arrow"></i>';
 
-                let trendIndicator = '';
-                if (course.PorcentajeDiferencia > 0) {
-                    trendIndicator = '<i class="bi bi-caret-up-fill text-success"></i>';
-                } else {
-                    trendIndicator = '<i class="bi bi-caret-down-fill text-danger"></i>';
-                }
-
-                row.append(`<td>${trendIndicator} ${course.PorcentajeDiferencia}%</td>`);
-                row.append(`<td>${course.NombreCurso}</td>`);
-                row.addClass('loading-row');
+                const item = $(`
+                    <div class="enrollment-item-modern">
+                        <div class="enrollment-name-modern">${course.NombreCurso}</div>
+                        <div class="enrollment-change-modern ${changeClass}">
+                            ${icon}
+                            <span>${course.PorcentajeDiferencia}%</span>
+                        </div>
+                    </div>
+                `);
 
                 setTimeout(function () {
-                    table.find('tbody').append(row);
-                    row.removeClass('loading-row');
-                }, index * 100);
+                    container.append(item);
+                }, index * 50);
             });
 
         } catch (error) {
             console.error('HomeAndChartsList - Error detallado:', error);
 
-            // Mostrar placeholder o mensaje discreto en la tabla
-            const table = $('#HomeAndCharts');
-            table.find('tbody').html(`
-                <tr>
-                    <td colspan="2" class="text-center text-muted">
-                        <i class="bi bi-exclamation-triangle"></i> 
-                        No se pudieron cargar los datos
-                    </td>
-                </tr>
+            // Mostrar placeholder o mensaje discreto
+            const container = $('#HomeAndCharts');
+            container.html(`
+                <div class="text-center text-muted p-4">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    No se pudieron cargar los datos
+                </div>
             `);
 
             reportError(
@@ -308,49 +307,58 @@ $(document).ready(function () {
                         label: 'Cantidad de Alumnos',
                         data: cantidades,
                         backgroundColor: [
-                            'rgba(255, 255, 0, 0.6)',
-                            'rgba(255, 204, 0, 0.6)',
-                            'rgba(255, 235, 59, 0.6)',
-                            'rgba(255, 193, 7, 0.6)',
-                            'rgba(255, 167, 38, 0.6)',
-                            'rgba(205, 220, 57, 0.6)',
-                            'rgba(255, 245, 157, 0.6)',
-                            'rgba(245, 124, 0, 0.6)',
-                            'rgba(255, 224, 130, 0.6)'
+                            '#fb923c',  // orange
+                            '#fbbf24',  // amber
+                            '#fde047',  // yellow
+                            '#a3e635',  // lime
+                            '#4ade80',  // green
+                            '#34d399',  // emerald
+                            '#2dd4bf',  // teal
+                            '#22d3ee',  // cyan
+                            '#38bdf8'   // blue
                         ],
-                        borderWidth: 1
+                        borderColor: '#ffffff',
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
                     plugins: {
                         legend: {
                             display: true,
-                            position: 'right',
+                            position: 'bottom',
                             labels: {
                                 usePointStyle: true,
                                 pointStyle: 'circle',
+                                padding: 12,
                                 font: {
-                                    size: 10,
-                                    weight: '100',
-                                    family: 'Arial, sans-serif'
+                                    size: 11,
+                                    family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                                 },
+                                color: '#64748b'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            titleFont: {
+                                size: 13,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                size: 12
                             }
                         }
                     },
                     animation: {
-                        onComplete: () => {
-                            delayed = true;
-                        },
-                        delay: (context) => {
-                            let delay = 0;
-                            if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                                delay = context.dataIndex * 300 + context.datasetIndex * 100;
-                            }
-                            return delay;
-                        },
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
                     },
+                    cutout: '50%'
                 }
             });
         } catch (error) {
@@ -432,7 +440,7 @@ $(document).ready(function () {
 
             reportError(
                 'Datos del Clima',
-                'No se pudieron obtener los datos meteorológicos'
+                'No se pudieron obtener los datos meteorolï¿½gicos'
             );
         }
     }
@@ -462,40 +470,78 @@ $(document).ready(function () {
                             datasets: [{
                                 label: 'Promedio Anual',
                                 data: promedios,
-                                borderColor: 'rgba(253, 206, 128, 1)',
-                                backgroundColor: 'rgba(253, 206, 128, 0.2)',
+                                borderColor: '#fb923c',
+                                backgroundColor: 'rgba(251, 146, 60, 0.1)',
                                 fill: true,
-                                tension: 0.1
+                                tension: 0.4,
+                                borderWidth: 3,
+                                pointRadius: 5,
+                                pointBackgroundColor: '#fb923c',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                                pointHoverRadius: 7,
+                                pointHoverBackgroundColor: '#fb923c',
+                                pointHoverBorderColor: '#ffffff',
+                                pointHoverBorderWidth: 3
                             }]
                         },
                         options: {
                             responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                    padding: 12,
+                                    cornerRadius: 8,
+                                    titleFont: {
+                                        size: 13,
+                                        weight: '600'
+                                    },
+                                    bodyFont: {
+                                        size: 12
+                                    },
+                                    callbacks: {
+                                        label: function (context) {
+                                            return 'Promedio: ' + context.parsed.y;
+                                        }
+                                    }
+                                }
+                            },
                             scales: {
                                 x: {
-                                    title: {
+                                    grid: {
                                         display: true,
-                                        text: 'Years'
+                                        color: 'rgba(226, 232, 240, 0.5)',
+                                        drawBorder: false
+                                    },
+                                    ticks: {
+                                        color: '#64748b',
+                                        font: {
+                                            size: 12
+                                        }
                                     }
                                 },
                                 y: {
-                                    title: {
+                                    grid: {
                                         display: true,
-                                        text: 'Promedio Anual'
+                                        color: 'rgba(226, 232, 240, 0.5)',
+                                        drawBorder: false
+                                    },
+                                    ticks: {
+                                        color: '#64748b',
+                                        font: {
+                                            size: 12
+                                        }
                                     }
                                 }
                             },
                             animation: {
-                                onComplete: () => {
-                                    delayed = true;
-                                },
-                                delay: (context) => {
-                                    let delay = 0;
-                                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
-                                        delay = context.dataIndex * 300 + context.datasetIndex * 100;
-                                    }
-                                    return delay;
-                                },
-                            },
+                                duration: 1500,
+                                easing: 'easeInOutQuart'
+                            }
                         }
                     });
                 },
@@ -591,7 +637,7 @@ $(document).ready(function () {
         }
     }
 
-    // Inicializar animación de números
+    // Inicializar animaciï¿½n de nï¿½meros
     animateNumbers();
 
     // Llamar funciones de forma secuencial para mejor control
@@ -615,12 +661,12 @@ $(document).ready(function () {
         await Promise.allSettled(promises);
     }
 
-    // Inicializar página
+    // Inicializar pï¿½gina
     initializePage().catch(error => {
         console.error('Error global al inicializar:', error);
         reportError(
-            'Error de Inicialización',
-            'Error inesperado al cargar la página'
+            'Error de Inicializaciï¿½n',
+            'Error inesperado al cargar la pï¿½gina'
         );
     });
 
