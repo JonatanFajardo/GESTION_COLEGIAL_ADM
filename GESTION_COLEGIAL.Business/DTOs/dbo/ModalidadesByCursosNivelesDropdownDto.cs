@@ -1,0 +1,8 @@
+﻿namespace GESTION_COLEGIAL.Business.DTOs
+{
+    public partial class ModalidadPorCursoNivelDropdownDto
+    {
+        public int ModalidadId { get; set; }
+        public string DescripcionModalidad { get; set; }
+    }
+}
