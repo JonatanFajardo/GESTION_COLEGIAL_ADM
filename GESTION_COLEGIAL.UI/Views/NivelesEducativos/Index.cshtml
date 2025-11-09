@@ -1,4 +1,4 @@
-﻿@model GESTION_COLEGIAL.Business.Models.NivelEducativoViewModel
+@model GESTION_COLEGIAL.Business.Models.NivelEducativoViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -58,27 +58,27 @@
                 {
                     <div class="fluid-container">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        @Html.HiddenFor(model => model.Niv_Id, new { @id = "item-id" })
+                        @Html.HiddenFor(model => model.NivelId, new { @id = "item-id" })
                         <div class="modal-body">
                             <div class="form-row">
                                 @* Columna Descripción *@
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Niv_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                        @Html.LabelFor(model => model.DescripcionNivel, "Descripción", htmlAttributes: new { @class = "control-label" })
                                         <div class="float-right">
                                             <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
                                                  data-placement="right" title="Estado"> 
-                                                <input type="checkbox" id="Niv_EsActivo" name="Niv_EsActivo"/> 
+                                                <input type="checkbox" id="EsActivoNivel" name="EsActivoNivel"/> 
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>
-                                        @Html.EditorFor(model => model.Niv_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Niv_Descripcion, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.DescripcionNivel, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.DescripcionNivel, "", new { @class = "text-danger" })
                                         @*<div class="float-right">
                                             <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
-                                                   data-placement="right" title="Niv_EsActivo">
+                                                   data-placement="right" title="EsActivoNivel">
 
-                                                <input type="checkbox" id="Niv_EsActivo" name="Niv_EsActivo" />
+                                                <input type="checkbox" id="EsActivoNivel" name="EsActivoNivel" />
 
 
                                                 <span class="slider round"></span>
@@ -89,9 +89,9 @@
 
                                 </div>
 
-                                @*@Html.CheckBoxFor(model => model.Niv_EsActivo)*@
-                                @*@Html.CheckBoxFor(x => Model.Niv_EsActivo)*@
-                                @*@Html.CheckBox("Niv_EsActivo", new { value = Model.Niv_EsActivo});*@
+                                @*@Html.CheckBoxFor(model => model.EsActivoNivel)*@
+                                @*@Html.CheckBoxFor(x => Model.EsActivoNivel)*@
+                                @*@Html.CheckBox("EsActivoNivel", new { value = Model.EsActivoNivel});*@
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -129,7 +129,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    @Html.HiddenFor(model => model.Niv_Id, new { @id = "delete-item-id" })
+                                    @Html.HiddenFor(model => model.NivelId, new { @id = "delete-item-id" })
                                     <p>¿Está seguro de que desea eliminar este registro?</p>
                                 </div>
                             </div>

@@ -1,4 +1,4 @@
-﻿@model GESTION_COLEGIAL.Business.Models.CursoNivelViewModel
+@model GESTION_COLEGIAL.Business.Models.CursoNivelViewModel
 @{ ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -59,15 +59,15 @@
             {
                 <div class="fluid-container">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    @Html.HiddenFor(model => model.Cun_Id, new { @id = "item-id" })
-                    @*<input name="Mda_Id" id="item-id" type="hidden">*@
+                    @Html.HiddenFor(model => model.CursoNivelId, new { @id = "item-id" })
+                    @*<input name="ModalidadId" id="item-id" type="hidden">*@
                     <div class="modal-body">
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.Cun_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Cun_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Cun_Descripcion, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.DescripcionCursoNivel, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.DescripcionCursoNivel, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DescripcionCursoNivel, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                @Html.HiddenFor(model => model.Cun_Id, new { @id = "delete-item-id" })
+                                @Html.HiddenFor(model => model.CursoNivelId, new { @id = "delete-item-id" })
                                 <p>¿Está seguro de que desea eliminar este registro?</p>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using System.Threading.Tasks;
@@ -64,7 +64,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Save(EmpleadoViewModel model)
         {
-            if (model.Emp_Id == 0)
+            if (model.EmpleadoId == 0)
             {
                 bool result = await empleadosService.Create(model);
 
@@ -100,7 +100,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(EmpleadoViewModel model)
         {
-            bool result = await empleadosService.Delete(model.Emp_Id);
+            bool result = await empleadosService.Delete(model.EmpleadoId);
 
             //Validamos error
             if (result)
@@ -121,3 +121,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

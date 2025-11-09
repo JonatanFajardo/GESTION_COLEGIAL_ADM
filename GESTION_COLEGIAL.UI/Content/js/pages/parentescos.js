@@ -1,4 +1,4 @@
-﻿var Parentescos = (function () {
+var Parentescos = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Par_Id",
+                    FieldName: "ParentescoId",
                     Size: 200
                 },
                 {
-                    FieldName: "Par_Descripcion"
+                    FieldName: "DescripcionParentesco"
                 }
             ]
             datatableCatalogs.init(Direction, header);

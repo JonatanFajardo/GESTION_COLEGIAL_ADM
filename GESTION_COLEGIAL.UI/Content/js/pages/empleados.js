@@ -1,4 +1,4 @@
-﻿var Empleados = (function () {
+var Empleados = (function () {
     var obj = {};
 
     obj.datatable = function (Direction) {
@@ -7,23 +7,23 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Emp_Id",
+                    FieldName: "EmpleadoId",
                     Size: 200
                 },
                 {
-                    FieldName: "Emp_Codigo"
+                    FieldName: "CodigoEmpleado"
                 },
                 {
-                    FieldName: "Emp_Nombre"
+                    FieldName: "NombreEmpleado"
                 },
                 {
                     FieldName: "EsActivo"
                 },
                 {
-                    FieldName: "Tit_Descripcion"
+                    FieldName: "DescripcionTitulo"
                 },
                 {
-                    FieldName: "Car_Descripcion"
+                    FieldName: "DescripcionCargo"
                 }
             ]
             datatable.init(Direction, header);

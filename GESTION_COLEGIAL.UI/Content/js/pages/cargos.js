@@ -1,4 +1,4 @@
-﻿var Cargos = (function () {
+var Cargos = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Car_Id",
+                    FieldName: "CargoId",
                     Size: 200
                 },
                 {
-                    FieldName: "Car_Descripcion"
+                    FieldName: "DescripcionCargo"
                 }
             ]
             datatableCatalogs.init(Direction, header);

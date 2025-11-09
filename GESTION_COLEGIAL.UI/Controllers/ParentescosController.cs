@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -53,7 +53,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(ParentescoViewModel model)
         {
-            if (model.Par_Id == 0)
+            if (model.ParentescoId == 0)
             {
                 bool result = await parentescosService.Create(model);
 
@@ -81,15 +81,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si un Parentesco ya existe.
         /// </summary>
-        /// <param name="Par_Id">ID del Parentesco.</param>
-        /// <param name="Par_Descripcion">Descripción del Parentesco.</param>
+        /// <param name="ParentescoId">ID del Parentesco.</param>
+        /// <param name="DescripcionParentesco">Descripción del Parentesco.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Par_Id, string Par_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? ParentescoId, string DescripcionParentesco)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Par_Descripcion;
+            validationModal.SendMessage = DescripcionParentesco;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -98,11 +98,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await parentescosService.Exist(Par_Descripcion);
+            var result = await parentescosService.Exist(DescripcionParentesco);
             if (result != null)
             {
-                int? firstValue = result.Par_Id;
-                return (firstValue == Par_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.ParentescoId;
+                return (firstValue == ParentescoId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -115,7 +115,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(ParentescoViewModel model)
         {
-            bool result = await parentescosService.Delete(model.Par_Id);
+            bool result = await parentescosService.Delete(model.ParentescoId);
 
             //Validamos error
             if (result)
@@ -126,3 +126,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

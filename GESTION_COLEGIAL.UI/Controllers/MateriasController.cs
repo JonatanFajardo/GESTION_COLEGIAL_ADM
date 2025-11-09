@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -51,7 +51,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(MateriaViewModel model)
         {
-            if (model.Mat_Id == 0)
+            if (model.MateriaId == 0)
             {
                 bool result = await materiasService.Create(model);
 
@@ -91,15 +91,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si una Materia ya existe.
         /// </summary>
-        /// <param name="Mat_Id">ID de la Materia.</param>
-        /// <param name="Mat_Nombre">Nombre de la Materia.</param>
+        /// <param name="MateriaId">ID de la Materia.</param>
+        /// <param name="NombreMateria">Nombre de la Materia.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Mat_Id, string Mat_Nombre)
+        public async Task<ActionResult> ExistAsync(int? MateriaId, string NombreMateria)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Mat_Nombre;
+            validationModal.SendMessage = NombreMateria;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -108,11 +108,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await materiasService.Exist(Mat_Nombre);
+            var result = await materiasService.Exist(NombreMateria);
             if (result != null)
             {
-                int? firstValue = result.Mat_Id;
-                return (firstValue == Mat_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.MateriaId;
+                return (firstValue == MateriaId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -125,7 +125,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(MateriaViewModel model)
         {
-            bool result = await materiasService.Delete(model.Mat_Id);
+            bool result = await materiasService.Delete(model.MateriaId);
 
             //Validamos error
             if (result)
@@ -136,3 +136,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -32,7 +32,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(TituloViewModel model)
         {
-            if (model.Tit_Id == 0)
+            if (model.TituloId == 0)
             {
                 bool result = await titulosService.Create(model);
 
@@ -58,11 +58,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Tit_Id, string Tit_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? TituloId, string DescripcionTitulo)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Tit_Descripcion;
+            validationModal.SendMessage = DescripcionTitulo;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -71,11 +71,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await titulosService.Exist(Tit_Descripcion);
+            var result = await titulosService.Exist(DescripcionTitulo);
             if (result != null)
             {
-                int? firstValue = result.Tit_Id;
-                return (firstValue == Tit_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.TituloId;
+                return (firstValue == TituloId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -83,7 +83,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(TituloViewModel model)
         {
-            bool result = await titulosService.Delete(model.Tit_Id);
+            bool result = await titulosService.Delete(model.TituloId);
 
             //Validamos error
             if (result)

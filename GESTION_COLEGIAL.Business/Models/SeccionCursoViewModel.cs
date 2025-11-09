@@ -1,17 +1,17 @@
 namespace GESTION_COLEGIAL.Business.Models
 {
     /// <summary>
-    /// Representa el modelo de vista de una sección y curso.
+    /// Representa el modelo de vista de una secciï¿½n y curso.
     /// </summary>
     internal partial class SeccionCursoViewModel
     {
         /// <summary>
         /// Obtiene o establece el ID del curso.
         /// </summary>
-        public int Cur_Id { get; set; }
+        public int CursoId { get; set; }
         /// <summary>
-        /// Obtiene o establece el ID de la sección.
+        /// Obtiene o establece el ID de la secciï¿½n.
         /// </summary>
-        public int Sec_Id { get; set; }
+        public int SeccionId { get; set; }
     }
 }

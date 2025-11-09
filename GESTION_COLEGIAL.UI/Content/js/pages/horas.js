@@ -1,4 +1,4 @@
-﻿var Horas = (function () {
+var Horas = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Hor_Id",
+                    FieldName: "HorarioId",
                     Size: 200
                 },
                 {
-                    FieldName: "Hor_Hora"
+                    FieldName: "Hora"
                 }
             ]
             console.log('hola' + Direction)

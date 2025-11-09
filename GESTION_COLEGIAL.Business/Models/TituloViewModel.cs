@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -13,7 +13,7 @@ namespace GESTION_COLEGIAL.Business.Models
         /// Identificador del título.
         /// </summary>
         [Key]
-        public int Tit_Id { get; set; }
+        public int TituloId { get; set; }
 
         /// <summary>
         /// Descripción del título.
@@ -21,43 +21,44 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(100)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo es requerido")]
-        [Remote(action: "ExistAsync", controller: "Titulos", HttpMethod = "POST", AdditionalFields = nameof(Tit_Id) + "," + nameof(Tit_Descripcion))] // Validación remota para verificar la existencia
-        public string Tit_Descripcion { get; set; }
+        [Remote(action: "ExistAsync", controller: "Titulos", HttpMethod = "POST", AdditionalFields = nameof(TituloId) + "," + nameof(DescripcionTitulo))] // Validación remota para verificar la existencia
+        public string DescripcionTitulo { get; set; }
 
         /// <summary>
         /// Identificador del usuario que registra el título.
         /// </summary>
         [Display(Name = "Usuario registra Id")]
-        public int Tit_UsuarioRegistra { get; set; }
+        public int UsuarioRegistraTituloId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que registra el título.
         /// </summary>
         [Display(Name = "Usuario registra Nombre")]
-        public string Tit_UsuarioRegistraNombre { get; set; }
+        public string NombreUsuarioRegistraTitulo { get; set; }
 
         /// <summary>
         /// Fecha de registro del título.
         /// </summary>
         [Display(Name = "Fecha registra")]
-        public DateTime Tit_FechaRegistra { get; set; }
+        public DateTime FechaRegistroTitulo { get; set; }
 
         /// <summary>
         /// Identificador del usuario que modifica el título.
         /// </summary>
         [Display(Name = "Usuario modifica Id")]
-        public int? Tit_UsuarioModifica { get; set; }
+        public int? UsuarioModificaTituloId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que modifica el título.
         /// </summary>
         [Display(Name = "Usuario modifica Nombre")]
-        public string Tit_UsuarioModificaNombre { get; set; }
+        public string NombreUsuarioModificaTitulo { get; set; }
 
         /// <summary>
         /// Fecha de modificación del título.
         /// </summary>
         [Display(Name = "Fecha modifica")]
-        public DateTime? Tit_FechaModifica { get; set; }
+        public DateTime? FechaModificacionTitulo { get; set; }
     }
 }
+

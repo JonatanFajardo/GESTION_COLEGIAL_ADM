@@ -1,4 +1,4 @@
-﻿var raza = (function () {
+var raza = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -16,11 +16,11 @@
             //];
             header = [
                 {
-                    FieldName: "Tit_Id",
+                    FieldName: "TituloId",
                     Size: 200
                 },
                 {
-                    FieldName: "Tit_Descripcion"
+                    FieldName: "DescripcionTitulo"
                 }
             ]
             datatableCatalogs.init(Direction, header);

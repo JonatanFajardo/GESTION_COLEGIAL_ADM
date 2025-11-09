@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -14,55 +14,55 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// Obtiene o establece el Id del Alumno.
 		/// </summary>
 		[Key]
-		public int Alu_Id { get; set; }
+		public int AlumnoId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el Id de la Persona.
 		/// </summary>
 		[Display(Name = "Persona")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Per_Id { get; set; }
+		public int PersonaId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el Id del Nivel educativo.
 		/// </summary>
 		[Display(Name = "Nivel educativo")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Niv_Id { get; set; }
+		public int NivelId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción del Nivel educativo.
 		/// </summary>
-		public string Niv_Descripcion { get; set; }
+		public string DescripcionNivel { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el Id del Curso nivel.
 		/// </summary>
 		[Display(Name = "Curso nivel")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Cun_Id { get; set; }
+		public int CursoNivelId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción del Curso nivel.
 		/// </summary>
-		public string Cun_Descripcion { get; set; }
+		public string DescripcionCursoNivel { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el Id de la Modalidad.
 		/// </summary>
 		[Display(Name = "Modalidad")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Mda_Id { get; set; }
+		public int ModalidadId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción de la Modalidad.
 		/// </summary>
-		public string Mda_Descripcion { get; set; }
+		public string DescripcionModalidad { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción del Curso.
 		/// </summary>
-		public string Cno_Descripcion { get; set; }
+		public string NombreCurso { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el anio cursado.
@@ -74,41 +74,41 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// </summary>
 		[Display(Name = "Curso")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Cur_Id { get; set; }
+		public int CursoId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción del Curso.
 		/// </summary>
-		public string Cur_Descripcion { get; set; }
+		public string DescripcionCurso { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el Id de la Sección.
 		/// </summary>
 		[Display(Name = "Secciones")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Sec_Id { get; set; }
+		public int SeccionId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción de la Sección.
 		/// </summary>
-		public string Sec_Descripcion { get; set; }
+		public string DescripcionSeccion { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el nombre del Alumno.
 		/// </summary>
-		public string Alu_Nombre { get; set; }
+		public string NombreAlumno { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el Id del Estado.
 		/// </summary>
 		[Display(Name = "Estado")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Est_Id { get; set; }
+		public int EstadoId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción del Estado.
 		/// </summary>
-		public string Est_Descripcion { get; set; }
+		public string DescripcionEstado { get; set; }
 
 		//Persona
 
@@ -118,7 +118,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[StringLength(50)]
 		[Display(Name = "Imagen")]
 		//[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_Imagen { get; set; }
+		public string ImagenPersona { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la identidad de la Persona.
@@ -127,7 +127,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe ser numérico")]
 		[Display(Name = "Identidad")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_Identidad { get; set; }
+		public string NumeroIdentidad { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el primer nombre de la Persona.
@@ -135,7 +135,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[StringLength(50)]
 		[Display(Name = "Primer nombre")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_PrimerNombre { get; set; }
+		public string PrimerNombre { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el segundo nombre de la Persona.
@@ -143,7 +143,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[StringLength(50)]
 		[Display(Name = "Segundo nombre")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_SegundoNombre { get; set; }
+		public string SegundoNombre { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el apellido paterno de la Persona.
@@ -151,7 +151,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[StringLength(50)]
 		[Display(Name = "Apellido paterno")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_ApellidoPaterno { get; set; }
+		public string ApellidoPaterno { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el apellido materno de la Persona.
@@ -159,7 +159,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[StringLength(50)]
 		[Display(Name = "Apellido materno")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_ApellidoMaterno { get; set; }
+		public string ApellidoMaterno { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la fecha de nacimiento de la Persona.
@@ -168,7 +168,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[Required(ErrorMessage = "El campo es requerido")]
 		[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
 		[DataType(DataType.Date)]
-		public DateTime Per_FechaNacimiento { get; set; }
+		public DateTime FechaNacimiento { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el correo electrónico de la Persona.
@@ -177,7 +177,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[Display(Name = "Correo electrónico")]
 		[EmailAddress(ErrorMessage = "Ingrese un correo válido")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_CorreoElectronico { get; set; }
+		public string CorreoElectronico { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el teléfono de la Persona.
@@ -186,7 +186,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[Required(ErrorMessage = "El campo es requerido")]
 		[StringLength(11, MinimumLength = 8, ErrorMessage = "El campo debe tener mínimo 8 dígitos y como máximo 11")]
 		[RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe ser numérico")]
-		public string Per_Telefono { get; set; }
+		public string Telefono { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la dirección de la Persona.
@@ -194,7 +194,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[StringLength(150)]
 		[Display(Name = "Dirección")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_Direccion { get; set; }
+		public string Direccion { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el sexo de la Persona.
@@ -202,50 +202,50 @@ namespace GESTION_COLEGIAL.Business.Models
 		[StringLength(1)]
 		[Display(Name = "Sexo")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_Sexo { get; set; }
+		public string Sexo { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece si la Persona está activa.
 		/// </summary>
 		[Display(Name = "Es activo")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public bool Per_EsActivo { get; set; }
+		public bool EsActivoPersona { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el Id del usuario que registró la Persona.
 		/// </summary>
 		[Display(Name = "Usuario registra Id")]
-		public int Per_UsuarioRegistra { get; set; }
+		public int UsuarioRegistraPersonaId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el nombre del usuario que registró la Persona.
 		/// </summary>
 		[Display(Name = "Usuario registra Nombre")]
-		public string Per_UsuarioRegistraNombre { get; set; }
+		public string NombreUsuarioRegistraPersona { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la fecha de registro de la Persona.
 		/// </summary>
 		[Display(Name = "Fecha registra")]
-		public DateTime Per_FechaRegistra { get; set; }
+		public DateTime FechaRegistroPersona { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el Id del usuario que modificó la Persona.
 		/// </summary>
 		[Display(Name = "Usuario modifica Id")]
-		public int Per_UsuarioModifica { get; set; }
+		public int UsuarioModificaPersonaId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el nombre del usuario que modificó la Persona.
 		/// </summary>
 		[Display(Name = "Usuario modifica Nombre")]
-		public string Per_UsuarioModificaNombre { get; set; }
+		public string NombreUsuarioModificaPersona { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la fecha de modificación de la Persona.
 		/// </summary>
 		[Display(Name = "Fecha modifica")]
-		public DateTime? Per_FechaModifica { get; set; }
+		public DateTime? FechaModificacionPersona { get; set; }
 
 		/// <summary>
 		/// Propiedad con listado de niveles educativos.
@@ -287,8 +287,8 @@ namespace GESTION_COLEGIAL.Business.Models
 		public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults,
 			IEnumerable<EstadoViewModel> estadoDropdownResults)
 		{
-			EstadosList = new SelectList(estadoDropdownResults, "Est_Id", "Est_Descripcion");
-			NivelesEducativosList = new SelectList(nivelEducativoDropdownResults, "Niv_Id", "Niv_Descripcion");
+			EstadosList = new SelectList(estadoDropdownResults, "EstadoId", "DescripcionEstado");
+			NivelesEducativosList = new SelectList(nivelEducativoDropdownResults, "NivelId", "DescripcionNivel");
 		}
 
 		#endregion Dropdown

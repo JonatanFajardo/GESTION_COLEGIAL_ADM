@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(HoraViewModel model)
         {
-            if (model.Hor_Id == 0)
+            if (model.HorarioId == 0)
             {
                 bool result = await horasService.Create(model);
 
@@ -59,7 +59,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(HoraViewModel model)
         {
-            bool result = await horasService.Delete(model.Hor_Id);
+            bool result = await horasService.Delete(model.HorarioId);
 
             //Validamos error
             if (result)

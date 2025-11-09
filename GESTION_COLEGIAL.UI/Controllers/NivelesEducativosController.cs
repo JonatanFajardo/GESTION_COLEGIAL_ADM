@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -54,7 +54,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(NivelEducativoViewModel model)
         {
-            if (model.Niv_Id == 0)
+            if (model.NivelId == 0)
             {
                 bool result = await nivelesEducativosService.Create(model);
 
@@ -81,15 +81,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si un Nivel Educativo ya existe.
         /// </summary>
-        /// <param name="Niv_Id">ID del Nivel Educativo.</param>
-        /// <param name="Niv_Descripcion">Descripción del Nivel Educativo.</param>
+        /// <param name="NivelId">ID del Nivel Educativo.</param>
+        /// <param name="DescripcionNivel">Descripción del Nivel Educativo.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Niv_Id, string Niv_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? NivelId, string DescripcionNivel)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Niv_Descripcion;
+            validationModal.SendMessage = DescripcionNivel;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -98,11 +98,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await nivelesEducativosService.Exist(Niv_Descripcion);
+            var result = await nivelesEducativosService.Exist(DescripcionNivel);
             if (result != null)
             {
-                int? firstValue = result.Niv_Id;
-                return (firstValue == Niv_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.NivelId;
+                return (firstValue == NivelId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -115,7 +115,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(NivelEducativoViewModel model)
         {
-            bool result = await nivelesEducativosService.Delete(model.Niv_Id);
+            bool result = await nivelesEducativosService.Delete(model.NivelId);
 
             //Validamos error
             if (result)
@@ -126,3 +126,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+
