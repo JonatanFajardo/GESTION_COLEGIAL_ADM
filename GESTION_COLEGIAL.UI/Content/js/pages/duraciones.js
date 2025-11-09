@@ -1,4 +1,4 @@
-﻿var Duraciones = (function () {
+var Duraciones = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Dur_Id",
+                    FieldName: "DuracionId",
                     Size: 200
                 },
                 {
-                    FieldName: "Dur_Descripcion"
+                    FieldName: "DescripcionDuracion"
                 }
             ]
             datatableCatalogs.init(Direction, header);

@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Extensions;
+using GESTION_COLEGIAL.Business.Extensions;
 using GESTION_COLEGIAL.Business.Models;
 using System;
 using System.Collections.Generic;
@@ -50,28 +50,28 @@ namespace GESTION_COLEGIAL.Business.Services
 			{
 				Text = x.Text,
 				Value = x.Value.ToString(),
-				Selected = modalidades.Any(y => y.Mda_Id.ToString() == x.Value.ToString()) ? true : false
+				Selected = modalidades.Any(y => y.ModalidadId.ToString() == x.Value.ToString()) ? true : false
 			}).ToList();
 
 			load.SeccionesCheckList = load.SeccionesCheckList.Select(x => new SelectListItem()
 			{
 				Text = x.Text,
 				Value = x.Value.ToString(),
-				Selected = secciones.Any(y => y.Sec_Id.ToString() == x.Value.ToString()) ? true : false
+				Selected = secciones.Any(y => y.SeccionId.ToString() == x.Value.ToString()) ? true : false
 			}).ToList();
 
 			load.CursoNivelesCheckList = load.CursoNivelesCheckList.Select(x => new SelectListItem()
 			{
 				Text = x.Text,
 				Value = x.Value.ToString(),
-				Selected = cursosniveles.Any(y => y.Cun_Id.ToString() == x.Value.ToString()) ? true : false
+				Selected = cursosniveles.Any(y => y.CursoNivelId.ToString() == x.Value.ToString()) ? true : false
 			}).ToList();
 
 			load.MateriasCheckList = load.MateriasCheckList.Select(x => new SelectListItem()
 			{
 				Text = x.Text,
 				Value = x.Value.ToString(),
-				Selected = materias.Any(y => y.Mat_Id.ToString() == x.Value.ToString()) ? true : false
+				Selected = materias.Any(y => y.MateriaId.ToString() == x.Value.ToString()) ? true : false
 			}).ToList();
 			return load;
 		}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,50 +16,50 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// Obtiene o establece el ID del curso.
 		/// </summary>
 		[Key]
-		public int Cur_Id { get; set; }
+		public int CursoId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el nombre del curso.
 		/// </summary>
 		[Display(Name = "Curso nombre")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Cur_Nombre { get; set; }
+		public string NombreCurso { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el ID de la materia asociada al curso.
 		/// </summary>
-		public int Mat_Id { get; set; }
+		public int MateriaId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción de la materia asociada al curso.
 		/// </summary>
-		public string Mat_Descripcion { get; set; }
+		public string DescripcionMateria { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el ID de la sección del curso.
 		/// </summary>
 		[Display(Name = "Sección")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Sec_Id { get; set; }
+		public int SeccionId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el ID del nivel educativo del curso.
 		/// </summary>
 		[Display(Name = "Nivel")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Niv_Id { get; set; }
+		public int NivelId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la descripción del nivel educativo del curso.
 		/// </summary>
-		public string Niv_Descripcion { get; set; }
+		public string DescripcionNivel { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el ID de la modalidad del curso.
 		/// </summary>
 		[Display(Name = "Modalidad")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int Mda_Id { get; set; }
+		public int ModalidadId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el estado de activación del curso.
@@ -71,19 +71,19 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// <summary>
 		/// Obtiene o establece un valor booleano que indica si el curso está activo.
 		/// </summary>
-		public bool Cur_EsActivo { get; set; }
+		public bool EsActivoCurso { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el ID del usuario que registró el curso.
 		/// </summary>
 		[Display(Name = "Usuario registra Id")]
-		public int Cur_UsuarioRegistra { get; set; }
+		public int UsuarioRegistraCursoId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el nombre del usuario que registró el curso.
 		/// </summary>
 		[Display(Name = "Usuario registra Nombre")]
-		public string Cur_UsuarioRegistraNombre { get; set; }
+		public string NombreUsuarioRegistraCurso { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la fecha en que se registró el curso.
@@ -91,20 +91,20 @@ namespace GESTION_COLEGIAL.Business.Models
 		[Column(TypeName = "datetime")]
 		[Display(Name = "Fecha registra")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public DateTime Cur_FechaRegistra { get; set; }
+		public DateTime FechaRegistroCurso { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el ID del usuario que modificó el curso.
 		/// </summary>
 		[Display(Name = "Usuario modifica Id")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public int? Cur_UsuarioModifica { get; set; }
+		public int? UsuarioModificaCursoId { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece el nombre del usuario que modificó el curso.
 		/// </summary>
 		[Display(Name = "Usuario modifica Nombre")]
-		public string Cur_UsuarioModificaNombre { get; set; }
+		public string NombreUsuarioModificaCurso { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece la fecha en que se modificó el curso.
@@ -112,7 +112,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		[Column(TypeName = "datetime")]
 		[Display(Name = "Fecha modifica")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public DateTime? Cur_FechaModifica { get; set; }
+		public DateTime? FechaModificacionCurso { get; set; }
 
 		/// <summary>
 		/// Obtiene o establece los IDs de las modalidades asociadas al curso.
@@ -175,29 +175,29 @@ namespace GESTION_COLEGIAL.Business.Models
 
 			ModalidadesCheckList = modalidades.Select(x => new SelectListItem()
 			{
-				Text = x.Mda_Descripcion,
-				Value = x.Mda_Id.ToString(),
+				Text = x.DescripcionModalidad,
+				Value = x.ModalidadId.ToString(),
 				Selected = x.IsSelected
 			}).ToList();
 
 			SeccionesCheckList = secciones.Select(x => new SelectListItem()
 			{
-				Text = x.Sec_Descripcion,
-				Value = x.Sec_Id.ToString(),
+				Text = x.DescripcionSeccion,
+				Value = x.SeccionId.ToString(),
 				Selected = x.IsSelected
 			}).ToList();
 
 			CursoNivelesCheckList = cursoNiveles.Select(x => new SelectListItem()
 			{
-				Text = x.Cun_Descripcion,
-				Value = x.Cun_Id.ToString(),
+				Text = x.DescripcionCursoNivel,
+				Value = x.CursoNivelId.ToString(),
 				Selected = x.IsSelected
 			}).ToList();
 
 			MateriasCheckList = materias.Select(x => new SelectListItem()
 			{
-				Text = x.Mat_Nombre,
-				Value = x.Mat_Id.ToString(),
+				Text = x.NombreMateria,
+				Value = x.MateriaId.ToString(),
 				Selected = x.IsSelected
 			}).ToList();
 		}
@@ -208,7 +208,7 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// <param name="nivelEducativoDropdownResults">La lista de niveles educativos.</param>
 		public void LoadDropDownList(IEnumerable<NivelEducativoViewModel> nivelEducativoDropdownResults)
 		{
-			NivelEducativoList = new SelectList(nivelEducativoDropdownResults, "Niv_Id", "Niv_Descripcion");
+			NivelEducativoList = new SelectList(nivelEducativoDropdownResults, "NivelId", "DescripcionNivel");
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -13,7 +13,7 @@ namespace GESTION_COLEGIAL.Business.Models
         /// Obtiene o establece el ID del cargo.
         /// </summary>
         [Key]
-        public int Car_Id { get; set; }
+        public int CargoId { get; set; }
 
         /// <summary>
         /// Obtiene o establece la descripción del cargo.
@@ -21,43 +21,43 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(100)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo es requerido")]
-        [Remote(action: "ExistAsync", controller: "Cargos", HttpMethod = "POST", AdditionalFields = nameof(Car_Id) + "," + nameof(Car_Descripcion))]
-        public string Car_Descripcion { get; set; }
+        [Remote(action: "ExistAsync", controller: "Cargos", HttpMethod = "POST", AdditionalFields = nameof(CargoId) + "," + nameof(DescripcionCargo))]
+        public string DescripcionCargo { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que registró el cargo.
         /// </summary>
         [Display(Name = "Usuario registra Id")]
-        public int Car_UsuarioRegistra { get; set; }
+        public int UsuarioRegistraCargoId { get; set; }
 
         /// <summary>
         /// Obtiene o establece el nombre del usuario que registró el cargo.
         /// </summary>
         [Display(Name = "Usuario registra Nombre")]
-        public string Car_UsuarioRegistraNombre { get; set; }
+        public string NombreUsuarioRegistraCargo { get; set; }
 
         /// <summary>
         /// Obtiene o establece la fecha de registro del cargo.
         /// </summary>
         [Display(Name = "Fecha registra")]
-        public DateTime Car_FechaRegistra { get; set; }
+        public DateTime FechaRegistroCargo { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que modificó el cargo.
         /// </summary>
         [Display(Name = "Usuario modifica Id")]
-        public int? Car_UsuarioModifica { get; set; }
+        public int? UsuarioModificaCargoId { get; set; }
 
         /// <summary>
         /// Obtiene o establece el nombre del usuario que modificó el cargo.
         /// </summary>
         [Display(Name = "Usuario modifica Nombre")]
-        public string Car_UsuarioModificaNombre { get; set; }
+        public string NombreUsuarioModificaCargo { get; set; }
 
         /// <summary>
         /// Obtiene o establece la fecha de modificación del cargo.
         /// </summary>
         [Display(Name = "Fecha modifica")]
-        public DateTime? Car_FechaModifica { get; set; }
+        public DateTime? FechaModificacionCargo { get; set; }
     }
 }

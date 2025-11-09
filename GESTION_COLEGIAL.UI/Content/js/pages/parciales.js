@@ -1,4 +1,4 @@
-﻿var Parciales = (function () {
+var Parciales = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Pac_Id",
+                    FieldName: "ParcialId",
                     Size: 200
                 },
                 {
-                    FieldName: "Pac_Descripcion"
+                    FieldName: "DescripcionParcial"
                 }
             ]
             datatableCatalogs.init(Direction, header);

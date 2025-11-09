@@ -1,4 +1,4 @@
-﻿@model GESTION_COLEGIAL.Business.Models.SeccionViewModel
+@model GESTION_COLEGIAL.Business.Models.SeccionViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -59,14 +59,14 @@
             {
             <div class="fluid-container">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @Html.HiddenFor(model => model.Sec_Id, new { @id = "item-id" })
+                @Html.HiddenFor(model => model.SeccionId, new { @id = "item-id" })
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.Sec_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Sec_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Sec_Descripcion, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.DescripcionSeccion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.DescripcionSeccion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DescripcionSeccion, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            @Html.HiddenFor(model => model.Sec_Id, new { @id = "delete-item-id" })
+                            @Html.HiddenFor(model => model.SeccionId, new { @id = "delete-item-id" })
                             <p>¿Está seguro de que desea eliminar este registro?</p>
                         </div>
                     </div>

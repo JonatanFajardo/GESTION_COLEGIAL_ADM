@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
@@ -12,7 +12,7 @@ namespace GESTION_COLEGIAL.Business.Models
         /// Obtiene o establece el ID del aula.
         /// </summary>
         [Key]
-        public int Aul_Id { get; set; }
+        public int AulaId { get; set; }
 
         /// <summary>
         /// Obtiene o establece la descripción del aula.
@@ -20,42 +20,42 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(50)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Aul_Descripcion { get; set; }
+        public string DescripcionAula { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que registró el aula.
         /// </summary>
         [Display(Name = "Usuario registra Id")]
-        public int Aul_UsuarioRegistra { get; set; }
+        public int UsuarioRegistraAulaId { get; set; }
 
         /// <summary>
         /// Obtiene o establece el nombre del usuario que registró el aula.
         /// </summary>
         [Display(Name = "Usuario registra Nombre")]
-        public string Aul_UsuarioRegistraNombre { get; set; }
+        public string NombreUsuarioRegistraAula { get; set; }
 
         /// <summary>
         /// Obtiene o establece la fecha de registro del aula.
         /// </summary>
         [Display(Name = "Fecha registra")]
-        public DateTime Aul_FechaRegistra { get; set; }
+        public DateTime FechaRegistroAula { get; set; }
 
         /// <summary>
         /// Obtiene o establece el ID del usuario que modificó el aula.
         /// </summary>
         [Display(Name = "Usuario modifica Id")]
-        public int? Aul_UsuarioModifica { get; set; }
+        public int? UsuarioModificaAulaId { get; set; }
 
         /// <summary>
         /// Obtiene o establece el nombre del usuario que modificó el aula.
         /// </summary>
         [Display(Name = "Usuario modifica Nombre")]
-        public string Aul_UsuarioModificaNombre { get; set; }
+        public string NombreUsuarioModificaAula { get; set; }
 
         /// <summary>
         /// Obtiene o establece la fecha de modificación del aula.
         /// </summary>
         [Display(Name = "Fecha modifica")]
-        public DateTime? Aul_FechaModifica { get; set; }
+        public DateTime? FechaModificacionAula { get; set; }
     }
 }

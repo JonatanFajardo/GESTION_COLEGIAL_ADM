@@ -1,4 +1,4 @@
-﻿@model GESTION_COLEGIAL.Business.Models.MateriaViewModel
+@model GESTION_COLEGIAL.Business.Models.MateriaViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -57,41 +57,41 @@
                 {
                     <div class="fluid-container">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        @Html.HiddenFor(model => model.Mat_Id, new { @id = "item-id" })
+                        @Html.HiddenFor(model => model.MateriaId, new { @id = "item-id" })
                         <div class="modal-body">
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Mat_Nombre, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.Mat_Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Mat_Nombre, "", new { @class = "text-danger" })
+                                        @Html.LabelFor(model => model.NombreMateria, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.NombreMateria, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NombreMateria, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Dur_Id, "Duración", htmlAttributes: new { @class = "control-label" })
+                                        @Html.LabelFor(model => model.DuracionId, "Duración", htmlAttributes: new { @class = "control-label" })
 
                                         <div class="float-right">
                                             <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
                                                    data-placement="right" title="Estado">
 
-                                                <input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" />
+                                                <input type="checkbox" id="EsActivoMateria" name="EsActivoMateria" />
 
-                                                @*@Html.CheckBoxFor(model => model.Mat_EsActivo, htmlAttributes: new { @class = "float-right", @title = "Activo", id = "estadoCheckbox" })*@
+                                                @*@Html.CheckBoxFor(model => model.EsActivoMateria, htmlAttributes: new { @class = "float-right", @title = "Activo", id = "estadoCheckbox" })*@
 
-                                                @*@Html.CheckBoxFor(m => m.Mat_EsActivo)*@
-                                                @*@Html.CheckBox("Mat_EsActivo")*@
-                                                @*<input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" model.Mat_EsActivo />*@
-                                                @*@Html.EditorFor(model => model.Mat_EsActivo, new { htmlAttributes = new { @class = "form-control", @type = "checkbox" } })*@
-                                                @*<input type="checkbox" name="@Model.Mat_EsActivo" id="radio-6">*@
-                                                @*<input type="checkbox" name="(model => model.Mat_EsActivo)" id="(model => model.Mat_EsActivo)">*@
-                                                @*@Html.CheckBoxFor(model => model.Mat_EsActivo, new { id = "" })*@
+                                                @*@Html.CheckBoxFor(m => m.EsActivoMateria)*@
+                                                @*@Html.CheckBox("EsActivoMateria")*@
+                                                @*<input type="checkbox" id="EsActivoMateria" name="EsActivoMateria" model.EsActivoMateria />*@
+                                                @*@Html.EditorFor(model => model.EsActivoMateria, new { htmlAttributes = new { @class = "form-control", @type = "checkbox" } })*@
+                                                @*<input type="checkbox" name="@Model.EsActivoMateria" id="radio-6">*@
+                                                @*<input type="checkbox" name="(model => model.EsActivoMateria)" id="(model => model.EsActivoMateria)">*@
+                                                @*@Html.CheckBoxFor(model => model.EsActivoMateria, new { id = "" })*@
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>
 
-                                        @Html.EditorFor(model => model.Dur_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Dur_Id, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.DuracionId, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.DuracionId, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <!--<div class="col-12 ">
@@ -141,7 +141,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    @Html.HiddenFor(model => model.Mat_Id, new { @id = "delete-item-id" })
+                                    @Html.HiddenFor(model => model.MateriaId, new { @id = "delete-item-id" })
                                     <p>¿Está seguro de que desea eliminar este registro?</p>
                                 </div>
                             </div>

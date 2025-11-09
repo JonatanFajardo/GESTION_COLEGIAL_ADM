@@ -1,4 +1,4 @@
-﻿@model GESTION_COLEGIAL.Business.Models.DiaViewModel
+@model GESTION_COLEGIAL.Business.Models.DiaViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -60,14 +60,14 @@
             {
             <div class="fluid-container">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @Html.HiddenFor(model => model.Dia_Id, new { @id = "item-id" })
+                @Html.HiddenFor(model => model.DiaId, new { @id = "item-id" })
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.Dia_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Dia_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Dia_Descripcion, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.DescripcionDia, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.DescripcionDia, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DescripcionDia, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            @Html.HiddenFor(model => model.Dia_Id, new { @id = "delete-item-id" })
+                            @Html.HiddenFor(model => model.DiaId, new { @id = "delete-item-id" })
                             <p>¿Está seguro de que desea eliminar este registro?</p>
                         </div>
                     </div>

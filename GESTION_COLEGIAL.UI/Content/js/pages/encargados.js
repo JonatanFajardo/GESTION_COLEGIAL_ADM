@@ -1,4 +1,4 @@
-﻿var Encargados = (function () {
+var Encargados = (function () {
     var obj = {};
 
     obj.datatable = function (Direction) {
@@ -7,19 +7,19 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Enc_Id"
+                    FieldName: "EncargadoId"
                 },
                 {
-                    FieldName: "Per_Identidad"
+                    FieldName: "NumeroIdentidad"
                 },
                 {
-                    FieldName: "Enc_Nombre"
+                    FieldName: "NombreEncargado"
                 },
                 {
-                    FieldName: "Per_Telefono"
+                    FieldName: "Telefono"
                 },
                 {
-                    FieldName: "Enc_Ocupacion"
+                    FieldName: "OcupacionEncargado"
                 },
                 {
                     FieldName: "EsActivo"

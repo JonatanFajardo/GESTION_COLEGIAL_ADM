@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using System.Collections.Generic;
@@ -57,37 +57,37 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
 			//Esto se hace para llenar los drowpdown al editar los registros.
 
-			// Llenamos el ViewBag con los niveles de curso disponibles, basados en el identificador de nivel (Niv_Id) del resultado obtenido.
+			// Llenamos el ViewBag con los niveles de curso disponibles, basados en el identificador de nivel (NivelId) del resultado obtenido.
 			// Se usa ContinueWith para procesar la lista devuelta por el método CursoNivelesDropdown y convertirla en una lista de SelectListItem.
-			ViewBag.Niveles = await alumnosService.CursoNivelesDropdown(result.Niv_Id)
+			ViewBag.Niveles = await alumnosService.CursoNivelesDropdown(result.NivelId)
 			  .ContinueWith(task => task.Result.Select(x => new SelectListItem
 			  {
-				  Value = x.Cun_Id.ToString(), // Asignamos el ID del curso como valor del dropdown.
-				  Text = x.Cun_Descripcion // Asignamos la descripción del curso como texto visible en el dropdown.
+				  Value = x.CursoNivelId.ToString(), // Asignamos el ID del curso como valor del dropdown.
+				  Text = x.DescripcionCursoNivel // Asignamos la descripción del curso como texto visible en el dropdown.
 			  }).ToList());
 
-			// Llenamos el ViewBag con las modalidades disponibles según el curso seleccionado (Cun_Id).
-			ViewBag.Modalidades = await alumnosService.ModalidadesDropdown(result.Cun_Id)
+			// Llenamos el ViewBag con las modalidades disponibles según el curso seleccionado (CursoNivelId).
+			ViewBag.Modalidades = await alumnosService.ModalidadesDropdown(result.CursoNivelId)
 			  .ContinueWith(task => task.Result.Select(x => new SelectListItem
 			  {
-				  Value = x.Mda_Id.ToString(), // Asignamos el ID de la modalidad como valor del dropdown.
-				  Text = x.Mda_Descripcion // Asignamos la descripción de la modalidad como texto visible en el dropdown.
+				  Value = x.ModalidadId.ToString(), // Asignamos el ID de la modalidad como valor del dropdown.
+				  Text = x.DescripcionModalidad // Asignamos la descripción de la modalidad como texto visible en el dropdown.
 			  }).ToList());
 
-			// Llenamos el ViewBag con los cursos disponibles según la modalidad seleccionada (Mda_Id).
-			ViewBag.Cursos = await alumnosService.CursosDropdown(result.Mda_Id)
+			// Llenamos el ViewBag con los cursos disponibles según la modalidad seleccionada (ModalidadId).
+			ViewBag.Cursos = await alumnosService.CursosDropdown(result.ModalidadId)
 			  .ContinueWith(task => task.Result.Select(x => new SelectListItem
 			  {
-				  Value = x.Cur_Id.ToString(), // Asignamos el ID del curso como valor del dropdown.
-				  Text = x.Cur_Nombre // Asignamos el nombre del curso como texto visible en el dropdown.
+				  Value = x.CursoId.ToString(), // Asignamos el ID del curso como valor del dropdown.
+				  Text = x.NombreCurso // Asignamos el nombre del curso como texto visible en el dropdown.
 			  }).ToList());
 
-			// Llenamos el ViewBag con las secciones disponibles según el curso seleccionado (Cur_Id).
-			ViewBag.Secciones = await alumnosService.SeccionesDropdown(result.Cur_Id)
+			// Llenamos el ViewBag con las secciones disponibles según el curso seleccionado (CursoId).
+			ViewBag.Secciones = await alumnosService.SeccionesDropdown(result.CursoId)
 			  .ContinueWith(task => task.Result.Select(x => new SelectListItem
 			  {
-				  Value = x.Sec_Id.ToString(), // Asignamos el ID de la sección como valor del dropdown.
-				  Text = x.Sec_Descripcion // Asignamos la descripción de la sección como texto visible en el dropdown.
+				  Value = x.SeccionId.ToString(), // Asignamos el ID de la sección como valor del dropdown.
+				  Text = x.DescripcionSeccion // Asignamos la descripción de la sección como texto visible en el dropdown.
 			  }).ToList());
 
 
@@ -103,7 +103,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		[HttpPost]
 		public async Task<ActionResult> Save(AlumnoViewModel model)
 		{
-			if (model.Alu_Id == 0)
+			if (model.AlumnoId == 0)
 			{
 				bool result = await alumnosService.Create(model);
 
@@ -152,8 +152,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			var result = await alumnosService.CursoNivelesDropdown(id);
 			IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
 			{
-				Value = x.Cun_Id.ToString(),
-				Text = x.Cun_Descripcion
+				Value = x.CursoNivelId.ToString(),
+				Text = x.DescripcionCursoNivel
 			}).ToList();
 			return AjaxResult(resultToSelectListItem);
 		}
@@ -168,8 +168,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			var result = await alumnosService.ModalidadesDropdown(id);
 			IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
 			{
-				Value = x.Mda_Id.ToString(),
-				Text = x.Mda_Descripcion
+				Value = x.ModalidadId.ToString(),
+				Text = x.DescripcionModalidad
 			}).ToList();
 			return AjaxResult(resultToSelectListItem);
 		}
@@ -184,8 +184,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			var result = await alumnosService.CursosDropdown(id);
 			IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
 			{
-				Value = x.Cur_Id.ToString(),
-				Text = x.Cur_Nombre
+				Value = x.CursoId.ToString(),
+				Text = x.NombreCurso
 			}).ToList();
 			return AjaxResult(resultToSelectListItem);
 		}
@@ -205,8 +205,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			}
 			IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
 			{
-				Value = x.Sec_Id.ToString(),
-				Text = x.Sec_Descripcion
+				Value = x.SeccionId.ToString(),
+				Text = x.DescripcionSeccion
 			}).ToList();
 			return AjaxResult(resultToSelectListItem);
 		}
@@ -219,7 +219,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		[HttpPost]
 		public async Task<ActionResult> DeleteAsync(AlumnoViewModel model)
 		{
-			bool result = await alumnosService.Delete(model.Alu_Id);
+			bool result = await alumnosService.Delete(model.AlumnoId);
 
 			// Validamos error
 			if (result)
@@ -230,3 +230,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		}
 	}
 }
+

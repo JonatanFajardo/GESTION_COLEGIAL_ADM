@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
@@ -15,7 +15,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe debe ser numerico")]
         [Display(Name = "Identidad")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Per_Identidad { get; set; }
+        public string NumeroIdentidad { get; set; }
 
         /// <summary>
         /// Primer nombre de la persona.
@@ -23,7 +23,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(50)]
         [Display(Name = "Primer nombre")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Per_PrimerNombre { get; set; }
+        public string PrimerNombre { get; set; }
 
         /// <summary>
         /// Segundo nombre de la persona.
@@ -31,7 +31,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(50)]
         [Display(Name = "Segundo nombre")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Per_SegundoNombre { get; set; }
+        public string SegundoNombre { get; set; }
 
         /// <summary>
         /// Apellido paterno de la persona.
@@ -39,7 +39,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(50)]
         [Display(Name = "Apellido paterno")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Per_ApellidoPaterno { get; set; }
+        public string ApellidoPaterno { get; set; }
 
         /// <summary>
         /// Apellido materno de la persona.
@@ -47,7 +47,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(50)]
         [Display(Name = "Apellido materno")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Per_ApellidoMaterno { get; set; }
+        public string ApellidoMaterno { get; set; }
 
         /// <summary>
         /// Fecha de nacimiento de la persona.
@@ -56,7 +56,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Required(ErrorMessage = "El campo es requerido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
-        public DateTime Per_FechaNacimiento { get; set; }
+        public DateTime FechaNacimiento { get; set; }
 
         /// <summary>
         /// Correo electrónico de la persona.
@@ -65,7 +65,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Display(Name = "Correo electrónico")]
         [EmailAddress(ErrorMessage = "Ingrese un correo valido")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Per_CorreoElectronico { get; set; }
+        public string CorreoElectronico { get; set; }
 
         /// <summary>
         /// Teléfono de la persona.
@@ -74,7 +74,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [Required(ErrorMessage = "El campo es requerido")]
         [StringLength(11, MinimumLength = 8, ErrorMessage = "El campo debe de tener minimo 8 digitos y como maximo 11")]
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe debe ser numerico")]
-        public string Per_Telefono { get; set; }
+        public string Telefono { get; set; }
 
         /// <summary>
         /// Dirección de la persona.
@@ -82,7 +82,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(150)]
         [Display(Name = "Dirección")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Per_Direccion { get; set; }
+        public string Direccion { get; set; }
 
         /// <summary>
         /// Sexo de la persona.
@@ -90,14 +90,14 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(1)]
         [Display(Name = "Sexo")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public string Per_Sexo { get; set; }
+        public string Sexo { get; set; }
 
         /// <summary>
         /// Indica si la persona está activa.
         /// </summary>
         [Display(Name = "Es activo")]
         [Required(ErrorMessage = "El campo es requerido")]
-        public bool Per_EsActivo { get; set; }
+        public bool EsActivoPersona { get; set; }
         /// <summary>
         /// Indica si la persona está activa.
         /// </summary>
@@ -108,36 +108,37 @@ namespace GESTION_COLEGIAL.Business.Models
         /// Identificador del usuario que registra la persona.
         /// </summary>
         [Display(Name = "Usuario registra Id")]
-        public int Per_UsuarioRegistra { get; set; }
+        public int UsuarioRegistraPersonaId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que registra la persona.
         /// </summary>
         [Display(Name = "Usuario registra Nombre")]
-        public string Per_UsuarioRegistraNombre { get; set; }
+        public string NombreUsuarioRegistraPersona { get; set; }
 
         /// <summary>
         /// Fecha de registro de la persona.
         /// </summary>
         [Display(Name = "Fecha registra")]
-        public DateTime Per_FechaRegistra { get; set; }
+        public DateTime FechaRegistroPersona { get; set; }
 
         /// <summary>
         /// Identificador del usuario que modifica la persona.
         /// </summary>
         [Display(Name = "Usuario modifica Id")]
-        public int? Per_UsuarioModifica { get; set; }
+        public int? UsuarioModificaPersonaId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que modifica la persona.
         /// </summary>
         [Display(Name = "Usuario modifica Nombre")]
-        public string Per_UsuarioModificaNombre { get; set; }
+        public string NombreUsuarioModificaPersona { get; set; }
 
         /// <summary>
         /// Fecha de modificación de la persona.
         /// </summary>
         [Display(Name = "Fecha modifica")]
-        public DateTime? Per_FechaModifica { get; set; }
+        public DateTime? FechaModificacionPersona { get; set; }
     }
 }
+

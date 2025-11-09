@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -52,7 +52,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(DuracionViewModel model)
         {
-            if (model.Dur_Id == 0)
+            if (model.DuracionId == 0)
             {
                 bool result = await duracionesService.Create(model);
 
@@ -80,15 +80,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si una duración ya existe.
         /// </summary>
-        /// <param name="Dur_Id">ID de la duración.</param>
-        /// <param name="Dur_Descripcion">Descripción de la duración.</param>
+        /// <param name="DuracionId">ID de la duración.</param>
+        /// <param name="DescripcionDuracion">Descripción de la duración.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Dur_Id, string Dur_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? DuracionId, string DescripcionDuracion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Dur_Descripcion;
+            validationModal.SendMessage = DescripcionDuracion;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -97,11 +97,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await duracionesService.Exist(Dur_Descripcion);
+            var result = await duracionesService.Exist(DescripcionDuracion);
             if (result != null)
             {
-                int? firstValue = result.Dur_Id;
-                return (firstValue == Dur_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.DuracionId;
+                return (firstValue == DuracionId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -114,7 +114,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(DuracionViewModel model)
         {
-            bool result = await duracionesService.Delete(model.Dur_Id);
+            bool result = await duracionesService.Delete(model.DuracionId);
 
             //Validamos error
             if (result)
@@ -125,3 +125,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

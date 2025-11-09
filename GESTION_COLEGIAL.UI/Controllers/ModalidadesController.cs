@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -52,7 +52,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(ModalidadViewModel model)
         {
-            if (model.Mda_Id == 0)
+            if (model.ModalidadId == 0)
             {
                 bool result = await modalidadesService.Create(model);
 
@@ -80,15 +80,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si existe una modalidad con la descripción proporcionada.
         /// </summary>
-        /// <param name="Mda_Id">ID de la modalidad.</param>
-        /// <param name="Mda_Descripcion">Descripción de la modalidad.</param>
+        /// <param name="ModalidadId">ID de la modalidad.</param>
+        /// <param name="DescripcionModalidad">Descripción de la modalidad.</param>
         /// <returns>Resultado de la verificación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Mda_Id, string Mda_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? ModalidadId, string DescripcionModalidad)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Mda_Descripcion;
+            validationModal.SendMessage = DescripcionModalidad;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -97,11 +97,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await modalidadesService.Exist(Mda_Descripcion);
+            var result = await modalidadesService.Exist(DescripcionModalidad);
             if (result != null)
             {
-                int? firstValue = result.Mda_Id;
-                return (firstValue == Mda_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.ModalidadId;
+                return (firstValue == ModalidadId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -114,7 +114,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(ModalidadViewModel model)
         {
-            bool result = await modalidadesService.Delete(model.Mda_Id);
+            bool result = await modalidadesService.Delete(model.ModalidadId);
 
             //Validamos error
             if (result)
@@ -125,3 +125,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -13,7 +13,7 @@ namespace GESTION_COLEGIAL.Business.Models
         /// Obtiene o establece el ID de la sección.
         /// </summary>
         [Key]
-        public int Sec_Id { get; set; }
+        public int SeccionId { get; set; }
 
         /// <summary>
         /// Descripción de la sección.
@@ -21,45 +21,46 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(50)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo es requerido")]
-        [Remote(action: "ExistAsync", controller: "Secciones", HttpMethod = "POST", AdditionalFields = nameof(Sec_Id) + "," + nameof(Sec_Descripcion))]
-        public string Sec_Descripcion { get; set; }
+        [Remote(action: "ExistAsync", controller: "Secciones", HttpMethod = "POST", AdditionalFields = nameof(SeccionId) + "," + nameof(DescripcionSeccion))]
+        public string DescripcionSeccion { get; set; }
 
         /// <summary>
         /// Identificador del usuario que registra la sección.
         /// </summary>
         [Display(Name = "Usuario registra Id")]
-        public int Sec_UsuarioRegistra { get; set; }
+        public int UsuarioRegistraSeccionId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que registra la sección.
         /// </summary>
         [Display(Name = "Usuario registra Nombre")]
-        public string Sec_UsuarioRegistraNombre { get; set; }
+        public string NombreUsuarioRegistraSeccion { get; set; }
 
         /// <summary>
         /// Fecha de registro de la sección.
         /// </summary>
         [Display(Name = "Fecha registra")]
-        public DateTime Sec_FechaRegistra { get; set; }
+        public DateTime FechaRegistroSeccion { get; set; }
 
         /// <summary>
         /// Identificador del usuario que modifica la sección.
         /// </summary>
         [Display(Name = "Usuario modifica Id")]
-        public int? Sec_UsuarioModifica { get; set; }
+        public int? UsuarioModificaSeccionId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que modifica la sección.
         /// </summary>
         [Display(Name = "Usuario modifica Nombre")]
-        public string Sec_UsuarioModificaNombre { get; set; }
+        public string NombreUsuarioModificaSeccion { get; set; }
 
         /// <summary>
         /// Fecha de modificación de la sección.
         /// </summary>
         [Display(Name = "Fecha modifica")]
-        public DateTime? Sec_FechaModifica { get; set; }
+        public DateTime? FechaModificacionSeccion { get; set; }
 
         public bool IsSelected { get; set; }
     }
 }
+

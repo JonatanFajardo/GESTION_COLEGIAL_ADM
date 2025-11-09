@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -52,7 +52,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(DiaViewModel model)
         {
-            if (model.Dia_Id == 0)
+            if (model.DiaId == 0)
             {
                 bool result = await diasService.Create(model);
 
@@ -80,15 +80,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si un día ya existe.
         /// </summary>
-        /// <param name="Dia_Id">ID del día.</param>
-        /// <param name="Dia_Descripcion">Descripción del día.</param>
+        /// <param name="DiaId">ID del día.</param>
+        /// <param name="DescripcionDia">Descripción del día.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Dia_Id, string Dia_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? DiaId, string DescripcionDia)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Dia_Descripcion;
+            validationModal.SendMessage = DescripcionDia;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -97,11 +97,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await diasService.Exist(Dia_Descripcion);
+            var result = await diasService.Exist(DescripcionDia);
             if (result != null)
             {
-                int? firstValue = result.Dia_Id;
-                return (firstValue == Dia_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.DiaId;
+                return (firstValue == DiaId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -114,7 +114,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(DiaViewModel model)
         {
-            bool result = await diasService.Delete(model.Dia_Id);
+            bool result = await diasService.Delete(model.DiaId);
 
             //Validamos error
             if (result)
@@ -125,3 +125,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

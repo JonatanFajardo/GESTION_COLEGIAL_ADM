@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using System;
@@ -63,7 +63,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> Save(CursoViewModel model)
         {
-            if (model.Cur_Id == 0)
+            if (model.CursoId == 0)
             {
                 Boolean createResult = await cursosService.Create(model);
                 //Validamos error
@@ -97,7 +97,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(CursoViewModel model)
         {
-            bool result = await cursosService.Delete(model.Cur_Id);
+            bool result = await cursosService.Delete(model.CursoId);
 
             //Validamos error
             if (result)
@@ -119,3 +119,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

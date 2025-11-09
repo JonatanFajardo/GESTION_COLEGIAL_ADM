@@ -1,4 +1,4 @@
-﻿var Materias = (function () {
+var Materias = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Mat_Id",
+                    FieldName: "MateriaId",
                     Size: 200
                 },
                 {
-                    FieldName: "Mat_Nombre"
+                    FieldName: "NombreMateria"
                 }
             ]
             datatableCatalogs.init(Direction, header);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -10,7 +10,7 @@ namespace GESTION_COLEGIAL.Business.Models
         /// Identificador del parentesco.
         /// </summary>
         [Key]
-        public int Par_Id { get; set; }
+        public int ParentescoId { get; set; }
 
         /// <summary>
         /// Descripción del parentesco.
@@ -18,43 +18,44 @@ namespace GESTION_COLEGIAL.Business.Models
         [StringLength(100)]
         [Display(Name = "Descripción")]
         [Required(ErrorMessage = "El campo es requerido")]
-        [Remote(action: "ExistAsync", controller: "Parentescos", HttpMethod = "POST", AdditionalFields = nameof(Par_Id) + "," + nameof(Par_Descripcion))]
-        public string Par_Descripcion { get; set; }
+        [Remote(action: "ExistAsync", controller: "Parentescos", HttpMethod = "POST", AdditionalFields = nameof(ParentescoId) + "," + nameof(DescripcionParentesco))]
+        public string DescripcionParentesco { get; set; }
 
         /// <summary>
         /// Identificador del usuario que registra el parentesco.
         /// </summary>
         [Display(Name = "Usuario registra Id")]
-        public int Par_UsuarioRegistra { get; set; }
+        public int UsuarioRegistraParentescoId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que registra el parentesco.
         /// </summary>
         [Display(Name = "Usuario registra Nombre")]
-        public string Par_UsuarioRegistraNombre { get; set; }
+        public string NombreUsuarioRegistraParentesco { get; set; }
 
         /// <summary>
         /// Fecha de registro del parentesco.
         /// </summary>
         [Display(Name = "Fecha registra")]
-        public DateTime Par_FechaRegistra { get; set; }
+        public DateTime FechaRegistroParentesco { get; set; }
 
         /// <summary>
         /// Identificador del usuario que modifica el parentesco.
         /// </summary>
         [Display(Name = "Usuario modifica Id")]
-        public int? Par_UsuarioModifica { get; set; }
+        public int? UsuarioModificaParentescoId { get; set; }
 
         /// <summary>
         /// Nombre del usuario que modifica el parentesco.
         /// </summary>
         [Display(Name = "Usuario modifica Nombre")]
-        public string Par_UsuarioModificaNombre { get; set; }
+        public string NombreUsuarioModificaParentesco { get; set; }
 
         /// <summary>
         /// Fecha de modificación del parentesco.
         /// </summary>
         [Display(Name = "Fecha modifica")]
-        public DateTime? Par_FechaModifica { get; set; }
+        public DateTime? FechaModificacionParentesco { get; set; }
     }
 }
+
