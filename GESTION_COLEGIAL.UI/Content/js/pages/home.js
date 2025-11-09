@@ -296,7 +296,7 @@ $(document).ready(function () {
             }
 
             const data = await response.json();
-            const labels = data.data.map(item => item.Cur_Nombre);
+            const labels = data.data.map(item => item.NombreCurso);
             const cantidades = data.data.map(item => parseInt(item.CantidadAlumnos));
 
             new Chart(ctx, {

@@ -1,4 +1,4 @@
-﻿var Dias = (function () {
+var Dias = (function () {
     console.log("sss")
     var obj = {};
 
@@ -8,11 +8,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Dia_Id",
+                    FieldName: "DiaId",
                     Size: 200
                 },
                 {
-                    FieldName: "Dia_Descripcion"
+                    FieldName: "DescripcionDia"
                 }
             ]
             datatableCatalogs.init(Direction, header);

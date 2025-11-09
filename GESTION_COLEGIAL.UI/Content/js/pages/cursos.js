@@ -1,4 +1,4 @@
-﻿var Cursos = (function () {
+var Cursos = (function () {
     var obj = {};
 
     obj.datatable = function (Direction) {
@@ -7,14 +7,14 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Cur_Id",
+                    FieldName: "CursoId",
                     Size: 200
                 },
                 {
-                    FieldName: "Cur_Nombre"
+                    FieldName: "NombreCurso"
                 },
                 {
-                    FieldName: "Niv_Descripcion"
+                    FieldName: "DescripcionNivel"
                 },
                 {
                     FieldName: "EsActivo"
@@ -27,8 +27,8 @@
 }());
 
 $(document).ready(function () {
-    $('#Niv_Id').change(function () {
-        var Niv_Id = $(this).val();
+    $('#NivelId').change(function () {
+        var NivelId = $(this).val();
         debugger
         $.ajax({
             type: "post",

@@ -1,4 +1,4 @@
-var estado = $("#Mat_EsActivo");
+var estado = $("#EsActivoMateria");
 
 
 
@@ -18,7 +18,7 @@ estado.click(function () {
     }
 });
 
-var estadoNivel = $("#Niv_EsActivo");
+var estadoNivel = $("#EsActivoNivel");
 
 
 
@@ -40,7 +40,7 @@ estadoNivel.click(function () {
 
 
 
-var estadoSemestre = $("#Sem_EsActivo");
+var estadoSemestre = $("#EsActivoSemestre");
 
 
 

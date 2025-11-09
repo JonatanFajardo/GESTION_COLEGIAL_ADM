@@ -1,4 +1,4 @@
-﻿var NivelesEducativos = (function () {
+var NivelesEducativos = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Niv_Id",
+                    FieldName: "NivelId",
                     Size: 200
                 },
                 {
-                    FieldName: "Niv_Descripcion"
+                    FieldName: "DescripcionNivel"
                 }
             ]
             datatableCatalogs.init(Direction, header);

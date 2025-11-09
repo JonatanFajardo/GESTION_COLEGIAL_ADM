@@ -1,4 +1,4 @@
-﻿@model GESTION_COLEGIAL.Business.Models.DuracionViewModel
+@model GESTION_COLEGIAL.Business.Models.DuracionViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -59,14 +59,14 @@
             {
             <div class="fluid-container">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @Html.HiddenFor(model => model.Dur_Id, new { @id = "item-id" })
+                @Html.HiddenFor(model => model.DuracionId, new { @id = "item-id" })
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.Dur_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Dur_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Dur_Descripcion, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.DescripcionDuracion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.DescripcionDuracion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DescripcionDuracion, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            @Html.HiddenFor(model => model.Dur_Id, new { @id = "delete-item-id" })
+                            @Html.HiddenFor(model => model.DuracionId, new { @id = "delete-item-id" })
                             <p>¿Está seguro de que desea eliminar este registro?</p>
                         </div>
                     </div>

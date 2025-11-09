@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -52,7 +52,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(SeccionViewModel model)
         {
-            if (model.Sec_Id == 0)
+            if (model.SeccionId == 0)
             {
                 bool result = await seccionesService.Create(model);
 
@@ -80,15 +80,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si existe una sección con la descripción proporcionada.
         /// </summary>
-        /// <param name="Sec_Id">ID de la sección.</param>
-        /// <param name="Sec_Descripcion">Descripción de la sección.</param>
+        /// <param name="SeccionId">ID de la sección.</param>
+        /// <param name="DescripcionSeccion">Descripción de la sección.</param>
         /// <returns>Resultado de la verificación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Sec_Id, string Sec_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? SeccionId, string DescripcionSeccion)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Sec_Descripcion;
+            validationModal.SendMessage = DescripcionSeccion;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -97,11 +97,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await seccionesService.Exist(Sec_Descripcion);
+            var result = await seccionesService.Exist(DescripcionSeccion);
             if (result != null)
             {
-                int? firstValue = result.Sec_Id;
-                return (firstValue == Sec_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.SeccionId;
+                return (firstValue == SeccionId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -114,7 +114,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(SeccionViewModel model)
         {
-            bool result = await seccionesService.Delete(model.Sec_Id);
+            bool result = await seccionesService.Delete(model.SeccionId);
 
             //Validamos error
             if (result)
@@ -125,3 +125,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

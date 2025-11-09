@@ -1,4 +1,4 @@
-﻿
+
 var Alumnos = (function () {
     var obj = {};
 
@@ -18,7 +18,7 @@ var Alumnos = (function () {
 
 
 
-$("#Niv_Id").on("change", function (e) {
+$("#NivelId").on("change", function (e) {
     var valueSelected = $(this).val();
     var data = {
         id: valueSelected
@@ -30,7 +30,7 @@ $("#Niv_Id").on("change", function (e) {
         dataType: "json",
         success: function (response) {
             if (response != null) {
-                FillDropDown("#Cun_Id", response.data);
+                FillDropDown("#CursoNivelId", response.data);
             }
             else {
             }
@@ -41,7 +41,7 @@ $("#Niv_Id").on("change", function (e) {
     });
 });
 
-$("#Cun_Id").on("change", function (e) {
+$("#CursoNivelId").on("change", function (e) {
     var valueSelected = $(this).val();
     var data = {
         id: valueSelected
@@ -53,7 +53,7 @@ $("#Cun_Id").on("change", function (e) {
         dataType: "json",
         success: function (response) {
             if (response != null) {
-                FillDropDown("#Mda_Id", response.data);
+                FillDropDown("#ModalidadId", response.data);
             }
             else {
             }
@@ -64,7 +64,7 @@ $("#Cun_Id").on("change", function (e) {
     });
 });
 
-$("#Mda_Id").on("change", function (e) {
+$("#ModalidadId").on("change", function (e) {
     var valueSelected = $(this).val();
     var data = {
         id: valueSelected
@@ -76,7 +76,7 @@ $("#Mda_Id").on("change", function (e) {
         dataType: "json",
         success: function (response) {
             if (response != null) {
-                FillDropDown("#Cur_Id", response.data);
+                FillDropDown("#CursoId", response.data);
             }
             else {
             }
@@ -87,7 +87,7 @@ $("#Mda_Id").on("change", function (e) {
     });
 });
 
-$("#Cur_Id").on("change", function (e) {
+$("#CursoId").on("change", function (e) {
     var valueSelected = $(this).val();
     var data = {
         id: valueSelected
@@ -100,7 +100,7 @@ $("#Cur_Id").on("change", function (e) {
         success: function (response) {
             if (response != null) {
                 console.log(response);
-                FillDropDown("#Sec_Id", response.data);
+                FillDropDown("#SeccionId", response.data);
             }
             else {
             }
@@ -336,7 +336,7 @@ var datatableAlumnos = (function () {
                 },
                 columns: [
                     {
-                        data: "Per_Imagen",
+                        data: "ImagenPersona",
                         render: function (data, type, row) {
                             const imageUrl = data ? data.replace('~/', '/') : '';
                             const fullImageUrl = imageUrl ? window.location.origin + imageUrl : '/Content/js/pages/default-profile.jpeg';
@@ -347,27 +347,27 @@ var datatableAlumnos = (function () {
                         
                     },
                     {
-                        data: "Alu_Nombre",
+                        data: "NombreAlumno",
                         targets: 2,
                     },
                     {
-                        data: "Per_Identidad",
+                        data: "NumeroIdentidad",
                         targets: 3,
                     },
                     {
-                        data: "Cno_Descripcion",
+                        data: "NombreCurso",
                         targets: 4,
                     },
                     {
-                        data: "Mda_Descripcion",
+                        data: "DescripcionModalidad",
                         targets: 5,
                     },
                     {
-                        data: "Niv_Descripcion",
+                        data: "DescripcionNivel",
                         targets: 5,
                     },
                     {
-                        data: "Sec_Descripcion",
+                        data: "DescripcionSeccion",
                         targets: 5,
                     },
                     {
@@ -376,7 +376,7 @@ var datatableAlumnos = (function () {
                     },
 
                     {
-                        data: "Est_Descripcion",
+                        data: "DescripcionEstado",
                         render: function (data, type, row) {
                             // Determinar el color basado en el estado usando switch
                             let colorClass = '';
@@ -410,8 +410,8 @@ var datatableAlumnos = (function () {
                                 //botones += '<button class="btn btn-secondary btn-sm edit-btn ladda-button" data-style="zoom-in" data-id="' + row[head] + '"><span class"ladda-label"><i class="mdi mdi-square-edit-outline"></i></span></button>';
                                 //botones += '<button class="btn btn-danger btn-sm ml-1 delete-btn-btn ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '"><span class"ladda-label"><i class="ion-trash-a"></i></span></button>';
                           
-                                botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-id="' + row["Alu_Id"] + '" class="bs-tooltip edit-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
-                                botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row["Alu_Id"] + '" class="bs-tooltip delete-btn text-muted pl-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
+                                botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-id="' + row["AlumnoId"] + '" class="bs-tooltip edit-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
+                                botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row["AlumnoId"] + '" class="bs-tooltip delete-btn text-muted pl-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
                             }
                             return botones;
                         },

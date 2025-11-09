@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -61,7 +61,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(CargoViewModel model)
         {
-            if (model.Car_Id == 0)
+            if (model.CargoId == 0)
             {
                 bool result = await cargosService.Create(model);
 
@@ -89,15 +89,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si ya existe un cargo con la misma descripción.
         /// </summary>
-        /// <param name="Car_Id">ID del cargo (opcional).</param>
-        /// <param name="Car_Descripcion">Descripción del cargo.</param>
+        /// <param name="CargoId">ID del cargo (opcional).</param>
+        /// <param name="DescripcionCargo">Descripción del cargo.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Car_Id, string Car_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? CargoId, string DescripcionCargo)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Car_Descripcion;
+            validationModal.SendMessage = DescripcionCargo;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -106,13 +106,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await cargosService.Exist(Car_Descripcion);
+            var result = await cargosService.Exist(DescripcionCargo);
 
             //Validamos error
             if (result != null)
             {
-                int? firstValue = result.Car_Id;
-                return (firstValue == Car_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.CargoId;
+                return (firstValue == CargoId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -125,7 +125,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(CargoViewModel model)
         {
-            bool result = await cargosService.Delete(model.Car_Id);
+            bool result = await cargosService.Delete(model.CargoId);
 
             //Validamos error
             if (result)
@@ -136,3 +136,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

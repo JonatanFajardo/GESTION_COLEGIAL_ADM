@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -52,7 +52,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(ParcialViewModel model)
         {
-            if (model.Pac_Id == 0)
+            if (model.ParcialId == 0)
             {
                 bool result = await parcialesService.Create(model);
 
@@ -80,15 +80,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si existe un parcial con la descripción proporcionada.
         /// </summary>
-        /// <param name="Pac_Id">ID del parcial.</param>
-        /// <param name="Pac_Descripcion">Descripción del parcial.</param>
+        /// <param name="ParcialId">ID del parcial.</param>
+        /// <param name="DescripcionParcial">Descripción del parcial.</param>
         /// <returns>Resultado de la verificación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Pac_Id, string Pac_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? ParcialId, string DescripcionParcial)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Pac_Descripcion;
+            validationModal.SendMessage = DescripcionParcial;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -97,11 +97,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await parcialesService.Exist(Pac_Descripcion);
+            var result = await parcialesService.Exist(DescripcionParcial);
             if (result != null)
             {
-                int? firstValue = result.Pac_Id;
-                return (firstValue == Pac_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.ParcialId;
+                return (firstValue == ParcialId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -114,7 +114,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(ParcialViewModel model)
         {
-            bool result = await parcialesService.Delete(model.Pac_Id);
+            bool result = await parcialesService.Delete(model.ParcialId);
 
             //Validamos error
             if (result)
@@ -125,3 +125,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

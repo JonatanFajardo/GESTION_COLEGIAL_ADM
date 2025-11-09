@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -53,7 +53,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(SemestreViewModel model)
         {
-            if (model.Sem_Id == 0)
+            if (model.SemestreId == 0)
             {
                 bool result = await semestresService.Create(model);
 
@@ -81,15 +81,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si un Semestre ya existe.
         /// </summary>
-        /// <param name="Sem_Id">ID del Semestre.</param>
-        /// <param name="Sem_Descripcion">Descripción del Semestre.</param>
+        /// <param name="SemestreId">ID del Semestre.</param>
+        /// <param name="DescripcionSemestre">Descripción del Semestre.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Sem_Id, string Sem_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? SemestreId, string DescripcionSemestre)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Sem_Descripcion;
+            validationModal.SendMessage = DescripcionSemestre;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -98,11 +98,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await semestresService.Exist(Sem_Descripcion);
+            var result = await semestresService.Exist(DescripcionSemestre);
             if (result != null)
             {
-                int? firstValue = result.Sem_Id;
-                return (firstValue == Sem_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.SemestreId;
+                return (firstValue == SemestreId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -115,7 +115,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(SemestreViewModel model)
         {
-            bool result = await semestresService.Delete(model.Sem_Id);
+            bool result = await semestresService.Delete(model.SemestreId);
 
             //Validamos error
             if (result)
@@ -126,3 +126,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -52,7 +52,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(CursoNivelViewModel model)
         {
-            if (model.Cun_Id == 0)
+            if (model.CursoNivelId == 0)
             {
                 bool result = await cursosNivelesService.Create(model);
 
@@ -80,15 +80,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para verificar si un curso nivel ya existe.
         /// </summary>
-        /// <param name="Cun_Id">ID del curso nivel.</param>
-        /// <param name="Cun_Descripcion">Descripción del curso nivel.</param>
+        /// <param name="CursoNivelId">ID del curso nivel.</param>
+        /// <param name="DescripcionCursoNivel">Descripción del curso nivel.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Cun_Id, string Cun_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? CursoNivelId, string DescripcionCursoNivel)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Cun_Descripcion;
+            validationModal.SendMessage = DescripcionCursoNivel;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -97,11 +97,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await cursosNivelesService.Exist(Cun_Descripcion);
+            var result = await cursosNivelesService.Exist(DescripcionCursoNivel);
             if (result != null)
             {
-                int? firstValue = result.Cun_Id;
-                return (firstValue == Cun_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.CursoNivelId;
+                return (firstValue == CursoNivelId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -114,7 +114,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(CursoNivelViewModel model)
         {
-            bool result = await cursosNivelesService.Delete(model.Cun_Id);
+            bool result = await cursosNivelesService.Delete(model.CursoNivelId);
 
             //Validamos error
             if (result)
@@ -125,3 +125,4 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
     }
 }
+

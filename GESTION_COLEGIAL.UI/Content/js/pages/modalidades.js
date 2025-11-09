@@ -1,4 +1,4 @@
-﻿var Modalidades = (function () {
+var Modalidades = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Mda_Id",
+                    FieldName: "ModalidadId",
                     Size: 200
                 },
                 {
-                    FieldName: "Mda_Descripcion"
+                    FieldName: "DescripcionModalidad"
                 }
             ]
             datatableCatalogs.init(Direction, header);

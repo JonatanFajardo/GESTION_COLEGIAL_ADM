@@ -1,4 +1,4 @@
-﻿var Secciones = (function () {
+var Secciones = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Sec_Id",
+                    FieldName: "SeccionId",
                     Size: 200
                 },
                 {
-                    FieldName: "Sec_Descripcion"
+                    FieldName: "DescripcionSeccion"
                 }
             ]
             datatableCatalogs.init(Direction, header);

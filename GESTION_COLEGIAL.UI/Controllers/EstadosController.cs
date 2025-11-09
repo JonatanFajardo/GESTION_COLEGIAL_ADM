@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Models;
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
@@ -43,7 +43,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(EstadoViewModel model)
         {
-            if (model.Est_Id == 0)
+            if (model.EstadoId == 0)
             {
                 bool result = await estadosService.Create(model);
 
@@ -69,11 +69,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ExistAsync(int? Est_Id, string Est_Descripcion)
+        public async Task<ActionResult> ExistAsync(int? EstadoId, string DescripcionEstado)
         {
             //Validaciones.
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Est_Descripcion;
+            validationModal.SendMessage = DescripcionEstado;
             validationModal.BlankSpaces();
             validationModal.SpecialCharacters();
             if (validationModal.RequestMessage != null)
@@ -82,11 +82,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             //Envío de datos.
-            var result = await estadosService.Exist(Est_Descripcion);
+            var result = await estadosService.Exist(DescripcionEstado);
             if (result != null)
             {
-                int? firstValue = result.Est_Id;
-                return (firstValue == Est_Id) ? Json(true) : Json(msjExist);
+                int? firstValue = result.EstadoId;
+                return (firstValue == EstadoId) ? Json(true) : Json(msjExist);
             }
             return Json(true);
         }
@@ -94,7 +94,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteAsync(EstadoViewModel model)
         {
-            bool result = await estadosService.Delete(model.Est_Id);
+            bool result = await estadosService.Delete(model.EstadoId);
 
             //Validamos error
             if (result)

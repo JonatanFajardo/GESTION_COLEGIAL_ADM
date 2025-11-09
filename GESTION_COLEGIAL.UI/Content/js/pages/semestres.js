@@ -1,4 +1,4 @@
-﻿var Semestres = (function () {
+var Semestres = (function () {
     var obj = {};
 
     obj.datatableCatalogs = function (Direction) {
@@ -7,11 +7,11 @@
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Sem_Id",
+                    FieldName: "SemestreId",
                     Size: 200
                 },
                 {
-                    FieldName: "Sem_Descripcion"
+                    FieldName: "DescripcionSemestre"
                 }
             ]
             datatableCatalogs.init(Direction, header);

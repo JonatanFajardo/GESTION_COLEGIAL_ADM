@@ -1,4 +1,4 @@
-﻿@model GESTION_COLEGIAL.Business.Models.CursoViewModel
+@model GESTION_COLEGIAL.Business.Models.CursoViewModel
 @{
     ViewBag.Title = "Crear";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -31,14 +31,14 @@
                     <div class="col-3 d-flex justify-content-end">
                         <div class="custom-control custom-checkbox">
                             <label class="control-label" for="customCheck1">Estado</label>
-                            @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @class = "" } })
+                            @Html.EditorFor(model => model.EsActivoCurso, new { htmlAttributes = new { @class = "" } })
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card-body">
-                @Html.HiddenFor(model => model.Cur_Id)
+                @Html.HiddenFor(model => model.CursoId)
                 <div class="row">
                     <div class="col-md-12 col-lg-7">
                         <div class="card p-4">
@@ -114,9 +114,9 @@
                                                                             @* Columna Nivel *@
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group">
-                                                                                    @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
-                                                                                    @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
-                                                                                    @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
+                                                                                    @Html.LabelFor(model => model.NivelId, "Nivel", htmlAttributes: new { @class = "control-label" })
+                                                                                    @Html.DropDownList("NivelId", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "NivelId" })
+                                                                                    @Html.ValidationMessageFor(model => model.NivelId, "", new { @class = "text-danger" })
                                                                                 </div>
                                                                             </div>
                                                                         </span>
@@ -218,17 +218,17 @@
                                     @* Columna Nivel *@
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
-                                            @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
-                                            @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.NivelId, "Nivel", htmlAttributes: new { @class = "control-label" })
+                                            @Html.DropDownList("NivelId", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "NivelId" })
+                                            @Html.ValidationMessageFor(model => model.NivelId, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     @* Columna Curso nombre *@
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Cur_Nombre, "Curso nombre", htmlAttributes: new { @class = "control-label" })
-                                            @Html.EditorFor(model => model.Cur_Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.Cur_Nombre, "", new { @class = "text-danger" })
+                                            @Html.LabelFor(model => model.NombreCurso, "Curso nombre", htmlAttributes: new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.NombreCurso, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.NombreCurso, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
