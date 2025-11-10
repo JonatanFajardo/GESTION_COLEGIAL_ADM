@@ -1,5 +1,7 @@
 ﻿using System;
 
+using System;
+
 namespace GESTION_COLEGIAL.Business.DTOs
 {
     public partial class AulaDetailDto

@@ -1,4 +1,6 @@
-﻿namespace GESTION_COLEGIAL.Business.DTOs.dbo
+﻿using System;
+
+namespace GESTION_COLEGIAL.Business.DTOs.dbo
 {
     public class PromedioCursoUltimosAniosDto
     {

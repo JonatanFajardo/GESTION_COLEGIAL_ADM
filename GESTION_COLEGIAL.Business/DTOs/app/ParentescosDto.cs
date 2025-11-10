@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,12 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Relación entre el encargado legal y el alumno.
     /// </summary>
     public partial class tbParentescos
-    {
-        public tbParentescos()
-        {
-            tbEncargados_tbAlumnos = new HashSet<tbEncargados_tbAlumnos>();
-        }
-
+    { 
         /// <summary>
         /// Identificador único de un parentesco.
         /// </summary>
@@ -30,6 +27,5 @@ namespace GESTION_COLEGIAL.Business.DTOs
 
         public virtual tbUsuarios Par_UsuarioModificaNavigation { get; set; }
         public virtual tbUsuarios Par_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbEncargados_tbAlumnos> tbEncargados_tbAlumnos { get; set; }
     }
 }

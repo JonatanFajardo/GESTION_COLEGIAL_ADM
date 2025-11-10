@@ -1,4 +1,8 @@
-﻿#nullable disable
+﻿
+
+using System;
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,16 +10,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Administra el nivel educativo que tendrá un curso.
     /// </summary>
     public partial class tbCursosNiveles
-    {
-        public tbCursosNiveles()
-        {
-            tbAlumnos = new HashSet<tbAlumnos>();
-            tbHorarioAlumnos = new HashSet<tbHorarioAlumnos>();
-            tbHorarioProfesores = new HashSet<tbHorarioProfesores>();
-            Cur = new HashSet<tbCursos>();
-            Mda = new HashSet<tbModalidades>();
-        }
-
+    { 
         /// <summary>
         /// Identificador único de la tabla tbCursosNiveles.
         /// </summary>
@@ -39,12 +34,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public int? Cun_UsuarioModifica { get; set; }
         public DateTime? Cun_FechaModifica { get; set; }
 
-        public virtual tbNivelesEducativos Niv { get; set; }
-        public virtual ICollection<tbAlumnos> tbAlumnos { get; set; }
-        public virtual ICollection<tbHorarioAlumnos> tbHorarioAlumnos { get; set; }
-        public virtual ICollection<tbHorarioProfesores> tbHorarioProfesores { get; set; }
-
-        public virtual ICollection<tbCursos> Cur { get; set; }
-        public virtual ICollection<tbModalidades> Mda { get; set; }
+        public virtual tbNivelesEducativos Niv { get; set; } 
     }
 }

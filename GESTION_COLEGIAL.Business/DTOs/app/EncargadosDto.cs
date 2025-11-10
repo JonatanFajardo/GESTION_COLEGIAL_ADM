@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,12 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Registra los datos del representante del alumno.
     /// </summary>
     public partial class tbEncargados
-    {
-        public tbEncargados()
-        {
-            tbEncargados_tbAlumnos = new HashSet<tbEncargados_tbAlumnos>();
-        }
-
+    { 
         /// <summary>
         /// Identificador único de un encargado.
         /// </summary>
@@ -27,7 +24,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         /// </summary>
         public string Enc_Ocupacion { get; set; }
 
-        public virtual tbPersonas Per { get; set; }
-        public virtual ICollection<tbEncargados_tbAlumnos> tbEncargados_tbAlumnos { get; set; }
+        public virtual tbPersonas Per { get; set; } 
     }
 }

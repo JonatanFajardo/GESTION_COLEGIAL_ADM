@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,12 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Registra la cantidad de secciones que puede haber en el centro estudiantil.
     /// </summary>
     public partial class tbSecciones
-    {
-        public tbSecciones()
-        {
-            tbAlumnos = new HashSet<tbAlumnos>();
-            tbCursos_tbSecciones = new HashSet<tbCursos_tbSecciones>();
-        }
+    { 
 
         /// <summary>
         /// Identificador único de la sección.
@@ -30,8 +27,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public DateTime? Sec_FechaModifica { get; set; }
 
         public virtual tbUsuarios Sec_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Sec_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbAlumnos> tbAlumnos { get; set; }
-        public virtual ICollection<tbCursos_tbSecciones> tbCursos_tbSecciones { get; set; }
+        public virtual tbUsuarios Sec_UsuarioRegistraNavigation { get; set; } 
     }
 }

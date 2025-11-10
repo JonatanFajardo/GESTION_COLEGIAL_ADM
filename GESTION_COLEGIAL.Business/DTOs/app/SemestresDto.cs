@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,12 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Periodo por año de la materia.
     /// </summary>
     public partial class tbSemestres
-    {
-        public tbSemestres()
-        {
-            tbNotas = new HashSet<tbNotas>();
-        }
-
+    { 
         /// <summary>
         /// Identificador único de la tabla.
         /// </summary>
@@ -30,7 +27,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public DateTime? Sem_FechaModifica { get; set; }
 
         public virtual tbUsuarios Sem_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Sem_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbNotas> tbNotas { get; set; }
+        public virtual tbUsuarios Sem_UsuarioRegistraNavigation { get; set; } 
     }
 }

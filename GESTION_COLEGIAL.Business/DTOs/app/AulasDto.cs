@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿using System;
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,12 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Registra los nombres que contendrá un aula.
     /// </summary>
     public partial class tbAulas
-    {
-        public tbAulas()
-        {
-            tbCursos_tbSecciones = new HashSet<tbCursos_tbSecciones>();
-        }
-
+    { 
         /// <summary>
         /// Identificador único de la tabla tbAulas.
         /// </summary>
@@ -26,10 +23,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public int Aul_UsuarioRegistra { get; set; }
         public DateTime Aul_FechaRegistra { get; set; }
         public int? Aul_UsuarioModifica { get; set; }
-        public DateTime? Aul_FechaModifica { get; set; }
-
-        public virtual tbUsuarios Aul_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Aul_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbCursos_tbSecciones> tbCursos_tbSecciones { get; set; }
+        public DateTime? Aul_FechaModifica { get; set; } 
     }
 }

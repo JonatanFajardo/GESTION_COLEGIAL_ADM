@@ -1,4 +1,7 @@
-﻿#nullable disable
+﻿
+using System;
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -32,9 +35,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public DateTime? Niv_FechaModifica { get; set; }
 
         public virtual tbUsuarios Niv_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Niv_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbAlumnos> tbAlumnos { get; set; }
-        public virtual ICollection<tbCursos> tbCursos { get; set; }
-        public virtual ICollection<tbCursosNiveles> tbCursosNiveles { get; set; }
+        public virtual tbUsuarios Niv_UsuarioRegistraNavigation { get; set; } 
     }
 }
