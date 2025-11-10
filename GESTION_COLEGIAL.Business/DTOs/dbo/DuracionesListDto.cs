@@ -1,4 +1,6 @@
-﻿namespace GESTION_COLEGIAL.Business.DTOs
+﻿using System;
+
+namespace GESTION_COLEGIAL.Business.DTOs
 {
     public partial class DuracionListDto
     {

@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿ 
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,12 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Contiene la información de los alumnos.
     /// </summary>
     public partial class tbAlumnos
-    {
-        public tbAlumnos()
-        {
-            tbEncargados_tbAlumnos = new HashSet<tbEncargados_tbAlumnos>();
-        }
-
+    { 
         /// <summary>
         /// Identificador unico del tbAlumnos.
         /// </summary>
@@ -61,7 +58,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public virtual tbModalidades Mda { get; set; }
         public virtual tbNivelesEducativos Niv { get; set; }
         public virtual tbPersonas Per { get; set; }
-        public virtual tbSecciones Sec { get; set; }
-        public virtual ICollection<tbEncargados_tbAlumnos> tbEncargados_tbAlumnos { get; set; }
+        public virtual tbSecciones Sec { get; set; } 
     }
 }

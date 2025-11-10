@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿using System;
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,12 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Registra las diferentes duraciones que puede tener una materia.
     /// </summary>
     public partial class tbDuraciones
-    {
-        public tbDuraciones()
-        {
-            tbMaterias = new HashSet<tbMaterias>();
-        }
-
+    { 
         /// <summary>
         /// Identificador único de la duracion.
         /// </summary>
@@ -29,7 +26,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public DateTime? Dur_FechaModifica { get; set; }
 
         public virtual tbUsuarios Dur_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Dur_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbMaterias> tbMaterias { get; set; }
+        public virtual tbUsuarios Dur_UsuarioRegistraNavigation { get; set; } 
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
+using System;
+
 namespace GESTION_COLEGIAL.Business.DTOs
 {
     public partial class EncargadoInsertDto

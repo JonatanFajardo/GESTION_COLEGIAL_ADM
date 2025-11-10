@@ -1,4 +1,7 @@
-﻿#nullable disable
+﻿
+using System;
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,11 +9,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Registra los puestos que puede tener un empleado en el colegio.
     /// </summary>
     public partial class tbCargos
-    {
-        public tbCargos()
-        {
-            tbEmpleados = new HashSet<tbEmpleados>();
-        }
+    { 
 
         /// <summary>
         /// Identificador único del puesto.
@@ -27,9 +26,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public DateTime Car_FechaRegistra { get; set; }
         public int? Car_UsuarioModifica { get; set; }
         public DateTime? Car_FechaModifica { get; set; }
-
-        public virtual tbUsuarios Car_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Car_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
+         
     }
 }

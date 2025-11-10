@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,14 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Administra los datos de las personas involucradas en el sistema.
     /// </summary>
     public partial class tbPersonas
-    {
-        public tbPersonas()
-        {
-            tbAlumnos = new HashSet<tbAlumnos>();
-            tbEmpleados = new HashSet<tbEmpleados>();
-            tbEncargados = new HashSet<tbEncargados>();
-        }
-
+    { 
         /// <summary>
         /// Indica el identificador único de la persona.
         /// </summary>
@@ -86,9 +81,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public DateTime? Per_FechaModifica { get; set; }
 
         public virtual tbUsuarios Per_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Per_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbAlumnos> tbAlumnos { get; set; }
-        public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
-        public virtual ICollection<tbEncargados> tbEncargados { get; set; }
+        public virtual tbUsuarios Per_UsuarioRegistraNavigation { get; set; } 
     }
 }
