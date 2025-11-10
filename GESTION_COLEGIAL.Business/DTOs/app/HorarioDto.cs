@@ -1,7 +1,9 @@
-﻿#nullable disable
+﻿
 
 using System;
 using System.Collections.Generic;
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {

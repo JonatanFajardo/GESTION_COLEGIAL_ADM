@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,11 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Información del título.
     /// </summary>
     public partial class tbTitulos
-    {
-        public tbTitulos()
-        {
-            tbEmpleados = new HashSet<tbEmpleados>();
-        }
+    { 
 
         /// <summary>
         /// Identificador único del titulo.
@@ -29,7 +27,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public DateTime? Tit_FechaModifica { get; set; }
 
         public virtual tbUsuarios Tit_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Tit_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbEmpleados> tbEmpleados { get; set; }
+        public virtual tbUsuarios Tit_UsuarioRegistraNavigation { get; set; } 
     }
 }

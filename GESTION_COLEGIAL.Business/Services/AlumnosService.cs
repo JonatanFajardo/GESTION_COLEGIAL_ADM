@@ -1,4 +1,5 @@
-﻿using GESTION_COLEGIAL.Business.Extensions;
+﻿using GESTION_COLEGIAL.Business.DTOs;
+using GESTION_COLEGIAL.Business.Extensions;
 using GESTION_COLEGIAL.Business.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace GESTION_COLEGIAL.Business.Services
     /// <summary>
     /// Clase que representa el servicio de alumnos.
     /// </summary>
-    public class AlumnosService
+    public class AlumnosService : BaseService
     {
         /// <summary>
         /// Obtiene una lista de alumnos de forma asíncrona.
@@ -17,9 +18,9 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de alumnos.</returns>
         public async Task<IEnumerable<AlumnoViewModel>> ListAsync()
         {
-            string url = "Alumnos/ListAsync";
-            IEnumerable<AlumnoViewModel> apiUrl = await ApiRequests.ListAsync<AlumnoViewModel>(url);
-            return apiUrl;
+            const string url = "Alumnos/ListAsync";
+            var dtos = await ApiRequests.ListAsync<AlumnoListDto>(url);
+            return Map<IEnumerable<AlumnoListDto>, IEnumerable<AlumnoViewModel>>(dtos);
         }
 
         /// <summary>
@@ -29,9 +30,9 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el alumno encontrado.</returns>
         public async Task<AlumnoViewModel> Find(int id)
         {
-            string url = "Alumnos/FindAsync";
-            AlumnoViewModel apiUrl = await ApiRequests.FindAsync<AlumnoViewModel>(url, id);
-            return apiUrl;
+            const string url = "Alumnos/FindAsync";
+            var dto = await ApiRequests.FindAsync<AlumnoFindDto>(url, id);
+            return Map<AlumnoFindDto, AlumnoViewModel>(dto);
         }
 
         /// <summary>
@@ -63,8 +64,9 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el alumno encontrado.</returns>
         public async Task<AlumnoViewModel> Exist(string value)
         {
-            string url = "Alumnos/ExistAsync";
-            return await ApiRequests.ExistAsync<AlumnoViewModel>(url, value);
+            const string url = "Alumnos/ExistAsync";
+            var dto = await ApiRequests.ExistAsync<AlumnoFindDto>(url, value);
+            return Map<AlumnoFindDto, AlumnoViewModel>(dto);
         }
 
         /// <summary>
@@ -85,11 +87,13 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el modelo de alumno con las listas desplegables cargadas.</returns>
         public async Task<AlumnoViewModel> Dropdown(AlumnoViewModel model)
         {
-            string urlNivelesEducativos = "Alumnos/NivelesEducativosDropdown";
-            string urlEstados = "Alumnos/EstadosDropdown";
-            var nivelesEducativosDropdown = await ApiRequests.DropdownAsync<NivelEducativoViewModel>(urlNivelesEducativos);
-            var estadosDropdown = await ApiRequests.DropdownAsync<EstadoViewModel>(urlEstados);
-            model.LoadDropDownList(nivelesEducativosDropdown, estadosDropdown);
+            const string urlNivelesEducativos = "Alumnos/NivelesEducativosDropdown";
+            const string urlEstados = "Alumnos/EstadosDropdown";
+            var nivelesEducativosDropdown = await ApiRequests.DropdownAsync<NivelEducativoDropdownDto>(urlNivelesEducativos);
+            var estadosDropdown = await ApiRequests.DropdownAsync<EstadoDropdownDto>(urlEstados);
+            var niveles = Map<IEnumerable<NivelEducativoDropdownDto>, IEnumerable<NivelEducativoViewModel>>(nivelesEducativosDropdown);
+            var estados = Map<IEnumerable<EstadoDropdownDto>, IEnumerable<EstadoViewModel>>(estadosDropdown);
+            model.LoadDropDownList(niveles, estados);
             return model;
         }
 
@@ -100,9 +104,9 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de cursos y niveles desplegables.</returns>
         public async Task<IEnumerable<CursoNivelDropViewModel>> CursoNivelesDropdown(int id)
         {
-            string urlCursosNiveles = "Alumnos/CursosNivelesDropdown";
-            var cursosNivelesDropdown = await ApiRequests.DropdownAsync<CursoNivelDropViewModel>(urlCursosNiveles, id);
-            return cursosNivelesDropdown;
+            const string urlCursosNiveles = "Alumnos/CursosNivelesDropdown";
+            var cursosNivelesDropdown = await ApiRequests.DropdownAsync<CursoNivelDropdownDto>(urlCursosNiveles, id);
+            return Map<IEnumerable<CursoNivelDropdownDto>, IEnumerable<CursoNivelDropViewModel>>(cursosNivelesDropdown);
         }
 
         /// <summary>
@@ -112,9 +116,9 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de modalidades desplegables.</returns>
         public async Task<IEnumerable<ModalidadViewModel>> ModalidadesDropdown(int id)
         {
-            string urlModalidades = "Alumnos/ModalidadesDropdown";
-            var modalidadesDropdown = await ApiRequests.DropdownAsync<ModalidadViewModel>(urlModalidades, id);
-            return modalidadesDropdown;
+            const string urlModalidades = "Alumnos/ModalidadesDropdown";
+            var modalidadesDropdown = await ApiRequests.DropdownAsync<ModalidadDropdownDto>(urlModalidades, id);
+            return Map<IEnumerable<ModalidadDropdownDto>, IEnumerable<ModalidadViewModel>>(modalidadesDropdown);
         }
 
         /// <summary>
@@ -124,9 +128,9 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de cursos desplegables.</returns>
         public async Task<IEnumerable<CursoViewModel>> CursosDropdown(int id)
         {
-            string urlCursos = "Alumnos/CursosDropdown";
-            var cursosDropdown = await ApiRequests.DropdownAsync<CursoViewModel>(urlCursos, id);
-            return cursosDropdown;
+            const string urlCursos = "Alumnos/CursosDropdown";
+            var cursosDropdown = await ApiRequests.DropdownAsync<CursoDropdownDto>(urlCursos, id);
+            return Map<IEnumerable<CursoDropdownDto>, IEnumerable<CursoViewModel>>(cursosDropdown);
         }
 
         /// <summary>
@@ -136,9 +140,9 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de secciones desplegables.</returns>
         public async Task<IEnumerable<SeccionViewModel>> SeccionesDropdown(int id)
         {
-            string urlSecciones = "Alumnos/SeccionesDropdown";
-            var seccionesDropdown = await ApiRequests.DropdownAsync<SeccionViewModel>(urlSecciones, id);
-            return seccionesDropdown;
+            const string urlSecciones = "Alumnos/SeccionesDropdown";
+            var seccionesDropdown = await ApiRequests.DropdownAsync<SeccionDropdownDto>(urlSecciones, id);
+            return Map<IEnumerable<SeccionDropdownDto>, IEnumerable<SeccionViewModel>>(seccionesDropdown);
         }
     }
 }

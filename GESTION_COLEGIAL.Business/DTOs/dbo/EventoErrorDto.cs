@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {

@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,12 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Indica los parciales que tendrá un semestre
     /// </summary>
     public partial class tbParciales
-    {
-        public tbParciales()
-        {
-            tbNotas = new HashSet<tbNotas>();
-        }
-
+    { 
         /// <summary>
         /// Identificador único del parcial.
         /// </summary>
@@ -29,7 +26,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public DateTime? Pac_FechaModifica { get; set; }
 
         public virtual tbUsuarios Pac_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Pac_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbNotas> tbNotas { get; set; }
+        public virtual tbUsuarios Pac_UsuarioRegistraNavigation { get; set; } 
     }
 }

@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,11 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Guarda la información relacionada con el personal que labora en la empresa.
     /// </summary>
     public partial class tbEmpleados
-    {
-        public tbEmpleados()
-        {
-            Mat = new HashSet<tbMaterias>();
-        }
+    { 
 
         /// <summary>
         /// Identificador único de la tabla tbEmpleados.
@@ -43,7 +41,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
         public virtual tbDepartamentoEmpleados Dep { get; set; }
         public virtual tbPersonas Per { get; set; }
         public virtual tbTitulos Tit { get; set; }
-
-        public virtual ICollection<tbMaterias> Mat { get; set; }
+         
     }
 }

@@ -1,4 +1,8 @@
-﻿#nullable disable
+﻿
+
+using System;
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,16 +10,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Administra la información de los cursos.
     /// </summary>
     public partial class tbCursos
-    {
-        public tbCursos()
-        {
-            tbAlumnos = new HashSet<tbAlumnos>();
-            tbCursos_tbSecciones = new HashSet<tbCursos_tbSecciones>();
-            tbHorarioProfesores = new HashSet<tbHorarioProfesores>();
-            Cun = new HashSet<tbCursosNiveles>();
-            Mat = new HashSet<tbMaterias>();
-            Mda = new HashSet<tbModalidades>();
-        }
+    { 
 
         /// <summary>
         /// Identificador único del registro en la tabla.
@@ -50,13 +45,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
 
         public virtual tbUsuarios Cur_UsuarioModificaNavigation { get; set; }
         public virtual tbUsuarios Cur_UsuarioRegistraNavigation { get; set; }
-        public virtual tbNivelesEducativos Niv { get; set; }
-        public virtual ICollection<tbAlumnos> tbAlumnos { get; set; }
-        public virtual ICollection<tbCursos_tbSecciones> tbCursos_tbSecciones { get; set; }
-        public virtual ICollection<tbHorarioProfesores> tbHorarioProfesores { get; set; }
-
-        public virtual ICollection<tbCursosNiveles> Cun { get; set; }
-        public virtual ICollection<tbMaterias> Mat { get; set; }
-        public virtual ICollection<tbModalidades> Mda { get; set; }
+        public virtual tbNivelesEducativos Niv { get; set; } 
     }
 }

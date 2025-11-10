@@ -1,4 +1,6 @@
-﻿#nullable disable
+﻿
+
+using System;
 
 namespace GESTION_COLEGIAL.Business.DTOs
 {
@@ -6,15 +8,7 @@ namespace GESTION_COLEGIAL.Business.DTOs
     /// Materia que puede impartir un profesor o recibir el alumno.
     /// </summary>
     public partial class tbMaterias
-    {
-        public tbMaterias()
-        {
-            tbHorarioAlumnos = new HashSet<tbHorarioAlumnos>();
-            tbNotas = new HashSet<tbNotas>();
-            Cur = new HashSet<tbCursos>();
-            Emp = new HashSet<tbEmpleados>();
-        }
-
+    { 
         /// <summary>
         /// Identificador único de la materia.
         /// </summary>
@@ -43,11 +37,6 @@ namespace GESTION_COLEGIAL.Business.DTOs
 
         public virtual tbDuraciones Dur { get; set; }
         public virtual tbUsuarios Mat_UsuarioModificaNavigation { get; set; }
-        public virtual tbUsuarios Mat_UsuarioRegistraNavigation { get; set; }
-        public virtual ICollection<tbHorarioAlumnos> tbHorarioAlumnos { get; set; }
-        public virtual ICollection<tbNotas> tbNotas { get; set; }
-
-        public virtual ICollection<tbCursos> Cur { get; set; }
-        public virtual ICollection<tbEmpleados> Emp { get; set; }
+        public virtual tbUsuarios Mat_UsuarioRegistraNavigation { get; set; } 
     }
 }
