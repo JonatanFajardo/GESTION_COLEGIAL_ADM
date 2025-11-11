@@ -12,8 +12,16 @@ namespace GESTION_COLEGIAL.Business.Helpers
 	/// </summary>
 	public static class SendHttpClient
 	{
+		private const string baseUrl = "https://localhost:7076/api/v1/";  // Development - API local
 		//private const string baseUrl = "https://localhost:44325/api/v1/";
-		private const string baseUrl = "http://www.gestioncolegialapi.somee.com/api/v1/";
+		//private const string baseUrl = "http://www.gestioncolegialapi.somee.com/api/v1/";  // Production
+
+		static SendHttpClient()
+		{
+			// Ignorar errores de certificado SSL en desarrollo
+			System.Net.ServicePointManager.ServerCertificateValidationCallback =
+				delegate { return true; };
+		}
 
 		#region Asincrono
 
@@ -199,6 +207,39 @@ namespace GESTION_COLEGIAL.Business.Helpers
 				return resultSerialize;
 			}
 			catch (Exception e)
+			{
+				throw;
+			}
+		}
+
+		/// <summary>
+		/// Envia datos a una API mediante POST y retorna una respuesta tipada.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="url"></param>
+		/// <param name="model"></param>
+		/// <returns></returns>
+		public static async Task<T> PostAsyncWithResponse<T>(string url, object model)
+		{
+			try
+			{
+				var httpclient = new HttpClient();
+				var content = JsonConvert.SerializeObject(model);
+				var contentSerialized = new StringContent(content, Encoding.UTF8, "application/json");
+
+				var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);
+
+				if (!httpResponse.IsSuccessStatusCode)
+				{
+					var errorContent = await httpResponse.Content.ReadAsStringAsync();
+					return default;
+				}
+
+				var responseContent = await httpResponse.Content.ReadAsStringAsync();
+				var resultSerialize = JsonConvert.DeserializeObject<T>(responseContent);
+				return resultSerialize;
+			}
+			catch (Exception)
 			{
 				throw;
 			}
