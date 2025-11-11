@@ -1,0 +1,261 @@
+/* Estilos para el módulo de Gestión de Horarios de Alumnos */
+
+.horarios-container {
+    padding: 20px;
+}
+
+/* Estilos para el formulario */
+#horario-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#horario-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+#horario-form label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+#horario-form .form-control {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.95rem;
+}
+
+#horario-form .form-control:focus {
+    border-color: #4361ee;
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+}
+
+#horario-form .text-danger {
+    color: #dc3545 !important;
+}
+
+/* Secciones del formulario */
+.border-bottom {
+    border-bottom: 2px solid #e9ecef;
+}
+
+.border-bottom h5 {
+    color: #4361ee;
+    font-weight: 600;
+}
+
+/* Botones */
+.btn-group-horario {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#submit-btn {
+    min-width: 120px;
+    padding: 0.65rem 1.5rem;
+    font-weight: 500;
+}
+
+#cancel-btn {
+    min-width: 120px;
+    padding: 0.65rem 1.5rem;
+    font-weight: 500;
+}
+
+/* Tabla de horarios */
+#datatable {
+    width: 100% !important;
+}
+
+#datatable thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+#datatable tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#datatable tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+#datatable tbody td {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+/* Botones de acción en la tabla */
+.btn-group .btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.btn-group .edit-btn {
+    background-color: #4361ee;
+    border-color: #4361ee;
+}
+
+.btn-group .edit-btn:hover {
+    background-color: #3451d6;
+    border-color: #3451d6;
+}
+
+.btn-group .delete-btn {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-group .delete-btn:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* Card styles */
+.card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    border-bottom: 2px solid #e9ecef;
+    padding: 1.25rem 1.5rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Modal styles */
+#delete-modal-secondary .modal-content {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#delete-modal-secondary .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    padding: 1.25rem 1.5rem;
+}
+
+#delete-modal-secondary .modal-header .modal-title {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+#delete-modal-secondary .modal-body {
+    padding: 2rem 1.5rem;
+}
+
+#delete-modal-secondary .modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #horario-form .row > div {
+        margin-bottom: 15px;
+    }
+
+    .btn-group-horario {
+        flex-direction: column;
+    }
+
+    #submit-btn,
+    #cancel-btn {
+        width: 100%;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Loading state */
+.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Validación */
+.field-validation-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.input-validation-error {
+    border-color: #dc3545 !important;
+}
+
+/* Breadcrumb */
+.breadcrumb-wrapper-content {
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.breadcrumb-item {
+    font-size: 0.95rem;
+}
+
+.breadcrumb-item.active {
+    color: #4361ee;
+    font-weight: 500;
+}
+
+/* Dropdown personalized styles */
+.form-control.select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
+}
+
+/* Gap utility (si no está disponible en Bootstrap 4) */
+.d-flex.gap-3 > * {
+    margin-right: 1rem;
+}
+
+.d-flex.gap-3 > *:last-child {
+    margin-right: 0;
+}
