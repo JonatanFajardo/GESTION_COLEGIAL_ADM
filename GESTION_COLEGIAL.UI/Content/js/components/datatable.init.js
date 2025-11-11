@@ -113,7 +113,7 @@ var datatable = (function () {
                     infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
                     infoFiltered: "(filtrado de un total de _MAX_ registros)",
                     infoPostFix: "",
-                    search: "",
+                    search: '<i class="fa-solid fa-magnifying-glass"></i>',
                     url: "",
                     infoThousands: ",",
                     loadingRecords: " ",
@@ -161,8 +161,8 @@ var datatable = (function () {
                     {
                         extend: "excelHtml5",
                         title: "Exportar a EXCEL",
-                        text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
-                        class: "btn btn-secondary",
+                        text: "<i class='mdi  mdi-file-excel-outline'></i> Excel",
+                        class: "btn btn-secondary",  
                         exportOptions: exportOptions
                     },
                     {
