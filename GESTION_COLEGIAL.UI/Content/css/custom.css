@@ -136,7 +136,10 @@
   transition: all 0.3s ease;
 }
 
-
+#datatable tbody tr:hover td img {
+  transform: scale(1.15) rotate(3deg);
+  box-shadow: 0 6px 16px rgba(247, 164, 0, 0.4);
+}
 
 /* Badges de Estado Modernos */
 .badge {
