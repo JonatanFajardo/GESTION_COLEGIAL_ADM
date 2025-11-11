@@ -1,0 +1,188 @@
+@model GESTION_COLEGIAL.Business.Models.HorarioAlumnoViewModel
+@{
+    ViewBag.Title = "Gestión de Horarios de Alumnos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Horarios de Alumnos</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <!-- Formulario de Registro/Edición -->
+    <div class="card mb-4">
+        <div class="card-header" style="background-color:white;">
+            <h3 id="form-title">Registrar Nuevo Horario</h3>
+        </div>
+        <div class="card-body">
+            @using (Ajax.BeginForm("CreateAsync", "HorarioAlumnos", new AjaxOptions
+            {
+                HttpMethod = "Post",
+                OnBegin = "HorarioAlumnos.onFormBegin",
+                OnSuccess = "HorarioAlumnos.onFormSuccess",
+                OnFailure = "HorarioAlumnos.onFormFailure"
+            }, new { @id = "horario-form" }))
+            {
+                @Html.HiddenFor(model => model.HoAl_Id, new { @id = "HoAl_Id" })
+
+                <!-- Contexto Académico -->
+                <div class="border-bottom pb-3 mb-4">
+                    <h5 class="mb-3">Contexto Académico</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Cur_Id">Curso <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.Cur_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Cur_Id", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Cur_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Cun_Id">Nivel <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.Cun_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Cun_Id", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Cun_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Mat_Id">Materia <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.Mat_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Mat_Id", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Mat_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Horario -->
+                <div class="mb-4">
+                    <h5 class="mb-3">Horario</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Dia_Id">Día <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.Dia_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Dia_Id", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Dia_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="HoAl_HoraInicio">Hora Inicio <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.HoAl_HoraInicio,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "HoAl_HoraInicio", required = "required" })
+                                @Html.ValidationMessageFor(model => model.HoAl_HoraInicio, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="HoAl_HoraFinaliza">Hora Finaliza <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.HoAl_HoraFinaliza,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "HoAl_HoraFinaliza", required = "required" })
+                                @Html.ValidationMessageFor(model => model.HoAl_HoraFinaliza, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex gap-3">
+                    <button type="submit" class="btn btn-primary" id="submit-btn">
+                        <i class="mdi mdi-content-save"></i> Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancel-btn" style="display:none;">
+                        <i class="mdi mdi-close"></i> Cancelar
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Listado de Horarios -->
+    <div class="card">
+        <div class="card-header" style="background-color:white;">
+            <h3>Horarios Registrados</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered wrap" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>Curso/Nivel</th>
+                            <th>Materia</th>
+                            <th>Día</th>
+                            <th>Hora Inicio</th>
+                            <th>Hora Finaliza</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete-->
+<div class="modal" id="delete-modal-secondary" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="deleteModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        @using (Ajax.BeginForm("DeleteAsync", "HorarioAlumnos", new AjaxOptions
+        {
+            HttpMethod = "Post",
+            OnBegin = "HorarioAlumnos.onDeleteBegin",
+            OnComplete = "HorarioAlumnos.onDeleteComplete",
+            OnFailure = "HorarioAlumnos.onDeleteFailure",
+            OnSuccess = "HorarioAlumnos.onDeleteSuccess"
+        }))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.HoAl_Id, new { @id = "delete-item-id" })
+                                <p>¿Está seguro de que desea eliminar este horario?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="mdi mdi-delete"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/horarioalumnos.js"></script>
+}
