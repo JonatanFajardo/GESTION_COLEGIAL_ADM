@@ -37,6 +37,29 @@ namespace GESTION_COLEGIAL.Business.Extensions
         }
 
         /// <summary>
+        /// Envía datos a la API mediante POST y retorna una respuesta tipada.
+        /// </summary>
+        /// <typeparam name="T">El tipo de respuesta esperada.</typeparam>
+        /// <param name="url">La URL de la API.</param>
+        /// <param name="model">El modelo de datos a enviar.</param>
+        /// <returns>La respuesta de tipo T de la API.</returns>
+        public static async Task<T> PostAsyncWithResponse<T>(string url, dynamic model)
+        {
+            return await SendHttpClient.PostAsyncWithResponse<T>(url, model);
+        }
+
+        /// <summary>
+        /// Envía datos a la API mediante POST.
+        /// </summary>
+        /// <param name="url">La URL de la API.</param>
+        /// <param name="model">El modelo de datos a enviar.</param>
+        /// <returns>true si hubo error, false si fue exitoso.</returns>
+        public static async Task<Boolean> PostAsync(string url, dynamic model)
+        {
+            return await SendHttpClient.PostAsync(url, model);
+        }
+
+        /// <summary>
         /// Actualiza un elemento en la API.
         /// </summary>
         /// <param name="url">La URL de la API.</param>
