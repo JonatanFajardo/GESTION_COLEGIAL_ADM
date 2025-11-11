@@ -1974,7 +1974,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #fcead4 !important;
+  /*background-color: $m-color_2 !important;*/
 }
 
 .table > tbody > tr > td {
@@ -1984,12 +1984,8 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
   letter-spacing: 1px;
 }
 .table > thead > tr > th {
-  color: #F7A400;
-  background-color: #ffd8a8;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  color: black;
+  background-color: #f2efed;
 }
 .table > tbody > tr > td .usr-img-frame {
   background-color: #ebedf2;
