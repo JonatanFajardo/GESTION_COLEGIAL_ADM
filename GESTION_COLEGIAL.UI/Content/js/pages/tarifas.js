@@ -7,23 +7,17 @@ var Tarifas = (function () {
             //Nombre | Tamaño/AutoWidth | Visibilidad
             header = [
                 {
-                    FieldName: "Tar_Id"
+                    FieldName: "TarifaId"
                 },
                 {
-                    FieldName: "ConceptoPago"
+                    FieldName: "ConceptoPagoId"
                 },
                 {
-                    FieldName: "Nivel"
+                    FieldName: "Monto"
                 },
                 {
-                    FieldName: "Curso"
+                    FieldName: "AnioVigencia"
                 },
-                {
-                    FieldName: "Tar_Monto"
-                },
-                {
-                    FieldName: "Tar_AnioVigencia"
-                }
             ]
             datatable.init(Direction, header);
         })

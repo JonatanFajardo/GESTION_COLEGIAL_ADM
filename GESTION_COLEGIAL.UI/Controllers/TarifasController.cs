@@ -23,19 +23,25 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
-        /// Acción para mostrar la vista de creación de tarifa.
+        /// Acción asincrónica para mostrar la vista de creación de tarifa.
         /// </summary>
-        public ActionResult CreateAsync()
+        public async Task<ActionResult> CreateAsync()
         {
-            return View();
+            var model = new TarifaViewModel();
+            var load = await Load(model);
+            return View(load);
         }
 
         /// <summary>
-        /// Acción para mostrar la vista de edición de tarifa.
+        /// Acción asincrónica para mostrar la vista de edición de tarifa.
         /// </summary>
-        public ActionResult FindAsync(int id)
+        public async Task<ActionResult> FindAsync(int id)
         {
-            return View();
+            var result = await tarifaService.Find(id);
+            var tarifaViewModel = MapToTarifaViewModel(result);
+            var load = await Load(tarifaViewModel);
+
+            return View("CreateAsync", load);
         }
 
         /// <summary>
@@ -57,6 +63,44 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción asincrónica para guardar una tarifa (crear o editar).
+        /// </summary>
+        /// <param name="model">Modelo de vista de la tarifa.</param>
+        /// <returns>Resultado de la operación.</returns>
+        [HttpPost]
+        public async Task<ActionResult> Save(TarifaViewModel model)
+        {
+            var tarifaFind = MapToTarifaFindViewModel(model);
+
+            if (model.Tar_Id == 0)
+            {
+                bool result = await tarifaService.Create(tarifaFind);
+
+                //Validamos error
+                if (result)
+                {
+                    AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
+                    return RedirectToAction("Index");
+                }
+                AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Insertado exitosamente");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                bool result = await tarifaService.Edit(tarifaFind);
+
+                //Validamos error
+                if (result)
+                {
+                    AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error");
+                    return RedirectToAction("Index");
+                }
+                AlertMessage.Show(AlertMessage.AlertMessageType.Success, "Editado exitosamente");
+                return RedirectToAction("Index");
+            }
+        }
+
+        /// <summary>
         /// Acción asincrónica para eliminar una tarifa.
         /// </summary>
         /// <param name="model">Modelo de vista de la tarifa.</param>
@@ -72,6 +116,58 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
+        }
+
+        /// <summary>
+        /// Carga la información necesaria para la vista de creación de tarifa.
+        /// </summary>
+        /// <param name="model">Modelo de vista de la tarifa.</param>
+        /// <returns>Modelo de vista de la tarifa cargado con los datos necesarios.</returns>
+        public async Task<TarifaViewModel> Load(TarifaViewModel model)
+        {
+            return await tarifaService.Dropdown(model);
+        }
+
+        /// <summary>
+        /// Mapea TarifaFindViewModel a TarifaViewModel.
+        /// </summary>
+        private TarifaViewModel MapToTarifaViewModel(TarifaFindViewModel source)
+        {
+            return new TarifaViewModel
+            {
+                Tar_Id = source.TarifaId,
+                ConceptoPago_Id = source.ConceptoPagoId,
+                Nivel_Id = source.NivelId,
+                CursoNivel_Id = source.CursoNivelId,
+                Tar_Monto = source.Monto,
+                Tar_AnioVigencia = source.AnioVigencia,
+                Tar_EsEliminado = source.EsEliminado,
+                Usu_RegistraId = source.UsuarioRegistraId,
+                Tar_FechaRegistro = source.FechaRegistro,
+                Usu_ModificaId = source.UsuarioModificaId,
+                Tar_FechaModifica = source.FechaModifica
+            };
+        }
+
+        /// <summary>
+        /// Mapea TarifaViewModel a TarifaFindViewModel.
+        /// </summary>
+        private TarifaFindViewModel MapToTarifaFindViewModel(TarifaViewModel source)
+        {
+            return new TarifaFindViewModel
+            {
+                TarifaId = source.Tar_Id,
+                ConceptoPagoId = source.ConceptoPago_Id,
+                NivelId = source.Nivel_Id,
+                CursoNivelId = source.CursoNivel_Id,
+                Monto = source.Tar_Monto,
+                AnioVigencia = source.Tar_AnioVigencia,
+                EsEliminado = source.Tar_EsEliminado,
+                UsuarioRegistraId = source.Usu_RegistraId,
+                FechaRegistro = source.Tar_FechaRegistro,
+                UsuarioModificaId = source.Usu_ModificaId,
+                FechaModifica = source.Tar_FechaModifica
+            };
         }
     }
 }
