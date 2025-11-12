@@ -1,0 +1,107 @@
+@model GESTION_COLEGIAL.Business.Models.TarifaViewModel
+@{
+    ViewBag.Title = Model.Tar_Id == 0 ? "Crear Tarifa" : "Editar Tarifa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/css/form-encargados.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Módulo Financiero</a></li>
+            <li class="breadcrumb-item"><a href="/Tarifas/Index">Tarifas</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+        </ol>
+    </nav>
+</div>
+
+@using (Html.BeginForm("Save", "Tarifas", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="fluid-container">
+        <div class="card form-encargados-card">
+            <div class="card-header">
+                <div class="header-content">
+                    <div>
+                        <h3 class="card-title-modern">@(Model.Tar_Id == 0 ? "Registro de Tarifa" : "Edición de Tarifa")</h3>
+                        <p class="card-subtitle-modern">Complete la información de la tarifa por nivel/curso</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="card-body">
+                @Html.HiddenFor(model => model.Tar_Id)
+
+                <div class="form-row">
+                    @* Columna Concepto de Pago *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ConceptoPago_Id, "Concepto de Pago", htmlAttributes: new { @class = "form-label-icon" })
+                            @Html.DropDownList("ConceptoPago_Id", Model.ConceptosPagoList, "-- Seleccionar Concepto de Pago --", htmlAttributes: new { @class = "form-control form-input-modern" })
+                            @Html.ValidationMessageFor(model => model.ConceptoPago_Id, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @* Columna Monto *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Tar_Monto, "Monto", htmlAttributes: new { @class = "form-label-icon" })
+                            @Html.EditorFor(model => model.Tar_Monto, new { htmlAttributes = new { @class = "form-control form-input-modern", @type = "number", @step = "0.01", @min = "0" } })
+                            @Html.ValidationMessageFor(model => model.Tar_Monto, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    @* Columna Nivel Educativo *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Nivel_Id, "Nivel Educativo", htmlAttributes: new { @class = "form-label-icon" })
+                            @Html.DropDownList("Nivel_Id", Model.NivelesEducativosList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control form-input-modern" })
+                            @Html.ValidationMessageFor(model => model.Nivel_Id, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @* Columna Curso/Nivel *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CursoNivel_Id, "Curso/Nivel", htmlAttributes: new { @class = "form-label-icon" })
+                            @Html.DropDownList("CursoNivel_Id", Model.CursosNivelesList, "-- Seleccionar Curso --", htmlAttributes: new { @class = "form-control form-input-modern" })
+                            @Html.ValidationMessageFor(model => model.CursoNivel_Id, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    @* Columna Año de Vigencia *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Tar_AnioVigencia, "Año de Vigencia", htmlAttributes: new { @class = "form-label-icon" })
+                            @Html.EditorFor(model => model.Tar_AnioVigencia, new { htmlAttributes = new { @class = "form-control form-input-modern", @type = "number", @min = "2000", @max = "2100" } })
+                            @Html.ValidationMessageFor(model => model.Tar_AnioVigencia, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions-modern">
+                    @Html.ActionLink("Cancelar", "Index", "Tarifas", null, new { @class = "btn btn-secondary-modern" })
+                    <button type="submit" class="btn btn-primary-modern">
+                        <i class="mdi mdi-content-save"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/js/form-encargados.js"></script>
+}

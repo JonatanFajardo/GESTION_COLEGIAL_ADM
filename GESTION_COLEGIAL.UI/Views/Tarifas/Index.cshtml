@@ -1,4 +1,4 @@
-@model GESTION_COLEGIAL.Business.Models.TarifaViewModel
+@model GESTION_COLEGIAL.Business.Models.TarifaListViewModel
 @{
     ViewBag.Title = "Tarifas";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -29,8 +29,6 @@
                     <tr>
                         <th>Id</th>
                         <th>Concepto de Pago</th>
-                        <th>Nivel</th>
-                        <th>Curso</th>
                         <th>Monto</th>
                         <th>Año Vigencia</th>
                         <th>Acciones</th>
@@ -65,7 +63,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                @Html.HiddenFor(model => model.Tar_Id, new { @id = "delete-item-id" })
+                                @Html.HiddenFor(model => model.TarifaId, new { @id = "delete-item-id" })
                                 <p>¿Está seguro de que desea eliminar este registro?</p>
                             </div>
                         </div>

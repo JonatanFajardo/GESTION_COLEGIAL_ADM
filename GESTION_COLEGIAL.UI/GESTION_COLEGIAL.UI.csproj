@@ -143,10 +143,12 @@
     <Compile Include="Controllers\ModalidadesController.cs" />
     <Compile Include="Controllers\NivelesEducativosController.cs" />
     <Compile Include="Controllers\PageError404Controller.cs" />
+    <Compile Include="Controllers\PagosController.cs" />
     <Compile Include="Controllers\ParcialesController.cs" />
     <Compile Include="Controllers\ParentescosController.cs" />
     <Compile Include="Controllers\SeccionesController.cs" />
     <Compile Include="Controllers\SemestresController.cs" />
+    <Compile Include="Controllers\TarifasController.cs" />
     <Compile Include="Controllers\TitulosController.cs" />
     <Compile Include="Extensions\AlertMessage.cs" />
     <Compile Include="Global.asax.cs">
