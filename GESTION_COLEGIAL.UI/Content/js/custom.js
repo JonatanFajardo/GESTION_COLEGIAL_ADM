@@ -124,3 +124,37 @@ function GetIEVersion() {
   else
     return 0; //It is not IE
 }
+
+/*
+=========================================
+|                                       |
+|       Sidebar Perfect Scrollbar       |
+|                                       |
+=========================================
+*/
+
+$(document).ready(function() {
+    var sidebarScroll = null;
+
+    // Initialize PerfectScrollbar for sidebar menu
+    if (typeof PerfectScrollbar !== 'undefined') {
+        var menuCategories = document.querySelector('.menu-categories');
+
+        if (menuCategories) {
+            sidebarScroll = new PerfectScrollbar('.menu-categories', {
+                wheelSpeed: 0.5,
+                swipeEasing: true,
+                minScrollbarLength: 40,
+                maxScrollbarLength: 300,
+                suppressScrollX: true
+            });
+
+            // Update PerfectScrollbar when collapse menus are toggled
+            $('.menu-categories .collapse').on('shown.bs.collapse hidden.bs.collapse', function() {
+                if (sidebarScroll) {
+                    sidebarScroll.update();
+                }
+            });
+        }
+    }
+});
