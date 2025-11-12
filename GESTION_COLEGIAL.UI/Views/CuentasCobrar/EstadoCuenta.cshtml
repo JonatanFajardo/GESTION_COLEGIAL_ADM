@@ -1,0 +1,144 @@
+@model GESTION_COLEGIAL.Business.Models.CuentaCobrarViewModel
+@{
+    ViewBag.Title = "Estado de Cuenta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Módulo Financiero</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Cuentas por Cobrar</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Estado de Cuenta</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <!-- Panel de Información del Alumno -->
+    <div class="card">
+        <div class="card-header" style="background-color:white;">
+            <h3>Información del Alumno</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nombre:</strong> <span id="alumno-nombre"></span></p>
+                    <p><strong>Identidad:</strong> <span id="alumno-identidad"></span></p>
+                    <p><strong>Nivel:</strong> <span id="alumno-nivel"></span></p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Curso:</strong> <span id="alumno-curso"></span></p>
+                    <p><strong>Sección:</strong> <span id="alumno-seccion"></span></p>
+                    <p><strong>Encargado:</strong> <span id="alumno-encargado"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel de Resumen Financiero -->
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Total Deuda</h5>
+                    <h3 class="text-danger" id="total-deuda">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Total Pagado</h5>
+                    <h3 class="text-success" id="total-pagado">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Pendiente</h5>
+                    <h3 class="text-warning" id="total-pendiente">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Mora</h5>
+                    <h3 class="text-danger" id="total-mora">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel de Cargos Pendientes -->
+    <div class="card mt-3">
+        <div class="card-header" style="background-color:white;">
+            <div class="row space-between">
+                <div class="col-md-9"><h3>Cargos Pendientes</h3></div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary float-right" id="btn-registrar-pago">
+                        <i class="mdi mdi-cash-multiple"></i> Registrar Pago
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped" id="tabla-cargos-pendientes">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Monto Original</th>
+                        <th>Descuento</th>
+                        <th>Mora</th>
+                        <th>Total</th>
+                        <th>Fecha Venc.</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-cargos-pendientes">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Panel de Histórico de Pagos -->
+    <div class="card mt-3">
+        <div class="card-header" style="background-color:white;">
+            <h3>Histórico de Pagos</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped" id="tabla-historico-pagos">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Monto</th>
+                        <th>Forma de Pago</th>
+                        <th>Referencia</th>
+                        <th>Usuario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-historico-pagos">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/estadocuenta.js"></script>
+    <script>
+        var alumnoId = @ViewBag.AlumnoId;
+        EstadoCuenta.init({
+            alumnoId: alumnoId,
+            urlEstadoCuenta: "@Url.Action("EstadoCuentaAlumnoAsync", "CuentasCobrar")",
+            urlAplicarDescuento: "@Url.Action("AplicarDescuentoAsync", "CuentasCobrar")",
+            urlCalcularMora: "@Url.Action("CalcularMoratoriaAsync", "CuentasCobrar")",
+            urlRecibo: "@Url.Action("GetReciboAsync", "Pagos")"
+        });
+    </script>
+}

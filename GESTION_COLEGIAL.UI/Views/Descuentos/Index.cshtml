@@ -1,0 +1,169 @@
+@model GESTION_COLEGIAL.Business.Models.DescuentoFindViewModel
+@{
+    ViewBag.Title = "Descuentos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="#">Financiero</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Descuentos</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    @* Listado *@
+    <div class="card">
+        <div class="card-header" style="background-color:white;">
+            <div class="row space-between">
+                <div class="col-md-9"><h3>Listado de descuentos</h3></div>
+                @* <div class="col-md-3"><button class="btn btn-primary mdi mdi-plus-circle-outline float-right" id="add-btn" data-toggle="modal" data-target="#edit-modal">  Nuevo</button></div> *@
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered nowrap" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Descripción</th>
+                        <th>Tipo</th>
+                        <th>Valor</th>
+                        <th>Activo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Ajax.BeginForm("CreateAsync", "Descuentos", new AjaxOptions
+                {
+                    HttpMethod = "Post",
+                    OnBegin = "Catalogs.begin",
+                    OnComplete = "Catalogs.complete",
+                    OnFailure = "Catalogs.failure",
+                    OnSuccess = "Catalogs.success"
+                }))
+                {
+                    <div class="fluid-container">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @Html.HiddenFor(model => model.DescuentoId, new { @id = "item-id" })
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.TipoDescuento, "Tipo de Descuento", htmlAttributes: new { @class = "control-label" })
+                                        @Html.DropDownListFor(model => model.TipoDescuento, new List<SelectListItem>
+                                        {
+                                            new SelectListItem { Text = "Porcentaje", Value = "Porcentaje" },
+                                            new SelectListItem { Text = "Monto Fijo", Value = "MontoFijo" }
+                                        }, "Seleccione...", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.TipoDescuento, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Valor, "Valor", htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Valor, new { htmlAttributes = new { @class = "form-control", @type = "number", @step = "0.01", @min = "0" } })
+                                        @Html.ValidationMessageFor(model => model.Valor, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(model => model.EsActivo, new { @class = "form-check-input", @checked = "checked" })
+                                        @Html.LabelFor(model => model.EsActivo, "Activo", htmlAttributes: new { @class = "form-check-label" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- Fin Modal -->
+    <!-- Modal Delete-->
+    <div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            @using (Ajax.BeginForm("DeleteAsync", "Descuentos", new AjaxOptions
+            {
+                HttpMethod = "Post",
+                OnBegin = "Catalogs.begin",
+                OnComplete = "Catalogs.complete",
+                OnFailure = "Catalogs.failure",
+                OnSuccess = "Catalogs.success"
+            }))
+            {
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.HiddenFor(model => model.DescuentoId, new { @id = "delete-item-id" })
+                                    <p>¿Está seguro de que desea eliminar este registro?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <!-- Fin Modal -->
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/descuentos.js"></script>
+    <script>
+        Descuentos.datatableCatalogs({
+            urlList: "@Url.Action("ListAsync")",
+            urlDetail: "Detail"
+        });
+    </script>
+    <script>
+        Catalogs.configure({
+            displayName: "descuento",
+            urlUpdate: "@Url.Action("FindAsync")"
+        });
+    </script>
+    @if (ViewBag.JavaScriptFunction != null)
+    {
+        <script type="text/javascript">
+        @Html.Raw(ViewBag.JavaScriptFunction);
+        </script>
+    }
+}

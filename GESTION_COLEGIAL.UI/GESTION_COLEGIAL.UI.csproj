@@ -125,13 +125,17 @@
     <Compile Include="Controllers\AlumnosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CargosController.cs" />
+    <Compile Include="Controllers\ConceptosPagoController.cs" />
     <Compile Include="Controllers\CursosController.cs" />
     <Compile Include="Controllers\CursosNivelesController.cs" />
+    <Compile Include="Controllers\DescuentosController.cs" />
     <Compile Include="Controllers\DiasController.cs" />
     <Compile Include="Controllers\DuracionesController.cs" />
     <Compile Include="Controllers\EmpleadosController.cs" />
     <Compile Include="Controllers\EncargadosController.cs" />
+    <Compile Include="Controllers\EstadosPagoController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
+    <Compile Include="Controllers\FormasPagoController.cs" />
     <Compile Include="Controllers\HomeAndChartsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HorasController.cs" />
@@ -341,13 +345,17 @@
     <Content Include="Content\js\pages\aulas.js" />
     <Content Include="Content\js\pages\cargos.js" />
     <Content Include="Content\js\pages\coming-soon\coming-soon.js" />
+    <Content Include="Content\js\pages\conceptospago.js" />
     <Content Include="Content\js\pages\cursos.js" />
     <Content Include="Content\js\pages\cursosniveles.js" />
+    <Content Include="Content\js\pages\descuentos.js" />
     <Content Include="Content\js\pages\dias.js" />
     <Content Include="Content\js\pages\duraciones.js" />
     <Content Include="Content\js\pages\empleados.js" />
     <Content Include="Content\js\pages\encargados.js" />
+    <Content Include="Content\js\pages\estadospago.js" />
     <Content Include="Content\js\pages\estados.js" />
+    <Content Include="Content\js\pages\formaspago.js" />
     <Content Include="Content\js\pages\faq\faq.js" />
     <Content Include="Content\js\pages\faq\faq2.js" />
     <Content Include="Content\js\pages\helpdesk.js" />
@@ -1365,6 +1373,10 @@
     <Content Include="Views\Titulos\Index.cshtml" />
     <Content Include="Views\Estados\Index.cshtml" />
     <Content Include="Views\Duraciones\Index.cshtml" />
+    <Content Include="Views\ConceptosPago\Index.cshtml" />
+    <Content Include="Views\FormasPago\Index.cshtml" />
+    <Content Include="Views\Descuentos\Index.cshtml" />
+    <Content Include="Views\EstadosPago\Index.cshtml" />
     <Content Include="Views\ds Dias\Index.cshtml" />
     <Content Include="Views\Materias\Index.cshtml" />
     <Content Include="Views\Alumnos\CreateAsync.cshtml" />
@@ -1388,6 +1400,7 @@
     <Content Include="Views\ds HorarioProfesores\CreateAsync.cshtml" />
     <Content Include="Views\ds Notas\CreateAsync.cshtml" />
     <None Include="packages.config" />
+    <Content Include="Views\EstadosPago\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
