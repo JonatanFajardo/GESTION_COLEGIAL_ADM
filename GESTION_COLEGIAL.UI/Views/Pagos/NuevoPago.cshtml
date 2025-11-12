@@ -1,0 +1,161 @@
+@model GESTION_COLEGIAL.Business.Models.PagoViewModel
+@{
+    ViewBag.Title = "Nuevo Pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Módulo Financiero</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Registro de Pagos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Nuevo Pago</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <div class="card">
+        <div class="card-header" style="background-color:white;">
+            <h3>Registrar Nuevo Pago</h3>
+        </div>
+        <div class="card-body">
+            <!-- Progress Bar -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills nav-fill" id="payment-steps">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="step1-tab" data-step="1">1. Seleccionar Alumno</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="step2-tab" data-step="2">2. Seleccionar Conceptos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="step3-tab" data-step="3">3. Aplicar Descuentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="step4-tab" data-step="4">4. Forma de Pago</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="step5-tab" data-step="5">5. Confirmación</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Paso 1: Seleccionar Alumno -->
+            <div id="step1" class="payment-step">
+                <h4>Seleccionar Alumno</h4>
+                <div class="form-group">
+                    <label for="alumno-search">Buscar Alumno</label>
+                    <input type="text" class="form-control" id="alumno-search" placeholder="Escriba el nombre o identidad del alumno..." />
+                </div>
+                <div id="alumno-info" style="display:none;">
+                    <div class="alert alert-info">
+                        <strong>Alumno seleccionado:</strong> <span id="alumno-nombre-selected"></span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-step1-next">Siguiente</button>
+            </div>
+
+            <!-- Paso 2: Seleccionar Conceptos -->
+            <div id="step2" class="payment-step" style="display:none;">
+                <h4>Seleccionar Conceptos a Pagar</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all-conceptos" /></th>
+                                <th>Concepto</th>
+                                <th>Monto</th>
+                                <th>Descuento</th>
+                                <th>Mora</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="conceptos-tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert alert-success">
+                    <strong>Subtotal seleccionado:</strong> L. <span id="subtotal-conceptos">0.00</span>
+                </div>
+                <button type="button" class="btn btn-secondary" id="btn-step2-prev">Anterior</button>
+                <button type="button" class="btn btn-primary" id="btn-step2-next">Siguiente</button>
+            </div>
+
+            <!-- Paso 3: Aplicar Descuentos -->
+            <div id="step3" class="payment-step" style="display:none;">
+                <h4>Aplicar Descuentos (Opcional)</h4>
+                <div class="form-group">
+                    <label for="descuento-select">Seleccionar Descuento</label>
+                    <select class="form-control" id="descuento-select">
+                        <option value="">-- Sin descuento --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="descuento-justificacion">Justificación</label>
+                    <textarea class="form-control" id="descuento-justificacion" rows="3"></textarea>
+                </div>
+                <div class="alert alert-info">
+                    <strong>Total con descuento:</strong> L. <span id="total-con-descuento">0.00</span>
+                </div>
+                <button type="button" class="btn btn-secondary" id="btn-step3-prev">Anterior</button>
+                <button type="button" class="btn btn-primary" id="btn-step3-next">Siguiente</button>
+            </div>
+
+            <!-- Paso 4: Forma de Pago -->
+            <div id="step4" class="payment-step" style="display:none;">
+                <h4>Forma de Pago</h4>
+                <div class="form-group">
+                    <label for="forma-pago-select">Seleccionar Forma de Pago</label>
+                    <select class="form-control" id="forma-pago-select" required>
+                        <option value="">-- Seleccione --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="numero-referencia">Número de Referencia</label>
+                    <input type="text" class="form-control" id="numero-referencia" />
+                </div>
+                <div class="form-group">
+                    <label for="observaciones">Observaciones</label>
+                    <textarea class="form-control" id="observaciones" rows="3"></textarea>
+                </div>
+                <button type="button" class="btn btn-secondary" id="btn-step4-prev">Anterior</button>
+                <button type="button" class="btn btn-primary" id="btn-step4-next">Siguiente</button>
+            </div>
+
+            <!-- Paso 5: Confirmación -->
+            <div id="step5" class="payment-step" style="display:none;">
+                <h4>Confirmación del Pago</h4>
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Resumen del Pago</h5>
+                        <p><strong>Alumno:</strong> <span id="confirm-alumno"></span></p>
+                        <p><strong>Conceptos:</strong> <span id="confirm-conceptos"></span></p>
+                        <p><strong>Forma de Pago:</strong> <span id="confirm-forma-pago"></span></p>
+                        <p><strong>Total a Pagar:</strong> L. <span id="confirm-total"></span></p>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" id="btn-step5-prev">Anterior</button>
+                <button type="button" class="btn btn-success" id="btn-confirmar-pago">
+                    <i class="mdi mdi-check-circle"></i> Confirmar y Generar Recibo
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/nuevopago.js"></script>
+    <script>
+        NuevoPago.init({
+            urlBuscarAlumno: "@Url.Action("BuscarAlumnoAsync", "Alumnos")",
+            urlConceptosAlumno: "@Url.Action("ListByAlumnoAsync", "CuentasCobrar")",
+            urlDescuentos: "@Url.Action("DropdownAsync", "Descuentos")",
+            urlFormasPago: "@Url.Action("DropdownAsync", "FormasPago")",
+            urlRegistrarPago: "@Url.Action("CreateAsync", "Pagos")"
+        });
+    </script>
+}
