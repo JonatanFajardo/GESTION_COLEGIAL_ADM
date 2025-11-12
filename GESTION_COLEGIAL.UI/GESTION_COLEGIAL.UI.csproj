@@ -1408,6 +1408,15 @@
     <Content Include="Views\CuentasCobrar\HistoricoPagos.cshtml" />
     <Content Include="Views\CuentasCobrar\Index.cshtml" />
     <Content Include="Views\CuentasCobrar\Moratorias.cshtml" />
+    <Content Include="Views\Pagos\Index.cshtml" />
+    <Content Include="Views\Pagos\ListaDia.cshtml" />
+    <Content Include="Views\Pagos\NuevoPago.cshtml" />
+    <Content Include="Views\ReportesFinancieros\ComparativaAnual.cshtml" />
+    <Content Include="Views\ReportesFinancieros\DashboardFinanciero.cshtml" />
+    <Content Include="Views\ReportesFinancieros\IngresosMes.cshtml" />
+    <Content Include="Views\ReportesFinancieros\Morosos.cshtml" />
+    <Content Include="Views\ReportesFinancieros\ProyeccionCobros.cshtml" />
+    <Content Include="Views\Tarifas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
