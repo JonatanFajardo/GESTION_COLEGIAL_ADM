@@ -1401,6 +1401,13 @@
     <Content Include="Views\ds Notas\CreateAsync.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\EstadosPago\Index.cshtml" />
+    <Content Include="Views\CuentasCobrar\CargosMasivos.cshtml" />
+    <Content Include="Views\CuentasCobrar\CargosPendientes.cshtml" />
+    <Content Include="Views\CuentasCobrar\Deudores.cshtml" />
+    <Content Include="Views\CuentasCobrar\EstadoCuenta.cshtml" />
+    <Content Include="Views\CuentasCobrar\HistoricoPagos.cshtml" />
+    <Content Include="Views\CuentasCobrar\Index.cshtml" />
+    <Content Include="Views\CuentasCobrar\Moratorias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
