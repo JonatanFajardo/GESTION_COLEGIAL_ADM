@@ -126,6 +126,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CargosController.cs" />
     <Compile Include="Controllers\ConceptosPagoController.cs" />
+    <Compile Include="Controllers\CuentasCobrarController.cs" />
     <Compile Include="Controllers\CursosController.cs" />
     <Compile Include="Controllers\CursosNivelesController.cs" />
     <Compile Include="Controllers\DescuentosController.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Controllers\EstadosPagoController.cs" />
     <Compile Include="Controllers\EstadosController.cs" />
     <Compile Include="Controllers\FormasPagoController.cs" />
+    <Compile Include="Controllers\GuiaFinancieraController.cs" />
     <Compile Include="Controllers\HomeAndChartsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HorasController.cs" />
@@ -1377,6 +1379,7 @@
     <Content Include="Views\Duraciones\Index.cshtml" />
     <Content Include="Views\ConceptosPago\Index.cshtml" />
     <Content Include="Views\FormasPago\Index.cshtml" />
+    <Content Include="Views\GuiaFinanciera\Index.cshtml" />
     <Content Include="Views\Descuentos\Index.cshtml" />
     <Content Include="Views\EstadosPago\Index.cshtml" />
     <Content Include="Views\ds Dias\Index.cshtml" />

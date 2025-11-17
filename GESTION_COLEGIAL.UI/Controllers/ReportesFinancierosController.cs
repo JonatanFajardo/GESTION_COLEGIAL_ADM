@@ -29,6 +29,30 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción para mostrar el reporte de ingresos por mes.
+        /// </summary>
+        public ActionResult IngresosMes()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Acción para mostrar el reporte de proyección de cobros.
+        /// </summary>
+        public ActionResult ProyeccionCobros()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Acción para mostrar el reporte comparativo anual.
+        /// </summary>
+        public ActionResult ComparativaAnual()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Acción asincrónica para obtener ingresos por mes.
         /// </summary>
         public async Task<ActionResult> IngresosPorMesAsync(int anio, int mes)
@@ -61,6 +85,24 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> EstadoCuentaAlumnoAsync(int alumnoId)
         {
             var result = await reportesService.EstadoCuentaAlumnoAsync(alumnoId);
+            return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Acción asincrónica para obtener comparativa anual.
+        /// </summary>
+        public async Task<ActionResult> ComparativaAnualAsync(int anioInicio, int anioFin)
+        {
+            var result = await reportesService.ComparativaAnualAsync(anioInicio, anioFin);
+            return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Acción asincrónica para obtener datos del dashboard financiero.
+        /// </summary>
+        public async Task<ActionResult> DashboardFinancieroAsync()
+        {
+            var result = await reportesService.DashboardFinancieroAsync();
             return AjaxResult(result);
         }
     }

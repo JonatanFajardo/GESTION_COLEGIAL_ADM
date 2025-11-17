@@ -1,0 +1,716 @@
+@{
+    ViewBag.Title = "Guía del Módulo Financiero";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="#">Financiero</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Guía de Inicio</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="container-fluid">
+    <!-- Encabezado de Bienvenida -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center py-5">
+                    <h1 class="display-4 mb-3">
+                        <i class="mdi mdi-school" style="font-size: 3rem;"></i>
+                        Bienvenido al Módulo Financiero
+                    </h1>
+                    <p class="lead">Esta guía te ayudará a familiarizarte con las funcionalidades del sistema de gestión financiera</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Introducción -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="mdi mdi-information-outline text-info"></i>
+                        ¿Qué puedes hacer con este módulo?
+                    </h3>
+                    <p class="text-muted">
+                        El módulo financiero te permite gestionar de forma integral todos los aspectos relacionados con la
+                        administración de pagos, cuentas por cobrar, conceptos de pago y generar reportes financieros del colegio.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección: Configuración Inicial -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">
+                <span class="badge badge-primary" style="font-size: 1.5rem;">1</span>
+                Configuración Inicial
+            </h2>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card guia-card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2 text-center">
+                            <div class="guia-icon bg-warning">
+                                <i class="mdi mdi-format-list-bulleted" style="font-size: 3rem; color: white;"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <h4 class="card-title">Conceptos de Pago</h4>
+                            <p class="text-muted">
+                                Antes de comenzar a registrar pagos, es importante configurar los conceptos de pago
+                                (mensualidades, inscripción, uniformes, actividades, etc.). Estos conceptos se utilizarán
+                                para generar las cuentas por cobrar de los alumnos.
+                            </p>
+                            <p><strong>¿Qué puedes hacer aquí?</strong></p>
+                            <ul>
+                                <li>Crear nuevos conceptos de pago</li>
+                                <li>Editar conceptos existentes</li>
+                                <li>Ver listado completo de conceptos</li>
+                                <li>Eliminar conceptos que no se utilicen</li>
+                            </ul>
+                            <a href="@Url.Action("Index", "ConceptosPago")" class="btn btn-warning text-white">
+                                <i class="mdi mdi-arrow-right"></i> Ir a Conceptos de Pago
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección: Gestión de Cuentas por Cobrar -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">
+                <span class="badge badge-primary" style="font-size: 1.5rem;">2</span>
+                Gestión de Cuentas por Cobrar
+            </h2>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <!-- Cuentas por Cobrar Principal -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-info">
+                            <i class="mdi mdi-currency-usd" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Cuentas por Cobrar</h4>
+                    <p class="text-muted">
+                        Administra todas las cuentas por cobrar de los alumnos. Puedes generar cargos,
+                        aplicar descuentos y dar seguimiento al estado de cada cuenta.
+                    </p>
+                    <p><strong>Funcionalidades:</strong></p>
+                    <ul>
+                        <li>Ver listado de todas las cuentas</li>
+                        <li>Generar cargos por alumno</li>
+                        <li>Aplicar descuentos</li>
+                        <li>Ver detalles de cada cuenta</li>
+                    </ul>
+                    <a href="@Url.Action("Index", "CuentasCobrar")" class="btn btn-info btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ir a Cuentas por Cobrar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deudores -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-danger">
+                            <i class="mdi mdi-account-alert" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Deudores</h4>
+                    <p class="text-muted">
+                        Visualiza el listado de alumnos que tienen cuentas vencidas y requieren seguimiento
+                        para gestionar su situación de pago.
+                    </p>
+                    <p><strong>Información disponible:</strong></p>
+                    <ul>
+                        <li>Alumnos con saldos vencidos</li>
+                        <li>Monto total adeudado</li>
+                        <li>Días de mora</li>
+                        <li>Historial de deudas</li>
+                    </ul>
+                    <a href="@Url.Action("Deudores", "CuentasCobrar")" class="btn btn-danger btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Deudores
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado de Cuenta -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-primary">
+                            <i class="mdi mdi-file-document" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Estado de Cuenta</h4>
+                    <p class="text-muted">
+                        Consulta el estado de cuenta detallado de cualquier alumno, incluyendo cargos,
+                        pagos realizados y saldo pendiente.
+                    </p>
+                    <p><strong>Detalles incluidos:</strong></p>
+                    <ul>
+                        <li>Cargos generados</li>
+                        <li>Pagos aplicados</li>
+                        <li>Saldo pendiente actual</li>
+                        <li>Historial completo de movimientos</li>
+                    </ul>
+                    <a href="@Url.Action("EstadoCuenta", "CuentasCobrar")" class="btn btn-primary btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Estado de Cuenta
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cargos Pendientes -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-secondary">
+                            <i class="mdi mdi-clock-alert" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Cargos Pendientes</h4>
+                    <p class="text-muted">
+                        Visualiza todos los cargos pendientes de pago en el sistema, organizados por
+                        concepto, alumno o fecha de vencimiento.
+                    </p>
+                    <p><strong>Información mostrada:</strong></p>
+                    <ul>
+                        <li>Listado de cargos sin pagar</li>
+                        <li>Fecha de vencimiento</li>
+                        <li>Monto pendiente</li>
+                        <li>Alumno asociado</li>
+                    </ul>
+                    <a href="@Url.Action("CargosPendientes", "CuentasCobrar")" class="btn btn-secondary btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Cargos Pendientes
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cargos Masivos -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-success">
+                            <i class="mdi mdi-account-multiple" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Cargos Masivos</h4>
+                    <p class="text-muted">
+                        Genera cargos de forma masiva para múltiples alumnos simultáneamente,
+                        ideal para aplicar mensualidades o cargos recurrentes.
+                    </p>
+                    <p><strong>Opciones disponibles:</strong></p>
+                    <ul>
+                        <li>Cargar por grado o sección</li>
+                        <li>Seleccionar concepto de pago</li>
+                        <li>Definir fechas de vencimiento</li>
+                        <li>Aplicar a todos los alumnos activos</li>
+                    </ul>
+                    <a href="@Url.Action("CargosMasivos", "CuentasCobrar")" class="btn btn-success btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Generar Cargos Masivos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Moratorias -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-warning">
+                            <i class="mdi mdi-alert-octagon" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Moratorias</h4>
+                    <p class="text-muted">
+                        Gestiona los cargos por mora aplicados a pagos vencidos según las políticas
+                        establecidas por el colegio.
+                    </p>
+                    <p><strong>Gestión de mora:</strong></p>
+                    <ul>
+                        <li>Visualizar moratorias aplicadas</li>
+                        <li>Calcular intereses moratorios</li>
+                        <li>Configurar políticas de mora</li>
+                        <li>Reportes de morosidad</li>
+                    </ul>
+                    <a href="@Url.Action("Moratorias", "CuentasCobrar")" class="btn btn-warning text-white btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Moratorias
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección: Registro de Pagos -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">
+                <span class="badge badge-primary" style="font-size: 1.5rem;">3</span>
+                Registro de Pagos
+            </h2>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <!-- Gestión de Pagos -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-success">
+                            <i class="mdi mdi-cash-register" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Gestión de Pagos</h4>
+                    <p class="text-muted">
+                        Pantalla principal para registrar y consultar todos los pagos realizados.
+                        Aquí podrás registrar nuevos pagos, ver el historial y generar recibos.
+                    </p>
+                    <p><strong>Funcionalidades principales:</strong></p>
+                    <ul>
+                        <li>Registrar nuevos pagos</li>
+                        <li>Seleccionar cuentas pendientes</li>
+                        <li>Elegir forma de pago</li>
+                        <li>Ver ingresos del día</li>
+                        <li>Imprimir recibos de pago</li>
+                    </ul>
+                    <a href="@Url.Action("Index", "Pagos")" class="btn btn-success btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ir a Gestión de Pagos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo Pago -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-primary">
+                            <i class="mdi mdi-cash-multiple" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Nuevo Pago</h4>
+                    <p class="text-muted">
+                        Acceso directo para registrar un nuevo pago. Selecciona el alumno,
+                        las cuentas a pagar y la forma de pago de manera rápida y sencilla.
+                    </p>
+                    <p><strong>Proceso de registro:</strong></p>
+                    <ul>
+                        <li>Buscar y seleccionar alumno</li>
+                        <li>Ver cuentas pendientes</li>
+                        <li>Seleccionar cuentas a pagar</li>
+                        <li>Ingresar forma de pago</li>
+                        <li>Generar recibo automático</li>
+                    </ul>
+                    <a href="@Url.Action("NuevoPago", "Pagos")" class="btn btn-primary btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Registrar Nuevo Pago
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagos del Día -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-info">
+                            <i class="mdi mdi-calendar-today" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Pagos del Día</h4>
+                    <p class="text-muted">
+                        Consulta todos los pagos registrados en el día actual. Útil para
+                        realizar arqueos de caja y cuadres diarios.
+                    </p>
+                    <p><strong>Información disponible:</strong></p>
+                    <ul>
+                        <li>Listado de pagos del día</li>
+                        <li>Total de ingresos</li>
+                        <li>Desglose por forma de pago</li>
+                        <li>Usuario que registró el pago</li>
+                        <li>Reimprimir recibos</li>
+                    </ul>
+                    <a href="@Url.Action("ListaDia", "Pagos")" class="btn btn-info btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Pagos del Día
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Histórico de Pagos -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-secondary">
+                            <i class="mdi mdi-history" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Histórico de Pagos</h4>
+                    <p class="text-muted">
+                        Accede al historial completo de todos los pagos registrados en el sistema,
+                        con opciones de búsqueda y filtrado avanzadas.
+                    </p>
+                    <p><strong>Opciones de consulta:</strong></p>
+                    <ul>
+                        <li>Buscar por alumno</li>
+                        <li>Filtrar por rango de fechas</li>
+                        <li>Filtrar por forma de pago</li>
+                        <li>Exportar reportes</li>
+                        <li>Ver detalles de cada pago</li>
+                    </ul>
+                    <a href="@Url.Action("HistoricoPagos", "CuentasCobrar")" class="btn btn-secondary btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Histórico
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección: Reportes Financieros -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">
+                <span class="badge badge-primary" style="font-size: 1.5rem;">4</span>
+                Reportes Financieros
+            </h2>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <!-- Dashboard Financiero -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-primary">
+                            <i class="mdi mdi-view-dashboard" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Dashboard Financiero</h4>
+                    <p class="text-muted">
+                        Vista general del estado financiero del colegio con indicadores clave,
+                        gráficas y métricas importantes en tiempo real.
+                    </p>
+                    <p><strong>Indicadores incluidos:</strong></p>
+                    <ul>
+                        <li>Ingresos totales del mes</li>
+                        <li>Cuentas por cobrar pendientes</li>
+                        <li>Índice de morosidad</li>
+                        <li>Gráficas de tendencias</li>
+                        <li>Comparativas mensuales</li>
+                    </ul>
+                    <a href="@Url.Action("DashboardFinanciero", "ReportesFinancieros")" class="btn btn-primary btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reporte de Morosos -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-danger">
+                            <i class="mdi mdi-alert-circle" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Reporte de Morosos</h4>
+                    <p class="text-muted">
+                        Genera reportes detallados de los alumnos con pagos vencidos,
+                        incluyendo montos adeudados y días de mora.
+                    </p>
+                    <p><strong>Información del reporte:</strong></p>
+                    <ul>
+                        <li>Listado de alumnos morosos</li>
+                        <li>Monto total adeudado</li>
+                        <li>Días de atraso</li>
+                        <li>Contacto de encargados</li>
+                        <li>Exportar a Excel/PDF</li>
+                    </ul>
+                    <a href="@Url.Action("Morosos", "ReportesFinancieros")" class="btn btn-danger btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Reporte de Morosos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ingresos por Mes -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-success">
+                            <i class="mdi mdi-chart-bar" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Ingresos por Mes</h4>
+                    <p class="text-muted">
+                        Analiza los ingresos mensuales del colegio con desglose por concepto de pago,
+                        forma de pago y comparativas con otros períodos.
+                    </p>
+                    <p><strong>Análisis disponibles:</strong></p>
+                    <ul>
+                        <li>Total de ingresos mensuales</li>
+                        <li>Desglose por concepto</li>
+                        <li>Formas de pago utilizadas</li>
+                        <li>Gráficas comparativas</li>
+                        <li>Exportar reportes</li>
+                    </ul>
+                    <a href="@Url.Action("IngresosMes", "ReportesFinancieros")" class="btn btn-success btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Ingresos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proyección de Cobros -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-info">
+                            <i class="mdi mdi-chart-line" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Proyección de Cobros</h4>
+                    <p class="text-muted">
+                        Visualiza la proyección de cobros futuros basada en las cuentas por cobrar
+                        pendientes y sus fechas de vencimiento.
+                    </p>
+                    <p><strong>Datos proyectados:</strong></p>
+                    <ul>
+                        <li>Cobros esperados por mes</li>
+                        <li>Montos por vencer</li>
+                        <li>Cuentas próximas a vencer</li>
+                        <li>Flujo de efectivo proyectado</li>
+                        <li>Alertas de vencimiento</li>
+                    </ul>
+                    <a href="@Url.Action("ProyeccionCobros", "ReportesFinancieros")" class="btn btn-info btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Proyección
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparativa Anual -->
+        <div class="col-md-6 mb-3">
+            <div class="card guia-card h-100">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <div class="guia-icon bg-warning">
+                            <i class="mdi mdi-chart-timeline" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Comparativa Anual</h4>
+                    <p class="text-muted">
+                        Compara el desempeño financiero entre diferentes años académicos para
+                        identificar tendencias y patrones de ingresos.
+                    </p>
+                    <p><strong>Comparativas incluidas:</strong></p>
+                    <ul>
+                        <li>Ingresos año vs año</li>
+                        <li>Crecimiento porcentual</li>
+                        <li>Análisis por concepto</li>
+                        <li>Gráficas evolutivas</li>
+                        <li>Indicadores de desempeño</li>
+                    </ul>
+                    <a href="@Url.Action("ComparativaAnual", "ReportesFinancieros")" class="btn btn-warning text-white btn-block">
+                        <i class="mdi mdi-arrow-right"></i> Ver Comparativa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección: Flujo de Trabajo Recomendado -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="mdi mdi-lightbulb-on text-warning"></i>
+                        Flujo de Trabajo Recomendado
+                    </h3>
+                    <ol class="flujo-trabajo">
+                        <li>
+                            <strong>Configuración inicial:</strong>
+                            Crea todos los conceptos de pago que utilizará el colegio (mensualidades, inscripción, etc.)
+                        </li>
+                        <li>
+                            <strong>Generación de cargos:</strong>
+                            Utiliza la opción de "Cargos Masivos" para generar las cuentas por cobrar de todos los alumnos al inicio del período
+                        </li>
+                        <li>
+                            <strong>Registro de pagos:</strong>
+                            Conforme los encargados realicen pagos, regístralos en "Gestión de Pagos" o "Nuevo Pago"
+                        </li>
+                        <li>
+                            <strong>Seguimiento diario:</strong>
+                            Consulta "Pagos del Día" para realizar arqueos de caja y verificar los ingresos diarios
+                        </li>
+                        <li>
+                            <strong>Control de morosidad:</strong>
+                            Revisa periódicamente "Deudores" y "Reporte de Morosos" para dar seguimiento a pagos atrasados
+                        </li>
+                        <li>
+                            <strong>Análisis financiero:</strong>
+                            Utiliza el "Dashboard Financiero" y los reportes para monitorear la salud financiera del colegio
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consejos Útiles -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="mdi mdi-star text-warning"></i>
+                        Consejos Útiles
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul>
+                                <li>Registra los pagos inmediatamente para mantener la información actualizada</li>
+                                <li>Genera recibos para todos los pagos como comprobante</li>
+                                <li>Revisa diariamente los pagos del día para detectar inconsistencias</li>
+                                <li>Utiliza el estado de cuenta para resolver consultas de encargados</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li>Exporta reportes regularmente para respaldo de información</li>
+                                <li>Programa recordatorios de pago para reducir la morosidad</li>
+                                <li>Aplica descuentos solo con justificación documentada</li>
+                                <li>Consulta el dashboard financiero semanalmente para tomar decisiones informadas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón de Ayuda -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h4>¿Necesitas más ayuda?</h4>
+                    <p>Si tienes dudas o necesitas asistencia adicional, contacta al administrador del sistema.</p>
+                    <button class="btn btn-light" onclick="window.print()">
+                        <i class="mdi mdi-printer"></i> Imprimir esta Guía
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .guia-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e3e6f0;
+        }
+
+        .guia-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .guia-icon {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .flujo-trabajo {
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+
+        .flujo-trabajo li {
+            margin-bottom: 15px;
+            padding-left: 10px;
+        }
+
+        .flujo-trabajo strong {
+            color: #4e73df;
+        }
+
+        .badge {
+            padding: 10px 15px;
+        }
+
+        .card-title {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .text-muted {
+            font-size: 0.95rem;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        @@media print {
+            .breadcrumb-wrapper-content,
+            .btn {
+                display: none;
+            }
+
+            .guia-card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+}
