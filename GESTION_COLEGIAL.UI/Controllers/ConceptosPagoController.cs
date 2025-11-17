@@ -32,6 +32,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción asincrónica para obtener la lista de conceptos de pago para dropdown.
+        /// </summary>
+        public async Task<ActionResult> DropdownAsync()
+        {
+            var result = await conceptosPagoService.ListAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
         /// Acción asincrónica para obtener los detalles de un concepto de pago específico.
         /// </summary>
         public async Task<ActionResult> FindAsync(int id)

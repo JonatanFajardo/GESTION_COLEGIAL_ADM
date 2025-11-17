@@ -156,6 +156,7 @@
     <Compile Include="Models\finansas\CuentaCobrarExistViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarFindViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarListViewModel.cs" />
+    <Compile Include="Models\finansas\CuentaCobrarViewModel.cs" />
     <Compile Include="Models\finansas\DescuentoAplicadoDetailViewModel.cs" />
     <Compile Include="Models\finansas\DescuentoAplicadoDropdownViewModel.cs" />
     <Compile Include="Models\finansas\DescuentoAplicadoExistViewModel.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Services\AulasService.cs" />
     <Compile Include="Services\CargosService.cs" />
     <Compile Include="Services\ConceptosPagoService.cs" />
+    <Compile Include="Services\CuentasCobrarService.cs" />
     <Compile Include="Services\CursosNivelesService.cs" />
     <Compile Include="Services\CursosService.cs" />
     <Compile Include="Services\DescuentosService.cs" />
@@ -255,6 +257,7 @@
     <Compile Include="Services\ParcialesService.cs" />
     <Compile Include="Services\PagosService.cs" />
     <Compile Include="Services\ParentescosService.cs" />
+    <Compile Include="Services\ReportesFinancierosService.cs" />
     <Compile Include="Services\SeccionesService.cs" />
     <Compile Include="Services\SemestresService.cs" />
     <Compile Include="Services\TarifaService.cs" />

@@ -32,6 +32,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción para mostrar la vista de pagos del día.
+        /// </summary>
+        public ActionResult ListaDia()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Acción asincrónica para obtener la lista de pagos.
         /// </summary>
         public async Task<ActionResult> ListAsync()
