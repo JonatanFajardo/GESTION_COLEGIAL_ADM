@@ -33,9 +33,41 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción para mostrar el estado de cuenta de un alumno.
         /// </summary>
-        public ActionResult EstadoCuenta(int alumnoId)
+        public ActionResult EstadoCuenta(int? alumnoId = null)
         {
-            ViewBag.AlumnoId = alumnoId;
+            ViewBag.AlumnoId = alumnoId ?? 0;
+            return View();
+        }
+
+        /// <summary>
+        /// Acción para mostrar la vista de cargos pendientes.
+        /// </summary>
+        public ActionResult CargosPendientes()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Acción para mostrar la vista de cargos masivos.
+        /// </summary>
+        public ActionResult CargosMasivos()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Acción para mostrar la vista de histórico de pagos.
+        /// </summary>
+        public ActionResult HistoricoPagos()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Acción para mostrar la vista de moratorias.
+        /// </summary>
+        public ActionResult Moratorias()
+        {
             return View();
         }
 
@@ -46,6 +78,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             var result = await cuentasCobrarService.ListAsync();
             return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Acción asincrónica para obtener los detalles de una cuenta por cobrar específica.
+        /// </summary>
+        public async Task<ActionResult> DetailAsync(int id)
+        {
+            var result = await cuentasCobrarService.Find(id);
+            return AjaxResult(result, true);
         }
 
         /// <summary>
