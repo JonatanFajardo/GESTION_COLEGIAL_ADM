@@ -96,6 +96,18 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		}
 
 		/// <summary>
+		/// Busca un alumno por su número de identidad de forma asíncrona.
+		/// </summary>
+		/// <param name="identidad">Número de identidad del alumno.</param>
+		/// <returns>El resultado en formato Ajax con los datos del alumno.</returns>
+		[HttpGet]
+		public async Task<ActionResult> FindByIdentidadAsync(string identidad)
+		{
+			var result = await alumnosService.FindByIdentidad(identidad);
+			return AjaxResult(result);
+		}
+
+		/// <summary>
 		/// Guarda los cambios realizados en un alumno.
 		/// </summary>
 		/// <param name="model">El modelo del alumno.</param>

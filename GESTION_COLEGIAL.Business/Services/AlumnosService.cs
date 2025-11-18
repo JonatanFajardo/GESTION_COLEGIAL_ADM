@@ -2,6 +2,7 @@
 using GESTION_COLEGIAL.Business.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.Business.Services
@@ -32,6 +33,18 @@ namespace GESTION_COLEGIAL.Business.Services
             string url = "Alumnos/FindAsync";
             AlumnoViewModel apiUrl = await ApiRequests.FindAsync<AlumnoViewModel>(url, id);
             return apiUrl;
+        }
+
+        /// <summary>
+        /// Busca un alumno por su número de identidad de forma asíncrona.
+        /// </summary>
+        /// <param name="identidad">El número de identidad del alumno.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el alumno encontrado.</returns>
+        public async Task<AlumnoViewModel> FindByIdentidad(string identidad)
+        {
+            string url = "Alumnos/FindByIdentidadAsync";
+            AlumnoViewModel result = await ApiRequests.ExistAsync<AlumnoViewModel>(url, identidad);
+            return result;
         }
 
         /// <summary>
