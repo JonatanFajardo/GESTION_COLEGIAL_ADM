@@ -3,7 +3,20 @@
     "allow": [
       "Read(//c/Users/movie/Downloads/GC home/**)",
       "Bash(dir \"C:\\Users\\movie\\Downloads\\GC home\")",
-      "Bash(dir \"C:\\Users\\movie\\Documents\\GitHub\\GESTION_COLEGIAL_ADM\\GESTION_COLEGIAL.UI\\Content\\css\" /b)"
+      "Bash(dir \"C:\\Users\\movie\\Documents\\GitHub\\GESTION_COLEGIAL_ADM\\GESTION_COLEGIAL.UI\\Content\\css\" /b)",
+      "Bash(dir:*)",
+      "Read(//c/Users/movie/Downloads/form-gc/**)",
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/**)",
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet clean:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(findstr:*)",
+      "Bash(test:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(powershell:*)"
     ],
     "deny": [],
     "ask": []
