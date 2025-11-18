@@ -2275,7 +2275,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: $m-color_2 !important;
+  /*background-color: $m-color_2 !important;*/
 }
 
 .table > {
@@ -2287,12 +2287,8 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
     }
 
     thead > tr > th {
-        color: $primary;
-        background-color: $m-color_3;
-        font-weight: 700;
-        font-size: 13px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
+        color: black;
+        background-color: #f2efed;
     }
 
     tbody > tr > td {
