@@ -25,7 +25,7 @@ var NuevoPago = (function () {
                 goToStep(2);
                 loadConceptosAlumno();
             } else {
-                alertConfig.alert("Debe seleccionar un alumno", "warning");
+                toastr.warning("Debe seleccionar un alumno");
             }
         });
 
@@ -40,7 +40,7 @@ var NuevoPago = (function () {
                 goToStep(3);
                 updateDescuentoTotal();
             } else {
-                alertConfig.alert("Debe seleccionar al menos un concepto", "warning");
+                toastr.warning("Debe seleccionar al menos un concepto");
             }
         });
 
@@ -57,7 +57,7 @@ var NuevoPago = (function () {
                 goToStep(5);
                 showConfirmation();
             } else {
-                alertConfig.alert("Debe seleccionar una forma de pago", "warning");
+                toastr.warning("Debe seleccionar una forma de pago");
             }
         });
 
@@ -74,22 +74,21 @@ var NuevoPago = (function () {
     }
 
     function initializeAlumnoSearch() {
-        $("#alumno-search").autocomplete({
-            source: function(request, response) {
-                $.ajax({
-                    url: urls.urlBuscarAlumno,
-                    data: { term: request.term },
-                    success: function(data) {
-                        response(data);
-                    }
+        $("#btn-buscar-alumno").click(function() {
+            var identidad = $("#alumno-identidad-search").val();
+
+            if (!identidad) {
+                toastr.warning("Por favor ingrese el número de identidad del alumno");
+                return;
+            }
 
             if (identidad.length !== 13) {
-                toastr.warning("El n�mero de identidad debe tener 13 d�gitos");
+                toastr.warning("El número de identidad debe tener 13 dígitos");
                 return;
             }
 
             buscarAlumnoPorIdentidad(identidad);
-                });
+        });
 
         // Permitir buscar con Enter
         $("#alumno-identidad-search").keypress(function(e) {
@@ -98,7 +97,7 @@ var NuevoPago = (function () {
             }
         });
 
-        // Validar solo n�meros
+        // Validar solo números
         $("#alumno-identidad-search").on('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
@@ -112,14 +111,14 @@ var NuevoPago = (function () {
             beforeSend: function() {
                 $("#btn-buscar-alumno").prop("disabled", true).html('<i class="mdi mdi-loading mdi-spin"></i> Buscando...');
             },
-            minLength: 2,
-            select: function(event, ui) {
-                selectedAlumno = ui.item;
-                $("#alumno-nombre-selected").text(ui.item.label);
-                $("#alumno-info").show();
+            success: function(response) {
+                if (response && response.data && response.data.Alu_Id) {
+                    selectedAlumno = response.data;
+                    mostrarDatosAlumno(response.data);
+                    $("#alumno-info").show();
                     $("#btn-step1-next").prop("disabled", false);
                 } else {
-                    toastr.warning("No se encontr� ning�n alumno con el n�mero de identidad especificado");
+                    toastr.warning("No se encontró ningún alumno con el número de identidad especificado");
                     limpiarDatosAlumno();
                 }
             },
@@ -161,7 +160,7 @@ var NuevoPago = (function () {
         if (alumno.Per_Imagen) {
             $("#alumno-imagen").attr("src", "/Content/images/alumnos/" + alumno.Per_Imagen);
         } else {
-            // Imagen por defecto seg�n el sexo
+            // Imagen por defecto según el sexo
             var imagenDefault = alumno.Per_Sexo === 'M' ?
                 "/Content/images/default-male-avatar.png" :
                 "/Content/images/default-female-avatar.png";
@@ -187,9 +186,14 @@ var NuevoPago = (function () {
     function loadConceptosAlumno() {
         $.ajax({
             url: urls.urlConceptosAlumno,
-            data: { alumnoId: selectedAlumno.value },
+            data: { alumnoId: selectedAlumno.Alu_Id },
+            type: "GET",
+            beforeSend: function() {
+                $("#conceptos-tbody").html('<tr><td colspan="6" class="text-center"><i class="mdi mdi-loading mdi-spin"></i> Cargando conceptos...</td></tr>');
+            },
             success: function(response) {
-                if (response.success) {
+                console.log("Response conceptos:", response);
+                if (response && response.data && response.data.length > 0) {
                     renderConceptos(response.data);
                 } else {
                     toastr.info("No hay conceptos pendientes de pago para este alumno");
@@ -209,16 +213,16 @@ var NuevoPago = (function () {
         if (!conceptos || conceptos.length === 0) {
             html = '<tr><td colspan="6" class="text-center">No hay conceptos pendientes de pago</td></tr>';
         } else {
-        conceptos.forEach(function(concepto) {
-            html += "<tr>";
-            html += '<td><input type="checkbox" class="concepto-checkbox" data-concepto=\'' + JSON.stringify(concepto) + '\' /></td>';
-            html += "<td>" + concepto.conceptoPago + "</td>";
-            html += "<td>L. " + formatMoney(concepto.montoOriginal) + "</td>";
-            html += "<td>L. " + formatMoney(concepto.montoDescuento) + "</td>";
-            html += "<td>L. " + formatMoney(concepto.montoMora) + "</td>";
-            html += "<td>L. " + formatMoney(concepto.montoTotal) + "</td>";
-            html += "</tr>";
-        });
+            conceptos.forEach(function(concepto) {
+                html += "<tr>";
+                html += '<td><input type="checkbox" class="concepto-checkbox" data-concepto=\'' + JSON.stringify(concepto) + '\' /></td>';
+                html += "<td>" + concepto.ConceptoDescripcion + "</td>";
+                html += "<td>L. " + formatMoney(concepto.MontoOriginal) + "</td>";
+                html += "<td>L. " + formatMoney(concepto.MontoDescuento) + "</td>";
+                html += "<td>L. " + formatMoney(concepto.MontoMora) + "</td>";
+                html += "<td>L. " + formatMoney(concepto.MontoPendiente) + "</td>";
+                html += "</tr>";
+            });
         }
         $("#conceptos-tbody").html(html);
 
@@ -231,7 +235,7 @@ var NuevoPago = (function () {
         var subtotal = 0;
         $(".concepto-checkbox:checked").each(function() {
             var concepto = $(this).data("concepto");
-            subtotal += parseFloat(concepto.montoTotal);
+            subtotal += parseFloat(concepto.MontoPendiente);
         });
         $("#subtotal-conceptos").text(formatMoney(subtotal));
     }
@@ -268,7 +272,11 @@ var NuevoPago = (function () {
     }
 
     function showConfirmation() {
-        $("#confirm-alumno").text(selectedAlumno.label);
+        var nombreCompleto = selectedAlumno.Per_PrimerNombre + " " +
+                           selectedAlumno.Per_SegundoNombre + " " +
+                           selectedAlumno.Per_ApellidoPaterno + " " +
+                           selectedAlumno.Per_ApellidoMaterno;
+        $("#confirm-alumno").text(nombreCompleto);
         $("#confirm-conceptos").text(selectedConceptos.length + " concepto(s)");
         $("#confirm-forma-pago").text($("#forma-pago-select option:selected").text());
         $("#confirm-total").text($("#total-con-descuento").text());
@@ -276,7 +284,7 @@ var NuevoPago = (function () {
 
     function confirmarPago() {
         var pagoData = {
-            alumnoId: selectedAlumno.value,
+            alumnoId: selectedAlumno.Alu_Id,
             formaPagoId: $("#forma-pago-select").val(),
             numeroReferencia: $("#numero-referencia").val(),
             observaciones: $("#observaciones").val(),
@@ -292,10 +300,10 @@ var NuevoPago = (function () {
             contentType: "application/json",
             success: function(response) {
                 if (response.success) {
-                    alertConfig.alert("Pago registrado exitosamente", "success");
-                    window.location.href = "/Pagos/ListaDia";
+                    toastr.success("Pago registrado exitosamente");
+                    window.location.href = "/Pagos/Index";
                 } else {
-                    alertConfig.alert(response.message, "error");
+                    toastr.error(response.message || "Error al registrar el pago");
                 }
             },
             error: function() {
