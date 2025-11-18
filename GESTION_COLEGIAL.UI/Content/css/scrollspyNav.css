@@ -24,7 +24,9 @@
   background-color: #F7A400;
 }
 
-#card-home h1, h6, p {
+#card-home h1,
+#card-home h6,
+#card-home p {
   color: white;
 }
 

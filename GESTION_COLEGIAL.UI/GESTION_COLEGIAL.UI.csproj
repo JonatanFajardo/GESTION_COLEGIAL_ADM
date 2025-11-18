@@ -362,6 +362,7 @@
     <Content Include="Content\js\pages\modalidades.js" />
     <Content Include="Content\js\pages\niveleseducativos.js" />
     <Content Include="Content\js\pages\notas.js" />
+    <Content Include="Content\js\pages\nuevopago.js" />
     <Content Include="Content\js\pages\parciales.js" />
     <Content Include="Content\js\pages\parentescos.js" />
     <Content Include="Content\js\pages\personas.js" />
