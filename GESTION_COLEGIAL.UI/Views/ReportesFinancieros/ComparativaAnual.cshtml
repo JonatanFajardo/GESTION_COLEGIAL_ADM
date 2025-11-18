@@ -1,0 +1,132 @@
+@{
+    ViewBag.Title = "Comparativa Anual";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Módulo Financiero</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Reportes Financieros</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Comparativa Anual</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <!-- Filtros -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="anio-inicio">Año Inicio</label>
+                        <input type="number" class="form-control" id="anio-inicio" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="anio-fin">Año Fin</label>
+                        <input type="number" class="form-control" id="anio-fin" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="concepto-filtro">Filtrar por Concepto</label>
+                        <select class="form-control" id="concepto-filtro">
+                            <option value="">-- Todos --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" id="btn-generar">
+                        <i class="mdi mdi-file-chart"></i> Generar Comparativa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfico Comparativo -->
+    <div class="card mb-3">
+        <div class="card-header" style="background-color:white;">
+            <h4>Comparativa Mensual</h4>
+        </div>
+        <div class="card-body">
+            <canvas id="chart-comparativa" height="80"></canvas>
+        </div>
+    </div>
+
+    <!-- Tabla Comparativa -->
+    <div class="card mb-3">
+        <div class="card-header" style="background-color:white;">
+            <h4>Resumen Comparativo</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Año</th>
+                        <th>Ene</th>
+                        <th>Feb</th>
+                        <th>Mar</th>
+                        <th>Abr</th>
+                        <th>May</th>
+                        <th>Jun</th>
+                        <th>Jul</th>
+                        <th>Ago</th>
+                        <th>Sep</th>
+                        <th>Oct</th>
+                        <th>Nov</th>
+                        <th>Dic</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-comparativa">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Crecimiento</h5>
+                    <h3 id="crecimiento">0%</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Mejor Mes</h5>
+                    <h3 id="mejor-mes">-</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Peor Mes</h5>
+                    <h3 id="peor-mes">-</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/Content/js/pages/comparativaanual.js"></script>
+    <script>
+        ComparativaAnual.init({
+            urlReporte: "@Url.Action("ComparativaAnualAsync", "ReportesFinancieros")",
+            urlConceptos: "@Url.Action("DropdownAsync", "ConceptosPago")"
+        });
+    </script>
+}

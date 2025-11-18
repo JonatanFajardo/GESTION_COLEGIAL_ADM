@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Scripts/entidadesfinansas.cs
+/Scripts/SP_Login_Authentication.sql
+/Scripts/SP_Login_Direct.sql
+/check-password.ps1
+/LOGIN_DOCUMENTATION.md
+/nul
+/test-api.ps1

@@ -109,6 +109,47 @@
                     <li>@Html.ActionLink("Semestres", "Index", "Semestres")</li>
                 </ul>
             </li>
+
+            <li class="menu">
+                <a href="#Financiero" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="h6">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign nav-icon"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        <span>Financiero</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled" id="Financiero" data-parent="#accordionExample">
+                    <li style="background-color: #f0f9ff; border-left: 3px solid #3b82f6;">
+                        @Html.ActionLink("📘 Guía de Inicio", "Index", "GuiaFinanciera", null, new { style = "font-weight: 600; color: #3b82f6;" })
+                    </li>
+                    <li>@Html.ActionLink("Dashboard Financiero", "DashboardFinanciero", "ReportesFinancieros")</li>
+                    <li class="submenu-header">Configuración</li>
+                    <li>@Html.ActionLink("Conceptos de Pago", "Index", "ConceptosPago")</li>
+                    <li>@Html.ActionLink("Formas de Pago", "Index", "FormasPago")</li>
+                    <li>@Html.ActionLink("Descuentos", "Index", "Descuentos")</li>
+                    <li>@Html.ActionLink("Estados de Pago", "Index", "EstadosPago")</li>
+                    <li>@Html.ActionLink("Tarifas", "Index", "Tarifas")</li>
+                    <li class="submenu-header">Pagos</li>
+                    <li>@Html.ActionLink("Gestión de Pagos", "Index", "Pagos")</li>
+                    <li>@Html.ActionLink("Nuevo Pago", "NuevoPago", "Pagos")</li>
+                    <li>@Html.ActionLink("Pagos del Día", "ListaDia", "Pagos")</li>
+                    <li class="submenu-header">Cuentas por Cobrar</li>
+                    <li>@Html.ActionLink("Cuentas por Cobrar", "Index", "CuentasCobrar")</li>
+                    <li>@Html.ActionLink("Estado de Cuenta", "EstadoCuenta", "CuentasCobrar")</li>
+                    <li>@Html.ActionLink("Cargos Pendientes", "CargosPendientes", "CuentasCobrar")</li>
+                    <li>@Html.ActionLink("Cargos Masivos", "CargosMasivos", "CuentasCobrar")</li>
+                    <li>@Html.ActionLink("Deudores", "Deudores", "CuentasCobrar")</li>
+                    <li>@Html.ActionLink("Moratorias", "Moratorias", "CuentasCobrar")</li>
+                    <li>@Html.ActionLink("Histórico de Pagos", "HistoricoPagos", "CuentasCobrar")</li>
+                    <li class="submenu-header">Reportes</li>
+                    <li>@Html.ActionLink("Ingresos del Mes", "IngresosMes", "ReportesFinancieros")</li>
+                    <li>@Html.ActionLink("Comparativa Anual", "ComparativaAnual", "ReportesFinancieros")</li>
+                    <li>@Html.ActionLink("Morosos", "Morosos", "ReportesFinancieros")</li>
+                    <li>@Html.ActionLink("Proyección de Cobros", "ProyeccionCobros", "ReportesFinancieros")</li>
+                </ul>
+            </li>
         </ul>
     </nav>
 </div>

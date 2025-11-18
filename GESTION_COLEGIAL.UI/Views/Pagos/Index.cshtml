@@ -63,6 +63,78 @@
     </div>
 </div>
 
+<!-- Modal Nuevo Pago -->
+<div class="modal fade" id="pago-modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registrar Pago</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("CreateAsync", "Pagos", new AjaxOptions
+            {
+                HttpMethod = "Post",
+                OnBegin = "Pagos.begin",
+                OnComplete = "Pagos.complete",
+                OnSuccess = "Pagos.success"
+            }))
+            {
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Alumno *</label>
+                                <select class="form-control" id="alumno-select" name="Alu_Id" required>
+                                    <option value="">Seleccione un alumno</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Encargado</label>
+                                <select class="form-control" id="encargado-select" name="Enc_Id">
+                                    <option value="">Seleccione encargado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Forma de Pago *</label>
+                                <select class="form-control" id="forma-pago-select" name="Fpa_Id" required>
+                                    <option value="">Seleccione forma de pago</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Número de Referencia</label>
+                                <input type="text" class="form-control" name="Pag_NumeroReferencia" placeholder="Núm. cheque, transferencia, etc.">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h5>Cuentas Pendientes</h5>
+                    <div id="cuentas-pendientes-container"></div>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Total a Pagar: <span class="text-success" id="total-pagar">L 0.00</span></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i class="mdi mdi-cash-register"></i> Registrar Pago</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script src="~/Content/js/pages/pagos.js"></script>
 }
