@@ -4,6 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles {
+    <link href="~/Content/css/form-encargados.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/Content/js/form-encargados.js"></script>
+}
+
 
 <div class="breadcrumb-wrapper-content ">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
@@ -21,21 +29,27 @@
     @using (Html.BeginForm("Save", "Cursos", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
 
-        <div class="card">
+        <div class="card form-encargados-card">
             <div class="card-header">
-                <div class="row">
-                    <div class="col-md-12 col-lg-9">
-                        <h3>Registro de Cursos</h3>
+                <div class="header-content">
+                    <div>
+                        <h3 class="card-title-modern">Registro de Cursos</h3>
+                        <p class="card-subtitle-modern">Configure el curso y sus opciones</p>
                     </div>
-                    @* Columna Es Activo *@
-                    <div class="col-3 d-flex justify-content-end">
-                        <div class="custom-control custom-checkbox">
-                            <label class="control-label" for="customCheck1">Estado</label>
-                            @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @class = "" } })
-                        </div>
+                    <div class="status-container">
+                        <span class="badge-status active" id="statusBadge">
+                            <span class="badge-dot active" id="statusDot"></span>
+                            <span id="statusText">Estado Activo</span>
+                        </span>
+                        <label class="switch">
+                            @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @id = "statusToggle", @checked = "checked" } })
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
             </div>
+
+            <div class="separator"></div>
 
             <div class="card-body">
                 @Html.HiddenFor(model => model.Cur_Id)
@@ -114,8 +128,8 @@
                                                                             @* Columna Nivel *@
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group">
-                                                                                    @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
-                                                                                    @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
+                                                                                    @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "form-label-icon" })
+                                                                                    @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control form-input-modern", @id = "Niv_Id" })
                                                                                     @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
                                                                                 </div>
                                                                             </div>
@@ -218,24 +232,26 @@
                                     @* Columna Nivel *@
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "control-label" })
-                                            @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control", @id = "Niv_Id" })
+                                            @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "form-label-icon" })
+                                            @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control form-input-modern", @id = "Niv_Id" })
                                             @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     @* Columna Curso nombre *@
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Cur_Nombre, "Curso nombre", htmlAttributes: new { @class = "control-label" })
-                                            @Html.EditorFor(model => model.Cur_Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.LabelFor(model => model.Cur_Nombre, "Curso nombre", htmlAttributes: new { @class = "form-label-icon" })
+                                            @Html.EditorFor(model => model.Cur_Nombre, new { htmlAttributes = new { @class = "form-control form-input-modern" } })
                                             @Html.ValidationMessageFor(model => model.Cur_Nombre, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col ">
-                                    <button type="submit" class="btn btn-primary float-right m-1"><i class="mdi mdi-content-save"></i> Guardar</button>
-                                    @Html.ActionLink("Cancelar", "Index", "Cursos", null, new { @class = "btn btn-primary-outline float-right m-1" })
+                                <div class="form-actions-modern">
+                                    @Html.ActionLink("Cancelar", "Index", "Cursos", null, new { @class = "btn btn-secondary-modern", @id = "cancelBtn" })
+                                    <button type="submit" class="btn btn-primary-modern">
+                                        <i class="mdi mdi-content-save"></i> Guardar
+                                    </button>
                                 </div>
                             </div>
                         </div>
