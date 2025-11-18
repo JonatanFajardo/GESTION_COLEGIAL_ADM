@@ -21,7 +21,7 @@
 .navbar {
     padding: 0;
     min-height: 50px;
-    background: $primary;
+    background: linear-gradient(90deg, oklch(0.78 0.18 70) 0%, oklch(0.74 0.21 55) 50%, oklch(0.72 0.22 40) 100% );
     -webkit-transition: .3s ease all;
     transition: .3s ease all;
     -webkit-box-shadow: 0 4px 6px 0 rgba(85, 85, 85, 0.08), 0 1px 20px 0 rgba(0, 0, 0, 0.07), 0px 1px 11px 0px rgba(0, 0, 0, 0.07);
@@ -36,7 +36,7 @@
 
 
 .sidebar-wrapper {
-    width: 212px;
+    width: $sidebar-width;
     position: fixed;
     z-index: 1028;
     border-radius: 6px;
@@ -53,7 +53,7 @@
 }
 
 .sidebar-theme {
-    background: $secondary;
+    background: $sidebar-bg;
 }
 
 .sidebar-closed {
@@ -74,8 +74,14 @@
 
 #sidebar {
     a{
-        color:white;
+        color: $sidebar-text;
     }
+  .nav-icon {
+    width: $sidebar-icon-size;
+    height: $sidebar-icon-size;
+    flex-shrink: 0;
+    margin-right: 10px;
+  }
   .navbar-brand .img-fluid {
     display: inline;
     width: 44px;
@@ -125,7 +131,7 @@
             height: calc(100vh - 107px) !important;
             margin-right: 0;
             padding-right: 22px;
-            border-right: 1px solid #e0e6ed;
+            border-right: 1px solid $sidebar-border;
         }
     }
 
@@ -163,13 +169,15 @@
                     display: flex;
                     justify-content: space-between;
                     cursor: pointer;
-                    font-size: 13px;
-                    color: $text_1_sidebar;
-                    padding: 11px 14px;
-                    transition: .600s;
+                    font-size: 16px;
+                    color: $sidebar-text;
+                    padding: $sidebar-item-padding-y $sidebar-item-padding-x;
+                    transition: .300s ease;
                     margin-bottom: 4px;
                     font-weight: 600;
-                    letter-spacing: 1px;
+                    letter-spacing: 0;
+                    border-radius: $sidebar-radius;
+                    background: transparent;
 
                     > div {
                         align-self: center;
@@ -183,62 +191,49 @@
                 > {
                     .dropdown-toggle {
                         svg {
-                            color: #506690;
+                            color: #94a3b8; // slate-400 for icons
                             margin-right: 10px;
                             vertical-align: middle;
-                            width: 20px;
-                            height: 20px;
+                            width: $sidebar-icon-size;
+                            height: $sidebar-icon-size;
                             stroke-width: 1.6;
                         }
 
                         &[data-active="true"] {
-                            background: #fff;
-                            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-                            border-radius: 6px;
-                            color: $primary;
+                            background: $sidebar-active-bg;
+                            border-radius: $sidebar-radius;
+                            color: $white;
 
                             svg {
-                                color: $primary;
-                                fill: #e0e6ed;
-                            }
-
-                            &:hover svg, span {
-                                color: $primary;
+                                color: $white;
+                                fill: transparent;
                             }
                         }
 
                         &:hover, &.dropdown-toggle:not([data-active="true"]):not([aria-expanded="true"]):hover {
-                            background: $m-color_2;
-                            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-                            border-radius: 6px;
+                            background: $sidebar-hover-bg;
+                            border-radius: $sidebar-radius;
+                            color: $white;
                         }
 
                         &[aria-expanded="true"]:not([data-active="true"]) {
-                            background: $m-color_2;
-                            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-                            border-radius: 6px;
-                            color: $primary;
+                            background: $sidebar-hover-bg;
+                            border-radius: $sidebar-radius;
+                            color: $white;
                         }
 
                         &:hover svg {
-                            color: #030305;
+                            color: $white;
                         }
 
                         &[aria-expanded="true"]:not([data-active="true"]) svg {
-                            color: #030305;
-                            color: #506690;
+                            color: $white;
                         }
 
                         svg.feather-chevron-right {
                             vertical-align: middle;
                             margin-right: 0;
                             width: 15px;
-                        }
-
-                        &[data-active="true"] svg {
-                            &.flaticon-right-arrow, &.flaticon-down-arrow {
-                                background-color: transparent;
-                            }
                         }
                     }
 
@@ -253,11 +248,12 @@
             position: relative;
             display: flex;
             justify-content: space-between;
-            padding: 10px 12px 10px 48px;
-            padding-left: 24px;
-            margin-left: 36px;
-            font-size: 13px;
-            color: white;
+            padding: $sidebar-item-padding-y $sidebar-item-padding-x;
+            margin-left: 8px;
+            font-size: 16px;
+            color: $sidebar-text;
+            border-radius: $sidebar-radius;
+            transition: .200s ease;
         }
 
         li.menu ul.submenu > li a:before {
@@ -266,26 +262,27 @@
             position: absolute;
             height: 3px;
             width: 3px;
-            top: 17.5px;
+            top: 50%;
+            transform: translateY(-50%);
             left: 13px;
             border-radius: 50%;
         }
 
         ul.submenu > li {
             &.active a {
-                color: $text_2;
-                border-top-left-radius: 10px;
-                border-bottom-left-radius: 10px;
+                color: $white;
+                background: $sidebar-active-bg;
+                border-radius: $sidebar-radius;
                 font-weight: 600;
             }
 
             a.dropdown-toggle {
-                padding: 10px 15px 10px 24px;
+                padding: $sidebar-item-padding-y $sidebar-item-padding-x;
             }
         }
 
         li.menu ul.submenu > li.active a:before {
-            background-color: $text_2;
+            background-color: $sidebar-accent;
         }
 
         ul.submenu {
@@ -296,10 +293,11 @@
 
                 a {
                     &:hover {
-                        color: $text_2;
+                        color: $white;
+                        background: $sidebar-hover-bg;
 
                         &:before {
-                            background-color: $text_2 !important;
+                            background-color: $sidebar-accent !important;
                         }
                     }
 
@@ -313,16 +311,17 @@
             li > {
                 [data-active="true"] {
                     i {
-                        color: $text_2;
+                        color: $sidebar-accent;
                     }
 
                     &:before {
-                        background-color: $text_2 !important;
+                        background-color: $sidebar-accent !important;
                     }
                 }
 
                 a[data-active="true"] {
-                    color: $text_2;
+                    color: $white;
+                    background: $sidebar-active-bg;
                 }
             }
 
@@ -337,7 +336,7 @@
                 }
 
                 &.active a {
-                    color: #805dca;
+                    color: $white;
                 }
 
                 a {
@@ -351,11 +350,20 @@
                 }
 
                 &.active a:before {
-                    background-color: $text_2;
+                    background-color: $sidebar-accent;
                 }
             }
         }
     }
+}
+
+// Sidebar heading (menu section title) to reflect mockup header style
+#sidebar .menu-heading .heading {
+  padding: 24px $sidebar-item-padding-x;
+  border-bottom: 1px solid $sidebar-border;
+  color: $white;
+
+  svg { color: $sidebar-text; }
 }
 
 .overlay {

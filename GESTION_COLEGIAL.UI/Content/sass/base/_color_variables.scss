@@ -52,3 +52,17 @@ $text_2_sidebar: #fff;
 
 
 $body-color: $m-color_19;
+
+// Sidebar (GC Home mockup) tokens
+// Keeping these scoped to the sidebar to avoid global palette shifts
+$sidebar-bg: #1e293b;           // slate-800
+$sidebar-border: #334155;       // slate-700
+$sidebar-text: #cbd5e1;         // slate-300
+$sidebar-hover-bg: rgba(51,65,85,0.5);
+$sidebar-active-bg: #334155;    // slate-700
+$sidebar-width: 256px;
+$sidebar-radius: 8px;
+$sidebar-item-padding-y: 12px;
+$sidebar-item-padding-x: 16px;
+$sidebar-icon-size: 20px;
+$sidebar-accent: #fb923c;       // orange-400 (mockup highlight)
