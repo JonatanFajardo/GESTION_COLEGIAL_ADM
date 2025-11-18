@@ -1,0 +1,104 @@
+@model GESTION_COLEGIAL.Business.Models.CuentaCobrarViewModel
+@{
+    ViewBag.Title = "Generar Cargos Masivos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Módulo Financiero</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Cuentas por Cobrar</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Generar Cargos Masivos</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <div class="card">
+        <div class="card-header" style="background-color:white;">
+            <h3>Generar cargos masivos</h3>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("GenerarCargosMasivosAsync", "CuentasCobrar", FormMethod.Post, new { @id = "form-cargos-masivos" }))
+            {
+                <div class="form-row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="anio" class="control-label">Año</label>
+                            <input type="number" class="form-control" id="anio" name="anio" required />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="nivelId" class="control-label">Nivel Educativo</label>
+                            <select class="form-control" id="nivelId" name="nivelId">
+                                <option value="">-- Todos --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="cursoId" class="control-label">Curso</label>
+                            <select class="form-control" id="cursoId" name="cursoId">
+                                <option value="">-- Todos --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="seccionId" class="control-label">Sección</label>
+                            <select class="form-control" id="seccionId" name="seccionId">
+                                <option value="">-- Todas --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Conceptos de Pago</label>
+                            <div id="conceptos-list" class="border p-3" style="max-height: 300px; overflow-y: auto;">
+                                <!-- Se llenará dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-info" id="btn-previsualizar">
+                            <i class="mdi mdi-eye"></i> Previsualizar
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btn-generar">
+                            <i class="mdi mdi-check-circle"></i> Generar Cargos
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Panel de previsualización -->
+    <div class="card mt-3" id="panel-previsualizacion" style="display:none;">
+        <div class="card-header" style="background-color:white;">
+            <h4>Previsualización de alumnos afectados</h4>
+        </div>
+        <div class="card-body">
+            <div id="lista-alumnos"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/cargosmasivos.js"></script>
+    <script>
+        CargosMasivos.init({
+            urlConceptos: "@Url.Action("DropdownAsync", "ConceptosPago")",
+            urlNiveles: "@Url.Action("DropdownAsync", "NivelesEducativos")",
+            urlCursos: "@Url.Action("DropdownAsync", "Cursos")",
+            urlSecciones: "@Url.Action("DropdownAsync", "Secciones")",
+            urlPrevisualizar: "@Url.Action("PrevisualizarCargosAsync", "CuentasCobrar")"
+        });
+    </script>
+}

@@ -471,3 +471,49 @@
     font-size: 10px !important;
   }
 }
+
+/* ==================================
+   Estilos para Sidebar
+   ================================== */
+
+/* Submenu headers */
+#sidebar ul.menu-categories .submenu .submenu-header {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px 16px 8px 16px;
+  margin-top: 8px;
+  pointer-events: none;
+  border-top: 1px solid #334155;
+}
+
+#sidebar ul.menu-categories .submenu .submenu-header:first-child {
+  border-top: none;
+  margin-top: 0;
+}
+
+/* Asegurar que el scroll funcione en el sidebar */
+#sidebar ul.menu-categories {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Estilos para la scrollbar en navegadores webkit */
+#sidebar ul.menu-categories::-webkit-scrollbar {
+  width: 6px;
+}
+
+#sidebar ul.menu-categories::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+#sidebar ul.menu-categories::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 3px;
+}
+
+#sidebar ul.menu-categories::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}

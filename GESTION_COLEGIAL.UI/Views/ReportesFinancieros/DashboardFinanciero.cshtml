@@ -1,0 +1,124 @@
+@{
+    ViewBag.Title = "Dashboard Financiero";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="#">Financiero</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Dashboard Financiero</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <!-- Cards Resumen -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Ingresos del Mes</h5>
+                    <h2 class="text-success" id="ingresos-mes">L 0.00</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Pendiente de Cobro</h5>
+                    <h2 class="text-warning" id="pendiente-cobro">L 0.00</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Cuentas Vencidas</h5>
+                    <h2 class="text-danger" id="cuentas-vencidas">L 0.00</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Morosos</h5>
+                    <h2 class="text-danger" id="total-morosos">0</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Ingresos Últimos 6 Meses</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="ingresos-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Proyección vs Realizado</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="proyeccion-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tablas -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-9"><h4>Alumnos Morosos</h4></div>
+                        <div class="col-md-3">
+                            <a href="@Url.Action("Morosos")" class="btn btn-danger float-right">
+                                Ver Todos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="morosos-table">
+                        <thead>
+                            <tr>
+                                <th>Alumno</th>
+                                <th>Curso</th>
+                                <th>Deuda Total</th>
+                                <th>Días Vencido</th>
+                                <th>Contacto</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Aquí irían los scripts para cargar los datos de los gráficos y tablas
+        $(document).ready(function () {
+            cargarDashboard();
+        });
+
+        function cargarDashboard() {
+            // Cargar datos de cards
+            // Cargar gráficos
+            // Cargar tabla de morosos
+        }
+    </script>
+}
