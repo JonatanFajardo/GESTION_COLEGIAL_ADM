@@ -2,6 +2,7 @@ using GESTION_COLEGIAL.Business.Extensions;
 using GESTION_COLEGIAL.Business.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.Business.Services
@@ -35,14 +36,21 @@ namespace GESTION_COLEGIAL.Business.Services
         }
 
         /// <summary>
-        /// Obtiene cuentas por cobrar pendientes.
+        /// Obtiene cuentas por cobrar pendientes (no vencidas).
         /// </summary>
         /// <returns>Una colección de objetos CuentaCobrarListViewModel.</returns>
         public async Task<IEnumerable<CuentaCobrarListViewModel>> ListPendientesAsync()
         {
-            string url = "CuentasCobrar/ListPendientesAsync";
-            IEnumerable<CuentaCobrarListViewModel> apiUrl = await ApiRequests.ListAsync<CuentaCobrarListViewModel>(url);
-            return apiUrl;
+            string url = "CuentasCobrar/ListAsync";
+            IEnumerable<CuentaCobrarListViewModel> cuentas = await ApiRequests.ListAsync<CuentaCobrarListViewModel>(url);
+
+            // Filtrar cargos no vencidos (fecha de vencimiento >= hoy) con monto pendiente
+            var pendientes = cuentas
+                .Where(c => c.EstadoPago == "Pendiente")
+                .OrderBy(c => c.FechaVence)
+                .ToList();
+
+            return pendientes;
         }
 
         /// <summary>
@@ -54,6 +62,24 @@ namespace GESTION_COLEGIAL.Business.Services
             string url = "CuentasCobrar/ListVencidasAsync";
             IEnumerable<CuentaCobrarListViewModel> apiUrl = await ApiRequests.ListAsync<CuentaCobrarListViewModel>(url);
             return apiUrl;
+        }
+
+        /// <summary>
+        /// Obtiene lista de deudores (cuentas vencidas no pagadas).
+        /// </summary>
+        /// <returns>Una colección de objetos CuentaCobrarListViewModel filtrados por vencimiento.</returns>
+        public async Task<IEnumerable<CuentaCobrarListViewModel>> ListDeudoresAsync()
+        {
+            string url = "CuentasCobrar/ListAsync";
+            IEnumerable<CuentaCobrarListViewModel> cuentas = await ApiRequests.ListAsync<CuentaCobrarListViewModel>(url);
+
+            // Filtrar cuentas vencidas (fecha de vencimiento menor a hoy) con monto pendiente
+            var deudores = cuentas
+                .Where(c => c.FechaVence < DateTime.Now && c.Pendiente > 0)
+                .OrderByDescending(c => c.Pendiente)
+                .ToList();
+
+            return deudores;
         }
 
         /// <summary>
@@ -126,6 +152,57 @@ namespace GESTION_COLEGIAL.Business.Services
             string url = "CuentasCobrar/AplicarDescuentoAsync";
             var model = new { cuentaCobrarId, descuentoId, monto, justificacion };
             return await ApiRequests.CreateAsync(url, model);
+        }
+
+        /// <summary>
+        /// Genera mensualidades para un mes específico.
+        /// </summary>
+        /// <param name="mes">El mes (1-12)</param>
+        /// <param name="anio">El año</param>
+        /// <returns>Resultado de la generación con totales</returns>
+        public async Task<dynamic> GenerarMensualidad(int mes, int anio)
+        {
+            string url = $"CuentasCobrar/GenerarMensualidadAsync?mes={mes}&anio={anio}";
+            return await ApiRequests.PostAsyncWithResponse<dynamic>(url, new { mes, anio });
+        }
+
+        /// <summary>
+        /// Genera mensualidades para un rango de meses.
+        /// </summary>
+        /// <param name="mesInicio">Mes inicial del rango</param>
+        /// <param name="mesFin">Mes final del rango</param>
+        /// <param name="anio">El año</param>
+        /// <returns>Resultado de la generación con totales</returns>
+        public async Task<dynamic> GenerarMensualidadesRango(int mesInicio, int mesFin, int anio)
+        {
+            string url = $"CuentasCobrar/GenerarMensualidadesRangoAsync?mesInicio={mesInicio}&mesFin={mesFin}&anio={anio}";
+            return await ApiRequests.PostAsyncWithResponse<dynamic>(url, new { mesInicio, mesFin, anio });
+        }
+
+        /// <summary>
+        /// Obtiene los meses pendientes de pago de un alumno.
+        /// </summary>
+        /// <param name="alumnoId">Identificador del alumno</param>
+        /// <param name="anio">Año a consultar (opcional, por defecto año actual)</param>
+        /// <returns>Lista de meses con su estado de pago</returns>
+        public async Task<IEnumerable<dynamic>> MesesPendientesPorAlumno(int alumnoId, int? anio = null)
+        {
+            string url = $"CuentasCobrar/MesesPendientesPorAlumnoAsync?alumnoId={alumnoId}";
+            if (anio.HasValue)
+                url += $"&anio={anio.Value}";
+
+            return await ApiRequests.ListAsync<dynamic>(url);
+        }
+
+        /// <summary>
+        /// Obtiene el estado de cuenta completo de un alumno.
+        /// </summary>
+        /// <param name="alumnoId">Identificador del alumno</param>
+        /// <returns>Estado de cuenta con información del alumno, resumen y detalle</returns>
+        public async Task<dynamic> EstadoCuentaAlumnoAsync(int alumnoId)
+        {
+            string url = $"CuentasCobrar/EstadoCuentaAlumnoAsync?alumnoId={alumnoId}";
+            return await ApiRequests.FindAsync<dynamic>(url, 0);
         }
     }
 }

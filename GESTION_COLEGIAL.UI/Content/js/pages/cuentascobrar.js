@@ -1,9 +1,11 @@
 $(document).ready(function () {
     var table = $('#datatable').DataTable({
         ajax: {
-            url: "/CuentasCobrar/ListPendientesAsync",
+            url: "/CuentasCobrar/ListAsync",
             dataSrc: function (json) {
+                // Los datos vienen envueltos en {data: [...]}
                 var data = json.data || json;
+                console.log('Datos procesados:', data);
                 return data;
             }
         },
