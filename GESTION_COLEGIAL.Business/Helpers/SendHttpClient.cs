@@ -43,9 +43,19 @@ namespace GESTION_COLEGIAL.Business.Helpers
 					var errorContent = await httpResponse.Content.ReadAsStringAsync();
 					return null;
 				}
+
 				var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
+
+				// Si el contenido está vacío o es null, retornar lista vacía
+				if (string.IsNullOrWhiteSpace(content) || content == "null")
+				{
+					return new List<T>();
+				}
+
 				var resultSerialize = JsonConvert.DeserializeObject<List<T>>(content);
-				return resultSerialize;
+
+				// Si la deserialización devuelve null, retornar lista vacía
+				return resultSerialize ?? new List<T>();
 			}
 			catch (Exception e)
 			{

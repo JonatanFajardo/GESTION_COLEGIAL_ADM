@@ -16,10 +16,46 @@
 </div>
 
 <div class="fluid-container">
-    <!-- Panel de Información del Alumno -->
-    <div class="card">
+    <!-- Panel de Búsqueda de Alumno -->
+    <div class="card" id="panel-busqueda">
         <div class="card-header" style="background-color:white;">
-            <h3>Información del Alumno</h3>
+            <h3>Buscar Alumno</h3>
+            <small class="text-muted">Ingrese el número de identidad del alumno para ver su estado de cuenta</small>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="alumno-identidad-search">Número de Identidad</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="alumno-identidad-search" placeholder="Ingrese la identidad del alumno..." maxlength="13" />
+                            <div class="input-group-append">
+                                <button class="btn btn-info" type="button" id="btn-buscar-alumno">
+                                    <i class="mdi mdi-magnify"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Ingrese el número de identidad (13 dígitos)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel de Información del Alumno -->
+    <div class="card" id="panel-info-alumno" style="display:none;">
+        <div class="card-header" style="background-color:white;">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3>Información del Alumno</h3>
+                    <small class="text-muted">Detalle financiero completo del alumno seleccionado</small>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-secondary float-right" id="btn-cambiar-alumno">
+                        <i class="mdi mdi-account-search"></i> Cambiar Alumno
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="row">
@@ -135,6 +171,7 @@
         var alumnoId = @ViewBag.AlumnoId;
         EstadoCuenta.init({
             alumnoId: alumnoId,
+            urlFindAlumnoByIdentidad: "@Url.Action("FindByIdentidadAsync", "Alumnos")",
             urlEstadoCuenta: "@Url.Action("EstadoCuentaAlumnoAsync", "CuentasCobrar")",
             urlAplicarDescuento: "@Url.Action("AplicarDescuentoAsync", "CuentasCobrar")",
             urlCalcularMora: "@Url.Action("CalcularMoratoriaAsync", "CuentasCobrar")",

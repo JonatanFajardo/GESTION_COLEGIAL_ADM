@@ -8,12 +8,107 @@ var EstadoCuenta = (function () {
         alumnoId = config.alumnoId;
 
         $(function () {
-            cargarEstadoCuenta();
+            initializeAlumnoSearch();
+
+            // Si ya viene con alumnoId, cargar directamente
+            if (alumnoId > 0) {
+                cargarEstadoCuenta();
+                $("#panel-busqueda").hide();
+                $("#panel-info-alumno").show();
+            }
 
             $("#btn-registrar-pago").click(function() {
-                window.location.href = "/Pagos/NuevoPago?alumnoId=" + alumnoId;
+                if (alumnoId > 0) {
+                    window.location.href = "/Pagos/NuevoPago?alumnoId=" + alumnoId;
+                } else {
+                    toastr.warning("Debe seleccionar un alumno primero");
+                }
+            });
+
+            $("#btn-cambiar-alumno").click(function() {
+                limpiarEstadoCuenta();
+                $("#panel-info-alumno").hide();
+                $("#panel-busqueda").show();
+                $("#alumno-identidad-search").val("").focus();
             });
         });
+    }
+
+    function initializeAlumnoSearch() {
+        $("#btn-buscar-alumno").click(function() {
+            var identidad = $("#alumno-identidad-search").val();
+
+            if (!identidad) {
+                toastr.warning("Por favor ingrese el número de identidad del alumno");
+                return;
+            }
+
+            if (identidad.length !== 13) {
+                toastr.warning("El número de identidad debe tener 13 dígitos");
+                return;
+            }
+
+            buscarAlumnoPorIdentidad(identidad);
+        });
+
+        // Permitir buscar con Enter
+        $("#alumno-identidad-search").keypress(function(e) {
+            if (e.which === 13) {
+                $("#btn-buscar-alumno").click();
+            }
+        });
+
+        // Validar solo números
+        $("#alumno-identidad-search").on('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+
+    function buscarAlumnoPorIdentidad(identidad) {
+        $.ajax({
+            url: urls.urlFindAlumnoByIdentidad,
+            data: { identidad: identidad },
+            type: "GET",
+            beforeSend: function() {
+                $("#btn-buscar-alumno").prop("disabled", true).html('<i class="mdi mdi-loading mdi-spin"></i> Buscando...');
+            },
+            success: function(response) {
+                if (response && response.data && response.data.Alu_Id) {
+                    alumnoId = response.data.Alu_Id;
+                    cargarEstadoCuenta();
+                    $("#panel-busqueda").hide();
+                    $("#panel-info-alumno").show();
+                } else {
+                    toastr.warning("No se encontró ningún alumno con el número de identidad especificado");
+                }
+            },
+            error: function(xhr) {
+                var errorMsg = "Error al buscar el alumno. Por favor intente nuevamente.";
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMsg = xhr.responseJSON.message;
+                }
+                toastr.error(errorMsg);
+            },
+            complete: function() {
+                $("#btn-buscar-alumno").prop("disabled", false).html('<i class="mdi mdi-magnify"></i> Buscar');
+            }
+        });
+    }
+
+    function limpiarEstadoCuenta() {
+        alumnoId = 0;
+        $("#alumno-nombre").text("");
+        $("#alumno-identidad").text("");
+        $("#alumno-nivel").text("");
+        $("#alumno-curso").text("");
+        $("#alumno-seccion").text("");
+        $("#alumno-encargado").text("");
+        $("#total-deuda").text("L. 0.00");
+        $("#total-pagado").text("L. 0.00");
+        $("#total-pendiente").text("L. 0.00");
+        $("#total-mora").text("L. 0.00");
+        $("#tbody-cargos-pendientes").html("");
+        $("#tbody-historico-pagos").html("");
     }
 
     function cargarEstadoCuenta() {
@@ -22,7 +117,10 @@ var EstadoCuenta = (function () {
             type: "GET",
             data: { alumnoId: alumnoId },
             success: function(response) {
-                if (response.success) {
+                console.log("Response EstadoCuenta:", response);
+                console.log("response.success:", response.success);
+                console.log("response.data:", response.data);
+                if (response.success && response.data) {
                     var data = response.data;
 
                     // Información del alumno
@@ -44,7 +142,14 @@ var EstadoCuenta = (function () {
 
                     // Histórico de pagos
                     cargarHistoricoPagos(data.historicoPagos);
+                } else {
+                    console.log("Error en response:", response);
+                    toastr.error(response.message || "Error al cargar el estado de cuenta");
                 }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error AJAX:", xhr, status, error);
+                toastr.error("Error al cargar el estado de cuenta");
             }
         });
     }

@@ -16,7 +16,12 @@
       "Bash(test:*)",
       "Bash(find:*)",
       "Bash(mkdir:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(git checkout:*)",
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Api/Controllers/**)",
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Api/Properties/**)",
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Api/**)",
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Business/Services/**)"
     ],
     "deny": [],
     "ask": []

@@ -117,6 +117,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción asincrónica para obtener lista de deudores (cuentas vencidas no pagadas).
+        /// </summary>
+        public async Task<ActionResult> ListDeudoresAsync()
+        {
+            var result = await cuentasCobrarService.ListDeudoresAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
         /// Acción asincrónica para generar cargos de un alumno.
         /// </summary>
         [HttpPost]
@@ -142,6 +151,77 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
+        }
+
+        /// <summary>
+        /// Genera mensualidades para un mes específico.
+        /// Usa SP: finanza.PR_GenerarMensualidad
+        /// </summary>
+        [HttpPost]
+        public async Task<ActionResult> GenerarMensualidadAsync(int mes, int anio)
+        {
+            try
+            {
+                var result = await cuentasCobrarService.GenerarMensualidad(mes, anio);
+                return AjaxResult(result);
+            }
+            catch (System.Exception ex)
+            {
+                return AjaxResult(null, AlertMessage.AlertMessageType.Error, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Genera mensualidades para un rango de meses.
+        /// Usa SP: finanza.PR_GenerarMensualidadesRango
+        /// </summary>
+        [HttpPost]
+        public async Task<ActionResult> GenerarMensualidadesRangoAsync(int mesInicio, int mesFin, int anio)
+        {
+            try
+            {
+                var result = await cuentasCobrarService.GenerarMensualidadesRango(mesInicio, mesFin, anio);
+                return AjaxResult(result);
+            }
+            catch (System.Exception ex)
+            {
+                return AjaxResult(null, AlertMessage.AlertMessageType.Error, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene los meses pendientes de pago de un alumno.
+        /// Usa SP: finanza.PR_MesesPendientesPorAlumno
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult> MesesPendientesPorAlumnoAsync(int alumnoId, int? anio = null)
+        {
+            try
+            {
+                var result = await cuentasCobrarService.MesesPendientesPorAlumno(alumnoId, anio);
+                return AjaxResult(result);
+            }
+            catch (System.Exception ex)
+            {
+                return AjaxResult(null, AlertMessage.AlertMessageType.Error, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el estado de cuenta completo de un alumno.
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult> EstadoCuentaAlumnoAsync(int alumnoId)
+        {
+            try
+            {
+                var result = await cuentasCobrarService.EstadoCuentaAlumnoAsync(alumnoId);
+                return AjaxResult(result);
+            }
+            catch (System.Exception ex)
+            {
+                return AjaxResult(null, AlertMessage.AlertMessageType.Error, ex.Message);
+            }
         }
     }
 }

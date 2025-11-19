@@ -31,6 +31,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <returns>The Ajax result.</returns>
         public ActionResult AjaxResult(dynamic response)
         {
+            // Handle null responses
+            if (response == null)
+            {
+                return Json(new { data = (object)null }, JsonRequestBehavior.AllowGet);
+            }
+
             // If response is boolean, it means this is a POST request.
             if (response.GetType() == typeof(bool))
             {
@@ -68,6 +74,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             // If response is boolean, it means this is a POST request.
             AlertMessageEntity _mensaje = ShowCustom(type);
+
+            // Handle null responses
+            if (response == null)
+            {
+                return Json(new { data = (object)null, type = _mensaje.type, message = _mensaje.message }, JsonRequestBehavior.AllowGet);
+            }
+
             if (response.GetType() == typeof(bool))
             {
                 return Json(new { success = response, type = _mensaje.type, message = _mensaje.message });
@@ -103,6 +116,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             // If response is boolean, it means this is a POST request.
             AlertMessageEntity _mensaje = Show(type, mensaje);
+
+            // Handle null responses
+            if (response == null)
+            {
+                return Json(new { data = (object)null, type = _mensaje.type, message = _mensaje.message }, JsonRequestBehavior.AllowGet);
+            }
+
             if (response.GetType() == typeof(bool))
             {
                 return Json(new { success = response, type = _mensaje.type, message = _mensaje.message });
