@@ -26,7 +26,8 @@
       "Read(//c/Users/movie/Downloads/modalidades modal/**)",
       "Bash(for dir in Cargos ConceptosPago CursosNiveles Descuentos Duraciones Estados EstadosPago FormasPago Materias Modalidades NivelesEducativos Parciales Parentescos Secciones Semestres Titulos)",
       "Bash(do echo \"=== $dir ===\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(cmd /c \"cd /d C:\\Users\\movie\\Documents\\GitHub\\GESTION_COLEGIAL_ADM\\GESTION_COLEGIAL.UI\\Views && dir /b | findstr /i \"\"Niv Par Sec Sem Tit Mat\"\"\")"
     ],
     "deny": [],
     "ask": []
