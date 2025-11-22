@@ -42,11 +42,14 @@
 </div>
 
 <!-- Modal -->
-<div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
+            <!-- Header with Orange Gradient -->
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="mdi mdi-pencil"></i>
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -64,21 +67,27 @@
                 <div class="fluid-container">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @Html.HiddenFor(model => model.Cun_Id, new { @id = "item-id" })
-                    @*<input name="Mda_Id" id="item-id" type="hidden">*@
                     <div class="modal-body">
-                        <div class="form-row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.Cun_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                    @Html.EditorFor(model => model.Cun_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Cun_Descripcion, "", new { @class = "text-danger" })
+                        <!-- Form Card -->
+                        <div class="form-card">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Cun_Descripcion, "Descripción", htmlAttributes: new { @class = "form-label" })
+                                        @Html.EditorFor(model => model.Cun_Descripcion, new { htmlAttributes = new { @class = "form-control form-control-modern", placeholder = "Ingrese la descripción del curso nivel" } })
+                                        @Html.ValidationMessageFor(model => model.Cun_Descripcion, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
+                        <button type="button" class="btn btn-secondary btn-modern-cancel" data-dismiss="modal">
+                            <i class="mdi mdi-close mr-1"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-modern-save">
+                            <i class="mdi mdi-content-save mr-1"></i>Guardar
+                        </button>
                     </div>
                 </div>}
         </div>
@@ -170,14 +179,14 @@
                             <div class="audit-info">
                                 <div>
                                     <label class="audit-label">Creado por</label>
-                                    <p class="audit-value" id="detail-cun_usuarioregistranombre"></p>
+                                    <p class="audit-value" id="detail-cun-usuarioregistranombre"></p>
                                 </div>
                                 <div>
                                     <label class="audit-label">
                                         <i class="fas fa-calendar icon-small"></i>
                                         Fecha de creación
                                     </label>
-                                    <p class="audit-value" id="detail-cun_fecharregistra"></p>
+                                    <p class="audit-value" id="detail-cun-fecharegistra"></p>
                                 </div>
                             </div>
                         </div>
@@ -190,14 +199,14 @@
                             <div class="audit-info">
                                 <div>
                                     <label class="audit-label">Modificado por</label>
-                                    <p class="audit-value" id="detail-cun_usuariomodificanombre"></p>
+                                    <p class="audit-value" id="detail-cun-usuariomodificanombre"></p>
                                 </div>
                                 <div>
                                     <label class="audit-label">
                                         <i class="fas fa-calendar icon-small"></i>
                                         Fecha de modificación
                                     </label>
-                                    <p class="audit-value" id="detail-cun_fechamodifica"></p>
+                                    <p class="audit-value" id="detail-cun-fechamodifica"></p>
                                 </div>
                             </div>
                         </div>

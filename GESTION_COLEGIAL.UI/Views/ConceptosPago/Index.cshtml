@@ -46,11 +46,14 @@
 </div>
 
     <!-- Modal -->
-    <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+                <!-- Header with Orange Gradient -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <i class="mdi mdi-pencil"></i>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -68,37 +71,44 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         @Html.HiddenFor(model => model.ConceptoPagoId, new { @id = "item-id" })
                         <div class="modal-body">
-                            <div class="form-row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                            <!-- Form Card -->
+                            <div class="form-card">
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Descripcion, "Descripción", htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control form-control-modern", placeholder = "Ingrese la descripción del concepto de pago" } })
+                                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(model => model.EsRecurrente, new { @class = "form-check-input" })
-                                        @Html.LabelFor(model => model.EsRecurrente, "Es Recurrente", htmlAttributes: new { @class = "form-check-label" })
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.EsRecurrente, new { @class = "form-check-input" })
+                                            @Html.LabelFor(model => model.EsRecurrente, "Es Recurrente", htmlAttributes: new { @class = "form-check-label" })
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(model => model.EsObligatorio, new { @class = "form-check-input" })
-                                        @Html.LabelFor(model => model.EsObligatorio, "Es Obligatorio", htmlAttributes: new { @class = "form-check-label" })
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.EsObligatorio, new { @class = "form-check-input" })
+                                            @Html.LabelFor(model => model.EsObligatorio, "Es Obligatorio", htmlAttributes: new { @class = "form-check-label" })
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12 mt-3">
-                                    <div class="form-check">
-                                        @Html.CheckBoxFor(model => model.EsActivo, new { @class = "form-check-input", @checked = "checked" })
-                                        @Html.LabelFor(model => model.EsActivo, "Activo", htmlAttributes: new { @class = "form-check-label" })
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.EsActivo, new { @class = "form-check-input", @checked = "checked" })
+                                            @Html.LabelFor(model => model.EsActivo, "Activo", htmlAttributes: new { @class = "form-check-label" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
+                            <button type="button" class="btn btn-secondary btn-modern-cancel" data-dismiss="modal">
+                                <i class="mdi mdi-close mr-1"></i>Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-modern-save">
+                                <i class="mdi mdi-content-save mr-1"></i>Guardar
+                            </button>
                         </div>
                     </div>
                 }
@@ -190,14 +200,14 @@
                             <div class="audit-info">
                                 <div>
                                     <label class="audit-label">Creado por</label>
-                                    <p class="audit-value" id="detail-cpa_usuarioregistranombre"></p>
+                                    <p class="audit-value" id="detail-cpa-usuarioregistranombre"></p>
                                 </div>
                                 <div>
                                     <label class="audit-label">
                                         <i class="fas fa-calendar icon-small"></i>
                                         Fecha de creación
                                     </label>
-                                    <p class="audit-value" id="detail-cpa_fecharregistra"></p>
+                                    <p class="audit-value" id="detail-cpa-fecharegistra"></p>
                                 </div>
                             </div>
                         </div>
@@ -210,14 +220,14 @@
                             <div class="audit-info">
                                 <div>
                                     <label class="audit-label">Modificado por</label>
-                                    <p class="audit-value" id="detail-cpa_usuariomodificanombre"></p>
+                                    <p class="audit-value" id="detail-cpa-usuariomodificanombre"></p>
                                 </div>
                                 <div>
                                     <label class="audit-label">
                                         <i class="fas fa-calendar icon-small"></i>
                                         Fecha de modificación
                                     </label>
-                                    <p class="audit-value" id="detail-cpa_fechamodifica"></p>
+                                    <p class="audit-value" id="detail-cpa-fechamodifica"></p>
                                 </div>
                             </div>
                         </div>
