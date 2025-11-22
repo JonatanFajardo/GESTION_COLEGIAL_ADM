@@ -156,13 +156,17 @@ var datatableCatalogs = (function () {
         head.push({
             targets: i,
             className: "text-center",
-            width: 80,
+            width: 120,
             render: function (data, type, row) {
                 var botones = "";
                 head = _header[0].FieldName;
                 if (type == "display") {
-                    botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-id="' + row[head] + '" class="bs-tooltip edit-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
-                    botones += '<a href="javascript:void(0);" ladda-button" data-style="zoom-in" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn text-muted pl-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
+                    // Boton Ver Detalles
+                    botones += '<a href="javascript:void(0);" data-id="' + row[head] + '" class="bs-tooltip view-detail-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="Ver detalles"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>';
+                    // Boton Editar
+                    botones += '<a href="javascript:void(0);" data-id="' + row[head] + '" class="bs-tooltip edit-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
+                    // Boton Eliminar
+                    botones += '<a href="javascript:void(0);" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn text-muted pl-2" data-toggle="tooltip" data-placement="top" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
                 }
                 return botones;
             }
@@ -172,3 +176,123 @@ var datatableCatalogs = (function () {
 
     return obj;
 }());
+
+// Configuracion global para Catalogs (detalles en modal)
+var CatalogsCfg = (function () {
+    var obj = {};
+
+    obj.configure = function (config) {
+        obj.displayName = config.displayName || "";
+        obj.getUrl = config.getUrl || "";
+        obj.detailModalId = config.detailModalId || "#detail-modal";
+    };
+
+    return obj;
+}());
+
+// Funcion global para ver detalles en modal de catalogos
+function viewDetailCatalog(id) {
+    if (typeof CatalogsCfg === 'undefined' || !CatalogsCfg.getUrl) {
+        console.error('CatalogsCfg.getUrl no esta configurado');
+        return;
+    }
+
+    var detailModalId = CatalogsCfg.detailModalId || '#detail-modal';
+
+    if ($(detailModalId).length === 0) {
+        console.error('Modal ' + detailModalId + ' no encontrado');
+        return;
+    }
+
+    $.ajax({
+        url: CatalogsCfg.getUrl + '/' + id,
+        type: 'GET',
+        success: function(response) {
+            var data = null;
+
+            // Manejar diferentes formatos de respuesta
+            if (response && response.data) {
+                data = response.data;
+            } else if (response && response.item) {
+                data = response.item;
+            } else if (response && response.success !== undefined) {
+                data = response.item || response.data || response;
+            } else if (response && typeof response === 'object') {
+                data = response;
+            }
+
+            if (data) {
+                fillDetailModalCatalog(data);
+                $(detailModalId).modal('show');
+            } else {
+                console.error('Respuesta sin datos:', response);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar los detalles:', error);
+        }
+    });
+}
+
+// Funcion auxiliar para llenar el modal con los datos
+function fillDetailModalCatalog(data) {
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            var elementId = '#detail-' + key.toLowerCase().replace(/_/g, '-');
+            var $element = $(elementId);
+
+            if ($element.length > 0) {
+                var value = data[key];
+
+                // Formatear valores especiales
+                if (value === null || value === undefined) {
+                    value = 'N/A';
+                } else if (typeof value === 'number' && (key.toLowerCase().includes('precio') || key.toLowerCase().includes('monto'))) {
+                    value = 'L. ' + parseFloat(value).toFixed(2);
+                } else if (key.toLowerCase().includes('fecha') && value) {
+                    // Intentar parsear la fecha de diferentes formas
+                    var date = null;
+                    if (typeof value === 'string') {
+                        // Verificar si es formato .NET JSON Date: /Date(1234567890000)/
+                        var match = value.match(/\/Date\((\d+)\)\//);
+                        if (match) {
+                            var timestamp = parseInt(match[1]);
+                            date = new Date(timestamp);
+                        } else {
+                            // Formato ISO o similar
+                            date = new Date(value);
+                        }
+                    } else if (typeof value === 'number') {
+                        // Timestamp en milisegundos
+                        date = new Date(value);
+                    } else if (typeof value === 'object' && value instanceof Date) {
+                        date = value;
+                    }
+
+                    // Verificar si la fecha es válida
+                    if (date && !isNaN(date.getTime())) {
+                        value = date.toLocaleDateString('es-HN', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    } else {
+                        value = 'N/A';
+                    }
+                } else if (typeof value === 'boolean') {
+                    value = value ? 'Si' : 'No';
+                }
+
+                $element.text(value);
+            }
+        }
+    }
+}
+
+// Event handler para el boton de ver detalles en catalogos
+$(document).on('click', '.view-detail-btn', function () {
+    var id = $(this).data('id');
+    viewDetailCatalog(id);
+});

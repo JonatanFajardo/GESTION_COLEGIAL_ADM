@@ -27,12 +27,24 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El identificador del descuento.</param>
         /// <returns>El objeto DescuentoFindViewModel encontrado.</returns>
-        public async Task<DescuentoFindViewModel> Find(int id)
-        {
-            string url = "Descuentos/FindAsync";
-            DescuentoFindViewModel apiUrl = await ApiRequests.FindAsync<DescuentoFindViewModel>(url, id);
-            return apiUrl;
-        }
+		public async Task<DescuentoFindViewModel> Find(int id)
+		{
+			string url = "Descuentos/FindAsync";
+			DescuentoFindViewModel apiUrl = await ApiRequests.FindAsync<DescuentoFindViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de un descuento por su identificador.
+		/// </summary>
+		/// <param name="id">El identificador del descuento.</param>
+		/// <returns>El detalle del descuento solicitado.</returns>
+		public async Task<DescuentoDetailViewModel> Detail(int id)
+		{
+			string url = "Descuentos/DetailAsync";
+			DescuentoDetailViewModel apiUrl = await ApiRequests.FindAsync<DescuentoDetailViewModel>(url, id);
+			return apiUrl;
+		}
 
         /// <summary>
         /// Crea un nuevo descuento de forma asíncrona.

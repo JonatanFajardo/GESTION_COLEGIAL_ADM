@@ -27,12 +27,24 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El identificador del concepto de pago.</param>
         /// <returns>El objeto ConceptoPagoFindViewModel encontrado.</returns>
-        public async Task<ConceptoPagoFindViewModel> Find(int id)
-        {
-            string url = "ConceptosPago/FindAsync";
-            ConceptoPagoFindViewModel apiUrl = await ApiRequests.FindAsync<ConceptoPagoFindViewModel>(url, id);
-            return apiUrl;
-        }
+		public async Task<ConceptoPagoFindViewModel> Find(int id)
+		{
+			string url = "ConceptosPago/FindAsync";
+			ConceptoPagoFindViewModel apiUrl = await ApiRequests.FindAsync<ConceptoPagoFindViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de un concepto de pago por su identificador.
+		/// </summary>
+		/// <param name="id">El identificador del concepto de pago.</param>
+		/// <returns>El detalle solicitado.</returns>
+		public async Task<ConceptoPagoDetailViewModel> Detail(int id)
+		{
+			string url = "ConceptosPago/DetailAsync";
+			ConceptoPagoDetailViewModel apiUrl = await ApiRequests.FindAsync<ConceptoPagoDetailViewModel>(url, id);
+			return apiUrl;
+		}
 
         /// <summary>
         /// Crea un nuevo concepto de pago de forma asíncrona.

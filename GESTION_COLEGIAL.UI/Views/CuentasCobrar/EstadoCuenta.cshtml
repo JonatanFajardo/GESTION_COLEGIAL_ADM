@@ -165,6 +165,172 @@
     </div>
 </div>
 
+<!-- Modal Detalle de Cargo -->
+<div class="modal fade" id="detail-cargo-modal" tabindex="-1" role="dialog" aria-labelledby="detailCargoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="detailCargoModalLabel">
+                    <i class="mdi mdi-file-document-outline mr-2"></i>Detalle del Cargo
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">ID Cuenta</label>
+                            <p class="font-weight-bold" id="detail-cargo-id"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Concepto de Pago</label>
+                            <p class="font-weight-bold" id="detail-cargo-concepto"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Monto Original</label>
+                            <p class="font-weight-bold" id="detail-cargo-monto-original"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Descuento Aplicado</label>
+                            <p class="font-weight-bold text-success" id="detail-cargo-descuento"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Mora</label>
+                            <p class="font-weight-bold text-danger" id="detail-cargo-mora"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Monto Total</label>
+                            <p class="font-weight-bold text-primary h5" id="detail-cargo-total"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Fecha de Vencimiento</label>
+                            <p class="font-weight-bold" id="detail-cargo-fecha-venc"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Estado</label>
+                            <p id="detail-cargo-estado"></p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Fecha de Creación</label>
+                            <p class="font-weight-bold" id="detail-cargo-fecha-creacion"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Observaciones</label>
+                            <p id="detail-cargo-observaciones"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="mdi mdi-close mr-1"></i>Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detalle de Pago -->
+<div class="modal fade" id="detail-pago-modal" tabindex="-1" role="dialog" aria-labelledby="detailPagoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="detailPagoModalLabel">
+                    <i class="mdi mdi-cash-multiple mr-2"></i>Detalle del Pago
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">ID Pago</label>
+                            <p class="font-weight-bold" id="detail-pago-id"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Fecha de Pago</label>
+                            <p class="font-weight-bold" id="detail-pago-fecha"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Monto Total</label>
+                            <p class="font-weight-bold text-success h5" id="detail-pago-monto"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Forma de Pago</label>
+                            <p class="font-weight-bold" id="detail-pago-forma"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Número de Referencia</label>
+                            <p class="font-weight-bold" id="detail-pago-referencia"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Número de Recibo</label>
+                            <p class="font-weight-bold" id="detail-pago-recibo"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Usuario que Registró</label>
+                            <p class="font-weight-bold" id="detail-pago-usuario"></p>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Estado</label>
+                            <p id="detail-pago-estado"></p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <label class="text-muted small mb-1">Conceptos Pagados</label>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered" id="tabla-conceptos-pago">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-conceptos-pago">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="detail-item">
+                            <label class="text-muted small mb-1">Observaciones</label>
+                            <p id="detail-pago-observaciones"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-ver-recibo-detail" id="btn-ver-recibo-modal">
+                    <i class="mdi mdi-receipt mr-1"></i>Ver Recibo
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="mdi mdi-close mr-1"></i>Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script src="~/Content/js/pages/estadocuenta.js"></script>
     <script>

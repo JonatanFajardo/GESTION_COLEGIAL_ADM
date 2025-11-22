@@ -40,11 +40,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID del Nivel Educativo.</param>
         /// <returns>Vista de los detalles del Nivel Educativo.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await nivelesEducativosService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await nivelesEducativosService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de un Nivel Educativo específico.
+		/// </summary>
+		/// <param name="id">ID del Nivel Educativo.</param>
+		/// <returns>Resultado con la información detallada.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await nivelesEducativosService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar un Nivel Educativo.

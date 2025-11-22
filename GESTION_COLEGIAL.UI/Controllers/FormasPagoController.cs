@@ -38,11 +38,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID de la forma de pago.</param>
         /// <returns>Resultado con los detalles de la forma de pago.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await formasPagoService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await formasPagoService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de una forma de pago específica.
+		/// </summary>
+		/// <param name="id">ID de la forma de pago.</param>
+		/// <returns>Resultado con el detalle solicitado.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await formasPagoService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar una forma de pago.

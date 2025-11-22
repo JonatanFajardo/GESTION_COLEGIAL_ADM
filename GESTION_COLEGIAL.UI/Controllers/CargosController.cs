@@ -47,11 +47,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID del cargo.</param>
         /// <returns>Resultado de la operación con los detalles del cargo.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await cargosService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await cargosService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de un cargo específico.
+		/// </summary>
+		/// <param name="id">ID del cargo.</param>
+		/// <returns>Resultado con el detalle del cargo.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await cargosService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar un cargo.

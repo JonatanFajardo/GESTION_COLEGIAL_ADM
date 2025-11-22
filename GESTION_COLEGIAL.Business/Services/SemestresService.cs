@@ -22,6 +22,13 @@ namespace GESTION_COLEGIAL.Business.Services
             return apiUrl;
         }
 
+        public async Task<SemestreDetailViewModel> Detail(int id)
+        {
+            string url = "Semestres/DetailAsync";
+            SemestreDetailViewModel apiUrl = await ApiRequests.FindAsync<SemestreDetailViewModel>(url, id);
+            return apiUrl;
+        }
+
         public async Task<Boolean> Create(SemestreViewModel model)
         {
             string url = "Semestres/CreateAsync";

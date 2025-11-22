@@ -27,12 +27,24 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El identificador de la forma de pago.</param>
         /// <returns>El objeto FormaPagoFindViewModel encontrado.</returns>
-        public async Task<FormaPagoFindViewModel> Find(int id)
-        {
-            string url = "FormasPago/FindAsync";
-            FormaPagoFindViewModel apiUrl = await ApiRequests.FindAsync<FormaPagoFindViewModel>(url, id);
-            return apiUrl;
-        }
+		public async Task<FormaPagoFindViewModel> Find(int id)
+		{
+			string url = "FormasPago/FindAsync";
+			FormaPagoFindViewModel apiUrl = await ApiRequests.FindAsync<FormaPagoFindViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de una forma de pago por su identificador.
+		/// </summary>
+		/// <param name="id">El identificador de la forma de pago.</param>
+		/// <returns>El detalle de la forma de pago solicitada.</returns>
+		public async Task<FormaPagoDetailViewModel> Detail(int id)
+		{
+			string url = "FormasPago/DetailAsync";
+			FormaPagoDetailViewModel apiUrl = await ApiRequests.FindAsync<FormaPagoDetailViewModel>(url, id);
+			return apiUrl;
+		}
 
         /// <summary>
         /// Crea una nueva forma de pago de forma asíncrona.

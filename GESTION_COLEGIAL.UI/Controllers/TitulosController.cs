@@ -29,6 +29,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result, true);
         }
 
+        public async Task<ActionResult> DetailAsync(int id)
+        {
+            var result = await titulosService.Detail(id);
+            return AjaxResult(result, true);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateAsync(TituloViewModel model)
         {

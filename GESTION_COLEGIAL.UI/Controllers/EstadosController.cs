@@ -34,11 +34,17 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await estadosService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await estadosService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await estadosService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         [HttpPost]
         public async Task<ActionResult> CreateAsync(EstadoViewModel model)

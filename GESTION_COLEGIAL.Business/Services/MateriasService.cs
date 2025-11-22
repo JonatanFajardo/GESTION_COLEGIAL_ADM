@@ -27,10 +27,22 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El identificador de la materia.</param>
         /// <returns>El objeto MateriaViewModel encontrado.</returns>
-        public async Task<MateriaViewModel> Find(int id)
+		public async Task<MateriaViewModel> Find(int id)
+		{
+			string url = "Materias/FindAsync";
+			MateriaViewModel apiUrl = await ApiRequests.FindAsync<MateriaViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de una materia por su identificador.
+		/// </summary>
+		/// <param name="id">El identificador de la materia.</param>
+		/// <returns>El modelo con el detalle solicitado.</returns>
+		public async Task<MateriaDetailViewModel> Detail(int id)
         {
-            string url = "Materias/FindAsync";
-            MateriaViewModel apiUrl = await ApiRequests.FindAsync<MateriaViewModel>(url, id);
+            string url = "Materias/DetailAsync";
+            MateriaDetailViewModel apiUrl = await ApiRequests.FindAsync<MateriaDetailViewModel>(url, id);
             return apiUrl;
         }
 

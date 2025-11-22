@@ -27,10 +27,22 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El identificador del estado.</param>
         /// <returns>El objeto EstadoViewModel encontrado.</returns>
-        public async Task<EstadoViewModel> Find(int id)
+		public async Task<EstadoViewModel> Find(int id)
+		{
+			string url = "Estados/FindAsync";
+			EstadoViewModel apiUrl = await ApiRequests.FindAsync<EstadoViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de un estado por su identificador.
+		/// </summary>
+		/// <param name="id">El identificador del estado.</param>
+		/// <returns>El detalle del estado correspondiente.</returns>
+		public async Task<EstadoDetailViewModel> Detail(int id)
         {
-            string url = "Estados/FindAsync";
-            EstadoViewModel apiUrl = await ApiRequests.FindAsync<EstadoViewModel>(url, id);
+            string url = "Estados/DetailAsync";
+            EstadoDetailViewModel apiUrl = await ApiRequests.FindAsync<EstadoDetailViewModel>(url, id);
             return apiUrl;
         }
 

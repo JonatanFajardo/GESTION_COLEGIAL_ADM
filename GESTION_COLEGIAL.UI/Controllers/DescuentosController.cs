@@ -38,11 +38,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID del descuento.</param>
         /// <returns>Resultado con los detalles del descuento.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await descuentosService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await descuentosService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de un descuento específico.
+		/// </summary>
+		/// <param name="id">ID del descuento.</param>
+		/// <returns>Resultado con el detalle del descuento.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await descuentosService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar un descuento.

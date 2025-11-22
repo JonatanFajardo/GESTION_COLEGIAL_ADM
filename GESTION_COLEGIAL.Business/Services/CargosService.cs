@@ -27,10 +27,22 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El ID del cargo.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el cargo encontrado.</returns>
-        public async Task<CargoViewModel> Find(int id)
+		public async Task<CargoViewModel> Find(int id)
+		{
+			string url = "Cargos/FindAsync";
+			CargoViewModel apiUrl = await ApiRequests.FindAsync<CargoViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de un cargo específico.
+		/// </summary>
+		/// <param name="id">El identificador del cargo.</param>
+		/// <returns>El detalle del cargo.</returns>
+		public async Task<CargoDetailViewModel> Detail(int id)
         {
-            string url = "Cargos/FindAsync";
-            CargoViewModel apiUrl = await ApiRequests.FindAsync<CargoViewModel>(url, id);
+            string url = "Cargos/DetailAsync";
+            CargoDetailViewModel apiUrl = await ApiRequests.FindAsync<CargoDetailViewModel>(url, id);
             return apiUrl;
         }
 

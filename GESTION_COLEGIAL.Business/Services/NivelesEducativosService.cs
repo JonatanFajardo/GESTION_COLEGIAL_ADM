@@ -27,10 +27,22 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El identificador del nivel educativo.</param>
         /// <returns>El objeto NivelEducativoViewModel encontrado.</returns>
-        public async Task<NivelEducativoViewModel> Find(int id)
+		public async Task<NivelEducativoViewModel> Find(int id)
+		{
+			string url = "NivelesEducativos/FindAsync";
+			NivelEducativoViewModel apiUrl = await ApiRequests.FindAsync<NivelEducativoViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de un nivel educativo por su identificador.
+		/// </summary>
+		/// <param name="id">El identificador del nivel educativo.</param>
+		/// <returns>El detalle del nivel educativo solicitado.</returns>
+		public async Task<NivelEducativoDetailViewModel> Detail(int id)
         {
-            string url = "NivelesEducativos/FindAsync";
-            NivelEducativoViewModel apiUrl = await ApiRequests.FindAsync<NivelEducativoViewModel>(url, id);
+            string url = "NivelesEducativos/DetailAsync";
+            NivelEducativoDetailViewModel apiUrl = await ApiRequests.FindAsync<NivelEducativoDetailViewModel>(url, id);
             return apiUrl;
         }
 

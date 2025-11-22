@@ -38,11 +38,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID del estado de pago.</param>
         /// <returns>Resultado con los detalles del estado de pago.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await estadosPagoService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await estadosPagoService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de un estado de pago específico.
+		/// </summary>
+		/// <param name="id">ID del estado de pago.</param>
+		/// <returns>Resultado con la información detallada.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await estadosPagoService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar un estado de pago.
