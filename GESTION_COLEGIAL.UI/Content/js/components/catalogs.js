@@ -90,7 +90,34 @@
                 success: function (response) {
                     if (response.success) {
                         $("#delete-item-id").val(id);
-                        //alertConfig.alert('Eliminado correctamente.', 'success');
+
+                        // Obtener el nombre/descripción del registro para mostrar en el modal
+                        var itemName = '';
+                        if (response.item) {
+                            // Buscar el campo de descripción (puede variar según la entidad)
+                            itemName = response.item.Mda_Descripcion ||
+                                      response.item.Car_Descripcion ||
+                                      response.item.Cpa_Descripcion ||
+                                      response.item.Cnv_Descripcion ||
+                                      response.item.Des_Descripcion ||
+                                      response.item.Dur_Descripcion ||
+                                      response.item.Est_Descripcion ||
+                                      response.item.Epa_Descripcion ||
+                                      response.item.Fpa_Descripcion ||
+                                      response.item.Mat_Descripcion ||
+                                      response.item.Nve_Descripcion ||
+                                      response.item.Par_Descripcion ||
+                                      response.item.Sec_Descripcion ||
+                                      response.item.Sem_Descripcion ||
+                                      response.item.Tit_Descripcion ||
+                                      response.item.Nombre ||
+                                      response.item.Descripcion ||
+                                      '';
+                        }
+
+                        // Establecer el nombre en el span del modal
+                        $("#delete-item-name").text('"' + itemName + '"');
+
                         $deleteModal.modal("show");
                     }
                     else {
