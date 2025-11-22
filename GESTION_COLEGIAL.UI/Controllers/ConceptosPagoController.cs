@@ -43,11 +43,20 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para obtener los detalles de un concepto de pago específico.
         /// </summary>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await conceptosPagoService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await conceptosPagoService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de un concepto de pago específico.
+		/// </summary>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await conceptosPagoService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar un concepto de pago.

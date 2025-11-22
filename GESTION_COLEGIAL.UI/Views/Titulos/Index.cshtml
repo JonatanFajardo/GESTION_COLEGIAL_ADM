@@ -4,6 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles{
+    <link href="~/Content/css/modal-detail.css" rel="stylesheet" />
+}
+
 
 <div class="breadcrumb-wrapper-content ">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
@@ -120,6 +124,95 @@
 </div>
 <!-- Fin Modal -->
 
+    <!-- Modal Detalle -->
+    <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <!-- Header with Orange Gradient -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailModalLabel">
+                        <i class="fas fa-file-alt"></i>
+                        Detalle del Título
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Info Card - ID and Description -->
+                    <div class="info-card">
+                        <div class="info-grid">
+                            <div>
+                                <label class="info-label">ID</label>
+                                <p class="info-value" id="detail-tit-id"></p>
+                            </div>
+                            <div>
+                                <label class="info-label">Descripción</label>
+                                <p class="info-value" id="detail-tit-descripcion"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audit Section -->
+                    <div class="audit-section">
+                        <h6 class="audit-section-title">
+                            <i class="fas fa-history"></i>
+                            Información de Auditoría
+                        </h6>
+
+                        <!-- Created -->
+                        <div class="audit-card">
+                            <div class="audit-icon green">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="audit-info">
+                                <div>
+                                    <label class="audit-label">Creado por</label>
+                                    <p class="audit-value" id="detail-tit_usuarioregistranombre"></p>
+                                </div>
+                                <div>
+                                    <label class="audit-label">
+                                        <i class="fas fa-calendar icon-small"></i>
+                                        Fecha de creación
+                                    </label>
+                                    <p class="audit-value" id="detail-tit_fecharregistra"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modified -->
+                        <div class="audit-card">
+                            <div class="audit-icon blue">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="audit-info">
+                                <div>
+                                    <label class="audit-label">Modificado por</label>
+                                    <p class="audit-value" id="detail-tit_usuariomodificanombre"></p>
+                                </div>
+                                <div>
+                                    <label class="audit-label">
+                                        <i class="fas fa-calendar icon-small"></i>
+                                        Fecha de modificación
+                                    </label>
+                                    <p class="audit-value" id="detail-tit_fechamodifica"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="mdi mdi-close mr-1"></i>Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Modal Detalle -->
+
 @section Scripts{
     <script src="~/Content/js/pages/titulos.js"></script>
     <script>
@@ -132,6 +225,10 @@
         Catalogs.configure({
             displayName: "titulos",
             urlUpdate: "@Url.Action("FindAsync")"
+        });
+        CatalogsCfg.configure({
+            displayName: "titulo",
+            getUrl: "@Url.Action("DetailAsync")"
         });
     </script>
 }

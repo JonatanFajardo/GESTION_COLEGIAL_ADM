@@ -1,18 +1,38 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
 {
-    public class ConceptoPagoDetailViewModel
+    public class ConceptoPagoDetailViewModel : BaseViewModel
     {
-        public int ConceptoPagoId { get; set; }
-        public string Descripcion { get; set; } = string.Empty;
-        public bool EsRecurrente { get; set; }
-        public bool EsObligatorio { get; set; }
-        public bool EsActivo { get; set; }
-        public bool EsEliminado { get; set; }
-        public int UsuarioRegistraId { get; set; }
-        public DateTime FechaRegistro { get; set; }
-        public int? UsuarioModificaId { get; set; }
-        public DateTime? FechaModifica { get; set; }
+        [Key]
+        public int Cpa_Id { get; set; }
+
+        [Display(Name = "Descripción")]
+        public string Cpa_Descripcion { get; set; }
+
+        [Display(Name = "Es Recurrente")]
+        public bool Cpa_EsRecurrente { get; set; }
+
+        [Display(Name = "Es Obligatorio")]
+        public bool Cpa_EsObligatorio { get; set; }
+
+        [Display(Name = "Activo")]
+        public bool Cpa_EsActivo { get; set; }
+
+        [Display(Name = "Cantidad de Tarifas")]
+        public int? CantTarifas { get; set; }
+
+        [Display(Name = "Creado por")]
+        public string NombreCompletoUsuarioRegistra { get; set; }
+
+        [Display(Name = "Fecha de creación")]
+        public DateTime Cpa_FechaRegistra { get; set; }
+
+        [Display(Name = "Modificado por")]
+        public string NombreCompletoUsuarioModifica { get; set; }
+
+        [Display(Name = "Fecha de modificación")]
+        public DateTime? Cpa_FechaModifica { get; set; }
     }
 }

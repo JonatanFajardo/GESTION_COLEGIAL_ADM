@@ -38,11 +38,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID de la duración.</param>
         /// <returns>Vista de creación de duración con los detalles de la duración.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await duracionesService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await duracionesService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de una duración específica.
+		/// </summary>
+		/// <param name="id">ID de la duración.</param>
+		/// <returns>Resultado con los datos detallados.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await duracionesService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar una duración.

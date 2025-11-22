@@ -27,12 +27,24 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El identificador del estado de pago.</param>
         /// <returns>El objeto EstadoPagoFindViewModel encontrado.</returns>
-        public async Task<EstadoPagoFindViewModel> Find(int id)
-        {
-            string url = "EstadosPago/FindAsync";
-            EstadoPagoFindViewModel apiUrl = await ApiRequests.FindAsync<EstadoPagoFindViewModel>(url, id);
-            return apiUrl;
-        }
+		public async Task<EstadoPagoFindViewModel> Find(int id)
+		{
+			string url = "EstadosPago/FindAsync";
+			EstadoPagoFindViewModel apiUrl = await ApiRequests.FindAsync<EstadoPagoFindViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de un estado de pago por su identificador.
+		/// </summary>
+		/// <param name="id">El identificador del estado de pago.</param>
+		/// <returns>El detalle del estado de pago solicitado.</returns>
+		public async Task<EstadoPagoDetailViewModel> Detail(int id)
+		{
+			string url = "EstadosPago/DetailAsync";
+			EstadoPagoDetailViewModel apiUrl = await ApiRequests.FindAsync<EstadoPagoDetailViewModel>(url, id);
+			return apiUrl;
+		}
 
         /// <summary>
         /// Crea un nuevo estado de pago de forma asíncrona.

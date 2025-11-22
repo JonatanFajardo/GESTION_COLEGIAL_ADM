@@ -24,10 +24,22 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         /// <param name="id">El identificador de la duración a encontrar.</param>
         /// <returns>El objeto DuracionViewModel encontrado, o null si no se encuentra.</returns>
-        public async Task<DuracionViewModel> Find(int id)
+		public async Task<DuracionViewModel> Find(int id)
+		{
+			string url = "Duraciones/FindAsync";
+			DuracionViewModel apiUrl = await ApiRequests.FindAsync<DuracionViewModel>(url, id);
+			return apiUrl;
+		}
+
+		/// <summary>
+		/// Obtiene el detalle de una duración por su identificador.
+		/// </summary>
+		/// <param name="id">El identificador de la duración.</param>
+		/// <returns>El detalle correspondiente al identificador solicitado.</returns>
+		public async Task<DuracionDetailViewModel> Detail(int id)
         {
-            string url = "Duraciones/FindAsync";
-            DuracionViewModel apiUrl = await ApiRequests.FindAsync<DuracionViewModel>(url, id);
+            string url = "Duraciones/DetailAsync";
+            DuracionDetailViewModel apiUrl = await ApiRequests.FindAsync<DuracionDetailViewModel>(url, id);
             return apiUrl;
         }
 

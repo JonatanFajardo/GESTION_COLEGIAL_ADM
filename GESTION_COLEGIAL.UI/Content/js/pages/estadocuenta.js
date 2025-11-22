@@ -2,6 +2,9 @@ var EstadoCuenta = (function () {
     var obj = {};
     var urls = {};
     var alumnoId = 0;
+    var cargosPendientesData = [];
+    var historicoPagosData = [];
+    var pagoIdActual = 0;
 
     obj.init = function (config) {
         urls = config;
@@ -9,6 +12,7 @@ var EstadoCuenta = (function () {
 
         $(function () {
             initializeAlumnoSearch();
+            initializeDetailEvents();
 
             // Si ya viene con alumnoId, cargar directamente
             if (alumnoId > 0) {
@@ -32,6 +36,76 @@ var EstadoCuenta = (function () {
                 $("#alumno-identidad-search").val("").focus();
             });
         });
+    }
+
+    function initializeDetailEvents() {
+        // Evento para ver detalle de cargo
+        $(document).on("click", ".btn-ver-cargo", function() {
+            var index = $(this).data("index");
+            mostrarDetalleCargo(cargosPendientesData[index]);
+        });
+
+        // Evento para ver detalle de pago
+        $(document).on("click", ".btn-ver-pago", function() {
+            var index = $(this).data("index");
+            mostrarDetallePago(historicoPagosData[index]);
+        });
+
+        // Evento para ver recibo desde modal
+        $("#btn-ver-recibo-modal").click(function() {
+            if (pagoIdActual > 0) {
+                verRecibo(pagoIdActual);
+            }
+        });
+    }
+
+    function mostrarDetalleCargo(cargo) {
+        $("#detail-cargo-id").text(cargo.cuentaCobrarId);
+        $("#detail-cargo-concepto").text(cargo.conceptoPago);
+        $("#detail-cargo-monto-original").text("L. " + formatMoney(cargo.montoOriginal));
+        $("#detail-cargo-descuento").text("L. " + formatMoney(cargo.montoDescuento));
+        $("#detail-cargo-mora").text("L. " + formatMoney(cargo.montoMora));
+        $("#detail-cargo-total").text("L. " + formatMoney(cargo.montoTotal));
+        $("#detail-cargo-fecha-venc").text(formatDate(cargo.fechaVencimiento));
+        $("#detail-cargo-estado").html("<span class='badge badge-" + getEstadoClass(cargo.estadoPago) + "'>" + cargo.estadoPago + "</span>");
+        $("#detail-cargo-fecha-creacion").text(cargo.fechaCreacion ? formatDate(cargo.fechaCreacion) : "N/A");
+        $("#detail-cargo-observaciones").text(cargo.observaciones || "Sin observaciones");
+
+        $("#detail-cargo-modal").modal("show");
+    }
+
+    function mostrarDetallePago(pago) {
+        pagoIdActual = pago.pagoId;
+
+        $("#detail-pago-id").text(pago.pagoId);
+        $("#detail-pago-fecha").text(formatDate(pago.fechaPago));
+        $("#detail-pago-monto").text("L. " + formatMoney(pago.montoTotal));
+        $("#detail-pago-forma").text(pago.formaPago);
+        $("#detail-pago-referencia").text(pago.numeroReferencia || "N/A");
+        $("#detail-pago-recibo").text(pago.numeroRecibo || "N/A");
+        $("#detail-pago-usuario").text(pago.usuario);
+        $("#detail-pago-estado").html("<span class='badge badge-success'>Completado</span>");
+        $("#detail-pago-observaciones").text(pago.observaciones || "Sin observaciones");
+
+        // Cargar conceptos pagados
+        var htmlConceptos = "";
+        if (pago.conceptos && pago.conceptos.length > 0) {
+            pago.conceptos.forEach(function(concepto) {
+                htmlConceptos += "<tr>";
+                htmlConceptos += "<td>" + concepto.nombre + "</td>";
+                htmlConceptos += "<td>L. " + formatMoney(concepto.monto) + "</td>";
+                htmlConceptos += "</tr>";
+            });
+        } else {
+            htmlConceptos = "<tr><td colspan='2' class='text-center'>Sin detalles disponibles</td></tr>";
+        }
+        $("#tbody-conceptos-pago").html(htmlConceptos);
+
+        $("#detail-pago-modal").modal("show");
+    }
+
+    function verRecibo(pagoId) {
+        window.open(urls.urlRecibo + "?pagoId=" + pagoId, "_blank");
     }
 
     function initializeAlumnoSearch() {
@@ -155,8 +229,9 @@ var EstadoCuenta = (function () {
     }
 
     function cargarCargosPendientes(cargos) {
+        cargosPendientesData = cargos;
         var html = "";
-        cargos.forEach(function(cargo) {
+        cargos.forEach(function(cargo, index) {
             html += "<tr>";
             html += "<td>" + cargo.conceptoPago + "</td>";
             html += "<td>L. " + formatMoney(cargo.montoOriginal) + "</td>";
@@ -166,8 +241,9 @@ var EstadoCuenta = (function () {
             html += "<td>" + formatDate(cargo.fechaVencimiento) + "</td>";
             html += "<td><span class='badge badge-" + getEstadoClass(cargo.estadoPago) + "'>" + cargo.estadoPago + "</span></td>";
             html += "<td>";
-            html += "<button class='btn btn-sm btn-warning btn-aplicar-descuento' data-id='" + cargo.cuentaCobrarId + "'><i class='mdi mdi-tag-outline'></i></button> ";
-            html += "<button class='btn btn-sm btn-info btn-calcular-mora' data-id='" + cargo.cuentaCobrarId + "'><i class='mdi mdi-calculator'></i></button>";
+            html += "<button class='btn btn-sm btn-primary btn-ver-cargo' data-index='" + index + "' title='Ver detalles'><i class='mdi mdi-eye'></i></button> ";
+            html += "<button class='btn btn-sm btn-warning btn-aplicar-descuento' data-id='" + cargo.cuentaCobrarId + "' title='Aplicar descuento'><i class='mdi mdi-tag-outline'></i></button> ";
+            html += "<button class='btn btn-sm btn-info btn-calcular-mora' data-id='" + cargo.cuentaCobrarId + "' title='Calcular mora'><i class='mdi mdi-calculator'></i></button>";
             html += "</td>";
             html += "</tr>";
         });
@@ -175,20 +251,28 @@ var EstadoCuenta = (function () {
     }
 
     function cargarHistoricoPagos(pagos) {
+        historicoPagosData = pagos;
         var html = "";
-        pagos.forEach(function(pago) {
+        pagos.forEach(function(pago, index) {
             html += "<tr>";
             html += "<td>" + formatDate(pago.fechaPago) + "</td>";
             html += "<td>L. " + formatMoney(pago.montoTotal) + "</td>";
             html += "<td>" + pago.formaPago + "</td>";
-            html += "<td>" + pago.numeroReferencia + "</td>";
+            html += "<td>" + (pago.numeroReferencia || "N/A") + "</td>";
             html += "<td>" + pago.usuario + "</td>";
             html += "<td>";
-            html += "<button class='btn btn-sm btn-secondary btn-ver-recibo' data-id='" + pago.pagoId + "'><i class='mdi mdi-receipt'></i> Recibo</button>";
+            html += "<button class='btn btn-sm btn-primary btn-ver-pago' data-index='" + index + "' title='Ver detalles'><i class='mdi mdi-eye'></i></button> ";
+            html += "<button class='btn btn-sm btn-secondary btn-ver-recibo' data-id='" + pago.pagoId + "' title='Ver recibo'><i class='mdi mdi-receipt'></i></button>";
             html += "</td>";
             html += "</tr>";
         });
         $("#tbody-historico-pagos").html(html);
+
+        // Evento para ver recibo
+        $(".btn-ver-recibo").off("click").on("click", function() {
+            var pagoId = $(this).data("id");
+            verRecibo(pagoId);
+        });
     }
 
     function formatMoney(amount) {

@@ -38,11 +38,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID del parcial.</param>
         /// <returns>Vista de creación de parcial con los detalles del parcial.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await parcialesService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await parcialesService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de un parcial específico.
+		/// </summary>
+		/// <param name="id">ID del parcial.</param>
+		/// <returns>Resultado con la información detallada del parcial.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await parcialesService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar un parcial.

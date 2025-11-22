@@ -45,6 +45,17 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción asincrónica para obtener los detalles completos de una modalidad específica.
+        /// </summary>
+        /// <param name="id">ID de la modalidad.</param>
+        /// <returns>Detalles completos de la modalidad incluyendo campos de auditoría.</returns>
+        public async Task<ActionResult> DetailAsync(int id)
+        {
+            var result = await modalidadesService.Detail(id);
+            return AjaxResult(result, true);
+        }
+
+        /// <summary>
         /// Acción asincrónica para crear o editar una modalidad.
         /// </summary>
         /// <param name="model">Modelo de vista de la modalidad.</param>

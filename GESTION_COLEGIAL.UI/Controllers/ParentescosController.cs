@@ -45,6 +45,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result, true);
         }
 
+        public async Task<ActionResult> DetailAsync(int id)
+        {
+            var result = await parentescosService.Detail(id);
+            return AjaxResult(result, true);
+        }
+
         /// <summary>
         /// Acción asincrónica para crear o editar un Parentesco.
         /// </summary>

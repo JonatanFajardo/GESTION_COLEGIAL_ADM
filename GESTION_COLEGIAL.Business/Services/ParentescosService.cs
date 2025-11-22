@@ -25,6 +25,13 @@ namespace GESTION_COLEGIAL.Business.Services
             return apiUrl;
         }
 
+        public async Task<ParentescoDetailViewModel> Detail(int id)
+        {
+            string url = "Parentescos/DetailAsync";
+            ParentescoDetailViewModel apiUrl = await ApiRequests.FindAsync<ParentescoDetailViewModel>(url, id);
+            return apiUrl;
+        }
+
         public async Task<Boolean> Create(ParentescoViewModel model)
         {
             string url = "Parentescos/CreateAsync";
