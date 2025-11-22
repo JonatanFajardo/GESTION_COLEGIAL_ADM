@@ -1,4 +1,4 @@
-﻿using GESTION_COLEGIAL.Business.Extensions;
+using GESTION_COLEGIAL.Business.Extensions;
 using GESTION_COLEGIAL.Business.Models;
 using System;
 using System.Collections.Generic;
@@ -22,6 +22,13 @@ namespace GESTION_COLEGIAL.Business.Services
         {
             string url = "Secciones/FindAsync";
             SeccionViewModel apiUrl = await ApiRequests.FindAsync<SeccionViewModel>(url, id);
+            return apiUrl;
+        }
+
+        public async Task<SeccionDetailViewModel> Detail(int id)
+        {
+            string url = "Secciones/DetailAsync";
+            SeccionDetailViewModel apiUrl = await ApiRequests.FindAsync<SeccionDetailViewModel>(url, id);
             return apiUrl;
         }
 

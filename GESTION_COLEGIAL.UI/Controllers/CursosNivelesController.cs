@@ -38,11 +38,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID del curso nivel.</param>
         /// <returns>Vista de creación de curso nivel con los detalles del curso nivel.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await cursosNivelesService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await cursosNivelesService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de un curso nivel específico.
+		/// </summary>
+		/// <param name="id">ID del curso nivel.</param>
+		/// <returns>Resultado con el detalle solicitado.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await cursosNivelesService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para crear o editar un curso nivel.

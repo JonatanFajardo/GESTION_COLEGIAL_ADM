@@ -82,11 +82,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         /// <param name="id">ID de la Materia.</param>
         /// <returns>Vista de creación de Materias con los detalles de la Materia.</returns>
-        public async Task<ActionResult> FindAsync(int id)
-        {
-            var result = await materiasService.Find(id);
-            return AjaxResult(result, true);
-        }
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await materiasService.Find(id);
+			return AjaxResult(result, true);
+		}
+
+		/// <summary>
+		/// Acción asincrónica para obtener el detalle de una Materia específica.
+		/// </summary>
+		/// <param name="id">ID de la Materia.</param>
+		/// <returns>Resultado con la información detallada.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await materiasService.Detail(id);
+			return AjaxResult(result, true);
+		}
 
         /// <summary>
         /// Acción asincrónica para verificar si una Materia ya existe.

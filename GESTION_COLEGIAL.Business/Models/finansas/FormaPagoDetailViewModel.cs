@@ -1,16 +1,32 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
 {
-    public class FormaPagoDetailViewModel
+    public class FormaPagoDetailViewModel : BaseViewModel
     {
-        public int FormaPagoId { get; set; }
-        public string Descripcion { get; set; } = string.Empty;
-        public bool EsActivo { get; set; }
-        public bool EsEliminado { get; set; }
-        public int UsuarioRegistraId { get; set; }
-        public DateTime FechaRegistro { get; set; }
-        public int? UsuarioModificaId { get; set; }
-        public DateTime? FechaModifica { get; set; }
+        [Key]
+        public int Fpa_Id { get; set; }
+
+        [Display(Name = "Descripción")]
+        public string Fpa_Descripcion { get; set; }
+
+        [Display(Name = "Activo")]
+        public bool Fpa_EsActivo { get; set; }
+
+        [Display(Name = "Cantidad de Pagos")]
+        public int? CantidadPagos { get; set; }
+
+        [Display(Name = "Creado por")]
+        public string NombreCompletoUsuarioRegistra { get; set; }
+
+        [Display(Name = "Fecha de creación")]
+        public DateTime Fpa_FechaRegistra { get; set; }
+
+        [Display(Name = "Modificado por")]
+        public string NombreCompletoUsuarioModifica { get; set; }
+
+        [Display(Name = "Fecha de modificación")]
+        public DateTime? Fpa_FechaModifica { get; set; }
     }
 }

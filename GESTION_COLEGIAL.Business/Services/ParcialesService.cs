@@ -35,6 +35,18 @@ namespace GESTION_COLEGIAL.Business.Services
 		}
 
 		/// <summary>
+		/// Obtiene el detalle de un parcial por su ID de forma asíncrona.
+		/// </summary>
+		/// <param name="id">ID del parcial a detallar.</param>
+		/// <returns>El objeto ParcialViewModel con el detalle solicitado.</returns>
+		public async Task<ParcialDetailViewModel> Detail(int id)
+        {
+            string url = "Parciales/DetailAsync";
+            ParcialDetailViewModel apiUrl = await ApiRequests.FindAsync<ParcialDetailViewModel>(url, id);
+            return apiUrl;
+        }
+
+		/// <summary>
 		/// Crea un nuevo parcial en la API de forma asíncrona.
 		/// </summary>
 		/// <param name="model">Objeto ParcialViewModel con los datos del parcial a crear.</param>

@@ -35,6 +35,18 @@ namespace GESTION_COLEGIAL.Business.Services
         }
 
         /// <summary>
+        /// Obtiene los detalles completos de una modalidad por su identificador de forma asíncrona.
+        /// </summary>
+        /// <param name="id">El identificador de la modalidad.</param>
+        /// <returns>El objeto ModalidadViewModel con todos los detalles.</returns>
+        public async Task<ModalidadDetailViewModel> Detail(int id)
+        {
+            string url = "Modalidades/DetailAsync";
+            ModalidadDetailViewModel apiUrl = await ApiRequests.FindAsync<ModalidadDetailViewModel>(url, id);
+            return apiUrl;
+        }
+
+        /// <summary>
         /// Crea una nueva modalidad de forma asíncrona.
         /// </summary>
         /// <param name="model">El objeto ModalidadViewModel a crear.</param>

@@ -34,6 +34,13 @@ namespace GESTION_COLEGIAL.Business.Services
             return apiUrl;
         }
 
+        public async Task<TituloDetailViewModel> Detail(int id)
+        {
+            string url = "Titulos/DetailAsync";
+            TituloDetailViewModel apiUrl = await ApiRequests.FindAsync<TituloDetailViewModel>(url, id);
+            return apiUrl;
+        }
+
         /// <summary>
         /// Crea un nuevo título de forma asincrónica.
         /// </summary>

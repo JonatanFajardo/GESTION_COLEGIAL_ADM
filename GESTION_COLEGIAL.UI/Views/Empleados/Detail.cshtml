@@ -1,0 +1,187 @@
+@model GESTION_COLEGIAL.Business.Models.EmpleadoViewModel
+@{
+    ViewBag.Title = "Detalle del Empleado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var estadoColor = Model.EsActivo == "Activo" ? "badge-success" : "badge-danger";
+    var sexoTexto = Model.Per_Sexo == "M" ? "Masculino" : "Femenino";
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Empleados</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detalle</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <div class="detail-container">
+        <!-- Header con informacion principal -->
+        <div class="card mb-4">
+            <div class="card-body" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border-radius: 5px;">
+                <div class="row align-items-center">
+                    <div class="col-md-2 text-center">
+                        <div class="rounded-circle bg-white d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; margin: 0 auto;">
+                            <i class="mdi mdi-account-tie" style="font-size: 60px; color: #11998e;"></i>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge badge-light">#@Model.Emp_Id.ToString().PadLeft(4, '0')</span>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <h2 class="mb-1">@Model.Emp_Nombre</h2>
+                        <p class="mb-2">
+                            <i class="mdi mdi-briefcase"></i> @Model.Car_Descripcion
+                        </p>
+                        <div class="d-flex flex-wrap">
+                            <span class="mr-3"><i class="mdi mdi-card-account-details"></i> @Model.Per_Identidad</span>
+                            <span class="mr-3"><i class="mdi mdi-badge-account"></i> Codigo: @Model.Emp_Codigo</span>
+                            <span><i class="mdi mdi-school"></i> @Model.Tit_Descripcion</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <a href="@Url.Action("FindAsync", new { id = Model.Emp_Id })" class="btn btn-light mb-2">
+                            <i class="mdi mdi-pencil"></i> Editar
+                        </a>
+                        <br>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-light">
+                            <i class="mdi mdi-arrow-left"></i> Volver
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Informacion Personal -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="mdi mdi-account-card-details mr-2"></i>Informacion Personal</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Primer Nombre:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_PrimerNombre</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Segundo Nombre:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_SegundoNombre</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Apellido Paterno:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_ApellidoPaterno</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Apellido Materno:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_ApellidoMaterno</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Identidad:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_Identidad</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Fecha Nacimiento:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_FechaNacimiento.ToString("dd/MM/yyyy")</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Sexo:</div>
+                            <div class="col-7 font-weight-bold">@sexoTexto</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informacion de Contacto -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="mdi mdi-phone mr-2"></i>Informacion de Contacto</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Telefono:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_Telefono</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Correo:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_CorreoElectronico</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Direccion:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_Direccion</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Informacion Laboral -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="mdi mdi-briefcase mr-2"></i>Informacion Laboral</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Codigo Empleado:</div>
+                            <div class="col-7 font-weight-bold">@Model.Emp_Codigo</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Titulo:</div>
+                            <div class="col-7 font-weight-bold">@Model.Tit_Descripcion</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Cargo:</div>
+                            <div class="col-7 font-weight-bold">@Model.Car_Descripcion</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Estado:</div>
+                            <div class="col-7">
+                                <span class="badge @estadoColor">@Model.EsActivo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informacion de Auditoria -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="mdi mdi-clock-outline mr-2"></i>Informacion de Registro</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Creado por:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_UsuarioRegistraNombre</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Fecha Creacion:</div>
+                            <div class="col-7 font-weight-bold">@Model.Per_FechaRegistra.ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+                        @if (Model.Per_FechaModifica.HasValue)
+                        {
+                            <div class="row mb-3">
+                                <div class="col-5 text-muted">Modificado por:</div>
+                                <div class="col-7 font-weight-bold">@Model.Per_UsuarioModificaNombre</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-5 text-muted">Fecha Modificacion:</div>
+                                <div class="col-7 font-weight-bold">@Model.Per_FechaModifica.Value.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/empleados.detail.js"></script>
+}

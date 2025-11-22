@@ -21,7 +21,12 @@
       "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Api/Controllers/**)",
       "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Api/Properties/**)",
       "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Api/**)",
-      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Business/Services/**)"
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.Business/Services/**)",
+      "Read(//c/Users/movie/Documents/GitHub/PetsHome/**)",
+      "Read(//c/Users/movie/Downloads/modalidades modal/**)",
+      "Bash(for dir in Cargos ConceptosPago CursosNiveles Descuentos Duraciones Estados EstadosPago FormasPago Materias Modalidades NivelesEducativos Parciales Parentescos Secciones Semestres Titulos)",
+      "Bash(do echo \"=== $dir ===\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []
