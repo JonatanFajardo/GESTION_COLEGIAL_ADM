@@ -10,6 +10,30 @@
   color: #655b51;
 }
 
+/*#card-home {
+    background-color: $primary;
+
+}*/
+#card-home h1, h6, p {
+  color: white;
+}
+
+.card-header {
+  background-color: white;
+}
+
+#datatable_filter label {
+  width: 100%;
+}
+
+.breadcrumb {
+  background-color: #fcead4;
+}
+
+.breadcrumb-item.active {
+  color: #655b51;
+}
+
 .card-home {
   background-color: #F7A400;
 }
@@ -17,7 +41,6 @@
 /* ==================================
    Estilos Modernos para Alumnos
    ================================== */
-
 /* Breadcrumb Mejorado */
 .breadcrumb-wrapper-content {
   margin-bottom: 20px;
@@ -86,7 +109,7 @@
   background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
 }
 
-#datatable thead th { 
+#datatable thead th {
   font-weight: 700;
   text-transform: uppercase;
   font-size: 13px;
@@ -125,7 +148,7 @@
   border: none !important;
 }
 
-/* Imágenes de Perfil Mejoradas */
+/* Imagenes de Perfil Mejoradas */
 #datatable tbody td img {
   width: 48px !important;
   height: 48px !important;
@@ -152,6 +175,7 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
+
 /* 
 .badge-success {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
@@ -170,13 +194,12 @@
   color: #ffffff !important;
   border: none !important;
 } */
-
 .badge:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Botones de Acción */
+/* Botones de Accion */
 #datatable .edit-btn svg,
 #datatable .delete-btn svg {
   transition: all 0.3s ease;
@@ -201,7 +224,7 @@
   padding: 20px;
 }
 
-/* Paginación Mejorada */
+/* Paginacion Mejorada */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   border-radius: 8px !important;
   margin: 0 4px;
@@ -235,7 +258,7 @@
   outline: none;
 }
 
-/* Botones de Exportación */
+/* Botones de Exportacion */
 .dt-buttons .btn {
   border-radius: 10px !important;
   padding: 10px 18px !important;
@@ -260,14 +283,14 @@
   border: none !important;
 }
 
-/* Información de Registros */
+/* Informacion de Registros */
 .dataTables_info {
   color: #6c757d;
   font-weight: 600;
   font-size: 14px;
 }
 
-/* Animación de Carga */
+/* Animacion de Carga */
 .dataTables_processing {
   background: rgba(255, 255, 255, 0.95) !important;
   border-radius: 12px !important;
@@ -283,7 +306,7 @@
   margin: 0 !important;
 }
 
-/* Área de búsqueda y botones superiores */
+/* Area de busqueda y botones superiores */
 .dataTables_wrapper .custom-buttons {
   gap: 8px;
 }
@@ -292,7 +315,7 @@
   white-space: nowrap;
 }
 
-/* Mejora del ícono de ordenamiento */
+/* Mejora del icono de ordenamiento */
 #datatable thead th.sorting,
 #datatable thead th.sorting_asc,
 #datatable thead th.sorting_desc {
@@ -314,7 +337,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Select de registros por página */
+/* Select de registros por pagina */
 .dataTables_length select {
   border: 2px solid #e0e0e0;
   border-radius: 8px;
@@ -337,7 +360,7 @@
   display: inline-block;
 }
 
-/* Animación de entrada de filas */
+/* Animacion de entrada de filas */
 #datatable tbody tr {
   animation: fadeInRow 0.4s ease-in-out;
 }
@@ -352,7 +375,6 @@
     transform: translateY(0);
   }
 }
-
 /* Mejora del mensaje de "sin datos" */
 .dataTables_empty {
   padding: 40px 20px !important;
@@ -411,71 +433,58 @@
   font-weight: 600;
 }
 
-/* Mejora de la experiencia táctil en móviles */
+/* Mejora de la experiencia tactil en moviles */
 @media (hover: none) and (pointer: coarse) {
   #datatable tbody tr:hover {
     transform: none;
   }
-
   #datatable tbody tr:active {
     background: linear-gradient(135deg, #fff8e6 0%, #fffaf0 100%);
   }
 }
-
 /* Responsive */
 @media (max-width: 768px) {
   .fluid-container > .card .card-header h3 {
     font-size: 20px;
   }
-
   #datatable thead th {
     font-size: 11px;
     padding: 14px 10px !important;
   }
-
   #datatable tbody td {
     padding: 12px 8px !important;
     font-size: 13px;
   }
-
   #datatable tbody td img {
     width: 40px !important;
     height: 40px !important;
   }
-
   .dt-buttons .btn {
     padding: 8px 12px !important;
     font-size: 12px;
   }
-
   .dataTables_wrapper .custom-buttons {
     flex-wrap: wrap;
   }
 }
-
 @media (max-width: 576px) {
   .fluid-container > .card .card-header {
     padding: 18px 20px !important;
   }
-
   .fluid-container > .card .card-header h3 {
     font-size: 18px;
   }
-
   .table-responsive {
     padding: 12px;
   }
-
   .badge {
     padding: 6px 12px !important;
     font-size: 10px !important;
   }
 }
-
 /* ==================================
    Estilos para Sidebar
    ================================== */
-
 /* Submenu headers */
 #sidebar ul.menu-categories .submenu .submenu-header {
   color: #94a3b8;
@@ -516,4 +525,15 @@
 
 #sidebar ul.menu-categories::-webkit-scrollbar-thumb:hover {
   background: #64748b;
+}
+
+.btn-no-action {
+  flex: 1;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151 !important;
+  font-size: 14px;
 }
