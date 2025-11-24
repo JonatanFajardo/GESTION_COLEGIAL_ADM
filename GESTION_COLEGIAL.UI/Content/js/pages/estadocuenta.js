@@ -147,16 +147,46 @@ var EstadoCuenta = (function () {
                 $("#btn-buscar-alumno").prop("disabled", true).html('<i class="mdi mdi-loading mdi-spin"></i> Buscando...');
             },
             success: function(response) {
-                if (response && response.data && response.data.Alu_Id) {
-                    alumnoId = response.data.Alu_Id;
-                    cargarEstadoCuenta();
-                    $("#panel-busqueda").hide();
-                    $("#panel-info-alumno").show();
+                console.log("Response completo:", response);
+                console.log("response.data:", response.data);
+
+                if (response && response.data) {
+                    var alumno = response.data;
+                    console.log("Alumno encontrado:", alumno);
+
+                    if (alumno.Alu_Id) {
+                        alumnoId = alumno.Alu_Id;
+
+                        // Cargar información del alumno en el panel
+                        var nombreCompleto = (alumno.Per_PrimerNombre || "") + " " +
+                                            (alumno.Per_SegundoNombre || "") + " " +
+                                            (alumno.Per_ApellidoPaterno || "") + " " +
+                                            (alumno.Per_ApellidoMaterno || "");
+
+                        $("#alumno-nombre").text(nombreCompleto.trim() || "N/A");
+                        $("#alumno-identidad").text(alumno.Per_Identidad || "N/A");
+                        $("#alumno-nivel").text(alumno.Niv_Descripcion || "N/A");
+                        $("#alumno-curso").text(alumno.Cur_Descripcion || "N/A");
+                        $("#alumno-seccion").text(alumno.Sec_Descripcion || "N/A");
+                        $("#alumno-encargado").text("Por implementar");
+
+                        $("#panel-busqueda").hide();
+                        $("#panel-info-alumno").show();
+
+                        // Por ahora, solo mostramos los datos del alumno
+                        // El estado de cuenta se implementará después
+                        toastr.success("Alumno encontrado correctamente");
+                    } else {
+                        console.log("No se encontró Alu_Id en los datos");
+                        toastr.warning("No se encontró ningún alumno con el número de identidad especificado");
+                    }
                 } else {
+                    console.log("Respuesta inválida o sin datos");
                     toastr.warning("No se encontró ningún alumno con el número de identidad especificado");
                 }
             },
             error: function(xhr) {
+                console.log("Error en AJAX:", xhr);
                 var errorMsg = "Error al buscar el alumno. Por favor intente nuevamente.";
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMsg = xhr.responseJSON.message;
