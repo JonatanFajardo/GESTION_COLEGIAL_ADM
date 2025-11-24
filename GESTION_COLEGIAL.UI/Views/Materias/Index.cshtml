@@ -39,11 +39,14 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+                <!-- Header with Orange Gradient -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <i class="mdi mdi-pencil"></i>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -63,56 +66,42 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         @Html.HiddenFor(model => model.Mat_Id, new { @id = "item-id" })
                         <div class="modal-body">
-                            <div class="form-row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Mat_Nombre, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.Mat_Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Mat_Nombre, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Dur_Id, "Duración", htmlAttributes: new { @class = "control-label" })
-
-                                        <div class="float-right">
-                                            <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
-                                                   data-placement="right" title="Estado">
-
-                                                <input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" />
-
-                                                @*@Html.CheckBoxFor(model => model.Mat_EsActivo, htmlAttributes: new { @class = "float-right", @title = "Activo", id = "estadoCheckbox" })*@
-
-                                                @*@Html.CheckBoxFor(m => m.Mat_EsActivo)*@
-                                                @*@Html.CheckBox("Mat_EsActivo")*@
-                                                @*<input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" model.Mat_EsActivo />*@
-                                                @*@Html.EditorFor(model => model.Mat_EsActivo, new { htmlAttributes = new { @class = "form-control", @type = "checkbox" } })*@
-                                                @*<input type="checkbox" name="@Model.Mat_EsActivo" id="radio-6">*@
-                                                @*<input type="checkbox" name="(model => model.Mat_EsActivo)" id="(model => model.Mat_EsActivo)">*@
-                                                @*@Html.CheckBoxFor(model => model.Mat_EsActivo, new { id = "" })*@
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-
-                                        @Html.EditorFor(model => model.Dur_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Dur_Id, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <!--<div class="col-12 ">
-                                    <div class="form-group">
-                                        <label class="toggler toggler--is-active" id="filt-monthly">Estado</label>
-                                        <div class="toggle">-->
-                                            @*<input type="checkbox" id="switcher" class="check">*@
-
-                                            <!--<b class="b switch"></b>
+                            <!-- Form Card -->
+                            <div class="form-card">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Mat_Nombre, "Descripción", htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Mat_Nombre, new { htmlAttributes = new { @class = "form-control form-control-modern", placeholder = "Ingrese el nombre de la materia" } })
+                                            @Html.ValidationMessageFor(model => model.Mat_Nombre, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                </div>-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Dur_Id, "Duración", htmlAttributes: new { @class = "form-label" })
+
+                                            <div class="float-right">
+                                                <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
+                                                       data-placement="right" title="Estado">
+                                                    <input type="checkbox" id="Mat_EsActivo" name="Mat_EsActivo" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+
+                                            @Html.EditorFor(model => model.Dur_Id, new { htmlAttributes = new { @class = "form-control form-control-modern" } })
+                                            @Html.ValidationMessageFor(model => model.Dur_Id, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
+                            <button type="button" class="btn btn-secondary btn-modern-cancel" data-dismiss="modal">
+                                <i class="mdi mdi-close mr-1"></i>Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-modern-save">
+                                <i class="mdi mdi-content-save mr-1"></i>Guardar
+                            </button>
                         </div>
                     </div>
                 }

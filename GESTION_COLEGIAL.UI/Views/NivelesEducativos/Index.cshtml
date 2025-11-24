@@ -41,11 +41,14 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+                <!-- Header with Orange Gradient -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <i class="mdi mdi-pencil"></i>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -64,43 +67,33 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         @Html.HiddenFor(model => model.Niv_Id, new { @id = "item-id" })
                         <div class="modal-body">
-                            <div class="form-row">
-                                @* Columna Descripción *@
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Niv_Descripcion, "Descripción", htmlAttributes: new { @class = "control-label" })
-                                        <div class="float-right">
-                                            <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
-                                                 data-placement="right" title="Estado"> 
-                                                <input type="checkbox" id="Niv_EsActivo" name="Niv_EsActivo"/> 
-                                                <span class="slider round"></span>
-                                            </label>
+                            <!-- Form Card -->
+                            <div class="form-card">
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Niv_Descripcion, "Descripción", htmlAttributes: new { @class = "form-label" })
+                                            <div class="float-right">
+                                                <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
+                                                     data-placement="right" title="Estado">
+                                                    <input type="checkbox" id="Niv_EsActivo" name="Niv_EsActivo"/>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            @Html.EditorFor(model => model.Niv_Descripcion, new { htmlAttributes = new { @class = "form-control form-control-modern", placeholder = "Ingrese la descripción del nivel educativo" } })
+                                            @Html.ValidationMessageFor(model => model.Niv_Descripcion, "", new { @class = "text-danger" })
                                         </div>
-                                        @Html.EditorFor(model => model.Niv_Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Niv_Descripcion, "", new { @class = "text-danger" })
-                                        @*<div class="float-right">
-                                            <label class="switch s-icons s-outline  s-outline-primary bs-tooltip"
-                                                   data-placement="right" title="Niv_EsActivo">
-
-                                                <input type="checkbox" id="Niv_EsActivo" name="Niv_EsActivo" />
-
-
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>*@
-
                                     </div>
-
                                 </div>
-
-                                @*@Html.CheckBoxFor(model => model.Niv_EsActivo)*@
-                                @*@Html.CheckBoxFor(x => Model.Niv_EsActivo)*@
-                                @*@Html.CheckBox("Niv_EsActivo", new { value = Model.Niv_EsActivo});*@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>Guardar</button>
+                            <button type="button" class="btn btn-secondary btn-modern-cancel" data-dismiss="modal">
+                                <i class="mdi mdi-close mr-1"></i>Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-modern-save">
+                                <i class="mdi mdi-content-save mr-1"></i>Guardar
+                            </button>
                         </div>
                     </div>
                 }

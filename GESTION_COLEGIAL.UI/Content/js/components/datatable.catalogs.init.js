@@ -151,12 +151,20 @@ var datatableCatalogs = (function () {
             if (_header[i].Size != undefined) {
                 head[i]['width'] = _header[i].Size
             }
+            // Entra si se desea agregar un render personalizado
+            if (_header[i].Render != undefined) {
+                head[i]['render'] = _header[i].Render
+            }
+            // Agregar clase text-center para columnas con render personalizado
+            if (_header[i].Render != undefined) {
+                head[i]['className'] = 'text-center'
+            }
         }
 
         head.push({
             targets: i,
             className: "text-center",
-            width: 120,
+            width: 150,
             render: function (data, type, row) {
                 var botones = "";
                 head = _header[0].FieldName;
