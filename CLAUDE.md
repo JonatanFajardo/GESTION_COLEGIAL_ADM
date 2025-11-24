@@ -18,6 +18,11 @@ GESTION_COLEGIAL_ADM.sln
 
 The application uses a **three-layer architecture** where the UI and Business layers communicate with an external RESTful API (separate microservice) for data persistence.
 
+**External API Repository:**
+- Path: `C:\Users\movie\Documents\GitHub\Gestion.Colegial.Api`
+- This is a separate ASP.NET Core Web API project that handles data persistence and business logic
+- The API must be running at `https://localhost:7076/api/v1/` for the MVC application to function
+
 ## Build & Development
 
 **Prerequisites:**
