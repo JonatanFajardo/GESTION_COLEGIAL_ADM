@@ -84,8 +84,8 @@
 </div>
 <!-- Fin Modal -->
 <!-- Modal Delete-->
-<div class="modal" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="deleteModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 440px;">
         @using (Ajax.BeginForm("DeleteAsync", "Titulos", new AjaxOptions
         {
             HttpMethod = "Post",
@@ -95,28 +95,53 @@
             OnSuccess = "Catalogs.success"
         }))
         {
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                    <span aria-hidden="true">&times;</span>
+        <div class="modal-content" style="border-radius: 12px; border: none;">
+            <!-- Header sin título, solo botón cerrar -->
+            <div class="modal-header" style="border-bottom: none; padding: 20px 24px 0;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding: 0; margin: 0; opacity: 0.5;">
+                    <span aria-hidden="true" style="font-size: 24px;">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <h5>
-                </h5>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            @Html.HiddenFor(model => model.Tit_Id, new { @id = "delete-item-id" })
-                            <p>¿Está seguro de que desea eliminar este registro?</p>
+
+            <div class="modal-body text-center" style="padding: 0 40px 32px;">
+                @Html.HiddenFor(model => model.Tit_Id, new { @id = "delete-item-id" })
+
+                <!-- Ícono de advertencia grande -->
+                <div class="d-flex justify-content-center mb-3">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-exclamation-triangle" style="color: white; font-size: 28px;"></i>
                         </div>
                     </div>
                 </div>
+
+                <!-- Título -->
+                <h5 class="mb-3" style="color: #1f2937; font-weight: 600; font-size: 20px;">Eliminar título</h5>
+
+                <!-- Mensaje de confirmación -->
+                <p class="mb-4" style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                    ¿Está seguro de que desea eliminar el título <span id="delete-item-name" style="font-weight: 600;"></span>?
+                </p>
+
+                <!-- Área de advertencia -->
+                <div class="alert d-flex align-items-start text-left" style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-bottom: 0;">
+                    <div style="flex-shrink: 0; margin-right: 12px;">
+                        <i class="fas fa-exclamation-triangle" style="color: #dc2626; font-size: 18px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <p class="mb-1" style="color: #991b1b; font-weight: 600; font-size: 13px; margin: 0;">Esta acción no se puede deshacer</p>
+                        <p class="mb-0" style="color: #991b1b; font-size: 13px; margin: 0;">El registro será eliminado permanentemente del sistema.</p>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" id="accept-delete-btn" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+
+            <div class="modal-footer" style="border-top: none; padding: 0 40px 32px; gap: 12px;">
+                <button type="button" class="btn" data-dismiss="modal" style="flex: 1; padding: 10px 24px; border-radius: 8px; font-weight: 500; background-color: #f3f4f6; border: 1px solid #d1d5db; color: #374151 !important; font-size: 14px;">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-danger" style="flex: 1; padding: 10px 24px; border-radius: 8px; font-weight: 500; background-color: #dc2626; border: none; font-size: 14px;">
+                    Eliminar
+                </button>
             </div>
         </div>
         }
