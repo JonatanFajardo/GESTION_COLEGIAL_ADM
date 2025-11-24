@@ -20,18 +20,532 @@
   color: #655b51;
 }
 
-#card-home {
-  background-color: #F7A400;
-}
+/*#card-home {
+    background-color: $primary;
 
-#card-home h1,
-#card-home h6,
-#card-home p {
+}*/
+#card-home h1, h6, p {
   color: white;
 }
 
 .card-header {
   background-color: white;
+}
+
+#datatable_filter label {
+  width: 100%;
+}
+
+.breadcrumb {
+  background-color: #fcead4;
+}
+
+.breadcrumb-item.active {
+  color: #655b51;
+}
+
+.card-home {
+  background-color: #F7A400;
+}
+
+/* ==================================
+   Estilos Modernos para Alumnos
+   ================================== */
+/* Breadcrumb Mejorado */
+.breadcrumb-wrapper-content {
+  margin-bottom: 20px;
+}
+
+.breadcrumb-style-one {
+  background: transparent;
+  padding: 0;
+}
+
+.breadcrumb-style-one .breadcrumb {
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 0;
+}
+
+.breadcrumb-style-one .breadcrumb-item a {
+  color: #F7A400;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb-style-one .breadcrumb-item a:hover {
+  color: #d89000;
+  text-decoration: none;
+}
+
+/* Card Principal de Alumnos */
+.fluid-container > .card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.fluid-container > .card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  transform: translateY(-2px);
+}
+
+/* Header de la Card */
+.fluid-container > .card .card-header {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+  border-bottom: 2px solid #f0f0f0;
+  padding: 24px 28px !important;
+}
+
+.fluid-container > .card .card-header h3 {
+  color: #2c3e50;
+  font-weight: 700;
+  font-size: 26px;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+/* Tabla de Alumnos */
+#datatable {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#datatable thead {
+  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
+}
+
+#datatable thead th {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+  padding: 18px 16px !important;
+  border: none !important;
+  vertical-align: middle;
+}
+
+#datatable thead th:first-child {
+  border-top-left-radius: 12px;
+}
+
+#datatable thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+#datatable tbody tr {
+  background: #ffffff;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#datatable tbody tr:hover {
+  background: linear-gradient(135deg, #fff8e6 0%, #fffaf0 100%);
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(247, 164, 0, 0.15);
+}
+
+#datatable tbody td {
+  padding: 16px !important;
+  vertical-align: middle;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 500;
+  border: none !important;
+}
+
+/* Imagenes de Perfil Mejoradas */
+#datatable tbody td img {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+  object-fit: cover;
+  border: 3px solid #F7A400 !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+#datatable tbody tr:hover td img {
+  transform: scale(1.15) rotate(3deg);
+  box-shadow: 0 6px 16px rgba(247, 164, 0, 0.4);
+}
+
+/* Badges de Estado Modernos */
+.badge {
+  padding: 8px 16px !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* 
+.badge-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.badge-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+} */
+.badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Botones de Accion */
+#datatable .edit-btn svg,
+#datatable .delete-btn svg {
+  transition: all 0.3s ease;
+}
+
+#datatable .edit-btn:hover svg {
+  color: #F7A400 !important;
+  transform: scale(1.2) rotate(10deg);
+  filter: drop-shadow(0 2px 4px rgba(247, 164, 0, 0.4));
+}
+
+#datatable .delete-btn:hover svg {
+  color: #dc3545 !important;
+  transform: scale(1.2) rotate(-10deg);
+  filter: drop-shadow(0 2px 4px rgba(220, 53, 69, 0.4));
+}
+
+/* Contenedor de la Tabla */
+.table-responsive {
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+  padding: 20px;
+}
+
+/* Paginacion Mejorada */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  border-radius: 8px !important;
+  margin: 0 4px;
+  transition: all 0.3s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%) !important;
+  color: #ffffff !important;
+  border-color: #F7A400 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%) !important;
+  color: #ffffff !important;
+  border-color: #F7A400 !important;
+}
+
+/* Buscador Mejorado */
+#datatable_filter input {
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+#datatable_filter input:focus {
+  border-color: #F7A400;
+  box-shadow: 0 0 0 3px rgba(247, 164, 0, 0.1);
+  outline: none;
+}
+
+/* Botones de Exportacion */
+.dt-buttons .btn {
+  border-radius: 10px !important;
+  padding: 10px 18px !important;
+  font-weight: 600 !important;
+  margin: 0 6px !important;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dt-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dt-buttons .btn-primary {
+  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%) !important;
+  border: none !important;
+}
+
+.dt-buttons .btn-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%) !important;
+  border: none !important;
+}
+
+/* Informacion de Registros */
+.dataTables_info {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Animacion de Carga */
+.dataTables_processing {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* DataTables Wrapper - Ajustes generales */
+.dataTables_wrapper {
+  padding: 0 !important;
+}
+
+.dataTables_wrapper .row {
+  margin: 0 !important;
+}
+
+/* Area de busqueda y botones superiores */
+.dataTables_wrapper .custom-buttons {
+  gap: 8px;
+}
+
+.dataTables_wrapper .custom-buttons .btn {
+  white-space: nowrap;
+}
+
+/* Mejora del icono de ordenamiento */
+#datatable thead th.sorting,
+#datatable thead th.sorting_asc,
+#datatable thead th.sorting_desc {
+  position: relative;
+  cursor: pointer;
+}
+
+#datatable thead th.sorting:after,
+#datatable thead th.sorting_asc:after,
+#datatable thead th.sorting_desc:after {
+  opacity: 0.6;
+  font-size: 0.9em;
+  margin-left: 6px;
+}
+
+#datatable thead th.sorting:hover,
+#datatable thead th.sorting_asc:hover,
+#datatable thead th.sorting_desc:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Select de registros por pagina */
+.dataTables_length select {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin: 0 8px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  color: #495057;
+}
+
+.dataTables_length select:focus {
+  border-color: #F7A400;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(247, 164, 0, 0.1);
+}
+
+/* Tooltips mejorados */
+.bs-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Animacion de entrada de filas */
+#datatable tbody tr {
+  animation: fadeInRow 0.4s ease-in-out;
+}
+
+@keyframes fadeInRow {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Mejora del mensaje de "sin datos" */
+.dataTables_empty {
+  padding: 40px 20px !important;
+  text-align: center;
+  color: #6c757d;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Loader personalizado */
+.dataTables_processing {
+  padding: 20px !important;
+}
+
+/* Estilos para el modal de eliminar */
+#delete-modal-secondary .modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+#delete-modal-secondary .modal-header {
+  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
+  border-radius: 16px 16px 0 0;
+  color: white;
+  border-bottom: none;
+  padding: 20px 24px;
+}
+
+#delete-modal-secondary .modal-body {
+  padding: 30px 24px;
+}
+
+#delete-modal-secondary .modal-footer {
+  border-top: 1px solid #e0e0e0;
+  padding: 16px 24px;
+}
+
+#delete-modal-secondary .btn-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#delete-modal-secondary .btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+#delete-modal-secondary .btn-secondary {
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+}
+
+/* Mejora de la experiencia tactil en moviles */
+@media (hover: none) and (pointer: coarse) {
+  #datatable tbody tr:hover {
+    transform: none;
+  }
+  #datatable tbody tr:active {
+    background: linear-gradient(135deg, #fff8e6 0%, #fffaf0 100%);
+  }
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .fluid-container > .card .card-header h3 {
+    font-size: 20px;
+  }
+  #datatable thead th {
+    font-size: 11px;
+    padding: 14px 10px !important;
+  }
+  #datatable tbody td {
+    padding: 12px 8px !important;
+    font-size: 13px;
+  }
+  #datatable tbody td img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .dt-buttons .btn {
+    padding: 8px 12px !important;
+    font-size: 12px;
+  }
+  .dataTables_wrapper .custom-buttons {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 576px) {
+  .fluid-container > .card .card-header {
+    padding: 18px 20px !important;
+  }
+  .fluid-container > .card .card-header h3 {
+    font-size: 18px;
+  }
+  .table-responsive {
+    padding: 12px;
+  }
+  .badge {
+    padding: 6px 12px !important;
+    font-size: 10px !important;
+  }
+}
+/* ==================================
+   Estilos para Sidebar
+   ================================== */
+/* Submenu headers */
+#sidebar ul.menu-categories .submenu .submenu-header {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px 16px 8px 16px;
+  margin-top: 8px;
+  pointer-events: none;
+  border-top: 1px solid #334155;
+}
+
+#sidebar ul.menu-categories .submenu .submenu-header:first-child {
+  border-top: none;
+  margin-top: 0;
+}
+
+/* Asegurar que el scroll funcione en el sidebar */
+#sidebar ul.menu-categories {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* Estilos para la scrollbar en navegadores webkit */
+#sidebar ul.menu-categories::-webkit-scrollbar {
+  width: 6px;
+}
+
+#sidebar ul.menu-categories::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+#sidebar ul.menu-categories::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 3px;
+}
+
+#sidebar ul.menu-categories::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+.btn-no-action {
+  flex: 1;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151 !important;
+  font-size: 14px;
 }
 
 .sidenav {

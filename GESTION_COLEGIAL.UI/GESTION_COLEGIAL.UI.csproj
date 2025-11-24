@@ -161,6 +161,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\base.css" />
+    <Content Include="Content\css\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
+    <Content Include="Content\css\form-encargados.css" />
+    <Content Include="Content\css\horarios.css" />
+    <Content Include="Content\css\modal-detail.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
