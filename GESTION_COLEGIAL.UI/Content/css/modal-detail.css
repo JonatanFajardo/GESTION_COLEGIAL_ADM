@@ -89,8 +89,9 @@
 
 .btn-modern-cancel {
     padding: 0.625rem 1.25rem;
-    background: linear-gradient(to right, #9333ea, #7e22ce);
-    color: white;
+   background-color: #edeff3;
+    border: 1px solid #d1d5db;
+    color: #374151 !important;
     border: none;
     border-radius: 0.5rem;
     font-size: 0.875rem;
@@ -98,9 +99,10 @@
     transition: all 0.15s;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
+ 
 
 .btn-modern-cancel:hover {
-    background: linear-gradient(to right, #7e22ce, #6b21a8);
+    background: #e7e9ec;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     color: white;
 }

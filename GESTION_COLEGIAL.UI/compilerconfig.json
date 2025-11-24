@@ -38,5 +38,13 @@
   {
     "outputFile": "Content/css/custom.css",
     "inputFile": "Content/sass/assets/custom.scss"
+  },
+  {
+    "outputFile": "Content/css/custom.css",
+    "inputFile": "Content/sass/base/_custom.scss"
+  },
+  {
+    "outputFile": "Content/css/base.css",
+    "inputFile": "Content/sass/base/_base.scss"
   }
 ]
