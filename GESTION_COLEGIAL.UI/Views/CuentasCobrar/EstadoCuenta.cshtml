@@ -42,6 +42,48 @@
         </div>
     </div>
 
+<!-- Card de Bienvenida / Placeholder -->
+<div id="card-placeholder" class="card mt-3">
+    <div class="card-body text-center py-5">
+        <div class="mb-4">
+            <i class="mdi mdi-account-search" style="font-size: 80px; color: #4361ee;"></i>
+        </div>
+        <h3 class="mb-3">Estado de Cuenta de Alumnos</h3>
+        <p class="text-muted mb-4">Busque un alumno por su número de identidad para visualizar su estado financiero completo</p>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="p-3">
+                    <i class="mdi mdi-cash-multiple text-success" style="font-size: 40px;"></i>
+                    <h5 class="mt-2">Cargos Pendientes</h5>
+                    <p class="text-muted small">Visualice todos los cargos pendientes de pago del alumno</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3">
+                    <i class="mdi mdi-chart-line text-primary" style="font-size: 40px;"></i>
+                    <h5 class="mt-2">Resumen Financiero</h5>
+                    <p class="text-muted small">Consulte el resumen completo de deudas, pagos y mora</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3">
+                    <i class="mdi mdi-history text-info" style="font-size: 40px;"></i>
+                    <h5 class="mt-2">Histórico de Pagos</h5>
+                    <p class="text-muted small">Revise todos los pagos realizados por el alumno</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-info mt-4 d-inline-block" role="alert">
+            <i class="mdi mdi-information-outline mr-2"></i>
+            <strong>Tip:</strong> Use el campo de búsqueda arriba para comenzar
+        </div>
+    </div>
+</div>
+
+<div id="paneles-informacion" style="display: none;">
+
     <!-- Panel de Información del Alumno -->
     <div class="card" id="panel-info-alumno" style="display:none;">
         <div class="card-header" style="background-color:white;">
@@ -163,6 +205,8 @@
             </table>
         </div>
     </div>
+</div>
+
 </div>
 
 <!-- Modal Detalle de Cargo -->
@@ -338,7 +382,9 @@
         EstadoCuenta.init({
             alumnoId: alumnoId,
             urlFindAlumnoByIdentidad: "@Url.Action("FindByIdentidadAsync", "Alumnos")",
-            urlEstadoCuenta: "@Url.Action("EstadoCuentaAlumnoAsync", "CuentasCobrar")",
+            urlCargosPendientes: "@Url.Action("ObtenerCargosPendientesAsync", "CuentasCobrar")",
+            urlResumenFinanciero: "@Url.Action("ObtenerResumenFinancieroAsync", "CuentasCobrar")",
+            urlHistoricoPagos: "@Url.Action("ObtenerHistoricoPagosAsync", "CuentasCobrar")",
             urlAplicarDescuento: "@Url.Action("AplicarDescuentoAsync", "CuentasCobrar")",
             urlCalcularMora: "@Url.Action("CalcularMoratoriaAsync", "CuentasCobrar")",
             urlRecibo: "@Url.Action("GetReciboAsync", "Pagos")"

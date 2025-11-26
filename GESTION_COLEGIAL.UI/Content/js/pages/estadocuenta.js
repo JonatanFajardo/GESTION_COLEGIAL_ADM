@@ -18,6 +18,8 @@ var EstadoCuenta = (function () {
             if (alumnoId > 0) {
                 cargarEstadoCuenta();
                 $("#panel-busqueda").hide();
+                $("#card-placeholder").hide();
+                $("#paneles-informacion").show();
                 $("#panel-info-alumno").show();
             }
 
@@ -32,6 +34,8 @@ var EstadoCuenta = (function () {
             $("#btn-cambiar-alumno").click(function() {
                 limpiarEstadoCuenta();
                 $("#panel-info-alumno").hide();
+                $("#paneles-informacion").hide();
+                $("#card-placeholder").show();
                 $("#panel-busqueda").show();
                 $("#alumno-identidad-search").val("").focus();
             });
@@ -171,11 +175,14 @@ var EstadoCuenta = (function () {
                         $("#alumno-encargado").text("Por implementar");
 
                         $("#panel-busqueda").hide();
+                        $("#card-placeholder").hide();
+                        $("#paneles-informacion").show();
                         $("#panel-info-alumno").show();
 
-                        // Por ahora, solo mostramos los datos del alumno
-                        // El estado de cuenta se implementará después
                         toastr.success("Alumno encontrado correctamente");
+
+                        // Cargar estado de cuenta del alumno
+                        cargarEstadoCuenta();
                     } else {
                         console.log("No se encontró Alu_Id en los datos");
                         toastr.warning("No se encontró ningún alumno con el número de identidad especificado");
@@ -213,53 +220,117 @@ var EstadoCuenta = (function () {
         $("#total-mora").text("L. 0.00");
         $("#tbody-cargos-pendientes").html("");
         $("#tbody-historico-pagos").html("");
+
+        // Ocultar paneles de información
+        $("#paneles-informacion").hide();
+        $("#panel-info-alumno").hide();
+
+        // Mostrar card placeholder
+        $("#card-placeholder").show();
     }
 
     function cargarEstadoCuenta() {
+        // Cargar los tres componentes del estado de cuenta por separado
+        cargarResumenFinanciero();
+        cargarCargosPendientesAjax();
+        cargarHistoricoPagosAjax();
+    }
+
+    function cargarResumenFinanciero() {
         $.ajax({
-            url: urls.urlEstadoCuenta,
+            url: urls.urlResumenFinanciero,
             type: "GET",
             data: { alumnoId: alumnoId },
             success: function(response) {
-                console.log("Response EstadoCuenta:", response);
-                console.log("response.success:", response.success);
-                console.log("response.data:", response.data);
-                if (response.success && response.data) {
-                    var data = response.data;
-
-                    // Información del alumno
-                    $("#alumno-nombre").text(data.alumno.nombreCompleto);
-                    $("#alumno-identidad").text(data.alumno.identidad);
-                    $("#alumno-nivel").text(data.alumno.nivel);
-                    $("#alumno-curso").text(data.alumno.curso);
-                    $("#alumno-seccion").text(data.alumno.seccion);
-                    $("#alumno-encargado").text(data.alumno.encargado);
-
-                    // Resumen financiero
-                    $("#total-deuda").text("L. " + formatMoney(data.resumen.totalDeuda));
-                    $("#total-pagado").text("L. " + formatMoney(data.resumen.totalPagado));
-                    $("#total-pendiente").text("L. " + formatMoney(data.resumen.totalPendiente));
-                    $("#total-mora").text("L. " + formatMoney(data.resumen.totalMora));
-
-                    // Cargos pendientes
-                    cargarCargosPendientes(data.cargosPendientes);
-
-                    // Histórico de pagos
-                    cargarHistoricoPagos(data.historicoPagos);
+                console.log("Response ResumenFinanciero:", response);
+                if (response && response.data) {
+                    var resumen = response.data;
+                    $("#total-deuda").text("L. " + formatMoney(resumen.totalDeuda || 0));
+                    $("#total-pagado").text("L. " + formatMoney(resumen.totalPagado || 0));
+                    $("#total-pendiente").text("L. " + formatMoney(resumen.totalPendiente || 0));
+                    $("#total-mora").text("L. " + formatMoney(resumen.totalMora || 0));
                 } else {
-                    console.log("Error en response:", response);
-                    toastr.error(response.message || "Error al cargar el estado de cuenta");
+                    console.log("No se pudo cargar el resumen financiero");
                 }
             },
             error: function(xhr, status, error) {
-                console.log("Error AJAX:", xhr, status, error);
-                toastr.error("Error al cargar el estado de cuenta");
+                console.log("Error al cargar resumen financiero:", xhr, status, error);
+                toastr.warning("No se pudo cargar el resumen financiero");
+            }
+        });
+    }
+
+    function cargarCargosPendientesAjax() {
+        $.ajax({
+            url: urls.urlCargosPendientes,
+            type: "GET",
+            data: { alumnoId: alumnoId },
+            success: function(response) {
+                console.log("Response CargosPendientes:", response);
+                if (response && response.data && response.data.length > 0) {
+                    cargarCargosPendientes(response.data);
+                } else {
+                    console.log("No hay cargos pendientes");
+                    var nombreAlumno = $("#alumno-nombre").text() || "el alumno actual";
+                    $("#tbody-cargos-pendientes").html(
+                        "<tr><td colspan='8' class='text-center py-4'>" +
+                        "<i class='mdi mdi-check-circle text-success' style='font-size: 48px;'></i>" +
+                        "<p class='mt-3 mb-0'><strong>¡Excelente!</strong></p>" +
+                        "<p class='text-muted'>No hay cargos pendientes para " + nombreAlumno + "</p>" +
+                        "</td></tr>"
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error al cargar cargos pendientes:", xhr, status, error);
+                toastr.warning("No se pudieron cargar los cargos pendientes");
+            }
+        });
+    }
+
+    function cargarHistoricoPagosAjax() {
+        $.ajax({
+            url: urls.urlHistoricoPagos,
+            type: "GET",
+            data: { alumnoId: alumnoId },
+            success: function(response) {
+                console.log("Response HistoricoPagos:", response);
+                if (response && response.data && response.data.length > 0) {
+                    cargarHistoricoPagos(response.data);
+                } else {
+                    console.log("No hay histórico de pagos");
+                    var nombreAlumno = $("#alumno-nombre").text() || "el alumno actual";
+                    $("#tbody-historico-pagos").html(
+                        "<tr><td colspan='6' class='text-center py-4'>" +
+                        "<i class='mdi mdi-information-outline text-info' style='font-size: 48px;'></i>" +
+                        "<p class='mt-3 mb-0'><strong>Sin registros</strong></p>" +
+                        "<p class='text-muted'>No hay pagos registrados para " + nombreAlumno + "</p>" +
+                        "</td></tr>"
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error al cargar histórico de pagos:", xhr, status, error);
+                toastr.warning("No se pudo cargar el histórico de pagos");
             }
         });
     }
 
     function cargarCargosPendientes(cargos) {
         cargosPendientesData = cargos;
+
+        if (!cargos || cargos.length === 0) {
+            var nombreAlumno = $("#alumno-nombre").text() || "el alumno actual";
+            $("#tbody-cargos-pendientes").html(
+                "<tr><td colspan='8' class='text-center py-4'>" +
+                "<i class='mdi mdi-check-circle text-success' style='font-size: 48px;'></i>" +
+                "<p class='mt-3 mb-0'><strong>¡Excelente!</strong></p>" +
+                "<p class='text-muted'>No hay cargos pendientes para " + nombreAlumno + "</p>" +
+                "</td></tr>"
+            );
+            return;
+        }
+
         var html = "";
         cargos.forEach(function(cargo, index) {
             html += "<tr>";
@@ -282,6 +353,19 @@ var EstadoCuenta = (function () {
 
     function cargarHistoricoPagos(pagos) {
         historicoPagosData = pagos;
+
+        if (!pagos || pagos.length === 0) {
+            var nombreAlumno = $("#alumno-nombre").text() || "el alumno actual";
+            $("#tbody-historico-pagos").html(
+                "<tr><td colspan='6' class='text-center py-4'>" +
+                "<i class='mdi mdi-information-outline text-info' style='font-size: 48px;'></i>" +
+                "<p class='mt-3 mb-0'><strong>Sin registros</strong></p>" +
+                "<p class='text-muted'>No hay pagos registrados para " + nombreAlumno + "</p>" +
+                "</td></tr>"
+            );
+            return;
+        }
+
         var html = "";
         pagos.forEach(function(pago, index) {
             html += "<tr>";

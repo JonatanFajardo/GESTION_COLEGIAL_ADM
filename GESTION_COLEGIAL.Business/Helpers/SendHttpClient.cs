@@ -255,6 +255,60 @@ namespace GESTION_COLEGIAL.Business.Helpers
 			}
 		}
 
+		/// <summary>
+		/// Obtiene un objeto único desde el servicio.
+		/// Intenta deserializar como objeto único, si falla intenta como lista y retorna el primer elemento.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="url">URL completa con query params (ej: "Controller/Action?param=value")</param>
+		/// <returns>Objeto de tipo T deserializado o el primer elemento si es una lista</returns>
+		public static async Task<T> GetSingleAsync<T>(string url)
+		{
+			try
+			{
+				var httpclient = new HttpClient();
+				var httpResponse = await httpclient.GetAsync($"{baseUrl}{url}");
+
+				if (!httpResponse.IsSuccessStatusCode)
+				{
+					var errorContent = await httpResponse.Content.ReadAsStringAsync();
+					return default;
+				}
+
+				var content = await httpResponse.Content.ReadAsStringAsync();
+
+				// Si el contenido está vacío o es null, retornar default
+				if (string.IsNullOrWhiteSpace(content) || content == "null")
+				{
+					return default;
+				}
+
+				// Intentar deserializar como objeto único primero
+				try
+				{
+					var resultSerialize = JsonConvert.DeserializeObject<T>(content);
+					return resultSerialize;
+				}
+				catch
+				{
+					// Si falla, intentar como lista y retornar el primer elemento
+					try
+					{
+						var resultList = JsonConvert.DeserializeObject<List<T>>(content);
+						return resultList != null && resultList.Count > 0 ? resultList[0] : default;
+					}
+					catch
+					{
+						return default;
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				throw;
+			}
+		}
+
 		#endregion Asincrono
 	}
 }

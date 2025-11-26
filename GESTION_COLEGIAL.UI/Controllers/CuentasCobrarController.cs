@@ -208,14 +208,48 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
-        /// Obtiene el estado de cuenta completo de un alumno.
+        /// Obtiene los cargos pendientes de un alumno.
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult> EstadoCuentaAlumnoAsync(int alumnoId)
+        public async Task<ActionResult> ObtenerCargosPendientesAsync(int alumnoId)
         {
             try
             {
-                var result = await cuentasCobrarService.EstadoCuentaAlumnoAsync(alumnoId);
+                var result = await cuentasCobrarService.ObtenerCargosPendientes(alumnoId);
+                return AjaxResult(result);
+            }
+            catch (System.Exception ex)
+            {
+                return AjaxResult(null, AlertMessage.AlertMessageType.Error, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el resumen financiero de un alumno.
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult> ObtenerResumenFinancieroAsync(int alumnoId)
+        {
+            try
+            {
+                var result = await cuentasCobrarService.ObtenerResumenFinanciero(alumnoId);
+                return AjaxResult(result);
+            }
+            catch (System.Exception ex)
+            {
+                return AjaxResult(null, AlertMessage.AlertMessageType.Error, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el histórico de pagos de un alumno.
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult> ObtenerHistoricoPagosAsync(int alumnoId)
+        {
+            try
+            {
+                var result = await cuentasCobrarService.ObtenerHistoricoPagos(alumnoId);
                 return AjaxResult(result);
             }
             catch (System.Exception ex)
