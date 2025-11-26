@@ -84,6 +84,18 @@ namespace GESTION_COLEGIAL.Business.Extensions
         }
 
         /// <summary>
+        /// Obtiene un único elemento de tipo T desde la API usando la URL completa con query params.
+        /// Deserializa directamente como objeto único (no como lista).
+        /// </summary>
+        /// <typeparam name="T">El tipo de elemento a obtener.</typeparam>
+        /// <param name="url">La URL completa de la API con query params (ej: "Controller/Action?param=value").</param>
+        /// <returns>El objeto de tipo T encontrado, o null si no se encontró.</returns>
+        public static async Task<T> GetSingleAsync<T>(string url)
+        {
+            return await SendHttpClient.GetSingleAsync<T>(url);
+        }
+
+        /// <summary>
         /// Busca todos los elementos de tipo T relacionados a un identificador en la API.
         /// </summary>
         /// <typeparam name="T">El tipo de elemento a buscar.</typeparam>
