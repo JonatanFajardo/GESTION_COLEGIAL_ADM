@@ -195,14 +195,36 @@ namespace GESTION_COLEGIAL.Business.Services
         }
 
         /// <summary>
-        /// Obtiene el estado de cuenta completo de un alumno.
+        /// Obtiene los cargos pendientes de un alumno.
         /// </summary>
         /// <param name="alumnoId">Identificador del alumno</param>
-        /// <returns>Estado de cuenta con información del alumno, resumen y detalle</returns>
-        public async Task<dynamic> EstadoCuentaAlumnoAsync(int alumnoId)
+        /// <returns>Lista de cargos pendientes</returns>
+        public async Task<IEnumerable<CargoPendienteViewModel>> ObtenerCargosPendientes(int alumnoId)
         {
-            string url = $"CuentasCobrar/EstadoCuentaAlumnoAsync?alumnoId={alumnoId}";
-            return await ApiRequests.FindAsync<dynamic>(url, 0);
+            string url = $"CuentasCobrar/ObtenerCargosPendientesAsync?alumnoId={alumnoId}";
+            return await ApiRequests.ListAsync<CargoPendienteViewModel>(url);
+        }
+
+        /// <summary>
+        /// Obtiene el resumen financiero de un alumno.
+        /// </summary>
+        /// <param name="alumnoId">Identificador del alumno</param>
+        /// <returns>Resumen con totales financieros</returns>
+        public async Task<ResumenFinancieroViewModel> ObtenerResumenFinanciero(int alumnoId)
+        {
+            string url = $"CuentasCobrar/ObtenerResumenFinancieroAsync?alumnoId={alumnoId}";
+            return await ApiRequests.GetSingleAsync<ResumenFinancieroViewModel>(url);
+        }
+
+        /// <summary>
+        /// Obtiene el histórico de pagos de un alumno.
+        /// </summary>
+        /// <param name="alumnoId">Identificador del alumno</param>
+        /// <returns>Lista de pagos realizados</returns>
+        public async Task<IEnumerable<HistoricoPagoViewModel>> ObtenerHistoricoPagos(int alumnoId)
+        {
+            string url = $"CuentasCobrar/ObtenerHistoricoPagosAsync?alumnoId={alumnoId}";
+            return await ApiRequests.ListAsync<HistoricoPagoViewModel>(url);
         }
     }
 }

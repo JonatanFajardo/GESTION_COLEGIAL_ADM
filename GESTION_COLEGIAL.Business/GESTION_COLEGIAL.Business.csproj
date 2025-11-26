@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -157,11 +157,14 @@
     <Compile Include="Models\finansas\ConceptoPagoFindViewModel.cs" />
     <Compile Include="Models\finansas\ConceptoPagoListViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarDetailViewModel.cs" />
+    <Compile Include="Models\finansas\CargoPendienteViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarDropdownViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarExistViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarFindViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarListViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarViewModel.cs" />
+    <Compile Include="Models\finansas\HistoricoPagoViewModel.cs" />
+    <Compile Include="Models\finansas\ResumenFinancieroViewModel.cs" />
     <Compile Include="Models\finansas\DescuentoAplicadoDetailViewModel.cs" />
     <Compile Include="Models\finansas\DescuentoAplicadoDropdownViewModel.cs" />
     <Compile Include="Models\finansas\DescuentoAplicadoExistViewModel.cs" />
