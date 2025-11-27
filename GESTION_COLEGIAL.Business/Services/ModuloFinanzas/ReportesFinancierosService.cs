@@ -2,8 +2,9 @@ using GESTION_COLEGIAL.Business.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GESTION_COLEGIAL.Business.Services;
 
-namespace GESTION_COLEGIAL.Business.Services
+namespace GESTION_COLEGIAL.Business.Services.ModuloFinanzas
 {
     /// <summary>
     /// Clase que proporciona servicios relacionados con reportes financieros.

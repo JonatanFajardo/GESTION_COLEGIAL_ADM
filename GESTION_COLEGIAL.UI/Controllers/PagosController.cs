@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using GESTION_COLEGIAL.Business.Services.ModuloFinanzas;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
