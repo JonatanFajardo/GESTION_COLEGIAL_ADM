@@ -250,18 +250,18 @@
     <Compile Include="Services\AlumnosService.cs" />
     <Compile Include="Services\AulasService.cs" />
     <Compile Include="Services\CargosService.cs" />
-    <Compile Include="Services\ConceptosPagoService.cs" />
-    <Compile Include="Services\CuentasCobrarService.cs" />
+    <Compile Include="Services\ModuloFinanzas\ConceptosPagoService.cs" />
+    <Compile Include="Services\ModuloFinanzas\CuentasCobrarService.cs" />
     <Compile Include="Services\CursosNivelesService.cs" />
     <Compile Include="Services\CursosService.cs" />
-    <Compile Include="Services\DescuentosService.cs" />
+    <Compile Include="Services\ModuloFinanzas\DescuentosService.cs" />
     <Compile Include="Services\DiasService.cs" />
     <Compile Include="Services\DuracionesService.cs" />
     <Compile Include="Services\EmpleadosService.cs" />
     <Compile Include="Services\EncargadosService.cs" />
-    <Compile Include="Services\EstadosPagoService.cs" />
+    <Compile Include="Services\ModuloFinanzas\EstadosPagoService.cs" />
     <Compile Include="Services\EstadosService.cs" />
-    <Compile Include="Services\FormasPagoService.cs" />
+    <Compile Include="Services\ModuloFinanzas\FormasPagoService.cs" />
     <Compile Include="Services\HomeAndChartsService.cs" />
     <Compile Include="Services\HorarioAlumnosService.cs" />
     <Compile Include="Extensions\ApiRequests.cs" />
@@ -272,12 +272,12 @@
     <Compile Include="Services\NivelesEducativosService.cs" />
     <Compile Include="Services\NotasService.cs" />
     <Compile Include="Services\ParcialesService.cs" />
-    <Compile Include="Services\PagosService.cs" />
+    <Compile Include="Services\ModuloFinanzas\PagosService.cs" />
     <Compile Include="Services\ParentescosService.cs" />
-    <Compile Include="Services\ReportesFinancierosService.cs" />
+    <Compile Include="Services\ModuloFinanzas\ReportesFinancierosService.cs" />
     <Compile Include="Services\SeccionesService.cs" />
     <Compile Include="Services\SemestresService.cs" />
-    <Compile Include="Services\TarifaService.cs" />
+    <Compile Include="Services\ModuloFinanzas\TarifaService.cs" />
     <Compile Include="Services\TitulosService.cs" />
   </ItemGroup>
   <ItemGroup>
