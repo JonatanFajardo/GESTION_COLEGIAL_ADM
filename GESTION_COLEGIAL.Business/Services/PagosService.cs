@@ -99,8 +99,8 @@ namespace GESTION_COLEGIAL.Business.Services
         public async Task<PagoDetailViewModel> GetReciboAsync(int pagoId)
         {
             string url = $"Pagos/GetReciboAsync?pagoId={pagoId}";
-            PagoDetailViewModel apiUrl = await ApiRequests.FindAsync<PagoDetailViewModel>(url, pagoId);
-            return apiUrl;
+            PagoDetailViewModel resultado = await ApiRequests.GetSingleAsync<PagoDetailViewModel>(url);
+            return resultado;
         }
     }
 }

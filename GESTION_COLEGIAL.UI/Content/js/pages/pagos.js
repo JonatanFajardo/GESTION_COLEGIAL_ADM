@@ -37,6 +37,6 @@ $(document).ready(function () {
     // Evento para el botón de recibo
     $('#datatable').on('click', '.recibo-btn', function () {
         var pagoId = $(this).data('id');
-        window.open('/Pagos/GenerarRecibo/' + pagoId, '_blank');
+        window.open('/Pagos/Recibo?pagoId=' + pagoId, '_blank');
     });
 });

@@ -109,7 +109,7 @@ var EstadoCuenta = (function () {
     }
 
     function verRecibo(pagoId) {
-        window.open(urls.urlRecibo + "?pagoId=" + pagoId, "_blank");
+        window.open("/Pagos/Recibo?pagoId=" + pagoId, "_blank");
     }
 
     function initializeAlumnoSearch() {

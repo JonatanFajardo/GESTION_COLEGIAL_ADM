@@ -1,0 +1,317 @@
+@model GESTION_COLEGIAL.Business.Models.PagoDetailViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo de Pago - @Model.NumeroRecibo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .recibo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #4361ee;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #4361ee;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .recibo-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #4361ee;
+        }
+
+        .recibo-numero {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4361ee;
+        }
+
+        .recibo-fecha {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .seccion {
+            margin-bottom: 25px;
+        }
+
+        .seccion-titulo {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-label {
+            width: 150px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+
+        .total-box {
+            background-color: #4361ee;
+            color: white;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .total-label {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .total-monto {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .firma-seccion {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .firma-box {
+            text-align: center;
+            width: 200px;
+        }
+
+        .firma-linea {
+            border-top: 2px solid #333;
+            margin-bottom: 5px;
+        }
+
+        .btn-imprimir {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-imprimir:hover {
+            background-color: #3651d4;
+        }
+
+        .btn-cerrar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-cerrar:hover {
+            background-color: #5a6268;
+        }
+
+        /* Estilos para impresión */
+        @@media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+
+            .recibo-container {
+                box-shadow: none;
+                padding: 20px;
+            }
+
+            .btn-imprimir,
+            .btn-cerrar {
+                display: none;
+            }
+
+            .recibo-info {
+                background-color: #f8f9fa !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .total-box {
+                background-color: #4361ee !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="btn-cerrar" onclick="window.close()">
+        ← Cerrar
+    </button>
+    <button class="btn-imprimir" onclick="window.print()">
+        🖨️ Imprimir
+    </button>
+
+    <div class="recibo-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>RECIBO DE PAGO</h1>
+            <p>Sistema de Gestión Colegial</p>
+        </div>
+
+        <!-- Información del Recibo -->
+        <div class="recibo-info">
+            <div>
+                <div class="recibo-numero">@Model.NumeroRecibo</div>
+                <div class="recibo-fecha">Fecha de Emisión: @Model.FechaEmision.ToString("dd/MM/yyyy")</div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-weight: bold;">Pago ID: @Model.PagoId</div>
+                <div class="recibo-fecha">Fecha de Pago: @Model.FechaPago.ToString("dd/MM/yyyy HH:mm")</div>
+            </div>
+        </div>
+
+        <!-- Información del Alumno -->
+        <div class="seccion">
+            <div class="seccion-titulo">Información del Alumno</div>
+            <div class="info-row">
+                <div class="info-label">Nombre:</div>
+                <div class="info-value">@Model.AlumnoNombre</div>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.AlumnoIdentidad))
+            {
+                <div class="info-row">
+                    <div class="info-label">Identidad:</div>
+                    <div class="info-value">@Model.AlumnoIdentidad</div>
+                </div>
+            }
+        </div>
+
+        <!-- Detalles del Pago -->
+        <div class="seccion">
+            <div class="seccion-titulo">Detalles del Pago</div>
+            <div class="info-row">
+                <div class="info-label">Forma de Pago:</div>
+                <div class="info-value">@Model.FormaPago</div>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.NumeroReferencia))
+            {
+                <div class="info-row">
+                    <div class="info-label">Número de Referencia:</div>
+                    <div class="info-value">@Model.NumeroReferencia</div>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(Model.Observaciones))
+            {
+                <div class="info-row">
+                    <div class="info-label">Observaciones:</div>
+                    <div class="info-value">@Model.Observaciones</div>
+                </div>
+            }
+        </div>
+
+        <!-- Total -->
+        <div class="total-box">
+            <div class="total-label">MONTO TOTAL PAGADO</div>
+            <div class="total-monto">L. @Model.MontoTotal.ToString("N2")</div>
+        </div>
+
+        <!-- Información del Usuario -->
+        <div class="seccion">
+            <div class="info-row">
+                <div class="info-label">Procesado por:</div>
+                <div class="info-value">@Model.NombreCompletoUsuarioRegistra</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Fecha de Registro:</div>
+                <div class="info-value">@Model.FechaEmision.ToString("dd/MM/yyyy HH:mm:ss")</div>
+            </div>
+        </div>
+
+        <!-- Firmas -->
+        <div class="firma-seccion">
+            <div class="firma-box">
+                <div class="firma-linea"></div>
+                <p>Firma del Encargado</p>
+            </div>
+            <div class="firma-box">
+                <div class="firma-linea"></div>
+                <p>Sello de la Institución</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Este documento es un comprobante oficial de pago</p>
+            <p>Para cualquier consulta, favor presentar este recibo</p>
+            <p style="margin-top: 10px;">© @DateTime.Now.Year Sistema de Gestión Colegial</p>
+        </div>
+    </div>
+</body>
+</html>
