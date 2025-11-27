@@ -3,6 +3,7 @@ using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -87,6 +88,30 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             var result = await pagosService.GetReciboAsync(pagoId);
             return AjaxResult(result, true);
+        }
+
+        /// <summary>
+        /// Acción para mostrar la vista del recibo de pago en formato imprimible.
+        /// </summary>
+        public async Task<ActionResult> Recibo(int pagoId)
+        {
+            try
+            {
+                // Obtener información completa del recibo desde el endpoint específico
+                var reciboInfo = await pagosService.GetReciboAsync(pagoId);
+
+                if (reciboInfo == null)
+                {
+                    return HttpNotFound("No se encontró el pago especificado.");
+                }
+
+                // Pasar directamente el PagoDetailViewModel que ya tiene toda la información
+                return View(reciboInfo);
+            }
+            catch (Exception ex)
+            {
+                return Content("Error al cargar el recibo: " + ex.Message);
+            }
         }
     }
 }
