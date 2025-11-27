@@ -29,7 +29,8 @@
       "Bash(done)",
       "Bash(cmd /c \"cd /d C:\\Users\\movie\\Documents\\GitHub\\GESTION_COLEGIAL_ADM\\GESTION_COLEGIAL.UI\\Views && dir /b | findstr /i \"\"Niv Par Sec Sem Tit Mat\"\"\")",
       "Bash(git log:*)",
-      "Bash(msbuild:*)"
+      "Bash(msbuild:*)",
+      "Bash(del \"c:\\Users\\movie\\Documents\\GitHub\\GESTION_COLEGIAL_ADM\\GESTION_COLEGIAL.Business\\Models\\finansas\\ReciboViewModel.cs\")"
     ],
     "deny": [],
     "ask": []

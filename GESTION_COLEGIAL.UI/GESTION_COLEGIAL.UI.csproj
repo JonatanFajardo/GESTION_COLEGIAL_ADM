@@ -1433,6 +1433,7 @@
     <Content Include="Views\ReportesFinancieros\Morosos.cshtml" />
     <Content Include="Views\ReportesFinancieros\ProyeccionCobros.cshtml" />
     <Content Include="Views\Tarifas\Index.cshtml" />
+    <Content Include="Views\HorarioAlumnos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\login.js" />
