@@ -73,23 +73,23 @@
                 </ul>
             </li>
 
-            <!--<li class="menu">
-        <a href="#Horario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-            <div class="h6">
-                <i class="fa-solid fa-hourglass-end"></i>
-                <span>Horario</span>
-            </div>
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-        </a>
-        <ul class="collapse submenu list-unstyled" id="Horario" data-parent="#accordionExample">-->
-            @*<li>@Html.ActionLink("Horario Alumno", "Index", "Horario Alumno")</li>
-        <li>@Html.ActionLink("Horario Profesor", "Index", "Horario Profesor")</li>*@
-            <!--<li>@Html.ActionLink("Horas", "Index", "Horas")</li>
-            <li>@Html.ActionLink("Dia", "Index", "Dias")</li>
-        </ul>
-    </li>-->
+            <li class="menu">
+                <a href="#Horario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="h6">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar nav-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>Horarios</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled" id="Horario" data-parent="#accordionExample">
+                    <li>@Html.ActionLink("Gestión de Horarios", "Index", "Horarios")</li>
+                    <li>@Html.ActionLink("Horas", "Index", "Horas")</li>
+                    <li>@Html.ActionLink("Días", "Index", "Dias")</li>
+                    <li>@Html.ActionLink("Aulas", "Index", "Aulas")</li>
+                </ul>
+            </li>
 
             <li class="menu">
                 <a href="#Institucion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">

@@ -6,10 +6,18 @@ var HorarioAlumnos = (function () {
     // Inicializar cuando la página esté lista
     obj.init = function () {
         $(function () {
+            // Configurar año actual por defecto
+            $('#HoAl_Año').val(new Date().getFullYear());
+
             // Cargar datos iniciales
+            cargarSemestres();
+            cargarModalidades();
+            cargarSecciones();
             cargarCursos();
             cargarCursosNiveles();
             cargarMaterias();
+            cargarEmpleados();
+            cargarAulas();
             cargarDias();
             cargarHoras();
 
@@ -102,6 +110,96 @@ var HorarioAlumnos = (function () {
         });
     }
 
+    function cargarSemestres() {
+        $.ajax({
+            type: "GET",
+            url: '/HorarioAlumnos/GetSemestresAsync',
+            dataType: "json",
+            success: function (response) {
+                if (response && response.data) {
+                    llenarDropdown('#Sem_Id', response.data, 'sem_Id', 'sem_Descripcion');
+                }
+            },
+            error: function (error) {
+                console.log('Error cargando semestres:', error);
+            }
+        });
+    }
+
+    function cargarModalidades() {
+        $.ajax({
+            type: "GET",
+            url: '/HorarioAlumnos/GetModalidadesAsync',
+            dataType: "json",
+            success: function (response) {
+                if (response && response.data) {
+                    llenarDropdown('#Mda_Id', response.data, 'mda_Id', 'mda_Descripcion');
+                }
+            },
+            error: function (error) {
+                console.log('Error cargando modalidades:', error);
+            }
+        });
+    }
+
+    function cargarSecciones() {
+        $.ajax({
+            type: "GET",
+            url: '/HorarioAlumnos/GetSeccionesAsync',
+            dataType: "json",
+            success: function (response) {
+                if (response && response.data) {
+                    llenarDropdown('#Sec_Id', response.data, 'sec_Id', 'sec_Descripcion');
+                }
+            },
+            error: function (error) {
+                console.log('Error cargando secciones:', error);
+            }
+        });
+    }
+
+    function cargarEmpleados() {
+        $.ajax({
+            type: "GET",
+            url: '/HorarioAlumnos/GetEmpleadosAsync',
+            dataType: "json",
+            success: function (response) {
+                if (response && response.data) {
+                    // Concatenar nombre completo del empleado
+                    var empleadosFormateados = response.data.map(function (emp) {
+                        return {
+                            id: emp.emp_Id,
+                            nombre: (emp.emp_PrimerNombre || '') + ' ' +
+                                (emp.emp_SegundoNombre || '') + ' ' +
+                                (emp.emp_PrimerApellido || '') + ' ' +
+                                (emp.emp_SegundoApellido || '')
+                        };
+                    });
+                    llenarDropdown('#Emp_Id', empleadosFormateados, 'id', 'nombre');
+                }
+            },
+            error: function (error) {
+                console.log('Error cargando empleados:', error);
+            }
+        });
+    }
+
+    function cargarAulas() {
+        $.ajax({
+            type: "GET",
+            url: '/HorarioAlumnos/GetAulasAsync',
+            dataType: "json",
+            success: function (response) {
+                if (response && response.data) {
+                    llenarDropdown('#Aul_Id', response.data, 'aul_Id', 'aul_Descripcion');
+                }
+            },
+            error: function (error) {
+                console.log('Error cargando aulas:', error);
+            }
+        });
+    }
+
     function llenarDropdown(selector, data, valueField, textField) {
         var dropdown = $(selector);
         dropdown.empty();
@@ -127,6 +225,18 @@ var HorarioAlumnos = (function () {
             },
             columns: [
                 {
+                    data: 'hoAl_Año',
+                    defaultContent: 'N/A'
+                },
+                {
+                    data: 'sem_Descripcion',
+                    defaultContent: 'N/A'
+                },
+                {
+                    data: 'sec_Descripcion',
+                    defaultContent: 'N/A'
+                },
+                {
                     data: null,
                     render: function (data, type, row) {
                         return '<div>' + (row.cur_Nombre || 'N/A') + '<br><small class="text-muted">' + (row.cun_Descripcion || '') + '</small></div>';
@@ -134,6 +244,16 @@ var HorarioAlumnos = (function () {
                 },
                 {
                     data: 'mat_Nombre',
+                    defaultContent: 'N/A'
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return (row.emp_NombreCompleto || 'N/A');
+                    }
+                },
+                {
+                    data: 'aul_Descripcion',
                     defaultContent: 'N/A'
                 },
                 {
@@ -236,9 +356,15 @@ var HorarioAlumnos = (function () {
 
                     // Llenar el formulario
                     $('#HoAl_Id').val(response.data.hoAl_Id);
+                    $('#HoAl_Año').val(response.data.hoAl_Año);
+                    $('#Sem_Id').val(response.data.sem_Id);
+                    $('#Mda_Id').val(response.data.mda_Id);
+                    $('#Sec_Id').val(response.data.sec_Id);
                     $('#Cur_Id').val(response.data.cur_Id);
                     $('#Cun_Id').val(response.data.cun_Id);
                     $('#Mat_Id').val(response.data.mat_Id);
+                    $('#Emp_Id').val(response.data.emp_Id);
+                    $('#Aul_Id').val(response.data.aul_Id);
                     $('#Dia_Id').val(response.data.dia_Id);
                     $('#HoAl_HoraInicio').val(response.data.hoAl_HoraInicio);
                     $('#HoAl_HoraFinaliza').val(response.data.hoAl_HoraFinaliza);
