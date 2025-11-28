@@ -34,6 +34,46 @@
                 <div class="border-bottom pb-3 mb-4">
                     <h5 class="mb-3">Contexto Académico</h5>
                     <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="HoAl_Año">Año Académico <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.HoAl_Año,
+                                    new { @class = "form-control", @id = "HoAl_Año", @type = "number", @min = "2020", @max = "2050", required = "required" })
+                                @Html.ValidationMessageFor(model => model.HoAl_Año, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Sem_Id">Semestre <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.Sem_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Sem_Id", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Sem_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Mda_Id">Modalidad</label>
+                                @Html.DropDownListFor(model => model.Mda_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Mda_Id" })
+                                @Html.ValidationMessageFor(model => model.Mda_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="Sec_Id">Sección <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.Sec_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Sec_Id", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Sec_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="Cur_Id">Curso <span class="text-danger">*</span></label>
@@ -62,6 +102,28 @@
                                     "Seleccione...",
                                     new { @class = "form-control", @id = "Mat_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Mat_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Emp_Id">Profesor <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.Emp_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Emp_Id", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Emp_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Aul_Id">Aula <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(model => model.Aul_Id,
+                                    new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                    "Seleccione...",
+                                    new { @class = "form-control", @id = "Aul_Id", required = "required" })
+                                @Html.ValidationMessageFor(model => model.Aul_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -127,8 +189,13 @@
                 <table class="table table-striped table-bordered wrap" id="datatable">
                     <thead>
                         <tr>
+                            <th>Año</th>
+                            <th>Semestre</th>
+                            <th>Sección</th>
                             <th>Curso/Nivel</th>
                             <th>Materia</th>
+                            <th>Profesor</th>
+                            <th>Aula</th>
                             <th>Día</th>
                             <th>Hora Inicio</th>
                             <th>Hora Finaliza</th>
