@@ -54,6 +54,47 @@ namespace GESTION_COLEGIAL.Business.Models
         public int Dia_Id { get; set; }
 
         /// <summary>
+        /// Obtiene o establece el ID de la sección.
+        /// </summary>
+        [Display(Name = "Sección")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int Sec_Id { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el ID del aula.
+        /// </summary>
+        [Display(Name = "Aula")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int Aul_Id { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el ID del empleado (profesor).
+        /// </summary>
+        [Display(Name = "Profesor")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int Emp_Id { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el ID del semestre.
+        /// </summary>
+        [Display(Name = "Semestre")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int Sem_Id { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el ID de la modalidad.
+        /// </summary>
+        [Display(Name = "Modalidad")]
+        public int? Mda_Id { get; set; }
+
+        /// <summary>
+        /// Obtiene o establece el año académico.
+        /// </summary>
+        [Display(Name = "Año Académico")]
+        [Required(ErrorMessage = "El campo es requerido")]
+        public int HoAl_Año { get; set; }
+
+        /// <summary>
         /// Obtiene o establece el ID del usuario que registró el horario del alumno.
         /// </summary>
         [Display(Name = "Usuario que registra ID")]

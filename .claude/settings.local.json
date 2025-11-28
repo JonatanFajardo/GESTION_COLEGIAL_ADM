@@ -5,7 +5,9 @@
       "Bash(do sed -i 's/namespace Gestion.Colegial.DataAccess.Repositories$/namespace Gestion.Colegial.DataAccess.Repositories.Finanzas/' \"$file\")",
       "Bash(do sed -i 's/namespace Gestion.Colegial.DataAccess.Interfaces$/namespace Gestion.Colegial.DataAccess.Interfaces.Finanzas/' \"$file\")",
       "Bash(do sed -i 's/using Gestion.Colegial.Business.Interfaces;/using Gestion.Colegial.Business.Interfaces.ModuloFinanzas;/' \"$file\")",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "Bash(move UDP_tbHorarioAlumnos_Insert.sql PR_tbHorarioAlumnos_Insert.sql)",
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.DataAccess/scripts/**)"
     ],
     "deny": [],
     "ask": []

@@ -18,6 +18,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
         private readonly MateriasService materiasService = new MateriasService();
         private readonly DiasService diasService = new DiasService();
         private readonly HorasService horasService = new HorasService();
+        private readonly SeccionesService seccionesService = new SeccionesService();
+        private readonly AulasService aulasService = new AulasService();
+        private readonly EmpleadosService empleadosService = new EmpleadosService();
+        private readonly SemestresService semestresService = new SemestresService();
+        private readonly ModalidadesService modalidadesService = new ModalidadesService();
 
         /// <summary>
         /// Acción para mostrar la vista principal de los horarios de alumnos.
@@ -147,6 +152,56 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> GetHorasAsync()
         {
             var result = await horasService.ListAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Obtiene la lista de secciones para el dropdown.
+        /// </summary>
+        /// <returns>Lista de secciones.</returns>
+        public async Task<ActionResult> GetSeccionesAsync()
+        {
+            var result = await seccionesService.ListAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Obtiene la lista de aulas para el dropdown.
+        /// </summary>
+        /// <returns>Lista de aulas.</returns>
+        public async Task<ActionResult> GetAulasAsync()
+        {
+            var result = await aulasService.ListAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Obtiene la lista de empleados (profesores) para el dropdown.
+        /// </summary>
+        /// <returns>Lista de empleados.</returns>
+        public async Task<ActionResult> GetEmpleadosAsync()
+        {
+            var result = await empleadosService.ListAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Obtiene la lista de semestres para el dropdown.
+        /// </summary>
+        /// <returns>Lista de semestres.</returns>
+        public async Task<ActionResult> GetSemestresAsync()
+        {
+            var result = await semestresService.ListAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Obtiene la lista de modalidades para el dropdown.
+        /// </summary>
+        /// <returns>Lista de modalidades.</returns>
+        public async Task<ActionResult> GetModalidadesAsync()
+        {
+            var result = await modalidadesService.ListAsync();
             return AjaxResult(result);
         }
     }

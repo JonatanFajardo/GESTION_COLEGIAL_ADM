@@ -1,0 +1,552 @@
+@model GESTION_COLEGIAL.Business.Models.HorarioFormDataViewModel
+
+@{
+    ViewBag.Title = "Gestión de Horarios Académicos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .form-section {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid #dee2e6;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-title::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background-color: #667eea;
+        margin-right: 12px;
+        border-radius: 2px;
+    }
+
+    .dia-section {
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        background-color: white;
+        transition: all 0.3s ease;
+    }
+
+    .dia-section:hover {
+        border-color: #667eea;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+    }
+
+    .dia-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .dia-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #495057;
+        margin: 0;
+    }
+
+    .clase-row {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        border: 1px solid #e9ecef;
+        transition: all 0.2s ease;
+    }
+
+    .clase-row:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .btn-agregar-clase {
+        background-color: #667eea;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .btn-agregar-clase:hover {
+        background-color: #5568d3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-eliminar-clase {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .btn-eliminar-clase:hover {
+        background-color: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .resumen-box {
+        background: linear-gradient(135deg, #e7f3ff 0%, #f0f7ff 100%);
+        border: 2px solid #b3d9ff;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .resumen-box h3 {
+        color: #004085;
+        font-size: 1.25rem;
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    .resumen-stat {
+        font-size: 1rem;
+        color: #004085;
+    }
+
+    .resumen-stat strong {
+        font-weight: 600;
+    }
+
+    .tooltip-icon {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background-color: #667eea;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 18px;
+        font-size: 12px;
+        margin-left: 5px;
+        cursor: help;
+    }
+
+    .no-clases-msg {
+        text-align: center;
+        padding: 2rem;
+        color: #6c757d;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        border: 2px dashed #dee2e6;
+    }
+
+    .no-clases-msg i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        display: block;
+        color: #adb5bd;
+    }
+
+    .btn-submit-horario {
+        background-color: #28a745;
+        border-color: #28a745;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit-horario:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-limpiar {
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+    }
+</style>
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Gestión de Horarios</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header">
+    <h1 style="margin: 0 0 0.5rem 0; font-size: 2rem;">Gestión de Horarios Académicos</h1>
+    <p style="margin: 0; opacity: 0.9;">Configure el horario semanal para un grupo específico</p>
+</div>
+
+@using (Html.BeginForm("Guardar", "Horarios", FormMethod.Post, new { id = "formHorario" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+    <!-- Contexto Académico -->
+    <div class="form-section">
+        <h2 class="section-title">Contexto Académico</h2>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Horario.HorAño, new { @class = "control-label" })
+                    <span class="text-danger">*</span>
+                    @Html.TextBoxFor(m => m.Horario.HorAño, new { @class = "form-control", type = "number", min = "2020", max = "2030" })
+                    @Html.ValidationMessageFor(m => m.Horario.HorAño, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Horario.SemId, new { @class = "control-label" })
+                    <span class="text-danger">*</span>
+                    @Html.DropDownListFor(m => m.Horario.SemId,
+                        new SelectList(Model.Semestres, "Id", "Descripcion"),
+                        "Seleccione...",
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Horario.SemId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Horario.MdaId, new { @class = "control-label" })
+                    @Html.DropDownListFor(m => m.Horario.MdaId,
+                        new SelectList(Model.Modalidades, "Id", "Descripcion"),
+                        "Seleccione...",
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Horario.MdaId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Horario.CurId, new { @class = "control-label" })
+                    <span class="text-danger">*</span>
+                    @Html.DropDownListFor(m => m.Horario.CurId,
+                        new SelectList(Model.Cursos, "Id", "Nombre"),
+                        "Seleccione...",
+                        new { @class = "form-control", id = "ddlCurso" })
+                    @Html.ValidationMessageFor(m => m.Horario.CurId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Horario.CunId, new { @class = "control-label" })
+                    <span class="text-danger">*</span>
+                    @Html.DropDownListFor(m => m.Horario.CunId,
+                        new SelectList(Enumerable.Empty<SelectListItem>()),
+                        "Seleccione un curso primero...",
+                        new { @class = "form-control", id = "ddlNivel", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Horario.CunId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Horario.SecId, new { @class = "control-label" })
+                    <span class="text-danger">*</span>
+                    @Html.DropDownListFor(m => m.Horario.SecId,
+                        new SelectList(Model.Secciones, "Id", "Descripcion"),
+                        "Seleccione...",
+                        new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Horario.SecId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Horario Semanal -->
+    <div>
+        <h2 class="section-title">Horario Semanal</h2>
+
+        <div id="horariosSemanales">
+            @foreach (var dia in Model.Dias)
+            {
+                <div class="dia-section" data-dia-id="@dia.Id">
+                    <div class="dia-header">
+                        <h3 class="dia-title">@dia.Descripcion</h3>
+                        <button type="button" class="btn-agregar-clase" onclick="agregarClase(@dia.Id, '@dia.Descripcion')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                            Agregar Clase
+                        </button>
+                    </div>
+                    <div class="clases-container" id="clases-dia-@dia.Id">
+                        <div class="no-clases-msg">
+                            <i class="mdi mdi-calendar-blank-outline"></i>
+                            No hay clases programadas para este día
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Resumen -->
+    <div id="resumenBox" class="resumen-box" style="display: none;">
+        <h3>Resumen del Horario</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p class="resumen-stat"><strong>Total de clases programadas:</strong> <span id="totalClases">0</span></p>
+            </div>
+            <div class="col-md-6">
+                <p class="resumen-stat"><strong>Días con clases:</strong> <span id="diasConClases">0</span> de 5</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="text-right">
+        <button type="button" class="btn btn-secondary btn-limpiar" onclick="limpiarFormulario()">
+            <i class="mdi mdi-close-circle-outline"></i> Limpiar Formulario
+        </button>
+        <button type="submit" class="btn btn-success btn-submit-horario">
+            <i class="mdi mdi-content-save"></i> Guardar Horario Completo
+        </button>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        var contadorClases = 0;
+        var niveles = @Html.Raw(Json.Encode(Model.Niveles));
+        var materias = @Html.Raw(Json.Encode(Model.Materias));
+        var empleados = @Html.Raw(Json.Encode(Model.Empleados));
+        var aulas = @Html.Raw(Json.Encode(Model.Aulas));
+        var horas = @Html.Raw(Json.Encode(Model.Horas));
+
+        $(document).ready(function () {
+            // Filtrar niveles por curso
+            $('#ddlCurso').change(function () {
+                var cursoId = $(this).val();
+                var ddlNivel = $('#ddlNivel');
+
+                ddlNivel.empty().append('<option value="">Seleccione...</option>');
+
+                if (cursoId) {
+                    ddlNivel.prop('disabled', false);
+                    var nivelesFilter = niveles.filter(function(n) {
+                        return n.CurId == cursoId;
+                    });
+
+                    $.each(nivelesFilter, function(i, nivel) {
+                        ddlNivel.append($('<option></option>').val(nivel.Id).text(nivel.Descripcion));
+                    });
+                } else {
+                    ddlNivel.prop('disabled', true);
+                }
+            });
+
+            // Tooltip para Aula
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        function agregarClase(diaId, diaNombre) {
+            contadorClases++;
+            var claseId = 'clase_' + contadorClases;
+
+            var html = '<div class="clase-row" id="' + claseId + '">' +
+                '<div class="row">' +
+                '<div class="col-md-2">' +
+                '<div class="form-group">' +
+                '<label class="control-label">Materia <span class="text-danger">*</span></label>' +
+                '<select name="Clases[' + contadorClases + '].MatId" class="form-control clase-campo" required>' +
+                '<option value="">Seleccione...</option>';
+
+            $.each(materias, function(i, mat) {
+                html += '<option value="' + mat.Id + '">' + mat.Nombre + '</option>';
+            });
+
+            html += '</select>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-3">' +
+                '<div class="form-group">' +
+                '<label class="control-label">Profesor <span class="text-danger">*</span></label>' +
+                '<select name="Clases[' + contadorClases + '].EmpId" class="form-control clase-campo" required>' +
+                '<option value="">Seleccione...</option>';
+
+            $.each(empleados, function(i, emp) {
+                html += '<option value="' + emp.Id + '">' + emp.NombreCompleto + '</option>';
+            });
+
+            html += '</select>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-2">' +
+                '<div class="form-group">' +
+                '<label class="control-label">' +
+                'Aula <span class="text-danger">*</span> ' +
+                '<span class="tooltip-icon" data-toggle="tooltip" title="Seleccione el aula donde se impartirá la clase (laboratorio, sala de computación, gimnasio, etc.)">i</span>' +
+                '</label>' +
+                '<select name="Clases[' + contadorClases + '].AulId" class="form-control clase-campo" required>' +
+                '<option value="">Seleccione...</option>';
+
+            $.each(aulas, function(i, aula) {
+                html += '<option value="' + aula.Id + '">' + aula.Descripcion + '</option>';
+            });
+
+            html += '</select>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-2">' +
+                '<div class="form-group">' +
+                '<label class="control-label">Hora Inicio <span class="text-danger">*</span></label>' +
+                '<select name="Clases[' + contadorClases + '].HorHoraInicio" class="form-control clase-campo" required>' +
+                '<option value="">Seleccione...</option>';
+
+            $.each(horas, function(i, hora) {
+                html += '<option value="' + hora.Id + '">' + hora.Hora + '</option>';
+            });
+
+            html += '</select>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-2">' +
+                '<div class="form-group">' +
+                '<label class="control-label">Hora Fin <span class="text-danger">*</span></label>' +
+                '<select name="Clases[' + contadorClases + '].HorHoraFinaliza" class="form-control clase-campo" required>' +
+                '<option value="">Seleccione...</option>';
+
+            $.each(horas, function(i, hora) {
+                html += '<option value="' + hora.Id + '">' + hora.Hora + '</option>';
+            });
+
+            html += '</select>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-md-1">' +
+                '<div class="form-group">' +
+                '<label class="control-label">&nbsp;</label>' +
+                '<button type="button" class="btn-eliminar-clase" onclick="eliminarClase(\'' + claseId + '\', ' + diaId + ')">' +
+                '<i class="mdi mdi-delete"></i>' +
+                '</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<input type="hidden" name="Clases[' + contadorClases + '].DiaId" value="' + diaId + '" />' +
+                '</div>';
+
+            var container = $('#clases-dia-' + diaId);
+            container.find('.no-clases-msg').remove();
+            container.append(html);
+
+            // Inicializar tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+
+            actualizarResumen();
+        }
+
+        function eliminarClase(claseId, diaId) {
+            if (confirm('¿Está seguro de eliminar esta clase?')) {
+                $('#' + claseId).remove();
+
+                var container = $('#clases-dia-' + diaId);
+                if (container.find('.clase-row').length === 0) {
+                    container.html('<div class="no-clases-msg"><i class="mdi mdi-calendar-blank-outline"></i>No hay clases programadas para este día</div>');
+                }
+
+                actualizarResumen();
+            }
+        }
+
+        function actualizarResumen() {
+            var totalClases = $('.clase-row').length;
+            var diasConClases = 0;
+
+            $('.clases-container').each(function() {
+                if ($(this).find('.clase-row').length > 0) {
+                    diasConClases++;
+                }
+            });
+
+            if (totalClases > 0) {
+                $('#resumenBox').show();
+                $('#totalClases').text(totalClases);
+                $('#diasConClases').text(diasConClases);
+            } else {
+                $('#resumenBox').hide();
+            }
+        }
+
+        function limpiarFormulario() {
+            if (confirm('¿Está seguro de limpiar todo el formulario? Se perderán todos los datos ingresados.')) {
+                location.reload();
+            }
+        }
+
+        // Validación antes de enviar
+        $('#formHorario').submit(function(e) {
+            var totalClases = $('.clase-row').length;
+
+            if (totalClases === 0) {
+                e.preventDefault();
+                alert('Debe agregar al menos una clase al horario antes de guardar.');
+                return false;
+            }
+
+            // Validar que se hayan llenado los campos del contexto académico
+            var año = $('input[name="Horario.HorAño"]').val();
+            var semestre = $('select[name="Horario.SemId"]').val();
+            var curso = $('select[name="Horario.CurId"]').val();
+            var nivel = $('select[name="Horario.CunId"]').val();
+            var seccion = $('select[name="Horario.SecId"]').val();
+
+            if (!año || !semestre || !curso || !nivel || !seccion) {
+                e.preventDefault();
+                alert('Por favor complete todos los campos obligatorios del Contexto Académico.');
+                return false;
+            }
+
+            return true;
+        });
+    </script>
+}
