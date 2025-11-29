@@ -12,66 +12,66 @@ namespace GESTION_COLEGIAL.Business.Services
     public class AulasService
     {
         /// <summary>
-        /// Obtiene una lista de modalidades de forma asíncrona.
+        /// Obtiene una lista de aulas de forma asíncrona.
         /// </summary>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de modalidades.</returns>
-        public async Task<IEnumerable<ModalidadViewModel>> ListAsync()
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de aulas.</returns>
+        public async Task<IEnumerable<AulaViewModel>> ListAsync()
         {
             string url = "Aulas/ListAsync";
-            IEnumerable<ModalidadViewModel> apiUrl = await ApiRequests.ListAsync<ModalidadViewModel>(url);
+            IEnumerable<AulaViewModel> apiUrl = await ApiRequests.ListAsync<AulaViewModel>(url);
             return apiUrl;
         }
 
         /// <summary>
-        /// Busca una modalidad por su ID de forma asíncrona.
+        /// Busca un aula por su ID de forma asíncrona.
         /// </summary>
-        /// <param name="id">El ID de la modalidad.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la modalidad encontrada.</returns>
-        public async Task<ModalidadViewModel> Find(int id)
+        /// <param name="id">El ID del aula.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el aula encontrada.</returns>
+        public async Task<AulaViewModel> Find(int id)
         {
             string url = "Aulas/FindAsync";
-            ModalidadViewModel apiUrl = await ApiRequests.FindAsync<ModalidadViewModel>(url, id);
+            AulaViewModel apiUrl = await ApiRequests.FindAsync<AulaViewModel>(url, id);
             return apiUrl;
         }
 
         /// <summary>
-        /// Crea una nueva modalidad de forma asíncrona.
+        /// Crea una nueva aula de forma asíncrona.
         /// </summary>
-        /// <param name="model">El modelo de la modalidad a crear.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se creó la modalidad correctamente.</returns>
-        public async Task<Boolean> Create(ModalidadViewModel model)
+        /// <param name="model">El modelo del aula a crear.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se creó el aula correctamente.</returns>
+        public async Task<Boolean> Create(AulaViewModel model)
         {
             string url = "Aulas/CreateAsync";
             return await ApiRequests.CreateAsync(url, model);
         }
 
         /// <summary>
-        /// Edita una modalidad existente de forma asíncrona.
+        /// Edita un aula existente de forma asíncrona.
         /// </summary>
-        /// <param name="model">El modelo de la modalidad a editar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se editó la modalidad correctamente.</returns>
-        public async Task<Boolean> Edit(ModalidadViewModel model)
+        /// <param name="model">El modelo del aula a editar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se editó el aula correctamente.</returns>
+        public async Task<Boolean> Edit(AulaViewModel model)
         {
             string url = "Aulas/EditAsync";
             return await ApiRequests.EditAsync(url, model);
         }
 
         /// <summary>
-        /// Verifica si existe una modalidad con el valor especificado de forma asíncrona.
+        /// Verifica si existe un aula con el valor especificado de forma asíncrona.
         /// </summary>
         /// <param name="value">El valor a verificar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la modalidad encontrada.</returns>
-        public async Task<ModalidadViewModel> Exist(string value)
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el aula encontrada.</returns>
+        public async Task<AulaViewModel> Exist(string value)
         {
             string url = "Aulas/ExistAsync";
-            return await ApiRequests.ExistAsync<ModalidadViewModel>(url, value);
+            return await ApiRequests.ExistAsync<AulaViewModel>(url, value);
         }
 
         /// <summary>
-        /// Elimina una modalidad por su ID de forma asíncrona.
+        /// Elimina un aula por su ID de forma asíncrona.
         /// </summary>
-        /// <param name="id">El ID de la modalidad a eliminar.</param>
-        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó la modalidad correctamente.</returns>
+        /// <param name="id">El ID del aula a eliminar.</param>
+        /// <returns>Una tarea que representa la operación asincrónica. El resultado indica si se eliminó el aula correctamente.</returns>
         public async Task<Boolean> Delete(int id)
         {
             string url = "Aulas/RemoveAsync";

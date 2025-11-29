@@ -7,7 +7,15 @@
       "Bash(do sed -i 's/using Gestion.Colegial.Business.Interfaces;/using Gestion.Colegial.Business.Interfaces.ModuloFinanzas;/' \"$file\")",
       "Bash(sed:*)",
       "Bash(move UDP_tbHorarioAlumnos_Insert.sql PR_tbHorarioAlumnos_Insert.sql)",
-      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.DataAccess/scripts/**)"
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/Gestion.Colegial.DataAccess/scripts/**)",
+      "Bash(msbuild:*)",
+      "Bash(move CrearHorarioSemanal.cshtml Index.cshtml)",
+      "Read(//c/Users/movie/Documents/GitHub/Gestion.Colegial.Api/**)",
+      "Bash(\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe\" \"c:\\Users\\movie\\Documents\\GitHub\\GESTION_COLEGIAL_ADM\\GESTION_COLEGIAL.UI\\GESTION_COLEGIAL.UI.csproj\" /p:Configuration=Debug /v:m)",
+      "Bash(\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe\" GESTION_COLEGIAL.UIGESTION_COLEGIAL.UI.csproj /p:Configuration=Debug /v:m)",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\":*)",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" GESTION_COLEGIAL.UI/GESTION_COLEGIAL.UI.csproj -p:Configuration=Debug -v:m)",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" GESTION_COLEGIAL.Business/GESTION_COLEGIAL.Business.csproj -p:Configuration=Debug -v:m)"
     ],
     "deny": [],
     "ask": []
