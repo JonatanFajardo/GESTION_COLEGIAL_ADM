@@ -77,7 +77,7 @@ namespace GESTION_COLEGIAL.Business.Services.ModuloFinanzas
         {
             // Obtener las URL para cargar las listas desplegables.
             string urlConceptosPago = "Tarifas/ConceptosPagoDropdown";
-            string urlNivelesEducativos = "Tarifas/NivelesEducativosDropdown";
+            string urlNivelesEducativos = "NivelesEducativos/NivelesEducativosDropdown";
             string urlCursosNiveles = "Tarifas/CursosNivelesDropdown";
 
             // Obtener las listas desplegables de forma asincrónica.

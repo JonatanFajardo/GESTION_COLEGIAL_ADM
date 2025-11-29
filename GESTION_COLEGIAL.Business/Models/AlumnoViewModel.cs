@@ -247,10 +247,12 @@ namespace GESTION_COLEGIAL.Business.Models
 		[Display(Name = "Fecha modifica")]
 		public DateTime? Per_FechaModifica { get; set; }
 
-		/// <summary>
-		/// Propiedad con listado de niveles educativos.
-		/// </summary>
-		public SelectList NivelesEducativosList { get; set; }
+        #region Dropdown
+
+        /// <summary>
+        /// Propiedad con listado de niveles educativos.
+        /// </summary>
+        public SelectList NivelesEducativosList { get; set; }
 
 		/// <summary>
 		/// Propiedad con listado de cursos niveles.
@@ -277,7 +279,6 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// </summary>
 		public SelectList EstadosList { get; set; }
 
-		#region Dropdown
 
 		/// <summary>
 		/// Carga los elementos desplegables para las listas desplegables.

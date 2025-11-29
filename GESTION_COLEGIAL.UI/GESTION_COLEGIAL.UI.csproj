@@ -141,6 +141,7 @@
     <Compile Include="Controllers\HomeAndChartsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HorariosController.cs" />
     <Compile Include="Controllers\HorasController.cs" />
     <Compile Include="Controllers\MateriasController.cs" />
     <Compile Include="Controllers\ModalidadesController.cs" />
@@ -1434,6 +1435,7 @@
     <Content Include="Views\ReportesFinancieros\ProyeccionCobros.cshtml" />
     <Content Include="Views\Tarifas\Index.cshtml" />
     <Content Include="Views\HorarioAlumnos\Index.cshtml" />
+    <Content Include="Views\Pagos\Recibo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\login.js" />
