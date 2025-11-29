@@ -5,18 +5,17 @@
 }
 
 @section Styles {
-    <link href="~/Content/css/form-encargados.css" rel="stylesheet" />
+    <link href="~/Content/css/form-cursos.css" rel="stylesheet" />
 }
 
 @section Scripts {
-    <script src="~/Content/js/form-encargados.js"></script>
+    <script src="~/Content/js/form-cursos.js"></script>
 }
 
 
-<div class="breadcrumb-wrapper-content ">
+<div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
-
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
             <li class="breadcrumb-item"><a href="/Cursos/Index">Cursos</a></li>
             <li class="breadcrumb-item active" aria-current="page">Crear Curso</li>
@@ -24,234 +23,237 @@
     </nav>
 </div>
 
+<div class="page-header-cursos">
+    <div class="header-content-wrapper">
+        <div class="header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+            </svg>
+        </div>
+        <div>
+            <h1 class="page-title">Registro de Cursos</h1>
+            <p class="page-subtitle">Configure el curso académico y sus opciones asociadas</p>
+        </div>
+    </div>
+</div>
 
 <div class="fluid-container">
     @using (Html.BeginForm("Save", "Cursos", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        @Html.HiddenFor(model => model.Cur_Id)
 
-        <div class="card form-encargados-card">
-            <div class="card-header">
-                <div class="header-content">
-                    <div>
-                        <h3 class="card-title-modern">Registro de Cursos</h3>
-                        <p class="card-subtitle-modern">Configure el curso y sus opciones</p>
+        <div class="row">
+            <!-- Columna Izquierda - Información Básica -->
+            <div class="col-md-12 col-lg-5 mb-4">
+                <div class="card-curso">
+                    <div class="card-curso-header">
+                        <h3 class="card-curso-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                            </svg>
+                            Información del Curso
+                        </h3>
                     </div>
-                    <div class="status-container">
-                        <span class="badge-status active" id="statusBadge">
-                            <span class="badge-dot active" id="statusDot"></span>
-                            <span id="statusText">Estado Activo</span>
-                        </span>
-                        <label class="switch">
-                            @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @id = "statusToggle", @checked = "checked" } })
-                            <span class="slider"></span>
-                        </label>
+
+                    <div class="card-curso-body">
+                        <div class="status-section">
+                            <label class="status-label">Estado del Curso</label>
+                            <div class="status-toggle-wrapper">
+                                <span class="badge-status-curso active" id="statusBadge">
+                                    <span class="badge-dot-curso active" id="statusDot"></span>
+                                    <span id="statusText">Activo</span>
+                                </span>
+                                <label class="switch-curso">
+                                    @Html.EditorFor(model => model.Cur_EsActivo, new { htmlAttributes = new { @id = "statusToggle", @checked = "checked" } })
+                                    <span class="slider-curso"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="separator-curso"></div>
+
+                        <div class="form-group-curso">
+                            <label class="form-label-curso">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                                </svg>
+                                Nivel Educativo
+                            </label>
+                            @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-input-curso", @id = "Niv_Id" })
+                            @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group-curso">
+                            <label class="form-label-curso">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                                </svg>
+                                Nombre del Curso
+                            </label>
+                            @Html.EditorFor(model => model.Cur_Nombre, new { htmlAttributes = new { @class = "form-input-curso", @placeholder = "Ej: Matemáticas Avanzadas" } })
+                            @Html.ValidationMessageFor(model => model.Cur_Nombre, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-actions-curso">
+                            @Html.ActionLink("Cancelar", "Index", "Cursos", null, new { @class = "btn-curso-secondary", @id = "cancelBtn" })
+                            <button type="submit" class="btn-curso-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                                </svg>
+                                Guardar Curso
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="separator"></div>
+            <!-- Columna Derecha - Opciones -->
+            <div class="col-md-12 col-lg-7 mb-4">
+                <div class="card-curso">
+                    <div class="card-curso-header">
+                        <h3 class="card-curso-title">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                            Opciones del Curso
+                        </h3>
+                    </div>
 
-            <div class="card-body">
-                @Html.HiddenFor(model => model.Cur_Id)
-                <div class="row">
-                    <div class="col-md-12 col-lg-7">
-                        <div class="card p-4">
-                            <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
-                                <h4>Opciones</h4>
-                            </div>
-
-                            <div id="toggleAccordion">
-                                <div class="card cursor-pointer">
-                                    <div class="card-header">
-                                        <section class="mb-0 mt-0">
-                                            <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionOne" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Materias
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div id="defaultAccordionOne" class="collapse show" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="table-responsive">
-                                            <!-- Columna MateriasCheckList -->
-                                            <div class="d-flex flex-wrap mb-3 ">
-                                                @for (int i = 0; i < Model.MateriasCheckList.Count; i++)
-                                                {
-                                                    <div class="badge outline-badge-primary px-1 m-2" style="cursor: pointer;">
-                                                        <div class="n-chk">
-                                                            <label class="m-0 new-control new-checkbox checkbox-warning">
-                                                                @Html.CheckBoxFor(model => model.MateriasCheckList[i].Selected,
-                                                                    new { @class = "new-control-input", id = "materia-" + i })
-                                                                <span class="new-control-indicator"></span>
-                                                                <span class="form-check-label text-primary m-0" style="cursor: pointer;">
-                                                                    @Html.DisplayFor(model => model.MateriasCheckList[i].Text)
-                                                                </span>
-                                                            </label>
-                                                        </div>
+                    <div class="card-curso-body">
+                        <div id="toggleAccordion" class="accordion-curso">
+                            <!-- Materias -->
+                            <div class="accordion-item-curso">
+                                <div class="accordion-header-curso" data-toggle="collapse" data-target="#accordionMaterias" aria-expanded="true">
+                                    <svg class="accordion-icon-curso" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687z"/>
+                                    </svg>
+                                    <span class="accordion-title-curso">Materias</span>
+                                    <svg class="accordion-chevron-curso" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </div>
+                                <div id="accordionMaterias" class="collapse show" data-parent="#toggleAccordion">
+                                    <div class="accordion-body-curso">
+                                        <div class="checkbox-grid-curso">
+                                            @for (int i = 0; i < Model.MateriasCheckList.Count; i++)
+                                            {
+                                                <div class="badge-checkbox-curso">
+                                                    <div class="n-chk">
+                                                        <label class="new-control new-checkbox checkbox-warning m-0">
+                                                            @Html.CheckBoxFor(model => model.MateriasCheckList[i].Selected, new { @class = "new-control-input", id = "materia-" + i })
+                                                            <span class="new-control-indicator"></span>
+                                                            <span class="checkbox-text-curso">@Html.DisplayFor(model => model.MateriasCheckList[i].Text)</span>
+                                                        </label>
                                                     </div>
                                                     @Html.HiddenFor(model => model.MateriasCheckList[i].Text)
                                                     @Html.HiddenFor(model => model.MateriasCheckList[i].Value)
-
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="card cursor-pointer">
-                                    <div class="card-header">
-                                        <section class="mb-0 mt-0">
-                                            <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionTwo" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Secciones
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div id="defaultAccordionTwo" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="table-responsive">
-
-                                            @* Columna SeccionesCheckList *@
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @* Itera y muestra ckebox con la respectiva descripción *@
-                                                    @for (int i = 0; i < Model.SeccionesCheckList.Count; i++)
-                                                    {
-                                                        <ul class="list-group task-list-group">
-                                                            <li class="list-group-item border-0  list-group-item border-0 -action">
-                                                                <div class="n-chk">
-                                                                    <label class="new-control new-checkbox checkbox-primary w-100 justify-content-between">
-                                                                        @Html.CheckBoxFor(model => model.SeccionesCheckList[i].Selected)
-                                                                        <span class="new-control-indicator"></span>
-                                                                        <span class="ml-2">
-                                                                            @Html.DisplayFor(model => model.SeccionesCheckList[i].Text)
-                                                                            @* Columna Nivel *@
-                                                                            <div class="col-md-12">
-                                                                                <div class="form-group">
-                                                                                    @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "form-label-icon" })
-                                                                                    @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control form-input-modern", @id = "Niv_Id" })
-                                                                                    @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
-                                                                                </div>
-                                                                            </div>
-                                                                        </span>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                        @Html.HiddenFor(model => model.SeccionesCheckList[i].Text)
-                                                        @Html.HiddenFor(model => model.SeccionesCheckList[i].Value)
-                                                    }
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card cursor-pointer">
-                                    <div class="card-header">
-                                        <section class="mb-0 mt-0">
-                                            <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionThree" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Modalidades
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div id="defaultAccordionThree" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="table-responsive">
-                                            <!-- Columna ModalidadesCheckList -->
-                                            <div class="d-flex flex-wrap mb-3">
-                                                @for (int i = 0; i < Model.ModalidadesCheckList.Count; i++)
-                                                {
-                                                    <div class="badge outline-badge-primary px-1 m-2" style="cursor: pointer;">
-                                                        <div class="n-chk">
-                                                            <label class="m-0 new-control new-checkbox checkbox-warning">
-                                                                @Html.CheckBoxFor(model => model.ModalidadesCheckList[i].Selected,
-                                                                     new { @class = "new-control-input", id = "modalidad-" + i })
-                                                                <span class="new-control-indicator"></span>
-                                                                <span class="form-check-label text-primary m-0" style="cursor: pointer;">
-                                                                    @Html.DisplayFor(model => model.ModalidadesCheckList[i].Text)
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    @Html.HiddenFor(model => model.ModalidadesCheckList[i].Text)
-                                                    @Html.HiddenFor(model => model.ModalidadesCheckList[i].Value)
-                                                }
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="card cursor-pointer">
-                                    <div class="card-header">
-                                        <section class="mb-0 mt-0">
-                                            <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionFour" aria-expanded="true" aria-controls="defaultAccordionOne">
-                                                Niveles
-                                            </div>
-                                        </section>
-                                    </div>
-
-                                    <div id="defaultAccordionFour" class="collapse" aria-labelledby="..." data-parent="#toggleAccordion">
-                                        <div class="card-body">
-
-                                            @* Columna CursoNivel *@
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    @* Itera y muestra ckebox con la respectiva descripción *@
-                                                    @for (int i = 0; i < Model.CursoNivelesCheckList.Count; i++)
-                                                    {
-                                                        <div class="badge outline-badge-primary px-1 m-2" style="cursor: pointer;">
-                                                            <div class="n-chk">
-                                                                <label class="m-0 new-control new-checkbox checkbox-warning">
-                                                                    @Html.CheckBoxFor(model => model.CursoNivelesCheckList[i].Selected,
-                                                                         new { @class = "new-control-input", id = "curso-nivel-" + i })
-                                                                    <span class="new-control-indicator"></span>
-                                                                    <span class="form-check-label text-primary m-0" style="cursor: pointer;">
-                                                                        @Html.DisplayFor(model => model.CursoNivelesCheckList[i].Text)
-                                                                    </span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Text)
-                                                        @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Value)
-                                                    }
-                                                </div>
-                                            </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="col-md-12 col-lg-5">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-row">
-                                    @* Columna Nivel *@
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Niv_Id, "Nivel", htmlAttributes: new { @class = "form-label-icon" })
-                                            @Html.DropDownList("Niv_Id", Model.NivelEducativoList, "-- Seleccionar Nivel --", htmlAttributes: new { @class = "form-control form-input-modern", @id = "Niv_Id" })
-                                            @Html.ValidationMessageFor(model => model.Niv_Id, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    @* Columna Curso nombre *@
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Cur_Nombre, "Curso nombre", htmlAttributes: new { @class = "form-label-icon" })
-                                            @Html.EditorFor(model => model.Cur_Nombre, new { htmlAttributes = new { @class = "form-control form-input-modern" } })
-                                            @Html.ValidationMessageFor(model => model.Cur_Nombre, "", new { @class = "text-danger" })
+                            <!-- Secciones -->
+                            <div class="accordion-item-curso">
+                                <div class="accordion-header-curso collapsed" data-toggle="collapse" data-target="#accordionSecciones">
+                                    <svg class="accordion-icon-curso" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                        <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                                        <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                                    </svg>
+                                    <span class="accordion-title-curso">Secciones</span>
+                                    <svg class="accordion-chevron-curso" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </div>
+                                <div id="accordionSecciones" class="collapse" data-parent="#toggleAccordion">
+                                    <div class="accordion-body-curso">
+                                        <div class="checkbox-list-curso">
+                                            @for (int i = 0; i < Model.SeccionesCheckList.Count; i++)
+                                            {
+                                                <div class="list-item-checkbox-curso">
+                                                    <div class="n-chk">
+                                                        <label class="new-control new-checkbox checkbox-primary">
+                                                            @Html.CheckBoxFor(model => model.SeccionesCheckList[i].Selected, new { @class = "new-control-input" })
+                                                            <span class="new-control-indicator"></span>
+                                                            <span class="checkbox-text-curso">@Html.DisplayFor(model => model.SeccionesCheckList[i].Text)</span>
+                                                        </label>
+                                                    </div>
+                                                    @Html.HiddenFor(model => model.SeccionesCheckList[i].Text)
+                                                    @Html.HiddenFor(model => model.SeccionesCheckList[i].Value)
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="form-actions-modern">
-                                    @Html.ActionLink("Cancelar", "Index", "Cursos", null, new { @class = "btn btn-secondary-modern", @id = "cancelBtn" })
-                                    <button type="submit" class="btn btn-primary-modern">
-                                        <i class="mdi mdi-content-save"></i> Guardar
-                                    </button>
+                            <!-- Modalidades -->
+                            <div class="accordion-item-curso">
+                                <div class="accordion-header-curso collapsed" data-toggle="collapse" data-target="#accordionModalidades">
+                                    <svg class="accordion-icon-curso" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5z"/>
+                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1h-3zm1.038 3.018a6.093 6.093 0 0 1 .924 0 6 6 0 1 1-.924 0zM0 3.5c0 .753.333 1.429.86 1.887A8.035 8.035 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5zM13.5 1c-.753 0-1.429.333-1.887.86a8.035 8.035 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1z"/>
+                                    </svg>
+                                    <span class="accordion-title-curso">Modalidades</span>
+                                    <svg class="accordion-chevron-curso" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </div>
+                                <div id="accordionModalidades" class="collapse" data-parent="#toggleAccordion">
+                                    <div class="accordion-body-curso">
+                                        <div class="checkbox-grid-curso">
+                                            @for (int i = 0; i < Model.ModalidadesCheckList.Count; i++)
+                                            {
+                                                <div class="badge-checkbox-curso">
+                                                    <div class="n-chk">
+                                                        <label class="new-control new-checkbox checkbox-warning m-0">
+                                                            @Html.CheckBoxFor(model => model.ModalidadesCheckList[i].Selected, new { @class = "new-control-input", id = "modalidad-" + i })
+                                                            <span class="new-control-indicator"></span>
+                                                            <span class="checkbox-text-curso">@Html.DisplayFor(model => model.ModalidadesCheckList[i].Text)</span>
+                                                        </label>
+                                                    </div>
+                                                    @Html.HiddenFor(model => model.ModalidadesCheckList[i].Text)
+                                                    @Html.HiddenFor(model => model.ModalidadesCheckList[i].Value)
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Niveles -->
+                            <div class="accordion-item-curso">
+                                <div class="accordion-header-curso collapsed" data-toggle="collapse" data-target="#accordionNiveles">
+                                    <svg class="accordion-icon-curso" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                    </svg>
+                                    <span class="accordion-title-curso">Niveles del Curso</span>
+                                    <svg class="accordion-chevron-curso" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </div>
+                                <div id="accordionNiveles" class="collapse" data-parent="#toggleAccordion">
+                                    <div class="accordion-body-curso">
+                                        <div class="checkbox-grid-curso">
+                                            @for (int i = 0; i < Model.CursoNivelesCheckList.Count; i++)
+                                            {
+                                                <div class="badge-checkbox-curso">
+                                                    <div class="n-chk">
+                                                        <label class="new-control new-checkbox checkbox-warning m-0">
+                                                            @Html.CheckBoxFor(model => model.CursoNivelesCheckList[i].Selected, new { @class = "new-control-input", id = "curso-nivel-" + i })
+                                                            <span class="new-control-indicator"></span>
+                                                            <span class="checkbox-text-curso">@Html.DisplayFor(model => model.CursoNivelesCheckList[i].Text)</span>
+                                                        </label>
+                                                    </div>
+                                                    @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Text)
+                                                    @Html.HiddenFor(model => model.CursoNivelesCheckList[i].Value)
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -259,6 +261,5 @@
                 </div>
             </div>
         </div>
-
     }
 </div>
