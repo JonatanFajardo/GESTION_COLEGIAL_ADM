@@ -98,8 +98,8 @@ namespace GESTION_COLEGIAL.Business.Services
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene el modelo de alumno con las listas desplegables cargadas.</returns>
         public async Task<AlumnoViewModel> Dropdown(AlumnoViewModel model)
         {
-            string urlNivelesEducativos = "Alumnos/NivelesEducativosDropdown";
-            string urlEstados = "Alumnos/EstadosDropdown";
+            string urlNivelesEducativos = "NivelesEducativos/NivelesEducativosDropdown";
+            string urlEstados = "Estados/EstadosDropdown";
             var nivelesEducativosDropdown = await ApiRequests.DropdownAsync<NivelEducativoViewModel>(urlNivelesEducativos);
             var estadosDropdown = await ApiRequests.DropdownAsync<EstadoViewModel>(urlEstados);
             model.LoadDropDownList(nivelesEducativosDropdown, estadosDropdown);
@@ -107,49 +107,49 @@ namespace GESTION_COLEGIAL.Business.Services
         }
 
         /// <summary>
-        /// Obtiene una lista de cursos y niveles desplegables para un ID específico de forma asíncrona.
+        /// Obtiene una lista de cursos y niveles desplegables para un ID de nivel educativo específico de forma asíncrona.
         /// </summary>
-        /// <param name="id">El ID de referencia.</param>
+        /// <param name="id">El ID del nivel educativo.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de cursos y niveles desplegables.</returns>
         public async Task<IEnumerable<CursoNivelDropViewModel>> CursoNivelesDropdown(int id)
         {
-            string urlCursosNiveles = "Alumnos/CursosNivelesDropdown";
+            string urlCursosNiveles = $"CursosNiveles/CursosNivelesDropdown?id={id}";
             var cursosNivelesDropdown = await ApiRequests.DropdownAsync<CursoNivelDropViewModel>(urlCursosNiveles, id);
             return cursosNivelesDropdown;
         }
 
         /// <summary>
-        /// Obtiene una lista de modalidades desplegables para un ID específico de forma asíncrona.
+        /// Obtiene una lista de modalidades desplegables para un ID de curso-nivel específico de forma asíncrona.
         /// </summary>
-        /// <param name="id">El ID de referencia.</param>
+        /// <param name="id">El ID del curso-nivel.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de modalidades desplegables.</returns>
         public async Task<IEnumerable<ModalidadViewModel>> ModalidadesDropdown(int id)
         {
-            string urlModalidades = "Alumnos/ModalidadesDropdown";
+            string urlModalidades = $"Modalidades/ModalidadesDropdown?id={id}";
             var modalidadesDropdown = await ApiRequests.DropdownAsync<ModalidadViewModel>(urlModalidades, id);
             return modalidadesDropdown;
         }
 
         /// <summary>
-        /// Obtiene una lista de cursos desplegables para un ID específico de forma asíncrona.
+        /// Obtiene una lista de cursos desplegables para un ID de modalidad específico de forma asíncrona.
         /// </summary>
-        /// <param name="id">El ID de referencia.</param>
+        /// <param name="id">El ID de la modalidad.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de cursos desplegables.</returns>
         public async Task<IEnumerable<CursoViewModel>> CursosDropdown(int id)
         {
-            string urlCursos = "Alumnos/CursosDropdown";
+            string urlCursos = $"Cursos/CursosDropdown?id={id}";
             var cursosDropdown = await ApiRequests.DropdownAsync<CursoViewModel>(urlCursos, id);
             return cursosDropdown;
         }
 
         /// <summary>
-        /// Obtiene una lista de secciones desplegables para un ID específico de forma asíncrona.
+        /// Obtiene una lista de secciones desplegables para un ID de curso específico de forma asíncrona.
         /// </summary>
-        /// <param name="id">El ID de referencia.</param>
+        /// <param name="id">El ID del curso.</param>
         /// <returns>Una tarea que representa la operación asincrónica. El resultado contiene la lista de secciones desplegables.</returns>
         public async Task<IEnumerable<SeccionViewModel>> SeccionesDropdown(int id)
         {
-            string urlSecciones = "Alumnos/SeccionesDropdown";
+            string urlSecciones = $"Secciones/SeccionesDropdown?id={id}";
             var seccionesDropdown = await ApiRequests.DropdownAsync<SeccionViewModel>(urlSecciones, id);
             return seccionesDropdown;
         }

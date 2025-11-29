@@ -1,4 +1,4 @@
-@model GESTION_COLEGIAL.Business.Models.HorarioFormDataViewModel
+@model GESTION_COLEGIAL.Business.Models.HorarioViewModel
 
 @{
     ViewBag.Title = "Gestión de Horarios Académicos";
@@ -7,7 +7,7 @@
 
 <style>
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
         color: white;
         padding: 2rem;
         border-radius: 8px;
@@ -36,7 +36,7 @@
         content: '';
         width: 4px;
         height: 24px;
-        background-color: #667eea;
+        background-color: #F7A400;
         margin-right: 12px;
         border-radius: 2px;
     }
@@ -51,8 +51,8 @@
     }
 
     .dia-section:hover {
-        border-color: #667eea;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        border-color: #F7A400;
+        box-shadow: 0 2px 8px rgba(247, 164, 0, 0.15);
     }
 
     .dia-header {
@@ -81,13 +81,13 @@
     }
 
     .clase-row:hover {
-        background-color: #e9ecef;
+        background-color: #fff8e6;
         transform: translateY(-2px);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(247, 164, 0, 0.1);
     }
 
     .btn-agregar-clase {
-        background-color: #667eea;
+        background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
         color: white;
         border: none;
         padding: 0.5rem 1rem;
@@ -101,13 +101,13 @@
     }
 
     .btn-agregar-clase:hover {
-        background-color: #5568d3;
+        background: linear-gradient(135deg, #d89000 0%, #F7A400 100%);
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 8px rgba(247, 164, 0, 0.4);
     }
 
     .btn-eliminar-clase {
-        background-color: #dc3545;
+        background: linear-gradient(135deg, #e7515a 0%, #d43f47 100%);
         color: white;
         border: none;
         padding: 0.5rem 1rem;
@@ -118,19 +118,19 @@
     }
 
     .btn-eliminar-clase:hover {
-        background-color: #c82333;
+        background: linear-gradient(135deg, #d43f47 0%, #c23540 100%);
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        box-shadow: 0 4px 8px rgba(231, 81, 90, 0.4);
     }
 
     .form-control:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        border-color: #F7A400;
+        box-shadow: 0 0 0 0.2rem rgba(247, 164, 0, 0.25);
     }
 
     .resumen-box {
-        background: linear-gradient(135deg, #e7f3ff 0%, #f0f7ff 100%);
-        border: 2px solid #b3d9ff;
+        background: linear-gradient(135deg, #fff8e6 0%, #fffaf0 100%);
+        border: 2px solid #FFE8B2;
         border-radius: 8px;
         padding: 1.5rem;
         margin-bottom: 2rem;
@@ -138,7 +138,7 @@
     }
 
     .resumen-box h3 {
-        color: #004085;
+        color: #804d1a;
         font-size: 1.25rem;
         margin-top: 0;
         margin-bottom: 1rem;
@@ -146,18 +146,19 @@
 
     .resumen-stat {
         font-size: 1rem;
-        color: #004085;
+        color: #655b51;
     }
 
     .resumen-stat strong {
         font-weight: 600;
+        color: #804d1a;
     }
 
     .tooltip-icon {
         display: inline-block;
         width: 18px;
         height: 18px;
-        background-color: #667eea;
+        background-color: #F7A400;
         color: white;
         border-radius: 50%;
         text-align: center;
@@ -184,23 +185,242 @@
     }
 
     .btn-submit-horario {
-        background-color: #28a745;
-        border-color: #28a745;
+        background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+        border: none;
         padding: 0.75rem 2rem;
         font-weight: 600;
         transition: all 0.3s ease;
     }
 
     .btn-submit-horario:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
+        background: linear-gradient(135deg, #16a085 0%, #148f77 100%);
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        box-shadow: 0 4px 8px rgba(26, 188, 156, 0.4);
     }
 
     .btn-limpiar {
         padding: 0.75rem 2rem;
         font-weight: 600;
+    }
+
+    /* Tabla de Resumen Semanal */
+    .tabla-resumen-container {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        display: none;
+    }
+
+    .tabla-resumen-header {
+        background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
+        color: white !important;
+        padding: 1.5rem;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .tabla-resumen-header h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white !important;
+    }
+
+    .tabla-resumen-wrapper {
+        background: white;
+        border-radius: 0 0 8px 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border: 1px solid #dee2e6;
+        border-top: none;
+    }
+
+    #tablaResumen {
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    #tablaResumen thead {
+        background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%) !important;
+    }
+
+    #tablaResumen thead th {
+        background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%) !important;
+        color: white !important;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 13px;
+        padding: 14px 10px !important;
+        text-align: center;
+        border: 1px solid #e5930a !important;
+        vertical-align: middle;
+    }
+
+    #tablaResumen thead th:first-child {
+        border-top-left-radius: 6px;
+    }
+
+    #tablaResumen thead th:last-child {
+        border-top-right-radius: 6px;
+    }
+
+    #tablaResumen tbody td {
+        padding: 12px 10px;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 13px;
+        border: 1px solid #dee2e6;
+        background-color: white;
+    }
+
+    #tablaResumen tbody td.hora-column {
+        font-weight: 700;
+        background-color: #fff3d9 !important;
+        color: #d89000 !important;
+        text-align: center;
+        font-size: 14px;
+        border-left: 3px solid #F7A400;
+    }
+
+    #tablaResumen tbody td.clase-cell {
+        background-color: #f8f9fa !important;
+        color: #adb5bd !important;
+        font-style: italic;
+        font-size: 12px;
+    }
+
+    #tablaResumen tbody td.clase-cell.occupied {
+        background: linear-gradient(135deg, #fffbf0 0%, #fff8e6 100%) !important;
+        color: #2c3e50 !important;
+        font-weight: 500;
+        font-style: normal;
+        border: 2px solid #F7A400 !important;
+        box-shadow: inset 0 1px 3px rgba(247, 164, 0, 0.1);
+    }
+
+    #tablaResumen tbody tr:hover td:not(.hora-column) {
+        background-color: #fffaf0 !important;
+        transition: background-color 0.2s ease;
+    }
+
+    #tablaResumen tbody tr:hover td.clase-cell.occupied {
+        background: linear-gradient(135deg, #fff8e6 0%, #ffedcc 100%) !important;
+        transform: scale(1.01);
+        box-shadow: 0 2px 6px rgba(247, 164, 0, 0.2);
+    }
+
+    .materia-nombre {
+        display: block;
+        font-weight: 700;
+        color: #d89000 !important;
+        margin-bottom: 3px;
+        font-size: 13px;
+    }
+
+    .profesor-nombre {
+        display: block;
+        font-size: 11px;
+        color: #5a6169 !important;
+        margin-bottom: 2px;
+    }
+
+    .aula-nombre {
+        display: block;
+        font-size: 10px;
+        color: #95a5a6 !important;
+        font-style: italic;
+    }
+
+    /* Responsive */
+    @@media (max-width: 992px) {
+        #tablaResumen thead th {
+            font-size: 11px !important;
+            padding: 10px 6px !important;
+        }
+
+        #tablaResumen tbody td {
+            padding: 8px 6px !important;
+            font-size: 11px !important;
+        }
+
+        .materia-nombre {
+            font-size: 11px !important;
+        }
+
+        .profesor-nombre {
+            font-size: 10px !important;
+        }
+
+        .aula-nombre {
+            font-size: 9px !important;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        #tablaResumen {
+            font-size: 10px;
+        }
+
+        #tablaResumen thead th {
+            padding: 8px 3px !important;
+            font-size: 10px !important;
+            writing-mode: horizontal-tb;
+        }
+
+        #tablaResumen tbody td {
+            padding: 6px 3px !important;
+            font-size: 9px !important;
+        }
+
+        #tablaResumen tbody td.hora-column {
+            font-size: 11px !important;
+            padding: 6px 4px !important;
+        }
+
+        .materia-nombre {
+            font-size: 10px !important;
+        }
+
+        .profesor-nombre {
+            font-size: 8px !important;
+        }
+
+        .aula-nombre {
+            display: none !important;
+        }
+
+        .tabla-resumen-header h3 {
+            font-size: 1.1rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        #tablaResumen thead th {
+            font-size: 9px !important;
+            padding: 6px 2px !important;
+        }
+
+        #tablaResumen tbody td {
+            font-size: 8px !important;
+            padding: 4px 2px !important;
+        }
+
+        #tablaResumen tbody td.hora-column {
+            font-size: 10px !important;
+        }
+
+        .materia-nombre {
+            font-size: 9px !important;
+        }
+
+        .profesor-nombre {
+            display: none !important;
+        }
+
+        .tabla-resumen-header h3 {
+            font-size: 1rem;
+        }
     }
 </style>
 
@@ -218,7 +438,7 @@
     <p style="margin: 0; opacity: 0.9;">Configure el horario semanal para un grupo específico</p>
 </div>
 
-@using (Html.BeginForm("Guardar", "Horarios", FormMethod.Post, new { id = "formHorario" }))
+@using (Html.BeginForm("Save", "Horarios", FormMethod.Post, new { id = "formHorario" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
@@ -230,33 +450,33 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Horario.HorAño, new { @class = "control-label" })
+                    @Html.LabelFor(m => m.Hor_Año, new { @class = "control-label" })
                     <span class="text-danger">*</span>
-                    @Html.TextBoxFor(m => m.Horario.HorAño, new { @class = "form-control", type = "number", min = "2020", max = "2030" })
-                    @Html.ValidationMessageFor(m => m.Horario.HorAño, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(m => m.Hor_Año, new { @class = "form-control", type = "number", min = "2020", max = "2050" })
+                    @Html.ValidationMessageFor(m => m.Hor_Año, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Horario.SemId, new { @class = "control-label" })
+                    @Html.LabelFor(m => m.Sem_Id, new { @class = "control-label" })
                     <span class="text-danger">*</span>
-                    @Html.DropDownListFor(m => m.Horario.SemId,
-                        new SelectList(Model.Semestres, "Id", "Descripcion"),
+                    @Html.DropDownListFor(m => m.Sem_Id,
+                        Model.SemestresList,
                         "Seleccione...",
                         new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Horario.SemId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(m => m.Sem_Id, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Horario.MdaId, new { @class = "control-label" })
-                    @Html.DropDownListFor(m => m.Horario.MdaId,
-                        new SelectList(Model.Modalidades, "Id", "Descripcion"),
+                    @Html.LabelFor(m => m.Mda_Id, new { @class = "control-label" })
+                    @Html.DropDownListFor(m => m.Mda_Id,
+                        Model.ModalidadesList,
                         "Seleccione...",
                         new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Horario.MdaId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(m => m.Mda_Id, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -264,37 +484,64 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Horario.CurId, new { @class = "control-label" })
+                    @Html.LabelFor(m => m.Cur_Id, new { @class = "control-label" })
                     <span class="text-danger">*</span>
-                    @Html.DropDownListFor(m => m.Horario.CurId,
-                        new SelectList(Model.Cursos, "Id", "Nombre"),
+                    @Html.DropDownListFor(m => m.Cur_Id,
+                        Model.CursosList,
                         "Seleccione...",
                         new { @class = "form-control", id = "ddlCurso" })
-                    @Html.ValidationMessageFor(m => m.Horario.CurId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(m => m.Cur_Id, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Horario.CunId, new { @class = "control-label" })
+                    @Html.LabelFor(m => m.Cun_Id, new { @class = "control-label" })
                     <span class="text-danger">*</span>
-                    @Html.DropDownListFor(m => m.Horario.CunId,
+                    @Html.DropDownListFor(m => m.Cun_Id,
                         new SelectList(Enumerable.Empty<SelectListItem>()),
                         "Seleccione un curso primero...",
                         new { @class = "form-control", id = "ddlNivel", disabled = "disabled" })
-                    @Html.ValidationMessageFor(m => m.Horario.CunId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(m => m.Cun_Id, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Horario.SecId, new { @class = "control-label" })
+                    @Html.LabelFor(m => m.Sec_Id, new { @class = "control-label" })
                     <span class="text-danger">*</span>
-                    @Html.DropDownListFor(m => m.Horario.SecId,
-                        new SelectList(Model.Secciones, "Id", "Descripcion"),
+                    @Html.DropDownListFor(m => m.Sec_Id,
+                        Model.SeccionesList,
                         "Seleccione...",
                         new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Horario.SecId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(m => m.Sec_Id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Hor_DuracionMinutos, new { @class = "control-label" })
+                    <span class="text-danger">*</span>
+                    <span class="tooltip-icon" data-toggle="tooltip" title="Duración predeterminada de cada clase en minutos. Se usará para calcular automáticamente la hora de finalización.">i</span>
+                    @Html.TextBoxFor(m => m.Hor_DuracionMinutos, new { @class = "form-control", type = "number", min = "10", max = "180", step = "5", id = "duracionClase" })
+                    @Html.ValidationMessageFor(m => m.Hor_DuracionMinutos, "", new { @class = "text-danger" })
+                    <small class="form-text text-muted">Esta duración se aplicará a todas las clases del horario</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Hor_AulaPredeterminada, new { @class = "control-label" })
+                    <span class="text-danger">*</span>
+                    <span class="tooltip-icon" data-toggle="tooltip" title="Aula predeterminada donde se impartirán las clases. Puede cambiarse individualmente en casos especiales (laboratorio, gimnasio, etc.).">i</span>
+                    @Html.DropDownListFor(m => m.Hor_AulaPredeterminada,
+                        Model.AulasList,
+                        "Seleccione...",
+                        new { @class = "form-control", id = "aulaPredeterminada" })
+                    @Html.ValidationMessageFor(m => m.Hor_AulaPredeterminada, "", new { @class = "text-danger" })
+                    <small class="form-text text-muted">Esta aula se aplicará automáticamente a todas las clases</small>
                 </div>
             </div>
         </div>
@@ -305,19 +552,19 @@
         <h2 class="section-title">Horario Semanal</h2>
 
         <div id="horariosSemanales">
-            @foreach (var dia in Model.Dias)
+            @foreach (var dia in Model.DiasList)
             {
-                <div class="dia-section" data-dia-id="@dia.Id">
+                <div class="dia-section" data-dia-id="@dia.Value">
                     <div class="dia-header">
-                        <h3 class="dia-title">@dia.Descripcion</h3>
-                        <button type="button" class="btn-agregar-clase" onclick="agregarClase(@dia.Id, '@dia.Descripcion')">
+                        <h3 class="dia-title">@dia.Text</h3>
+                        <button type="button" class="btn-agregar-clase" onclick="agregarClase(@dia.Value, '@dia.Text')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                             </svg>
                             Agregar Clase
                         </button>
                     </div>
-                    <div class="clases-container" id="clases-dia-@dia.Id">
+                    <div class="clases-container" id="clases-dia-@dia.Value">
                         <div class="no-clases-msg">
                             <i class="mdi mdi-calendar-blank-outline"></i>
                             No hay clases programadas para este día
@@ -336,7 +583,35 @@
                 <p class="resumen-stat"><strong>Total de clases programadas:</strong> <span id="totalClases">0</span></p>
             </div>
             <div class="col-md-6">
-                <p class="resumen-stat"><strong>Días con clases:</strong> <span id="diasConClases">0</span> de 5</p>
+                <p class="resumen-stat"><strong>Días con clases:</strong> <span id="diasConClases">0</span> de 7</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Resumen Semanal -->
+    <div id="tablaResumenContainer" class="tabla-resumen-container">
+        <div class="tabla-resumen-header">
+            <h3><i class="mdi mdi-calendar-week"></i> Resumen Semanal del Horario</h3>
+        </div>
+        <div class="tabla-resumen-wrapper">
+            <div class="table-responsive">
+                <table id="tablaResumen" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Hora</th>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                            <th>Sábado</th>
+                            <th>Domingo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaResumenBody">
+                        <!-- Se llenará dinámicamente con JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -357,14 +632,15 @@
 
     <script type="text/javascript">
         var contadorClases = 0;
-        var niveles = @Html.Raw(Json.Encode(Model.Niveles));
-        var materias = @Html.Raw(Json.Encode(Model.Materias));
-        var empleados = @Html.Raw(Json.Encode(Model.Empleados));
-        var aulas = @Html.Raw(Json.Encode(Model.Aulas));
-        var horas = @Html.Raw(Json.Encode(Model.Horas));
+
+        // Convertir SelectListItem a objetos JavaScript simples
+        var materias = @Html.Raw(Json.Encode(Model.MateriasList.Select(m => new { Value = m.Value, Text = m.Text })));
+        var empleados = @Html.Raw(Json.Encode(Model.EmpleadosList.Select(e => new { Value = e.Value, Text = e.Text })));
+        var aulas = @Html.Raw(Json.Encode(Model.AulasList.Select(a => new { Value = a.Value, Text = a.Text })));
+        var horas = @Html.Raw(Json.Encode(Model.HorasList.Select(h => new { Value = h.Value, Text = h.Text })));
 
         $(document).ready(function () {
-            // Filtrar niveles por curso
+            // Filtrar niveles por curso via AJAX
             $('#ddlCurso').change(function () {
                 var cursoId = $(this).val();
                 var ddlNivel = $('#ddlNivel');
@@ -372,16 +648,38 @@
                 ddlNivel.empty().append('<option value="">Seleccione...</option>');
 
                 if (cursoId) {
-                    ddlNivel.prop('disabled', false);
-                    var nivelesFilter = niveles.filter(function(n) {
-                        return n.CurId == cursoId;
-                    });
-
-                    $.each(nivelesFilter, function(i, nivel) {
-                        ddlNivel.append($('<option></option>').val(nivel.Id).text(nivel.Descripcion));
+                    $.ajax({
+                        url: '@Url.Action("GetCursosNiveles", "Horarios")',
+                        type: 'GET',
+                        data: { id: cursoId },
+                        success: function (response) {
+                            ddlNivel.prop('disabled', false);
+                            if (response.data && response.data.length > 0) {
+                                $.each(response.data, function (i, nivel) {
+                                    ddlNivel.append($('<option></option>').val(nivel.Value).text(nivel.Text));
+                                });
+                            }
+                        },
+                        error: function () {
+                            alert('Error al cargar los niveles del curso');
+                        }
                     });
                 } else {
                     ddlNivel.prop('disabled', true);
+                }
+            });
+
+            // Cuando cambia el aula predeterminada, actualizar todas las clases existentes
+            $('#aulaPredeterminada').change(function () {
+                var aulaPredeterminadaId = $(this).val();
+                console.log('Aula predeterminada cambiada a:', aulaPredeterminadaId);
+
+                if (aulaPredeterminadaId) {
+                    // Actualizar todas las aulas de las clases ya agregadas
+                    $('.aula-select').each(function() {
+                        $(this).val(aulaPredeterminadaId);
+                        console.log('Actualizada aula de clase existente a:', aulaPredeterminadaId);
+                    });
                 }
             });
 
@@ -398,11 +696,11 @@
                 '<div class="col-md-2">' +
                 '<div class="form-group">' +
                 '<label class="control-label">Materia <span class="text-danger">*</span></label>' +
-                '<select name="Clases[' + contadorClases + '].MatId" class="form-control clase-campo" required>' +
+                '<select name="Horarios[' + contadorClases + '].Mat_Id" class="form-control clase-campo" required>' +
                 '<option value="">Seleccione...</option>';
 
             $.each(materias, function(i, mat) {
-                html += '<option value="' + mat.Id + '">' + mat.Nombre + '</option>';
+                html += '<option value="' + mat.Value + '">' + mat.Text + '</option>';
             });
 
             html += '</select>' +
@@ -411,11 +709,11 @@
                 '<div class="col-md-3">' +
                 '<div class="form-group">' +
                 '<label class="control-label">Profesor <span class="text-danger">*</span></label>' +
-                '<select name="Clases[' + contadorClases + '].EmpId" class="form-control clase-campo" required>' +
+                '<select name="Horarios[' + contadorClases + '].Emp_Id" class="form-control clase-campo" required>' +
                 '<option value="">Seleccione...</option>';
 
             $.each(empleados, function(i, emp) {
-                html += '<option value="' + emp.Id + '">' + emp.NombreCompleto + '</option>';
+                html += '<option value="' + emp.Value + '">' + emp.Text + '</option>';
             });
 
             html += '</select>' +
@@ -425,13 +723,13 @@
                 '<div class="form-group">' +
                 '<label class="control-label">' +
                 'Aula <span class="text-danger">*</span> ' +
-                '<span class="tooltip-icon" data-toggle="tooltip" title="Seleccione el aula donde se impartirá la clase (laboratorio, sala de computación, gimnasio, etc.)">i</span>' +
+                '<span class="tooltip-icon" data-toggle="tooltip" title="Aula predeterminada seleccionada. Puede cambiarla para casos especiales (laboratorio, sala de computación, gimnasio, etc.)">i</span>' +
                 '</label>' +
-                '<select name="Clases[' + contadorClases + '].AulId" class="form-control clase-campo" required>' +
+                '<select name="Horarios[' + contadorClases + '].Aul_Id" class="form-control clase-campo aula-select" id="aula_' + contadorClases + '" required>' +
                 '<option value="">Seleccione...</option>';
 
             $.each(aulas, function(i, aula) {
-                html += '<option value="' + aula.Id + '">' + aula.Descripcion + '</option>';
+                html += '<option value="' + aula.Value + '">' + aula.Text + '</option>';
             });
 
             html += '</select>' +
@@ -440,27 +738,14 @@
                 '<div class="col-md-2">' +
                 '<div class="form-group">' +
                 '<label class="control-label">Hora Inicio <span class="text-danger">*</span></label>' +
-                '<select name="Clases[' + contadorClases + '].HorHoraInicio" class="form-control clase-campo" required>' +
-                '<option value="">Seleccione...</option>';
-
-            $.each(horas, function(i, hora) {
-                html += '<option value="' + hora.Id + '">' + hora.Hora + '</option>';
-            });
-
-            html += '</select>' +
+                '<input type="time" name="Horarios[' + contadorClases + '].Hor_HoraInicio" class="form-control clase-campo hora-inicio" data-clase-id="' + contadorClases + '" data-dia-id="' + diaId + '" step="300" required />' +
                 '</div>' +
                 '</div>' +
                 '<div class="col-md-2">' +
                 '<div class="form-group">' +
                 '<label class="control-label">Hora Fin <span class="text-danger">*</span></label>' +
-                '<select name="Clases[' + contadorClases + '].HorHoraFinaliza" class="form-control clase-campo" required>' +
-                '<option value="">Seleccione...</option>';
-
-            $.each(horas, function(i, hora) {
-                html += '<option value="' + hora.Id + '">' + hora.Hora + '</option>';
-            });
-
-            html += '</select>' +
+                '<input type="text" class="form-control hora-fin-display" id="horaFin_' + contadorClases + '" readonly style="background-color: #e9ecef; cursor: not-allowed;" placeholder="Automático" />' +
+                '<input type="hidden" name="Horarios[' + contadorClases + '].Hor_HoraFinaliza" class="hora-fin-value" id="horaFinValue_' + contadorClases + '" />' +
                 '</div>' +
                 '</div>' +
                 '<div class="col-md-1">' +
@@ -472,7 +757,7 @@
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '<input type="hidden" name="Clases[' + contadorClases + '].DiaId" value="' + diaId + '" />' +
+                '<input type="hidden" name="Horarios[' + contadorClases + '].Dia_Id" value="' + diaId + '" />' +
                 '</div>';
 
             var container = $('#clases-dia-' + diaId);
@@ -482,7 +767,115 @@
             // Inicializar tooltips
             $('[data-toggle="tooltip"]').tooltip();
 
+            // Auto-seleccionar hora de inicio basada en la clase anterior del mismo día
+            var inputHoraInicio = $('#clases-dia-' + diaId).find('.hora-inicio[data-clase-id="' + contadorClases + '"]');
+
+            // Vincular eventos
+            inputHoraInicio.on('change input', function() {
+                calcularHoraFin($(this));
+                actualizarTablaResumen();
+            });
+
+            // Vincular eventos a los selects para actualizar la tabla
+            $('#' + claseId).find('.clase-campo').on('change', function() {
+                actualizarTablaResumen();
+            });
+
+            // Auto-establecer hora de inicio
+            autoSeleccionarHoraInicio(diaId, contadorClases);
+
+            // Auto-seleccionar aula predeterminada
+            autoSeleccionarAulaPredeterminada(contadorClases);
+
             actualizarResumen();
+        }
+
+        // Función para auto-seleccionar aula predeterminada
+        function autoSeleccionarAulaPredeterminada(claseId) {
+            var aulaPredeterminadaId = $('#aulaPredeterminada').val();
+
+            console.log('Aula predeterminada ID:', aulaPredeterminadaId);
+            console.log('Selector aula clase:', '#aula_' + claseId);
+
+            if (aulaPredeterminadaId) {
+                $('#aula_' + claseId).val(aulaPredeterminadaId);
+                console.log('Aula asignada a clase', claseId);
+            } else {
+                console.log('No hay aula predeterminada seleccionada');
+            }
+        }
+
+        // Función para auto-seleccionar hora de inicio basada en clase anterior
+        function autoSeleccionarHoraInicio(diaId, claseActualId) {
+            var clasesDelDia = $('#clases-dia-' + diaId).find('.hora-inicio');
+            var inputActual = clasesDelDia.last();
+
+            // Si es la primera clase del día, establecer 07:00
+            if (clasesDelDia.length === 1) {
+                inputActual.val('07:00');
+                calcularHoraFin(inputActual);
+            }
+            // Si hay clases anteriores, usar la hora fin de la última clase
+            else if (clasesDelDia.length > 1) {
+                var claseAnterior = $(clasesDelDia[clasesDelDia.length - 2]);
+                var horaFinAnterior = claseAnterior.closest('.clase-row').find('.hora-fin-value').val();
+
+                if (horaFinAnterior) {
+                    inputActual.val(horaFinAnterior);
+                    calcularHoraFin(inputActual);
+                }
+            }
+        }
+
+        // Función para calcular hora fin basada en hora inicio + duración
+        function calcularHoraFin(inputHoraInicio) {
+            var horaInicio = inputHoraInicio.val();
+            var claseId = inputHoraInicio.data('clase-id');
+            var duracionMinutos = parseInt($('#duracionClase').val()) || 40;
+
+            if (!horaInicio) {
+                $('#horaFin_' + claseId).val('');
+                $('#horaFinValue_' + claseId).val('');
+                return;
+            }
+
+            // Calcular hora fin (horaInicio está en formato HH:mm del input time)
+            var horaFinCalculada = calcularHoraConDuracion(horaInicio, duracionMinutos);
+
+            if (horaFinCalculada) {
+                $('#horaFin_' + claseId).val(horaFinCalculada);
+                $('#horaFinValue_' + claseId).val(horaFinCalculada);
+            }
+        }
+
+        // Función para calcular hora con duración (formato HH:mm)
+        function calcularHoraConDuracion(horaTexto, minutos) {
+            try {
+                // horaTexto viene en formato "HH:mm" del input type="time"
+                var partes = horaTexto.split(':');
+                if (partes.length !== 2) return null;
+
+                var hora = parseInt(partes[0]);
+                var mins = parseInt(partes[1]);
+
+                // Crear fecha con la hora
+                var fecha = new Date();
+                fecha.setHours(hora);
+                fecha.setMinutes(mins);
+                fecha.setSeconds(0);
+
+                // Agregar duración
+                fecha.setMinutes(fecha.getMinutes() + minutos);
+
+                // Obtener nueva hora y formatear en HH:mm
+                var nuevaHora = fecha.getHours();
+                var nuevosMinutos = fecha.getMinutes();
+
+                return String(nuevaHora).padStart(2, '0') + ':' + String(nuevosMinutos).padStart(2, '0');
+            } catch (e) {
+                console.error('Error calculando hora:', e);
+                return null;
+            }
         }
 
         function eliminarClase(claseId, diaId) {
@@ -512,9 +905,83 @@
                 $('#resumenBox').show();
                 $('#totalClases').text(totalClases);
                 $('#diasConClases').text(diasConClases);
+                actualizarTablaResumen();
             } else {
                 $('#resumenBox').hide();
+                $('#tablaResumenContainer').hide();
             }
+        }
+
+        function actualizarTablaResumen() {
+            // Recopilar todas las clases
+            var clasesPorHora = {};
+            var horasUnicas = new Set();
+
+            $('.clase-row').each(function() {
+                var row = $(this);
+                var diaId = row.find('input[name*=".Dia_Id"]').val();
+                var horaInicio = row.find('.hora-inicio').val();
+                var materiaId = row.find('select[name*=".Mat_Id"]').val();
+                var materiaNombre = row.find('select[name*=".Mat_Id"] option:selected').text();
+                var empleadoId = row.find('select[name*=".Emp_Id"]').val();
+                var empleadoNombre = row.find('select[name*=".Emp_Id"] option:selected').text();
+                var aulaId = row.find('.aula-select').val();
+                var aulaNombre = row.find('.aula-select option:selected').text();
+
+                if (horaInicio && materiaId && diaId) {
+                    horasUnicas.add(horaInicio);
+
+                    if (!clasesPorHora[horaInicio]) {
+                        clasesPorHora[horaInicio] = {};
+                    }
+
+                    clasesPorHora[horaInicio][diaId] = {
+                        materia: materiaNombre,
+                        profesor: empleadoNombre,
+                        aula: aulaNombre
+                    };
+                }
+            });
+
+            // Ordenar horas
+            var horasOrdenadas = Array.from(horasUnicas).sort();
+
+            // Generar filas de la tabla
+            var tbody = $('#tablaResumenBody');
+            tbody.empty();
+
+            if (horasOrdenadas.length === 0) {
+                tbody.append('<tr><td colspan="8" class="text-center text-muted" style="padding: 2rem;">No hay clases programadas</td></tr>');
+                $('#tablaResumenContainer').hide();
+                return;
+            }
+
+            // Mapeo de días (1=Lunes, 2=Martes, 3=Miércoles, 4=Jueves, 5=Viernes, 6=Sábado, 7=Domingo)
+            var diasSemana = ['1', '2', '3', '4', '5', '6', '7']; // IDs de los días
+
+            horasOrdenadas.forEach(function(hora) {
+                var row = '<tr>';
+                row += '<td class="hora-column">' + hora + '</td>';
+
+                diasSemana.forEach(function(diaId) {
+                    var clase = clasesPorHora[hora] && clasesPorHora[hora][diaId];
+
+                    if (clase) {
+                        row += '<td class="clase-cell occupied">';
+                        row += '<span class="materia-nombre">' + clase.materia + '</span>';
+                        row += '<span class="profesor-nombre">' + clase.profesor + '</span>';
+                        row += '<span class="aula-nombre">' + clase.aula + '</span>';
+                        row += '</td>';
+                    } else {
+                        row += '<td class="clase-cell">-</td>';
+                    }
+                });
+
+                row += '</tr>';
+                tbody.append(row);
+            });
+
+            $('#tablaResumenContainer').show();
         }
 
         function limpiarFormulario() {
@@ -534,11 +1001,11 @@
             }
 
             // Validar que se hayan llenado los campos del contexto académico
-            var año = $('input[name="Horario.HorAño"]').val();
-            var semestre = $('select[name="Horario.SemId"]').val();
-            var curso = $('select[name="Horario.CurId"]').val();
-            var nivel = $('select[name="Horario.CunId"]').val();
-            var seccion = $('select[name="Horario.SecId"]').val();
+            var año = $('input[name="Hor_Año"]').val();
+            var semestre = $('select[name="Sem_Id"]').val();
+            var curso = $('select[name="Cur_Id"]').val();
+            var nivel = $('select[name="Cun_Id"]').val();
+            var seccion = $('select[name="Sec_Id"]').val();
 
             if (!año || !semestre || !curso || !nivel || !seccion) {
                 e.preventDefault();

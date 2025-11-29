@@ -162,7 +162,7 @@ namespace GESTION_COLEGIAL.Business.Services
 		public async Task<CursoViewModel> Load(CursoViewModel model)
 		{
 			// Direcciones.
-			string urlNivelesEducativos = "Cursos/NivelesEducativosDropdown";
+			string urlNivelesEducativos = "NivelesEducativos/NivelesEducativosDropdown";
 			string urlModalidades = "Cursos/ModalidadesList";
 			string urlMaterias = "Cursos/MateriasList";
 			string urlCursosNiveles = "Cursos/CursosNivelesList";
