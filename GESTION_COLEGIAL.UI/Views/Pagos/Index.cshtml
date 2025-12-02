@@ -2,6 +2,9 @@
     ViewBag.Title = "Registro de Pagos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+}
 
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
@@ -13,8 +16,31 @@
     </nav>
 </div>
 
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Registro de Pagos</h1>
+                <p>Administre los pagos y transacciones financieras del sistema</p>
+            </div>
+        </div>
+        <div class="header-action-catalogo">
+            <a href="@Url.Action("NuevoPago", "Pagos")" class="btn-nuevo-catalogo" style="background: rgba(40, 167, 69, 0.2); border-color: rgba(40, 167, 69, 0.3);">
+                <i class="mdi mdi-cash-register"></i>
+                Nuevo Pago
+            </a>
+        </div>
+    </div>
+</div>
+
 <div class="fluid-container">
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body text-center">
@@ -33,32 +59,38 @@
         </div>
     </div>
 
-    <div class="card mt-3">
-        <div class="card-header" style="background-color:white;">
-            <div class="row space-between">
-                <div class="col-md-9"><h3>Listado de Pagos</h3></div>
-                <div class="col-md-3">
-                    <a href="@Url.Action("NuevoPago", "Pagos")" class="btn btn-success float-right">
-                        <i class="mdi mdi-cash-register"></i> Nuevo Pago
-                    </a>
-                </div>
-            </div>
+    <div class="card-listado-catalogo">
+        <div class="card-header-listado-catalogo">
+            <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                Listado de Pagos
+            </h3>
         </div>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered nowrap" id="datatable">
-                <thead>
-                    <tr>
-                        <th>No. Recibo</th>
-                        <th>Fecha</th>
-                        <th>Alumno</th>
-                        <th>Encargado</th>
-                        <th>Forma Pago</th>
-                        <th>Monto Total</th>
-                        <th>Usuario</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-            </table>
+
+        <div class="card-body-listado-catalogo">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered nowrap" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>No. Recibo</th>
+                            <th>Fecha</th>
+                            <th>Alumno</th>
+                            <th>Encargado</th>
+                            <th>Forma Pago</th>
+                            <th>Monto Total</th>
+                            <th>Usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 </div>
