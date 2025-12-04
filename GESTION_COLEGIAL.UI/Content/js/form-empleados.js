@@ -1,4 +1,4 @@
-// Funcionalidad para el formulario de encargados
+// Funcionalidad para el formulario de empleados
 (function() {
     'use strict';
 
@@ -74,7 +74,7 @@
         }
 
         // Animación de entrada para los acordeones
-        const accordionHeaders = document.querySelectorAll('.accordion-header-encargado');
+        const accordionHeaders = document.querySelectorAll('.accordion-header-empleado');
         accordionHeaders.forEach(function(header) {
             header.addEventListener('click', function() {
                 // Agregar clase para animación suave
@@ -91,7 +91,7 @@
             const nivelId = this.querySelector('select[name="Niv_Id"]');
 
             if (!nombreAlumno || nombreAlumno.value.trim() === '') {
-                alert('Por favor ingrese el nombre del encargado.');
+                alert('Por favor ingrese el nombre del empleado.');
                 e.preventDefault();
                 nombreAlumno.focus();
                 return false;
