@@ -20,58 +20,29 @@
             statusBadge.classList.add('active');
             statusDot.classList.remove('inactive');
             statusDot.classList.add('active');
-            statusText.textContent = 'Estado Activo';
+            statusText.textContent = 'Activo';
         } else {
             statusBadge.classList.remove('active');
             statusBadge.classList.add('inactive');
             statusDot.classList.remove('active');
             statusDot.classList.add('inactive');
-            statusText.textContent = 'Estado Inactivo';
+            statusText.textContent = 'Inactivo';
         }
     }
 
+    // Los checkboxes del sistema ya funcionan correctamente
+    // Solo agregamos funcionalidad adicional si es necesaria
+
     // Inicializar cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', function() {
-        // Verificar que los elementos existen
-        if (!statusToggle || !statusBadge || !statusDot || !statusText) {
-            console.warn('No se encontraron todos los elementos necesarios para el toggle de estado');
-            return;
-        }
+        // Configurar toggle de estado
+        if (statusToggle && statusBadge && statusDot && statusText) {
+            // Inicializar estado basado en el checkbox
+            actualizarEstado(statusToggle.checked);
 
-        // Inicializar estado basado en el checkbox
-        actualizarEstado(statusToggle.checked);
-
-        // Event listener para el toggle
-        statusToggle.addEventListener('change', function() {
-            actualizarEstado(this.checked);
-        });
-
-        // Validación en tiempo real para el correo electrónico
-        const correoInput = document.querySelector('input[name="Per_CorreoElectronico"]');
-        if (correoInput) {
-            correoInput.addEventListener('blur', function() {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (this.value && !emailRegex.test(this.value)) {
-                    this.style.borderColor = '#ef4444';
-                } else {
-                    this.style.borderColor = '#cbd5e1';
-                }
-            });
-        }
-
-        // Validación para teléfono (solo números)
-        const telefonoInput = document.querySelector('input[name="Per_Telefono"]');
-        if (telefonoInput) {
-            telefonoInput.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
-            });
-        }
-
-        // Validación para identidad (solo números)
-        const identidadInput = document.querySelector('input[name="Per_Identidad"]');
-        if (identidadInput) {
-            identidadInput.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
+            // Event listener para el toggle
+            statusToggle.addEventListener('change', function() {
+                actualizarEstado(this.checked);
             });
         }
 
@@ -82,12 +53,15 @@
                 // Verificar si hay cambios en el formulario
                 const form = this.closest('form');
                 if (form) {
-                    const hasChanges = Array.from(form.elements).some(function(element) {
-                        if (element.type === 'text' || element.type === 'date' || element.type === 'email' || element.tagName === 'SELECT') {
-                            return element.value.trim() !== '';
-                        }
-                        return false;
-                    });
+                    const nombreAlumno = form.querySelector('input[name="Alu_Nombre"]');
+                    const nivelId = form.querySelector('select[name="Niv_Id"]');
+
+                    // Verificar si hay algún checkbox marcado
+                    const checkboxesMarcados = form.querySelectorAll('input[type="checkbox"]:checked').length;
+
+                    const hasChanges = (nombreAlumno && nombreAlumno.value.trim() !== '') ||
+                                      (nivelId && nivelId.value !== '') ||
+                                      checkboxesMarcados > 0;
 
                     if (hasChanges) {
                         if (!confirm('¿Está seguro de que desea cancelar? Los cambios no guardados se perderán.')) {
@@ -98,5 +72,39 @@
                 }
             });
         }
+
+        // Animación de entrada para los acordeones
+        const accordionHeaders = document.querySelectorAll('.accordion-header-encargado');
+        accordionHeaders.forEach(function(header) {
+            header.addEventListener('click', function() {
+                // Agregar clase para animación suave
+                this.classList.toggle('collapsed');
+            });
+        });
     });
+
+    // Validación del formulario antes de enviar
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const nombreAlumno = this.querySelector('input[name="Alu_Nombre"]');
+            const nivelId = this.querySelector('select[name="Niv_Id"]');
+
+            if (!nombreAlumno || nombreAlumno.value.trim() === '') {
+                alert('Por favor ingrese el nombre del encargado.');
+                e.preventDefault();
+                nombreAlumno.focus();
+                return false;
+            }
+
+            if (!nivelId || nivelId.value === '') {
+                alert('Por favor seleccione un nivel educativo.');
+                e.preventDefault();
+                nivelId.focus();
+                return false;
+            }
+
+            return true;
+        });
+    }
 })();

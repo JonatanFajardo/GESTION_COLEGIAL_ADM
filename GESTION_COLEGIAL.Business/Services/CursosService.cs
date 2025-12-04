@@ -174,7 +174,7 @@ namespace GESTION_COLEGIAL.Business.Services
 			var cursosNivelesList = await ApiRequests.CheckListAsync<CursoNivelViewModel>(urlCursosNiveles);
 			var seccionesList = await ApiRequests.CheckListAsync<SeccionViewModel>(urlSecciones);
 
-			materiasList.OrderBy(x => x.Mat_Nombre);
+			materiasList = materiasList.OrderBy(x => x.Mat_Nombre).ToList();
 			
 			// Cargando en el modelo.
 			model.LoadDropDownList(nivelesEducativosDropdown);
