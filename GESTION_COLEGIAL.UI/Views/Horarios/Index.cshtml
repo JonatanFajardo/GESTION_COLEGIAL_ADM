@@ -4,16 +4,11 @@
     ViewBag.Title = "Gestión de Horarios Académicos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+}
 
 <style>
-    .page-header {
-        background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
-        color: white;
-        padding: 2rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
 
     .form-section {
         background-color: #f8f9fa;
@@ -433,9 +428,23 @@
     </nav>
 </div>
 
-<div class="page-header">
-    <h1 style="margin: 0 0 0.5rem 0; font-size: 2rem;">Gestión de Horarios Académicos</h1>
-    <p style="margin: 0; opacity: 0.9;">Configure el horario semanal para un grupo específico</p>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Gestión de Horarios Académicos</h1>
+                <p>Configure el horario semanal para un grupo específico</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @using (Html.BeginForm("Save", "Horarios", FormMethod.Post, new { id = "formHorario" }))

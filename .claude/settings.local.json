@@ -18,7 +18,9 @@
       "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" GESTION_COLEGIAL.Business/GESTION_COLEGIAL.Business.csproj -p:Configuration=Debug -v:m)",
       "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" \"c:\\Users\\movie\\Documents\\GitHub\\GESTION_COLEGIAL_ADM\\GESTION_COLEGIAL.UI\\GESTION_COLEGIAL.UI.csproj\" /p:Configuration=Debug /v:m)",
       "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" GESTION_COLEGIAL.UI/GESTION_COLEGIAL.UI.csproj /p:Configuration=Debug /v:m)",
-      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" \"GESTION_COLEGIAL.UI\\GESTION_COLEGIAL.UI.csproj\" /p:Configuration=Debug /verbosity:minimal)"
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe\" \"GESTION_COLEGIAL.UI\\GESTION_COLEGIAL.UI.csproj\" /p:Configuration=Debug /verbosity:minimal)",
+      "Bash(npm install:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,477 @@
+/* ========================================
+   MODAL CATALOGOS - DISEÑO PROFESIONAL COMÚN
+   Archivo CSS reutilizable para todos los módulos de catálogos
+   Paleta: Naranjas/Dorados del sistema
+
+   Módulos que usan este archivo:
+   - Cargos
+   - ConceptosPago
+   - CursosNiveles
+   - Descuentos
+   - Duraciones
+   - Estados
+   - EstadosPago
+   - FormasPago
+   - Materias
+   - Modalidades
+   - NivelesEducativos
+   - Parciales
+   - Parentescos
+   - Secciones
+   - Semestres
+   - Titulos
+   ======================================== */
+
+/* ========================================
+   MODAL CONTENT
+   ======================================== */
+.modal-content-catalogo {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   MODAL HEADER
+   ======================================== */
+.modal-header-catalogo {
+    background: linear-gradient(135deg, #F7A400 0%, #f97316 100%);
+    padding: 2rem 2.5rem;
+    border-bottom: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-header-catalogo::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.modal-header-catalogo::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.modal-title-wrapper-catalogo {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+.modal-icon-catalogo {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-title-catalogo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.modal-subtitle-catalogo {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0.35rem 0 0 0;
+    font-weight: 400;
+}
+
+.close-catalogo {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    z-index: 2;
+    color: white;
+    opacity: 0.9;
+    font-size: 2rem;
+    font-weight: 300;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.close-catalogo:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+/* ========================================
+   MODAL BODY
+   ======================================== */
+.modal-body-catalogo {
+    padding: 2rem 2.5rem;
+    background: #f9fafb;
+}
+
+/* Section Header */
+.section-header-catalogo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e5e7eb;
+    color: #374151;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.section-header-catalogo svg {
+    color: #F7A400;
+}
+
+/* Form Card */
+.form-card-catalogo {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+}
+
+/* Form Group */
+.form-group-catalogo {
+    margin-bottom: 0;
+}
+
+.form-label-catalogo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.label-icon-catalogo {
+    color: #F7A400;
+    flex-shrink: 0;
+}
+
+.required-asterisk-catalogo {
+    color: #ef4444;
+    font-size: 1.1rem;
+    margin-left: 0.25rem;
+}
+
+/* Form Input */
+.form-input-catalogo {
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #1f2937;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+.form-input-catalogo:focus {
+    outline: none;
+    border-color: #F7A400;
+    box-shadow: 0 0 0 4px rgba(247, 164, 0, 0.1);
+    background-color: #fffbf0;
+}
+
+.form-input-catalogo::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Form Text Hint */
+.form-text-hint-catalogo {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-radius: 8px;
+    color: #92400e;
+    font-size: 0.825rem;
+    line-height: 1.5;
+    border-left: 3px solid #F7A400;
+}
+
+.form-text-hint-catalogo svg {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: #F7A400;
+}
+
+/* Validation Message */
+.validation-message-catalogo {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #dc2626;
+    font-weight: 500;
+}
+
+/* ========================================
+   MODAL FOOTER
+   ======================================== */
+.modal-footer-catalogo {
+    padding: 1.5rem 2.5rem;
+    background: white;
+    border-top: 2px solid #f3f4f6;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+/* Botón Cancelar */
+.btn-cancel-catalogo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    background: white;
+    color: #6b7280;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-catalogo:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: #374151;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cancel-catalogo svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Botón Guardar */
+.btn-save-catalogo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    background: linear-gradient(135deg, #F7A400 0%, #f97316 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(247, 164, 0, 0.35);
+}
+
+.btn-save-catalogo:hover {
+    background: linear-gradient(135deg, #e69500 0%, #ea5a0c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(247, 164, 0, 0.45);
+}
+
+.btn-save-catalogo:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(247, 164, 0, 0.35);
+}
+
+.btn-save-catalogo svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ========================================
+   VARIANTES DE CAMPOS (Para campos adicionales)
+   ======================================== */
+
+/* Select/Dropdown */
+.form-select-catalogo {
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #1f2937;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    appearance: none;
+}
+
+.form-select-catalogo:focus {
+    outline: none;
+    border-color: #F7A400;
+    box-shadow: 0 0 0 4px rgba(247, 164, 0, 0.1);
+    background-color: #fffbf0;
+}
+
+/* Textarea */
+.form-textarea-catalogo {
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #1f2937;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.form-textarea-catalogo:focus {
+    outline: none;
+    border-color: #F7A400;
+    box-shadow: 0 0 0 4px rgba(247, 164, 0, 0.1);
+    background-color: #fffbf0;
+}
+
+/* Checkbox personalizado */
+.form-checkbox-catalogo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.form-checkbox-catalogo input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #F7A400;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+    .modal-header-catalogo {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .modal-body-catalogo {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .modal-footer-catalogo {
+        padding: 1.25rem;
+        flex-direction: column;
+    }
+
+    .btn-cancel-catalogo,
+    .btn-save-catalogo {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-title-catalogo {
+        font-size: 1.25rem;
+    }
+
+    .modal-subtitle-catalogo {
+        font-size: 0.825rem;
+    }
+
+    .modal-icon-catalogo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .form-card-catalogo {
+        padding: 1.5rem;
+    }
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal.fade .modal-content-catalogo {
+    animation: fadeInModal 0.3s ease-out;
+}
+
+/* ========================================
+   UTILIDADES
+   ======================================== */
+
+/* Separador de secciones */
+.section-divider-catalogo {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #e5e7eb 50%, transparent 100%);
+    margin: 1.5rem 0;
+}
+
+/* Badge/etiqueta informativa */
+.info-badge-catalogo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1e40af;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 1rem;
+}
+
+.info-badge-catalogo svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Grid de 2 columnas para campos múltiples */
+.form-grid-catalogo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .form-grid-catalogo {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
