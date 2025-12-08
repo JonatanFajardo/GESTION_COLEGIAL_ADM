@@ -169,6 +169,10 @@
     <Content Include="Content\css\form-encargados.css" />
     <Content Include="Content\css\horarios.css" />
     <Content Include="Content\css\modal-detail.css" />
+    <Content Include="Content\js\form-alumnos.js" />
+    <Content Include="Content\js\form-cursos.js" />
+    <Content Include="Content\js\form-empleados.js" />
+    <Content Include="Content\js\form-encargados.js" />
     <Content Include="Content\login.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
