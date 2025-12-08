@@ -60,47 +60,44 @@ var datatableCatalogs = (function () {
                 responsive: true,
                 deferRender: true,
                 //serverSide: true,
-                buttons: [
-                    {
-                        text: '<i class="fa-solid fa-rotate-right"></i>',
-                        titleAttr: 'Recargar tabla',
-                        action: function (e, dt, config) {
-                            dt.ajax.reload();
-                        }
-                    },
-                    //{
-                    //    title: "Exportar a CSV",
-                    //    extend: "csvHtml5",
-                    //    text: "<i class='mdi mdi-file-multiple-outline'></i> CSV",
-                    //    className: "btn-secondary",
-                    //    exportOptions: exportOptions
-                    //},
-                    {
-                        extend: "pdfHtml5",
-                        title: "Exportar a PDF",
-                        text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
-                        class: "btn btn-secondary",
-                        exportOptions: exportOptions
-                    },
-                    {
-                        extend: "excelHtml5",
-                        title: "Exportar a EXCEL",
-                        text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
-                        class: "btn btn-secondary",
-                        exportOptions: exportOptions
-                    },
-                    {
-                        attr: {
-                            title: "Añadir nuevo elemento",
-                            id: "add-btn",
-                            class: "btn btn-primary",
-                            'data-style': "zoom-in",
-                            'data-toggle': "modal",
-                            'data-target': "#edit-modal"
-                        },
-                        text: '<i class="mdi mdi-plus-thick ladda-button"> Nuevo</i>'
+               buttons: [
+                {
+                    title: "Recargar",
+                    text: '<i class="fas fa-sync-alt"></i>',
+                    titleAttr: 'Recargar datos de la tabla',
+                    className: 'btn-reload',
+                    action: function (e, dt, config) {
+                        dt.ajax.reload();
                     }
-                ],
+                },
+                {
+                    extend: "pdfHtml5",
+                    title: "Exportar a PDF",
+                    text: "<i class='fas fa-file-pdf'></i> PDF",
+                    titleAttr: 'Exportar tabla a formato PDF',
+                    className: "btn btn-export-pdf",
+                    exportOptions: exportOptions
+                },
+                {
+                    extend: "excelHtml5",
+                    title: "Exportar a EXCEL",
+                    text: "<i class='fas fa-file-excel'></i> Excel",
+                    titleAttr: 'Exportar tabla a formato Excel',
+                    className: "btn btn-export-excel",
+                    exportOptions: exportOptions
+                },
+                {
+                    attr: {
+                        title: "Añadir nuevo elemento",
+                        id: "add-btn",
+                        class: "btn btn-primary btn-add-new",
+                        'data-style': "zoom-in",
+                        'data-toggle': "modal",
+                        'data-target': "#edit-modal"
+                    },
+                    text: '<i class="fas fa-plus-circle"></i> Nuevo'
+                }
+            ],
                 ajax: function (data, callback, settings) {
                     $.ajax({
                         url: DirectionUrls.urlList,
