@@ -53,14 +53,14 @@
                 // Verificar si hay cambios en el formulario
                 const form = this.closest('form');
                 if (form) {
-                    const nombreAlumno = form.querySelector('input[name="Alu_Nombre"]');
-                    const nivelId = form.querySelector('select[name="Niv_Id"]');
+                    const nombreEncargado = form.querySelector('input[name="Per_PrimerNombre"]');
+                    const ocupacion = form.querySelector('input[name="Enc_Ocupacion"]');
 
                     // Verificar si hay algún checkbox marcado
                     const checkboxesMarcados = form.querySelectorAll('input[type="checkbox"]:checked').length;
 
-                    const hasChanges = (nombreAlumno && nombreAlumno.value.trim() !== '') ||
-                                      (nivelId && nivelId.value !== '') ||
+                    const hasChanges = (nombreEncargado && nombreEncargado.value.trim() !== '') ||
+                                      (ocupacion && ocupacion.value !== '') ||
                                       checkboxesMarcados > 0;
 
                     if (hasChanges) {
@@ -87,20 +87,20 @@
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            const nombreAlumno = this.querySelector('input[name="Alu_Nombre"]');
-            const nivelId = this.querySelector('select[name="Niv_Id"]');
+            const nombreEncargado = this.querySelector('input[name="Per_PrimerNombre"]');
+            const ocupacion = this.querySelector('input[name="Enc_Ocupacion"]');
 
-            if (!nombreAlumno || nombreAlumno.value.trim() === '') {
+            if (!nombreEncargado || nombreEncargado.value.trim() === '') {
                 alert('Por favor ingrese el nombre del encargado.');
                 e.preventDefault();
-                nombreAlumno.focus();
+                nombreEncargado.focus();
                 return false;
             }
 
-            if (!nivelId || nivelId.value === '') {
-                alert('Por favor seleccione un nivel educativo.');
+            if (!ocupacion || ocupacion.value.trim() === '') {
+                alert('Por favor ingrese la ocupación del encargado.');
                 e.preventDefault();
-                nivelId.focus();
+                ocupacion.focus();
                 return false;
             }
 

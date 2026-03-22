@@ -112,7 +112,7 @@ namespace GESTION_COLEGIAL.Business.Models
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe ser numérico")]
         [Display(Name = "Identidad")]
         [Required(ErrorMessage = "El campo es requerido")]
-        private PersonaViewModel Persona { get; set; }
+        public PersonaViewModel Persona { get; set; }
 
         /// <summary>
         /// Obtiene o establece la identidad de la persona.

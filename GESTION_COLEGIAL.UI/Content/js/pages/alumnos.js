@@ -340,27 +340,27 @@ var datatableAlumnos = (function () {
                         render: function (data, type, row) {
                             const imageUrl = data ? data.replace('~/', '/') : '';
                             const fullImageUrl = imageUrl ? window.location.origin + imageUrl : '/Content/js/pages/default-profile.jpeg';
-                            return `<img src="${fullImageUrl}" alt="Imagen" style="width: 50px; height: 50px; border-radius: 5px;" 
+                            return `<img src="${fullImageUrl}" alt="Imagen" style="width: 50px; height: 50px; border-radius: 5px;"
         onerror="this.onerror=null; this.src='/path/to/placeholder.png';">`;
                         },
-                        targets: 1,
-                        
+                        targets: 0,
+
                     },
                     {
                         data: "Alu_Nombre",
-                        targets: 2,
+                        targets: 1,
                     },
                     {
                         data: "Per_Identidad",
-                        targets: 3,
+                        targets: 2,
                     },
                     {
                         data: "Cno_Descripcion",
-                        targets: 4,
+                        targets: 3,
                     },
                     {
                         data: "Mda_Descripcion",
-                        targets: 5,
+                        targets: 4,
                     },
                     {
                         data: "Niv_Descripcion",
@@ -368,11 +368,11 @@ var datatableAlumnos = (function () {
                     },
                     {
                         data: "Sec_Descripcion",
-                        targets: 5,
+                        targets: 6,
                     },
                     {
                         data: "AnioCursado",
-                        targets: 6,
+                        targets: 7,
                     },
 
                     {
@@ -395,7 +395,7 @@ var datatableAlumnos = (function () {
 
                             return `<span class="${colorClass}">${data}</span>`;
                         },
-                        targets: 7,
+                        targets: 8,
                        
                     },
                     {
@@ -416,7 +416,7 @@ var datatableAlumnos = (function () {
                             }
                             return botones;
                         },
-                        targets: 8,
+                        targets: 9,
                     }
 
                 ]

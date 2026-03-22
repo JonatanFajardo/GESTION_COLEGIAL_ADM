@@ -77,7 +77,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
             else
             {
-                Boolean createResult = await cursosService.Create(model);
+                Boolean createResult = await cursosService.Edit(model);
                 //Validamos error
                 if (createResult)
                 {

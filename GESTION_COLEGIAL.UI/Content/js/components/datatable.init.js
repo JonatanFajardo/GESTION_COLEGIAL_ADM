@@ -204,7 +204,7 @@ var datatable = (function () {
                 window.location = `${DirectionUrls.urlUpdate}/${getIdEdit}`;
             });
 
-            table.on("click", ".delete-btn-btn", function (e) {
+            table.on("click", ".delete-btn", function (e) {
                 var getIdDelete = $(this).data("id");
                 console.log(`getIdDelete: ${getIdDelete}`);
                 $("#delete-item-id").val(getIdDelete);
