@@ -5,6 +5,8 @@ VisualStudioVersion = 18.3.11505.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GESTION_COLEGIAL.Business", "GESTION_COLEGIAL.Business\GESTION_COLEGIAL.Business.csproj", "{6AECE9C8-3390-4216-A542-4F6895CC5554}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GESTION_COLEGIAL.UI", "GESTION_COLEGIAL.UI\GESTION_COLEGIAL.UI.csproj", "{D15CEAE7-D4BD-4070-B45C-B6526B1AB202}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6AECE9C8-3390-4216-A542-4F6895CC5554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AECE9C8-3390-4216-A542-4F6895CC5554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AECE9C8-3390-4216-A542-4F6895CC5554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D15CEAE7-D4BD-4070-B45C-B6526B1AB202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D15CEAE7-D4BD-4070-B45C-B6526B1AB202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D15CEAE7-D4BD-4070-B45C-B6526B1AB202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D15CEAE7-D4BD-4070-B45C-B6526B1AB202}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
