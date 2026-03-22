@@ -214,6 +214,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			if (result == null)
 			{
 				AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Ha ocurrido un error al procesar la solicitud");
+				return AjaxResult(new List<SelectListItem>());
 			}
 			IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
 			{
