@@ -145,7 +145,10 @@
     <Compile Include="Controllers\SemestresController.cs" />
     <Compile Include="Controllers\TarifasController.cs" />
     <Compile Include="Controllers\TitulosController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Extensions\AlertMessage.cs" />
+    <Compile Include="Filters\SessionManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -385,6 +388,7 @@
     <Content Include="Content\js\pages\secciones.js" />
     <Content Include="Content\js\pages\semestres.js" />
     <Content Include="Content\js\pages\titulos.js" />
+    <Content Include="Content\js\pages\roles.js" />
     <Content Include="Content\js\pages\usuarios.js" />
     <Content Include="Content\js\scrollspyNav.js" />
     <Content Include="Content\js\toggleUnic.js" />
@@ -1371,6 +1375,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\SinAcceso.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />

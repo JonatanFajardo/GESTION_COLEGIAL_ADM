@@ -5,12 +5,14 @@ using GESTION_COLEGIAL.UI.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using GESTION_COLEGIAL.Business.Services.ModuloFinanzas;
+using GESTION_COLEGIAL.UI.Filters;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de tarifas por nivel/curso.
     /// </summary>
+    [SessionManager("Listado de tarifas")]
     public class TarifasController : BaseController
     {
         private readonly TarifaService tarifaService = new TarifaService();
