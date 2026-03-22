@@ -5,12 +5,14 @@ using GESTION_COLEGIAL.UI.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using GESTION_COLEGIAL.Business.Services.ModuloFinanzas;
+using GESTION_COLEGIAL.UI.Filters;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de formas de pago.
     /// </summary>
+    [SessionManager("Listado de formas de pago")]
     public class FormasPagoController : BaseController
     {
         private readonly FormasPagoService formasPagoService = new FormasPagoService();

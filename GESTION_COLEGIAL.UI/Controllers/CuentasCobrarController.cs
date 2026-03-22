@@ -5,12 +5,14 @@ using GESTION_COLEGIAL.UI.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using GESTION_COLEGIAL.Business.Services.ModuloFinanzas;
+using GESTION_COLEGIAL.UI.Filters;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de cuentas por cobrar.
     /// </summary>
+    [SessionManager("Listado de cuentas por cobrar")]
     public class CuentasCobrarController : BaseController
     {
         private readonly CuentasCobrarService cuentasCobrarService = new CuentasCobrarService();

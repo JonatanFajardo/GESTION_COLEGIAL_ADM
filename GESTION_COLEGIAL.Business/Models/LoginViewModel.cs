@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
@@ -23,6 +24,7 @@ namespace GESTION_COLEGIAL.Business.Models
         public string Message { get; set; }
         public string Token { get; set; }
         public UserInfoViewModel User { get; set; }
+        public List<string> Pantallas { get; set; }
     }
 
     public class UserInfoViewModel

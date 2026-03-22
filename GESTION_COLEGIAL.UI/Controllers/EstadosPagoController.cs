@@ -5,12 +5,14 @@ using GESTION_COLEGIAL.UI.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using GESTION_COLEGIAL.Business.Services.ModuloFinanzas;
+using GESTION_COLEGIAL.UI.Filters;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de estados de pago.
     /// </summary>
+    [SessionManager("Listado de estados de pago")]
     public class EstadosPagoController : BaseController
     {
         private readonly EstadosPagoService estadosPagoService = new EstadosPagoService();

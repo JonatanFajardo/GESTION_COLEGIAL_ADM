@@ -1,6 +1,7 @@
 ﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
+using GESTION_COLEGIAL.UI.Filters;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 	/// <summary>
 	/// Controlador para gestionar la entidad Alumnos.
 	/// </summary>
+	[SessionManager("Listado de alumnos")]
 	public class AlumnosController : BaseController
 	{
 		private readonly AlumnosService alumnosService = new AlumnosService();

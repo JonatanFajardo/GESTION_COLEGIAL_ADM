@@ -1,5 +1,6 @@
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
+using GESTION_COLEGIAL.UI.Filters;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -8,6 +9,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     /// <summary>
     /// Controlador para reportes financieros.
     /// </summary>
+    [SessionManager("Reportes financieros")]
     public class ReportesFinancierosController : BaseController
     {
         private readonly ReportesFinancierosService reportesService = new ReportesFinancierosService();

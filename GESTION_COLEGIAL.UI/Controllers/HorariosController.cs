@@ -1,5 +1,6 @@
 using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     /// <summary>
     /// Controlador para gestionar la entidad Horarios.
     /// </summary>
+    [SessionManager("Listado de horarios")]
     public class HorariosController : BaseController
     {
         private readonly HorariosService horariosService = new HorariosService();
