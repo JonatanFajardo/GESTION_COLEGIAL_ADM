@@ -8,14 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         primary: '#10b981',
                         secondary: '#059669',
                         accent: '#14b8a6',
-                        dark: '#f9fafb',
-                        darker: '#ffffff',
                     }
                 }
             }
@@ -28,11 +27,28 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* Theme-aware CSS custom properties */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --glass-shadow: rgba(0, 0, 0, 0.06);
+            --tree-line-color: #cbd5e1;
+            --code-bg: #f8fafc;
+        }
+        html.dark {
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(16, 185, 129, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --tree-line-color: #334155;
+            --code-bg: #1e293b;
+        }
+
         .glass {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--glass-bg);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 1px 3px var(--glass-shadow);
         }
         .layer-card { transition: transform 0.3s, box-shadow 0.3s; }
         .layer-card:hover {
@@ -58,10 +74,10 @@
                 content: '↓'; right: auto; left: 50%; top: auto; bottom: -28px; transform: translateX(-50%);
             }
         }
-        .tree-line { border-left: 2px solid #cbd5e1; margin-left: 1rem; padding-left: 1rem; }
+        .tree-line { border-left: 2px solid var(--tree-line-color); margin-left: 1rem; padding-left: 1rem; }
     </style>
 </head>
-<body class="bg-white text-gray-700 min-h-screen">
+<body class="bg-white dark:bg-slate-950 text-gray-700 dark:text-gray-300 min-h-screen">
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 glass">
@@ -70,49 +86,54 @@
                 <i class="fas fa-desktop text-primary"></i> Gestión Colegial Admin
             </a>
             <div class="hidden md:flex gap-6 text-sm">
-                <a href="#stack" class="hover:text-primary transition">Stack</a>
-                <a href="#architecture" class="hover:text-primary transition">Arquitectura</a>
-                <a href="#patterns" class="hover:text-primary transition">Patrones</a>
-                <a href="#modules" class="hover:text-primary transition">Módulos</a>
-                <a href="#api-comm" class="hover:text-primary transition">Comunicación API</a>
-                <a href="#frontend" class="hover:text-primary transition">Frontend</a>
-                <a href="#structure" class="hover:text-primary transition">Estructura</a>
+                <a href="#stack" class="text-gray-600 dark:text-gray-400 hover:text-primary transition">Stack</a>
+                <a href="#architecture" class="text-gray-600 dark:text-gray-400 hover:text-primary transition">Arquitectura</a>
+                <a href="#patterns" class="text-gray-600 dark:text-gray-400 hover:text-primary transition">Patrones</a>
+                <a href="#modules" class="text-gray-600 dark:text-gray-400 hover:text-primary transition">Módulos</a>
+                <a href="#api-comm" class="text-gray-600 dark:text-gray-400 hover:text-primary transition">Comunicación API</a>
+                <a href="#frontend" class="text-gray-600 dark:text-gray-400 hover:text-primary transition">Frontend</a>
+                <a href="#structure" class="text-gray-600 dark:text-gray-400 hover:text-primary transition">Estructura</a>
             </div>
-            <button id="menu-toggle" class="md:hidden text-gray-500 hover:text-gray-900">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
+            <div class="flex items-center gap-3">
+                <button id="theme-toggle" class="text-gray-500 dark:text-gray-400 hover:text-primary transition" title="Cambiar tema">
+                    <i class="fas fa-moon text-lg" id="theme-icon"></i>
+                </button>
+                <button id="menu-toggle" class="md:hidden text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
         </div>
         <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2 text-sm">
-            <a href="#stack" class="block hover:text-primary">Stack</a>
-            <a href="#architecture" class="block hover:text-primary">Arquitectura</a>
-            <a href="#patterns" class="block hover:text-primary">Patrones</a>
-            <a href="#modules" class="block hover:text-primary">Módulos</a>
-            <a href="#api-comm" class="block hover:text-primary">Comunicación API</a>
-            <a href="#frontend" class="block hover:text-primary">Frontend</a>
-            <a href="#structure" class="block hover:text-primary">Estructura</a>
+            <a href="#stack" class="block text-gray-600 dark:text-gray-400 hover:text-primary">Stack</a>
+            <a href="#architecture" class="block text-gray-600 dark:text-gray-400 hover:text-primary">Arquitectura</a>
+            <a href="#patterns" class="block text-gray-600 dark:text-gray-400 hover:text-primary">Patrones</a>
+            <a href="#modules" class="block text-gray-600 dark:text-gray-400 hover:text-primary">Módulos</a>
+            <a href="#api-comm" class="block text-gray-600 dark:text-gray-400 hover:text-primary">Comunicación API</a>
+            <a href="#frontend" class="block text-gray-600 dark:text-gray-400 hover:text-primary">Frontend</a>
+            <a href="#structure" class="block text-gray-600 dark:text-gray-400 hover:text-primary">Estructura</a>
         </div>
     </nav>
 
     <!-- Hero -->
     <section id="hero" class="pt-32 pb-20 px-4 text-center">
         <div class="max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-gray-500 mb-6">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-gray-500 dark:text-gray-400 mb-6">
                 <i class="fas fa-desktop"></i> Panel Administrativo &bull; Documentación de Arquitectura
             </div>
             <h1 class="text-5xl md:text-7xl font-bold mb-6">
                 <span class="gradient-text">Gestión Colegial</span>
-                <span class="block text-2xl md:text-3xl text-gray-500 mt-2">Admin Panel</span>
+                <span class="block text-2xl md:text-3xl text-gray-500 dark:text-gray-400 mt-2">Admin Panel</span>
             </h1>
-            <p class="text-xl text-gray-500 mb-8 max-w-2xl mx-auto">
+            <p class="text-xl text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                 Panel administrativo MVC para la gestión de centros educativos. Interfaz completa con DataTables, modales CRUD, módulo financiero y dashboard interactivo.
             </p>
             <div class="flex flex-wrap justify-center gap-3">
-                <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm border border-emerald-500/20">ASP.NET MVC 5</span>
-                <span class="px-3 py-1 rounded-full bg-teal-500/10 text-teal-400 text-sm border border-teal-500/20">.NET Framework 4.7.2</span>
-                <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-sm border border-amber-500/20">jQuery 3.4</span>
-                <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-sm border border-indigo-500/20">Bootstrap 4</span>
-                <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-sm border border-cyan-500/20">DataTables</span>
-                <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 text-sm border border-rose-500/20">REST API Client</span>
+                <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm border border-emerald-500/20">ASP.NET MVC 5</span>
+                <span class="px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 text-sm border border-teal-500/20">.NET Framework 4.7.2</span>
+                <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-sm border border-amber-500/20">jQuery 3.4</span>
+                <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-sm border border-indigo-500/20">Bootstrap 4</span>
+                <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 text-sm border border-cyan-500/20">DataTables</span>
+                <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 text-sm border border-rose-500/20">REST API Client</span>
             </div>
         </div>
     </section>
@@ -121,76 +142,76 @@
     <section id="stack" class="py-20 px-4">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-2 gradient-text">Stack Tecnológico</h2>
-            <p class="text-center text-gray-500 mb-12">Tecnologías y herramientas del frontend</p>
+            <p class="text-center text-gray-500 dark:text-gray-400 mb-12">Tecnologías y herramientas del frontend</p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-server text-3xl text-emerald-400 mb-3"></i>
-                    <h3 class="font-semibold text-gray-900">ASP.NET MVC 5</h3>
-                    <p class="text-xs text-gray-500 mt-1">v5.2.7 — Web Framework</p>
+                    <i class="fas fa-server text-3xl text-emerald-500 dark:text-emerald-400 mb-3"></i>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">ASP.NET MVC 5</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">v5.2.7 — Web Framework</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-cube text-3xl text-teal-400 mb-3"></i>
-                    <h3 class="font-semibold text-gray-900">.NET Framework</h3>
-                    <p class="text-xs text-gray-500 mt-1">v4.7.2 — Runtime</p>
+                    <i class="fas fa-cube text-3xl text-teal-500 dark:text-teal-400 mb-3"></i>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">.NET Framework</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">v4.7.2 — Runtime</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-code text-3xl text-amber-400 mb-3"></i>
-                    <h3 class="font-semibold text-gray-900">jQuery 3.4</h3>
-                    <p class="text-xs text-gray-500 mt-1">DOM & AJAX</p>
+                    <i class="fas fa-code text-3xl text-amber-500 dark:text-amber-400 mb-3"></i>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">jQuery 3.4</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">DOM & AJAX</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-palette text-3xl text-indigo-400 mb-3"></i>
-                    <h3 class="font-semibold text-gray-900">Bootstrap 4</h3>
-                    <p class="text-xs text-gray-500 mt-1">UI Framework</p>
+                    <i class="fas fa-palette text-3xl text-indigo-500 dark:text-indigo-400 mb-3"></i>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">Bootstrap 4</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">UI Framework</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-table text-3xl text-cyan-400 mb-3"></i>
-                    <h3 class="font-semibold text-gray-900">DataTables</h3>
-                    <p class="text-xs text-gray-500 mt-1">Grids + Export</p>
+                    <i class="fas fa-table text-3xl text-cyan-500 dark:text-cyan-400 mb-3"></i>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">DataTables</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Grids + Export</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-bell text-3xl text-rose-400 mb-3"></i>
-                    <h3 class="font-semibold text-gray-900">Toastr + SweetAlert2</h3>
-                    <p class="text-xs text-gray-500 mt-1">Notificaciones</p>
+                    <i class="fas fa-bell text-3xl text-rose-500 dark:text-rose-400 mb-3"></i>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">Toastr + SweetAlert2</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Notificaciones</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-paint-brush text-3xl text-purple-400 mb-3"></i>
-                    <h3 class="font-semibold text-gray-900">SCSS / Sass</h3>
-                    <p class="text-xs text-gray-500 mt-1">Preprocesador CSS</p>
+                    <i class="fas fa-paint-brush text-3xl text-purple-500 dark:text-purple-400 mb-3"></i>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">SCSS / Sass</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Preprocesador CSS</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-check-circle text-3xl text-sky-400 mb-3"></i>
-                    <h3 class="font-semibold text-gray-900">jQuery Validation</h3>
-                    <p class="text-xs text-gray-500 mt-1">Form Validation</p>
+                    <i class="fas fa-check-circle text-3xl text-sky-500 dark:text-sky-400 mb-3"></i>
+                    <h3 class="font-semibold text-gray-900 dark:text-white">jQuery Validation</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Form Validation</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Architecture -->
-    <section id="architecture" class="py-20 px-4 bg-dark/50">
+    <section id="architecture" class="py-20 px-4 bg-gray-50 dark:bg-slate-900/50">
         <div class="max-w-5xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-2 gradient-text">Arquitectura del Sistema</h2>
-            <p class="text-center text-gray-500 mb-12">2 proyectos internos + API externa como fuente de datos</p>
+            <p class="text-center text-gray-500 dark:text-gray-400 mb-12">2 proyectos internos + API externa como fuente de datos</p>
 
             <!-- Layer: UI -->
             <div class="layer-card glass rounded-xl p-6 mb-2">
                 <div class="flex items-center gap-3 mb-3">
-                    <span class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm">UI</span>
+                    <span class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-500 dark:text-emerald-400 font-bold text-sm">UI</span>
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900">GESTION_COLEGIAL.UI</h3>
-                        <span class="text-xs text-gray-500">Capa de Presentación</span>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">GESTION_COLEGIAL.UI</h3>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">Capa de Presentación</span>
                     </div>
-                    <span class="ml-auto px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs">ASP.NET MVC 5</span>
+                    <span class="ml-auto px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs">ASP.NET MVC 5</span>
                 </div>
-                <p class="text-sm text-gray-400 mb-3">Controladores MVC, Vistas Razor, archivos JavaScript por página, SCSS, plugins de terceros y layout compartido.</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Controladores MVC, Vistas Razor, archivos JavaScript por página, SCSS, plugins de terceros y layout compartido.</p>
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">35+ Controllers</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">30+ Views</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">50+ JS Pages</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">SCSS Themes</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">60+ Plugins</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">Session Auth</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">35+ Controllers</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">30+ Views</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">50+ JS Pages</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">SCSS Themes</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">60+ Plugins</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">Session Auth</span>
                 </div>
             </div>
             <div class="arrow-down"></div>
@@ -198,20 +219,20 @@
             <!-- Layer: Business -->
             <div class="layer-card glass rounded-xl p-6 mb-2">
                 <div class="flex items-center gap-3 mb-3">
-                    <span class="w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">BL</span>
+                    <span class="w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center text-teal-500 dark:text-teal-400 font-bold text-sm">BL</span>
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900">GESTION_COLEGIAL.Business</h3>
-                        <span class="text-xs text-gray-500">Capa de Lógica</span>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">GESTION_COLEGIAL.Business</h3>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">Capa de Lógica</span>
                     </div>
-                    <span class="ml-auto px-3 py-1 rounded-full bg-teal-500/10 text-teal-400 text-xs">Services + HTTP Client</span>
+                    <span class="ml-auto px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 text-xs">Services + HTTP Client</span>
                 </div>
-                <p class="text-sm text-gray-400 mb-3">Servicios de negocio, ViewModels, DTOs, HTTP Client para comunicación con la API REST, extensiones y validaciones.</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Servicios de negocio, ViewModels, DTOs, HTTP Client para comunicación con la API REST, extensiones y validaciones.</p>
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">30+ Services</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">100+ ViewModels</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">SendHttpClient</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">ApiRequests</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">Newtonsoft.Json</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">30+ Services</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">100+ ViewModels</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">SendHttpClient</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">ApiRequests</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">Newtonsoft.Json</span>
                 </div>
             </div>
             <div class="arrow-down"></div>
@@ -219,19 +240,19 @@
             <!-- Layer: External API -->
             <div class="layer-card glass rounded-xl p-6 border-2 border-dashed border-emerald-500/30">
                 <div class="flex items-center gap-3 mb-3">
-                    <span class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm"><i class="fas fa-cloud"></i></span>
+                    <span class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-500 dark:text-amber-400 font-bold text-sm"><i class="fas fa-cloud"></i></span>
                     <div>
-                        <h3 class="text-lg font-bold text-gray-900">Gestión Colegial API</h3>
-                        <span class="text-xs text-gray-500">API REST Externa — localhost:7076</span>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Gestión Colegial API</h3>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">API REST Externa — localhost:7076</span>
                     </div>
-                    <span class="ml-auto px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs">Proyecto Separado</span>
+                    <span class="ml-auto px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs">Proyecto Separado</span>
                 </div>
-                <p class="text-sm text-gray-400 mb-3">API REST en .NET 6 que provee todos los datos. El Admin Panel no tiene acceso directo a la base de datos.</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">API REST en .NET 6 que provee todos los datos. El Admin Panel no tiene acceso directo a la base de datos.</p>
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">.NET 6 Web API</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">JWT Auth</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">SQL Server</span>
-                    <span class="px-2 py-1 rounded bg-slate-700/50 text-gray-300">Stored Procedures</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">.NET 6 Web API</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">JWT Auth</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">SQL Server</span>
+                    <span class="px-2 py-1 rounded bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400">Stored Procedures</span>
                 </div>
             </div>
         </div>
@@ -241,25 +262,25 @@
     <section id="patterns" class="py-20 px-4">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-2 gradient-text">Patrones de Diseño</h2>
-            <p class="text-center text-gray-500 mb-12">Patrones implementados en la aplicación</p>
+            <p class="text-center text-gray-500 dark:text-gray-400 mb-12">Patrones implementados en la aplicación</p>
 
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- Service Layer -->
                 <div class="glass rounded-xl p-6 layer-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                            <i class="fas fa-layer-group text-emerald-400 text-xl"></i>
+                            <i class="fas fa-layer-group text-emerald-500 dark:text-emerald-400 text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Service Layer</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Service Layer</h3>
                     </div>
-                    <p class="text-sm text-gray-400 mb-4">Capa de servicios como intermediaria entre controladores y la API externa. Cada módulo tiene su servicio dedicado con operaciones CRUD estandarizadas.</p>
-                    <div class="bg-slate-900/60 rounded-lg p-4 text-sm font-mono">
-                        <span class="text-gray-500">// Flujo de cada operación</span><br>
-                        <span class="text-cyan-300">Controller</span><br>
-                        &nbsp;&nbsp;→ <span class="text-emerald-300">Service</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;→ <span class="text-amber-300">ApiRequests</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="text-purple-300">SendHttpClient</span><br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="text-rose-300">REST API</span> <span class="text-gray-500">:7076</span>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Capa de servicios como intermediaria entre controladores y la API externa. Cada módulo tiene su servicio dedicado con operaciones CRUD estandarizadas.</p>
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4 text-sm font-mono">
+                        <span class="text-gray-500 dark:text-gray-400">// Flujo de cada operación</span><br>
+                        <span class="text-cyan-600 dark:text-cyan-300">Controller</span><br>
+                        &nbsp;&nbsp;→ <span class="text-emerald-600 dark:text-emerald-300">Service</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;→ <span class="text-amber-600 dark:text-amber-300">ApiRequests</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="text-purple-600 dark:text-purple-300">SendHttpClient</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="text-rose-600 dark:text-rose-300">REST API</span> <span class="text-gray-500 dark:text-gray-400">:7076</span>
                     </div>
                 </div>
 
@@ -267,19 +288,19 @@
                 <div class="glass rounded-xl p-6 layer-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 rounded-lg bg-teal-500/20 flex items-center justify-center">
-                            <i class="fas fa-building text-teal-400 text-xl"></i>
+                            <i class="fas fa-building text-teal-500 dark:text-teal-400 text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">Facade</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Facade</h3>
                     </div>
-                    <p class="text-sm text-gray-400 mb-4">ApiRequests actúa como fachada que abstrae la complejidad de SendHttpClient, proporcionando una interfaz simplificada a los servicios.</p>
-                    <div class="bg-slate-900/60 rounded-lg p-4 text-sm font-mono">
-                        <span class="text-purple-400">internal static class</span> <span class="text-cyan-300">ApiRequests</span><br>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">ApiRequests actúa como fachada que abstrae la complejidad de SendHttpClient, proporcionando una interfaz simplificada a los servicios.</p>
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4 text-sm font-mono">
+                        <span class="text-purple-600 dark:text-purple-400">internal static class</span> <span class="text-cyan-600 dark:text-cyan-300">ApiRequests</span><br>
                         {<br>
-                        &nbsp;&nbsp;<span class="text-emerald-400">ListAsync</span>&lt;T&gt;(url);<br>
-                        &nbsp;&nbsp;<span class="text-emerald-400">FindAsync</span>&lt;T&gt;(url, id);<br>
-                        &nbsp;&nbsp;<span class="text-emerald-400">CreateAsync</span>(url, model);<br>
-                        &nbsp;&nbsp;<span class="text-emerald-400">EditAsync</span>(url, model);<br>
-                        &nbsp;&nbsp;<span class="text-emerald-400">DeleteAsync</span>(url, id);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">ListAsync</span>&lt;T&gt;(url);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">FindAsync</span>&lt;T&gt;(url, id);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">CreateAsync</span>(url, model);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">EditAsync</span>(url, model);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">DeleteAsync</span>(url, id);<br>
                         }
                     </div>
                 </div>
@@ -288,27 +309,27 @@
                 <div class="glass rounded-xl p-6 layer-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                            <i class="fas fa-envelope text-cyan-400 text-xl"></i>
+                            <i class="fas fa-envelope text-cyan-500 dark:text-cyan-400 text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">DTO (Data Transfer Object)</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">DTO (Data Transfer Object)</h3>
                     </div>
-                    <p class="text-sm text-gray-400 mb-4">Objetos de transferencia de datos especializados por operación. Separan el modelo de dominio del modelo de transporte.</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Objetos de transferencia de datos especializados por operación. Separan el modelo de dominio del modelo de transporte.</p>
                     <div class="flex flex-wrap gap-2 mt-4">
-                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
-                            <span class="text-amber-300">ConceptoPagoListDto</span>
-                            <span class="text-gray-600 ml-1">→ Listados</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-amber-600 dark:text-amber-300">ConceptoPagoListDto</span>
+                            <span class="text-gray-600 dark:text-gray-400 ml-1">→ Listados</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
-                            <span class="text-emerald-300">ConceptoPagoDetailDto</span>
-                            <span class="text-gray-600 ml-1">→ Detalle</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-emerald-600 dark:text-emerald-300">ConceptoPagoDetailDto</span>
+                            <span class="text-gray-600 dark:text-gray-400 ml-1">→ Detalle</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
-                            <span class="text-cyan-300">ConceptoPagoFindDto</span>
-                            <span class="text-gray-600 ml-1">→ Búsqueda</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-cyan-600 dark:text-cyan-300">ConceptoPagoFindDto</span>
+                            <span class="text-gray-600 dark:text-gray-400 ml-1">→ Búsqueda</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
-                            <span class="text-rose-300">ConceptoPagoDropdownDto</span>
-                            <span class="text-gray-600 ml-1">→ Selects</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-rose-600 dark:text-rose-300">ConceptoPagoDropdownDto</span>
+                            <span class="text-gray-600 dark:text-gray-400 ml-1">→ Selects</span>
                         </div>
                     </div>
                 </div>
@@ -317,27 +338,27 @@
                 <div class="glass rounded-xl p-6 layer-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-                            <i class="fas fa-clone text-indigo-400 text-xl"></i>
+                            <i class="fas fa-clone text-indigo-500 dark:text-indigo-400 text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-gray-900">ViewModel</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">ViewModel</h3>
                     </div>
-                    <p class="text-sm text-gray-400 mb-4">ViewModels con Data Annotations para validación. Variantes por tipo de vista y operación.</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">ViewModels con Data Annotations para validación. Variantes por tipo de vista y operación.</p>
                     <div class="flex flex-wrap gap-2 mt-4">
-                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
-                            <span class="text-amber-300">CargoViewModel</span>
-                            <span class="text-gray-600 ml-1">→ Create/Edit</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-amber-600 dark:text-amber-300">CargoViewModel</span>
+                            <span class="text-gray-600 dark:text-gray-400 ml-1">→ Create/Edit</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
-                            <span class="text-emerald-300">CargoDetailViewModel</span>
-                            <span class="text-gray-600 ml-1">→ Detail</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-emerald-600 dark:text-emerald-300">CargoDetailViewModel</span>
+                            <span class="text-gray-600 dark:text-gray-400 ml-1">→ Detail</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
-                            <span class="text-cyan-300">AlumnoListViewModel</span>
-                            <span class="text-gray-600 ml-1">→ DataTable</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-cyan-600 dark:text-cyan-300">AlumnoListViewModel</span>
+                            <span class="text-gray-600 dark:text-gray-400 ml-1">→ DataTable</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
-                            <span class="text-rose-300">DropdownViewModel</span>
-                            <span class="text-gray-600 ml-1">→ Selects</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-rose-600 dark:text-rose-300">DropdownViewModel</span>
+                            <span class="text-gray-600 dark:text-gray-400 ml-1">→ Selects</span>
                         </div>
                     </div>
                 </div>
@@ -346,34 +367,34 @@
             <!-- Additional Patterns -->
             <div class="grid md:grid-cols-2 gap-4 mt-6">
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-cubes text-amber-400 text-2xl mb-3"></i>
-                    <h4 class="font-semibold text-gray-900 text-sm">Module Pattern (JS)</h4>
-                    <p class="text-xs text-gray-500 mt-2">Encapsulación frontend con IIFE y namespacing. Módulos como <code class="text-gray-400">Modals</code> y <code class="text-gray-400">DataTable</code> evitan contaminación del scope global.</p>
+                    <i class="fas fa-cubes text-amber-500 dark:text-amber-400 text-2xl mb-3"></i>
+                    <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Module Pattern (JS)</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Encapsulación frontend con IIFE y namespacing. Módulos como <code class="text-gray-600 dark:text-gray-400">Modals</code> y <code class="text-gray-600 dark:text-gray-400">DataTable</code> evitan contaminación del scope global.</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-sync-alt text-cyan-400 text-2xl mb-3"></i>
-                    <h4 class="font-semibold text-gray-900 text-sm">Async/Await (TAP)</h4>
-                    <p class="text-xs text-gray-500 mt-2">Programación asíncrona basada en <code class="text-gray-400">Task</code> en toda la arquitectura: controladores, servicios y comunicación HTTP.</p>
+                    <i class="fas fa-sync-alt text-cyan-500 dark:text-cyan-400 text-2xl mb-3"></i>
+                    <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Async/Await (TAP)</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Programación asíncrona basada en <code class="text-gray-600 dark:text-gray-400">Task</code> en toda la arquitectura: controladores, servicios y comunicación HTTP.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- System Modules -->
-    <section id="modules" class="py-20 px-4 bg-dark/50">
+    <section id="modules" class="py-20 px-4 bg-gray-50 dark:bg-slate-900/50">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-2 gradient-text">Módulos del Sistema</h2>
-            <p class="text-center text-gray-500 mb-12">Funcionalidades organizadas por tipo de pantalla</p>
+            <p class="text-center text-gray-500 dark:text-gray-400 mb-12">Funcionalidades organizadas por tipo de pantalla</p>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Catálogos -->
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-emerald-500">
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-th-list text-2xl text-emerald-400"></i>
-                        <h3 class="font-bold text-gray-900">Catálogos</h3>
+                        <i class="fas fa-th-list text-2xl text-emerald-500 dark:text-emerald-400"></i>
+                        <h3 class="font-bold text-gray-900 dark:text-white">Catálogos</h3>
                     </div>
-                    <p class="text-xs text-gray-500 mb-2">16 módulos con modales CRUD</p>
-                    <ul class="text-xs text-gray-400 space-y-1.5">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">16 módulos con modales CRUD</p>
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1.5">
                         <li><i class="fas fa-briefcase text-emerald-400/50 mr-2"></i>Cargos</li>
                         <li><i class="fas fa-receipt text-emerald-400/50 mr-2"></i>Conceptos de Pago</li>
                         <li><i class="fas fa-tag text-emerald-400/50 mr-2"></i>Descuentos</li>
@@ -385,11 +406,11 @@
                 <!-- Alumnos -->
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-sky-500">
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-user-graduate text-2xl text-sky-400"></i>
-                        <h3 class="font-bold text-gray-900">Alumnos</h3>
+                        <i class="fas fa-user-graduate text-2xl text-sky-500 dark:text-sky-400"></i>
+                        <h3 class="font-bold text-gray-900 dark:text-white">Alumnos</h3>
                     </div>
-                    <p class="text-xs text-gray-500 mb-2">CRUD completo con vistas</p>
-                    <ul class="text-xs text-gray-400 space-y-1.5">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">CRUD completo con vistas</p>
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1.5">
                         <li><i class="fas fa-list text-sky-400/50 mr-2"></i>Listado DataTable</li>
                         <li><i class="fas fa-plus text-sky-400/50 mr-2"></i>Crear / Editar</li>
                         <li><i class="fas fa-info-circle text-sky-400/50 mr-2"></i>Detalle completo</li>
@@ -400,11 +421,11 @@
                 <!-- Personal -->
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-indigo-500">
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-user-tie text-2xl text-indigo-400"></i>
-                        <h3 class="font-bold text-gray-900">Personal</h3>
+                        <i class="fas fa-user-tie text-2xl text-indigo-500 dark:text-indigo-400"></i>
+                        <h3 class="font-bold text-gray-900 dark:text-white">Personal</h3>
                     </div>
-                    <p class="text-xs text-gray-500 mb-2">Gestión de empleados</p>
-                    <ul class="text-xs text-gray-400 space-y-1.5">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Gestión de empleados</p>
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1.5">
                         <li><i class="fas fa-id-card text-indigo-400/50 mr-2"></i>Empleados</li>
                         <li><i class="fas fa-briefcase text-indigo-400/50 mr-2"></i>Cargos</li>
                         <li><i class="fas fa-graduation-cap text-indigo-400/50 mr-2"></i>Títulos</li>
@@ -414,11 +435,11 @@
                 <!-- Financiero -->
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-amber-500">
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-coins text-2xl text-amber-400"></i>
-                        <h3 class="font-bold text-gray-900">Financiero</h3>
+                        <i class="fas fa-coins text-2xl text-amber-500 dark:text-amber-400"></i>
+                        <h3 class="font-bold text-gray-900 dark:text-white">Financiero</h3>
                     </div>
-                    <p class="text-xs text-gray-500 mb-2">Módulo completo de pagos</p>
-                    <ul class="text-xs text-gray-400 space-y-1.5">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Módulo completo de pagos</p>
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1.5">
                         <li><i class="fas fa-money-bill text-amber-400/50 mr-2"></i>Pagos</li>
                         <li><i class="fas fa-file-invoice text-amber-400/50 mr-2"></i>Cuentas por Cobrar</li>
                         <li><i class="fas fa-tags text-amber-400/50 mr-2"></i>Tarifas</li>
@@ -429,10 +450,10 @@
                 <!-- Académico -->
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-purple-500">
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-book text-2xl text-purple-400"></i>
-                        <h3 class="font-bold text-gray-900">Académico</h3>
+                        <i class="fas fa-book text-2xl text-purple-500 dark:text-purple-400"></i>
+                        <h3 class="font-bold text-gray-900 dark:text-white">Académico</h3>
                     </div>
-                    <ul class="text-xs text-gray-400 space-y-1.5">
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1.5">
                         <li><i class="fas fa-chalkboard text-purple-400/50 mr-2"></i>Cursos</li>
                         <li><i class="fas fa-book-open text-purple-400/50 mr-2"></i>Materias</li>
                         <li><i class="fas fa-star text-purple-400/50 mr-2"></i>Notas</li>
@@ -443,10 +464,10 @@
                 <!-- Dashboard -->
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-rose-500">
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-chart-pie text-2xl text-rose-400"></i>
-                        <h3 class="font-bold text-gray-900">Dashboard</h3>
+                        <i class="fas fa-chart-pie text-2xl text-rose-500 dark:text-rose-400"></i>
+                        <h3 class="font-bold text-gray-900 dark:text-white">Dashboard</h3>
                     </div>
-                    <ul class="text-xs text-gray-400 space-y-1.5">
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1.5">
                         <li><i class="fas fa-chart-line text-rose-400/50 mr-2"></i>Estadísticas</li>
                         <li><i class="fas fa-users text-rose-400/50 mr-2"></i>Alumnos por Curso</li>
                         <li><i class="fas fa-chart-area text-rose-400/50 mr-2"></i>Tendencias</li>
@@ -456,10 +477,10 @@
                 <!-- Auth -->
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-red-500">
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-shield-alt text-2xl text-red-400"></i>
-                        <h3 class="font-bold text-gray-900">Autenticación</h3>
+                        <i class="fas fa-shield-alt text-2xl text-red-500 dark:text-red-400"></i>
+                        <h3 class="font-bold text-gray-900 dark:text-white">Autenticación</h3>
                     </div>
-                    <ul class="text-xs text-gray-400 space-y-1.5">
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1.5">
                         <li><i class="fas fa-sign-in-alt text-red-400/50 mr-2"></i>Login</li>
                         <li><i class="fas fa-sign-out-alt text-red-400/50 mr-2"></i>Logout</li>
                         <li><i class="fas fa-cookie text-red-400/50 mr-2"></i>Session Management</li>
@@ -469,10 +490,10 @@
                 <!-- Layout -->
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-teal-500">
                     <div class="flex items-center gap-3 mb-3">
-                        <i class="fas fa-columns text-2xl text-teal-400"></i>
-                        <h3 class="font-bold text-gray-900">Layout</h3>
+                        <i class="fas fa-columns text-2xl text-teal-500 dark:text-teal-400"></i>
+                        <h3 class="font-bold text-gray-900 dark:text-white">Layout</h3>
                     </div>
-                    <ul class="text-xs text-gray-400 space-y-1.5">
+                    <ul class="text-xs text-gray-500 dark:text-gray-400 space-y-1.5">
                         <li><i class="fas fa-bars text-teal-400/50 mr-2"></i>Sidebar Navigation</li>
                         <li><i class="fas fa-heading text-teal-400/50 mr-2"></i>Header / Topbar</li>
                         <li><i class="fas fa-shoe-prints text-teal-400/50 mr-2"></i>Footer</li>
@@ -486,38 +507,38 @@
     <section id="api-comm" class="py-20 px-4">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-2 gradient-text">Comunicación con API</h2>
-            <p class="text-center text-gray-500 mb-12">Cómo el Admin Panel se comunica con el backend REST API</p>
+            <p class="text-center text-gray-500 dark:text-gray-400 mb-12">Cómo el Admin Panel se comunica con el backend REST API</p>
 
             <!-- Flow Diagram -->
             <div class="glass rounded-xl p-8 mb-6">
-                <h3 class="text-sm font-semibold text-emerald-400 mb-6 text-center">
+                <h3 class="text-sm font-semibold text-emerald-500 dark:text-emerald-400 mb-6 text-center">
                     <i class="fas fa-arrow-right mr-1"></i> Flujo de una Operación CRUD
                 </h3>
                 <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-4">
-                    <div class="flow-step bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px]">
-                        <i class="fas fa-globe text-emerald-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-gray-900">Browser</p>
-                        <p class="text-xs text-gray-500">User Action</p>
+                    <div class="flow-step bg-gray-50 dark:bg-slate-800 rounded-lg p-4 text-center min-w-[130px]">
+                        <i class="fas fa-globe text-emerald-500 dark:text-emerald-400 text-xl mb-2"></i>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">Browser</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">User Action</p>
                     </div>
-                    <div class="flow-step bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px]">
-                        <i class="fas fa-route text-teal-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-gray-900">Controller</p>
-                        <p class="text-xs text-gray-500">MVC Action</p>
+                    <div class="flow-step bg-gray-50 dark:bg-slate-800 rounded-lg p-4 text-center min-w-[130px]">
+                        <i class="fas fa-route text-teal-500 dark:text-teal-400 text-xl mb-2"></i>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">Controller</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">MVC Action</p>
                     </div>
-                    <div class="flow-step bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px]">
-                        <i class="fas fa-cogs text-cyan-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-gray-900">Service</p>
-                        <p class="text-xs text-gray-500">Business Logic</p>
+                    <div class="flow-step bg-gray-50 dark:bg-slate-800 rounded-lg p-4 text-center min-w-[130px]">
+                        <i class="fas fa-cogs text-cyan-500 dark:text-cyan-400 text-xl mb-2"></i>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">Service</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Business Logic</p>
                     </div>
-                    <div class="flow-step bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px]">
-                        <i class="fas fa-paper-plane text-indigo-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-gray-900">HttpClient</p>
-                        <p class="text-xs text-gray-500">SendHttpClient</p>
+                    <div class="flow-step bg-gray-50 dark:bg-slate-800 rounded-lg p-4 text-center min-w-[130px]">
+                        <i class="fas fa-paper-plane text-indigo-500 dark:text-indigo-400 text-xl mb-2"></i>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">HttpClient</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">SendHttpClient</p>
                     </div>
-                    <div class="bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px] border border-amber-500/30">
-                        <i class="fas fa-cloud text-amber-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-gray-900">REST API</p>
-                        <p class="text-xs text-gray-500">localhost:7076</p>
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4 text-center min-w-[130px] border border-amber-500/30">
+                        <i class="fas fa-cloud text-amber-500 dark:text-amber-400 text-xl mb-2"></i>
+                        <p class="text-sm font-semibold text-gray-900 dark:text-white">REST API</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">localhost:7076</p>
                     </div>
                 </div>
             </div>
@@ -525,63 +546,63 @@
             <!-- HTTP Methods -->
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="glass rounded-xl p-6">
-                    <h4 class="text-sm font-semibold text-amber-400 mb-4">
+                    <h4 class="text-sm font-semibold text-amber-500 dark:text-amber-400 mb-4">
                         <i class="fas fa-code mr-2"></i>SendHttpClient — Métodos HTTP
                     </h4>
                     <div class="space-y-2 text-xs font-mono">
-                        <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">GET</span>
-                            <span class="text-gray-900">GetAsync&lt;T&gt;</span>
-                            <span class="text-gray-500 ml-auto">→ Listar</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">GET</span>
+                            <span class="text-gray-900 dark:text-white">GetAsync&lt;T&gt;</span>
+                            <span class="text-gray-500 dark:text-gray-400 ml-auto">→ Listar</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">GET</span>
-                            <span class="text-gray-900">FindAsync&lt;T&gt;</span>
-                            <span class="text-gray-500 ml-auto">→ Buscar por ID</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">GET</span>
+                            <span class="text-gray-900 dark:text-white">FindAsync&lt;T&gt;</span>
+                            <span class="text-gray-500 dark:text-gray-400 ml-auto">→ Buscar por ID</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-400">POST</span>
-                            <span class="text-gray-900">PostAsync</span>
-                            <span class="text-gray-500 ml-auto">→ Crear</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-600 dark:text-sky-400">POST</span>
+                            <span class="text-gray-900 dark:text-white">PostAsync</span>
+                            <span class="text-gray-500 dark:text-gray-400 ml-auto">→ Crear</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400">PUT</span>
-                            <span class="text-gray-900">PutAsync</span>
-                            <span class="text-gray-500 ml-auto">→ Editar</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-400">PUT</span>
+                            <span class="text-gray-900 dark:text-white">PutAsync</span>
+                            <span class="text-gray-500 dark:text-gray-400 ml-auto">→ Editar</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400">PUT</span>
-                            <span class="text-gray-900">DeleteAsync</span>
-                            <span class="text-gray-500 ml-auto">→ Soft Delete</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-600 dark:text-rose-400">PUT</span>
+                            <span class="text-gray-900 dark:text-white">DeleteAsync</span>
+                            <span class="text-gray-500 dark:text-gray-400 ml-auto">→ Soft Delete</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-400">GET</span>
-                            <span class="text-gray-900">ExistAsync&lt;T&gt;</span>
-                            <span class="text-gray-500 ml-auto">→ Validar duplicado</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-600 dark:text-purple-400">GET</span>
+                            <span class="text-gray-900 dark:text-white">ExistAsync&lt;T&gt;</span>
+                            <span class="text-gray-500 dark:text-gray-400 ml-auto">→ Validar duplicado</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="glass rounded-xl p-6">
-                    <h4 class="text-sm font-semibold text-emerald-400 mb-4">
+                    <h4 class="text-sm font-semibold text-emerald-500 dark:text-emerald-400 mb-4">
                         <i class="fas fa-plug mr-2"></i>ApiRequests Wrapper
                     </h4>
-                    <div class="bg-slate-900/60 rounded-lg p-4 text-xs font-mono space-y-2">
+                    <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4 text-xs font-mono space-y-2">
                         <div>
-                            <span class="text-gray-500">// Wrapper simplificado para servicios</span><br>
-                            <span class="text-purple-400">public static class</span> <span class="text-cyan-300">ApiRequests</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">// Wrapper simplificado para servicios</span><br>
+                            <span class="text-purple-600 dark:text-purple-400">public static class</span> <span class="text-cyan-600 dark:text-cyan-300">ApiRequests</span><br>
                             {<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;IEnumerable&lt;T&gt;&gt; <span class="text-gray-900">ListAsync</span>(url);<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;T&gt; <span class="text-gray-900">FindAsync</span>(url, id);<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900">CreateAsync</span>(url, model);<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900">EditAsync</span>(url, model);<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900">DeleteAsync</span>(url, id);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">Task</span>&lt;IEnumerable&lt;T&gt;&gt; <span class="text-gray-900 dark:text-white">ListAsync</span>(url);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">Task</span>&lt;T&gt; <span class="text-gray-900 dark:text-white">FindAsync</span>(url, id);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900 dark:text-white">CreateAsync</span>(url, model);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900 dark:text-white">EditAsync</span>(url, model);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-600 dark:text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900 dark:text-white">DeleteAsync</span>(url, id);<br>
                             }
                         </div>
                     </div>
-                    <div class="mt-4 p-3 bg-slate-900/60 rounded-lg text-xs">
-                        <span class="text-amber-400 font-semibold"><i class="fas fa-info-circle mr-1"></i> Base URL:</span>
-                        <code class="text-gray-300 ml-2">https://localhost:7076/api/v1/</code>
+                    <div class="mt-4 p-3 bg-gray-50 dark:bg-slate-800 rounded-lg text-xs">
+                        <span class="text-amber-500 dark:text-amber-400 font-semibold"><i class="fas fa-info-circle mr-1"></i> Base URL:</span>
+                        <code class="text-gray-600 dark:text-gray-400 ml-2">https://localhost:7076/api/v1/</code>
                     </div>
                 </div>
             </div>
@@ -589,133 +610,133 @@
     </section>
 
     <!-- Frontend Architecture -->
-    <section id="frontend" class="py-20 px-4 bg-dark/50">
+    <section id="frontend" class="py-20 px-4 bg-gray-50 dark:bg-slate-900/50">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-2 gradient-text">Arquitectura Frontend</h2>
-            <p class="text-center text-gray-500 mb-12">Organización de JavaScript, CSS y plugins</p>
+            <p class="text-center text-gray-500 dark:text-gray-400 mb-12">Organización de JavaScript, CSS y plugins</p>
 
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- DataTable Types -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-table text-cyan-400"></i> Tipos de DataTable
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-table text-cyan-500 dark:text-cyan-400"></i> Tipos de DataTable
                     </h3>
                     <div class="space-y-3">
-                        <div class="bg-slate-900/60 rounded-lg p-4">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                                <span class="font-semibold text-gray-900 text-sm">datatable.init.js</span>
+                                <span class="font-semibold text-gray-900 dark:text-white text-sm">datatable.init.js</span>
                             </div>
-                            <p class="text-xs text-gray-400">Pantallas principales — CRUD completo, export PDF/Excel, paginación server-side.</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Pantallas principales — CRUD completo, export PDF/Excel, paginación server-side.</p>
                             <div class="flex flex-wrap gap-1 mt-2 text-xs">
-                                <span class="px-2 py-0.5 bg-slate-700/50 rounded text-gray-400">Alumnos</span>
-                                <span class="px-2 py-0.5 bg-slate-700/50 rounded text-gray-400">Empleados</span>
-                                <span class="px-2 py-0.5 bg-slate-700/50 rounded text-gray-400">Pagos</span>
+                                <span class="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 rounded text-gray-500 dark:text-gray-400">Alumnos</span>
+                                <span class="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 rounded text-gray-500 dark:text-gray-400">Empleados</span>
+                                <span class="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 rounded text-gray-500 dark:text-gray-400">Pagos</span>
                             </div>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-4">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-3 h-3 rounded-full bg-teal-500"></span>
-                                <span class="font-semibold text-gray-900 text-sm">datatable.catalogs.init.js</span>
+                                <span class="font-semibold text-gray-900 dark:text-white text-sm">datatable.catalogs.init.js</span>
                             </div>
-                            <p class="text-xs text-gray-400">Catálogos — CRUD con modales, client-side processing, validación inline.</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Catálogos — CRUD con modales, client-side processing, validación inline.</p>
                             <div class="flex flex-wrap gap-1 mt-2 text-xs">
-                                <span class="px-2 py-0.5 bg-slate-700/50 rounded text-gray-400">Cargos</span>
-                                <span class="px-2 py-0.5 bg-slate-700/50 rounded text-gray-400">Estados</span>
-                                <span class="px-2 py-0.5 bg-slate-700/50 rounded text-gray-400">Títulos</span>
+                                <span class="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 rounded text-gray-500 dark:text-gray-400">Cargos</span>
+                                <span class="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 rounded text-gray-500 dark:text-gray-400">Estados</span>
+                                <span class="px-2 py-0.5 bg-gray-100 dark:bg-slate-700 rounded text-gray-500 dark:text-gray-400">Títulos</span>
                             </div>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-4">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
-                                <span class="font-semibold text-gray-900 text-sm">datatable.partials.init.js</span>
+                                <span class="font-semibold text-gray-900 dark:text-white text-sm">datatable.partials.init.js</span>
                             </div>
-                            <p class="text-xs text-gray-400">Vistas parciales — Detalle embebido en master-detail views.</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Vistas parciales — Detalle embebido en master-detail views.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Plugins Grid -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-puzzle-piece text-purple-400"></i> Plugins (60+)
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-puzzle-piece text-purple-500 dark:text-purple-400"></i> Plugins (60+)
                     </h3>
                     <div class="grid grid-cols-2 gap-2 text-xs">
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-table text-cyan-400/60"></i>
-                            <span class="text-gray-300">DataTables + BS4</span>
+                            <span class="text-gray-600 dark:text-gray-400">DataTables + BS4</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-check text-emerald-400/60"></i>
-                            <span class="text-gray-300">jQuery Validation</span>
+                            <span class="text-gray-600 dark:text-gray-400">jQuery Validation</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-bell text-rose-400/60"></i>
-                            <span class="text-gray-300">Toastr</span>
+                            <span class="text-gray-600 dark:text-gray-400">Toastr</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-exclamation-triangle text-amber-400/60"></i>
-                            <span class="text-gray-300">SweetAlert 2</span>
+                            <span class="text-gray-600 dark:text-gray-400">SweetAlert 2</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-spinner text-indigo-400/60"></i>
-                            <span class="text-gray-300">Ladda (Loaders)</span>
+                            <span class="text-gray-600 dark:text-gray-400">Ladda (Loaders)</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-search text-teal-400/60"></i>
-                            <span class="text-gray-300">Select2</span>
+                            <span class="text-gray-600 dark:text-gray-400">Select2</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-calendar text-purple-400/60"></i>
-                            <span class="text-gray-300">Flatpickr</span>
+                            <span class="text-gray-600 dark:text-gray-400">Flatpickr</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-scroll text-sky-400/60"></i>
-                            <span class="text-gray-300">Perfect Scrollbar</span>
+                            <span class="text-gray-600 dark:text-gray-400">Perfect Scrollbar</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-file-pdf text-rose-400/60"></i>
-                            <span class="text-gray-300">DT Buttons (Export)</span>
+                            <span class="text-gray-600 dark:text-gray-400">DT Buttons (Export)</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-2.5 flex items-center gap-2">
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-2.5 flex items-center gap-2">
                             <i class="fas fa-mobile-alt text-cyan-400/60"></i>
-                            <span class="text-gray-300">DT Responsive</span>
+                            <span class="text-gray-600 dark:text-gray-400">DT Responsive</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- SCSS Architecture -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-paint-brush text-purple-400"></i> SCSS Architecture
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-paint-brush text-purple-500 dark:text-purple-400"></i> SCSS Architecture
                     </h3>
                     <div class="space-y-2 text-xs font-mono">
-                        <div class="bg-slate-900/60 rounded-lg p-3">
-                            <span class="text-purple-400">Content/sass/</span><br>
-                            <span class="text-gray-400">&nbsp;&nbsp;├── base/</span> <span class="text-gray-600">— Variables, mixins, reset</span><br>
-                            <span class="text-gray-400">&nbsp;&nbsp;├── assets/</span> <span class="text-gray-600">— Main theme styles</span><br>
-                            <span class="text-gray-400">&nbsp;&nbsp;└── plugins/</span> <span class="text-gray-600">— Plugin overrides</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3">
+                            <span class="text-purple-600 dark:text-purple-400">Content/sass/</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">&nbsp;&nbsp;├── base/</span> <span class="text-gray-600 dark:text-gray-500">— Variables, mixins, reset</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">&nbsp;&nbsp;├── assets/</span> <span class="text-gray-600 dark:text-gray-500">— Main theme styles</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">&nbsp;&nbsp;└── plugins/</span> <span class="text-gray-600 dark:text-gray-500">— Plugin overrides</span>
                         </div>
-                        <div class="bg-slate-900/60 rounded-lg p-3">
-                            <span class="text-emerald-400">Compilación:</span><br>
-                            <span class="text-gray-400">.scss</span> → <span class="text-cyan-300">Web Compiler</span> → <span class="text-gray-400">.css</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3">
+                            <span class="text-emerald-600 dark:text-emerald-400">Compilación:</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">.scss</span> → <span class="text-cyan-600 dark:text-cyan-300">Web Compiler</span> → <span class="text-gray-500 dark:text-gray-400">.css</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- JS Organization -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-code text-amber-400"></i> Organización JavaScript
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-code text-amber-500 dark:text-amber-400"></i> Organización JavaScript
                     </h3>
                     <div class="space-y-2 text-xs font-mono">
-                        <div class="bg-slate-900/60 rounded-lg p-3">
-                            <span class="text-amber-400">Content/js/</span><br>
-                            <span class="text-gray-400">&nbsp;&nbsp;├── components/</span> <span class="text-gray-600">— Shared (DataTable, catalogs, alerts)</span><br>
-                            <span class="text-gray-400">&nbsp;&nbsp;├── pages/</span> <span class="text-gray-600">— 50+ page-specific scripts</span><br>
-                            <span class="text-gray-400">&nbsp;&nbsp;├── apps/</span> <span class="text-gray-600">— Application utilities</span><br>
-                            <span class="text-gray-400">&nbsp;&nbsp;├── dashboard/</span> <span class="text-gray-600">— Charts and stats</span><br>
-                            <span class="text-gray-400">&nbsp;&nbsp;└── libs/</span> <span class="text-gray-600">— jQuery core</span>
+                        <div class="bg-gray-50 dark:bg-slate-800 rounded-lg p-3">
+                            <span class="text-amber-600 dark:text-amber-400">Content/js/</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">&nbsp;&nbsp;├── components/</span> <span class="text-gray-600 dark:text-gray-500">— Shared (DataTable, catalogs, alerts)</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">&nbsp;&nbsp;├── pages/</span> <span class="text-gray-600 dark:text-gray-500">— 50+ page-specific scripts</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">&nbsp;&nbsp;├── apps/</span> <span class="text-gray-600 dark:text-gray-500">— Application utilities</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">&nbsp;&nbsp;├── dashboard/</span> <span class="text-gray-600 dark:text-gray-500">— Charts and stats</span><br>
+                            <span class="text-gray-500 dark:text-gray-400">&nbsp;&nbsp;└── libs/</span> <span class="text-gray-600 dark:text-gray-500">— jQuery core</span>
                         </div>
                     </div>
                 </div>
@@ -727,36 +748,36 @@
     <section id="structure" class="py-20 px-4">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-2 gradient-text">Estructura del Proyecto</h2>
-            <p class="text-center text-gray-500 mb-12">Organización de la solución y métricas</p>
+            <p class="text-center text-gray-500 dark:text-gray-400 mb-12">Organización de la solución y métricas</p>
 
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- Tree -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-folder-open text-amber-400"></i> GESTION_COLEGIAL_ADM.sln
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-folder-open text-amber-500 dark:text-amber-400"></i> GESTION_COLEGIAL_ADM.sln
                     </h3>
                     <div class="font-mono text-sm space-y-1">
-                        <div class="text-teal-300"><i class="fas fa-folder text-teal-400/60 mr-2"></i>GESTION_COLEGIAL.Business/</div>
-                        <div class="tree-line space-y-1 text-gray-400 text-xs">
-                            <div><i class="fas fa-folder mr-2"></i>Models/ <span class="text-gray-600">— 100+ ViewModels</span></div>
-                            <div class="ml-4"><i class="fas fa-folder mr-2"></i>finansas/ <span class="text-gray-600">— 60+ financieros</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Services/ <span class="text-gray-600">— 20+ servicios</span></div>
-                            <div class="ml-4"><i class="fas fa-folder mr-2"></i>ModuloFinanzas/ <span class="text-gray-600">— 7 financieros</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>DTOs/ <span class="text-gray-600">— Login, financieros</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Extensions/ <span class="text-gray-600">— ApiRequests, Validation</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Helpers/ <span class="text-gray-600">— SendHttpClient</span></div>
+                        <div class="text-teal-600 dark:text-teal-300"><i class="fas fa-folder text-teal-400/60 mr-2"></i>GESTION_COLEGIAL.Business/</div>
+                        <div class="tree-line space-y-1 text-gray-500 dark:text-gray-400 text-xs">
+                            <div><i class="fas fa-folder mr-2"></i>Models/ <span class="text-gray-600 dark:text-gray-500">— 100+ ViewModels</span></div>
+                            <div class="ml-4"><i class="fas fa-folder mr-2"></i>finansas/ <span class="text-gray-600 dark:text-gray-500">— 60+ financieros</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Services/ <span class="text-gray-600 dark:text-gray-500">— 20+ servicios</span></div>
+                            <div class="ml-4"><i class="fas fa-folder mr-2"></i>ModuloFinanzas/ <span class="text-gray-600 dark:text-gray-500">— 7 financieros</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>DTOs/ <span class="text-gray-600 dark:text-gray-500">— Login, financieros</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Extensions/ <span class="text-gray-600 dark:text-gray-500">— ApiRequests, Validation</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Helpers/ <span class="text-gray-600 dark:text-gray-500">— SendHttpClient</span></div>
                         </div>
 
-                        <div class="text-emerald-300 mt-4"><i class="fas fa-folder text-emerald-400/60 mr-2"></i>GESTION_COLEGIAL.UI/</div>
-                        <div class="tree-line space-y-1 text-gray-400 text-xs">
-                            <div><i class="fas fa-folder mr-2"></i>Controllers/ <span class="text-gray-600">— 35+ controllers</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Views/ <span class="text-gray-600">— 30+ folders</span></div>
-                            <div class="ml-4"><i class="fas fa-folder mr-2"></i>Shared/ <span class="text-gray-600">— Layout, sidebar, header</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Content/js/pages/ <span class="text-gray-600">— 50+ scripts</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Content/js/components/ <span class="text-gray-600">— Shared JS</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Content/sass/ <span class="text-gray-600">— SCSS source</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Content/css/ <span class="text-gray-600">— Compiled CSS</span></div>
-                            <div><i class="fas fa-folder mr-2"></i>Content/plugins/ <span class="text-gray-600">— 60+ plugins</span></div>
+                        <div class="text-emerald-600 dark:text-emerald-300 mt-4"><i class="fas fa-folder text-emerald-400/60 mr-2"></i>GESTION_COLEGIAL.UI/</div>
+                        <div class="tree-line space-y-1 text-gray-500 dark:text-gray-400 text-xs">
+                            <div><i class="fas fa-folder mr-2"></i>Controllers/ <span class="text-gray-600 dark:text-gray-500">— 35+ controllers</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Views/ <span class="text-gray-600 dark:text-gray-500">— 30+ folders</span></div>
+                            <div class="ml-4"><i class="fas fa-folder mr-2"></i>Shared/ <span class="text-gray-600 dark:text-gray-500">— Layout, sidebar, header</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Content/js/pages/ <span class="text-gray-600 dark:text-gray-500">— 50+ scripts</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Content/js/components/ <span class="text-gray-600 dark:text-gray-500">— Shared JS</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Content/sass/ <span class="text-gray-600 dark:text-gray-500">— SCSS source</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Content/css/ <span class="text-gray-600 dark:text-gray-500">— Compiled CSS</span></div>
+                            <div><i class="fas fa-folder mr-2"></i>Content/plugins/ <span class="text-gray-600 dark:text-gray-500">— 60+ plugins</span></div>
                         </div>
                     </div>
                 </div>
@@ -764,51 +785,51 @@
                 <!-- Stats -->
                 <div class="space-y-4">
                     <div class="glass rounded-xl p-6">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <i class="fas fa-chart-bar text-cyan-400"></i> Métricas del Proyecto
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-chart-bar text-cyan-500 dark:text-cyan-400"></i> Métricas del Proyecto
                         </h3>
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="text-center"><div class="text-3xl font-bold text-emerald-400">2</div><div class="text-xs text-gray-500">Proyectos</div></div>
-                            <div class="text-center"><div class="text-3xl font-bold text-teal-400">3</div><div class="text-xs text-gray-500">Capas</div></div>
-                            <div class="text-center"><div class="text-3xl font-bold text-cyan-400">35+</div><div class="text-xs text-gray-500">Controllers</div></div>
-                            <div class="text-center"><div class="text-3xl font-bold text-indigo-400">30+</div><div class="text-xs text-gray-500">Services</div></div>
-                            <div class="text-center"><div class="text-3xl font-bold text-amber-400">100+</div><div class="text-xs text-gray-500">ViewModels</div></div>
-                            <div class="text-center"><div class="text-3xl font-bold text-rose-400">50+</div><div class="text-xs text-gray-500">JS Pages</div></div>
-                            <div class="text-center"><div class="text-3xl font-bold text-purple-400">60+</div><div class="text-xs text-gray-500">Plugins</div></div>
-                            <div class="text-center"><div class="text-3xl font-bold text-sky-400">30+</div><div class="text-xs text-gray-500">Views</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-emerald-500 dark:text-emerald-400">2</div><div class="text-xs text-gray-500 dark:text-gray-400">Proyectos</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-teal-500 dark:text-teal-400">3</div><div class="text-xs text-gray-500 dark:text-gray-400">Capas</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-cyan-500 dark:text-cyan-400">35+</div><div class="text-xs text-gray-500 dark:text-gray-400">Controllers</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-indigo-500 dark:text-indigo-400">30+</div><div class="text-xs text-gray-500 dark:text-gray-400">Services</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-amber-500 dark:text-amber-400">100+</div><div class="text-xs text-gray-500 dark:text-gray-400">ViewModels</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-rose-500 dark:text-rose-400">50+</div><div class="text-xs text-gray-500 dark:text-gray-400">JS Pages</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-purple-500 dark:text-purple-400">60+</div><div class="text-xs text-gray-500 dark:text-gray-400">Plugins</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-sky-500 dark:text-sky-400">30+</div><div class="text-xs text-gray-500 dark:text-gray-400">Views</div></div>
                         </div>
                     </div>
 
                     <!-- Controller Types -->
                     <div class="glass rounded-xl p-6">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <i class="fas fa-sitemap text-purple-400"></i> Tipos de Pantallas
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-sitemap text-purple-500 dark:text-purple-400"></i> Tipos de Pantallas
                         </h3>
                         <div class="space-y-3">
                             <div>
                                 <div class="flex justify-between text-sm mb-1">
-                                    <span class="text-gray-300">Catálogos (Modal CRUD)</span>
-                                    <span class="text-emerald-400 font-semibold">16</span>
+                                    <span class="text-gray-600 dark:text-gray-400">Catálogos (Modal CRUD)</span>
+                                    <span class="text-emerald-500 dark:text-emerald-400 font-semibold">16</span>
                                 </div>
-                                <div class="w-full bg-slate-700/30 rounded-full h-2">
+                                <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
                                     <div class="bg-emerald-500 h-2 rounded-full" style="width: 46%"></div>
                                 </div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-1">
-                                    <span class="text-gray-300">Entidades (CRUD completo)</span>
-                                    <span class="text-teal-400 font-semibold">12</span>
+                                    <span class="text-gray-600 dark:text-gray-400">Entidades (CRUD completo)</span>
+                                    <span class="text-teal-500 dark:text-teal-400 font-semibold">12</span>
                                 </div>
-                                <div class="w-full bg-slate-700/30 rounded-full h-2">
+                                <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
                                     <div class="bg-teal-500 h-2 rounded-full" style="width: 34%"></div>
                                 </div>
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-1">
-                                    <span class="text-gray-300">Financieros (Módulo completo)</span>
-                                    <span class="text-amber-400 font-semibold">7</span>
+                                    <span class="text-gray-600 dark:text-gray-400">Financieros (Módulo completo)</span>
+                                    <span class="text-amber-500 dark:text-amber-400 font-semibold">7</span>
                                 </div>
-                                <div class="w-full bg-slate-700/30 rounded-full h-2">
+                                <div class="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
                                     <div class="bg-amber-500 h-2 rounded-full" style="width: 20%"></div>
                                 </div>
                             </div>
@@ -817,16 +838,16 @@
 
                     <!-- Auth Flow -->
                     <div class="glass rounded-xl p-6">
-                        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <i class="fas fa-key text-red-400"></i> Flujo de Autenticación
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-key text-red-500 dark:text-red-400"></i> Flujo de Autenticación
                         </h3>
                         <div class="space-y-1.5 text-xs font-mono">
-                            <div class="px-3 py-1.5 bg-slate-900/60 rounded text-gray-300">1. Login form → AccountController</div>
-                            <div class="px-3 py-1.5 bg-slate-900/60 rounded text-gray-300">2. AccountService → POST /api/v1/Account/Login</div>
-                            <div class="px-3 py-1.5 bg-slate-900/60 rounded text-gray-300">3. API returns JWT + User data</div>
-                            <div class="px-3 py-1.5 bg-slate-900/60 rounded text-gray-300">4. Session["Token"] = JWT</div>
-                            <div class="px-3 py-1.5 bg-slate-900/60 rounded text-gray-300">5. Session["UserId"], ["Username"], ["RoleName"]</div>
-                            <div class="px-3 py-1.5 bg-slate-900/60 rounded text-gray-300">6. Redirect → Home/Index</div>
+                            <div class="px-3 py-1.5 bg-gray-50 dark:bg-slate-800 rounded text-gray-600 dark:text-gray-400">1. Login form → AccountController</div>
+                            <div class="px-3 py-1.5 bg-gray-50 dark:bg-slate-800 rounded text-gray-600 dark:text-gray-400">2. AccountService → POST /api/v1/Account/Login</div>
+                            <div class="px-3 py-1.5 bg-gray-50 dark:bg-slate-800 rounded text-gray-600 dark:text-gray-400">3. API returns JWT + User data</div>
+                            <div class="px-3 py-1.5 bg-gray-50 dark:bg-slate-800 rounded text-gray-600 dark:text-gray-400">4. Session["Token"] = JWT</div>
+                            <div class="px-3 py-1.5 bg-gray-50 dark:bg-slate-800 rounded text-gray-600 dark:text-gray-400">5. Session["UserId"], ["Username"], ["RoleName"]</div>
+                            <div class="px-3 py-1.5 bg-gray-50 dark:bg-slate-800 rounded text-gray-600 dark:text-gray-400">6. Redirect → Home/Index</div>
                         </div>
                     </div>
                 </div>
@@ -835,35 +856,58 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-4 border-t border-slate-800">
+    <footer class="py-12 px-4 border-t border-gray-200 dark:border-slate-800">
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="text-center md:text-left">
                     <h3 class="text-xl font-bold gradient-text flex items-center gap-2 justify-center md:justify-start">
                         <i class="fas fa-desktop"></i> Gestión Colegial Admin
                     </h3>
-                    <p class="text-sm text-gray-500 mt-1">Panel Administrativo para Centros Educativos</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Panel Administrativo para Centros Educativos</p>
                 </div>
                 <div class="flex flex-wrap justify-center gap-3 text-xs">
-                    <span class="px-3 py-1.5 glass rounded-full text-gray-400"><i class="fas fa-code mr-1 text-emerald-400"></i> ASP.NET MVC 5</span>
-                    <span class="px-3 py-1.5 glass rounded-full text-gray-400"><i class="fas fa-cube mr-1 text-teal-400"></i> .NET 4.7.2</span>
-                    <span class="px-3 py-1.5 glass rounded-full text-gray-400"><i class="fas fa-code mr-1 text-amber-400"></i> jQuery</span>
-                    <span class="px-3 py-1.5 glass rounded-full text-gray-400"><i class="fas fa-palette mr-1 text-indigo-400"></i> Bootstrap 4</span>
-                    <span class="px-3 py-1.5 glass rounded-full text-gray-400"><i class="fas fa-table mr-1 text-cyan-400"></i> DataTables</span>
+                    <span class="px-3 py-1.5 glass rounded-full text-gray-500 dark:text-gray-400"><i class="fas fa-code mr-1 text-emerald-500 dark:text-emerald-400"></i> ASP.NET MVC 5</span>
+                    <span class="px-3 py-1.5 glass rounded-full text-gray-500 dark:text-gray-400"><i class="fas fa-cube mr-1 text-teal-500 dark:text-teal-400"></i> .NET 4.7.2</span>
+                    <span class="px-3 py-1.5 glass rounded-full text-gray-500 dark:text-gray-400"><i class="fas fa-code mr-1 text-amber-500 dark:text-amber-400"></i> jQuery</span>
+                    <span class="px-3 py-1.5 glass rounded-full text-gray-500 dark:text-gray-400"><i class="fas fa-palette mr-1 text-indigo-500 dark:text-indigo-400"></i> Bootstrap 4</span>
+                    <span class="px-3 py-1.5 glass rounded-full text-gray-500 dark:text-gray-400"><i class="fas fa-table mr-1 text-cyan-500 dark:text-cyan-400"></i> DataTables</span>
                 </div>
             </div>
-            <div class="text-center mt-8 text-xs text-gray-600">
+            <div class="text-center mt-8 text-xs text-gray-600 dark:text-gray-500">
                 Documentación de Arquitectura &bull; Gestión Colegial Admin &copy; 2026
             </div>
         </div>
     </footer>
 
     <script>
+        // Mobile menu toggle
         document.getElementById('menu-toggle').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
         document.querySelectorAll('#mobile-menu a').forEach(function(link) {
             link.addEventListener('click', function() { document.getElementById('mobile-menu').classList.add('hidden'); });
+        });
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        // Check saved preference, default to light
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            html.classList.add('dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', function() {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeIcon.classList.replace(
+                isDark ? 'fa-moon' : 'fa-sun',
+                isDark ? 'fa-sun' : 'fa-moon'
+            );
         });
     </script>
 </body>
