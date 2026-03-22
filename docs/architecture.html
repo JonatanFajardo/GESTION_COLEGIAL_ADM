@@ -14,8 +14,8 @@
                         primary: '#10b981',
                         secondary: '#059669',
                         accent: '#14b8a6',
-                        dark: '#0f172a',
-                        darker: '#020617',
+                        dark: '#f9fafb',
+                        darker: '#ffffff',
                     }
                 }
             }
@@ -29,14 +29,15 @@
             -webkit-text-fill-color: transparent;
         }
         .glass {
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
         }
         .layer-card { transition: transform 0.3s, box-shadow 0.3s; }
         .layer-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.15), 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         .arrow-down {
             width: 2px; height: 40px;
@@ -57,10 +58,10 @@
                 content: '↓'; right: auto; left: 50%; top: auto; bottom: -28px; transform: translateX(-50%);
             }
         }
-        .tree-line { border-left: 2px solid #334155; margin-left: 1rem; padding-left: 1rem; }
+        .tree-line { border-left: 2px solid #cbd5e1; margin-left: 1rem; padding-left: 1rem; }
     </style>
 </head>
-<body class="bg-darker text-gray-300 min-h-screen">
+<body class="bg-white text-gray-700 min-h-screen">
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 glass">
@@ -77,7 +78,7 @@
                 <a href="#frontend" class="hover:text-primary transition">Frontend</a>
                 <a href="#structure" class="hover:text-primary transition">Estructura</a>
             </div>
-            <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-white">
+            <button id="menu-toggle" class="md:hidden text-gray-500 hover:text-gray-900">
                 <i class="fas fa-bars text-xl"></i>
             </button>
         </div>
@@ -95,14 +96,14 @@
     <!-- Hero -->
     <section id="hero" class="pt-32 pb-20 px-4 text-center">
         <div class="max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-gray-400 mb-6">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-gray-500 mb-6">
                 <i class="fas fa-desktop"></i> Panel Administrativo &bull; Documentación de Arquitectura
             </div>
             <h1 class="text-5xl md:text-7xl font-bold mb-6">
                 <span class="gradient-text">Gestión Colegial</span>
                 <span class="block text-2xl md:text-3xl text-gray-500 mt-2">Admin Panel</span>
             </h1>
-            <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+            <p class="text-xl text-gray-500 mb-8 max-w-2xl mx-auto">
                 Panel administrativo MVC para la gestión de centros educativos. Interfaz completa con DataTables, modales CRUD, módulo financiero y dashboard interactivo.
             </p>
             <div class="flex flex-wrap justify-center gap-3">
@@ -124,42 +125,42 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="glass rounded-xl p-5 text-center layer-card">
                     <i class="fas fa-server text-3xl text-emerald-400 mb-3"></i>
-                    <h3 class="font-semibold text-white">ASP.NET MVC 5</h3>
+                    <h3 class="font-semibold text-gray-900">ASP.NET MVC 5</h3>
                     <p class="text-xs text-gray-500 mt-1">v5.2.7 — Web Framework</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
                     <i class="fas fa-cube text-3xl text-teal-400 mb-3"></i>
-                    <h3 class="font-semibold text-white">.NET Framework</h3>
+                    <h3 class="font-semibold text-gray-900">.NET Framework</h3>
                     <p class="text-xs text-gray-500 mt-1">v4.7.2 — Runtime</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
                     <i class="fas fa-code text-3xl text-amber-400 mb-3"></i>
-                    <h3 class="font-semibold text-white">jQuery 3.4</h3>
+                    <h3 class="font-semibold text-gray-900">jQuery 3.4</h3>
                     <p class="text-xs text-gray-500 mt-1">DOM & AJAX</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
                     <i class="fas fa-palette text-3xl text-indigo-400 mb-3"></i>
-                    <h3 class="font-semibold text-white">Bootstrap 4</h3>
+                    <h3 class="font-semibold text-gray-900">Bootstrap 4</h3>
                     <p class="text-xs text-gray-500 mt-1">UI Framework</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
                     <i class="fas fa-table text-3xl text-cyan-400 mb-3"></i>
-                    <h3 class="font-semibold text-white">DataTables</h3>
+                    <h3 class="font-semibold text-gray-900">DataTables</h3>
                     <p class="text-xs text-gray-500 mt-1">Grids + Export</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
                     <i class="fas fa-bell text-3xl text-rose-400 mb-3"></i>
-                    <h3 class="font-semibold text-white">Toastr + SweetAlert2</h3>
+                    <h3 class="font-semibold text-gray-900">Toastr + SweetAlert2</h3>
                     <p class="text-xs text-gray-500 mt-1">Notificaciones</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
                     <i class="fas fa-paint-brush text-3xl text-purple-400 mb-3"></i>
-                    <h3 class="font-semibold text-white">SCSS / Sass</h3>
+                    <h3 class="font-semibold text-gray-900">SCSS / Sass</h3>
                     <p class="text-xs text-gray-500 mt-1">Preprocesador CSS</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
                     <i class="fas fa-check-circle text-3xl text-sky-400 mb-3"></i>
-                    <h3 class="font-semibold text-white">jQuery Validation</h3>
+                    <h3 class="font-semibold text-gray-900">jQuery Validation</h3>
                     <p class="text-xs text-gray-500 mt-1">Form Validation</p>
                 </div>
             </div>
@@ -177,7 +178,7 @@
                 <div class="flex items-center gap-3 mb-3">
                     <span class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm">UI</span>
                     <div>
-                        <h3 class="text-lg font-bold text-white">GESTION_COLEGIAL.UI</h3>
+                        <h3 class="text-lg font-bold text-gray-900">GESTION_COLEGIAL.UI</h3>
                         <span class="text-xs text-gray-500">Capa de Presentación</span>
                     </div>
                     <span class="ml-auto px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs">ASP.NET MVC 5</span>
@@ -199,7 +200,7 @@
                 <div class="flex items-center gap-3 mb-3">
                     <span class="w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm">BL</span>
                     <div>
-                        <h3 class="text-lg font-bold text-white">GESTION_COLEGIAL.Business</h3>
+                        <h3 class="text-lg font-bold text-gray-900">GESTION_COLEGIAL.Business</h3>
                         <span class="text-xs text-gray-500">Capa de Lógica</span>
                     </div>
                     <span class="ml-auto px-3 py-1 rounded-full bg-teal-500/10 text-teal-400 text-xs">Services + HTTP Client</span>
@@ -220,7 +221,7 @@
                 <div class="flex items-center gap-3 mb-3">
                     <span class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm"><i class="fas fa-cloud"></i></span>
                     <div>
-                        <h3 class="text-lg font-bold text-white">Gestión Colegial API</h3>
+                        <h3 class="text-lg font-bold text-gray-900">Gestión Colegial API</h3>
                         <span class="text-xs text-gray-500">API REST Externa — localhost:7076</span>
                     </div>
                     <span class="ml-auto px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs">Proyecto Separado</span>
@@ -243,35 +244,15 @@
             <p class="text-center text-gray-500 mb-12">Patrones implementados en la aplicación</p>
 
             <div class="grid md:grid-cols-2 gap-6">
-                <!-- BaseController -->
+                <!-- Service Layer -->
                 <div class="glass rounded-xl p-6 layer-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                            <i class="fas fa-sitemap text-emerald-400 text-xl"></i>
+                            <i class="fas fa-layer-group text-emerald-400 text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-white">BaseController</h3>
+                        <h3 class="text-lg font-bold text-gray-900">Service Layer</h3>
                     </div>
-                    <p class="text-sm text-gray-400 mb-4">Controlador base con respuestas AJAX estandarizadas y sistema de alertas compartido.</p>
-                    <div class="bg-slate-900/60 rounded-lg p-4 text-sm font-mono">
-                        <span class="text-purple-400">public class</span> <span class="text-cyan-300">BaseController</span> : <span class="text-emerald-400">Controller</span><br>
-                        {<br>
-                        &nbsp;&nbsp;<span class="text-emerald-400">ActionResult</span> <span class="text-white">AjaxResult</span>(response);<br>
-                        &nbsp;&nbsp;<span class="text-emerald-400">ActionResult</span> <span class="text-white">AjaxResult</span>(item, success);<br>
-                        &nbsp;&nbsp;<span class="text-emerald-400">ActionResult</span> <span class="text-white">AjaxResult</span>(response,<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-amber-300">AlertMessageType</span>, mensaje);<br>
-                        }
-                    </div>
-                </div>
-
-                <!-- Service → API Pattern -->
-                <div class="glass rounded-xl p-6 layer-card">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-teal-500/20 flex items-center justify-center">
-                            <i class="fas fa-exchange-alt text-teal-400 text-xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white">Service → API Pattern</h3>
-                    </div>
-                    <p class="text-sm text-gray-400 mb-4">Los servicios consumen la API REST externa via SendHttpClient. No hay acceso directo a base de datos.</p>
+                    <p class="text-sm text-gray-400 mb-4">Capa de servicios como intermediaria entre controladores y la API externa. Cada módulo tiene su servicio dedicado con operaciones CRUD estandarizadas.</p>
                     <div class="bg-slate-900/60 rounded-lg p-4 text-sm font-mono">
                         <span class="text-gray-500">// Flujo de cada operación</span><br>
                         <span class="text-cyan-300">Controller</span><br>
@@ -282,13 +263,63 @@
                     </div>
                 </div>
 
-                <!-- ViewModel Pattern -->
+                <!-- Facade -->
+                <div class="glass rounded-xl p-6 layer-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-teal-500/20 flex items-center justify-center">
+                            <i class="fas fa-building text-teal-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">Facade</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">ApiRequests actúa como fachada que abstrae la complejidad de SendHttpClient, proporcionando una interfaz simplificada a los servicios.</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-sm font-mono">
+                        <span class="text-purple-400">internal static class</span> <span class="text-cyan-300">ApiRequests</span><br>
+                        {<br>
+                        &nbsp;&nbsp;<span class="text-emerald-400">ListAsync</span>&lt;T&gt;(url);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-400">FindAsync</span>&lt;T&gt;(url, id);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-400">CreateAsync</span>(url, model);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-400">EditAsync</span>(url, model);<br>
+                        &nbsp;&nbsp;<span class="text-emerald-400">DeleteAsync</span>(url, id);<br>
+                        }
+                    </div>
+                </div>
+
+                <!-- DTO -->
                 <div class="glass rounded-xl p-6 layer-card">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                            <i class="fas fa-clone text-cyan-400 text-xl"></i>
+                            <i class="fas fa-envelope text-cyan-400 text-xl"></i>
                         </div>
-                        <h3 class="text-lg font-bold text-white">ViewModel Pattern</h3>
+                        <h3 class="text-lg font-bold text-gray-900">DTO (Data Transfer Object)</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">Objetos de transferencia de datos especializados por operación. Separan el modelo de dominio del modelo de transporte.</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-amber-300">ConceptoPagoListDto</span>
+                            <span class="text-gray-600 ml-1">→ Listados</span>
+                        </div>
+                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-emerald-300">ConceptoPagoDetailDto</span>
+                            <span class="text-gray-600 ml-1">→ Detalle</span>
+                        </div>
+                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-cyan-300">ConceptoPagoFindDto</span>
+                            <span class="text-gray-600 ml-1">→ Búsqueda</span>
+                        </div>
+                        <div class="bg-slate-900/60 rounded-lg px-3 py-2 text-xs">
+                            <span class="text-rose-300">ConceptoPagoDropdownDto</span>
+                            <span class="text-gray-600 ml-1">→ Selects</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ViewModel -->
+                <div class="glass rounded-xl p-6 layer-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                            <i class="fas fa-clone text-indigo-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900">ViewModel</h3>
                     </div>
                     <p class="text-sm text-gray-400 mb-4">ViewModels con Data Annotations para validación. Variantes por tipo de vista y operación.</p>
                     <div class="flex flex-wrap gap-2 mt-4">
@@ -310,43 +341,19 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Modal CRUD -->
-                <div class="glass rounded-xl p-6 layer-card">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-                            <i class="fas fa-window-maximize text-indigo-400 text-xl"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white">Modal CRUD</h3>
-                    </div>
-                    <p class="text-sm text-gray-400 mb-4">Los catálogos usan modales jQuery para crear, editar y eliminar sin cambiar de página. Un solo formulario para ambas operaciones.</p>
-                    <div class="bg-slate-900/60 rounded-lg p-4 text-sm font-mono">
-                        <span class="text-gray-500">// catalogs.js</span><br>
-                        <span class="text-purple-400">function</span> <span class="text-white">Edit</span>(id) {<br>
-                        &nbsp;&nbsp;<span class="text-gray-500">// GET → Populate modal form</span><br>
-                        &nbsp;&nbsp;<span class="text-gray-500">// Submit → POST/PUT via AJAX</span><br>
-                        &nbsp;&nbsp;<span class="text-gray-500">// Success → Reload DataTable</span><br>
-                        }
-                    </div>
-                </div>
             </div>
 
             <!-- Additional Patterns -->
-            <div class="grid md:grid-cols-3 gap-4 mt-6">
+            <div class="grid md:grid-cols-2 gap-4 mt-6">
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-user-lock text-emerald-400 text-2xl mb-3"></i>
-                    <h4 class="font-semibold text-white text-sm">Session Auth</h4>
-                    <p class="text-xs text-gray-500 mt-2">Autenticación basada en sesión. Token JWT almacenado en <code class="text-gray-400">Session["Token"]</code>.</p>
+                    <i class="fas fa-cubes text-amber-400 text-2xl mb-3"></i>
+                    <h4 class="font-semibold text-gray-900 text-sm">Module Pattern (JS)</h4>
+                    <p class="text-xs text-gray-500 mt-2">Encapsulación frontend con IIFE y namespacing. Módulos como <code class="text-gray-400">Modals</code> y <code class="text-gray-400">DataTable</code> evitan contaminación del scope global.</p>
                 </div>
                 <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-trash-alt text-amber-400 text-2xl mb-3"></i>
-                    <h4 class="font-semibold text-white text-sm">Soft Delete via PUT</h4>
-                    <p class="text-xs text-gray-500 mt-2">Eliminaciones usan <code class="text-gray-400">PUT</code> en lugar de <code class="text-gray-400">DELETE</code>. Marcado lógico.</p>
-                </div>
-                <div class="glass rounded-xl p-5 text-center layer-card">
-                    <i class="fas fa-search text-cyan-400 text-2xl mb-3"></i>
-                    <h4 class="font-semibold text-white text-sm">Remote Validation</h4>
-                    <p class="text-xs text-gray-500 mt-2">Validación de duplicados en tiempo real consultando la API antes de guardar.</p>
+                    <i class="fas fa-sync-alt text-cyan-400 text-2xl mb-3"></i>
+                    <h4 class="font-semibold text-gray-900 text-sm">Async/Await (TAP)</h4>
+                    <p class="text-xs text-gray-500 mt-2">Programación asíncrona basada en <code class="text-gray-400">Task</code> en toda la arquitectura: controladores, servicios y comunicación HTTP.</p>
                 </div>
             </div>
         </div>
@@ -363,7 +370,7 @@
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-emerald-500">
                     <div class="flex items-center gap-3 mb-3">
                         <i class="fas fa-th-list text-2xl text-emerald-400"></i>
-                        <h3 class="font-bold text-white">Catálogos</h3>
+                        <h3 class="font-bold text-gray-900">Catálogos</h3>
                     </div>
                     <p class="text-xs text-gray-500 mb-2">16 módulos con modales CRUD</p>
                     <ul class="text-xs text-gray-400 space-y-1.5">
@@ -379,7 +386,7 @@
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-sky-500">
                     <div class="flex items-center gap-3 mb-3">
                         <i class="fas fa-user-graduate text-2xl text-sky-400"></i>
-                        <h3 class="font-bold text-white">Alumnos</h3>
+                        <h3 class="font-bold text-gray-900">Alumnos</h3>
                     </div>
                     <p class="text-xs text-gray-500 mb-2">CRUD completo con vistas</p>
                     <ul class="text-xs text-gray-400 space-y-1.5">
@@ -394,7 +401,7 @@
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-indigo-500">
                     <div class="flex items-center gap-3 mb-3">
                         <i class="fas fa-user-tie text-2xl text-indigo-400"></i>
-                        <h3 class="font-bold text-white">Personal</h3>
+                        <h3 class="font-bold text-gray-900">Personal</h3>
                     </div>
                     <p class="text-xs text-gray-500 mb-2">Gestión de empleados</p>
                     <ul class="text-xs text-gray-400 space-y-1.5">
@@ -408,7 +415,7 @@
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-amber-500">
                     <div class="flex items-center gap-3 mb-3">
                         <i class="fas fa-coins text-2xl text-amber-400"></i>
-                        <h3 class="font-bold text-white">Financiero</h3>
+                        <h3 class="font-bold text-gray-900">Financiero</h3>
                     </div>
                     <p class="text-xs text-gray-500 mb-2">Módulo completo de pagos</p>
                     <ul class="text-xs text-gray-400 space-y-1.5">
@@ -423,7 +430,7 @@
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-purple-500">
                     <div class="flex items-center gap-3 mb-3">
                         <i class="fas fa-book text-2xl text-purple-400"></i>
-                        <h3 class="font-bold text-white">Académico</h3>
+                        <h3 class="font-bold text-gray-900">Académico</h3>
                     </div>
                     <ul class="text-xs text-gray-400 space-y-1.5">
                         <li><i class="fas fa-chalkboard text-purple-400/50 mr-2"></i>Cursos</li>
@@ -437,7 +444,7 @@
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-rose-500">
                     <div class="flex items-center gap-3 mb-3">
                         <i class="fas fa-chart-pie text-2xl text-rose-400"></i>
-                        <h3 class="font-bold text-white">Dashboard</h3>
+                        <h3 class="font-bold text-gray-900">Dashboard</h3>
                     </div>
                     <ul class="text-xs text-gray-400 space-y-1.5">
                         <li><i class="fas fa-chart-line text-rose-400/50 mr-2"></i>Estadísticas</li>
@@ -450,7 +457,7 @@
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-red-500">
                     <div class="flex items-center gap-3 mb-3">
                         <i class="fas fa-shield-alt text-2xl text-red-400"></i>
-                        <h3 class="font-bold text-white">Autenticación</h3>
+                        <h3 class="font-bold text-gray-900">Autenticación</h3>
                     </div>
                     <ul class="text-xs text-gray-400 space-y-1.5">
                         <li><i class="fas fa-sign-in-alt text-red-400/50 mr-2"></i>Login</li>
@@ -463,7 +470,7 @@
                 <div class="glass rounded-xl p-5 layer-card border-l-4 border-teal-500">
                     <div class="flex items-center gap-3 mb-3">
                         <i class="fas fa-columns text-2xl text-teal-400"></i>
-                        <h3 class="font-bold text-white">Layout</h3>
+                        <h3 class="font-bold text-gray-900">Layout</h3>
                     </div>
                     <ul class="text-xs text-gray-400 space-y-1.5">
                         <li><i class="fas fa-bars text-teal-400/50 mr-2"></i>Sidebar Navigation</li>
@@ -489,27 +496,27 @@
                 <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-4">
                     <div class="flow-step bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px]">
                         <i class="fas fa-globe text-emerald-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-white">Browser</p>
+                        <p class="text-sm font-semibold text-gray-900">Browser</p>
                         <p class="text-xs text-gray-500">User Action</p>
                     </div>
                     <div class="flow-step bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px]">
                         <i class="fas fa-route text-teal-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-white">Controller</p>
+                        <p class="text-sm font-semibold text-gray-900">Controller</p>
                         <p class="text-xs text-gray-500">MVC Action</p>
                     </div>
                     <div class="flow-step bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px]">
                         <i class="fas fa-cogs text-cyan-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-white">Service</p>
+                        <p class="text-sm font-semibold text-gray-900">Service</p>
                         <p class="text-xs text-gray-500">Business Logic</p>
                     </div>
                     <div class="flow-step bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px]">
                         <i class="fas fa-paper-plane text-indigo-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-white">HttpClient</p>
+                        <p class="text-sm font-semibold text-gray-900">HttpClient</p>
                         <p class="text-xs text-gray-500">SendHttpClient</p>
                     </div>
                     <div class="bg-slate-800/50 rounded-lg p-4 text-center min-w-[130px] border border-amber-500/30">
                         <i class="fas fa-cloud text-amber-400 text-xl mb-2"></i>
-                        <p class="text-sm font-semibold text-white">REST API</p>
+                        <p class="text-sm font-semibold text-gray-900">REST API</p>
                         <p class="text-xs text-gray-500">localhost:7076</p>
                     </div>
                 </div>
@@ -524,32 +531,32 @@
                     <div class="space-y-2 text-xs font-mono">
                         <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">GET</span>
-                            <span class="text-white">GetAsync&lt;T&gt;</span>
+                            <span class="text-gray-900">GetAsync&lt;T&gt;</span>
                             <span class="text-gray-500 ml-auto">→ Listar</span>
                         </div>
                         <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">GET</span>
-                            <span class="text-white">FindAsync&lt;T&gt;</span>
+                            <span class="text-gray-900">FindAsync&lt;T&gt;</span>
                             <span class="text-gray-500 ml-auto">→ Buscar por ID</span>
                         </div>
                         <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-400">POST</span>
-                            <span class="text-white">PostAsync</span>
+                            <span class="text-gray-900">PostAsync</span>
                             <span class="text-gray-500 ml-auto">→ Crear</span>
                         </div>
                         <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400">PUT</span>
-                            <span class="text-white">PutAsync</span>
+                            <span class="text-gray-900">PutAsync</span>
                             <span class="text-gray-500 ml-auto">→ Editar</span>
                         </div>
                         <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400">PUT</span>
-                            <span class="text-white">DeleteAsync</span>
+                            <span class="text-gray-900">DeleteAsync</span>
                             <span class="text-gray-500 ml-auto">→ Soft Delete</span>
                         </div>
                         <div class="bg-slate-900/60 rounded-lg p-3 flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-400">GET</span>
-                            <span class="text-white">ExistAsync&lt;T&gt;</span>
+                            <span class="text-gray-900">ExistAsync&lt;T&gt;</span>
                             <span class="text-gray-500 ml-auto">→ Validar duplicado</span>
                         </div>
                     </div>
@@ -564,11 +571,11 @@
                             <span class="text-gray-500">// Wrapper simplificado para servicios</span><br>
                             <span class="text-purple-400">public static class</span> <span class="text-cyan-300">ApiRequests</span><br>
                             {<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;IEnumerable&lt;T&gt;&gt; <span class="text-white">ListAsync</span>(url);<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;T&gt; <span class="text-white">FindAsync</span>(url, id);<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-white">CreateAsync</span>(url, model);<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-white">EditAsync</span>(url, model);<br>
-                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-white">DeleteAsync</span>(url, id);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;IEnumerable&lt;T&gt;&gt; <span class="text-gray-900">ListAsync</span>(url);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;T&gt; <span class="text-gray-900">FindAsync</span>(url, id);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900">CreateAsync</span>(url, model);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900">EditAsync</span>(url, model);<br>
+                            &nbsp;&nbsp;<span class="text-emerald-400">Task</span>&lt;bool&gt; <span class="text-gray-900">DeleteAsync</span>(url, id);<br>
                             }
                         </div>
                     </div>
@@ -590,14 +597,14 @@
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- DataTable Types -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-table text-cyan-400"></i> Tipos de DataTable
                     </h3>
                     <div class="space-y-3">
                         <div class="bg-slate-900/60 rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                                <span class="font-semibold text-white text-sm">datatable.init.js</span>
+                                <span class="font-semibold text-gray-900 text-sm">datatable.init.js</span>
                             </div>
                             <p class="text-xs text-gray-400">Pantallas principales — CRUD completo, export PDF/Excel, paginación server-side.</p>
                             <div class="flex flex-wrap gap-1 mt-2 text-xs">
@@ -609,7 +616,7 @@
                         <div class="bg-slate-900/60 rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-3 h-3 rounded-full bg-teal-500"></span>
-                                <span class="font-semibold text-white text-sm">datatable.catalogs.init.js</span>
+                                <span class="font-semibold text-gray-900 text-sm">datatable.catalogs.init.js</span>
                             </div>
                             <p class="text-xs text-gray-400">Catálogos — CRUD con modales, client-side processing, validación inline.</p>
                             <div class="flex flex-wrap gap-1 mt-2 text-xs">
@@ -621,7 +628,7 @@
                         <div class="bg-slate-900/60 rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
-                                <span class="font-semibold text-white text-sm">datatable.partials.init.js</span>
+                                <span class="font-semibold text-gray-900 text-sm">datatable.partials.init.js</span>
                             </div>
                             <p class="text-xs text-gray-400">Vistas parciales — Detalle embebido en master-detail views.</p>
                         </div>
@@ -630,7 +637,7 @@
 
                 <!-- Plugins Grid -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-puzzle-piece text-purple-400"></i> Plugins (60+)
                     </h3>
                     <div class="grid grid-cols-2 gap-2 text-xs">
@@ -679,7 +686,7 @@
 
                 <!-- SCSS Architecture -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-paint-brush text-purple-400"></i> SCSS Architecture
                     </h3>
                     <div class="space-y-2 text-xs font-mono">
@@ -698,7 +705,7 @@
 
                 <!-- JS Organization -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-code text-amber-400"></i> Organización JavaScript
                     </h3>
                     <div class="space-y-2 text-xs font-mono">
@@ -725,7 +732,7 @@
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- Tree -->
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-folder-open text-amber-400"></i> GESTION_COLEGIAL_ADM.sln
                     </h3>
                     <div class="font-mono text-sm space-y-1">
@@ -757,7 +764,7 @@
                 <!-- Stats -->
                 <div class="space-y-4">
                     <div class="glass rounded-xl p-6">
-                        <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                             <i class="fas fa-chart-bar text-cyan-400"></i> Métricas del Proyecto
                         </h3>
                         <div class="grid grid-cols-2 gap-4">
@@ -774,7 +781,7 @@
 
                     <!-- Controller Types -->
                     <div class="glass rounded-xl p-6">
-                        <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                             <i class="fas fa-sitemap text-purple-400"></i> Tipos de Pantallas
                         </h3>
                         <div class="space-y-3">
@@ -810,7 +817,7 @@
 
                     <!-- Auth Flow -->
                     <div class="glass rounded-xl p-6">
-                        <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                             <i class="fas fa-key text-red-400"></i> Flujo de Autenticación
                         </h3>
                         <div class="space-y-1.5 text-xs font-mono">
