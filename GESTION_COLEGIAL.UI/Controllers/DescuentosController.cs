@@ -5,12 +5,14 @@ using GESTION_COLEGIAL.UI.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using GESTION_COLEGIAL.Business.Services.ModuloFinanzas;
+using GESTION_COLEGIAL.UI.Filters;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de descuentos.
     /// </summary>
+    [SessionManager("Listado de descuentos")]
     public class DescuentosController : BaseController
     {
         private readonly DescuentosService descuentosService = new DescuentosService();

@@ -1,6 +1,7 @@
 ﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
+using GESTION_COLEGIAL.UI.Filters;
 using GESTION_COLEGIAL.UI.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -10,6 +11,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     /// <summary>
     /// Controlador para la gestión de los Semestres.
     /// </summary>
+    [SessionManager("Listado de semestres")]
     public class SemestresController : BaseController
     {
         private readonly SemestresService semestresService = new SemestresService();

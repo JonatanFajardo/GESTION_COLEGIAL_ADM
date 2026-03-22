@@ -1,6 +1,7 @@
 ﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
+using GESTION_COLEGIAL.UI.Filters;
 using GESTION_COLEGIAL.UI.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -10,6 +11,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     /// <summary>
     /// Controlador para la gestión de las Materias.
     /// </summary>
+    [SessionManager("Listado de materias")]
     public class MateriasController : BaseController
     {
         private readonly MateriasService materiasService = new MateriasService();

@@ -1,7 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using GESTION_COLEGIAL.UI.Filters;
+using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
+    [SessionManager("Home")]
     public class HomeController : BaseController
     {
         public ActionResult Index()

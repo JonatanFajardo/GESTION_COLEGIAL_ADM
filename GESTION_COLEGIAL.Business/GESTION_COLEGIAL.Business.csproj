@@ -242,6 +242,12 @@
     <Compile Include="Models\TituloDetailViewModel.cs" />
     <Compile Include="Models\TituloViewModel.cs" />
     <Compile Include="Models\UsuarioViewModel.cs" />
+    <Compile Include="Models\UsuarioDetailViewModel.cs" />
+    <Compile Include="Models\RolDropdownViewModel.cs" />
+    <Compile Include="Models\RolViewModel.cs" />
+    <Compile Include="Models\RolDetailViewModel.cs" />
+    <Compile Include="Models\PantallaItemViewModel.cs" />
+    <Compile Include="Models\RolConPantallasViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -282,6 +288,8 @@
     <Compile Include="Services\SemestresService.cs" />
     <Compile Include="Services\ModuloFinanzas\TarifaService.cs" />
     <Compile Include="Services\TitulosService.cs" />
+    <Compile Include="Services\UsuariosService.cs" />
+    <Compile Include="Services\RolesService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,3 +1,4 @@
+using GESTION_COLEGIAL.UI.Filters;
 using System.Web.Mvc;
 
 namespace GESTION_COLEGIAL.UI.Controllers
@@ -6,6 +7,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     /// Controlador para la guía del módulo financiero.
     /// Proporciona información paso a paso para nuevos usuarios del sistema.
     /// </summary>
+    [SessionManager("Guia financiera")]
     public class GuiaFinancieraController : BaseController
     {
         /// <summary>
