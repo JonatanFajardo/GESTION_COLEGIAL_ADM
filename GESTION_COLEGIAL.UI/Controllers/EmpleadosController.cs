@@ -57,6 +57,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Muestra la vista de detalle de un empleado de forma asíncrona.
+        /// </summary>
+        /// <param name="id">ID del empleado.</param>
+        /// <returns>La vista de detalle del empleado.</returns>
+        public async Task<ActionResult> DetailAsync(int id)
+        {
+            var result = await empleadosService.Find(id);
+            if (result == null)
+            {
+                AlertMessage.Show(AlertMessage.AlertMessageType.Error, "No se encontró el empleado");
+                return RedirectToAction("Index");
+            }
+            return View("Detail", result);
+        }
+
+        /// <summary>
         /// Acción asincrónica para guardar un empleado (crear o editar).
         /// </summary>
         /// <param name="model">Modelo de vista del empleado.</param>
