@@ -1,6 +1,7 @@
 ﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
+using GESTION_COLEGIAL.UI.Helpers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -54,6 +55,31 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             var result = await horasService.Find(id);
             return AjaxResult(result, true);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ExistAsync(int? Hor_Id, string Hor_Hora)
+        {
+            //Validaciones.
+            ValidationModal validationModal = new ValidationModal();
+            validationModal.SendMessage = Hor_Hora;
+            validationModal.BlankSpaces();
+            validationModal.SpecialCharacters();
+            if (validationModal.RequestMessage != null)
+            {
+                return Json(validationModal.RequestMessage);
+            }
+
+            //Envío de datos.
+            var result = await horasService.Exist(Hor_Hora);
+
+            //Validamos error
+            if (result != null)
+            {
+                int? firstValue = result.Hor_Id;
+                return (firstValue == Hor_Id) ? Json(true) : Json(msjExist);
+            }
+            return Json(true);
         }
 
         [HttpPost]
