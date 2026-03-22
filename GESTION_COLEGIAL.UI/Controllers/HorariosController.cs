@@ -49,7 +49,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> GetCursosNiveles(int id)
         {
             var result = await horariosService.CursosNivelesDropdown(id);
-            IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
+            IList<SelectListItem> resultToSelectListItem = (result ?? Enumerable.Empty<CursoNivelViewModel>()).Select(x => new SelectListItem()
             {
                 Value = x.Cun_Id.ToString(),
                 Text = x.Cun_Descripcion
