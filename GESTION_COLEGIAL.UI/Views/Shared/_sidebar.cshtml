@@ -1,4 +1,8 @@
-﻿<div class="overlay"></div>
+@{
+    string pantallas = HttpContext.Current.Session["pantallas"] as string ?? "";
+}
+
+<div class="overlay"></div>
 <div class="search-overlay"></div>
 
 <!--  BEGIN SIDEBAR  -->
@@ -20,136 +24,264 @@
                 </div>
             </li>
 
-            <li class="menu">
-                <a href="#Cursos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="h6">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open nav-icon"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                        <span>Cursos</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Cursos" data-parent="#accordionExample">
-                    <li>@Html.ActionLink("Cursos", "Index", "Cursos")</li>
-                    <li>@Html.ActionLink("Cursos Niveles", "Index", "CursosNiveles")</li>
-                    <li>@Html.ActionLink("Duraciones", "Index", "Duraciones")</li>
-                    <li>@Html.ActionLink("Materias", "Index", "Materias")</li>
-                </ul>
-            </li>
+            @if (pantallas.Contains("Listado de cursos"))
+            {
+                <li class="menu">
+                    <a href="#Cursos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="h6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open nav-icon"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                            <span>Cursos</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Cursos" data-parent="#accordionExample">
+                        @if (pantallas.Contains("Listado de cursos"))
+                        {
+                            <li>@Html.ActionLink("Cursos", "Index", "Cursos")</li>
+                        }
+                        @if (pantallas.Contains("Listado de cursos niveles"))
+                        {
+                            <li>@Html.ActionLink("Cursos Niveles", "Index", "CursosNiveles")</li>
+                        }
+                        @if (pantallas.Contains("Listado de duraciones"))
+                        {
+                            <li>@Html.ActionLink("Duraciones", "Index", "Duraciones")</li>
+                        }
+                        @if (pantallas.Contains("Listado de materias"))
+                        {
+                            <li>@Html.ActionLink("Materias", "Index", "Materias")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            <li class="menu">
-                <a href="#Alumnos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="h6">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user nav-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        <span>Alumnos</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Alumnos" data-parent="#accordionExample">
-                    <li>@Html.ActionLink("Alumno", "Index", "Alumnos")</li>
-                    <li>@Html.ActionLink("Encargados", "Index", "Encargados")</li>
-                    <li>@Html.ActionLink("Parentescos", "Index", "Parentescos")</li>
-                </ul>
+            @if (pantallas.Contains("Listado de alumnos"))
+            {
+                <li class="menu">
+                    <a href="#Alumnos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="h6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user nav-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            <span>Alumnos</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Alumnos" data-parent="#accordionExample">
+                        @if (pantallas.Contains("Listado de alumnos"))
+                        {
+                            <li>@Html.ActionLink("Alumno", "Index", "Alumnos")</li>
+                        }
+                        @if (pantallas.Contains("Listado de encargados"))
+                        {
+                            <li>@Html.ActionLink("Encargados", "Index", "Encargados")</li>
+                        }
+                        @if (pantallas.Contains("Listado de parentescos"))
+                        {
+                            <li>@Html.ActionLink("Parentescos", "Index", "Parentescos")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            </li>
+            @if (pantallas.Contains("Listado de empleados"))
+            {
+                <li class="menu">
+                    <a href="#RecursosHumanos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="h6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase nav-icon"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                            <span>RRHH</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="RecursosHumanos" data-parent="#accordionExample">
+                        @if (pantallas.Contains("Listado de empleados"))
+                        {
+                            <li>@Html.ActionLink("Empleados", "Index", "Empleados")</li>
+                        }
+                        @if (pantallas.Contains("Listado de cargos"))
+                        {
+                            <li>@Html.ActionLink("Cargos", "Index", "Cargos")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            <li class="menu">
-                <a href="#RecursosHumanos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="h6">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase nav-icon"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                        <span>RRHH</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="RecursosHumanos" data-parent="#accordionExample">
-                    <li>@Html.ActionLink("Empleados", "Index", "Empleados")</li>
-                    <li>@Html.ActionLink("Cargos", "Index", "Cargos")</li>
+            @if (pantallas.Contains("Listado de horarios"))
+            {
+                <li class="menu">
+                    <a href="#Horario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="h6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar nav-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <span>Horarios</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Horario" data-parent="#accordionExample">
+                        @if (pantallas.Contains("Listado de horarios"))
+                        {
+                            <li>@Html.ActionLink("Crear Horario Semanal", "Index", "Horarios")</li>
+                        }
+                        @if (pantallas.Contains("Listado de horas"))
+                        {
+                            <li>@Html.ActionLink("Horas", "Index", "Horas")</li>
+                        }
+                        @if (pantallas.Contains("Listado de dias"))
+                        {
+                            <li>@Html.ActionLink("Dias", "Index", "Dias")</li>
+                        }
+                        @if (pantallas.Contains("Listado de aulas"))
+                        {
+                            <li>@Html.ActionLink("Aulas", "Index", "Aulas")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-                </ul>
-            </li>
+            @if (pantallas.Contains("Listado de modalidades") || pantallas.Contains("Listado de niveles educativos") || pantallas.Contains("Listado de parciales") || pantallas.Contains("Listado de secciones") || pantallas.Contains("Listado de semestres"))
+            {
+                <li class="menu">
+                    <a href="#Institucion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="h6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book nav-icon"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                            <span>Institucion</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Institucion" data-parent="#accordionExample">
+                        @if (pantallas.Contains("Listado de modalidades"))
+                        {
+                            <li>@Html.ActionLink("Modalidades", "Index", "Modalidades")</li>
+                        }
+                        @if (pantallas.Contains("Listado de niveles educativos"))
+                        {
+                            <li>@Html.ActionLink("Niveles Educativos", "Index", "NivelesEducativos")</li>
+                        }
+                        @if (pantallas.Contains("Listado de parciales"))
+                        {
+                            <li>@Html.ActionLink("Parciales", "Index", "Parciales")</li>
+                        }
+                        @if (pantallas.Contains("Listado de secciones"))
+                        {
+                            <li>@Html.ActionLink("Secciones", "Index", "Secciones")</li>
+                        }
+                        @if (pantallas.Contains("Listado de semestres"))
+                        {
+                            <li>@Html.ActionLink("Semestres", "Index", "Semestres")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            <li class="menu">
-                <a href="#Horario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="h6">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar nav-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        <span>Horarios</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Horario" data-parent="#accordionExample">
-                    <li>@Html.ActionLink("Crear Horario Semanal", "Index", "Horarios")</li>
-                    <li>@Html.ActionLink("Horas", "Index", "Horas")</li>
-                    <li>@Html.ActionLink("Días", "Index", "Dias")</li>
-                    <li>@Html.ActionLink("Aulas", "Index", "Aulas")</li>
-                </ul>
-            </li>
+            @if (pantallas.Contains("Listado de pagos") || pantallas.Contains("Listado de cuentas por cobrar") || pantallas.Contains("Reportes financieros"))
+            {
+                <li class="menu">
+                    <a href="#Financiero" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="h6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign nav-icon"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            <span>Financiero</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Financiero" data-parent="#accordionExample">
+                        @if (pantallas.Contains("Guia financiera"))
+                        {
+                            <li style="background-color: #f0f9ff; border-left: 3px solid #3b82f6;">
+                                @Html.ActionLink("Guia de Inicio", "Index", "GuiaFinanciera", null, new { style = "font-weight: 600; color: #3b82f6;" })
+                            </li>
+                        }
+                        @if (pantallas.Contains("Reportes financieros"))
+                        {
+                            <li>@Html.ActionLink("Dashboard Financiero", "DashboardFinanciero", "ReportesFinancieros")</li>
+                        }
+                        @if (pantallas.Contains("Listado de conceptos de pago") || pantallas.Contains("Listado de formas de pago") || pantallas.Contains("Listado de descuentos") || pantallas.Contains("Listado de estados de pago") || pantallas.Contains("Listado de tarifas"))
+                        {
+                            <li class="submenu-header">Configuracion</li>
+                        }
+                        @if (pantallas.Contains("Listado de conceptos de pago"))
+                        {
+                            <li>@Html.ActionLink("Conceptos de Pago", "Index", "ConceptosPago")</li>
+                        }
+                        @if (pantallas.Contains("Listado de formas de pago"))
+                        {
+                            <li>@Html.ActionLink("Formas de Pago", "Index", "FormasPago")</li>
+                        }
+                        @if (pantallas.Contains("Listado de descuentos"))
+                        {
+                            <li>@Html.ActionLink("Descuentos", "Index", "Descuentos")</li>
+                        }
+                        @if (pantallas.Contains("Listado de estados de pago"))
+                        {
+                            <li>@Html.ActionLink("Estados de Pago", "Index", "EstadosPago")</li>
+                        }
+                        @if (pantallas.Contains("Listado de tarifas"))
+                        {
+                            <li>@Html.ActionLink("Tarifas", "Index", "Tarifas")</li>
+                        }
+                        @if (pantallas.Contains("Listado de pagos"))
+                        {
+                            <li class="submenu-header">Pagos</li>
+                            <li>@Html.ActionLink("Gestion de Pagos", "Index", "Pagos")</li>
+                            <li>@Html.ActionLink("Nuevo Pago", "NuevoPago", "Pagos")</li>
+                            <li>@Html.ActionLink("Pagos del Dia", "ListaDia", "Pagos")</li>
+                        }
+                        @if (pantallas.Contains("Listado de cuentas por cobrar"))
+                        {
+                            <li class="submenu-header">Cuentas por Cobrar</li>
+                            <li>@Html.ActionLink("Cuentas por Cobrar", "Index", "CuentasCobrar")</li>
+                            <li>@Html.ActionLink("Estado de Cuenta", "EstadoCuenta", "CuentasCobrar")</li>
+                            <li>@Html.ActionLink("Cargos Pendientes", "CargosPendientes", "CuentasCobrar")</li>
+                            <li>@Html.ActionLink("Generar Mensualidades", "CargosMasivos", "CuentasCobrar")</li>
+                            <li>@Html.ActionLink("Deudores", "Deudores", "CuentasCobrar")</li>
+                            <li>@Html.ActionLink("Moratorias", "Moratorias", "CuentasCobrar")</li>
+                            <li>@Html.ActionLink("Historico de Pagos", "HistoricoPagos", "CuentasCobrar")</li>
+                        }
+                        @if (pantallas.Contains("Reportes financieros"))
+                        {
+                            <li class="submenu-header">Reportes</li>
+                            <li>@Html.ActionLink("Ingresos del Mes", "IngresosMes", "ReportesFinancieros")</li>
+                            <li>@Html.ActionLink("Comparativa Anual", "ComparativaAnual", "ReportesFinancieros")</li>
+                            <li>@Html.ActionLink("Morosos", "Morosos", "ReportesFinancieros")</li>
+                            <li>@Html.ActionLink("Proyeccion de Cobros", "ProyeccionCobros", "ReportesFinancieros")</li>
+                        }
+                    </ul>
+                </li>
+            }
 
-            <li class="menu">
-                <a href="#Institucion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="h6">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book nav-icon"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                        <span>Institución</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Institucion" data-parent="#accordionExample">
-                    <li>@Html.ActionLink("Modalidades", "Index", "Modalidades")</li>
-                    <li>@Html.ActionLink("Niveles Educativos", "Index", "NivelesEducativos")</li>
-                    <li>@Html.ActionLink("Parciales", "Index", "Parciales")</li>
-                    <li>@Html.ActionLink("Secciones", "Index", "Secciones")</li>
-                    <li>@Html.ActionLink("Semestres", "Index", "Semestres")</li>
-                </ul>
-            </li>
-
-            <li class="menu">
-                <a href="#Financiero" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="h6">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign nav-icon"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                        <span>Financiero</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="Financiero" data-parent="#accordionExample">
-                    <li style="background-color: #f0f9ff; border-left: 3px solid #3b82f6;">
-                        @Html.ActionLink("📘 Guía de Inicio", "Index", "GuiaFinanciera", null, new { style = "font-weight: 600; color: #3b82f6;" })
-                    </li>
-                    <li>@Html.ActionLink("Dashboard Financiero", "DashboardFinanciero", "ReportesFinancieros")</li>
-                    <li class="submenu-header">Configuración</li>
-                    <li>@Html.ActionLink("Conceptos de Pago", "Index", "ConceptosPago")</li>
-                    <li>@Html.ActionLink("Formas de Pago", "Index", "FormasPago")</li>
-                    <li>@Html.ActionLink("Descuentos", "Index", "Descuentos")</li>
-                    <li>@Html.ActionLink("Estados de Pago", "Index", "EstadosPago")</li>
-                    <li>@Html.ActionLink("Tarifas", "Index", "Tarifas")</li>
-                    <li class="submenu-header">Pagos</li>
-                    <li>@Html.ActionLink("Gestión de Pagos", "Index", "Pagos")</li>
-                    <li>@Html.ActionLink("Nuevo Pago", "NuevoPago", "Pagos")</li>
-                    <li>@Html.ActionLink("Pagos del Día", "ListaDia", "Pagos")</li>
-                    <li class="submenu-header">Cuentas por Cobrar</li>
-                    <li>@Html.ActionLink("Cuentas por Cobrar", "Index", "CuentasCobrar")</li>
-                    <li>@Html.ActionLink("Estado de Cuenta", "EstadoCuenta", "CuentasCobrar")</li>
-                    <li>@Html.ActionLink("Cargos Pendientes", "CargosPendientes", "CuentasCobrar")</li>
-                    <li>@Html.ActionLink("Generar Mensualidades", "CargosMasivos", "CuentasCobrar")</li>
-                    <li>@Html.ActionLink("Deudores", "Deudores", "CuentasCobrar")</li>
-                    <li>@Html.ActionLink("Moratorias", "Moratorias", "CuentasCobrar")</li>
-                    <li>@Html.ActionLink("Histórico de Pagos", "HistoricoPagos", "CuentasCobrar")</li>
-                    <li class="submenu-header">Reportes</li>
-                    <li>@Html.ActionLink("Ingresos del Mes", "IngresosMes", "ReportesFinancieros")</li>
-                    <li>@Html.ActionLink("Comparativa Anual", "ComparativaAnual", "ReportesFinancieros")</li>
-                    <li>@Html.ActionLink("Morosos", "Morosos", "ReportesFinancieros")</li>
-                    <li>@Html.ActionLink("Proyección de Cobros", "ProyeccionCobros", "ReportesFinancieros")</li>
-                </ul>
-            </li>
+            @if (pantallas.Contains("Listado de usuarios") || pantallas.Contains("Listado de roles"))
+            {
+                <li class="menu">
+                    <a href="#Seguridad" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="h6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield nav-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <span>Seguridad</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="Seguridad" data-parent="#accordionExample">
+                        @if (pantallas.Contains("Listado de usuarios"))
+                        {
+                            <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
+                        }
+                        @if (pantallas.Contains("Listado de roles"))
+                        {
+                            <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+                        }
+                    </ul>
+                </li>
+            }
         </ul>
     </nav>
 </div>

@@ -1,6 +1,7 @@
 ﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
+using GESTION_COLEGIAL.UI.Filters;
 using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -10,6 +11,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     /// <summary>
     /// Controlador para la gestión de horarios de alumnos.
     /// </summary>
+    [SessionManager("Listado de horarios")]
     public class HorarioAlumnosController : BaseController
     {
         private readonly HorarioAlumnosService horarioAlumnosService = new HorarioAlumnosService();

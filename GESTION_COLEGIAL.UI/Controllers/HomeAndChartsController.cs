@@ -1,4 +1,5 @@
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Filters;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -7,12 +8,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
     /// <summary>
     /// Controlador para gestionar la entidad Alumnos.
     /// </summary>
+    [SessionManager("Home")]
     public class HomeAndChartsController : BaseController
     {
         private readonly HomeAndChartsService homeAndChartsService = new HomeAndChartsService();
 
         /// <summary>
-        /// Renderiza la vista principal de la aplicación.
+        /// Renderiza la vista principal de la aplicaciï¿½n.
         /// </summary>
         /// <returns>La vista principal (Index).</returns>
         public ActionResult Index()
@@ -21,9 +23,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
-        /// Recupera y devuelve datos analíticos y gráficos del inicio de forma asíncrona.
+        /// Recupera y devuelve datos analï¿½ticos y grï¿½ficos del inicio de forma asï¿½ncrona.
         /// </summary>
-        /// <returns>Un resultado en formato Ajax con la información analítica de la página de inicio.</returns>
+        /// <returns>Un resultado en formato Ajax con la informaciï¿½n analï¿½tica de la pï¿½gina de inicio.</returns>
         public async Task<ActionResult> HomeAndChartsList()
         {
             var result = await homeAndChartsService.HomeAndCharts();
@@ -31,9 +33,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
-        /// Obtiene la cantidad de alumnos inscritos por curso de forma asíncrona.
+        /// Obtiene la cantidad de alumnos inscritos por curso de forma asï¿½ncrona.
         /// </summary>
-        /// <returns>Un resultado en formato Ajax con el número de alumnos por curso.</returns>
+        /// <returns>Un resultado en formato Ajax con el nï¿½mero de alumnos por curso.</returns>
         public async Task<ActionResult> ObtenerCantidadAlumnosPorCursoList()
         {
             var result = await homeAndChartsService.ObtenerCantidadAlumnosPorCursoList();
@@ -41,9 +43,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
-        /// Calcula y proporciona el promedio de rendimiento de los cursos durante los últimos años de forma asíncrona.
+        /// Calcula y proporciona el promedio de rendimiento de los cursos durante los ï¿½ltimos aï¿½os de forma asï¿½ncrona.
         /// </summary>
-        /// <returns>Un resultado en formato Ajax con los promedios de los cursos en los últimos años.</returns>
+        /// <returns>Un resultado en formato Ajax con los promedios de los cursos en los ï¿½ltimos aï¿½os.</returns>
         public async Task<ActionResult> ObtenerPromedioCursoUltimosAnios()
         {
             var result = await homeAndChartsService.ObtenerPromedioCursoUltimosAnios();
@@ -51,9 +53,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
-        /// Obtiene los datos de las tarjetas informativas que se muestran en la página de inicio de forma asíncrona.
+        /// Obtiene los datos de las tarjetas informativas que se muestran en la pï¿½gina de inicio de forma asï¿½ncrona.
         /// </summary>
-        /// <returns>Un resultado en formato Ajax con las tarjetas de información para la página de inicio.</returns>
+        /// <returns>Un resultado en formato Ajax con las tarjetas de informaciï¿½n para la pï¿½gina de inicio.</returns>
         public async Task<ActionResult> CardsInHomeList()
         {
             var result = await homeAndChartsService.CardsInHomeList();

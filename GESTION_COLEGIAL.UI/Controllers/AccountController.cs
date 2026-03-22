@@ -1,5 +1,6 @@
 using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -46,8 +47,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
                     // Guardar datos del usuario en sesión
                     Session["UserId"] = result.User.Usu_Id;
                     Session["Username"] = result.User.Usu_Name;
+                    Session["RolId"] = result.User.Rol_Id;
                     Session["RoleName"] = result.User.Rol_Nombre;
                     Session["Token"] = result.Token;
+
+                    // Guardar pantallas/permisos del rol en sesión
+                    string pantallas = result.Pantallas != null
+                        ? String.Join(",", result.Pantallas)
+                        : "";
+                    Session["pantallas"] = pantallas;
 
                     // Redirigir
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -70,6 +78,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 ModelState.AddModelError("", "Error al conectar con el servidor: " + ex.Message);
                 return View(model);
             }
+        }
+
+        [AllowAnonymous]
+        public ActionResult SinAcceso()
+        {
+            return View();
         }
 
         public async Task<ActionResult> Logout()
