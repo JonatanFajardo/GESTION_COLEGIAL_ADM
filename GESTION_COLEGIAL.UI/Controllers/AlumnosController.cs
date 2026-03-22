@@ -60,7 +60,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			// Llenamos el ViewBag con los niveles de curso disponibles, basados en el identificador de nivel (Niv_Id) del resultado obtenido.
 			// Se usa ContinueWith para procesar la lista devuelta por el método CursoNivelesDropdown y convertirla en una lista de SelectListItem.
 			ViewBag.Niveles = await alumnosService.CursoNivelesDropdown(result.Niv_Id)
-			  .ContinueWith(task => task.Result.Select(x => new SelectListItem
+			  .ContinueWith(task => (task.Result ?? Enumerable.Empty<CursoNivelDropViewModel>()).Select(x => new SelectListItem
 			  {
 				  Value = x.Cun_Id.ToString(), // Asignamos el ID del curso como valor del dropdown.
 				  Text = x.Cun_Descripcion // Asignamos la descripción del curso como texto visible en el dropdown.
@@ -68,7 +68,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
 			// Llenamos el ViewBag con las modalidades disponibles según el curso seleccionado (Cun_Id).
 			ViewBag.Modalidades = await alumnosService.ModalidadesDropdown(result.Cun_Id)
-			  .ContinueWith(task => task.Result.Select(x => new SelectListItem
+			  .ContinueWith(task => (task.Result ?? Enumerable.Empty<ModalidadViewModel>()).Select(x => new SelectListItem
 			  {
 				  Value = x.Mda_Id.ToString(), // Asignamos el ID de la modalidad como valor del dropdown.
 				  Text = x.Mda_Descripcion // Asignamos la descripción de la modalidad como texto visible en el dropdown.
@@ -76,7 +76,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
 			// Llenamos el ViewBag con los cursos disponibles según la modalidad seleccionada (Mda_Id).
 			ViewBag.Cursos = await alumnosService.CursosDropdown(result.Mda_Id)
-			  .ContinueWith(task => task.Result.Select(x => new SelectListItem
+			  .ContinueWith(task => (task.Result ?? Enumerable.Empty<CursoViewModel>()).Select(x => new SelectListItem
 			  {
 				  Value = x.Cur_Id.ToString(), // Asignamos el ID del curso como valor del dropdown.
 				  Text = x.Cur_Nombre // Asignamos el nombre del curso como texto visible en el dropdown.
@@ -84,7 +84,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
 			// Llenamos el ViewBag con las secciones disponibles según el curso seleccionado (Cur_Id).
 			ViewBag.Secciones = await alumnosService.SeccionesDropdown(result.Cur_Id)
-			  .ContinueWith(task => task.Result.Select(x => new SelectListItem
+			  .ContinueWith(task => (task.Result ?? Enumerable.Empty<SeccionViewModel>()).Select(x => new SelectListItem
 			  {
 				  Value = x.Sec_Id.ToString(), // Asignamos el ID de la sección como valor del dropdown.
 				  Text = x.Sec_Descripcion // Asignamos la descripción de la sección como texto visible en el dropdown.
@@ -178,7 +178,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		public async Task<ActionResult> GetCursosNiveles(int id)
 		{
 			var result = await alumnosService.CursoNivelesDropdown(id);
-			IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
+			IList<SelectListItem> resultToSelectListItem = (result ?? Enumerable.Empty<CursoNivelDropViewModel>()).Select(x => new SelectListItem()
 			{
 				Value = x.Cun_Id.ToString(),
 				Text = x.Cun_Descripcion
@@ -194,7 +194,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		public async Task<ActionResult> GetModalidades(int id)
 		{
 			var result = await alumnosService.ModalidadesDropdown(id);
-			IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
+			IList<SelectListItem> resultToSelectListItem = (result ?? Enumerable.Empty<ModalidadViewModel>()).Select(x => new SelectListItem()
 			{
 				Value = x.Mda_Id.ToString(),
 				Text = x.Mda_Descripcion
@@ -210,7 +210,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		public async Task<ActionResult> GetCursos(int id)
 		{
 			var result = await alumnosService.CursosDropdown(id);
-			IList<SelectListItem> resultToSelectListItem = result.Select(x => new SelectListItem()
+			IList<SelectListItem> resultToSelectListItem = (result ?? Enumerable.Empty<CursoViewModel>()).Select(x => new SelectListItem()
 			{
 				Value = x.Cur_Id.ToString(),
 				Text = x.Cur_Nombre

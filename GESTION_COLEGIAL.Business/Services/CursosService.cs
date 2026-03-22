@@ -46,32 +46,32 @@ namespace GESTION_COLEGIAL.Business.Services
 
 			var load = await Load(result);
 
-			load.ModalidadesCheckList = load.ModalidadesCheckList.Select(x => new SelectListItem()
+			load.ModalidadesCheckList = (load.ModalidadesCheckList ?? Enumerable.Empty<SelectListItem>()).Select(x => new SelectListItem()
 			{
 				Text = x.Text,
 				Value = x.Value.ToString(),
-				Selected = modalidades.Any(y => y.Mda_Id.ToString() == x.Value.ToString()) ? true : false
+				Selected = (modalidades ?? Enumerable.Empty<ModalidadViewModel>()).Any(y => y.Mda_Id.ToString() == x.Value.ToString()) ? true : false
 			}).ToList();
 
-			load.SeccionesCheckList = load.SeccionesCheckList.Select(x => new SelectListItem()
+			load.SeccionesCheckList = (load.SeccionesCheckList ?? Enumerable.Empty<SelectListItem>()).Select(x => new SelectListItem()
 			{
 				Text = x.Text,
 				Value = x.Value.ToString(),
-				Selected = secciones.Any(y => y.Sec_Id.ToString() == x.Value.ToString()) ? true : false
+				Selected = (secciones ?? Enumerable.Empty<SeccionViewModel>()).Any(y => y.Sec_Id.ToString() == x.Value.ToString()) ? true : false
 			}).ToList();
 
-			load.CursoNivelesCheckList = load.CursoNivelesCheckList.Select(x => new SelectListItem()
+			load.CursoNivelesCheckList = (load.CursoNivelesCheckList ?? Enumerable.Empty<SelectListItem>()).Select(x => new SelectListItem()
 			{
 				Text = x.Text,
 				Value = x.Value.ToString(),
-				Selected = cursosniveles.Any(y => y.Cun_Id.ToString() == x.Value.ToString()) ? true : false
+				Selected = (cursosniveles ?? Enumerable.Empty<CursoNivelViewModel>()).Any(y => y.Cun_Id.ToString() == x.Value.ToString()) ? true : false
 			}).ToList();
 
-			load.MateriasCheckList = load.MateriasCheckList.Select(x => new SelectListItem()
+			load.MateriasCheckList = (load.MateriasCheckList ?? Enumerable.Empty<SelectListItem>()).Select(x => new SelectListItem()
 			{
 				Text = x.Text,
 				Value = x.Value.ToString(),
-				Selected = materias.Any(y => y.Mat_Id.ToString() == x.Value.ToString()) ? true : false
+				Selected = (materias ?? Enumerable.Empty<MateriaViewModel>()).Any(y => y.Mat_Id.ToString() == x.Value.ToString()) ? true : false
 			}).ToList();
 			return load;
 		}

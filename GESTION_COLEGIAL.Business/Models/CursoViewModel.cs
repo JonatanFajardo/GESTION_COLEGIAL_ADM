@@ -180,21 +180,21 @@ namespace GESTION_COLEGIAL.Business.Models
 				Selected = x.IsSelected
 			}).ToList();
 
-			SeccionesCheckList = secciones.Select(x => new SelectListItem()
+			SeccionesCheckList = (secciones ?? new List<SeccionViewModel>()).Select(x => new SelectListItem()
 			{
 				Text = x.Sec_Descripcion,
 				Value = x.Sec_Id.ToString(),
 				Selected = x.IsSelected
 			}).ToList();
 
-			CursoNivelesCheckList = cursoNiveles.Select(x => new SelectListItem()
+			CursoNivelesCheckList = (cursoNiveles ?? new List<CursoNivelViewModel>()).Select(x => new SelectListItem()
 			{
 				Text = x.Cun_Descripcion,
 				Value = x.Cun_Id.ToString(),
 				Selected = x.IsSelected
 			}).ToList();
 
-			MateriasCheckList = materias.Select(x => new SelectListItem()
+			MateriasCheckList = (materias ?? new List<MateriaViewModel>()).Select(x => new SelectListItem()
 			{
 				Text = x.Mat_Nombre,
 				Value = x.Mat_Id.ToString(),
