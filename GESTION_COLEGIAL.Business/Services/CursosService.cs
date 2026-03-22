@@ -25,6 +25,18 @@ namespace GESTION_COLEGIAL.Business.Services
 		}
 
 		/// <summary>
+		/// Obtiene el detalle de un curso específico.
+		/// </summary>
+		/// <param name="id">El identificador del curso.</param>
+		/// <returns>El detalle del curso.</returns>
+		public async Task<CursoDetailViewModel> Detail(int id)
+        {
+            string url = "Cursos/DetailAsync";
+            CursoDetailViewModel apiUrl = await ApiRequests.FindAsync<CursoDetailViewModel>(url, id);
+            return apiUrl;
+        }
+
+		/// <summary>
 		/// Busca un curso por su identificador de forma asincrónica.
 		/// </summary>
 		/// <param name="id">El identificador del curso.</param>
