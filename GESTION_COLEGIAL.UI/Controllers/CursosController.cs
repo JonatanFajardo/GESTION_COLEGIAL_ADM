@@ -45,6 +45,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción asincrónica para obtener el detalle de un curso específico.
+        /// </summary>
+        /// <param name="id">ID del curso.</param>
+        /// <returns>La vista de detalle del curso.</returns>
+        public async Task<ActionResult> DetailAsync(int id)
+        {
+            var result = await cursosService.Detail(id);
+            if (result == null)
+            {
+                AlertMessage.Show(AlertMessage.AlertMessageType.Error, "No se encontró el curso");
+                return RedirectToAction("Index");
+            }
+            return View("Detail", result);
+        }
+
+        /// <summary>
         /// Acción asincrónica para obtener los detalles de un curso específico.
         /// </summary>
         /// <param name="id">ID del curso.</param>

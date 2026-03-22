@@ -62,9 +62,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para obtener pagos del día.
         /// </summary>
-        public async Task<ActionResult> ListByFechaAsync(DateTime fecha)
+        public async Task<ActionResult> ListByFechaAsync(DateTime? fecha = null)
         {
-            var result = await pagosService.ListByFechaAsync(fecha);
+            var result = await pagosService.ListByFechaAsync(fecha ?? DateTime.Today);
             return AjaxResult(result);
         }
 

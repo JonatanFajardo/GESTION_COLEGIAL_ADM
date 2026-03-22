@@ -1,0 +1,106 @@
+@model GESTION_COLEGIAL.Business.Models.CursoDetailViewModel
+@{
+    ViewBag.Title = "Detalle del Curso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Cursos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detalle</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <div class="detail-container">
+        <!-- Header con informacion principal -->
+        <div class="card mb-4">
+            <div class="card-body" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 5px;">
+                <div class="row align-items-center">
+                    <div class="col-md-2 text-center">
+                        <div class="rounded-circle bg-white d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; margin: 0 auto;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <div class="mt-2">
+                            <span class="badge badge-light">#@Model.Cur_Id.ToString().PadLeft(4, '0')</span>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <h2 class="mb-1">@Model.Cur_Nombre</h2>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <a href="@Url.Action("FindAsync", new { id = Model.Cur_Id })" class="btn btn-light mb-2">
+                            <i class="mdi mdi-pencil"></i> Editar
+                        </a>
+                        <br>
+                        <a href="@Url.Action("Index")" class="btn btn-outline-light">
+                            <i class="mdi mdi-arrow-left"></i> Volver
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Informacion del Curso -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="mdi mdi-book-open-variant mr-2"></i>Informaci&oacute;n del Curso</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">ID:</div>
+                            <div class="col-7 font-weight-bold">@Model.Cur_Id</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Nombre:</div>
+                            <div class="col-7 font-weight-bold">@Model.Cur_Nombre</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informacion de Auditoria -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0"><i class="mdi mdi-clock-outline mr-2"></i>Informaci&oacute;n de Registro</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Creado por:</div>
+                            <div class="col-7 font-weight-bold">@Model.Cur_UsuarioRegistraNombre</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-5 text-muted">Fecha Creaci&oacute;n:</div>
+                            <div class="col-7 font-weight-bold">
+                                @if (Model.Cur_FechaRegistra.HasValue)
+                                {
+                                    @Model.Cur_FechaRegistra.Value.ToString("dd/MM/yyyy HH:mm")
+                                }
+                            </div>
+                        </div>
+                        @if (Model.Cur_FechaModifica.HasValue)
+                        {
+                            <div class="row mb-3">
+                                <div class="col-5 text-muted">Modificado por:</div>
+                                <div class="col-7 font-weight-bold">@Model.Cur_UsuarioModificaNombre</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-5 text-muted">Fecha Modificaci&oacute;n:</div>
+                                <div class="col-7 font-weight-bold">@Model.Cur_FechaModifica.Value.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
