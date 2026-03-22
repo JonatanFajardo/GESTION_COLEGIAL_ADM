@@ -56,6 +56,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Muestra la vista de detalle de un encargado de forma asíncrona.
+        /// </summary>
+        /// <param name="id">ID del encargado.</param>
+        /// <returns>La vista de detalle del encargado.</returns>
+        public async Task<ActionResult> DetailAsync(int id)
+        {
+            var result = await encargadosService.Find(id);
+            if (result == null)
+            {
+                AlertMessage.Show(AlertMessage.AlertMessageType.Error, "No se encontró el encargado");
+                return RedirectToAction("Index");
+            }
+            return View("Detail", result);
+        }
+
+        /// <summary>
         /// Acción asincrónica para crear o editar un Encargado.
         /// </summary>
         /// <param name="model">Modelo de vista del Encargado.</param>
