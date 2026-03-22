@@ -96,6 +96,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		}
 
 		/// <summary>
+		/// Muestra la vista de detalle de un alumno de forma asíncrona.
+		/// </summary>
+		/// <param name="id">ID del alumno.</param>
+		/// <returns>La vista de detalle del alumno.</returns>
+		public async Task<ActionResult> DetailAsync(int id)
+		{
+			var result = await alumnosService.Find(id);
+			if (result == null)
+			{
+				AlertMessage.Show(AlertMessage.AlertMessageType.Error, "No se encontró el alumno");
+				return RedirectToAction("Index");
+			}
+			return View("Detail", result);
+		}
+
+		/// <summary>
 		/// Busca un alumno por su número de identidad de forma asíncrona.
 		/// </summary>
 		/// <param name="identidad">Número de identidad del alumno.</param>
