@@ -53,14 +53,14 @@
                 // Verificar si hay cambios en el formulario
                 const form = this.closest('form');
                 if (form) {
-                    const nombreAlumno = form.querySelector('input[name="Alu_Nombre"]');
-                    const nivelId = form.querySelector('select[name="Niv_Id"]');
+                    const nombreEmpleado = form.querySelector('input[name="Per_PrimerNombre"]');
+                    const cargoId = form.querySelector('select[name="Car_Id"]');
 
                     // Verificar si hay algún checkbox marcado
                     const checkboxesMarcados = form.querySelectorAll('input[type="checkbox"]:checked').length;
 
-                    const hasChanges = (nombreAlumno && nombreAlumno.value.trim() !== '') ||
-                                      (nivelId && nivelId.value !== '') ||
+                    const hasChanges = (nombreEmpleado && nombreEmpleado.value.trim() !== '') ||
+                                      (cargoId && cargoId.value !== '') ||
                                       checkboxesMarcados > 0;
 
                     if (hasChanges) {
@@ -87,20 +87,20 @@
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function(e) {
-            const nombreAlumno = this.querySelector('input[name="Alu_Nombre"]');
-            const nivelId = this.querySelector('select[name="Niv_Id"]');
+            const nombreEmpleado = this.querySelector('input[name="Per_PrimerNombre"]');
+            const cargoId = this.querySelector('select[name="Car_Id"]');
 
-            if (!nombreAlumno || nombreAlumno.value.trim() === '') {
+            if (!nombreEmpleado || nombreEmpleado.value.trim() === '') {
                 alert('Por favor ingrese el nombre del empleado.');
                 e.preventDefault();
-                nombreAlumno.focus();
+                nombreEmpleado.focus();
                 return false;
             }
 
-            if (!nivelId || nivelId.value === '') {
-                alert('Por favor seleccione un nivel educativo.');
+            if (!cargoId || cargoId.value === '') {
+                alert('Por favor seleccione un cargo.');
                 e.preventDefault();
-                nivelId.focus();
+                cargoId.focus();
                 return false;
             }
 
