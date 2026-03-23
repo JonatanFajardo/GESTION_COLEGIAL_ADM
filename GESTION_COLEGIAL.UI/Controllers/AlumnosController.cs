@@ -23,6 +23,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// <returns>La vista del índice.</returns>
 		public ActionResult Index()
 		{
+			ViewBag.PuedeCrear = TienePantalla("Crear alumnos");
+			ViewBag.PuedeEditar = TienePantalla("Editar alumnos");
+			ViewBag.PuedeEliminar = TienePantalla("Eliminar alumnos");
 			return View();
 		}
 
@@ -30,6 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// Muestra la vista de creación de forma asíncrona.
 		/// </summary>
 		/// <returns>La vista de creación.</returns>
+		[SessionManager("Crear alumnos")]
 		public async Task<ActionResult> CreateAsync()
 		{
 			var model = new AlumnoViewModel();
@@ -52,6 +56,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// </summary>
 		/// <param name="id">ID del alumno.</param>
 		/// <returns>La vista de creación con el alumno encontrado.</returns>
+		[SessionManager("Editar alumnos")]
 		public async Task<ActionResult> FindAsync(int id)
 		{
 			var result = await alumnosService.Find(id);
@@ -131,6 +136,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// <param name="model">El modelo del alumno.</param>
 		/// <returns>El resultado de la operación.</returns>
 		[HttpPost]
+		[SessionManager("Crear alumnos")]
 		public async Task<ActionResult> Save(AlumnoViewModel model)
 		{
 			if (model.Alu_Id == 0)
@@ -248,6 +254,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// <param name="model">El modelo del alumno.</param>
 		/// <returns>El resultado de la operación.</returns>
 		[HttpPost]
+		[SessionManager("Eliminar alumnos")]
 		public async Task<ActionResult> DeleteAsync(AlumnoViewModel model)
 		{
 			bool result = await alumnosService.Delete(model.Alu_Id);

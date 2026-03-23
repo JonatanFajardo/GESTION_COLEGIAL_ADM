@@ -12,6 +12,7 @@ var datatableCatalogs = (function () {
      */
     obj.init = function (DirectionUrls, header) {
         $(function () {
+            var permisos = DirectionUrls.permisos || { crear: true, editar: true, eliminar: true };
             //configuraciones
             $.extend(true, $.fn.dataTable.defaults, {
                 dom: "<'row m-2 my-3'<'col-md-7'f> <'col-md-5 d-flex justify-content-end custom-buttons'B>>" +
@@ -60,44 +61,49 @@ var datatableCatalogs = (function () {
                 responsive: true,
                 deferRender: true,
                 //serverSide: true,
-               buttons: [
-                {
-                    title: "Recargar",
-                    text: '<i class="fas fa-sync-alt"></i>',
-                    titleAttr: 'Recargar datos de la tabla',
-                    className: 'btn-reload',
-                    action: function (e, dt, config) {
-                        dt.ajax.reload();
+               buttons: (function () {
+                    var btns = [
+                        {
+                            title: "Recargar",
+                            text: '<i class="fas fa-sync-alt"></i>',
+                            titleAttr: 'Recargar datos de la tabla',
+                            className: 'btn-reload',
+                            action: function (e, dt, config) {
+                                dt.ajax.reload();
+                            }
+                        },
+                        {
+                            extend: "pdfHtml5",
+                            title: "Exportar a PDF",
+                            text: "<i class='fas fa-file-pdf'></i> PDF",
+                            titleAttr: 'Exportar tabla a formato PDF',
+                            className: "btn btn-export-pdf",
+                            exportOptions: exportOptions
+                        },
+                        {
+                            extend: "excelHtml5",
+                            title: "Exportar a EXCEL",
+                            text: "<i class='fas fa-file-excel'></i> Excel",
+                            titleAttr: 'Exportar tabla a formato Excel',
+                            className: "btn btn-export-excel",
+                            exportOptions: exportOptions
+                        }
+                    ];
+                    if (permisos.crear) {
+                        btns.push({
+                            attr: {
+                                title: "Añadir nuevo elemento",
+                                id: "add-btn",
+                                class: "btn btn-primary btn-add-new",
+                                'data-style': "zoom-in",
+                                'data-toggle': "modal",
+                                'data-target': "#edit-modal"
+                            },
+                            text: '<i class="fas fa-plus-circle"></i> Nuevo'
+                        });
                     }
-                },
-                {
-                    extend: "pdfHtml5",
-                    title: "Exportar a PDF",
-                    text: "<i class='fas fa-file-pdf'></i> PDF",
-                    titleAttr: 'Exportar tabla a formato PDF',
-                    className: "btn btn-export-pdf",
-                    exportOptions: exportOptions
-                },
-                {
-                    extend: "excelHtml5",
-                    title: "Exportar a EXCEL",
-                    text: "<i class='fas fa-file-excel'></i> Excel",
-                    titleAttr: 'Exportar tabla a formato Excel',
-                    className: "btn btn-export-excel",
-                    exportOptions: exportOptions
-                },
-                {
-                    attr: {
-                        title: "Añadir nuevo elemento",
-                        id: "add-btn",
-                        class: "btn btn-primary btn-add-new",
-                        'data-style': "zoom-in",
-                        'data-toggle': "modal",
-                        'data-target': "#edit-modal"
-                    },
-                    text: '<i class="fas fa-plus-circle"></i> Nuevo'
-                }
-            ],
+                    return btns;
+                })(),
                 ajax: function (data, callback, settings) {
                     $.ajax({
                         url: DirectionUrls.urlList,
@@ -166,12 +172,16 @@ var datatableCatalogs = (function () {
                 var botones = "";
                 head = _header[0].FieldName;
                 if (type == "display") {
-                    // Boton Ver Detalles
+                    // Boton Ver Detalles (siempre visible si tiene acceso al listado)
                     botones += '<a href="javascript:void(0);" data-id="' + row[head] + '" class="bs-tooltip view-detail-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="Ver detalles"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>';
-                    // Boton Editar
-                    botones += '<a href="javascript:void(0);" data-id="' + row[head] + '" class="bs-tooltip edit-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
-                    // Boton Eliminar
-                    botones += '<a href="javascript:void(0);" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn text-muted pl-2" data-toggle="tooltip" data-placement="top" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
+                    // Boton Editar (solo si tiene permiso)
+                    if (permisos.editar) {
+                        botones += '<a href="javascript:void(0);" data-id="' + row[head] + '" class="bs-tooltip edit-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
+                    }
+                    // Boton Eliminar (solo si tiene permiso)
+                    if (permisos.eliminar) {
+                        botones += '<a href="javascript:void(0);" data-toggle="modal" data-target="#delete-modal" data-id="' + row[head] + '" class="bs-tooltip delete-btn text-muted pl-2" data-toggle="tooltip" data-placement="top" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
+                    }
                 }
                 return botones;
             }
