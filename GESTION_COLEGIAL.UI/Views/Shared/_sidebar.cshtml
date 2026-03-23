@@ -1,5 +1,9 @@
 @{
     string pantallas = HttpContext.Current.Session["pantallas"] as string ?? "";
+    var listaPantallas = pantallas.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                  .Select(p => p.Trim())
+                                  .ToList();
+    Func<string, bool> tiene = (nombre) => listaPantallas.Contains(nombre, StringComparer.OrdinalIgnoreCase);
 }
 
 <div class="overlay"></div>
@@ -24,7 +28,7 @@
                 </div>
             </li>
 
-            @if (pantallas.Contains("Listado de cursos"))
+            @if (tiene("Listado de cursos"))
             {
                 <li class="menu">
                     <a href="#Cursos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -37,19 +41,19 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Cursos" data-parent="#accordionExample">
-                        @if (pantallas.Contains("Listado de cursos"))
+                        @if (tiene("Listado de cursos"))
                         {
                             <li>@Html.ActionLink("Cursos", "Index", "Cursos")</li>
                         }
-                        @if (pantallas.Contains("Listado de cursos niveles"))
+                        @if (tiene("Listado de cursos niveles"))
                         {
                             <li>@Html.ActionLink("Cursos Niveles", "Index", "CursosNiveles")</li>
                         }
-                        @if (pantallas.Contains("Listado de duraciones"))
+                        @if (tiene("Listado de duraciones"))
                         {
                             <li>@Html.ActionLink("Duraciones", "Index", "Duraciones")</li>
                         }
-                        @if (pantallas.Contains("Listado de materias"))
+                        @if (tiene("Listado de materias"))
                         {
                             <li>@Html.ActionLink("Materias", "Index", "Materias")</li>
                         }
@@ -57,7 +61,7 @@
                 </li>
             }
 
-            @if (pantallas.Contains("Listado de alumnos"))
+            @if (tiene("Listado de alumnos"))
             {
                 <li class="menu">
                     <a href="#Alumnos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -70,15 +74,15 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Alumnos" data-parent="#accordionExample">
-                        @if (pantallas.Contains("Listado de alumnos"))
+                        @if (tiene("Listado de alumnos"))
                         {
                             <li>@Html.ActionLink("Alumno", "Index", "Alumnos")</li>
                         }
-                        @if (pantallas.Contains("Listado de encargados"))
+                        @if (tiene("Listado de encargados"))
                         {
                             <li>@Html.ActionLink("Encargados", "Index", "Encargados")</li>
                         }
-                        @if (pantallas.Contains("Listado de parentescos"))
+                        @if (tiene("Listado de parentescos"))
                         {
                             <li>@Html.ActionLink("Parentescos", "Index", "Parentescos")</li>
                         }
@@ -86,7 +90,7 @@
                 </li>
             }
 
-            @if (pantallas.Contains("Listado de empleados"))
+            @if (tiene("Listado de empleados"))
             {
                 <li class="menu">
                     <a href="#RecursosHumanos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -99,11 +103,11 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="RecursosHumanos" data-parent="#accordionExample">
-                        @if (pantallas.Contains("Listado de empleados"))
+                        @if (tiene("Listado de empleados"))
                         {
                             <li>@Html.ActionLink("Empleados", "Index", "Empleados")</li>
                         }
-                        @if (pantallas.Contains("Listado de cargos"))
+                        @if (tiene("Listado de cargos"))
                         {
                             <li>@Html.ActionLink("Cargos", "Index", "Cargos")</li>
                         }
@@ -111,7 +115,7 @@
                 </li>
             }
 
-            @if (pantallas.Contains("Listado de horarios"))
+            @if (tiene("Listado de horarios"))
             {
                 <li class="menu">
                     <a href="#Horario" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -124,19 +128,19 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Horario" data-parent="#accordionExample">
-                        @if (pantallas.Contains("Listado de horarios"))
+                        @if (tiene("Listado de horarios"))
                         {
                             <li>@Html.ActionLink("Crear Horario Semanal", "Index", "Horarios")</li>
                         }
-                        @if (pantallas.Contains("Listado de horas"))
+                        @if (tiene("Listado de horas"))
                         {
                             <li>@Html.ActionLink("Horas", "Index", "Horas")</li>
                         }
-                        @if (pantallas.Contains("Listado de dias"))
+                        @if (tiene("Listado de dias"))
                         {
                             <li>@Html.ActionLink("Dias", "Index", "Dias")</li>
                         }
-                        @if (pantallas.Contains("Listado de aulas"))
+                        @if (tiene("Listado de aulas"))
                         {
                             <li>@Html.ActionLink("Aulas", "Index", "Aulas")</li>
                         }
@@ -144,7 +148,7 @@
                 </li>
             }
 
-            @if (pantallas.Contains("Listado de modalidades") || pantallas.Contains("Listado de niveles educativos") || pantallas.Contains("Listado de parciales") || pantallas.Contains("Listado de secciones") || pantallas.Contains("Listado de semestres"))
+            @if (tiene("Listado de modalidades") || tiene("Listado de niveles educativos") || tiene("Listado de parciales") || tiene("Listado de secciones") || tiene("Listado de semestres"))
             {
                 <li class="menu">
                     <a href="#Institucion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -157,23 +161,23 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Institucion" data-parent="#accordionExample">
-                        @if (pantallas.Contains("Listado de modalidades"))
+                        @if (tiene("Listado de modalidades"))
                         {
                             <li>@Html.ActionLink("Modalidades", "Index", "Modalidades")</li>
                         }
-                        @if (pantallas.Contains("Listado de niveles educativos"))
+                        @if (tiene("Listado de niveles educativos"))
                         {
                             <li>@Html.ActionLink("Niveles Educativos", "Index", "NivelesEducativos")</li>
                         }
-                        @if (pantallas.Contains("Listado de parciales"))
+                        @if (tiene("Listado de parciales"))
                         {
                             <li>@Html.ActionLink("Parciales", "Index", "Parciales")</li>
                         }
-                        @if (pantallas.Contains("Listado de secciones"))
+                        @if (tiene("Listado de secciones"))
                         {
                             <li>@Html.ActionLink("Secciones", "Index", "Secciones")</li>
                         }
-                        @if (pantallas.Contains("Listado de semestres"))
+                        @if (tiene("Listado de semestres"))
                         {
                             <li>@Html.ActionLink("Semestres", "Index", "Semestres")</li>
                         }
@@ -181,7 +185,7 @@
                 </li>
             }
 
-            @if (pantallas.Contains("Listado de pagos") || pantallas.Contains("Listado de cuentas por cobrar") || pantallas.Contains("Reportes financieros"))
+            @if (tiene("Listado de pagos") || tiene("Listado de cuentas por cobrar") || tiene("Reportes financieros"))
             {
                 <li class="menu">
                     <a href="#Financiero" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -194,48 +198,48 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Financiero" data-parent="#accordionExample">
-                        @if (pantallas.Contains("Guia financiera"))
+                        @if (tiene("Guia financiera"))
                         {
                             <li style="background-color: #f0f9ff; border-left: 3px solid #3b82f6;">
                                 @Html.ActionLink("Guia de Inicio", "Index", "GuiaFinanciera", null, new { style = "font-weight: 600; color: #3b82f6;" })
                             </li>
                         }
-                        @if (pantallas.Contains("Reportes financieros"))
+                        @if (tiene("Reportes financieros"))
                         {
                             <li>@Html.ActionLink("Dashboard Financiero", "DashboardFinanciero", "ReportesFinancieros")</li>
                         }
-                        @if (pantallas.Contains("Listado de conceptos de pago") || pantallas.Contains("Listado de formas de pago") || pantallas.Contains("Listado de descuentos") || pantallas.Contains("Listado de estados de pago") || pantallas.Contains("Listado de tarifas"))
+                        @if (tiene("Listado de conceptos de pago") || tiene("Listado de formas de pago") || tiene("Listado de descuentos") || tiene("Listado de estados de pago") || tiene("Listado de tarifas"))
                         {
                             <li class="submenu-header">Configuracion</li>
                         }
-                        @if (pantallas.Contains("Listado de conceptos de pago"))
+                        @if (tiene("Listado de conceptos de pago"))
                         {
                             <li>@Html.ActionLink("Conceptos de Pago", "Index", "ConceptosPago")</li>
                         }
-                        @if (pantallas.Contains("Listado de formas de pago"))
+                        @if (tiene("Listado de formas de pago"))
                         {
                             <li>@Html.ActionLink("Formas de Pago", "Index", "FormasPago")</li>
                         }
-                        @if (pantallas.Contains("Listado de descuentos"))
+                        @if (tiene("Listado de descuentos"))
                         {
                             <li>@Html.ActionLink("Descuentos", "Index", "Descuentos")</li>
                         }
-                        @if (pantallas.Contains("Listado de estados de pago"))
+                        @if (tiene("Listado de estados de pago"))
                         {
                             <li>@Html.ActionLink("Estados de Pago", "Index", "EstadosPago")</li>
                         }
-                        @if (pantallas.Contains("Listado de tarifas"))
+                        @if (tiene("Listado de tarifas"))
                         {
                             <li>@Html.ActionLink("Tarifas", "Index", "Tarifas")</li>
                         }
-                        @if (pantallas.Contains("Listado de pagos"))
+                        @if (tiene("Listado de pagos"))
                         {
                             <li class="submenu-header">Pagos</li>
                             <li>@Html.ActionLink("Gestion de Pagos", "Index", "Pagos")</li>
                             <li>@Html.ActionLink("Nuevo Pago", "NuevoPago", "Pagos")</li>
                             <li>@Html.ActionLink("Pagos del Dia", "ListaDia", "Pagos")</li>
                         }
-                        @if (pantallas.Contains("Listado de cuentas por cobrar"))
+                        @if (tiene("Listado de cuentas por cobrar"))
                         {
                             <li class="submenu-header">Cuentas por Cobrar</li>
                             <li>@Html.ActionLink("Cuentas por Cobrar", "Index", "CuentasCobrar")</li>
@@ -246,7 +250,7 @@
                             <li>@Html.ActionLink("Moratorias", "Moratorias", "CuentasCobrar")</li>
                             <li>@Html.ActionLink("Historico de Pagos", "HistoricoPagos", "CuentasCobrar")</li>
                         }
-                        @if (pantallas.Contains("Reportes financieros"))
+                        @if (tiene("Reportes financieros"))
                         {
                             <li class="submenu-header">Reportes</li>
                             <li>@Html.ActionLink("Ingresos del Mes", "IngresosMes", "ReportesFinancieros")</li>
@@ -258,7 +262,7 @@
                 </li>
             }
 
-            @if (pantallas.Contains("Listado de usuarios") || pantallas.Contains("Listado de roles"))
+            @if (tiene("Listado de usuarios") || tiene("Listado de roles"))
             {
                 <li class="menu">
                     <a href="#Seguridad" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -271,11 +275,11 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Seguridad" data-parent="#accordionExample">
-                        @if (pantallas.Contains("Listado de usuarios"))
+                        @if (tiene("Listado de usuarios"))
                         {
                             <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
                         }
-                        @if (pantallas.Contains("Listado de roles"))
+                        @if (tiene("Listado de roles"))
                         {
                             <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
                         }

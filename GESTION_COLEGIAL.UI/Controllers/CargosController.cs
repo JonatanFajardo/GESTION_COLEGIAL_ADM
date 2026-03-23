@@ -22,6 +22,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <returns>Vista principal de los cargos.</returns>
         public ActionResult Index()
         {
+            ViewBag.PuedeCrear = TienePantalla("Crear cargos");
+            ViewBag.PuedeEditar = TienePantalla("Editar cargos");
+            ViewBag.PuedeEliminar = TienePantalla("Eliminar cargos");
             return View();
         }
 
@@ -29,6 +32,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Acción para mostrar la vista de creación de un nuevo cargo.
         /// </summary>
         /// <returns>Vista de creación de cargo.</returns>
+        [SessionManager("Crear cargos")]
         public ActionResult CreateAsync()
         {
             return View("CreateAsync");
@@ -72,6 +76,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <param name="model">Modelo de vista del cargo.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
+        [SessionManager("Crear cargos")]
         public async Task<ActionResult> CreateAsync(CargoViewModel model)
         {
             if (model.Car_Id == 0)
@@ -136,6 +141,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <param name="model">Modelo de vista del cargo.</param>
         /// <returns>Resultado de la operación.</returns>
         [HttpPost]
+        [SessionManager("Eliminar cargos")]
         public async Task<ActionResult> DeleteAsync(CargoViewModel model)
         {
             bool result = await cargosService.Delete(model.Car_Id);

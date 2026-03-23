@@ -1,4 +1,5 @@
 ﻿using GESTION_COLEGIAL.UI.Extensions;
+using GESTION_COLEGIAL.UI.Filters;
 using System.Web.Mvc;
 using static GESTION_COLEGIAL.UI.Extensions.AlertMessage;
 
@@ -10,6 +11,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class BaseController : Controller
     {
         protected string msjExist = $"El registro ya está en uso.";
+
+        /// <summary>
+        /// Verifica si el usuario actual tiene acceso a una pantalla específica.
+        /// </summary>
+        protected bool TienePantalla(string pantallaNombre)
+        {
+            string pantallas = Session?["pantallas"] as string;
+            return SessionManager.TienePantalla(pantallas, pantallaNombre);
+        }
 
         #region Result
 

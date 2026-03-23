@@ -31,10 +31,13 @@
             </div>
         </div>
         <div class="header-action-catalogo">
-            <a href="@Url.Action("CreateAsync", "Alumnos")" class="btn-nuevo-catalogo">
-                <i class="mdi mdi-plus-circle-outline"></i>
-                Nuevo Alumno
-            </a>
+            @if (ViewBag.PuedeCrear == true)
+            {
+                <a href="@Url.Action("CreateAsync", "Alumnos")" class="btn-nuevo-catalogo">
+                    <i class="mdi mdi-plus-circle-outline"></i>
+                    Nuevo Alumno
+                </a>
+            }
         </div>
     </div>
 </div>
@@ -123,10 +126,15 @@
     <script src="~/Content/js/pages/alumnos.js"></script>
     <script>
     Alumnos.datatable({
-    urlList: "@Url.Action("ListAsync")",
-    urlInsert: "@Url.Action("CreateAsync")",
-    urlUpdate: "@Url.Action("FindAsync")",
-    urlDetail: "@Url.Action("DetailAsync")"
+        urlList: "@Url.Action("ListAsync")",
+        urlInsert: "@Url.Action("CreateAsync")",
+        urlUpdate: "@Url.Action("FindAsync")",
+        urlDetail: "@Url.Action("DetailAsync")",
+        permisos: {
+            crear: @(ViewBag.PuedeCrear == true ? "true" : "false"),
+            editar: @(ViewBag.PuedeEditar == true ? "true" : "false"),
+            eliminar: @(ViewBag.PuedeEliminar == true ? "true" : "false")
+        }
     });
     </script>
 }
