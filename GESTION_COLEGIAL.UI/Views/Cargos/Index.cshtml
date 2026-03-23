@@ -36,10 +36,13 @@
             </div>
         </div>
         <div class="header-action-catalogo">
-            <button class="btn-nuevo-catalogo" id="add-btn-header" data-toggle="modal" data-target="#edit-modal">
-                <i class="mdi mdi-plus-circle-outline"></i>
-                Nuevo Cargo
-            </button>
+            @if (ViewBag.PuedeCrear == true)
+            {
+                <button class="btn-nuevo-catalogo" id="add-btn-header" data-toggle="modal" data-target="#edit-modal">
+                    <i class="mdi mdi-plus-circle-outline"></i>
+                    Nuevo Cargo
+                </button>
+            }
         </div>
     </div>
 </div>
@@ -319,7 +322,12 @@
     <script>
         Cargos.datatableCatalogs({
             urlList: "@Url.Action("ListAsync")",
-            urlDetail: "@Url.Action("DetailAsync")"
+            urlDetail: "@Url.Action("DetailAsync")",
+            permisos: {
+                crear: @(ViewBag.PuedeCrear == true ? "true" : "false"),
+                editar: @(ViewBag.PuedeEditar == true ? "true" : "false"),
+                eliminar: @(ViewBag.PuedeEliminar == true ? "true" : "false")
+            }
         });
     </script>
     <script>
