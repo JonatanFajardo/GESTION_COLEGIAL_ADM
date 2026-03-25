@@ -22,6 +22,13 @@
         .pantallas-tree .grupo-check-all:hover { color: #2196F3; }
         .pantallas-tree .grupo-icon { margin-right: 6px; vertical-align: middle; }
         .pantallas-tree .pantalla-item { padding: 2px 0; }
+        .pantallas-tree .pantalla-subgrupo { padding-left: 10px; margin: 2px 0; }
+        .pantallas-tree .pantalla-subgrupo-header { font-weight: 500; font-size: 13px; color: #1b2e4b; cursor: pointer; padding: 4px 0; }
+        .pantallas-tree .pantalla-subgrupo-header:hover { color: #2196F3; }
+        .pantallas-tree .pantalla-subgrupo-header .badge { font-size: 10px; }
+        .pantallas-tree .pantalla-subgrupo-content { padding-left: 20px; }
+        .pantallas-tree .pantalla-subgrupo-check-all { margin-left: 6px; font-size: 11px; color: #888ea8; cursor: pointer; }
+        .pantallas-tree .pantalla-subgrupo-check-all:hover { color: #2196F3; }
     </style>
 }
 
@@ -373,18 +380,31 @@
             });
         }
 
+        // Extraer el nombre de la pantalla (entidad) quitando el verbo CRUD
+        function extractPantalla(descripcion) {
+            var prefijos = ['Crear ', 'Editar ', 'Eliminar ', 'Listado de '];
+            for (var i = 0; i < prefijos.length; i++) {
+                if (descripcion.indexOf(prefijos[i]) === 0) {
+                    return descripcion.substring(prefijos[i].length);
+                }
+            }
+            return descripcion;
+        }
+
         function buildTree(container, pantallas, assignedIds) {
             if (!pantallas || pantallas.length === 0) {
                 container.html('<p class="text-muted text-center py-3">No hay pantallas disponibles</p>');
                 return;
             }
 
-            // Agrupar por Pan_Grupo
+            // Agrupar por Pan_Grupo -> Pantalla (entidad) -> Items
             var grupos = {};
             $.each(pantallas, function (i, p) {
                 var grupo = p.Pan_Grupo || 'General';
-                if (!grupos[grupo]) grupos[grupo] = [];
-                grupos[grupo].push(p);
+                var pantalla = extractPantalla(p.Pan_Descripcion);
+                if (!grupos[grupo]) grupos[grupo] = {};
+                if (!grupos[grupo][pantalla]) grupos[grupo][pantalla] = [];
+                grupos[grupo][pantalla].push(p);
             });
 
             // Iconos por grupo
@@ -402,13 +422,17 @@
 
             var html = '<ul class="file-tree">';
 
-            $.each(grupos, function (grupoName, items) {
+            $.each(grupos, function (grupoName, subgrupos) {
                 var grupoId = grupoName.replace(/\s+/g, '_').toLowerCase();
                 var icon = grupoIcons[grupoName] || 'fas fa-folder';
-                var totalItems = items.length;
-                var checkedItems = 0;
-                $.each(items, function (i, p) {
-                    if (assignedIds.indexOf(p.Pan_Id) >= 0) checkedItems++;
+
+                // Contar totales del grupo
+                var totalItems = 0, checkedItems = 0;
+                $.each(subgrupos, function (sgName, items) {
+                    $.each(items, function (i, p) {
+                        totalItems++;
+                        if (assignedIds.indexOf(p.Pan_Id) >= 0) checkedItems++;
+                    });
                 });
 
                 html += '<li class="file-tree-folder open">';
@@ -420,13 +444,34 @@
                 html += '</span>';
                 html += '<ul style="display: block;">';
 
-                $.each(items, function (i, p) {
-                    var checked = assignedIds.indexOf(p.Pan_Id) >= 0 ? 'checked' : '';
-                    html += '<li class="pantalla-item">';
-                    html += '<div class="custom-control custom-checkbox">';
-                    html += '<input type="checkbox" class="custom-control-input pantalla-check" id="pan_' + p.Pan_Id + '" value="' + p.Pan_Id + '" data-grupo="' + grupoId + '" ' + checked + '>';
-                    html += '<label class="custom-control-label" for="pan_' + p.Pan_Id + '">' + p.Pan_Descripcion + '</label>';
-                    html += '</div>';
+                $.each(subgrupos, function (pantallaName, items) {
+                    var subgrupoId = grupoId + '_' + pantallaName.replace(/\s+/g, '_').toLowerCase();
+                    var sgTotal = items.length;
+                    var sgChecked = 0;
+                    $.each(items, function (i, p) {
+                        if (assignedIds.indexOf(p.Pan_Id) >= 0) sgChecked++;
+                    });
+
+                    html += '<li class="pantalla-subgrupo file-tree-folder open">';
+                    html += '<span class="pantalla-subgrupo-header" data-subgrupo="' + subgrupoId + '" data-grupo="' + grupoId + '">';
+                    html += '<i class="fas fa-file-alt" style="color: #F7A400; margin-right: 5px;"></i>';
+                    html += pantallaName.charAt(0).toUpperCase() + pantallaName.slice(1);
+                    html += ' <span class="badge badge-secondary">' + sgChecked + '/' + sgTotal + '</span>';
+                    html += '<span class="pantalla-subgrupo-check-all" data-subgrupo="' + subgrupoId + '" data-grupo="' + grupoId + '"> (marcar todo)</span>';
+                    html += '</span>';
+                    html += '<ul class="pantalla-subgrupo-content" style="display: block;">';
+
+                    $.each(items, function (i, p) {
+                        var checked = assignedIds.indexOf(p.Pan_Id) >= 0 ? 'checked' : '';
+                        html += '<li class="pantalla-item">';
+                        html += '<div class="custom-control custom-checkbox">';
+                        html += '<input type="checkbox" class="custom-control-input pantalla-check" id="pan_' + p.Pan_Id + '" value="' + p.Pan_Id + '" data-grupo="' + grupoId + '" data-subgrupo="' + subgrupoId + '" ' + checked + '>';
+                        html += '<label class="custom-control-label" for="pan_' + p.Pan_Id + '">' + p.Pan_Descripcion + '</label>';
+                        html += '</div>';
+                        html += '</li>';
+                    });
+
+                    html += '</ul>';
                     html += '</li>';
                 });
 
@@ -444,7 +489,15 @@
         function initTreeEvents() {
             // Toggle grupo (expandir/colapsar)
             $('.grupo-header').off('click').on('click', function (e) {
-                if ($(e.target).hasClass('grupo-check-all')) return; // No colapsar al click en "marcar todo"
+                if ($(e.target).hasClass('grupo-check-all')) return;
+                var $ul = $(this).closest('li').children('ul');
+                $ul.slideToggle(200);
+                $(this).closest('li').toggleClass('open');
+            });
+
+            // Toggle sub-grupo (expandir/colapsar)
+            $('.pantalla-subgrupo-header').off('click').on('click', function (e) {
+                if ($(e.target).hasClass('pantalla-subgrupo-check-all')) return;
                 var $ul = $(this).closest('li').children('ul');
                 $ul.slideToggle(200);
                 $(this).closest('li').toggleClass('open');
@@ -457,14 +510,36 @@
                 var $checks = $('.pantalla-check[data-grupo="' + grupoId + '"]');
                 var allChecked = $checks.length === $checks.filter(':checked').length;
                 $checks.prop('checked', !allChecked);
+                updateAllBadges(grupoId);
+            });
+
+            // Marcar/desmarcar todo el sub-grupo
+            $('.pantalla-subgrupo-check-all').off('click').on('click', function (e) {
+                e.stopPropagation();
+                var subgrupoId = $(this).data('subgrupo');
+                var grupoId = $(this).data('grupo');
+                var $checks = $('.pantalla-check[data-subgrupo="' + subgrupoId + '"]');
+                var allChecked = $checks.length === $checks.filter(':checked').length;
+                $checks.prop('checked', !allChecked);
+                updateSubgrupoBadge(subgrupoId);
                 updateGrupoBadge(grupoId);
             });
 
-            // Actualizar badge al cambiar checkbox
+            // Actualizar badges al cambiar checkbox
             $('.pantalla-check').off('change').on('change', function () {
                 var grupoId = $(this).data('grupo');
+                var subgrupoId = $(this).data('subgrupo');
+                updateSubgrupoBadge(subgrupoId);
                 updateGrupoBadge(grupoId);
             });
+        }
+
+        function updateSubgrupoBadge(subgrupoId) {
+            var $checks = $('.pantalla-check[data-subgrupo="' + subgrupoId + '"]');
+            var total = $checks.length;
+            var checked = $checks.filter(':checked').length;
+            var $header = $('.pantalla-subgrupo-header[data-subgrupo="' + subgrupoId + '"]');
+            $header.find('.badge').text(checked + '/' + total);
         }
 
         function updateGrupoBadge(grupoId) {
@@ -475,23 +550,31 @@
             $header.find('.badge').text(checked + '/' + total);
         }
 
+        function updateAllBadges(grupoId) {
+            // Actualizar badge del grupo
+            updateGrupoBadge(grupoId);
+            // Actualizar badges de todos los sub-grupos dentro de este grupo
+            $('.pantalla-subgrupo-header[data-grupo="' + grupoId + '"]').each(function () {
+                updateSubgrupoBadge($(this).data('subgrupo'));
+            });
+        }
+
         // Seleccionar / Deseleccionar todas
         $('#btn-select-all').click(function () {
             $('.pantalla-check').prop('checked', true);
-            // Actualizar todos los badges
             $('.grupo-header').each(function () {
-                updateGrupoBadge($(this).data('grupo'));
+                updateAllBadges($(this).data('grupo'));
             });
         });
 
         $('#btn-deselect-all').click(function () {
             $('.pantalla-check').prop('checked', false);
             $('.grupo-header').each(function () {
-                updateGrupoBadge($(this).data('grupo'));
+                updateAllBadges($(this).data('grupo'));
             });
         });
 
-        // Expandir / Colapsar todos
+        // Expandir / Colapsar todos (aplica a grupos y sub-grupos)
         $('#btn-expand-all').click(function () {
             $('.file-tree-folder').addClass('open').children('ul').slideDown(200);
         });

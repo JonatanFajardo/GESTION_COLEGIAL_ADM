@@ -120,7 +120,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             bool result = await rolesService.SavePantallasAsync(model);
             if (result)
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
-            return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
+            return AjaxResult(true, AlertMessage.AlertMessageType.Success, "Pantallas asignadas exitosamente. Los cambios se verán reflejados en el próximo inicio de sesión.");
         }
     }
 }
