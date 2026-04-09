@@ -7,7 +7,15 @@ namespace GESTION_COLEGIAL.UI
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.LowercaseUrls = true;
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: "ControllerIndex",
+                url: "{controller}",
+                defaults: new { action = "Index", id = UrlParameter.Optional }
+            );
 
             routes.MapRoute(
                 name: "Default",
