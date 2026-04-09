@@ -437,16 +437,102 @@
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: linear-gradient(135deg, #F7A400 0%, #f97316 100%) !important;
-    color: white !important;
-    border: 1px solid #f97316 !important;
-    border-radius: 6px !important;
+/* ========================================
+   PAGINACIÓN MEJORADA
+   ======================================== */
+.dataTables_wrapper .dataTables_paginate {
+    padding: 0.75rem 1rem;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: linear-gradient(to bottom, #fffbeb, #ffedd5) !important;
+/* Contenedor de páginas */
+.dataTables_wrapper .dataTables_paginate .pagination {
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+/* Cada ítem de página */
+.dataTables_wrapper .dataTables_paginate .page-item .page-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    padding: 0 0.625rem !important;
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    color: #475569 !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Hover en botones normales */
+.dataTables_wrapper .dataTables_paginate .page-item:not(.disabled):not(.active) .page-link:hover {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%) !important;
     color: #f97316 !important;
-    border: 1px solid #fde68a !important;
-    border-radius: 6px !important;
+    border-color: #fed7aa !important;
+    box-shadow: 0 3px 8px rgba(249, 115, 22, 0.15) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Página activa */
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link,
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link:hover {
+    background: linear-gradient(135deg, #F7A400 0%, #f97316 100%) !important;
+    color: #ffffff !important;
+    border-color: #f97316 !important;
+    box-shadow: 0 4px 12px rgba(247, 164, 0, 0.35) !important;
+    transform: translateY(-1px) !important;
+    font-weight: 600 !important;
+}
+
+/* Botones deshabilitados */
+.dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+    background: #f8fafc !important;
+    color: #94a3b8 !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    pointer-events: none !important;
+}
+
+/* Botones Anterior / Siguiente más anchos */
+.dataTables_wrapper .dataTables_paginate .page-item:first-child .page-link,
+.dataTables_wrapper .dataTables_paginate .page-item:last-child .page-link {
+    padding: 0 0.875rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+}
+
+/* Ellipsis */
+.dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link[data-dt-idx="ellipsis"] {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #94a3b8 !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+}
+
+/* Info y length */
+.dataTables_wrapper .dataTables_info {
+    padding: 0.75rem 1rem;
+    color: #64748b;
+    font-size: 0.8125rem;
+}
+
+/* Footer row con borde superior sutil */
+.dataTables_wrapper > .row:last-child {
+    border-top: 1px solid #f1f5f9;
+    background: #fafbfc;
+    border-radius: 0 0 12px 12px;
 }
