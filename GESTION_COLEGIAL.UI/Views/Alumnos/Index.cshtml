@@ -33,7 +33,7 @@
         <div class="header-action-catalogo">
             @if (ViewBag.PuedeCrear == true)
             {
-                <a href="@Url.Action("CreateAsync", "Alumnos")" class="btn-nuevo-catalogo">
+                <a href="@Url.Action("Nuevo", "Alumnos")" class="btn-nuevo-catalogo">
                     <i class="mdi mdi-plus-circle-outline"></i>
                     Nuevo Alumno
                 </a>
@@ -85,7 +85,7 @@
 <!-- Modal Delete-->
 <div class="modal" id="delete-modal-secondary" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        @using (Ajax.BeginForm("DeleteAsync", "Alumnos", new AjaxOptions
+        @using (Ajax.BeginForm("Eliminar", "Alumnos", new AjaxOptions
         {
             HttpMethod = "Post",
             OnBegin = "Modals.begin",
@@ -127,9 +127,9 @@
     <script>
     Alumnos.datatable({
         urlList: "@Url.Action("ListAsync")",
-        urlInsert: "@Url.Action("CreateAsync")",
-        urlUpdate: "@Url.Action("FindAsync")",
-        urlDetail: "@Url.Action("DetailAsync")",
+        urlInsert: "@Url.Action("Nuevo")",
+        urlUpdate: "@Url.Action("Editar")",
+        urlDetail: "@Url.Action("Detalle")",
         permisos: {
             crear: @(ViewBag.PuedeCrear == true ? "true" : "false"),
             editar: @(ViewBag.PuedeEditar == true ? "true" : "false"),

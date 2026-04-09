@@ -34,7 +34,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// </summary>
 		/// <returns>La vista de creación.</returns>
 		[SessionManager("Crear alumnos")]
-		public async Task<ActionResult> CreateAsync()
+		public async Task<ActionResult> Nuevo()
 		{
 			var model = new AlumnoViewModel();
 			var drop = await Dropdown(model);
@@ -57,7 +57,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// <param name="id">ID del alumno.</param>
 		/// <returns>La vista de creación con el alumno encontrado.</returns>
 		[SessionManager("Editar alumnos")]
-		public async Task<ActionResult> FindAsync(int id)
+		public async Task<ActionResult> Editar(int id)
 		{
 			var result = await alumnosService.Find(id);
 			var drop = await Dropdown(result);
@@ -107,7 +107,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// </summary>
 		/// <param name="id">ID del alumno.</param>
 		/// <returns>La vista de detalle del alumno.</returns>
-		public async Task<ActionResult> DetailAsync(int id)
+		public async Task<ActionResult> Detalle(int id)
 		{
 			var result = await alumnosService.Find(id);
 			if (result == null)
@@ -137,7 +137,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// <returns>El resultado de la operación.</returns>
 		[HttpPost]
 		[SessionManager("Crear alumnos")]
-		public async Task<ActionResult> Save(AlumnoViewModel model)
+		public async Task<ActionResult> Guardar(AlumnoViewModel model)
 		{
 			if (model.Alu_Id == 0)
 			{
@@ -255,7 +255,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// <returns>El resultado de la operación.</returns>
 		[HttpPost]
 		[SessionManager("Eliminar alumnos")]
-		public async Task<ActionResult> DeleteAsync(AlumnoViewModel model)
+		public async Task<ActionResult> Eliminar(AlumnoViewModel model)
 		{
 			bool result = await alumnosService.Delete(model.Alu_Id);
 
