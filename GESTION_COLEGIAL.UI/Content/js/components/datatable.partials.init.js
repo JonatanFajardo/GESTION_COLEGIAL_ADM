@@ -59,7 +59,8 @@ var datatablePartials = (function () {
                     type: "GET",
                     dataType: "json",
                     success: function (response) {
-                        callback(response);
+                        var rows = Array.isArray(response) ? response : (response.data || []);
+                        callback({ data: rows });
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log('Error: ' + textStatus + ' - ' + errorThrown);

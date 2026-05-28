@@ -110,14 +110,15 @@ var datatableCatalogs = (function () {
                         type: "GET",
                         dataType: "json",
                         success: function (response) {
-                            callback(response);
+                            var rows = Array.isArray(response) ? response : (response.data || []);
+                            callback({ data: rows });
                         },
                         error: function () {
                             console.log('error');
                         }
                     });
                 },
-                columnDefs: obj.dataHeader(header)
+                columnDefs: obj.dataHeader(header, permisos)
             });
         });
         $('#datatable').on('init.dt', function () {
@@ -137,7 +138,7 @@ var datatableCatalogs = (function () {
      * @param {Array} header Listado de nombres y configuraciones en las columnas.
      * @returns
      */
-    obj.dataHeader = function (header) {
+    obj.dataHeader = function (header, permisos) {
         var _header = header;
         var head = [];
         var i = 0;

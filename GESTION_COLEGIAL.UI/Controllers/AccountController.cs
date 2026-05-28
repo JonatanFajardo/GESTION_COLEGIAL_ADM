@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -57,6 +58,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
                         : "";
                     Session["pantallas"] = pantallas;
 
+                    // Crear cookie de autenticación
+                    FormsAuthentication.SetAuthCookie(result.User.Usu_Name, model.RememberMe);
+
                     // Redirigir
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
@@ -96,6 +100,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
             Session.Clear();
             Session.Abandon();
+            FormsAuthentication.SignOut();
 
             return RedirectToAction("Login", "Account");
         }
