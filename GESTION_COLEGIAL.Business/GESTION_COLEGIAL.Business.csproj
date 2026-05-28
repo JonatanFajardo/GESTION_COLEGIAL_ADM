@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -254,6 +254,34 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Services\DashboardAdminService.cs" />
+    <Compile Include="Services\DashboardDirectorService.cs" />
+    <Compile Include="Services\DashboardDocenteService.cs" />
+    <Compile Include="Services\DashboardSecretariaService.cs" />
+    <Compile Include="Services\DashboardRRHHService.cs" />
+    <Compile Include="Services\DashboardCajeroService.cs" />
+    <Compile Include="Services\DashboardFinancieroService.cs" />
+    <Compile Include="Services\DashboardConsultaService.cs" />
+    <Compile Include="Services\AgingCuentasService.cs" />
+    <Compile Include="Services\TopDeudoresService.cs" />
+    <Compile Include="Services\MorosidadPorNivelService.cs" />
+    <Compile Include="Services\EmpleadosAntiguedadService.cs" />
+    <Compile Include="Services\AlumnosEnRiesgoService.cs" />
+    <Compile Include="Services\AlumnosBusquedaService.cs" />
+    <Compile Include="Services\BitacoraService.cs" />
+    <Compile Include="Services\NotasAdmService.cs" />
+    <Compile Include="Services\AsistenciaAdmService.cs" />
+    <Compile Include="Services\VacacionesAdmService.cs" />
+    <Compile Include="Services\BoletinAdmService.cs" />
+    <Compile Include="Services\Ficha360AlumnoAdmService.cs" />
+    <Compile Include="Services\Ficha360EmpleadoAdmService.cs" />
+    <Compile Include="Services\DocumentosAlumnoAdmService.cs" />
+    <Compile Include="Services\ArqueosCajaAdmService.cs" />
+    <Compile Include="Services\EstadoCuentaAdmService.cs" />
+    <Compile Include="Services\PlanClasesAdmService.cs" />
+    <Compile Include="Services\TareasAdmService.cs" />
+    <Compile Include="Services\MisAlumnosAdmService.cs" />
+    <Compile Include="Services\MapaAulasAdmService.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\AlumnosService.cs" />
     <Compile Include="Services\AulasService.cs" />
@@ -290,6 +318,33 @@
     <Compile Include="Services\TitulosService.cs" />
     <Compile Include="Services\UsuariosService.cs" />
     <Compile Include="Services\RolesService.cs" />
+    <Compile Include="Services\AlumnosDirectorioService.cs" />
+    <Compile Include="Services\AsistenciaEmpleadosService.cs" />
+    <Compile Include="Services\BuscadorService.cs" />
+    <Compile Include="Services\CentroAnunciosService.cs" />
+    <Compile Include="Services\ComparativoAniosService.cs" />
+    <Compile Include="Services\ConfiguracionService.cs" />
+    <Compile Include="Services\DevToolsService.cs" />
+    <Compile Include="Services\CumplimientoDocumentosService.cs" />
+    <Compile Include="Services\EmpleadosCumpleanosService.cs" />
+    <Compile Include="Services\HorarioProfesoresService.cs" />
+    <Compile Include="Services\KPIsAcademicosService.cs" />
+    <Compile Include="Services\KPIsFinancierosService.cs" />
+    <Compile Include="Services\MatrizRolPantallasService.cs" />
+    <Compile Include="Services\MensajesService.cs" />
+    <Compile Include="Services\NotificacionesService.cs" />
+    <Compile Include="Services\OrganigramaService.cs" />
+    <Compile Include="Services\PerfilService.cs" />
+    <Compile Include="Services\PersonasService.cs" />
+    <Compile Include="Services\PiramideMatriculaService.cs" />
+    <Compile Include="Services\RendimientoPorSeccionService.cs" />
+    <Compile Include="Services\SesionesActivasService.cs" />
+    <Compile Include="Services\ModuloFinanzas\AnalisisIngresosService.cs" />
+    <Compile Include="Services\ModuloFinanzas\EstadoResultadosService.cs" />
+    <Compile Include="Services\ModuloFinanzas\FlujoCajaService.cs" />
+    <Compile Include="Services\ModuloFinanzas\HistorialTransaccionesService.cs" />
+    <Compile Include="Services\ModuloFinanzas\PagosDelDiaService.cs" />
+    <Compile Include="Services\ModuloFinanzas\PendientesCobrarService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
