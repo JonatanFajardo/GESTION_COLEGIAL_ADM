@@ -1,0 +1,123 @@
+@{
+    ViewBag.Title = "Cumplimiento de Documentos de Empleados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/cumplimientodocumentos.css" rel="stylesheet" />
+}
+
+@* BREADCRUMB *@
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Cumplimiento de Documentos</li>
+        </ol>
+    </nav>
+</div>
+
+@* PAGE HEADER *@
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <i class="fa-solid fa-folder-open fa-2x"></i>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Cumplimiento de Documentos</h1>
+                <p>Estado de entrega de documentos requeridos por empleado</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+
+    @* SECCIÓN 1 — STATS GLOBALES *@
+    <div id="cdoc-stats" class="row mb-4">
+
+        @* Tarjeta: % Cumplimiento Global *@
+        <div class="col-md-4 mb-3">
+            <div class="cdoc-stat-card stat-global">
+                <div class="cdoc-stat-card-header">
+                    <p class="cdoc-stat-card-title">Cumplimiento Global</p>
+                    <div class="cdoc-stat-card-icon icon-global">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                </div>
+                <p class="cdoc-stat-pct" id="cdoc-stat-pct">—</p>
+                <p class="cdoc-stat-sub" id="cdoc-stat-sub-global">documentos entregados sobre el total</p>
+                <div class="progress cdoc-stat-progress-bar">
+                    <div id="cdoc-stat-progress"
+                         class="progress-bar bg-primary"
+                         role="progressbar"
+                         aria-valuenow="0"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Tarjeta: Documentos Entregados *@
+        <div class="col-md-4 mb-3">
+            <div class="cdoc-stat-card stat-entregados">
+                <div class="cdoc-stat-card-header">
+                    <p class="cdoc-stat-card-title">Documentos Entregados</p>
+                    <div class="cdoc-stat-card-icon icon-entregados">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+                <p class="cdoc-stat-value" id="cdoc-stat-entregados">—</p>
+                <p class="cdoc-stat-sub">con confirmación de recepción</p>
+            </div>
+        </div>
+
+        @* Tarjeta: Documentos Pendientes *@
+        <div class="col-md-4 mb-3">
+            <div class="cdoc-stat-card stat-pendientes">
+                <div class="cdoc-stat-card-header">
+                    <p class="cdoc-stat-card-title">Documentos Pendientes</p>
+                    <div class="cdoc-stat-card-icon icon-pendientes">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </div>
+                </div>
+                <p class="cdoc-stat-value" id="cdoc-stat-pendientes">—</p>
+                <p class="cdoc-stat-sub">aún sin registrar entrega</p>
+            </div>
+        </div>
+
+    </div>
+
+    @* SECCIÓN 2 — FILTRO *@
+    <div class="cdoc-filter-panel mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-5 col-sm-8 mb-2 mb-sm-0">
+                <select id="filter-empleado" class="form-control">
+                    <option value="">-- Todos los empleados --</option>
+                </select>
+            </div>
+            <div class="col-md-2 col-sm-4">
+                <button class="btn btn-primary btn-sm w-100" id="btn-filtrar">
+                    <i class="fa-solid fa-filter"></i> Filtrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    @* SECCIÓN 3 — GRID DE EMPLEADOS (tarjetas inyectadas por JS) *@
+    <div id="cdoc-grid" class="row"></div>
+
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/cumplimientodocumentos.js"></script>
+    <script>
+        CumplimientoDocumentos.init(
+            "@Url.Action("ListAsync")",
+            "@Url.Action("EmpleadosDropdownAsync")"
+        );
+    </script>
+}

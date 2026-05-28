@@ -1,0 +1,129 @@
+@{
+    ViewBag.Title = "Asistencia Empleados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/modal-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/asistenciaempleados.css" rel="stylesheet" />
+}
+
+@* Breadcrumb *@
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Asistencia Empleados</li>
+        </ol>
+    </nav>
+</div>
+
+@* Page Header *@
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <i class="fa-solid fa-calendar-check fa-2x"></i>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Asistencia del Personal</h1>
+                <p>Registre y consulte la asistencia diaria de los empleados</p>
+            </div>
+        </div>
+        <div class="header-action-catalogo">
+            <button id="btn-registrar-asistencia" class="btn-nuevo-catalogo">
+                <i class="mdi mdi-plus-circle-outline"></i> Registrar Asistencia
+            </button>
+        </div>
+    </div>
+</div>
+
+@* Contenido principal *@
+<div class="fluid-container">
+
+    @* Filtros *@
+    <div id="asi-filtros" class="asi-filtros-card">
+        <div class="row align-items-end">
+            <div class="col-md-4 col-sm-6 mb-2 mb-md-0">
+                <label class="form-label-catalogo" for="filtro-empleado">Empleado</label>
+                <select id="filtro-empleado" class="form-control">
+                    <option value="">-- Todos --</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
+                <label class="form-label-catalogo" for="filtro-fecha">Fecha</label>
+                <input type="date" id="filtro-fecha" class="form-control" />
+            </div>
+            <div class="col-md-2 col-sm-6 mb-2 mb-md-0">
+                <button id="btn-buscar" class="btn btn-primary btn-block">
+                    <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    @* KPI Cards — llenado por JS *@
+    <div id="asi-kpis" class="row"></div>
+
+    @* Tarjetas de registro — llenado por JS *@
+    <div id="asi-cards-container" class="row"></div>
+
+</div>
+
+@* Modal Registrar Asistencia *@
+<div class="modal fade" id="modal-nueva" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modal-content-catalogo">
+            <div class="modal-header-catalogo">
+                <div class="modal-title-wrapper-catalogo">
+                    <div>
+                        <h5 class="modal-title-catalogo">Registrar Asistencia</h5>
+                    </div>
+                </div>
+                <button type="button" class="close close-catalogo" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="form-nueva">
+                <div class="modal-body-catalogo">
+                    <div class="form-card-catalogo">
+                        <div class="row">
+                            <div class="col-md-12 form-group-catalogo mb-3">
+                                <label class="form-label-catalogo">Empleado *</label>
+                                <select name="Emp_Id" class="form-control form-input-catalogo">
+                                    <option value="">-- Seleccione Empleado --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group-catalogo mb-3">
+                                <label class="form-label-catalogo">Fecha *</label>
+                                <input type="date" name="Fecha" class="form-control form-input-catalogo" />
+                            </div>
+                            <div class="col-md-6 form-group-catalogo mb-3">
+                                <label class="form-label-catalogo">Tipo *</label>
+                                <select name="Tipo" class="form-control form-input-catalogo">
+                                    <option value="Presente">Presente</option>
+                                    <option value="Ausente">Ausente</option>
+                                    <option value="Permiso">Permiso</option>
+                                    <option value="Tardanza">Tardanza</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer-catalogo">
+                    <button type="button" class="btn-cancel-catalogo" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-save-catalogo">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/asistenciaempleados.js"></script>
+    <script>
+        AsistenciaEmpleados.init(
+            "@Url.Action("ListAsync")",
+            "@Url.Action("CreateAsync")",
+            "@Url.Action("DropdownsAsync")"
+        );
+    </script>
+}

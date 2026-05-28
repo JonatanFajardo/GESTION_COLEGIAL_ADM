@@ -1,0 +1,345 @@
+/* ============================================================
+   empleadoscumpleanos.css
+   Estilos exclusivos para la pantalla Cumpleaños del Personal
+   Bootstrap 4 se encarga del grid/spacing; este archivo cubre
+   lo que Bootstrap no provee.
+   ============================================================ */
+
+/* ---------- Variables de color de la paleta de avatares ---------- */
+:root {
+    --bday-color-0: #3a7bd5;
+    --bday-color-1: #00b09b;
+    --bday-color-2: #f7971e;
+    --bday-color-3: #8e44ad;
+    --bday-color-4: #e74c3c;
+    --bday-color-5: #16a085;
+    --bday-color-6: #d35400;
+    --bday-gold:    #f0c040;
+    --bday-gold-bg: #fffbea;
+    --bday-today-border: #e6ac00;
+}
+
+/* Restaurar padding que listado-catalogos.css fuerza a 0 (pensado para DataTables) */
+.card-listado-catalogo .card-body-listado-catalogo {
+    padding: 1.5rem;
+}
+
+/* ---------- Nav de meses ---------- */
+.bday-month-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: #ced4da transparent;
+}
+
+.bday-month-nav::-webkit-scrollbar {
+    height: 4px;
+}
+
+.bday-month-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.bday-month-nav::-webkit-scrollbar-thumb {
+    background-color: #ced4da;
+    border-radius: 4px;
+}
+
+.bday-month-nav .nav-pills {
+    flex-wrap: nowrap;
+    display: inline-flex;
+    gap: 6px;
+}
+
+.bday-month-nav .nav-link {
+    border-radius: 20px;
+    font-size: 0.82rem;
+    padding: 5px 14px;
+    color: #495057;
+    background-color: #f1f3f5;
+    border: 1px solid #dee2e6;
+    transition: background-color 0.18s, color 0.18s, border-color 0.18s;
+    white-space: nowrap;
+}
+
+.bday-month-nav .nav-link:hover {
+    background-color: #dce4f5;
+    border-color: #3a7bd5;
+    color: #3a7bd5;
+}
+
+.bday-month-nav .nav-link.active {
+    background-color: #3a7bd5;
+    border-color: #3a7bd5;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ---------- Banner de resumen ---------- */
+.bday-summary {
+    border-radius: 12px;
+    border-left: 5px solid #3a7bd5;
+    background-color: #f0f5ff;
+    padding: 16px 20px;
+}
+
+.bday-summary .bday-summary-count {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #3a7bd5;
+    line-height: 1;
+}
+
+.bday-summary .bday-summary-label {
+    font-size: 0.92rem;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+.bday-summary .bday-today-alert {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #fff3cd;
+    border: 1px solid var(--bday-gold);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #856404;
+}
+
+/* ---------- Tarjeta de empleado ---------- */
+.bday-card {
+    border-radius: 14px;
+    border: 1px solid #e9ecef;
+    border-top: 4px solid var(--bday-color, #3a7bd5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    background-color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+}
+
+.bday-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Tarjeta especial para cumpleaños hoy */
+.bday-today {
+    background-color: var(--bday-gold-bg);
+    border-top-color: var(--bday-today-border);
+    border-color: var(--bday-gold);
+    animation: bday-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes bday-pulse {
+    0%   { box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+    50%  { box-shadow: 0 4px 18px rgba(240, 192, 64, 0.45); }
+    100% { box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+}
+
+/* ---------- Avatar ---------- */
+.bday-avatar,
+.bday-avatar-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.bday-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+    user-select: none;
+}
+
+.bday-avatar-img {
+    object-fit: cover;
+    border: 2px solid #dee2e6;
+}
+
+/* ---------- Badge de días ---------- */
+.bday-badge {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.bday-badge-today {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.bday-badge-soon {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffc107;
+}
+
+.bday-badge-later {
+    background-color: #e2ecf9;
+    color: #2c5282;
+    border: 1px solid #b8d0ee;
+}
+
+/* ---------- Separador interno de la tarjeta ---------- */
+.bday-card-body {
+    padding: 16px;
+}
+
+.bday-card-divider {
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 10px 0;
+}
+
+.bday-card-meta {
+    font-size: 0.82rem;
+    color: #6c757d;
+}
+
+.bday-card-name {
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.bday-card-role {
+    font-size: 0.78rem;
+    color: #6c757d;
+    margin-top: 1px;
+}
+
+/* ---------- Estado vacío ---------- */
+.bday-empty {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.bday-empty-icon {
+    font-size: 3.5rem;
+    color: #ced4da;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.bday-empty-text {
+    font-size: 1rem;
+    color: #adb5bd;
+}
+
+/* ---------- Spinner de carga ---------- */
+.bday-loading {
+    padding: 60px 20px;
+    text-align: center;
+    color: #6c757d;
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────── */
+
+/* Teléfonos portrait */
+@media (max-width: 575px) {
+    .bday-summary {
+        text-align: center;
+        border-left: none;
+        border-top: 5px solid #3a7bd5;
+        padding: 12px 14px;
+    }
+
+    .bday-summary .bday-summary-count { font-size: 1.5rem; }
+    .bday-summary .bday-summary-label { font-size: 0.85rem; }
+
+    .bday-card-body { padding: 12px; }
+
+    .bday-avatar,
+    .bday-avatar-img { width: 52px; height: 52px; }
+    .bday-avatar { font-size: 1.1rem; }
+
+    .bday-card-name  { font-size: 0.875rem; }
+    .bday-card-role  { font-size: 0.75rem; }
+    .bday-card-meta  { font-size: 0.78rem; }
+
+    /* Pills compactos, tap target ≥ 36 px */
+    .bday-month-nav .nav-link {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+/* Teléfono muy pequeño */
+@media (max-width: 360px) {
+    .bday-avatar,
+    .bday-avatar-img { width: 44px; height: 44px; }
+    .bday-avatar { font-size: 0.95rem; }
+    .bday-month-nav .nav-link { padding: 5px 8px; font-size: 0.75rem; }
+}
+
+/* ─────────────────────────────────────────
+   PANTALLAS GRANDES: 1920 px
+   ───────────────────────────────────────── */
+@media (min-width: 1920px) {
+    .bday-summary { padding: 20px 28px; }
+    .bday-summary .bday-summary-count { font-size: 2.4rem; }
+    .bday-summary .bday-summary-label { font-size: 1.05rem; }
+
+    .bday-card-body { padding: 20px; }
+
+    .bday-avatar,
+    .bday-avatar-img { width: 72px; height: 72px; }
+    .bday-avatar { font-size: 1.5rem; }
+
+    .bday-card-name { font-size: 1.05rem; }
+    .bday-card-meta { font-size: 0.88rem; }
+
+    .bday-month-nav .nav-link { font-size: 0.92rem; padding: 7px 18px; }
+}
+
+/* ─────────────────────────────────────────
+   4 K: 2560 px y superior
+   ───────────────────────────────────────── */
+@media (min-width: 2560px) {
+    /* 6 tarjetas por fila */
+    #bday-grid > [class*="col-"] {
+        flex: 0 0 16.6666%;
+        max-width: 16.6666%;
+    }
+
+    .bday-avatar,
+    .bday-avatar-img { width: 84px; height: 84px; }
+    .bday-avatar { font-size: 1.75rem; }
+
+    .bday-card-body  { padding: 22px; }
+    .bday-card-name  { font-size: 1.125rem; }
+    .bday-card-role  { font-size: 0.9rem; }
+    .bday-card-meta  { font-size: 0.9375rem; }
+
+    .bday-badge { font-size: 0.875rem; padding: 5px 16px; }
+
+    .bday-summary               { padding: 22px 32px; }
+    .bday-summary .bday-summary-count { font-size: 3rem; }
+    .bday-summary .bday-summary-label { font-size: 1.125rem; }
+    .bday-today-alert           { font-size: 1rem; padding: 6px 20px; }
+
+    .bday-month-nav .nav-link { font-size: 1rem; padding: 9px 22px; }
+
+    .bday-empty-icon { font-size: 5rem; }
+    .bday-empty-text { font-size: 1.25rem; }
+}

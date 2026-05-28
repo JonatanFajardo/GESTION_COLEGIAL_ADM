@@ -1,0 +1,526 @@
+/* ========================================
+   CUMPLIMIENTO DE DOCUMENTOS DE EMPLEADOS
+   Módulo: cumplimientodocumentos.css
+   ======================================== */
+
+/* ----------------------------------------
+   STAT CARDS (sección de totales globales)
+   ---------------------------------------- */
+.cdoc-stat-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border-left: 5px solid #F7A400;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+}
+
+.cdoc-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.cdoc-stat-card.stat-global {
+    border-left-color: #3a7bd5;
+}
+
+.cdoc-stat-card.stat-entregados {
+    border-left-color: #00b09b;
+}
+
+.cdoc-stat-card.stat-pendientes {
+    border-left-color: #e74c3c;
+}
+
+.cdoc-stat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.cdoc-stat-card-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    margin: 0;
+}
+
+.cdoc-stat-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    flex-shrink: 0;
+}
+
+.cdoc-stat-card-icon.icon-global {
+    background: #eff6ff;
+    color: #3a7bd5;
+}
+
+.cdoc-stat-card-icon.icon-entregados {
+    background: #ecfdf5;
+    color: #00b09b;
+}
+
+.cdoc-stat-card-icon.icon-pendientes {
+    background: #fef2f2;
+    color: #e74c3c;
+}
+
+.cdoc-stat-pct {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+    margin: 0;
+}
+
+.cdoc-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+    margin: 0;
+}
+
+.cdoc-stat-sub {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* Barra de progreso en las stat-cards */
+.cdoc-stat-progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* ----------------------------------------
+   FILTRO
+   ---------------------------------------- */
+.cdoc-filter-panel {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    padding: 1rem 1.25rem;
+    border: 1px solid #e5e7eb;
+}
+
+/* ----------------------------------------
+   GRID DE TARJETAS DE EMPLEADOS
+   ---------------------------------------- */
+#cdoc-grid {
+    margin-top: 0;
+}
+
+.cdoc-emp-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e5e7eb;
+    border-top: 4px solid #cbd5e1;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.cdoc-emp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* Colores de borde superior según cumplimiento */
+.cdoc-emp-card.status-full {
+    border-top-color: #00b09b;
+}
+
+.cdoc-emp-card.status-partial {
+    border-top-color: #f7971e;
+}
+
+.cdoc-emp-card.status-low {
+    border-top-color: #e74c3c;
+}
+
+/* HEADER de la tarjeta de empleado */
+.cdoc-emp-card-header {
+    padding: 1rem 1.125rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: #fafbfc;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.cdoc-emp-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.cdoc-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+/* Clases de color de avatar según Emp_Id % 7 */
+.cdoc-avatar.avatar-0 { background-color: #3a7bd5; }
+.cdoc-avatar.avatar-1 { background-color: #00b09b; }
+.cdoc-avatar.avatar-2 { background-color: #f7971e; }
+.cdoc-avatar.avatar-3 { background-color: #8e44ad; }
+.cdoc-avatar.avatar-4 { background-color: #e74c3c; }
+.cdoc-avatar.avatar-5 { background-color: #16a085; }
+.cdoc-avatar.avatar-6 { background-color: #d35400; }
+
+.cdoc-emp-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cdoc-emp-name {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cdoc-emp-code {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin: 0.15rem 0 0;
+    font-weight: 500;
+}
+
+/* Barra de progreso dentro del header */
+.cdoc-progress-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cdoc-progress-label .pct-text {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.cdoc-progress-bar-wrap {
+    width: 100%;
+}
+
+/* ----------------------------------------
+   LISTA DE DOCUMENTOS
+   ---------------------------------------- */
+.cdoc-doc-list {
+    padding: 0.5rem 0;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 280px;
+}
+
+.cdoc-doc-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.5rem 1.125rem;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.15s ease;
+    cursor: default;
+}
+
+.cdoc-doc-item:last-child {
+    border-bottom: none;
+}
+
+.cdoc-doc-item:hover {
+    background-color: #f8fafc;
+}
+
+.cdoc-doc-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    line-height: 1;
+}
+
+.cdoc-doc-icon.icon-ok {
+    color: #00b09b;
+}
+
+.cdoc-doc-icon.icon-pending {
+    color: #e74c3c;
+}
+
+.cdoc-doc-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.cdoc-doc-name {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #334155;
+    line-height: 1.35;
+    margin: 0;
+}
+
+.cdoc-doc-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+}
+
+.cdoc-badge-oblig {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+}
+
+.cdoc-badge-oblig.oblig-pendiente {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.cdoc-badge-oblig.oblig-entregado {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.cdoc-doc-fecha {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+/* ----------------------------------------
+   ESTADO VACÍO
+   ---------------------------------------- */
+.cdoc-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    color: #94a3b8;
+    text-align: center;
+    width: 100%;
+}
+
+.cdoc-empty-state i {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.cdoc-empty-state p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    color: #94a3b8;
+}
+
+/* ----------------------------------------
+   SPINNER DE CARGA
+   ---------------------------------------- */
+.cdoc-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    width: 100%;
+    color: #64748b;
+    gap: 0.75rem;
+    font-size: 0.9375rem;
+}
+
+/* ----------------------------------------
+   ANIMACIONES
+   ---------------------------------------- */
+@keyframes cdocFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cdoc-emp-card {
+    animation: cdocFadeIn 0.3s ease-out both;
+}
+
+/* Delay escalonado para las tarjetas */
+.cdoc-emp-card:nth-child(1)  { animation-delay: 0.04s; }
+.cdoc-emp-card:nth-child(2)  { animation-delay: 0.08s; }
+.cdoc-emp-card:nth-child(3)  { animation-delay: 0.12s; }
+.cdoc-emp-card:nth-child(4)  { animation-delay: 0.16s; }
+.cdoc-emp-card:nth-child(5)  { animation-delay: 0.20s; }
+.cdoc-emp-card:nth-child(6)  { animation-delay: 0.24s; }
+.cdoc-emp-card:nth-child(7)  { animation-delay: 0.28s; }
+.cdoc-emp-card:nth-child(8)  { animation-delay: 0.32s; }
+.cdoc-emp-card:nth-child(9)  { animation-delay: 0.36s; }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────── */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .cdoc-stat-card { padding: 1.125rem 1.25rem; }
+
+    .cdoc-stat-pct,
+    .cdoc-stat-value { font-size: 1.5rem; }
+
+    .cdoc-doc-list { max-height: none; }
+}
+
+/* Teléfonos */
+@media (max-width: 575px) {
+    /* Stats: 1 por fila en mobile */
+    #cdoc-stats > [class*="col-"] {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .cdoc-stat-card { padding: 1rem; }
+
+    .cdoc-stat-pct,
+    .cdoc-stat-value { font-size: 1.375rem; }
+
+    .cdoc-stat-card-icon { width: 36px; height: 36px; font-size: 1rem; }
+
+    /* Empleados: 1 columna — ya en col-md-12 de Bootstrap */
+    .cdoc-emp-card-top { gap: 0.5rem; }
+
+    .cdoc-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 0.875rem;
+    }
+
+    .cdoc-emp-name { font-size: 0.875rem; }
+    .cdoc-emp-code { font-size: 0.7rem; }
+
+    .cdoc-emp-card-header { padding: 0.75rem; }
+
+    .cdoc-doc-item { padding: 0.4rem 0.75rem; }
+    .cdoc-doc-name { font-size: 0.8125rem; }
+
+    /* Filtro */
+    .cdoc-filter-panel { padding: 0.75rem; }
+
+    /* Tap target para select y botón */
+    .cdoc-filter-panel .form-control,
+    .cdoc-filter-panel .btn {
+        min-height: 44px;
+        font-size: 16px; /* evita zoom iOS */
+    }
+}
+
+/* Teléfono muy pequeño */
+@media (max-width: 360px) {
+    .cdoc-avatar { width: 36px; height: 36px; font-size: 0.8rem; }
+    .cdoc-stat-pct, .cdoc-stat-value { font-size: 1.25rem; }
+}
+
+/* ─────────────────────────────────────────
+   PANTALLAS GRANDES: 1920 px
+   ───────────────────────────────────────── */
+@media (min-width: 1920px) {
+    .cdoc-stat-card       { padding: 1.75rem 2rem; }
+    .cdoc-stat-pct,
+    .cdoc-stat-value      { font-size: 2.375rem; }
+    .cdoc-stat-card-icon  { width: 48px; height: 48px; font-size: 1.25rem; }
+    .cdoc-stat-card-title { font-size: 0.875rem; }
+
+    .cdoc-avatar   { width: 56px; height: 56px; font-size: 1.125rem; }
+    .cdoc-emp-name { font-size: 1rem; }
+    .cdoc-emp-code { font-size: 0.8rem; }
+
+    .cdoc-doc-name { font-size: 0.875rem; }
+    .cdoc-doc-list { max-height: 320px; }
+}
+
+/* ─────────────────────────────────────────
+   4 K: 2560 px y superior
+   ───────────────────────────────────────── */
+@media (min-width: 2560px) {
+    /* Stats: 3 columnas → se mantienen, pero con más espacio */
+    .cdoc-stat-card       { padding: 2.25rem 2.5rem; }
+    .cdoc-stat-pct,
+    .cdoc-stat-value      { font-size: 3rem; }
+    .cdoc-stat-card-icon  { width: 58px; height: 58px; font-size: 1.5rem; border-radius: 14px; }
+    .cdoc-stat-card-title { font-size: 0.9375rem; }
+    .cdoc-stat-sub        { font-size: 0.875rem; }
+
+    /* Grid: 4 tarjetas por fila en 4K */
+    #cdoc-grid > [class*="col-"] {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+
+    .cdoc-emp-card-header { padding: 1.25rem 1.5rem 1rem; }
+    .cdoc-emp-card-top    { gap: 1rem; }
+
+    .cdoc-avatar   { width: 64px; height: 64px; font-size: 1.3rem; }
+    .cdoc-emp-name { font-size: 1.0625rem; }
+    .cdoc-emp-code { font-size: 0.8125rem; }
+
+    .cdoc-progress-label { font-size: 0.8125rem; }
+
+    .cdoc-doc-item  { padding: 0.625rem 1.5rem; }
+    .cdoc-doc-name  { font-size: 0.9375rem; }
+    .cdoc-doc-list  { max-height: 380px; }
+
+    .cdoc-badge-oblig { font-size: 0.7rem; padding: 0.15rem 0.55rem; }
+
+    /* Filtro */
+    .cdoc-filter-panel { padding: 1.375rem 1.75rem; }
+    .cdoc-filter-panel .form-control { padding: 0.875rem 1.125rem; font-size: 1rem; }
+
+    .cdoc-empty-state i { font-size: 5rem; }
+    .cdoc-empty-state p { font-size: 1.25rem; }
+}
