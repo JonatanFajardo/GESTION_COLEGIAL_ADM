@@ -70,7 +70,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             {
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
-            return AjaxResult(true, AlertMessage.AlertMessageCustomType.Success);
+            return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessInsert);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             {
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
-            return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessEdit);
+            return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
         }
 
         /// <summary>
