@@ -368,6 +368,8 @@
     <Content Include="Content\css\pages\error\style-maintanence.css" />
     <Content Include="Content\css\pages\faq\faq.css" />
     <Content Include="Content\css\pages\faq\faq2.css" />
+    <Content Include="Content\css\pages\cajero-kpis.css" />
+    <Content Include="Content\css\pages\finanzas-dashboard.css" />
     <Content Include="Content\css\pages\helpdesk.css" />
     <Content Include="Content\css\pages\main.css" />
     <Content Include="Content\css\pages\main.min.css" />
