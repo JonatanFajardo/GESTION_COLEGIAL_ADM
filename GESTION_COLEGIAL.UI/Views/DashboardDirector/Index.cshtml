@@ -1,0 +1,445 @@
+@{
+    ViewBag.Title = "Dashboard Director";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* ── Spacing (Bootstrap rules del proyecto) ── */
+    .dd-wrapper { padding: 0 6px 32px; }
+    .dd-wrapper .row { margin-bottom: 22px; }
+    .dd-wrapper .row:last-child { margin-bottom: 0; }
+    .dd-wrapper [class*="col-"] { padding-left: 10px; padding-right: 10px; }
+
+    /* ── Header ── */
+    .dd-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 22px;
+        padding: 16px 22px;
+        background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(15,76,129,.3);
+    }
+    .dd-header-left { display: flex; align-items: center; gap: 14px; }
+    .dd-header-icon {
+        width: 46px; height: 46px;
+        background: rgba(255,255,255,.15);
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem; color: #fff;
+    }
+    .dd-header h2 { margin: 0; font-size: 1.25rem; font-weight: 700; color: #fff; }
+    .dd-header-sub { font-size: .78rem; color: rgba(255,255,255,.6); margin-top: 2px; }
+    .dd-controls {
+        display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .dd-controls label { font-size: .8rem; color: rgba(255,255,255,.7); font-weight: 600; margin: 0; }
+    .dd-controls select {
+        height: 34px; padding: 0 10px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.25);
+        border-radius: 7px; font-size: .84rem; color: #fff;
+        outline: none; cursor: pointer;
+    }
+    .dd-controls select option { background: #1e293b; color: #fff; }
+    .btn-actualizar {
+        height: 34px; padding: 0 18px;
+        background: #fff; color: #1e293b;
+        border: none; border-radius: 7px;
+        font-size: .84rem; font-weight: 700;
+        cursor: pointer; transition: all .2s;
+        display: flex; align-items: center; gap: 6px;
+    }
+    .btn-actualizar:hover { background: #e0f2fe; transform: translateY(-1px); }
+
+    /* ── Section heading ── */
+    .dd-section {
+        display: flex; align-items: center; gap: 10px;
+        margin-bottom: 14px;
+    }
+    .dd-section-accent {
+        width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0;
+    }
+    .dd-section-label {
+        font-size: .78rem; font-weight: 800; color: #475569;
+        text-transform: uppercase; letter-spacing: .7px; white-space: nowrap;
+    }
+    .dd-section-line { flex: 1; height: 1px; background: #e2e8f0; }
+
+    /* ── KPI Cards ── */
+    .kpi-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px 18px 14px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+        position: relative;
+        overflow: hidden;
+        transition: transform .15s, box-shadow .15s;
+        border-left: 4px solid transparent;
+    }
+    .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+    .kpi-card.c-blue   { border-left-color: #3b82f6; }
+    .kpi-card.c-green  { border-left-color: #22c55e; }
+    .kpi-card.c-teal   { border-left-color: #14b8a6; }
+    .kpi-card.c-red    { border-left-color: #ef4444; }
+    .kpi-card.c-orange { border-left-color: #f97316; }
+    .kpi-card.c-amber  { border-left-color: #f59e0b; }
+
+    .kpi-card .kpi-icon-bg {
+        position: absolute; right: -6px; bottom: -6px;
+        font-size: 3.8rem; opacity: .05; color: #0f172a; pointer-events: none;
+    }
+    .kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+    .kpi-icon {
+        width: 36px; height: 36px; border-radius: 9px;
+        display: flex; align-items: center; justify-content: center; font-size: .95rem;
+    }
+    .kpi-icon.blue   { background: #eff6ff; color: #3b82f6; }
+    .kpi-icon.green  { background: #f0fdf4; color: #22c55e; }
+    .kpi-icon.teal   { background: #f0fdfa; color: #14b8a6; }
+    .kpi-icon.red    { background: #fef2f2; color: #ef4444; }
+    .kpi-icon.orange { background: #fff7ed; color: #f97316; }
+    .kpi-icon.amber  { background: #fffbeb; color: #f59e0b; }
+
+    .kpi-badge-top {
+        font-size: .65rem; padding: 2px 8px; border-radius: 20px; font-weight: 700;
+    }
+    .kpi-value { font-size: 1.7rem; font-weight: 800; color: #0f172a; line-height: 1; }
+    .kpi-label { font-size: .7rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+
+    /* ── Panel ── */
+    .dd-panel {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+        padding: 18px 20px;
+    }
+
+    /* ── Asistencia ── */
+    .asist-stat {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        padding: 10px 20px;
+        border-radius: 10px;
+    }
+    .asist-stat.pres { background: #f0fdf4; }
+    .asist-stat.ause { background: #fef2f2; }
+    .asist-stat.tard { background: #fffbeb; }
+    .asist-val { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+    .asist-lbl { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-top: 3px; }
+    .asist-val.pres { color: #16a34a; } .asist-lbl.pres { color: #86efac; }
+    .asist-val.ause { color: #dc2626; } .asist-lbl.ause { color: #fca5a5; }
+    .asist-val.tard { color: #d97706; } .asist-lbl.tard { color: #fcd34d; }
+    .asist-pct-wrap {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        padding: 0 16px;
+    }
+    .asist-pct-num { font-size: 2.6rem; font-weight: 900; color: #0f172a; line-height: 1; }
+    .asist-pct-lbl { font-size: .72rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+    .asist-stats-row { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+
+    /* ── Chart header with stat ── */
+    .chart-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+    .chart-title { font-size: .8rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .5px; }
+    .chart-stat { font-size: .82rem; font-weight: 700; color: #3b82f6; }
+
+    /* ── Tablas ── */
+    .dd-table { width: 100%; font-size: .82rem; border-collapse: collapse; }
+    .dd-table th {
+        background: #f8fafc; color: #64748b;
+        font-weight: 700; font-size: .7rem; text-transform: uppercase; letter-spacing: .5px;
+        padding: 8px 12px; border-bottom: 2px solid #e2e8f0;
+    }
+    .dd-table td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; }
+    .dd-table tr:last-child td { border-bottom: none; }
+    .dd-table tr:hover td { background: #f8fafc; }
+    /* filas de rendimiento con fondo tintado */
+    .dd-table tr.rend-ok td  { background: #f0fdf4 !important; }
+    .dd-table tr.rend-med td { background: #fffbeb !important; }
+    .dd-table tr.rend-bad td { background: #fff1f2 !important; }
+    .dd-table tr.rend-ok:hover td  { background: #dcfce7 !important; }
+    .dd-table tr.rend-med:hover td { background: #fef9c3 !important; }
+    .dd-table tr.rend-bad:hover td { background: #ffe4e6 !important; }
+
+    /* ── Progress bar ── */
+    .dd-progress { height: 7px; background: #e2e8f0; border-radius: 4px; overflow: hidden; min-width: 70px; }
+    .dd-progress-fill { height: 100%; border-radius: 4px; transition: width .5s cubic-bezier(.4,0,.2,1); }
+
+    /* ── Rank badge en deuda ── */
+    .rank-badge {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 22px; height: 22px; border-radius: 50%;
+        font-size: .7rem; font-weight: 800;
+    }
+    .rank-1 { background: #fef9c3; color: #a16207; }
+    .rank-2 { background: #f1f5f9; color: #475569; }
+    .rank-3 { background: #fff7ed; color: #c2410c; }
+    .rank-n { background: #f8fafc; color: #94a3b8; }
+
+    /* ── Alertas ── */
+    .alertas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+    .alerta-item {
+        display: flex; align-items: flex-start; gap: 10px;
+        padding: 12px 14px; border-radius: 10px; font-size: .83rem;
+        border-left: 3px solid transparent;
+    }
+    .alerta-item.alta  { background: #fef2f2; border-left-color: #ef4444; }
+    .alerta-item.media { background: #fff7ed; border-left-color: #f97316; }
+    .alerta-item.baja  { background: #eff6ff; border-left-color: #3b82f6; }
+    .alerta-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .alerta-body { flex: 1; }
+    .alerta-msg  { color: #1e293b; font-weight: 600; line-height: 1.3; }
+    .alerta-badge {
+        display: inline-block; margin-top: 4px;
+        font-size: .62rem; padding: 1px 7px; border-radius: 20px; font-weight: 700;
+    }
+    .badge-alta  { background: #fee2e2; color: #b91c1c; }
+    .badge-media { background: #ffedd5; color: #c2410c; }
+    .badge-baja  { background: #dbeafe; color: #1d4ed8; }
+
+    /* ── Chart canvas ── */
+    canvas { display: block; }
+</style>
+
+<div class="dd-wrapper">
+
+    <!-- ══ Header ══ -->
+    <div class="dd-header">
+        <div class="dd-header-left">
+            <div class="dd-header-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div>
+                <h2>Dashboard Director</h2>
+                <div class="dd-header-sub">Resumen ejecutivo en tiempo real</div>
+            </div>
+        </div>
+        <div class="dd-controls">
+            <label>Año</label>
+            <select id="sel-anio"></select>
+            <label>Mes</label>
+            <select id="sel-mes"></select>
+            <button class="btn-actualizar" id="btn-actualizar">
+                <i class="fa-solid fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ KPI Cards ══ -->
+    <div class="dd-section">
+        <div class="dd-section-accent" style="background:#3b82f6;"></div>
+        <span class="dd-section-label"><i class="fa-solid fa-gauge-high" style="margin-right:5px;"></i>Indicadores Clave</span>
+        <div class="dd-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="kpi-card c-blue">
+                <i class="fa-solid fa-user-graduate kpi-icon-bg"></i>
+                <div class="kpi-top">
+                    <div class="kpi-icon blue"><i class="fa-solid fa-user-graduate"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-alumnos">—</div>
+                <div class="kpi-label">Total Alumnos</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="kpi-card c-green">
+                <i class="fa-solid fa-users kpi-icon-bg"></i>
+                <div class="kpi-top">
+                    <div class="kpi-icon green"><i class="fa-solid fa-users"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-empleados">—</div>
+                <div class="kpi-label">Empleados</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="kpi-card c-teal">
+                <i class="fa-solid fa-circle-dollar-to-slot kpi-icon-bg"></i>
+                <div class="kpi-top">
+                    <div class="kpi-icon teal"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-cobrado">—</div>
+                <div class="kpi-label">Cobrado Mes</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="kpi-card c-red">
+                <i class="fa-solid fa-triangle-exclamation kpi-icon-bg"></i>
+                <div class="kpi-top">
+                    <div class="kpi-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <span class="kpi-badge-top badge-alta" id="kpi-cuentas-vencidas-badge"></span>
+                </div>
+                <div class="kpi-value" id="kpi-deuda">—</div>
+                <div class="kpi-label">Deuda Pendiente</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="kpi-card c-orange">
+                <i class="fa-solid fa-star-half-stroke kpi-icon-bg"></i>
+                <div class="kpi-top">
+                    <div class="kpi-icon orange"><i class="fa-solid fa-star-half-stroke"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-promedio">—</div>
+                <div class="kpi-label">Promedio Gral.</div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-6">
+            <div class="kpi-card c-amber">
+                <i class="fa-solid fa-user-clock kpi-icon-bg"></i>
+                <div class="kpi-top">
+                    <div class="kpi-icon amber"><i class="fa-solid fa-user-clock"></i></div>
+                </div>
+                <div class="kpi-value" id="kpi-riesgo">—</div>
+                <div class="kpi-label">Alumnos Riesgo</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Asistencia ══ -->
+    <div class="dd-section">
+        <div class="dd-section-accent" style="background:#22c55e;"></div>
+        <span class="dd-section-label"><i class="fa-solid fa-clipboard-user" style="margin-right:5px;"></i>Asistencia Hoy</span>
+        <div class="dd-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dd-panel">
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <div class="asist-stats-row">
+                            <div class="asist-pct-wrap">
+                                <div class="asist-pct-num" id="kpi-pct-asistencia">—</div>
+                                <div class="asist-pct-lbl">% Asistencia</div>
+                            </div>
+                            <div style="width:1px;background:#e2e8f0;margin:0 6px;"></div>
+                            <div class="asist-stat pres">
+                                <div class="asist-val pres" id="kpi-presentes">—</div>
+                                <div class="asist-lbl pres">Presentes</div>
+                            </div>
+                            <div class="asist-stat ause">
+                                <div class="asist-val ause" id="kpi-ausentes">—</div>
+                                <div class="asist-lbl ause">Ausentes</div>
+                            </div>
+                            <div class="asist-stat tard">
+                                <div class="asist-val tard" id="kpi-tardanzas">—</div>
+                                <div class="asist-lbl tard">Tardanzas</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <canvas id="chart-asistencia" style="max-height:150px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Matrícula + Cobros ══ -->
+    <div class="dd-section">
+        <div class="dd-section-accent" style="background:#6366f1;"></div>
+        <span class="dd-section-label"><i class="fa-solid fa-chart-bar" style="margin-right:5px;"></i>Matrícula y Finanzas</span>
+        <div class="dd-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="dd-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-chalkboard" style="margin-right:5px;color:#6366f1;"></i>Matrícula por Curso</span>
+                    <span class="chart-stat" id="stat-total-matricula" style="color:#6366f1;"></span>
+                </div>
+                <canvas id="chart-matricula" style="max-height:260px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="dd-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-money-bill-trend-up" style="margin-right:5px;color:#14b8a6;"></i>Cobros por Mes</span>
+                    <span class="chart-stat" id="stat-total-cobros" style="color:#14b8a6;"></span>
+                </div>
+                <canvas id="chart-cobros" style="max-height:260px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Rendimiento + Deuda ══ -->
+    <div class="dd-section">
+        <div class="dd-section-accent" style="background:#f97316;"></div>
+        <span class="dd-section-label"><i class="fa-solid fa-graduation-cap" style="margin-right:5px;"></i>Rendimiento y Deuda</span>
+        <div class="dd-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="dd-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-graduation-cap" style="margin-right:5px;color:#f97316;"></i>Rendimiento por Curso</span>
+                    <span style="font-size:.72rem;color:#94a3b8;">
+                        <span style="display:inline-block;width:8px;height:8px;background:#22c55e;border-radius:2px;margin-right:3px;"></span>≥70
+                        <span style="display:inline-block;width:8px;height:8px;background:#f59e0b;border-radius:2px;margin:0 3px 0 8px;"></span>60–69
+                        <span style="display:inline-block;width:8px;height:8px;background:#ef4444;border-radius:2px;margin:0 3px 0 8px;"></span>&lt;60
+                    </span>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="dd-table">
+                        <thead>
+                            <tr>
+                                <th>Curso</th>
+                                <th style="text-align:center;width:72px;">Promedio</th>
+                                <th style="text-align:center;width:80px;">En Riesgo</th>
+                                <th style="min-width:90px;">Nivel</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-rendimiento">
+                            <tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:20px;">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="dd-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-file-invoice-dollar" style="margin-right:5px;color:#ef4444;"></i>Top Cursos con Deuda</span>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="dd-table">
+                        <thead>
+                            <tr>
+                                <th style="width:32px;">#</th>
+                                <th>Curso</th>
+                                <th style="text-align:center;width:70px;">Alumnos</th>
+                                <th style="text-align:right;">Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-deuda">
+                            <tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:20px;">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Alertas ══ -->
+    <div class="dd-section">
+        <div class="dd-section-accent" style="background:#ef4444;"></div>
+        <span class="dd-section-label"><i class="fa-solid fa-bell" style="margin-right:5px;"></i>Alertas del Sistema</span>
+        <div class="dd-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dd-panel">
+                <div class="alertas-grid" id="lista-alertas">
+                    <p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin alertas activas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/dashboarddirector.js"></script>
+    <script>
+        DashboardDirector.init("@Url.Action("ResumenAsync")");
+    </script>
+}

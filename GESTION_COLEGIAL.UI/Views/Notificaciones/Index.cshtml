@@ -1,0 +1,79 @@
+@{
+    ViewBag.Title = "Notificaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <style>
+        .badge-tipo-I { background-color: #17a2b8; }
+        .badge-tipo-A { background-color: #ffc107; color: #000; }
+        .badge-tipo-E { background-color: #dc3545; }
+        .badge-tipo-S { background-color: #28a745; }
+        .notif-no-leida { font-weight: 600; background-color: #f0f4ff; }
+        .notif-leida { color: #6c757d; }
+    </style>
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Notificaciones</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <i class="fa-solid fa-bell" style="font-size:32px;"></i>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Notificaciones</h1>
+                <p>Bandeja de notificaciones del usuario</p>
+            </div>
+        </div>
+        <div class="header-right-catalogo">
+            <div class="form-check form-switch d-flex align-items-center gap-2">
+                <input class="form-check-input" type="checkbox" id="chk-solo-no-leidas" />
+                <label class="form-check-label" for="chk-solo-no-leidas">Solo no leídas</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+    <div class="card-listado-catalogo">
+        <div class="card-body-listado-catalogo">
+            <div class="table-responsive">
+                <table class="table table-bordered nowrap" id="datatable-notificaciones">
+                    <thead>
+                        <tr>
+                            <th style="width:90px;">Tipo</th>
+                            <th>Título</th>
+                            <th>Mensaje</th>
+                            <th style="width:140px;">Fecha</th>
+                            <th style="width:80px;">Estado</th>
+                            <th style="width:80px;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notificaciones-tbody">
+                        <tr><td colspan="6" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/notificaciones.js"></script>
+    <script>
+        Notificaciones.init(
+            "@Url.Action("ListAsync")",
+            "@Url.Action("MarcarLeidaAsync")"
+        );
+    </script>
+}

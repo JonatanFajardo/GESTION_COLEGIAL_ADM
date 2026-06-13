@@ -1,0 +1,95 @@
+@{
+    ViewBag.Title = "Arqueo de Caja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{ <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" /> <link href="~/Content/css/modal-catalogos.css" rel="stylesheet" /> }
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Arqueo de Caja</li>
+        </ol>
+    </nav>
+</div>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="fa-solid fa-scale-balanced" style="font-size:32px;"></i></div>
+            <div class="header-text-catalogo">
+                <h1>Arqueo de Caja</h1>
+                <p>Registre el cierre y arqueo de caja del turno actual</p>
+            </div>
+        </div>
+        <div class="header-action-catalogo">
+            <button class="btn-nuevo-catalogo" data-toggle="modal" data-target="#modal-arqueo">
+                <i class="mdi mdi-plus-circle-outline"></i> Nuevo Arqueo
+            </button>
+        </div>
+    </div>
+</div>
+<div class="fluid-container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4" id="panel-ultimo" style="display:none;">
+                <h5 class="fw-bold mb-3">Último Arqueo</h5>
+                <div id="info-arqueo"></div>
+            </div>
+            <div class="card p-4 text-center text-muted" id="panel-sin-arqueo">
+                <i class="fa-solid fa-scale-balanced fa-3x mb-3 opacity-25"></i>
+                <p>No hay arqueos registrados. Cree el primero.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Nuevo Arqueo -->
+<div class="modal fade" id="modal-arqueo" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modal-content-catalogo">
+            <div class="modal-header-catalogo">
+                <div><h5 class="modal-title-catalogo">Nuevo Arqueo de Caja</h5></div>
+                <button type="button" class="close close-catalogo" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="form-arqueo">
+                <div class="modal-body-catalogo">
+                    <div class="form-card-catalogo">
+                        <div class="row">
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Monto Inicial *</label>
+                                <input type="number" step="0.01" name="Arq_MontoInicial" class="form-control form-input-catalogo" value="0">
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Monto Final *</label>
+                                <input type="number" step="0.01" name="Arq_MontoFinal" class="form-control form-input-catalogo" value="0">
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Total Efectivo *</label>
+                                <input type="number" step="0.01" name="Arq_TotalEfectivo" class="form-control form-input-catalogo" value="0">
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Total Tarjeta *</label>
+                                <input type="number" step="0.01" name="Arq_TotalTarjeta" class="form-control form-input-catalogo" value="0">
+                            </div>
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Observación</label>
+                                <textarea name="Arq_Observacion" class="form-control form-input-catalogo" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer-catalogo">
+                    <button type="button" class="btn-cancel-catalogo" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-save-catalogo">Guardar Arqueo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Content/js/pages/arqueosCajaAdm.js"></script>
+    <script>
+        ArqueosCajaAdm.init(
+            "@Url.Action("LastAsync")",
+            "@Url.Action("CreateAsync")"
+        );
+    </script>
+}

@@ -1,0 +1,164 @@
+@{
+    ViewBag.Title = "Dev Tools";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <style>
+        .dev-card { border: 1px solid #e5e7eb; border-radius: 10px; background:#fff; padding: 20px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .dev-card h5 { color:#fbbf24; font-weight:600; margin-bottom: 12px; display:flex; align-items:center; gap:8px; }
+        .dev-card h5 i { font-size: 22px; }
+        .dev-stat { text-align:center; padding: 12px 8px; background:#f9fafb; border-radius:8px; }
+        .dev-stat .label { font-size:11px; text-transform:uppercase; color:#6b7280; letter-spacing:.5px; }
+        .dev-stat .value { font-size: 22px; font-weight:700; color:#111827; margin-top:4px; }
+        .step-row { padding: 8px 12px; border-radius:6px; display:flex; align-items:center; gap:10px; transition: background .2s; }
+        .step-row + .step-row { margin-top: 2px; }
+        .step-row:hover { background:#f3f4f6; }
+        .step-row .icon { width: 22px; text-align:center; font-size:14px; }
+        .step-row .name { flex:1; font-family: monospace; font-size:12.5px; color:#374151; }
+        .step-row .meta { font-size:11px; color:#6b7280; font-variant-numeric: tabular-nums; }
+        .step-row.pending .icon { color:#9ca3af; }
+        .step-row.pending .name { color:#9ca3af; }
+        .step-row.running .icon { color:#3b82f6; }
+        .step-row.running .name { color:#1e40af; font-weight:600; }
+        .step-row.completed .icon { color:#10b981; }
+        .step-row.completed { background:#ecfdf5; }
+        .step-row.error .icon { color:#ef4444; }
+        .step-row.error { background:#fef2f2; }
+        .progress-wrap { background:#f3f4f6; border-radius: 10px; height: 8px; overflow:hidden; margin: 14px 0 6px; }
+        .progress-bar { background: linear-gradient(90deg,#3b82f6,#8b5cf6); height: 100%; width: 0%; transition: width 350ms cubic-bezier(.4,0,.2,1); }
+        .progress-meta { font-size: 11px; color:#6b7280; display:flex; justify-content:space-between; }
+        .pulse-success { animation: pulse-ok .9s ease; }
+        @@keyframes pulse-ok { 0%{transform:scale(1)} 50%{transform:scale(1.02); box-shadow:0 0 0 8px rgba(16,185,129,.2)} 100%{transform:scale(1)} }
+        .badge-delta { background:#fbbf24; color:#000; padding: 4px 10px; border-radius: 999px; font-weight:700; font-size: 13px; }
+        .badge-sync { background:#10b981; color:#fff; padding: 4px 10px; border-radius: 999px; font-weight:600; font-size: 12px; }
+    </style>
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Dev Tools</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <i class="fa-solid fa-screwdriver-wrench" style="font-size:32px;color:#fbbf24;"></i>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Dev Tools</h1>
+                <p>Herramientas internas — solo administrador</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+    <div class="row">
+        <!-- ============== SINCRONIZADOR DE FECHAS ============== -->
+        <div class="col-lg-8">
+            <div class="dev-card" id="card-sync">
+                <h5><i class="fa-solid fa-calendar-days"></i> Sincronizador de Fechas</h5>
+
+                <div class="row g-2 align-items-center mb-2">
+                    <div class="col-md-4 dev-stat">
+                        <div class="label">Año en la data</div>
+                        <div class="value" id="sync-anio-actual">—</div>
+                    </div>
+                    <div class="col-md-4 dev-stat">
+                        <div class="label">Año del sistema</div>
+                        <div class="value" id="sync-anio-objetivo">—</div>
+                    </div>
+                    <div class="col-md-4 dev-stat">
+                        <div class="label">Delta</div>
+                        <div class="value" id="sync-delta">—</div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mb-3 mt-3">
+                    <button id="btn-sync-detectar" class="btn btn-outline-primary btn-sm">
+                        <i class="fa-solid fa-arrows-rotate"></i> Detectar
+                    </button>
+                    <button id="btn-sync-run" class="btn btn-primary btn-sm" disabled>
+                        <i class="fa-solid fa-play"></i> Avanzar fechas
+                    </button>
+                    <div class="ms-auto" id="sync-status"></div>
+                </div>
+
+                <div class="progress-wrap"><div class="progress-bar" id="sync-progress"></div></div>
+                <div class="progress-meta">
+                    <span id="sync-progress-text">0 de 0</span>
+                    <span id="sync-progress-percent">0%</span>
+                </div>
+
+                <div id="sync-steps" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- ============== ESTADO BD ============== -->
+        <div class="col-lg-4">
+            <div class="dev-card" id="card-estado">
+                <h5><i class="fa-solid fa-database"></i> Estado de la BD</h5>
+                <div class="row g-2" id="estado-grid">
+                    <div class="col-6 dev-stat"><div class="label">Alumnos</div><div class="value" data-stat="TotalAlumnos">—</div></div>
+                    <div class="col-6 dev-stat"><div class="label">Empleados</div><div class="value" data-stat="TotalEmpleados">—</div></div>
+                    <div class="col-6 dev-stat"><div class="label">Usuarios</div><div class="value" data-stat="TotalUsuarios">—</div></div>
+                    <div class="col-6 dev-stat"><div class="label">Roles</div><div class="value" data-stat="TotalRoles">—</div></div>
+                    <div class="col-6 dev-stat"><div class="label">Pantallas</div><div class="value" data-stat="TotalPantallas">—</div></div>
+                    <div class="col-6 dev-stat"><div class="label">Sesiones activas</div><div class="value" data-stat="SesionesActivas">—</div></div>
+                    <div class="col-6 dev-stat"><div class="label">Pagos</div><div class="value" data-stat="TotalPagos">—</div></div>
+                    <div class="col-6 dev-stat"><div class="label">Ctas pendientes</div><div class="value" data-stat="CuentasPendientes">—</div></div>
+                    <div class="col-12 dev-stat"><div class="label">Año actual data</div><div class="value" data-stat="AnioActualData">—</div></div>
+                </div>
+                <button id="btn-estado-refresh" class="btn btn-outline-secondary btn-sm w-100 mt-3">
+                    <i class="fa-solid fa-arrows-rotate"></i> Refrescar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============== IMPERSONAR ROL ============== -->
+    <div class="row">
+        <div class="col-12">
+            <div class="dev-card" id="card-impersonar">
+                <h5><i class="fa-solid fa-user-secret"></i> Impersonar Rol</h5>
+                <p class="text-muted small mb-2">Cargar las pantallas de otro rol en tu sesión actual (sin logout). Útil para ver el sidebar como lo vería ese rol.</p>
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-5">
+                        <label class="form-label small fw-semibold">Rol a impersonar</label>
+                        <select id="imp-rol" class="form-control"></select>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="btn-imp-cargar" class="btn btn-warning btn-sm w-100">
+                            <i class="fa-solid fa-mask"></i> Impersonar
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="btn-imp-restaurar" class="btn btn-outline-secondary btn-sm w-100">
+                            <i class="fa-solid fa-rotate-left"></i> Volver a admin
+                        </button>
+                    </div>
+                </div>
+                <div class="alert alert-info small mt-2 mb-0" id="imp-status" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/devtools.js"></script>
+    <script>
+        DevTools.init({
+            urlDetectar: "@Url.Action("DetectarAsync")",
+            urlPaso:     "@Url.Action("PasoAsync")",
+            urlEstado:   "@Url.Action("EstadoBDAsync")",
+            urlRoles:    "@Url.Action("RolesAsync")"
+        });
+    </script>
+}

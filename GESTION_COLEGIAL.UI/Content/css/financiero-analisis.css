@@ -1,0 +1,153 @@
+/* ================================================================
+   financiero-analisis.css — Pantallas de análisis financiero
+   FlujoCaja · EstadoResultados · AnalisisIngresos
+   ComparativoAnios · KPIsFinancieros
+   ================================================================ */
+
+/* ── Wrapper ── */
+.fan-wrapper { padding: 0 6px 32px; }
+.fan-wrapper .row { margin-bottom: 18px; }
+.fan-wrapper .row:last-child { margin-bottom: 0; }
+.fan-wrapper [class*="col-"] { padding-left: 10px; padding-right: 10px; }
+
+/* ── Header ── */
+.fan-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    margin-bottom: 20px; padding: 16px 22px;
+    background: linear-gradient(135deg, #0c4a6e 0%, #155e75 50%, #134e4a 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(12,74,110,.3);
+}
+.fan-header-left { display: flex; align-items: center; gap: 14px; }
+.fan-header-icon {
+    width: 46px; height: 46px;
+    background: rgba(255,255,255,.15); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; color: #fff;
+}
+.fan-header h2 { margin: 0; font-size: 1.2rem; font-weight: 700; color: #fff; }
+.fan-header-sub { font-size: .77rem; color: rgba(255,255,255,.6); margin-top: 2px; }
+.fan-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.fan-controls label { font-size: .8rem; color: rgba(255,255,255,.7); font-weight: 600; margin: 0; white-space: nowrap; }
+.fan-controls input,
+.fan-controls select {
+    height: 34px; padding: 0 10px;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+    border-radius: 7px; font-size: .84rem; color: #fff; outline: none; cursor: pointer;
+}
+.fan-controls input { width: 90px; }
+.fan-controls select option { background: #155e75; color: #fff; }
+.fan-controls input::placeholder { color: rgba(255,255,255,.5); }
+.btn-fan {
+    height: 34px; padding: 0 18px;
+    background: #fff; color: #0c4a6e;
+    border: none; border-radius: 7px;
+    font-size: .84rem; font-weight: 700; cursor: pointer;
+    transition: all .2s; display: flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+}
+.btn-fan:hover { background: #e0f7fa; transform: translateY(-1px); }
+
+/* ── Section heading ── */
+.fan-section { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.fan-section-accent { width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0; }
+.fan-section-label { font-size: .78rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: .7px; white-space: nowrap; }
+.fan-section-line { flex: 1; height: 1px; background: #e2e8f0; }
+
+/* ── KPI Cards ── */
+.kpi-card-fan {
+    background: #fff; border-radius: 12px; padding: 16px 18px 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+    position: relative; overflow: hidden;
+    transition: transform .15s, box-shadow .15s;
+    border-left: 4px solid transparent;
+    height: 100%;
+}
+.kpi-card-fan:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+.kpi-card-fan.c-teal   { border-left-color: #14b8a6; }
+.kpi-card-fan.c-blue   { border-left-color: #0ea5e9; }
+.kpi-card-fan.c-amber  { border-left-color: #f59e0b; }
+.kpi-card-fan.c-red    { border-left-color: #ef4444; }
+.kpi-card-fan.c-green  { border-left-color: #22c55e; }
+.kpi-card-fan.c-indigo { border-left-color: #6366f1; }
+.kpi-card-fan.c-purple { border-left-color: #a855f7; }
+.kpi-card-fan.c-rose   { border-left-color: #f43f5e; }
+.kpi-card-fan.c-orange { border-left-color: #f97316; }
+
+.kpi-icon-bg-fan {
+    position: absolute; right: -6px; bottom: -6px;
+    font-size: 3.8rem; opacity: .05; color: #0f172a; pointer-events: none;
+}
+.kpi-top-fan { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.kpi-icon-fan {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; font-size: .95rem;
+}
+.kpi-icon-fan.teal   { background: #f0fdfa; color: #14b8a6; }
+.kpi-icon-fan.blue   { background: #f0f9ff; color: #0ea5e9; }
+.kpi-icon-fan.amber  { background: #fffbeb; color: #f59e0b; }
+.kpi-icon-fan.red    { background: #fef2f2; color: #ef4444; }
+.kpi-icon-fan.green  { background: #f0fdf4; color: #22c55e; }
+.kpi-icon-fan.indigo { background: #eef2ff; color: #6366f1; }
+.kpi-icon-fan.purple { background: #faf5ff; color: #a855f7; }
+.kpi-icon-fan.rose   { background: #fff1f2; color: #f43f5e; }
+.kpi-icon-fan.orange { background: #fff7ed; color: #f97316; }
+
+.kpi-value-fan { font-size: 1.4rem; font-weight: 800; color: #0f172a; line-height: 1.1; }
+.kpi-label-fan { font-size: .7rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+.kpi-sub-fan   { font-size: .68rem; color: #64748b; margin-top: 6px; }
+
+/* ── Panel ── */
+.fan-panel {
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+    padding: 18px 20px;
+}
+.fan-chart-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+.fan-chart-title  { font-size: .8rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .5px; }
+
+/* ── Tablas ── */
+.fan-table { width: 100%; font-size: .82rem; border-collapse: collapse; }
+.fan-table th {
+    background: #f8fafc; color: #64748b; font-weight: 700;
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .5px;
+    padding: 8px 12px; border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+.fan-table td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; }
+.fan-table tr:last-child td { border-bottom: none; }
+.fan-table tr:hover td { background: #f8fafc; }
+.fan-table .col-label { font-weight: 600; color: #1e293b; }
+
+/* ── Progress bar ── */
+.fan-progress { height: 6px; border-radius: 3px; background: #e2e8f0; overflow: hidden; }
+.fan-progress-bar { height: 100%; border-radius: 3px; transition: width .7s ease; }
+
+/* ── Badges ── */
+.fan-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: .68rem; font-weight: 700; }
+.fan-badge.up   { background: #f0fdf4; color: #16a34a; }
+.fan-badge.down { background: #fef2f2; color: #dc2626; }
+.fan-badge.flat { background: #f8fafc; color: #64748b; }
+
+/* ── Diff arrow ── */
+.diff-pos { color: #22c55e; font-weight: 700; }
+.diff-neg { color: #ef4444; font-weight: 700; }
+.diff-neu { color: #94a3b8; font-weight: 600; }
+
+/* ── Estado resultados — fila de total ── */
+.fan-table tr.fan-total-row td { background: #f0fdf4; font-weight: 700; color: #166534; border-top: 2px solid #bbf7d0; }
+
+/* ── Loading skeleton ── */
+.fan-loading { text-align: center; padding: 40px 20px; color: #94a3b8; font-size: .9rem; }
+
+/* ── Animations ── */
+@keyframes fadeInUpFan {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.fan-anim    { animation: fadeInUpFan .35s ease both; }
+.fan-anim-d1 { animation-delay: .05s; }
+.fan-anim-d2 { animation-delay: .10s; }
+.fan-anim-d3 { animation-delay: .15s; }
+.fan-anim-d4 { animation-delay: .20s; }

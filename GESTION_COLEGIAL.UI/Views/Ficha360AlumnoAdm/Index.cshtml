@@ -1,0 +1,69 @@
+@{
+    ViewBag.Title = "Ficha 360° Alumno";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{ <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" /> }
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Ficha 360° Alumno</li>
+        </ol>
+    </nav>
+</div>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="fa-solid fa-id-card" style="font-size:32px;"></i></div>
+            <div class="header-text-catalogo">
+                <h1>Ficha 360° del Alumno</h1>
+                <p>Información académica, financiera y personal del alumno</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fluid-container">
+    <div class="card mb-3 p-3">
+        <div class="row g-2">
+            <div class="col-md-6">
+                <select id="f-alu" class="form-control"><option value="">-- Seleccione Alumno --</option></select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" id="btn-ver">
+                    <i class="fa-solid fa-magnifying-glass"></i> Ver Ficha
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="panel-ficha" style="display:none;">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card p-3 mb-3">
+                    <h6 class="fw-bold mb-3"><i class="fa-solid fa-user me-2"></i>Datos Personales</h6>
+                    <div id="datos-personales"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 mb-3">
+                    <h6 class="fw-bold mb-3"><i class="fa-solid fa-graduation-cap me-2"></i>Datos Académicos</h6>
+                    <div id="datos-academicos"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 mb-3">
+                    <h6 class="fw-bold mb-3"><i class="fa-solid fa-dollar-sign me-2"></i>Estado Financiero</h6>
+                    <div id="datos-financieros"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Content/js/pages/ficha360alumnoadm.js"></script>
+    <script>
+        Ficha360AlumnoAdm.init(
+            "@Url.Action("GetAsync")",
+            "@Url.Action("AlumnosDropdownAsync")"
+        );
+    </script>
+}

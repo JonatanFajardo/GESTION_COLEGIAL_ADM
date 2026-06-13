@@ -1,0 +1,102 @@
+@{
+    ViewBag.Title = "Control de Vacaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{ <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" /> <link href="~/Content/css/modal-catalogos.css" rel="stylesheet" /> }
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Vacaciones / Permisos</li>
+        </ol>
+    </nav>
+</div>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="fa-solid fa-umbrella-beach" style="font-size:32px;"></i></div>
+            <div class="header-text-catalogo"><h1>Vacaciones y Permisos</h1><p>Gestione las solicitudes de vacaciones del personal</p></div>
+        </div>
+        <div class="header-action-catalogo">
+            <button class="btn-nuevo-catalogo" data-toggle="modal" data-target="#modal-nueva">
+                <i class="mdi mdi-plus-circle-outline"></i> Nueva Solicitud
+            </button>
+        </div>
+    </div>
+</div>
+<div class="fluid-container">
+    <div class="card-listado-catalogo">
+        <div class="card-body-listado-catalogo">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered nowrap" id="datatable-vac">
+                    <thead><tr>
+                        <th>Empleado</th><th>Tipo</th><th>Inicio</th><th>Fin</th>
+                        <th>Estado</th><th>Acciones</th>
+                    </tr></thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva Solicitud -->
+<div class="modal fade" id="modal-nueva" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modal-content-catalogo">
+            <div class="modal-header-catalogo">
+                <div class="modal-title-wrapper-catalogo">
+                    <div><h5 class="modal-title-catalogo">Nueva Solicitud</h5></div>
+                </div>
+                <button type="button" class="close close-catalogo" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="form-nueva">
+                <div class="modal-body-catalogo">
+                    <div class="form-card-catalogo">
+                        <div class="row">
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Empleado *</label>
+                                <select name="Emp_Id" class="form-control form-input-catalogo">
+                                    <option value="">-- Seleccione Empleado --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Fecha Inicio *</label>
+                                <input type="date" name="Vac_FechaInicio" class="form-control form-input-catalogo">
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Fecha Fin *</label>
+                                <input type="date" name="Vac_FechaFin" class="form-control form-input-catalogo">
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Tipo *</label>
+                                <select name="Vac_Tipo" class="form-control form-input-catalogo">
+                                    <option>Vacaciones</option><option>Permiso</option><option>Incapacidad</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Observación</label>
+                                <textarea name="Vac_Motivo" class="form-control form-input-catalogo" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer-catalogo">
+                    <button type="button" class="btn-cancel-catalogo" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-save-catalogo">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/vacacionesadm.js"></script>
+    <script>
+        VacacionesAdm.init(
+            "@Url.Action("ListAsync")",
+            "@Url.Action("CreateAsync")",
+            "@Url.Action("ApproveAsync")",
+            "@Url.Action("DropdownsAsync")"
+        );
+    </script>
+}
