@@ -158,3 +158,39 @@ $(document).ready(function() {
         }
     }
 });
+
+// Restaurar submenú activo del sidebar al navegar entre páginas
+$(document).ready(function () {
+    var currentPath = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+
+    var bestMatch = null;
+    var bestMatchLen = 0;
+
+    $('#accordionExample .submenu li a').each(function () {
+        var href = $(this).attr('href');
+        if (!href || href === '#') return;
+
+        var linkPath = href.toLowerCase().replace(/\/$/, '') || '/';
+
+        if (linkPath.length > 1 &&
+            (currentPath === linkPath || currentPath.indexOf(linkPath) === 0)) {
+
+            if (linkPath.length > bestMatchLen) {
+                bestMatchLen = linkPath.length;
+                bestMatch = $(this);
+            }
+        }
+    });
+
+    if (bestMatch) {
+        bestMatch.closest('li').addClass('active');
+
+        var $submenu = bestMatch.closest('ul.submenu');
+        $submenu.addClass('show');
+
+        var submenuId = $submenu.attr('id');
+        if (submenuId) {
+            $('a[href="#' + submenuId + '"]').attr('aria-expanded', 'true');
+        }
+    }
+});
