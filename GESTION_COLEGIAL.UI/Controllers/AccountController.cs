@@ -1,5 +1,6 @@
 using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 using System.Web;
@@ -58,8 +59,37 @@ namespace GESTION_COLEGIAL.UI.Controllers
                         : "";
                     Session["pantallas"] = pantallas;
 
-                    // Crear cookie de autenticación
-                    FormsAuthentication.SetAuthCookie(result.User.Usu_Name, model.RememberMe);
+                    // Crear ticket de autenticación con datos del usuario embebidos
+                    string userData = JsonConvert.SerializeObject(new
+                    {
+                        UserId = result.User.Usu_Id,
+                        RolId = result.User.Rol_Id,
+                        RoleName = result.User.Rol_Nombre,
+                        Username = result.User.Usu_Name,
+                        Token = result.Token,
+                        Pantallas = pantallas
+                    });
+
+                    DateTime expiracion = model.RememberMe
+                        ? DateTime.Now.AddDays(7)
+                        : DateTime.Now.AddMinutes(60);
+
+                    var ticket = new FormsAuthenticationTicket(
+                        1,
+                        result.User.Usu_Name,
+                        DateTime.Now,
+                        expiracion,
+                        model.RememberMe,
+                        userData
+                    );
+
+                    string ticketEncriptado = FormsAuthentication.Encrypt(ticket);
+                    var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, ticketEncriptado);
+                    if (model.RememberMe)
+                    {
+                        authCookie.Expires = expiracion;
+                    }
+                    Response.Cookies.Add(authCookie);
 
                     // Redirigir
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))

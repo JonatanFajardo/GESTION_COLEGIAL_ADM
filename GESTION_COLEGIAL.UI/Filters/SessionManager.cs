@@ -1,9 +1,11 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace GESTION_COLEGIAL.UI.Filters
 {
@@ -29,6 +31,27 @@ namespace GESTION_COLEGIAL.UI.Filters
             var session = filterContext.HttpContext.Session;
             string pantallas = session["pantallas"] as string;
 
+            // Si la sesión expiró pero hay cookie de RememberMe válida, restaurar la sesión
+            if (string.IsNullOrEmpty(pantallas))
+            {
+                var formsIdentity = filterContext.HttpContext.User.Identity as FormsIdentity;
+                if (!string.IsNullOrEmpty(formsIdentity?.Ticket?.UserData))
+                {
+                    try
+                    {
+                        var obj = JObject.Parse(formsIdentity.Ticket.UserData);
+                        session["UserId"] = obj["UserId"].Value<int>();
+                        session["RolId"] = obj["RolId"].Value<int>();
+                        session["RoleName"] = obj["RoleName"].Value<string>();
+                        session["Username"] = obj["Username"].Value<string>();
+                        session["Token"] = obj["Token"].Value<string>();
+                        session["pantallas"] = obj["Pantallas"].Value<string>();
+                        pantallas = obj["Pantallas"].Value<string>();
+                    }
+                    catch { }
+                }
+            }
+
             if (string.IsNullOrEmpty(pantallas))
             {
                 // Sesión expirada o no autenticado → redirigir al Login
@@ -37,6 +60,7 @@ namespace GESTION_COLEGIAL.UI.Filters
             }
             else if (!string.IsNullOrEmpty(_pantallaNombre)
                      && _pantallaNombre != "Home"
+                     && !EsAdmin(session)
                      && !TienePantalla(pantallas, _pantallaNombre))
             {
                 // Usuario no tiene permiso para esta pantalla
@@ -66,6 +90,12 @@ namespace GESTION_COLEGIAL.UI.Filters
         public static string ObtenerPantallas()
         {
             return HttpContext.Current?.Session?["pantallas"] as string ?? "";
+        }
+
+        private static bool EsAdmin(System.Web.HttpSessionStateBase session)
+        {
+            var role = session?["RoleName"] as string ?? "";
+            return role.Equals("admin", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
