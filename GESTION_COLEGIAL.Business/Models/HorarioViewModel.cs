@@ -292,4 +292,10 @@ namespace GESTION_COLEGIAL.Business.Models
 
         #endregion Dropdown
     }
+
+    public class HorarioRemoveViewModel
+    {
+        public int Hor_Id { get; set; }
+        public int UsuarioModifica { get; set; }
+    }
 }
