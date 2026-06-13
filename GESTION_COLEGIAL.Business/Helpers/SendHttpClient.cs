@@ -12,7 +12,7 @@ namespace GESTION_COLEGIAL.Business.Helpers
 	/// </summary>
 	public static class SendHttpClient
 	{
-		private const string baseUrl = "https://localhost:7076/api/v1/";  // Development - API local
+		private const string baseUrl = "http://localhost:5076/api/v1/";  // Development - API local (HTTP, HTTPS cert issue on dev)
 		//private const string baseUrl = "https://localhost:44325/api/v1/";
 		//private const string baseUrl = "http://www.gestioncolegialapi.somee.com/api/v1/";  // Production
 
