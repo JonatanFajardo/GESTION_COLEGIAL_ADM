@@ -1,5 +1,6 @@
 ﻿using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Filters;
+using Newtonsoft.Json;
 using System.Web.Mvc;
 using static GESTION_COLEGIAL.UI.Extensions.AlertMessage;
 
@@ -41,21 +42,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <returns>The Ajax result.</returns>
         public ActionResult AjaxResult(dynamic response)
         {
-            // Handle null responses
             if (response == null)
-            {
-                return Json(new { data = (object)null }, JsonRequestBehavior.AllowGet);
-            }
+                return Content(JsonConvert.SerializeObject(new { data = (object)null }), "application/json");
 
-            // If response is boolean, it means this is a POST request.
-            if (response.GetType() == typeof(bool))
-            {
-                return Json(new { success = response });
-            }
-            else
-            {
-                return Json(new { data = response }, JsonRequestBehavior.AllowGet);
-            }
+            if (response is bool || response.GetType() == typeof(bool))
+                return Content(JsonConvert.SerializeObject(new { success = (bool)response }), "application/json");
+
+            return Content(JsonConvert.SerializeObject(new { data = response }), "application/json");
         }
 
         #endregion Result
