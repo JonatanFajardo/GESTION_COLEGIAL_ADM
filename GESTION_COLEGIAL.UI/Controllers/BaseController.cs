@@ -13,6 +13,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
     {
         protected string msjExist = $"El registro ya está en uso.";
 
+        protected int GetUsuarioId()
+        {
+            return Session["UserId"] != null ? (int)Session["UserId"] : 0;
+        }
+
         /// <summary>
         /// Verifica si el usuario actual tiene acceso a una pantalla específica.
         /// </summary>
