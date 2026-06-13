@@ -31,6 +31,19 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		/// <typeparam name="T"></typeparam>
 		/// <param name="url"></param>
 		/// <returns></returns>
+		public static async Task<string> GetRawAsync(string url)
+		{
+			try
+			{
+				var httpclient = new HttpClient();
+				var httpResponse = await httpclient.GetAsync($"{baseUrl}{url}");
+				if (!httpResponse.IsSuccessStatusCode) return "[]";
+				var content = await httpResponse.Content.ReadAsStringAsync();
+				return string.IsNullOrWhiteSpace(content) ? "[]" : content;
+			}
+			catch { return "[]"; }
+		}
+
 		public static async Task<List<T>> GetAsync<T>(string url/*, object model*/)
 		{
 			try
