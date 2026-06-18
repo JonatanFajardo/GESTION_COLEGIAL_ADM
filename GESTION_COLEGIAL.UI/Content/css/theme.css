@@ -1,0 +1,497 @@
+/* ============================================================
+   GESTIÓN COLEGIAL — SISTEMA DE TEMAS
+   Por defecto: amarillo/naranja (sin clase en <html>)
+   Tema azul:   html.gc-theme-blue
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   TEMA AZUL — PAGE HEADER
+   ------------------------------------------------------------ */
+html.gc-theme-blue .page-header-catalogo {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.25);
+}
+
+/* ------------------------------------------------------------
+   TEMA AZUL — CARD HEADER LISTADO
+   ------------------------------------------------------------ */
+html.gc-theme-blue .card-header-listado-catalogo {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border-bottom: 2px solid #bfdbfe;
+}
+
+html.gc-theme-blue .card-header-listado-catalogo h3 {
+    color: #1e3a5f;
+}
+
+html.gc-theme-blue .card-header-listado-catalogo h3 svg {
+    color: #2563eb;
+}
+
+/* ------------------------------------------------------------
+   TEMA AZUL — TABLA
+   ------------------------------------------------------------ */
+html.gc-theme-blue #datatable tbody tr:hover {
+    background-color: #eff6ff !important;
+}
+
+/* ------------------------------------------------------------
+   TEMA AZUL — DATATABLE CONTROLES
+   ------------------------------------------------------------ */
+html.gc-theme-blue .dataTables_wrapper .dataTables_length select:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+html.gc-theme-blue .dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* ------------------------------------------------------------
+   TEMA AZUL — PAGINACIÓN
+   ------------------------------------------------------------ */
+html.gc-theme-blue .dataTables_wrapper .dataTables_paginate .page-item:not(.disabled):not(.active) .page-link:hover {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+    color: #1d4ed8 !important;
+    border-color: #bfdbfe !important;
+    box-shadow: 0 3px 8px rgba(29, 78, 216, 0.15) !important;
+}
+
+html.gc-theme-blue .dataTables_wrapper .dataTables_paginate .page-item.active .page-link,
+html.gc-theme-blue .dataTables_wrapper .dataTables_paginate .page-item.active .page-link:hover {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%) !important;
+    color: #ffffff !important;
+    border-color: #0f4c81 !important;
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.35) !important;
+}
+
+/* ------------------------------------------------------------
+   TEMA AZUL — BOTÓN NUEVO
+   ------------------------------------------------------------ */
+html.gc-theme-blue .btn-nuevo-catalogo:hover {
+    color: #0f4c81;
+}
+
+/* ------------------------------------------------------------
+   TEMA AZUL — MODALES (edit + detail)
+   ------------------------------------------------------------ */
+html.gc-theme-blue #edit-modal .modal-header,
+html.gc-theme-blue #detail-modal .modal-header {
+    background: linear-gradient(to right, #1e293b, #0f4c81);
+}
+
+html.gc-theme-blue .form-card,
+html.gc-theme-blue .info-card {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border: 1px solid #bfdbfe;
+}
+
+html.gc-theme-blue .form-card .form-label,
+html.gc-theme-blue .info-card .info-label {
+    color: #1e3a5f;
+}
+
+html.gc-theme-blue .info-card .info-value {
+    color: #1e293b;
+}
+
+html.gc-theme-blue .form-control-modern:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+html.gc-theme-blue .btn-modern-save {
+    background: linear-gradient(to right, #1e293b, #0f4c81);
+}
+
+html.gc-theme-blue .btn-modern-save:hover {
+    background: linear-gradient(to right, #0f172a, #0c3a63);
+}
+
+/* ============================================================
+   TEMA AZUL — MODAL CATÁLOGOS (modal-catalogos.css)
+   Cargos · ConceptosPago · CursosNiveles · Descuentos · Duraciones
+   Estados · EstadosPago · FormasPago · Materias · Modalidades
+   NivelesEducativos · Parciales · Parentescos · Secciones · Semestres · Titulos
+   ============================================================ */
+
+html.gc-theme-blue .modal-header-catalogo {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+}
+
+html.gc-theme-blue .section-header-catalogo svg,
+html.gc-theme-blue .label-icon-catalogo,
+html.gc-theme-blue .form-text-hint-catalogo svg {
+    color: #2563eb;
+}
+
+html.gc-theme-blue .form-input-catalogo:focus,
+html.gc-theme-blue .form-select-catalogo:focus,
+html.gc-theme-blue .form-textarea-catalogo:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    background-color: #f0f9ff;
+}
+
+html.gc-theme-blue .form-text-hint-catalogo {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border-left-color: #2563eb;
+    color: #1e3a5f;
+}
+
+html.gc-theme-blue .btn-save-catalogo {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.35);
+}
+
+html.gc-theme-blue .btn-save-catalogo:hover {
+    background: linear-gradient(135deg, #0f172a 0%, #0c3a63 100%);
+    box-shadow: 0 8px 20px rgba(15, 76, 129, 0.45);
+}
+
+html.gc-theme-blue .btn-save-catalogo:active {
+    box-shadow: 0 2px 8px rgba(15, 76, 129, 0.35);
+}
+
+html.gc-theme-blue .form-checkbox-catalogo input[type="checkbox"] {
+    accent-color: #2563eb;
+}
+
+/* ============================================================
+   TEMA AZUL — FORMULARIOS DE PÁGINA COMPLETA
+   Módulos: alumnos · cursos · empleados · encargados
+   ============================================================ */
+
+/* ── Headers de página ── */
+html.gc-theme-blue .page-header-alumnos,
+html.gc-theme-blue .page-header-cursos,
+html.gc-theme-blue .page-header-empleados,
+html.gc-theme-blue .page-header-encargados {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.25);
+}
+
+/* ── Card headers ── */
+html.gc-theme-blue .card-alumno-header,
+html.gc-theme-blue .card-curso-header,
+html.gc-theme-blue .card-empleado-header,
+html.gc-theme-blue .card-encargado-header {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border-bottom-color: #bfdbfe;
+}
+
+/* ── Iconos en labels ── */
+html.gc-theme-blue .form-label-alumno svg,
+html.gc-theme-blue .form-label-curso svg,
+html.gc-theme-blue .form-label-empleado svg,
+html.gc-theme-blue .form-label-encargado svg {
+    color: #2563eb;
+}
+
+/* ── Inputs focus ── */
+html.gc-theme-blue .form-input-alumno:focus,
+html.gc-theme-blue .form-input-curso:focus,
+html.gc-theme-blue .form-input-empleado:focus,
+html.gc-theme-blue .form-input-encargado:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ── Botones primarios ── */
+html.gc-theme-blue .btn-alumno-primary,
+html.gc-theme-blue .btn-curso-primary,
+html.gc-theme-blue .btn-empleado-primary,
+html.gc-theme-blue .btn-encargado-primary {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.3);
+}
+
+html.gc-theme-blue .btn-alumno-primary:hover,
+html.gc-theme-blue .btn-curso-primary:hover,
+html.gc-theme-blue .btn-empleado-primary:hover,
+html.gc-theme-blue .btn-encargado-primary:hover {
+    background: linear-gradient(135deg, #0f172a 0%, #0c3a63 100%);
+}
+
+/* ── Accordion hover ── */
+html.gc-theme-blue .accordion-header-alumno:hover,
+html.gc-theme-blue .accordion-header-curso:hover,
+html.gc-theme-blue .accordion-header-empleado:hover,
+html.gc-theme-blue .accordion-header-encargado:hover {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+}
+
+/* ── Accordion activo ── */
+html.gc-theme-blue .accordion-header-alumno:not(.collapsed),
+html.gc-theme-blue .accordion-header-curso:not(.collapsed),
+html.gc-theme-blue .accordion-header-empleado:not(.collapsed),
+html.gc-theme-blue .accordion-header-encargado:not(.collapsed) {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border-bottom-color: #bfdbfe;
+}
+
+/* ── Iconos de accordion ── */
+html.gc-theme-blue .accordion-icon-alumno,
+html.gc-theme-blue .accordion-icon-curso,
+html.gc-theme-blue .accordion-icon-empleado,
+html.gc-theme-blue .accordion-icon-encargado,
+html.gc-theme-blue .accordion-chevron-alumno:not(.collapsed),
+html.gc-theme-blue .accordion-chevron-curso:not(.collapsed),
+html.gc-theme-blue .accordion-chevron-empleado:not(.collapsed),
+html.gc-theme-blue .accordion-chevron-encargado:not(.collapsed) {
+    color: #2563eb;
+}
+
+/* ── Badge checkboxes — hover ── */
+html.gc-theme-blue .badge-checkbox-alumno:hover,
+html.gc-theme-blue .badge-checkbox-curso:hover,
+html.gc-theme-blue .badge-checkbox-empleado:hover,
+html.gc-theme-blue .badge-checkbox-encargado:hover,
+html.gc-theme-blue .list-item-checkbox-alumno:hover,
+html.gc-theme-blue .list-item-checkbox-curso:hover,
+html.gc-theme-blue .list-item-checkbox-empleado:hover,
+html.gc-theme-blue .list-item-checkbox-encargado:hover {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border-color: #bfdbfe;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+/* ── Badge checkboxes — texto checked ── */
+html.gc-theme-blue .badge-checkbox-alumno input[type="checkbox"]:checked ~ .checkbox-text-alumno,
+html.gc-theme-blue .badge-checkbox-curso input[type="checkbox"]:checked ~ .checkbox-text-curso,
+html.gc-theme-blue .badge-checkbox-empleado input[type="checkbox"]:checked ~ .checkbox-text-empleado,
+html.gc-theme-blue .badge-checkbox-encargado input[type="checkbox"]:checked ~ .checkbox-text-encargado,
+html.gc-theme-blue .list-item-checkbox-alumno input[type="checkbox"]:checked ~ .checkbox-text-alumno,
+html.gc-theme-blue .list-item-checkbox-curso input[type="checkbox"]:checked ~ .checkbox-text-curso,
+html.gc-theme-blue .list-item-checkbox-empleado input[type="checkbox"]:checked ~ .checkbox-text-empleado,
+html.gc-theme-blue .list-item-checkbox-encargado input[type="checkbox"]:checked ~ .checkbox-text-encargado {
+    color: #1d4ed8;
+}
+
+/* ── Badge checkboxes — estado checked ── */
+html.gc-theme-blue .badge-checkbox-alumno:has(input[type="checkbox"]:checked),
+html.gc-theme-blue .badge-checkbox-curso:has(input[type="checkbox"]:checked),
+html.gc-theme-blue .badge-checkbox-empleado:has(input[type="checkbox"]:checked),
+html.gc-theme-blue .badge-checkbox-encargado:has(input[type="checkbox"]:checked),
+html.gc-theme-blue .list-item-checkbox-alumno:has(input[type="checkbox"]:checked),
+html.gc-theme-blue .list-item-checkbox-curso:has(input[type="checkbox"]:checked),
+html.gc-theme-blue .list-item-checkbox-empleado:has(input[type="checkbox"]:checked),
+html.gc-theme-blue .list-item-checkbox-encargado:has(input[type="checkbox"]:checked) {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border-color: #93c5fd;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+}
+
+/* ── Badge checkboxes — barra de acento checked ── */
+html.gc-theme-blue .badge-checkbox-alumno:has(input[type="checkbox"]:checked)::before,
+html.gc-theme-blue .badge-checkbox-curso:has(input[type="checkbox"]:checked)::before,
+html.gc-theme-blue .badge-checkbox-empleado:has(input[type="checkbox"]:checked)::before,
+html.gc-theme-blue .badge-checkbox-encargado:has(input[type="checkbox"]:checked)::before {
+    background: linear-gradient(135deg, #1e293b, #0f4c81);
+}
+
+/* ============================================================
+   MODAL DE AJUSTES
+   ============================================================ */
+#modal-ajustes .modal-dialog {
+    max-width: 320px;
+    margin: 1.75rem auto;
+}
+
+#modal-ajustes .modal-content {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+/* Header del modal */
+.ajustes-header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+    padding: 1.25rem 1.25rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ajustes-user-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.ajustes-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.4);
+}
+
+.ajustes-user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    line-height: 1.2;
+}
+
+.ajustes-user-role {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ajustes-close-btn {
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    border-radius: 0.4rem;
+    color: rgba(255, 255, 255, 0.8);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+
+.ajustes-close-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+    color: white;
+}
+
+/* Body del modal */
+.ajustes-body {
+    padding: 1.25rem;
+    background: white;
+}
+
+.ajustes-section-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+}
+
+.ajustes-item-label {
+    font-size: 0.82rem;
+    color: #475569;
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+/* Swatches de color */
+.ajustes-colors {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.ajustes-color-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.75rem 0.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.6rem;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+}
+
+.ajustes-color-btn:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+}
+
+.ajustes-color-btn.active {
+    border-color: #0f4c81;
+    background: #eff6ff;
+}
+
+.ajustes-color-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.ajustes-color-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.ajustes-color-btn.active .ajustes-color-label {
+    color: #0f4c81;
+    font-weight: 600;
+}
+
+.ajustes-check {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 16px;
+    height: 16px;
+    background: #0f4c81;
+    color: white;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.ajustes-color-btn.active .ajustes-check {
+    display: flex;
+}
+
+/* Divider */
+.ajustes-divider {
+    border: none;
+    border-top: 1px solid #f1f5f9;
+    margin: 1rem 0;
+}
+
+/* Footer */
+.ajustes-footer {
+    padding: 0 1.25rem 1.25rem;
+    background: white;
+}
+
+.ajustes-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.6rem 0.875rem;
+    border: 1px solid #fee2e2;
+    border-radius: 0.5rem;
+    background: #fff5f5;
+    color: #dc2626;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.ajustes-logout-btn:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+    text-decoration: none;
+}
