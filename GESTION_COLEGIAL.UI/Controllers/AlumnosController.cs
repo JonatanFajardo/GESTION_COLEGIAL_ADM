@@ -38,7 +38,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		{
 			var model = new AlumnoViewModel();
 			var drop = await Dropdown(model);
-			return View(drop);
+			return View("CreateAsync", drop);
 		}
 
 		/// <summary>
