@@ -86,29 +86,27 @@
 }
 
 .btn-nuevo-catalogo {
-    padding: 0.875rem 1.75rem;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
+    padding: 0.75rem 1.75rem;
+    background: white;
+    color: #1e293b;
+    border: none;
+    border-radius: 50px;
     font-size: 0.9375rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     display: inline-flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: 0.5rem;
     text-decoration: none;
 }
 
 .btn-nuevo-catalogo:hover {
-    background: white;
+    background: #f8fafc;
     color: #f97316;
-    border-color: white;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     text-decoration: none;
 }
 
@@ -254,6 +252,46 @@
     border-color: #dc2626;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
+}
+
+/* ========================================
+   BADGE DE ESTADO
+   ======================================== */
+.badge-estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.badge-estado .dot-estado {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.badge-estado.activo {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #86efac;
+}
+
+.badge-estado.activo .dot-estado {
+    background: #16a34a;
+}
+
+.badge-estado.inactivo {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fcd34d;
+}
+
+.badge-estado.inactivo .dot-estado {
+    background: #d97706;
 }
 
 /* ========================================
