@@ -43,17 +43,7 @@ var ConceptosPago = (function () {
                 },
                 {
                     FieldName: "EsActivo",
-                    Size: 110,
-                    Render: function (data, type, row) {
-                        if (type === 'display') {
-                            if (data === true || data === 'true' || data === 'True') {
-                                return '<span class="badge badge-primary" style="padding: 6px 12px; font-size: 11px; font-weight: 500; border-radius: 6px;"><i class="fas fa-check-circle mr-1"></i>ACTIVO</span>';
-                            } else {
-                                return '<span class="badge badge-danger" style="padding: 6px 12px; font-size: 11px; font-weight: 500; border-radius: 6px;"><i class="fas fa-times-circle mr-1"></i>INACTIVO</span>';
-                            }
-                        }
-                        return data;
-                    }
+                    Size: 110
                 },
                 {
                     FieldName: "CantTarifas",

@@ -20,10 +20,7 @@ var Usuarios = (function () {
                 },
                 {
                     FieldName: "Usu_EsActivo",
-                    Size: 100,
-                    Render: function (data, type, row) {
-                        return data ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-danger">Inactivo</span>';
-                    }
+                    Size: 100
                 }
             ]
             datatableCatalogs.init(Direction, header);
