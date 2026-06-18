@@ -1,0 +1,400 @@
+/* ========================================
+   LISTADO ALUMNOS - PALETA NAVY/AZUL
+   Sobreescribe los colores naranja de listado-catalogos.css
+   ======================================== */
+
+.page-header-catalogo {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.25);
+}
+
+.btn-nuevo-catalogo:hover {
+    color: #0f4c81;
+}
+
+/* ========================================
+   CARD HEADER - TONO AZUL SUAVE
+   ======================================== */
+.card-header-listado-catalogo {
+    background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+    border-bottom: 2px solid #bfdbfe;
+}
+
+.card-header-listado-catalogo h3 {
+    color: #1e3a5f;
+}
+
+.card-header-listado-catalogo h3 svg {
+    color: #2563eb;
+}
+
+/* ========================================
+   TABLA - OCUPA TODA LA CARD
+   Anula los márgenes negativos de Bootstrap solo en las filas
+   sin la clase .m-2 (es decir, la fila de la tabla y la de paginación).
+   Elimina el padding únicamente del col-sm-12 que contiene la tabla.
+   ======================================== */
+#datatable_wrapper > .row:not(.m-2) {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#datatable_wrapper > .row > .col-sm-12 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* ========================================
+   TABLA - HOVER AZUL
+   ======================================== */
+#datatable tbody tr:hover {
+    background-color: #eff6ff;
+}
+
+/* ========================================
+   CONTROLES DATATABLE - FOCO AZUL
+   ======================================== */
+.dataTables_wrapper .dataTables_length select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ========================================
+   PAGINACIÓN - NAVY/AZUL
+   ======================================== */
+.dataTables_wrapper .dataTables_paginate .page-item:not(.disabled):not(.active) .page-link:hover {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+    color: #1d4ed8 !important;
+    border-color: #bfdbfe !important;
+    box-shadow: 0 3px 8px rgba(29, 78, 216, 0.15) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link,
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link:hover {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%) !important;
+    color: #ffffff !important;
+    border-color: #0f4c81 !important;
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.35) !important;
+}
+
+/* ========================================
+   DETALLE ALUMNO — HERO / PROFILE HEADER
+   ======================================== */
+.alumno-detail-hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+    border-radius: 0.5rem;
+    color: white;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 14px rgba(15, 76, 129, 0.3);
+}
+
+.alumno-hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Avatar */
+.alumno-hero-avatar {
+    flex-shrink: 0;
+    text-align: center;
+    width: 100px;
+}
+
+.alumno-detail-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    object-fit: cover;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+    display: block;
+    margin: 0 auto;
+}
+
+.alumno-detail-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.alumno-detail-avatar-placeholder i {
+    font-size: 2.5rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.alumno-detail-id-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+}
+
+/* Info */
+.alumno-hero-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.alumno-detail-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+    color: white !important;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.alumno-detail-subtitle {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+}
+
+.alumno-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    align-items: center;
+}
+
+.alumno-detail-meta i {
+    margin-right: 0.25rem;
+}
+
+/* Actions */
+.alumno-hero-actions {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn-detail-edit {
+    background: white;
+    color: #0f4c81 !important;
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.btn-detail-edit:hover {
+    background: #f0f4ff;
+    color: #0f4c81 !important;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn-detail-back {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.9) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.4rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: all 0.15s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    text-decoration: none;
+}
+
+.btn-detail-back:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    color: white !important;
+    text-decoration: none;
+}
+
+/* ========================================
+   DETALLE ALUMNO — INFO CARDS
+   ======================================== */
+.detail-col-stretch {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-col-stretch .detail-info-card:last-child {
+    flex-grow: 1;
+}
+
+.detail-info-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.detail-info-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.25rem;
+    background: linear-gradient(to right, #f1f5f9, #f8fafc);
+    border-bottom: 1px solid #e2e8f0;
+    border-left: 4px solid #0f4c81;
+}
+
+.detail-info-card-header i {
+    font-size: 1.05rem;
+    color: #0f4c81;
+}
+
+.detail-info-card-header h6 {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1e3a5f;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.detail-info-card-body {
+    padding: 0.75rem 1.25rem;
+}
+
+/* ========================================
+   DETALLE ALUMNO — FILAS DE CAMPO
+   ======================================== */
+.detail-field {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.detail-field:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.detail-field:first-child {
+    padding-top: 0;
+}
+
+.detail-field-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.4rem;
+    background: #eff6ff;
+    color: #0f4c81;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+    margin-top: 0.1rem;
+}
+
+.detail-field-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.1rem;
+}
+
+.detail-field-value {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+/* ========================================
+   DETALLE ALUMNO — AUDITORÍA
+   ======================================== */
+.detail-audit-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 0.875rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.detail-audit-entry:last-child {
+    margin-bottom: 0;
+}
+
+.detail-audit-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.detail-audit-icon.created {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.detail-audit-icon.modified {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.detail-audit-label {
+    font-size: 0.68rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+}
+
+.detail-audit-who {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.2rem;
+}
+
+.detail-audit-date {
+    font-size: 0.8rem;
+    color: #64748b;
+}
