@@ -163,6 +163,16 @@ var datatableCatalogs = (function () {
             if (_header[i].Render != undefined) {
                 head[i]['className'] = 'text-center'
             }
+            // Auto-render badge de estado para campos EsActivo / Usu_EsActivo
+            if ((_header[i].FieldName === 'EsActivo' || _header[i].FieldName === 'Usu_EsActivo') && _header[i].Render === undefined) {
+                head[i]['render'] = function (data) {
+                    var isActive = data === true || data === 1 || data === 'true' || data === 'Activo';
+                    return isActive
+                        ? '<span class="badge-estado activo"><span class="dot-estado"></span>Activo</span>'
+                        : '<span class="badge-estado inactivo"><span class="dot-estado"></span>Inactivo</span>';
+                };
+                head[i]['className'] = 'text-center';
+            }
         }
 
         head.push({
