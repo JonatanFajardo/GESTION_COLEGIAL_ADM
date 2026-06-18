@@ -5,6 +5,7 @@
 }
 @section Styles{
     <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/listado-encargados.css" rel="stylesheet" />
 }
 
 <div class="breadcrumb-wrapper-content ">
@@ -29,7 +30,7 @@
             </div>
             <div class="header-text-catalogo">
                 <h1>Gestión de Encargados</h1>
-                <p>Administre la información de padres y tutores responsables</p>
+                <p>Administra la información de padres y tutores responsables</p>
             </div>
         </div>
         <div class="header-action-catalogo">
@@ -44,17 +45,23 @@
 <div class="fluid-container">
     <div class="card-listado-catalogo">
         <div class="card-header-listado-catalogo">
-            <h3>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="8" y1="6" x2="21" y2="6"></line>
-                    <line x1="8" y1="12" x2="21" y2="12"></line>
-                    <line x1="8" y1="18" x2="21" y2="18"></line>
-                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                </svg>
-                Listado de Encargados
-            </h3>
+            <div class="header-listado-left">
+                <span class="header-accent-bar"></span>
+                <h3>Listado de Encargados</h3>
+                <span class="badge-total-count" id="total-count">0</span>
+            </div>
+            <div class="header-listado-right">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="custom-table-search" placeholder="Buscar en la tabla..." />
+                </div>
+                <button class="btn-table-export btn-table-pdf" id="btn-export-pdf">
+                    <i class="fas fa-download"></i> PDF
+                </button>
+                <button class="btn-table-export btn-table-excel" id="btn-export-excel">
+                    <i class="fas fa-download"></i> Excel
+                </button>
+            </div>
         </div>
 
         <div class="card-body-listado-catalogo">

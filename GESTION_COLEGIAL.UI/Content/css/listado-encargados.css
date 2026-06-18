@@ -1,0 +1,237 @@
+/* ========================================
+   LISTADO ENCARGADOS - CARD Y TABLA REDISEÑADA
+   ======================================== */
+
+/* Card header - layout flex en dos secciones */
+.card-header-listado-catalogo {
+    background: white !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    padding: 1rem 1.5rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.card-header-listado-catalogo h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.header-listado-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.header-accent-bar {
+    width: 4px;
+    height: 22px;
+    background: linear-gradient(135deg, #F7A400, #f97316);
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.badge-total-count {
+    background: #fff7ed;
+    color: #f97316;
+    border: 1px solid #fed7aa;
+    border-radius: 20px;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    min-width: 36px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* Controles derechos: buscador + botones de exportación */
+.header-listado-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-wrapper i {
+    position: absolute;
+    left: 0.75rem;
+    color: #94a3b8;
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+.search-wrapper input {
+    padding: 0.5rem 0.875rem 0.5rem 2.25rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #475569;
+    background: #f8fafc;
+    width: 220px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-wrapper input:focus {
+    outline: none;
+    border-color: #f97316;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.search-wrapper input::placeholder {
+    color: #94a3b8;
+}
+
+.btn-table-export {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-table-pdf {
+    color: #dc2626;
+    border-color: #fca5a5;
+    background: #fff5f5;
+}
+
+.btn-table-pdf:hover {
+    background: #dc2626;
+    color: white;
+    border-color: #dc2626;
+}
+
+.btn-table-excel {
+    color: #16a34a;
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.btn-table-excel:hover {
+    background: #16a34a;
+    color: white;
+    border-color: #16a34a;
+}
+
+/* ========================================
+   BADGES DE ESTADO
+   ======================================== */
+.badge-estado-enc {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.badge-estado-enc .dot-enc {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.activo-enc {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #86efac;
+}
+
+.activo-enc .dot-enc {
+    background: #16a34a;
+}
+
+.inactivo-enc {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fcd34d;
+}
+
+.inactivo-enc .dot-enc {
+    background: #d97706;
+}
+
+/* ========================================
+   OVERRIDES DEL TEMA (main.css aplica fondo naranja al thead)
+   ======================================== */
+
+/* main.css pone background naranja en #datatable thead — lo quitamos */
+#datatable thead {
+    background: linear-gradient(to bottom, #fafafa, #f8fafc) !important;
+}
+
+/* Restaurar estilos limpios en las celdas de encabezado */
+#datatable thead th {
+    background: transparent !important;
+    color: #334155 !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 1rem 1.25rem !important;
+    border-top: none !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Info de datatable (footer) */
+div.dataTables_wrapper div.dataTables_info {
+    border: none !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0 !important;
+    font-size: 0.8125rem !important;
+    color: #64748b !important;
+    font-weight: 400 !important;
+}
+
+/* ========================================
+   FOOTER DE DATATABLE
+   ======================================== */
+.dt-footer-enc {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #f1f5f9;
+    background: #fafbfc;
+    border-radius: 0 0 12px 12px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 768px) {
+    .header-listado-right {
+        width: 100%;
+    }
+
+    .search-wrapper input {
+        width: 100%;
+    }
+
+    .search-wrapper {
+        flex: 1;
+    }
+}
