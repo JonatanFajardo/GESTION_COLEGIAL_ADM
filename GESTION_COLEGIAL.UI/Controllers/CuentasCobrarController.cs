@@ -228,6 +228,32 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Crea un cargo (CuentaCobrar) ad-hoc para un alumno desde el wizard de Nuevo Pago.
+        /// </summary>
+        [HttpPost]
+        public async Task<ActionResult> CrearCargoAlumnoAsync(CuentaCobrarFindViewModel model)
+        {
+            try
+            {
+                model.EstadoPagoId = model.EstadoPagoId == 0 ? 1 : model.EstadoPagoId;
+                model.MontoTotal = model.MontoOriginal - model.MontoDescuento + model.MontoMora;
+                model.MontoPendiente = model.MontoTotal;
+                model.FechaEmision = model.FechaEmision == default ? System.DateTime.Today : model.FechaEmision;
+
+                bool result = await cuentasCobrarService.Create(model);
+                if (result)
+                {
+                    return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
+                }
+                return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessInsert);
+            }
+            catch (System.Exception ex)
+            {
+                return AjaxResult(null, AlertMessage.AlertMessageType.Error, ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Obtiene el resumen financiero de un alumno.
         /// </summary>
         [HttpGet]

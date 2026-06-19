@@ -6,6 +6,9 @@ var NuevoPago = (function () {
     var selectedConceptos = [];
     var selectedDescuento = null;
     var selectedFormaPago = null;
+    var conceptosCatalogo = [];
+    var tarifasCatalogo = [];
+    var MENSUALIDAD_CONCEPTO_ID = 2;
 
     obj.init = function (config) {
         urls = config;
@@ -13,8 +16,19 @@ var NuevoPago = (function () {
         $(function () {
             initializeStepNavigation();
             initializeAlumnoSearch();
+            initializeGenerarMensualidad();
+            initializeAgregarCargo();
             loadDescuentos();
             loadFormasPago();
+            loadConceptosCatalogo();
+            loadTarifas();
+
+            var now = new Date();
+            $("#mensualidad-anio").val(now.getFullYear());
+            $("#mensualidad-mes").val(now.getMonth() + 1);
+            var vence = new Date();
+            vence.setDate(vence.getDate() + 10);
+            $("#adhoc-vence").val(toIsoDate(vence));
         });
     }
 
@@ -156,16 +170,20 @@ var NuevoPago = (function () {
         $("#alumno-nivel").text(alumno.Niv_Descripcion || "N/A");
         $("#alumno-curso").text(alumno.Cun_Descripcion || "N/A");
 
-        // Mostrar imagen del alumno
-        if (alumno.Per_Imagen) {
-            $("#alumno-imagen").attr("src", "/Content/images/alumnos/" + alumno.Per_Imagen);
+        // Mostrar imagen del alumno (o placeholder con ícono)
+        var placeholderHtml = '<div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center" style="width:140px;height:140px;font-size:64px;color:#fff;">'
+                            + '<i class="fa-solid fa-user"></i>'
+                            + '</div>';
+        var avatarHtml;
+        if (alumno.Per_Imagen && String(alumno.Per_Imagen).trim()) {
+            var onerrorReplace = "this.outerHTML='" + placeholderHtml.replace(/'/g, "\\'").replace(/"/g, '&quot;') + "';";
+            avatarHtml = '<img src="' + alumno.Per_Imagen + '" alt="Foto del alumno" class="img-fluid rounded-circle" '
+                       + 'style="width:140px;height:140px;object-fit:cover;border:2px solid #ddd;" '
+                       + 'onerror="' + onerrorReplace + '" />';
         } else {
-            // Imagen por defecto según el sexo
-            var imagenDefault = alumno.Per_Sexo === 'M' ?
-                "/Content/images/default-male-avatar.png" :
-                "/Content/images/default-female-avatar.png";
-            $("#alumno-imagen").attr("src", imagenDefault);
+            avatarHtml = placeholderHtml;
         }
+        $("#alumno-avatar-wrapper").html(avatarHtml);
     }
 
     function limpiarDatosAlumno() {
@@ -180,7 +198,7 @@ var NuevoPago = (function () {
         $("#alumno-telefono").text("");
         $("#alumno-nivel").text("");
         $("#alumno-curso").text("");
-        $("#alumno-imagen").attr("src", "");
+        $("#alumno-avatar-wrapper").html('<div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center" style="width:140px;height:140px;font-size:64px;color:#fff;"><i class="fa-solid fa-user"></i></div>');
     }
 
     function loadConceptosAlumno() {
@@ -324,6 +342,158 @@ var NuevoPago = (function () {
 
     function formatMoney(amount) {
         return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+
+    function toIsoDate(d) {
+        var m = (d.getMonth() + 1).toString().padStart(2, '0');
+        var day = d.getDate().toString().padStart(2, '0');
+        return d.getFullYear() + "-" + m + "-" + day;
+    }
+
+    function loadConceptosCatalogo() {
+        $.ajax({
+            url: urls.urlConceptosPago,
+            type: "GET",
+            success: function (response) {
+                var data = response && response.data ? response.data : response;
+                conceptosCatalogo = data || [];
+                var html = '<option value="">-- Seleccione --</option>';
+                conceptosCatalogo.forEach(function (c) {
+                    if (c.EsActivo && !c.EsEliminado) {
+                        html += '<option value="' + c.ConceptoPagoId + '">' + c.Descripcion + '</option>';
+                    }
+                });
+                $("#adhoc-concepto").html(html);
+            }
+        });
+    }
+
+    function loadTarifas() {
+        $.ajax({
+            url: urls.urlTarifas,
+            type: "GET",
+            success: function (response) {
+                var data = response && response.data ? response.data : response;
+                tarifasCatalogo = data || [];
+            }
+        });
+    }
+
+    function montoSugeridoPorConcepto(conceptoPagoId) {
+        if (!tarifasCatalogo || tarifasCatalogo.length === 0) return 0;
+        var anioActual = new Date().getFullYear();
+        var match = tarifasCatalogo
+            .filter(function (t) { return t.ConceptoPagoId === parseInt(conceptoPagoId) && !t.EsEliminado; })
+            .sort(function (a, b) { return b.AnioVigencia - a.AnioVigencia; })[0];
+        return match ? parseFloat(match.Monto) : 0;
+    }
+
+    function initializeGenerarMensualidad() {
+        $("#btn-generar-mensualidad").click(function () {
+            if (!selectedAlumno) {
+                toastr.warning("Debe seleccionar un alumno primero");
+                return;
+            }
+            var mes = parseInt($("#mensualidad-mes").val());
+            var anio = parseInt($("#mensualidad-anio").val());
+            var monto = parseFloat($("#mensualidad-monto").val());
+            if (!monto || monto <= 0) {
+                monto = montoSugeridoPorConcepto(MENSUALIDAD_CONCEPTO_ID);
+            }
+            if (!mes || !anio || !monto || monto <= 0) {
+                toastr.warning("Complete mes, año y monto válidos");
+                return;
+            }
+
+            var vence = new Date(anio, mes, 0);
+
+            crearCargo({
+                AlumnoId: selectedAlumno.Alu_Id,
+                ConceptoPagoId: MENSUALIDAD_CONCEPTO_ID,
+                MontoOriginal: monto,
+                MontoDescuento: 0,
+                MontoMora: 0,
+                FechaEmision: toIsoDate(new Date()),
+                FechaVencimiento: toIsoDate(vence),
+                Mes: mes,
+                Anio: anio,
+                Observaciones: "Mensualidad adelantada (mes " + mes + "/" + anio + ")",
+                EstadoPagoId: 1
+            }, "Mensualidad generada y agregada a la lista");
+        });
+
+        $("#adhoc-concepto").change(function () {
+            var id = parseInt($(this).val());
+            if (id) {
+                var sugerido = montoSugeridoPorConcepto(id);
+                if (sugerido > 0) $("#adhoc-monto").val(sugerido.toFixed(2));
+            }
+        });
+    }
+
+    function initializeAgregarCargo() {
+        $("#btn-agregar-cargo").click(function () {
+            if (!selectedAlumno) {
+                toastr.warning("Debe seleccionar un alumno primero");
+                return;
+            }
+            var conceptoId = parseInt($("#adhoc-concepto").val());
+            var monto = parseFloat($("#adhoc-monto").val());
+            var vence = $("#adhoc-vence").val();
+            var obs = $("#adhoc-observaciones").val() || "Cargo puntual";
+
+            if (!conceptoId) {
+                toastr.warning("Seleccione un concepto");
+                return;
+            }
+            if (!monto || monto <= 0) {
+                toastr.warning("Ingrese un monto válido");
+                return;
+            }
+            if (!vence) {
+                toastr.warning("Seleccione fecha de vencimiento");
+                return;
+            }
+
+            var venceDate = new Date(vence);
+
+            crearCargo({
+                AlumnoId: selectedAlumno.Alu_Id,
+                ConceptoPagoId: conceptoId,
+                MontoOriginal: monto,
+                MontoDescuento: 0,
+                MontoMora: 0,
+                FechaEmision: toIsoDate(new Date()),
+                FechaVencimiento: vence,
+                Mes: venceDate.getMonth() + 1,
+                Anio: venceDate.getFullYear(),
+                Observaciones: obs,
+                EstadoPagoId: 1
+            }, "Cargo agregado a la lista");
+        });
+    }
+
+    function crearCargo(payload, successMsg) {
+        $.ajax({
+            url: urls.urlCrearCargo,
+            type: "POST",
+            data: payload,
+            success: function (response) {
+                if (response && (response === true || response.success === true || response.item === true)) {
+                    toastr.success(successMsg);
+                    loadConceptosAlumno();
+                    $("#adhoc-monto").val("");
+                    $("#adhoc-observaciones").val("");
+                    $("#mensualidad-monto").val("");
+                } else {
+                    toastr.error("No se pudo crear el cargo");
+                }
+            },
+            error: function (xhr) {
+                var msg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : "Error al crear el cargo";
+                toastr.error(msg);
+            }
+        });
     }
 
     return obj;

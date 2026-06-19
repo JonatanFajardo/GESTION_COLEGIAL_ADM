@@ -66,25 +66,29 @@
 
                 <div id="alumno-info" style="display:none;">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="background-color:white;">
                             <div class="row">
                                 <div class="col-md-3 text-center">
-                                    <img id="alumno-imagen" src="" alt="Foto del alumno" class="img-fluid rounded" style="max-width: 150px; border: 2px solid #ddd;" />
+                                    <div id="alumno-avatar-wrapper">
+                                        <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center" style="width:140px;height:140px;font-size:64px;color:#fff;">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-9">
                                     <h5 class="text-black">Información del Alumno</h5>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p><strong>Nombre completo:</strong> <span id="alumno-nombre-completo"></span></p>
-                                            <p><strong>Identidad:</strong> <span id="alumno-identidad"></span></p>
-                                            <p><strong>Fecha de nacimiento:</strong> <span id="alumno-fecha-nacimiento"></span></p>
-                                            <p><strong>Sexo:</strong> <span id="alumno-sexo"></span></p>
+                                            <p style="color:#333;"><strong>Nombre completo:</strong> <span id="alumno-nombre-completo"></span></p>
+                                            <p style="color:#333;"><strong>Identidad:</strong> <span id="alumno-identidad"></span></p>
+                                            <p style="color:#333;"><strong>Fecha de nacimiento:</strong> <span id="alumno-fecha-nacimiento"></span></p>
+                                            <p style="color:#333;"><strong>Sexo:</strong> <span id="alumno-sexo"></span></p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><strong>Correo:</strong> <span id="alumno-correo"></span></p>
-                                            <p><strong>Teléfono:</strong> <span id="alumno-telefono"></span></p>
-                                            <p><strong>Nivel:</strong> <span id="alumno-nivel"></span></p>
-                                            <p><strong>Curso:</strong> <span id="alumno-curso"></span></p>
+                                            <p style="color:#333;"><strong>Correo:</strong> <span id="alumno-correo"></span></p>
+                                            <p style="color:#333;"><strong>Teléfono:</strong> <span id="alumno-telefono"></span></p>
+                                            <p style="color:#333;"><strong>Nivel:</strong> <span id="alumno-nivel"></span></p>
+                                            <p style="color:#333;"><strong>Curso:</strong> <span id="alumno-curso"></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -101,22 +105,109 @@
             <!-- Paso 2: Seleccionar Conceptos -->
             <div id="step2" class="payment-step" style="display:none;">
                 <h4>Seleccionar Conceptos a Pagar</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th><input type="checkbox" id="select-all-conceptos" /></th>
-                                <th>Concepto</th>
-                                <th>Monto</th>
-                                <th>Descuento</th>
-                                <th>Mora</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="conceptos-tbody">
-                        </tbody>
-                    </table>
+
+                <!-- Sección 1: Cargos pendientes existentes -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <strong><i class="mdi mdi-clipboard-list"></i> Cargos pendientes existentes</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="select-all-conceptos" /></th>
+                                        <th>Concepto</th>
+                                        <th>Monto</th>
+                                        <th>Descuento</th>
+                                        <th>Mora</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="conceptos-tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Sección 2: Generar mensualidad adelantada -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <strong><i class="mdi mdi-calendar-month"></i> Generar mensualidad adelantada</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="mensualidad-mes">Mes</label>
+                                <select class="form-control" id="mensualidad-mes">
+                                    <option value="1">Enero</option>
+                                    <option value="2">Febrero</option>
+                                    <option value="3">Marzo</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Mayo</option>
+                                    <option value="6">Junio</option>
+                                    <option value="7">Julio</option>
+                                    <option value="8">Agosto</option>
+                                    <option value="9">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="mensualidad-anio">Año</label>
+                                <input type="number" class="form-control" id="mensualidad-anio" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="mensualidad-monto">Monto</label>
+                                <input type="number" step="0.01" class="form-control" id="mensualidad-monto" placeholder="Monto sugerido" />
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-info btn-block" id="btn-generar-mensualidad">
+                                    <i class="mdi mdi-plus-circle"></i> Generar
+                                </button>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted mt-2">Crea una mensualidad para un mes específico y la añade a la lista de cargos pendientes.</small>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Cargo puntual ad-hoc -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <strong><i class="mdi mdi-plus-box"></i> Agregar cargo puntual</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="adhoc-concepto">Concepto</label>
+                                <select class="form-control" id="adhoc-concepto">
+                                    <option value="">-- Seleccione --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="adhoc-monto">Monto</label>
+                                <input type="number" step="0.01" class="form-control" id="adhoc-monto" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="adhoc-vence">Fecha vencimiento</label>
+                                <input type="date" class="form-control" id="adhoc-vence" />
+                            </div>
+                            <div class="col-md-2">
+                                <label for="adhoc-observaciones">Observaciones</label>
+                                <input type="text" class="form-control" id="adhoc-observaciones" placeholder="(opcional)" />
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-success btn-block" id="btn-agregar-cargo">
+                                    <i class="mdi mdi-plus"></i> Agregar
+                                </button>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted mt-2">Crea un cargo puntual (Materiales, Examen, Transporte, etc.) con monto personalizado.</small>
+                    </div>
+                </div>
+
                 <div class="alert alert-success">
                     <strong>Subtotal seleccionado:</strong> L. <span id="subtotal-conceptos">0.00</span>
                 </div>
@@ -194,6 +285,9 @@
             urlConceptosAlumno: "@Url.Action("ListByAlumnoAsync", "CuentasCobrar")",
             urlDescuentos: "@Url.Action("DropdownAsync", "Descuentos")",
             urlFormasPago: "@Url.Action("DropdownAsync", "FormasPago")",
+            urlConceptosPago: "@Url.Action("DropdownAsync", "ConceptosPago")",
+            urlTarifas: "@Url.Action("ListAsync", "Tarifas")",
+            urlCrearCargo: "@Url.Action("CrearCargoAlumnoAsync", "CuentasCobrar")",
             urlRegistrarPago: "@Url.Action("CreateAsync", "Pagos")"
         });
     </script>

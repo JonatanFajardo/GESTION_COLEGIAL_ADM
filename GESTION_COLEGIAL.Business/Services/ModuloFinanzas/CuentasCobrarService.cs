@@ -29,11 +29,10 @@ namespace GESTION_COLEGIAL.Business.Services.ModuloFinanzas
         /// </summary>
         /// <param name="alumnoId">El identificador del alumno.</param>
         /// <returns>Una colección de objetos CuentaCobrarListViewModel.</returns>
-        public async Task<IEnumerable<CuentaCobrarListViewModel>> ListByAlumnoAsync(int alumnoId)
+        public async Task<IEnumerable<CuentaCobrarPorAlumnoViewModel>> ListByAlumnoAsync(int alumnoId)
         {
             string url = $"CuentasCobrar/ListByAlumnoAsync?alumnoId={alumnoId}";
-            IEnumerable<CuentaCobrarListViewModel> apiUrl = await ApiRequests.ListAsync<CuentaCobrarListViewModel>(url);
-            return apiUrl;
+            return await ApiRequests.ListAsync<CuentaCobrarPorAlumnoViewModel>(url);
         }
 
         /// <summary>
