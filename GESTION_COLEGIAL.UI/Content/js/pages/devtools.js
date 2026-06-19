@@ -15,6 +15,7 @@ var DevTools = (function () {
         "app.tbNotas",
         "app.tbTareas",
         "app.tbDocumentosAlumno",
+        "app.tbDocumentosEmpleado",
         "app.tbVacaciones",
         "app.tbAnuncios",
         "app.tbMensajes",
