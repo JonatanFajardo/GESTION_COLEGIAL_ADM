@@ -114,6 +114,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DashboardAdminController.cs" />
+    <Compile Include="Controllers\DashboardAulasController.cs" />
     <Compile Include="Controllers\DashboardDirectorController.cs" />
     <Compile Include="Controllers\DashboardDocenteController.cs" />
     <Compile Include="Controllers\DashboardSecretariaController.cs" />
@@ -254,6 +255,7 @@
     <Content Include="Content\js\pages\cuentascobrar.js" />
     <Content Include="Content\js\pages\cumplimientodocumentos.js" />
     <Content Include="Content\js\pages\dashboardadmin.js" />
+    <Content Include="Content\js\pages\dashboardaulas.js" />
     <Content Include="Content\js\pages\dashboardcajero.js" />
     <Content Include="Content\js\pages\dashboardconsulta.js" />
     <Content Include="Content\js\pages\dashboarddirector.js" />
@@ -369,6 +371,7 @@
     <Content Include="Content\css\pages\faq\faq.css" />
     <Content Include="Content\css\pages\faq\faq2.css" />
     <Content Include="Content\css\pages\cajero-kpis.css" />
+    <Content Include="Content\css\pages\dashboard-aulas.css" />
     <Content Include="Content\css\pages\finanzas-dashboard.css" />
     <Content Include="Content\css\pages\helpdesk.css" />
     <Content Include="Content\css\pages\main.css" />
@@ -1562,6 +1565,7 @@
     <Content Include="Views\ds Notas\CreateAsync.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\EstadosPago\Index.cshtml" />
+    <Content Include="Views\DashboardAulas\Index.cshtml" />
     <Content Include="Views\CuentasCobrar\CargosMasivos.cshtml" />
     <Content Include="Views\CuentasCobrar\CargosPendientes.cshtml" />
     <Content Include="Views\CuentasCobrar\Deudores.cshtml" />

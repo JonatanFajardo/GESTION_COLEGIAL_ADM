@@ -164,6 +164,7 @@
     <Compile Include="Models\finansas\CuentaCobrarExistViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarFindViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarListViewModel.cs" />
+    <Compile Include="Models\finansas\CuentaCobrarPorAlumnoViewModel.cs" />
     <Compile Include="Models\finansas\CuentaCobrarViewModel.cs" />
     <Compile Include="Models\finansas\HistoricoPagoViewModel.cs" />
     <Compile Include="Models\finansas\ResumenFinancieroViewModel.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Models\ParentescoDetailViewModel.cs" />
     <Compile Include="Models\ParentescoViewModel.cs" />
     <Compile Include="Models\PersonaViewModel.cs" />
+    <Compile Include="Models\DashboardAulaViewModel.cs" />
     <Compile Include="Models\SeccionCursoViewModel.cs" />
     <Compile Include="Models\SeccionDetailViewModel.cs" />
     <Compile Include="Models\SeccionViewModel.cs" />
@@ -312,6 +314,7 @@
     <Compile Include="Services\ModuloFinanzas\PagosService.cs" />
     <Compile Include="Services\ParentescosService.cs" />
     <Compile Include="Services\ModuloFinanzas\ReportesFinancierosService.cs" />
+    <Compile Include="Services\DashboardAulasService.cs" />
     <Compile Include="Services\SeccionesService.cs" />
     <Compile Include="Services\SemestresService.cs" />
     <Compile Include="Services\ModuloFinanzas\TarifaService.cs" />

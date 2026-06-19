@@ -8,6 +8,7 @@
     string username        = HttpContext.Current.Session["Username"] as string ?? "Usuario";
     string roleName        = HttpContext.Current.Session["RoleName"] as string ?? "";
     string impersonandoRol = HttpContext.Current.Session["impersonando_rol"] as string ?? "";
+    bool esAdmin = roleName.Equals("admin", StringComparison.OrdinalIgnoreCase);
     var nameParts   = username.Trim().Split(new[]{' '}, StringSplitOptions.RemoveEmptyEntries);
     string initials = nameParts.Length >= 2
         ? $"{nameParts[0][0]}{nameParts[1][0]}".ToUpper()
@@ -160,7 +161,7 @@
             }
 
             <!-- ·· Dashboards ·· -->
-            @if (tiene("Dashboard Admin") || tiene("Dashboard Director") || tiene("Dashboard Docente") || tiene("Dashboard Secretaria") || tiene("Dashboard Recursos Humanos") || tiene("Dashboard Caja") || tiene("Dashboard Financiero") || tiene("Dashboard Consulta"))
+            @if (esAdmin || tiene("Dashboard Admin") || tiene("Dashboard Director") || tiene("Dashboard Docente") || tiene("Dashboard Secretaria") || tiene("Dashboard Recursos Humanos") || tiene("Dashboard Caja") || tiene("Dashboard Financiero") || tiene("Dashboard Consulta") || tiene("Dashboard Aulas"))
             {
                 <li class="menu menu-heading">
                     <div class="heading"><span>Dashboards</span></div>
@@ -177,6 +178,7 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Dashboards" data-parent="#accordionExample">
                         @if (tiene("Dashboard Admin"))            { <li>@Html.ActionLink("Administrador", "Index", "DashboardAdmin")</li> }
+                        @if (tiene("Dashboard Aulas") || esAdmin) { <li>@Html.ActionLink("Aulas",         "Index", "DashboardAulas")</li> }
                         @if (tiene("Dashboard Director"))         { <li>@Html.ActionLink("Director",      "Index", "DashboardDirector")</li> }
                         @if (tiene("Dashboard Docente"))          { <li>@Html.ActionLink("Docente",       "Index", "DashboardDocente")</li> }
                         @if (tiene("Dashboard Secretaria"))       { <li>@Html.ActionLink("Secretaria",    "Index", "DashboardSecretaria")</li> }
