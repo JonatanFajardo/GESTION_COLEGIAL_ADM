@@ -27,8 +27,7 @@ var datatableCatalogs = (function () {
                 //bInfo: false,
                 processing: true,
                 lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLenght: 10,
-                displayLength: 10,
+                pageLength: (function () { try { return parseInt(localStorage.getItem('gc-page-length'), 10) || 10; } catch (e) { return 10; } })(),
                 language: {
                     processing: '<div class="d-flex justify-content-center py-3"><i class="fa-solid fa-spinner fa-spin-pulse fa-3x" style="color: #F7A400;"></i></div>',
                     lengthMenu: " _MENU_ ",

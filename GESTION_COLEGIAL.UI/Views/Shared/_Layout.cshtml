@@ -57,7 +57,7 @@
     @RenderSection("Styles", required: false)
 
     @* Aplicar tema guardado antes de que cargue el body para evitar flash *@
-    <script>(function(){var t=localStorage.getItem('gc-theme');if(t)document.documentElement.classList.add(t);})();</script>
+    <script>(function(){var t=localStorage.getItem('gc-theme');if(t)document.documentElement.classList.add(t);if(localStorage.getItem('gc-dark-mode')==='1')document.documentElement.classList.add('gc-dark');if(localStorage.getItem('gc-density')==='compact')document.documentElement.classList.add('gc-density-compact');})();</script>
 
 </head>
 <body class="sidebar-noneoverflow" data-spy="scroll" data-target="#navSection" data-offset="140">
@@ -222,6 +222,57 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </span>
                     </button>
+                </div>
+
+                <!-- Dark mode toggle -->
+                <div class="ajustes-toggle-row" style="margin-top:0.75rem;">
+                    <span class="ajustes-toggle-label">Modo oscuro</span>
+                    <label class="ajustes-toggle-switch">
+                        <input type="checkbox" id="toggle-dark-mode">
+                        <span class="ajustes-toggle-track"></span>
+                    </label>
+                </div>
+
+                <!-- Interfaz -->
+                <div class="ajustes-section-label" style="margin-top:1rem;">Interfaz</div>
+
+                <!-- Sidebar compacto -->
+                <div class="ajustes-toggle-row">
+                    <span class="ajustes-toggle-label">Sidebar compacto</span>
+                    <label class="ajustes-toggle-switch">
+                        <input type="checkbox" id="toggle-sidebar-collapsed">
+                        <span class="ajustes-toggle-track"></span>
+                    </label>
+                </div>
+
+                <!-- Filas por página -->
+                <div class="ajustes-row-between" style="margin-bottom:0.75rem;">
+                    <span class="ajustes-item-label" style="margin-bottom:0;">Filas por página</span>
+                    <div class="ajustes-segmented">
+                        <button class="ajustes-seg-btn" data-page-length="10">10</button>
+                        <button class="ajustes-seg-btn" data-page-length="25">25</button>
+                        <button class="ajustes-seg-btn" data-page-length="50">50</button>
+                    </div>
+                </div>
+
+                <!-- Densidad -->
+                <div class="ajustes-row-between">
+                    <span class="ajustes-item-label" style="margin-bottom:0;">Densidad</span>
+                    <div class="ajustes-segmented">
+                        <button class="ajustes-seg-btn" data-density="">Normal</button>
+                        <button class="ajustes-seg-btn" data-density="compact">Compacto</button>
+                    </div>
+                </div>
+
+                <!-- Regional -->
+                <div class="ajustes-section-label" style="margin-top:1rem;">Regional</div>
+                <div class="ajustes-row-between">
+                    <span class="ajustes-item-label" style="margin-bottom:0;">Moneda</span>
+                    <div class="ajustes-segmented">
+                        <button class="ajustes-seg-btn" data-moneda="L" title="Lempira hondureño">L HNL</button>
+                        <button class="ajustes-seg-btn" data-moneda="$" title="Dólar estadounidense">$ USD</button>
+                        <button class="ajustes-seg-btn" data-moneda="Q" title="Quetzal guatemalteco">Q GTQ</button>
+                    </div>
                 </div>
             </div>
 
