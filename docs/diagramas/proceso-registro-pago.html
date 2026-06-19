@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proceso: Registro de Pago</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --navy: #0f172a;
+            --indigo: #4f46e5;
+            --slate: #475569;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--navy);
+            margin: 0;
+            padding: 32px;
+        }
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0 0 4px;
+            color: var(--navy);
+        }
+        .subtitle {
+            color: var(--slate);
+            font-size: 14px;
+        }
+        .meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .pill {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: var(--slate);
+        }
+        .pill strong { color: var(--indigo); }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 2px rgba(15,23,42,.04);
+        }
+        .card h2 {
+            font-size: 16px;
+            margin: 0 0 16px;
+            color: var(--navy);
+            border-left: 3px solid var(--indigo);
+            padding-left: 10px;
+        }
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--slate);
+        }
+        .swatch {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+        .mermaid {
+            text-align: center;
+        }
+        .actores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .actor {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            background: #f1f5f9;
+        }
+        .actor h3 {
+            margin: 0 0 4px;
+            font-size: 13px;
+            color: var(--indigo);
+        }
+        .actor p {
+            margin: 0;
+            font-size: 12px;
+            color: var(--slate);
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <header>
+        <h1>Proceso: Registro de Pago</h1>
+        <div class="subtitle">Flujo operativo del módulo <strong>Pagos</strong> en GESTION_COLEGIAL_ADM</div>
+        <div class="meta">
+            <span class="pill">Módulo: <strong>Pagos</strong></span>
+            <span class="pill">Actor principal: <strong>Cajero</strong></span>
+            <span class="pill">Sistemas: <strong>UI MVC + API</strong></span>
+            <span class="pill">Versión: <strong>1.0</strong></span>
+        </div>
+    </header>
+
+    <div class="card">
+        <h2>Actores</h2>
+        <div class="actores">
+            <div class="actor">
+                <h3>Cajero</h3>
+                <p>Recibe el pago y registra la transacción en el sistema.</p>
+            </div>
+            <div class="actor">
+                <h3>Sistema (UI)</h3>
+                <p>Valida datos, calcula montos y envía al API.</p>
+            </div>
+            <div class="actor">
+                <h3>API Externa</h3>
+                <p>Persiste el pago y actualiza Cuentas por Cobrar.</p>
+            </div>
+            <div class="actor">
+                <h3>Encargado / Alumno</h3>
+                <p>Realiza el pago y recibe comprobante.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Leyenda</h2>
+        <div class="legend">
+            <div class="legend-item"><span class="swatch" style="background:#dbeafe"></span> Inicio / Fin</div>
+            <div class="legend-item"><span class="swatch" style="background:#e0e7ff"></span> Acción del usuario</div>
+            <div class="legend-item"><span class="swatch" style="background:#fef9c3"></span> Decisión</div>
+            <div class="legend-item"><span class="swatch" style="background:#dcfce7"></span> Proceso del sistema</div>
+            <div class="legend-item"><span class="swatch" style="background:#fee2e2"></span> Error / Cancelación</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Diagrama de flujo</h2>
+        <div class="mermaid">
+flowchart TD
+    A([Inicio: Encargado solicita pago]):::startend --> B["Cajero inicia sesión<br/><i>🖥 Account/Login.cshtml</i>"]:::accion
+    B --> B2["Abrir módulo Pagos desde menú lateral<br/><i>🖥 Pagos/Index.cshtml</i>"]:::accion
+    B2 --> C["Click en 'Nuevo Pago' → abre modal<br/><i>🪟 Modal: _CreatePago.cshtml</i>"]:::accion
+    C --> C2["Buscar alumno por código o nombre<br/><i>🔍 Autocomplete en modal</i>"]:::accion
+    C2 --> D{¿Alumno existe?}:::decision
+    D -- No --> E["Toast: Alumno no encontrado<br/><i>🪟 Modal Pagos</i>"]:::error
+    E --> F([Fin]):::startend
+    D -- Sí --> G["Cargar cuentas por cobrar del alumno<br/><i>📋 Grid en modal de Pagos</i>"]:::sistema
+    G --> H{¿Tiene saldos pendientes?}:::decision
+    H -- No --> I["Toast: Sin pagos pendientes<br/><i>🪟 Modal Pagos</i>"]:::error
+    I --> F
+    H -- Sí --> J["Seleccionar conceptos a pagar<br/><i>📋 Grid de conceptos en modal</i>"]:::accion
+    J --> K["Aplicar descuentos automáticos<br/><i>🪟 Modal Pagos (campo total)</i>"]:::sistema
+    K --> L["Seleccionar forma de pago (efectivo/transf.)<br/><i>🪟 Modal Pagos (dropdown)</i>"]:::accion
+    L --> M["Calcular total a pagar<br/><i>🪟 Modal Pagos (resumen)</i>"]:::sistema
+    M --> N{¿Datos válidos?}:::decision
+    N -- No --> O["Mostrar errores de validación<br/><i>🪟 Modal Pagos (campos en rojo)</i>"]:::error
+    O --> J
+    N -- Sí --> P["Click 'Guardar' → POST API /pagos<br/><i>🪟 Modal Pagos (botón submit)</i>"]:::sistema
+    P --> Q{¿API responde OK?}:::decision
+    Q -- No --> R["Toast: Error de servidor<br/><i>🪟 Modal Pagos</i>"]:::error
+    R --> J
+    Q -- Sí --> S["Actualizar Cuentas por Cobrar<br/><i>🖥 CuentasCobrar/Index.cshtml (refresh)</i>"]:::sistema
+    S --> T["Generar número de comprobante<br/><i>⚙ Servicio PagosService</i>"]:::sistema
+    T --> U["Mostrar / Imprimir recibo<br/><i>🖥 Pagos/Recibo.cshtml</i>"]:::accion
+    U --> V([Fin: Pago registrado]):::startend
+
+    classDef startend fill:#dbeafe,stroke:#1e40af,stroke-width:1.5px,color:#0f172a;
+    classDef accion fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#0f172a;
+    classDef decision fill:#fef9c3,stroke:#ca8a04,stroke-width:1.5px,color:#0f172a;
+    classDef sistema fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#0f172a;
+    classDef error fill:#fee2e2,stroke:#dc2626,stroke-width:1.5px,color:#0f172a;
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Pantallas involucradas</h2>
+        <div class="actores">
+            <div class="actor">
+                <h3>🖥 Account/Login.cshtml</h3>
+                <p>Inicio de sesión del cajero.</p>
+            </div>
+            <div class="actor">
+                <h3>🖥 Pagos/Index.cshtml</h3>
+                <p>Listado principal con DataTable de pagos registrados y botón "Nuevo Pago".</p>
+            </div>
+            <div class="actor">
+                <h3>🪟 Modal _CreatePago.cshtml</h3>
+                <p>Formulario modal para selección de alumno, conceptos, descuentos y forma de pago.</p>
+            </div>
+            <div class="actor">
+                <h3>🖥 CuentasCobrar/Index.cshtml</h3>
+                <p>Se actualiza automáticamente tras registrar el pago (saldos pendientes).</p>
+            </div>
+            <div class="actor">
+                <h3>🖥 Pagos/Recibo.cshtml</h3>
+                <p>Vista de impresión del comprobante con número de recibo generado.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Notas técnicas</h2>
+        <ul style="color:var(--slate); font-size:13px; line-height:1.6;">
+            <li>Endpoint del API: <code>POST https://localhost:7076/api/v1/pagos</code></li>
+            <li>Controlador MVC: <code>PagosController.CreateAsync</code></li>
+            <li>Servicio: <code>PagosService</code> → <code>SendHttpClient.PostAsync</code></li>
+            <li>Actualización en cascada: <code>CuentasCobrarService</code> recalcula saldos pendientes</li>
+            <li>Validación de duplicados de recibo vía atributo <code>[Remote]</code></li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+            fontFamily: 'Segoe UI, Tahoma, sans-serif',
+            fontSize: '14px'
+        },
+        flowchart: {
+            curve: 'basis',
+            padding: 20,
+            nodeSpacing: 40,
+            rankSpacing: 50
+        }
+    });
+</script>
+</body>
+</html>
