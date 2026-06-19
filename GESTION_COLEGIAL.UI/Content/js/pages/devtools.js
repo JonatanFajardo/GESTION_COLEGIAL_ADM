@@ -206,14 +206,40 @@ var DevTools = (function () {
     function impersonar() {
         var rolId = $("#imp-rol").val();
         if (!rolId) { alert("Selecciona un rol"); return; }
-        $("#imp-status").show().removeClass("alert-info alert-warning").addClass("alert-info")
-            .html('<i class="fa-solid fa-info-circle"></i> ' +
-                  'Esta función requiere logout para tomar efecto. Por ahora cierra sesión y vuelve a entrar con un usuario de ese rol.');
+
+        $("#btn-imp-cargar, #btn-imp-restaurar").prop("disabled", true);
+        $("#imp-status").show().removeClass("alert-info alert-warning alert-danger").addClass("alert-info")
+            .html('<i class="fa-solid fa-spinner fa-spin"></i> Aplicando impersonación...');
+
+        $.ajax({ url: cfg.urlImpersonar, type: "POST", data: { rolId: rolId } })
+            .done(function (res) {
+                if (res && res.success) {
+                    window.location.reload();
+                } else {
+                    $("#imp-status").removeClass("alert-info").addClass("alert-danger")
+                        .html('<i class="fa-solid fa-triangle-exclamation"></i> Error al impersonar el rol.');
+                    $("#btn-imp-cargar, #btn-imp-restaurar").prop("disabled", false);
+                }
+            })
+            .fail(function () {
+                $("#imp-status").removeClass("alert-info").addClass("alert-danger")
+                    .html('<i class="fa-solid fa-triangle-exclamation"></i> Error de comunicación.');
+                $("#btn-imp-cargar, #btn-imp-restaurar").prop("disabled", false);
+            });
     }
 
     function restaurar() {
-        $("#imp-status").show().removeClass("alert-info alert-warning").addClass("alert-warning")
-            .html('<i class="fa-solid fa-rotate-left"></i> Cierra sesión y vuelve a entrar como <strong>jona / admin</strong> para restaurar permisos completos.');
+        $("#btn-imp-cargar, #btn-imp-restaurar").prop("disabled", true);
+        $("#imp-status").show().removeClass("alert-info alert-warning alert-danger").addClass("alert-info")
+            .html('<i class="fa-solid fa-spinner fa-spin"></i> Restaurando sesión admin...');
+
+        $.ajax({ url: cfg.urlRestaurar, type: "POST" })
+            .done(function () { window.location.reload(); })
+            .fail(function () {
+                $("#imp-status").removeClass("alert-info").addClass("alert-danger")
+                    .html('<i class="fa-solid fa-triangle-exclamation"></i> Error al restaurar.');
+                $("#btn-imp-cargar, #btn-imp-restaurar").prop("disabled", false);
+            });
     }
 
     // -------------------- BIND --------------------

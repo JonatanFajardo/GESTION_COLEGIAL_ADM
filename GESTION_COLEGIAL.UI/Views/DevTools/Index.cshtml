@@ -128,22 +128,41 @@
             <div class="dev-card" id="card-impersonar">
                 <h5><i class="fa-solid fa-user-secret"></i> Impersonar Rol</h5>
                 <p class="text-muted small mb-2">Cargar las pantallas de otro rol en tu sesión actual (sin logout). Útil para ver el sidebar como lo vería ese rol.</p>
-                <div class="row g-2 align-items-end">
-                    <div class="col-md-5">
-                        <label class="form-label small fw-semibold">Rol a impersonar</label>
-                        <select id="imp-rol" class="form-control"></select>
+
+                @if (TempData["ImpError"] != null)
+                {
+                    <div class="alert alert-danger small mt-2 mb-2">
+                        <i class="fa-solid fa-triangle-exclamation"></i> @TempData["ImpError"]
                     </div>
-                    <div class="col-md-3">
-                        <button id="btn-imp-cargar" class="btn btn-warning btn-sm w-100">
-                            <i class="fa-solid fa-mask"></i> Impersonar
-                        </button>
+                }
+                @if (TempData["ImpOk"] != null)
+                {
+                    <div class="alert alert-success small mt-2 mb-2">
+                        <i class="fa-solid fa-circle-check"></i> @TempData["ImpOk"]
                     </div>
-                    <div class="col-md-3">
-                        <button id="btn-imp-restaurar" class="btn btn-outline-secondary btn-sm w-100">
-                            <i class="fa-solid fa-rotate-left"></i> Volver a admin
-                        </button>
+                }
+
+                <form method="post" action="@Url.Action("ImpersonarAsync")" id="frm-impersonar">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-5">
+                            <label class="form-label small fw-semibold">Rol a impersonar</label>
+                            <select id="imp-rol" name="rolId" class="form-control" required></select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" id="btn-imp-cargar" class="btn btn-warning btn-sm w-100">
+                                <i class="fa-solid fa-mask"></i> Impersonar
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" id="btn-imp-restaurar" class="btn btn-outline-secondary btn-sm w-100"
+                                    formaction="@Url.Action("RestaurarAsync")" formmethod="post"
+                                    onclick="document.getElementById('frm-restaurar').submit();">
+                                <i class="fa-solid fa-rotate-left"></i> Volver a admin
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </form>
+                <form method="post" action="@Url.Action("RestaurarAsync")" id="frm-restaurar" style="display:none;"></form>
                 <div class="alert alert-info small mt-2 mb-0" id="imp-status" style="display:none;"></div>
             </div>
         </div>
@@ -152,13 +171,15 @@
 </div>
 
 @section Scripts{
-    <script src="~/Content/js/pages/devtools.js"></script>
+    <script src="~/Content/js/pages/devtools.js?v=2"></script>
     <script>
         DevTools.init({
-            urlDetectar: "@Url.Action("DetectarAsync")",
-            urlPaso:     "@Url.Action("PasoAsync")",
-            urlEstado:   "@Url.Action("EstadoBDAsync")",
-            urlRoles:    "@Url.Action("RolesAsync")"
+            urlDetectar:    "@Url.Action("DetectarAsync")",
+            urlPaso:        "@Url.Action("PasoAsync")",
+            urlEstado:      "@Url.Action("EstadoBDAsync")",
+            urlRoles:       "@Url.Action("RolesAsync")",
+            urlImpersonar:  "@Url.Action("ImpersonarAsync")",
+            urlRestaurar:   "@Url.Action("RestaurarAsync")"
         });
     </script>
 }
