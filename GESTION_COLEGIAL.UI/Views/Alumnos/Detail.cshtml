@@ -4,8 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
-    <link href="~/Content/css/listado-alumnos.css" rel="stylesheet" />
+    <link href="~/Content/css/detalle.css" rel="stylesheet" />
 }
 @{
     var estadoColor = Model.Est_Descripcion == "Activo" ? "badge-success" :
@@ -37,35 +36,35 @@
 <div class="fluid-container">
 
     <!-- Hero / Encabezado de perfil -->
-    <div class="alumno-detail-hero">
-        <div class="alumno-hero-inner">
+    <div class="detail-hero">
+        <div class="detail-hero-inner">
             <!-- Avatar -->
-            <div class="alumno-hero-avatar">
+            <div class="detail-hero-avatar">
                 @if (!string.IsNullOrEmpty(Model.Per_Imagen))
                 {
                     var imageUrl = Model.Per_Imagen.Replace("~/", "/");
-                    <img src="@imageUrl" alt="@nombreCompleto" class="alumno-detail-avatar">
+                    <img src="@imageUrl" alt="@nombreCompleto" class="detail-avatar">
                 }
                 else
                 {
-                    <div class="alumno-detail-avatar-placeholder">
+                    <div class="detail-avatar-placeholder">
                         <i class="bi bi-person-fill"></i>
                     </div>
                 }
-                <div class="alumno-detail-id-badge">#@Model.Alu_Id.ToString().PadLeft(4, '0')</div>
+                <div class="detail-id-badge">#@Model.Alu_Id.ToString().PadLeft(4, '0')</div>
             </div>
 
             <!-- Info -->
-            <div class="alumno-hero-info">
-                <h2 class="alumno-detail-name">@nombreCompleto</h2>
-                <p class="alumno-detail-subtitle">
+            <div class="detail-hero-info">
+                <h2 class="detail-name">@nombreCompleto</h2>
+                <p class="detail-subtitle">
                     <i class="bi bi-mortarboard-fill"></i> @Model.Niv_Descripcion
                     @if (!string.IsNullOrEmpty(gradoDescripcion))
                     {
                         <span> &mdash; @gradoDescripcion</span>
                     }
                 </p>
-                <div class="alumno-detail-meta">
+                <div class="detail-meta">
                     @if (!string.IsNullOrEmpty(Model.Per_Identidad))
                     {
                         <span><i class="bi bi-card-text"></i> @Model.Per_Identidad</span>
@@ -83,7 +82,7 @@
             </div>
 
             <!-- Acciones -->
-            <div class="alumno-hero-actions">
+            <div class="detail-hero-actions">
                 <a href="@Url.Action("FindAsync", new { id = Model.Alu_Id })" class="btn-detail-edit">
                     <i class="bi bi-pencil"></i> Editar
                 </a>
