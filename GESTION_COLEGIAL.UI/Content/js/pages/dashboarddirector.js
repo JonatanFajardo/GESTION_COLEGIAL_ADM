@@ -22,7 +22,7 @@ var DashboardDirector = (function () {
 
     function fmtMoney(val) {
         if (val === null || val === undefined || val === '') return '—';
-        return 'Q ' + Number(val).toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return window.GC ? window.GC.fmtMoney(val) : ('Q ' + Number(val).toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     }
 
     function fmtDecimal(val, decimals) {
@@ -319,9 +319,7 @@ var DashboardDirector = (function () {
                     tooltip: {
                         callbacks: {
                             label: function (ctx) {
-                                return ' ' + ctx.dataset.label + ': Q ' + Number(ctx.parsed.y).toLocaleString('es-GT', {
-                                    minimumFractionDigits: 2, maximumFractionDigits: 2
-                                });
+                                return ' ' + ctx.dataset.label + ': ' + fmtMoney(ctx.parsed.y);
                             }
                         }
                     }
@@ -338,7 +336,7 @@ var DashboardDirector = (function () {
                             font: { size: 11 },
                             color: '#64748b',
                             callback: function (val) {
-                                return 'Q ' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
+                                return (window.GC ? window.GC.currencySymbol() : 'Q') + ' ' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
                             }
                         }
                     }
@@ -461,13 +459,9 @@ var DashboardDirector = (function () {
         poblarSelectores();
         cargar();
 
-        // Botón Actualizar
         var btn = document.getElementById('btn-actualizar');
-        if (btn) {
-            btn.addEventListener('click', function () {
-                cargar();
-            });
-        }
+        if (btn) btn.addEventListener('click', function () { cargar(); });
+        document.addEventListener('gc:moneda', function () { cargar(); });
     };
 
     return obj;

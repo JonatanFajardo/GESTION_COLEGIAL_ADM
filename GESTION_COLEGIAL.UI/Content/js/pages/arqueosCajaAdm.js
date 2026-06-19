@@ -10,12 +10,13 @@ var ArqueosCajaAdm = (function () {
         $.getJSON(urlLast, function (res) {
             var d = res.item || res;
             if (d && d.Arq_Id) {
+                var sym = window.GC ? window.GC.currencySymbol() : 'Q';
                 $("#info-arqueo").html(
                     kv("Fecha", d.Arq_Fecha) +
-                    kv("Monto Inicial", "Q " + d.Arq_MontoInicial) +
-                    kv("Monto Final",   "Q " + d.Arq_MontoFinal) +
-                    kv("Total Efectivo","Q " + d.Arq_TotalEfectivo) +
-                    kv("Total Tarjeta", "Q " + d.Arq_TotalTarjeta) +
+                    kv("Monto Inicial", sym + " " + d.Arq_MontoInicial) +
+                    kv("Monto Final",   sym + " " + d.Arq_MontoFinal) +
+                    kv("Total Efectivo",sym + " " + d.Arq_TotalEfectivo) +
+                    kv("Total Tarjeta", sym + " " + d.Arq_TotalTarjeta) +
                     kv("Observación",   d.Arq_Observacion)
                 );
                 $("#panel-ultimo").show();

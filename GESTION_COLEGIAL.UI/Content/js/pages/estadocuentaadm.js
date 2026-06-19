@@ -16,9 +16,10 @@ var EstadoCuentaAdm = (function () {
 
             $.getJSON(urlGet, params, function (res) {
                 var d = res.item || res || {};
-                $("#kpi-cobrado").text("Q " + (d.TotalCobrado   || "0.00"));
-                $("#kpi-pendiente").text("Q " + (d.TotalPendiente || "0.00"));
-                $("#kpi-descuento").text("Q " + (d.TotalDescuento || "0.00"));
+                var sym = window.GC ? window.GC.currencySymbol() : 'Q';
+                $("#kpi-cobrado").text(sym + " " + (d.TotalCobrado   || "0.00"));
+                $("#kpi-pendiente").text(sym + " " + (d.TotalPendiente || "0.00"));
+                $("#kpi-descuento").text(sym + " " + (d.TotalDescuento || "0.00"));
                 $("#kpi-cuotas").text(d.CuotasPendientes || "0");
 
                 var tbody = $("#tbody-cuentas").empty();
@@ -29,9 +30,9 @@ var EstadoCuentaAdm = (function () {
                     $.each(cuentas, function (_, c) {
                         var cls = c.Cue_Saldo > 0 ? 'text-danger' : 'text-success';
                         tbody.append('<tr><td>' + c.Con_Descripcion + '</td>' +
-                            '<td>Q ' + c.Cue_Monto + '</td>' +
-                            '<td>Q ' + c.Cue_Pagado + '</td>' +
-                            '<td class="' + cls + '">Q ' + c.Cue_Saldo + '</td>' +
+                            '<td>' + sym + ' ' + c.Cue_Monto + '</td>' +
+                            '<td>' + sym + ' ' + c.Cue_Pagado + '</td>' +
+                            '<td class="' + cls + '">' + sym + ' ' + c.Cue_Saldo + '</td>' +
                             '<td>' + (c.Cue_FechaVence || '—') + '</td>' +
                             '<td>' + (c.Est_Descripcion || '—') + '</td></tr>');
                     });

@@ -13,17 +13,11 @@ var DashboardFinanciero = (function () {
     }
 
     function fmtMoney(val) {
-        if (val === null || val === undefined || val === '') return 'Q 0.00';
-        var n = Number(val);
-        if (isNaN(n)) return 'Q 0.00';
-        return 'Q ' + n.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return window.GC ? window.GC.fmtMoney(val) : ('Q ' + (Number(val) || 0).toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     }
 
     function fmtMoneyShort(val) {
-        var n = Number(val) || 0;
-        if (Math.abs(n) >= 1000000) return 'Q ' + (n / 1000000).toFixed(1) + 'M';
-        if (Math.abs(n) >= 1000)    return 'Q ' + (n / 1000).toFixed(1) + 'K';
-        return 'Q ' + n.toFixed(0);
+        return window.GC ? window.GC.fmtMoneyShort(val) : ('Q ' + (Number(val) || 0).toFixed(0));
     }
 
     function fmtNum(val) {
@@ -354,6 +348,7 @@ var DashboardFinanciero = (function () {
         cargar();
         var btn = document.getElementById('btn-actualizar-fin');
         if (btn) btn.addEventListener('click', function () { cargar(); });
+        document.addEventListener('gc:moneda', function () { cargar(); });
     };
     return obj;
 }());

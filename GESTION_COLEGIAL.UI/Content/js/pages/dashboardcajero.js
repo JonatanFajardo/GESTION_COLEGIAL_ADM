@@ -23,7 +23,7 @@ var DashboardCajero = (function () {
         if (val === null || val === undefined || val === '') return '—';
         var n = Number(val);
         if (isNaN(n)) return '—';
-        return 'Q ' + n.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return window.GC ? window.GC.fmtMoney(n) : ('Q ' + n.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     }
 
     function fmtFechaCorta(val) {
@@ -122,7 +122,7 @@ var DashboardCajero = (function () {
             totalMonto += Number(data[i].MontoTotal || 0);
         }
         var el = document.getElementById('stat-monto-hora');
-        if (el) el.textContent = totalMonto > 0 ? 'Q ' + totalMonto.toLocaleString('es-GT', { minimumFractionDigits: 2 }) : '';
+        if (el) el.textContent = totalMonto > 0 ? fmtMoney(totalMonto) : '';
 
         _charts['pagos-hora'] = new Chart(ctx, {
             type: 'bar',
@@ -131,7 +131,7 @@ var DashboardCajero = (function () {
                 datasets: [
                     {
                         type: 'line',
-                        label: 'Monto Q',
+                        label: 'Monto',
                         data: montos,
                         borderColor: '#15803d',
                         backgroundColor: 'rgba(21,128,61,.12)',
@@ -157,7 +157,7 @@ var DashboardCajero = (function () {
                     tooltip: {
                         callbacks: {
                             label: function (c) {
-                                if (c.dataset.label === 'Monto Q') return ' ' + c.dataset.label + ': Q ' + Number(c.parsed.y).toLocaleString('es-GT', { minimumFractionDigits: 2 });
+                                if (c.dataset.label === 'Monto') return ' ' + c.dataset.label + ': ' + fmtMoney(c.parsed.y);
                                 return ' ' + c.dataset.label + ': ' + c.parsed.y;
                             }
                         }
@@ -166,7 +166,7 @@ var DashboardCajero = (function () {
                 scales: {
                     x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#64748b' } },
                     y: { beginAtZero: true, position: 'left', grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 }, color: '#64748b', precision: 0 }, title: { display: true, text: '# Cobros', font: { size: 10 }, color: '#94a3b8' } },
-                    y1:{ beginAtZero: true, position: 'right', grid: { display: false }, ticks: { font: { size: 10 }, color: '#64748b', callback: function (v) { return 'Q' + v; } }, title: { display: true, text: 'Monto', font: { size: 10 }, color: '#94a3b8' } }
+                    y1:{ beginAtZero: true, position: 'right', grid: { display: false }, ticks: { font: { size: 10 }, color: '#64748b', callback: function (v) { return (window.GC ? window.GC.currencySymbol() : 'Q') + v; } }, title: { display: true, text: 'Monto', font: { size: 10 }, color: '#94a3b8' } }
                 }
             }
         });
@@ -184,7 +184,7 @@ var DashboardCajero = (function () {
             total += Number(data[i].Total || 0);
         }
         var el = document.getElementById('stat-formas');
-        if (el) el.textContent = total > 0 ? 'Q ' + total.toLocaleString('es-GT', { minimumFractionDigits: 2 }) : '';
+        if (el) el.textContent = total > 0 ? fmtMoney(total) : '';
 
         if (labels.length === 0) {
             ctx.style.display = 'none';
@@ -211,7 +211,7 @@ var DashboardCajero = (function () {
                         callbacks: {
                             label: function (c) {
                                 var t = c.dataset.data.reduce(function (a, b) { return a + b; }, 0);
-                                return ' ' + c.label + ': Q ' + Number(c.parsed).toLocaleString('es-GT', { minimumFractionDigits: 2 }) + ' (' + ((c.parsed / t) * 100).toFixed(1) + '%)';
+                                return ' ' + c.label + ': ' + fmtMoney(c.parsed) + ' (' + ((c.parsed / t) * 100).toFixed(1) + '%)';
                             }
                         }
                     }
@@ -248,10 +248,10 @@ var DashboardCajero = (function () {
                 indexAxis: 'y', responsive: true, maintainAspectRatio: true,
                 plugins: {
                     legend: { display: false },
-                    tooltip: { callbacks: { label: function (c) { return ' Q ' + Number(c.parsed.x).toLocaleString('es-GT', { minimumFractionDigits: 2 }); } } }
+                    tooltip: { callbacks: { label: function (c) { return ' ' + fmtMoney(c.parsed.x); } } }
                 },
                 scales: {
-                    x: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 }, color: '#64748b', callback: function (v) { return 'Q' + v; } } },
+                    x: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 }, color: '#64748b', callback: function (v) { return (window.GC ? window.GC.currencySymbol() : 'Q') + v; } } },
                     y: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#334155' } }
                 }
             }
@@ -270,14 +270,14 @@ var DashboardCajero = (function () {
             total += Number(data[i].MontoTotal || 0);
         }
         var el = document.getElementById('stat-semana');
-        if (el) el.textContent = total > 0 ? 'Q ' + total.toLocaleString('es-GT', { minimumFractionDigits: 2 }) + ' total' : '';
+        if (el) el.textContent = total > 0 ? fmtMoney(total) + ' total' : '';
 
         _charts['semana'] = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [
-                    { label: 'Monto Q', data: montos, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,.12)', fill: true, tension: 0.4, pointBackgroundColor: '#3b82f6', pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7, borderWidth: 3, yAxisID: 'y1' },
+                    { label: 'Monto', data: montos, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,.12)', fill: true, tension: 0.4, pointBackgroundColor: '#3b82f6', pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7, borderWidth: 3, yAxisID: 'y1' },
                     { label: '# Cobros', data: cant, borderColor: '#f59e0b', backgroundColor: 'transparent', fill: false, tension: 0.4, pointBackgroundColor: '#f59e0b', pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 4, pointHoverRadius: 6, borderWidth: 2, yAxisID: 'y' }
                 ]
             },
@@ -285,12 +285,12 @@ var DashboardCajero = (function () {
                 responsive: true, maintainAspectRatio: true, interaction: { mode: 'index', intersect: false },
                 plugins: {
                     legend: { display: true, position: 'top', align: 'end', labels: { usePointStyle: true, pointStyle: 'circle', boxWidth: 8, padding: 12, font: { size: 11, weight: '600' }, color: '#475569' } },
-                    tooltip: { callbacks: { label: function (c) { if (c.dataset.label === 'Monto Q') return ' ' + c.dataset.label + ': Q ' + Number(c.parsed.y).toLocaleString('es-GT', { minimumFractionDigits: 2 }); return ' ' + c.dataset.label + ': ' + c.parsed.y; } } }
+                    tooltip: { callbacks: { label: function (c) { if (c.dataset.label === 'Monto') return ' ' + c.dataset.label + ': ' + fmtMoney(c.parsed.y); return ' ' + c.dataset.label + ': ' + c.parsed.y; } } }
                 },
                 scales: {
                     x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#64748b' } },
                     y: { beginAtZero: true, position: 'left', grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 }, color: '#64748b', precision: 0 } },
-                    y1:{ beginAtZero: true, position: 'right', grid: { display: false }, ticks: { font: { size: 10 }, color: '#64748b', callback: function (v) { return 'Q' + v; } } }
+                    y1:{ beginAtZero: true, position: 'right', grid: { display: false }, ticks: { font: { size: 10 }, color: '#64748b', callback: function (v) { return (window.GC ? window.GC.currencySymbol() : 'Q') + v; } } }
                 }
             }
         });
@@ -417,6 +417,7 @@ var DashboardCajero = (function () {
         var btn = document.getElementById('btn-actualizar');
         if (btn) btn.addEventListener('click', function () { cargar(); });
         if (fechaInput) fechaInput.addEventListener('change', function () { cargar(); });
+        document.addEventListener('gc:moneda', function () { cargar(); });
     };
     return obj;
 }());
