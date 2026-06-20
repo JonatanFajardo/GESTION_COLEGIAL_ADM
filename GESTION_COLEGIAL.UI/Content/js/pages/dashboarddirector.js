@@ -17,12 +17,12 @@ var DashboardDirector = (function () {
 
     function fmtNum(val) {
         if (val === null || val === undefined || val === '') return '—';
-        return Number(val).toLocaleString('es-GT');
+        return Number(val).toLocaleString('es-HN');
     }
 
     function fmtMoney(val) {
         if (val === null || val === undefined || val === '') return '—';
-        return window.GC ? window.GC.fmtMoney(val) : ('Q ' + Number(val).toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        return window.GC ? window.GC.fmtMoney(val) : ('L ' + Number(val).toLocaleString('es-HN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     }
 
     function fmtDecimal(val, decimals) {

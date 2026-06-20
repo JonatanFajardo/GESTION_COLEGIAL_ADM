@@ -13,7 +13,7 @@ var DashboardSecretaria = (function () {
 
     function fmtNum(val) {
         if (val === null || val === undefined || val === '') return '—';
-        return Number(val).toLocaleString('es-GT');
+        return Number(val).toLocaleString('es-HN');
     }
 
     function setText(id, value) {
@@ -54,7 +54,7 @@ var DashboardSecretaria = (function () {
         try {
             var d = new Date(iso);
             if (isNaN(d.getTime())) return '—';
-            return d.toLocaleDateString('es-GT', { day: '2-digit', month: 'short' });
+            return d.toLocaleDateString('es-HN', { day: '2-digit', month: 'short' });
         } catch (e) { return '—'; }
     }
 
@@ -186,7 +186,7 @@ var DashboardSecretaria = (function () {
         }
 
         var statEl = document.getElementById('stat-matricula-mes');
-        if (statEl) statEl.textContent = totalActual > 0 ? totalActual.toLocaleString('es-GT') + ' nuevas YTD' : '';
+        if (statEl) statEl.textContent = totalActual > 0 ? totalActual.toLocaleString('es-HN') + ' nuevas YTD' : '';
 
         if (labels.length === 0) return;
 
@@ -248,7 +248,7 @@ var DashboardSecretaria = (function () {
                     tooltip: {
                         callbacks: {
                             label: function (c) {
-                                return ' ' + c.dataset.label + ': ' + Number(c.parsed.y).toLocaleString('es-GT') + ' alumnos';
+                                return ' ' + c.dataset.label + ': ' + Number(c.parsed.y).toLocaleString('es-HN') + ' alumnos';
                             }
                         }
                     }
@@ -299,7 +299,7 @@ var DashboardSecretaria = (function () {
         var totalGral = valores.reduce(function (a, b) { return a + b; }, 0);
 
         var statEl = document.getElementById('stat-matricula-seccion');
-        if (statEl) statEl.textContent = totalGral > 0 ? totalGral.toLocaleString('es-GT') + ' alumnos' : '';
+        if (statEl) statEl.textContent = totalGral > 0 ? totalGral.toLocaleString('es-HN') + ' alumnos' : '';
 
         if (labels.length === 0) return;
 

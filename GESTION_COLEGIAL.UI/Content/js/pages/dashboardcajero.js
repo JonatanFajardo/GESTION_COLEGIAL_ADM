@@ -16,14 +16,14 @@ var DashboardCajero = (function () {
         if (val === null || val === undefined || val === '') return '—';
         var n = Number(val);
         if (isNaN(n)) return '—';
-        return n.toLocaleString('es-GT');
+        return n.toLocaleString('es-HN');
     }
 
     function fmtMoney(val) {
         if (val === null || val === undefined || val === '') return '—';
         var n = Number(val);
         if (isNaN(n)) return '—';
-        return window.GC ? window.GC.fmtMoney(n) : ('Q ' + n.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        return window.GC ? window.GC.fmtMoney(n) : ('L ' + n.toLocaleString('es-HN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     }
 
     function fmtFechaCorta(val) {

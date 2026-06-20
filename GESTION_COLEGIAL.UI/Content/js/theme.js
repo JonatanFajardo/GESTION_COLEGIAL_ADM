@@ -28,7 +28,7 @@
     }
 
     function _getCur() {
-        return _currencies[get(KEYS.moneda)] || _currencies['Q'];
+        return _currencies[get(KEYS.moneda)] || _currencies['L'];
     }
 
     function applyTheme(cls) {

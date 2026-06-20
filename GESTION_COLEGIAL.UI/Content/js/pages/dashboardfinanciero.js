@@ -13,16 +13,16 @@ var DashboardFinanciero = (function () {
     }
 
     function fmtMoney(val) {
-        return window.GC ? window.GC.fmtMoney(val) : ('Q ' + (Number(val) || 0).toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        return window.GC ? window.GC.fmtMoney(val) : ('L ' + (Number(val) || 0).toLocaleString('es-HN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
     }
 
     function fmtMoneyShort(val) {
-        return window.GC ? window.GC.fmtMoneyShort(val) : ('Q ' + (Number(val) || 0).toFixed(0));
+        return window.GC ? window.GC.fmtMoneyShort(val) : ('L ' + (Number(val) || 0).toFixed(0));
     }
 
     function fmtNum(val) {
         if (val === null || val === undefined || val === '') return '—';
-        return Number(val).toLocaleString('es-GT');
+        return Number(val).toLocaleString('es-HN');
     }
 
     function fmtPct(val) {
