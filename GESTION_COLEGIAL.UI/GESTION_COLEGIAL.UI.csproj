@@ -115,6 +115,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DashboardAdminController.cs" />
     <Compile Include="Controllers\DashboardAulasController.cs" />
+    <Compile Include="Controllers\GraduacionAlumnosController.cs" />
+    <Compile Include="Controllers\AlumnosGraduadosController.cs" />
     <Compile Include="Controllers\DashboardDirectorController.cs" />
     <Compile Include="Controllers\DashboardDocenteController.cs" />
     <Compile Include="Controllers\DashboardSecretariaController.cs" />
@@ -256,6 +258,9 @@
     <Content Include="Content\js\pages\cumplimientodocumentos.js" />
     <Content Include="Content\js\pages\dashboardadmin.js" />
     <Content Include="Content\js\pages\dashboardaulas.js" />
+    <Content Include="Content\js\pages\graduacionalumnos.js" />
+    <Content Include="Content\js\pages\graduacionalumnos.backfill.js" />
+    <Content Include="Content\js\pages\alumnosgraduados.js" />
     <Content Include="Content\js\pages\dashboardcajero.js" />
     <Content Include="Content\js\pages\dashboardconsulta.js" />
     <Content Include="Content\js\pages\dashboarddirector.js" />
@@ -1566,6 +1571,9 @@
     <None Include="packages.config" />
     <Content Include="Views\EstadosPago\Index.cshtml" />
     <Content Include="Views\DashboardAulas\Index.cshtml" />
+    <Content Include="Views\GraduacionAlumnos\Index.cshtml" />
+    <Content Include="Views\GraduacionAlumnos\BackfillIndex.cshtml" />
+    <Content Include="Views\AlumnosGraduados\Index.cshtml" />
     <Content Include="Views\CuentasCobrar\CargosMasivos.cshtml" />
     <Content Include="Views\CuentasCobrar\CargosPendientes.cshtml" />
     <Content Include="Views\CuentasCobrar\Deudores.cshtml" />

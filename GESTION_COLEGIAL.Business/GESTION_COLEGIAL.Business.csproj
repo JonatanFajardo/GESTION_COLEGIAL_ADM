@@ -236,6 +236,10 @@
     <Compile Include="Models\ParentescoViewModel.cs" />
     <Compile Include="Models\PersonaViewModel.cs" />
     <Compile Include="Models\DashboardAulaViewModel.cs" />
+    <Compile Include="Models\Graduacion\CandidatoGraduacionViewModel.cs" />
+    <Compile Include="Models\Graduacion\AlumnoGraduadoViewModel.cs" />
+    <Compile Include="Models\Graduacion\BackfillResultViewModel.cs" />
+    <Compile Include="Models\Graduacion\ConfiguracionValorViewModel.cs" />
     <Compile Include="Models\SeccionCursoViewModel.cs" />
     <Compile Include="Models\SeccionDetailViewModel.cs" />
     <Compile Include="Models\SeccionViewModel.cs" />
@@ -315,6 +319,8 @@
     <Compile Include="Services\ParentescosService.cs" />
     <Compile Include="Services\ModuloFinanzas\ReportesFinancierosService.cs" />
     <Compile Include="Services\DashboardAulasService.cs" />
+    <Compile Include="Services\GraduacionService.cs" />
+    <Compile Include="Services\AlumnosGraduadosService.cs" />
     <Compile Include="Services\SeccionesService.cs" />
     <Compile Include="Services\SemestresService.cs" />
     <Compile Include="Services\ModuloFinanzas\TarifaService.cs" />

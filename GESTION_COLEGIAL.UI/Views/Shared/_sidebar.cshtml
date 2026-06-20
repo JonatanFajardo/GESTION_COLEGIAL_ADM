@@ -307,6 +307,9 @@
                         @if (tiene("Centro de anuncios"))              { <li>@Html.ActionLink("Centro de Anuncios",   "Index", "CentroAnuncios")</li> }
                         @if (tiene("Rendimiento por Sección"))         { <li>@Html.ActionLink("Rendimiento x Sección","Index", "RendimientoPorSeccion")</li> }
                         @if (tiene("KPIs Académicos"))                 { <li>@Html.ActionLink("KPIs Académicos",      "Index", "KPIsAcademicos")</li> }
+                        @if (tiene("Graduación de Alumnos") || esAdmin) { <li>@Html.ActionLink("Candidatos a graduación", "Index", "GraduacionAlumnos")</li> }
+                        @if (tiene("Directorio de Graduados") || esAdmin) { <li>@Html.ActionLink("Directorio de graduados", "Index", "AlumnosGraduados")</li> }
+                        @if (tiene("Backfill Graduados") || esAdmin)   { <li>@Html.ActionLink("Backfill graduados (histórico)", "BackfillIndex", "GraduacionAlumnos")</li> }
                     </ul>
                 </li>
             }
