@@ -16,21 +16,33 @@ namespace GESTION_COLEGIAL.Business.Services
     {
         private readonly AlumnosService _alumnos = new AlumnosService();
         private readonly CuentasCobrarService _cuentas = new CuentasCobrarService();
+        private readonly PromediosAlumnosService _promedios = new PromediosAlumnosService();
 
         public async Task<DashboardAulasResponseViewModel> ObtenerAsync()
         {
             var alumnosTask = _alumnos.ListAsync();
             var deudoresTask = _cuentas.ListDeudoresAsync();
-            await Task.WhenAll(alumnosTask, deudoresTask);
+            var promediosTask = _promedios.ListAsync(DateTime.Now.Year);
+            await Task.WhenAll(alumnosTask, deudoresTask, promediosTask);
 
             var alumnos = (alumnosTask.Result ?? Enumerable.Empty<AlumnoViewModel>()).ToList();
             var deudores = (deudoresTask.Result ?? Enumerable.Empty<CuentaCobrarListViewModel>()).ToList();
+            var promedios = (promediosTask.Result ?? Enumerable.Empty<PromedioAlumnoViewModel>()).ToList();
 
             var deudoresPorNombre = new HashSet<string>(
                 deudores
                     .Select(d => Normalizar(d.Alumno))
                     .Where(s => !string.IsNullOrWhiteSpace(s))
             );
+
+            var bajosPorNombre = new HashSet<string>(
+                promedios
+                    .Where(p => p.EsBajo)
+                    .Select(p => Normalizar(p.Alu_NombreCompleto))
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+            );
+
+            bool bajoDisponible = promedios.Count > 0;
 
             // La API Alumnos/ListAsync NO expone Sec_Id ni Cur_Id, sólo descripciones.
             // Agrupamos por una clave compuesta de descripciones para identificar aulas únicas.
@@ -56,6 +68,7 @@ namespace GESTION_COLEGIAL.Business.Services
                     int capacidad = CapacidadPorNivel(nivel, alumnosCount);
 
                     int conDeuda = lista.Count(a => deudoresPorNombre.Contains(NombreCompleto(a)));
+                    int conBajo = lista.Count(a => bajosPorNombre.Contains(NombreCompleto(a)));
 
                     string seccion = lista.Select(a => a.Sec_Descripcion).FirstOrDefault(x => !string.IsNullOrWhiteSpace(x))
                                     ?? "Única";
@@ -70,10 +83,10 @@ namespace GESTION_COLEGIAL.Business.Services
                         Modalidad = string.IsNullOrWhiteSpace(modalidad) ? "—" : modalidad,
                         Capacidad = capacidad,
                         Alumnos = alumnosCount,
-                        Bajo = 0,
+                        Bajo = conBajo,
                         Deuda = conDeuda,
                         Asistencia = 0,
-                        BajoDisponible = false,
+                        BajoDisponible = bajoDisponible,
                         AsistenciaDisponible = false
                     };
                 })
@@ -87,7 +100,7 @@ namespace GESTION_COLEGIAL.Business.Services
             {
                 Aulas = aulas,
                 Niveles = niveles,
-                BajoDisponible = false,
+                BajoDisponible = bajoDisponible,
                 AsistenciaDisponible = false
             };
         }
