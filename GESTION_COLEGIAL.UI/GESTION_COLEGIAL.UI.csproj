@@ -132,6 +132,7 @@
     <Compile Include="Controllers\AlumnosBusquedaController.cs" />
     <Compile Include="Controllers\BitacoraController.cs" />
     <Compile Include="Controllers\HorariosNuevoController.cs" />
+    <Compile Include="Controllers\VisorHorariosController.cs" />
     <Compile Include="Controllers\NotasAdmController.cs" />
     <Compile Include="Controllers\AsistenciaAdmController.cs" />
     <Compile Include="Controllers\VacacionesAdmController.cs" />
@@ -283,6 +284,7 @@
     <Content Include="Content\js\pages\historialtransacciones.js" />
     <Content Include="Content\js\pages\historicopagos.js" />
     <Content Include="Content\js\pages\horariosnuevo.js" />
+    <Content Include="Content\js\pages\visorhorarios.js" />
     <Content Include="Content\js\pages\importador.js" />
     <Content Include="Content\js\pages\ingresosmes.js" />
     <Content Include="Content\js\pages\kpisacademicos.js" />
@@ -377,6 +379,7 @@
     <Content Include="Content\css\pages\faq\faq2.css" />
     <Content Include="Content\css\pages\cajero-kpis.css" />
     <Content Include="Content\css\pages\dashboard-aulas.css" />
+    <Content Include="Content\css\pages\visor-horarios.css" />
     <Content Include="Content\css\pages\finanzas-dashboard.css" />
     <Content Include="Content\css\pages\helpdesk.css" />
     <Content Include="Content\css\pages\main.css" />
@@ -1571,6 +1574,7 @@
     <None Include="packages.config" />
     <Content Include="Views\EstadosPago\Index.cshtml" />
     <Content Include="Views\DashboardAulas\Index.cshtml" />
+    <Content Include="Views\VisorHorarios\Index.cshtml" />
     <Content Include="Views\GraduacionAlumnos\Index.cshtml" />
     <Content Include="Views\GraduacionAlumnos\BackfillIndex.cshtml" />
     <Content Include="Views\AlumnosGraduados\Index.cshtml" />

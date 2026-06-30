@@ -1,0 +1,696 @@
+/* Visor de Horarios — estilos scopeados a .visor-horarios */
+
+.visor-horarios {
+    --vh-bg-card: #ffffff;
+    --vh-border: #e5e7eb;
+    --vh-text: #111827;
+    --vh-text-muted: #6b7280;
+    --vh-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.04);
+    --vh-shadow-hover: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.04);
+    --vh-radius: 12px;
+    --vh-radius-sm: 8px;
+
+    /* Areas */
+    --vh-MAT: #4f46e5;
+    --vh-LEN: #ec4899;
+    --vh-CIE: #059669;
+    --vh-ING: #0ea5e9;
+    --vh-SOC: #d97706;
+    --vh-CON: #7c3aed;
+    --vh-TEC: #0891b2;
+    --vh-ART: #db2777;
+    --vh-OTR: #6b7280;
+
+    padding: 0;
+    color: var(--vh-text);
+}
+
+/* ---------- Encabezado ---------- */
+.visor-horarios .vh-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: var(--vh-radius);
+    margin-bottom: 20px;
+    box-shadow: var(--vh-shadow);
+}
+.visor-horarios .vh-header-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.visor-horarios .vh-header-text h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+.visor-horarios .vh-header-text p {
+    margin: 4px 0 0 0;
+    opacity: 0.92;
+    font-size: 0.9rem;
+}
+
+/* ---------- KPIs ---------- */
+.visor-horarios .vh-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.visor-horarios .vh-kpi {
+    background: var(--vh-bg-card);
+    border-radius: var(--vh-radius);
+    padding: 18px 20px;
+    box-shadow: var(--vh-shadow);
+    border-left: 4px solid transparent;
+}
+.visor-horarios .vh-kpi-label {
+    font-size: 0.78rem;
+    color: var(--vh-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+}
+.visor-horarios .vh-kpi-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-top: 4px;
+    color: var(--vh-text);
+}
+.visor-horarios .vh-kpi--indigo  { border-left-color: #4f46e5; }
+.visor-horarios .vh-kpi--emerald { border-left-color: #10b981; }
+.visor-horarios .vh-kpi--amber   { border-left-color: #f59e0b; }
+.visor-horarios .vh-kpi--cyan    { border-left-color: #06b6d4; }
+
+/* ---------- Filtros ---------- */
+.visor-horarios .vh-filtros {
+    background: var(--vh-bg-card);
+    border-radius: var(--vh-radius);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--vh-shadow);
+}
+.visor-horarios .vh-filtros-grupo-vista {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+.visor-horarios .vh-filtros-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--vh-text-muted);
+}
+.visor-horarios .vh-toggle {
+    display: inline-flex;
+    background: #f3f4f6;
+    border-radius: 999px;
+    padding: 4px;
+    gap: 2px;
+}
+.visor-horarios .vh-toggle-btn {
+    border: 0;
+    background: transparent;
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--vh-text-muted);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.visor-horarios .vh-toggle-btn:hover {
+    color: var(--vh-text);
+}
+.visor-horarios .vh-toggle-btn.is-active {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(79,70,229,0.35);
+}
+.visor-horarios .vh-filtros-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    align-items: end;
+}
+.visor-horarios .vh-filtro label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--vh-text-muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.visor-horarios .vh-filtro .form-control {
+    height: 38px;
+    border-radius: var(--vh-radius-sm);
+    border: 1px solid var(--vh-border);
+    font-size: 0.9rem;
+}
+.visor-horarios .vh-search-wrap {
+    position: relative;
+}
+.visor-horarios .vh-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--vh-text-muted);
+}
+.visor-horarios .vh-filtro-search .form-control {
+    padding-left: 34px;
+}
+.visor-horarios .vh-filtro-acciones .btn {
+    height: 38px;
+    border-radius: var(--vh-radius-sm);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+/* ---------- Leyenda ---------- */
+.visor-horarios .vh-leyenda {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fafafa;
+    border-radius: var(--vh-radius-sm);
+}
+.visor-horarios .vh-leyenda-label {
+    font-size: 0.8rem;
+    color: var(--vh-text-muted);
+    font-weight: 600;
+    margin-right: 4px;
+}
+.visor-horarios .vh-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+}
+.visor-horarios .vh-pill--MAT { background: var(--vh-MAT); }
+.visor-horarios .vh-pill--LEN { background: var(--vh-LEN); }
+.visor-horarios .vh-pill--CIE { background: var(--vh-CIE); }
+.visor-horarios .vh-pill--ING { background: var(--vh-ING); }
+.visor-horarios .vh-pill--SOC { background: var(--vh-SOC); }
+.visor-horarios .vh-pill--CON { background: var(--vh-CON); }
+.visor-horarios .vh-pill--TEC { background: var(--vh-TEC); }
+.visor-horarios .vh-pill--ART { background: var(--vh-ART); }
+.visor-horarios .vh-pill--OTR { background: var(--vh-OTR); }
+
+/* ---------- Contador ---------- */
+.visor-horarios .vh-resultado-info {
+    font-size: 0.85rem;
+    color: var(--vh-text-muted);
+    margin-bottom: 10px;
+    padding: 0 4px;
+}
+
+/* ---------- Grid de cards ---------- */
+.visor-horarios .vh-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+    gap: 18px;
+}
+.visor-horarios .vh-card {
+    background: var(--vh-bg-card);
+    border-radius: var(--vh-radius);
+    overflow: hidden;
+    box-shadow: var(--vh-shadow);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    display: flex;
+    flex-direction: column;
+}
+.visor-horarios .vh-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--vh-shadow-hover);
+}
+.visor-horarios .vh-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--vh-border);
+    background: linear-gradient(180deg, #fafbff 0%, #ffffff 100%);
+}
+.visor-horarios .vh-card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #eef2ff, #ede9fe);
+    color: #4f46e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.visor-horarios .vh-card-title-wrap {
+    flex: 1;
+    min-width: 0;
+}
+.visor-horarios .vh-card-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--vh-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.visor-horarios .vh-card-subtitle {
+    font-size: 0.78rem;
+    color: var(--vh-text-muted);
+    margin-top: 2px;
+}
+.visor-horarios .vh-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    background: #fef3c7;
+    color: #92400e;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ---------- Mini-grid semanal ---------- */
+.visor-horarios .vh-mini {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    table-layout: fixed;
+}
+.visor-horarios .vh-mini thead th {
+    background: #f9fafb;
+    color: var(--vh-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.72rem;
+    padding: 10px 5px;
+    text-align: center;
+    border-bottom: 1px solid var(--vh-border);
+}
+.visor-horarios .vh-mini-hora-col {
+    width: 90px;
+}
+.visor-horarios .vh-mini tbody td {
+    border-bottom: 1px solid #f3f4f6;
+    border-right: 1px solid #f3f4f6;
+    vertical-align: top;
+    padding: 8px 6px;
+    min-height: 76px;
+    height: 76px;
+}
+.visor-horarios .vh-mini tbody td:last-child {
+    border-right: 0;
+}
+.visor-horarios .vh-mini tbody tr:last-child td {
+    border-bottom: 0;
+}
+.visor-horarios .vh-mini-hora-cel {
+    background: #fbfbfd;
+    color: var(--vh-text-muted);
+    font-weight: 600;
+    text-align: center;
+}
+.visor-horarios .vh-mini-hora-cel span {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--vh-text);
+}
+.visor-horarios .vh-mini-hora-cel small {
+    font-size: 0.66rem;
+    opacity: 0.7;
+}
+.visor-horarios .vh-mini-vacio {
+    background: repeating-linear-gradient(
+        45deg,
+        #fcfcfd,
+        #fcfcfd 6px,
+        #f5f5f7 6px,
+        #f5f5f7 12px
+    );
+}
+.visor-horarios .vh-mini-clase {
+    cursor: pointer;
+    position: relative;
+    border-radius: 6px;
+    border-left: 3px solid transparent;
+    background: #fff;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+.visor-horarios .vh-mini-clase:hover {
+    filter: brightness(0.97);
+    transform: scale(1.03);
+    z-index: 2;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+.visor-horarios .vh-clase-mat {
+    font-weight: 700;
+    color: var(--vh-text);
+    margin-bottom: 4px;
+    line-height: 1.2;
+    font-size: 0.8rem;
+}
+.visor-horarios .vh-clase-sec, .visor-horarios .vh-clase-aula {
+    color: var(--vh-text-muted);
+    font-size: 0.72rem;
+    line-height: 1.25;
+}
+.visor-horarios .vh-clase-aula {
+    font-weight: 600;
+    color: #6366f1;
+    margin-top: 2px;
+}
+
+/* Fila de RECESO entre bloques */
+.visor-horarios .vh-mini .vh-receso-row td,
+.vh-modal .vh-mini .vh-receso-row td {
+    padding: 0;
+    height: 30px;
+    min-height: 30px;
+    background: linear-gradient(90deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%);
+    border: 0;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #92400e;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.visor-horarios .vh-receso-row td i,
+.vh-modal .vh-receso-row td i {
+    margin-right: 6px;
+    opacity: 0.7;
+}
+.visor-horarios .vh-multi {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 0.6rem;
+    padding: 1px 5px;
+    border-radius: 999px;
+}
+
+/* Colorear celdas por area */
+.visor-horarios .vh-area-MAT { border-left-color: var(--vh-MAT); background: rgba(79,70,229,0.06); }
+.visor-horarios .vh-area-LEN { border-left-color: var(--vh-LEN); background: rgba(236,72,153,0.06); }
+.visor-horarios .vh-area-CIE { border-left-color: var(--vh-CIE); background: rgba(5,150,105,0.06); }
+.visor-horarios .vh-area-ING { border-left-color: var(--vh-ING); background: rgba(14,165,233,0.06); }
+.visor-horarios .vh-area-SOC { border-left-color: var(--vh-SOC); background: rgba(217,119,6,0.06); }
+.visor-horarios .vh-area-CON { border-left-color: var(--vh-CON); background: rgba(124,58,237,0.06); }
+.visor-horarios .vh-area-TEC { border-left-color: var(--vh-TEC); background: rgba(8,145,178,0.06); }
+.visor-horarios .vh-area-ART { border-left-color: var(--vh-ART); background: rgba(219,39,119,0.06); }
+.visor-horarios .vh-area-OTR { border-left-color: var(--vh-OTR); background: rgba(107,114,128,0.06); }
+
+.visor-horarios .vh-card-sin-data {
+    padding: 30px;
+    text-align: center;
+    color: var(--vh-text-muted);
+    font-size: 0.85rem;
+    background: #fafafa;
+}
+
+/* ---------- Estado vacio ---------- */
+.visor-horarios .vh-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    color: var(--vh-text-muted);
+}
+.visor-horarios .vh-vacio i {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+.visor-horarios .vh-vacio p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* ---------- Loader ---------- */
+.visor-horarios .vh-loader {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: var(--vh-text-muted);
+}
+.visor-horarios .vh-spinner {
+    width: 38px;
+    height: 38px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #4f46e5;
+    border-radius: 50%;
+    animation: vh-spin 0.9s linear infinite;
+    margin-bottom: 12px;
+}
+@keyframes vh-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Card clickable */
+.visor-horarios .vh-card { cursor: pointer; }
+.visor-horarios .vh-card-expand {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f3f4f6;
+    color: var(--vh-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+    font-size: 0.85rem;
+}
+.visor-horarios .vh-card:hover .vh-card-expand {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(79,70,229,0.3);
+}
+
+/* ---------- Modal grande de horario ---------- */
+.vh-modal .vh-modal-dialog {
+    max-width: min(1280px, 95vw);
+    width: 95vw;
+    margin: 1.5rem auto;
+}
+.vh-modal .modal-content {
+    border-radius: 14px;
+    border: 0;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    overflow: hidden;
+    max-height: 92vh;
+}
+.vh-modal .vh-modal-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: #fff;
+    border-bottom: 0;
+    padding: 18px 24px;
+    align-items: center;
+}
+.vh-modal .vh-modal-header .close {
+    color: #fff;
+    opacity: 0.85;
+    text-shadow: none;
+    font-size: 1.6rem;
+    font-weight: 300;
+}
+.vh-modal .vh-modal-header .close:hover { opacity: 1; }
+.vh-modal .vh-modal-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+}
+.vh-modal .vh-modal-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+.vh-modal .modal-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.vh-modal .vh-modal-subtitle {
+    font-size: 0.83rem;
+    opacity: 0.9;
+    margin-top: 3px;
+}
+.vh-modal .modal-body {
+    padding: 0;
+    background: #f8fafc;
+    overflow: hidden;
+}
+
+/* Layout 2 columnas dentro del modal */
+.vh-modal .vh-modal-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 0;
+    max-height: calc(92vh - 92px);
+}
+.vh-modal .vh-modal-grid-col {
+    padding: 18px;
+    overflow: auto;
+    background: #fff;
+}
+.vh-modal .vh-modal-panel-col {
+    background: #f8fafc;
+    border-left: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.vh-modal .vh-modal-panel-title {
+    padding: 16px 18px 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--vh-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.vh-modal .vh-modal-panel-body {
+    padding: 0 18px 18px;
+    overflow: auto;
+    flex: 1;
+}
+.vh-modal .vh-modal-panel-hint {
+    padding: 8px 12px;
+    background: #eef2ff;
+    color: #4338ca;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.vh-modal .vh-modal-empty {
+    text-align: center;
+    padding: 40px 16px;
+    color: #9ca3af;
+}
+.vh-modal .vh-modal-empty i {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+.vh-modal .vh-modal-empty p {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+/* Grid expandido dentro del modal */
+.visor-horarios .vh-mini--expanded,
+.vh-modal .vh-mini--expanded {
+    font-size: 0.82rem;
+}
+.vh-modal .vh-mini--expanded thead th {
+    font-size: 0.78rem;
+    padding: 12px 6px;
+}
+.vh-modal .vh-mini--expanded .vh-mini-hora-col { width: 100px; }
+.vh-modal .vh-mini--expanded tbody td {
+    height: 88px;
+    min-height: 88px;
+    padding: 8px 8px;
+}
+.vh-modal .vh-mini--expanded .vh-mini-hora-cel span { font-size: 0.9rem; }
+.vh-modal .vh-mini--expanded .vh-mini-hora-cel small { font-size: 0.74rem; }
+.vh-modal .vh-mini--expanded .vh-clase-mat { font-size: 0.85rem; margin-bottom: 4px; }
+.vh-modal .vh-mini--expanded .vh-clase-sec,
+.vh-modal .vh-mini--expanded .vh-clase-aula { font-size: 0.78rem; }
+
+/* Bloques de clase en panel lateral */
+.vh-modal .vh-modal-clase {
+    border-radius: var(--vh-radius-sm);
+    border-left: 4px solid var(--vh-text-muted);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.vh-modal .vh-modal-mat {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--vh-text);
+}
+.vh-modal .vh-modal-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #374151;
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+.vh-modal .vh-modal-row i {
+    color: #6b7280;
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* Responsive: stack columns en pantallas chicas */
+@media (max-width: 900px) {
+    .vh-modal .vh-modal-layout {
+        grid-template-columns: 1fr;
+        max-height: calc(92vh - 92px);
+        overflow: auto;
+    }
+    .vh-modal .vh-modal-panel-col {
+        border-left: 0;
+        border-top: 1px solid #e5e7eb;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .visor-horarios .vh-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .visor-horarios .vh-mini {
+        font-size: 0.66rem;
+    }
+    .visor-horarios .vh-mini-hora-col {
+        width: 60px;
+    }
+}
