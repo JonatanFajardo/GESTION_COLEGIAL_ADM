@@ -44,21 +44,29 @@
     @* Filtros *@
     <div id="asi-filtros" class="asi-filtros-card">
         <div class="row align-items-end">
-            <div class="col-md-4 col-sm-6 mb-2 mb-md-0">
+            <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
                 <label class="form-label-catalogo" for="filtro-empleado">Empleado</label>
                 <select id="filtro-empleado" class="form-control">
                     <option value="">-- Todos --</option>
                 </select>
             </div>
             <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
-                <label class="form-label-catalogo" for="filtro-fecha">Fecha</label>
-                <input type="date" id="filtro-fecha" class="form-control" />
+                <label class="form-label-catalogo" for="filtro-desde">Desde</label>
+                <input type="date" id="filtro-desde" class="form-control" autocomplete="off" />
             </div>
-            <div class="col-md-2 col-sm-6 mb-2 mb-md-0">
+            <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
+                <label class="form-label-catalogo" for="filtro-hasta">Hasta</label>
+                <input type="date" id="filtro-hasta" class="form-control" autocomplete="off" />
+            </div>
+            <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
                 <button id="btn-buscar" class="btn btn-primary btn-block">
                     <i class="fa-solid fa-magnifying-glass"></i> Buscar
                 </button>
             </div>
+        </div>
+        <div class="asi-rango-hint">
+            <i class="fa-regular fa-calendar-days mr-1"></i>
+            Mostrando: <span id="asi-rango-label">—</span>
         </div>
     </div>
 
@@ -118,7 +126,13 @@
 </div>
 
 @section Scripts{
-    <script src="~/Content/js/pages/asistenciaempleados.js"></script>
+    @{
+        var jsPath = Server.MapPath("~/Content/js/pages/asistenciaempleados.js");
+        var jsVer  = System.IO.File.Exists(jsPath)
+                     ? System.IO.File.GetLastWriteTimeUtc(jsPath).Ticks.ToString()
+                     : DateTime.UtcNow.Ticks.ToString();
+    }
+    <script src="~/Content/js/pages/asistenciaempleados.js?v=@jsVer"></script>
     <script>
         AsistenciaEmpleados.init(
             "@Url.Action("ListAsync")",

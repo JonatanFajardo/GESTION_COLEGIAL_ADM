@@ -28,9 +28,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<ActionResult> ListAsync(string Emp_Id = null, string Fecha = null)
+        public async Task<ActionResult> ListAsync(
+            string Emp_Id     = null,
+            string Fecha      = null,
+            string FechaDesde = null,
+            string FechaHasta = null)
         {
-            string json = await _service.ListRawAsync(Emp_Id, Fecha);
+            string json = await _service.ListRawAsync(Emp_Id, Fecha, FechaDesde, FechaHasta);
             return Content(json, "application/json");
         }
 

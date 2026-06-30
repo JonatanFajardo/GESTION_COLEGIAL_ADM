@@ -53,6 +53,18 @@
     outline: none;
 }
 
+/* Hint del rango activo */
+.asi-rango-hint {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    color: #6b7280;
+}
+
+.asi-rango-hint #asi-rango-label {
+    font-weight: 600;
+    color: #1f2937;
+}
+
 /* ----------------------------------------
    KPI CARDS
    ---------------------------------------- */

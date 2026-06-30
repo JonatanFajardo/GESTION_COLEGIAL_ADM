@@ -11,10 +11,18 @@ var AsistenciaEmpleados = (function () {
         urlList   = ul;
         urlCreate = uc;
 
-        // Fecha de hoy en filtro y en modal
-        var hoy = new Date().toISOString().split('T')[0];
-        $('#filtro-fecha').val(hoy);
-        $('input[name="Fecha"]').val(hoy);
+        // Defaults del rango: primer día del mes anterior → hoy
+        // Limpiamos primero por si el navegador autorrellenó valores antiguos.
+        var hoy = new Date();
+        var hoyStr = toYmd(hoy);
+        var primerDiaMesAnterior = new Date(hoy.getFullYear(), hoy.getMonth() - 1, 1);
+        var desdeStr = toYmd(primerDiaMesAnterior);
+
+        $('#filtro-desde').val('').val(desdeStr).trigger('change');
+        $('#filtro-hasta').val('').val(hoyStr).trigger('change');
+
+        // Fecha del modal: hoy
+        $('input[name="Fecha"]').val(hoyStr);
 
         // Cargar dropdowns de empleados
         if (urlDropdowns) {
@@ -38,7 +46,7 @@ var AsistenciaEmpleados = (function () {
         });
 
         // Permitir buscar con Enter en los filtros
-        $('#filtro-fecha, #filtro-empleado').on('keypress', function (e) {
+        $('#filtro-desde, #filtro-hasta, #filtro-empleado').on('keypress', function (e) {
             if (e.which === 13) { cargarDatos(); }
         });
 
@@ -80,12 +88,23 @@ var AsistenciaEmpleados = (function () {
     /* ------------------------------------------------------------------ */
     function cargarDatos() {
         var empId = $('#filtro-empleado').val();
-        var fecha = $('#filtro-fecha').val();
+        var desde = $('#filtro-desde').val();
+        var hasta = $('#filtro-hasta').val();
+
+        // Sanidad: si Desde > Hasta, intercambiar para evitar consulta vacía
+        if (desde && hasta && desde > hasta) {
+            var tmp = desde; desde = hasta; hasta = tmp;
+            $('#filtro-desde').val(desde);
+            $('#filtro-hasta').val(hasta);
+        }
+
         var params = [];
-        if (empId) { params.push('Emp_Id=' + encodeURIComponent(empId)); }
-        if (fecha)  { params.push('Fecha='  + encodeURIComponent(fecha));  }
+        if (empId) { params.push('Emp_Id='     + encodeURIComponent(empId)); }
+        if (desde) { params.push('FechaDesde=' + encodeURIComponent(desde)); }
+        if (hasta) { params.push('FechaHasta=' + encodeURIComponent(hasta)); }
         var qs = params.length > 0 ? '?' + params.join('&') : '';
 
+        actualizarRangoLabel(desde, hasta);
         mostrarLoading();
 
         $.getJSON(urlList + qs, function (res) {
@@ -102,6 +121,13 @@ var AsistenciaEmpleados = (function () {
                 '</div></div>'
             );
         });
+    }
+
+    function actualizarRangoLabel(desde, hasta) {
+        var $lbl = $('#asi-rango-label');
+        if (!$lbl.length) { return; }
+        if (!desde && !hasta) { $lbl.text('mes anterior y mes actual'); return; }
+        $lbl.text(formatFecha(desde) + '  →  ' + formatFecha(hasta));
     }
 
     /* ------------------------------------------------------------------ */
@@ -182,7 +208,7 @@ var AsistenciaEmpleados = (function () {
                 '<div class="col-12">' +
                 '  <div class="asi-empty-state">' +
                 '    <div class="asi-empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div>' +
-                '    <p>No hay registros para los filtros seleccionados.</p>' +
+                '    <p>No hay registros para el rango seleccionado.</p>' +
                 '  </div>' +
                 '</div>'
             );
@@ -242,6 +268,13 @@ var AsistenciaEmpleados = (function () {
         var mm = String(d.getMonth() + 1).padStart(2, '0');
         var yyyy = d.getFullYear();
         return dd + '/' + mm + '/' + yyyy;
+    }
+
+    function toYmd(d) {
+        var yyyy = d.getFullYear();
+        var mm = String(d.getMonth() + 1).padStart(2, '0');
+        var dd = String(d.getDate()).padStart(2, '0');
+        return yyyy + '-' + mm + '-' + dd;
     }
 
     function iniciales(nombre) {
