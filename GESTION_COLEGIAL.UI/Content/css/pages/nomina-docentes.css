@@ -1,0 +1,355 @@
+/* Nomina de Docentes — scoped a .nomina-docentes */
+
+.nomina-docentes {
+    --nd-bg-card: #ffffff;
+    --nd-border: #e5e7eb;
+    --nd-text: #111827;
+    --nd-text-muted: #6b7280;
+    --nd-radius: 12px;
+    --nd-radius-sm: 8px;
+    --nd-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.04);
+    --nd-shadow-hover: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.04);
+
+    --nd-MAT: #4f46e5;
+    --nd-LEN: #ec4899;
+    --nd-CIE: #059669;
+    --nd-ING: #0ea5e9;
+    --nd-SOC: #d97706;
+    --nd-CON: #7c3aed;
+    --nd-TEC: #0891b2;
+    --nd-ART: #db2777;
+    --nd-OTR: #6b7280;
+
+    color: var(--nd-text);
+}
+
+/* Header */
+.nomina-docentes .nd-header {
+    display: flex; align-items: center; gap: 16px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff; padding: 20px 24px; border-radius: var(--nd-radius);
+    margin-bottom: 20px; box-shadow: var(--nd-shadow);
+}
+.nomina-docentes .nd-header-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.nomina-docentes .nd-header-text h2 { margin: 0; font-size: 1.4rem; font-weight: 700; }
+.nomina-docentes .nd-header-text p { margin: 4px 0 0; opacity: 0.92; font-size: 0.9rem; }
+
+/* KPIs */
+.nomina-docentes .nd-kpis {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px; margin-bottom: 20px;
+}
+.nomina-docentes .nd-kpi {
+    background: var(--nd-bg-card); border-radius: var(--nd-radius);
+    padding: 18px 20px; box-shadow: var(--nd-shadow);
+    border-left: 4px solid transparent;
+}
+.nomina-docentes .nd-kpi-label {
+    font-size: 0.78rem; color: var(--nd-text-muted);
+    text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600;
+}
+.nomina-docentes .nd-kpi-value {
+    font-size: 1.7rem; font-weight: 700; margin-top: 4px; color: var(--nd-text);
+}
+.nomina-docentes .nd-kpi-foot {
+    font-size: 0.74rem; color: var(--nd-text-muted); margin-top: 2px;
+}
+.nomina-docentes .nd-kpi--indigo  { border-left-color: #4f46e5; }
+.nomina-docentes .nd-kpi--emerald { border-left-color: #10b981; }
+.nomina-docentes .nd-kpi--amber   { border-left-color: #f59e0b; }
+.nomina-docentes .nd-kpi--rose    { border-left-color: #f43f5e; }
+
+/* Filtros */
+.nomina-docentes .nd-filtros {
+    background: var(--nd-bg-card); border-radius: var(--nd-radius);
+    padding: 18px 20px; margin-bottom: 16px; box-shadow: var(--nd-shadow);
+}
+.nomina-docentes .nd-filtros-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px; align-items: end;
+}
+.nomina-docentes .nd-filtro label {
+    display: block; font-size: 0.78rem; font-weight: 600;
+    color: var(--nd-text-muted); margin-bottom: 4px;
+    text-transform: uppercase; letter-spacing: 0.03em;
+}
+.nomina-docentes .nd-filtro .form-control {
+    height: 38px; border-radius: var(--nd-radius-sm);
+    border: 1px solid var(--nd-border); font-size: 0.9rem;
+}
+.nomina-docentes .nd-search-wrap { position: relative; }
+.nomina-docentes .nd-search-icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--nd-text-muted);
+}
+.nomina-docentes .nd-filtro-search .form-control { padding-left: 34px; }
+
+.nomina-docentes .nd-resultado-info {
+    font-size: 0.85rem; color: var(--nd-text-muted);
+    margin-bottom: 10px; padding: 0 4px;
+}
+
+/* Grid de cards */
+.nomina-docentes .nd-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+}
+.nomina-docentes .nd-card {
+    background: var(--nd-bg-card); border-radius: var(--nd-radius);
+    overflow: hidden; box-shadow: var(--nd-shadow);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor: pointer; display: flex; flex-direction: column;
+}
+.nomina-docentes .nd-card:hover {
+    transform: translateY(-2px); box-shadow: var(--nd-shadow-hover);
+}
+
+/* Header de card (con color de area) */
+.nomina-docentes .nd-card-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; color: #fff; position: relative;
+}
+.nomina-docentes .nd-card-header.nd-area-MAT { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+.nomina-docentes .nd-card-header.nd-area-LEN { background: linear-gradient(135deg, #ec4899, #f472b6); }
+.nomina-docentes .nd-card-header.nd-area-CIE { background: linear-gradient(135deg, #059669, #10b981); }
+.nomina-docentes .nd-card-header.nd-area-ING { background: linear-gradient(135deg, #0ea5e9, #38bdf8); }
+.nomina-docentes .nd-card-header.nd-area-SOC { background: linear-gradient(135deg, #d97706, #f59e0b); }
+.nomina-docentes .nd-card-header.nd-area-CON { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+.nomina-docentes .nd-card-header.nd-area-TEC { background: linear-gradient(135deg, #0891b2, #06b6d4); }
+.nomina-docentes .nd-card-header.nd-area-ART { background: linear-gradient(135deg, #db2777, #ec4899); }
+.nomina-docentes .nd-card-header.nd-area-OTR { background: linear-gradient(135deg, #6b7280, #9ca3af); }
+
+.nomina-docentes .nd-avatar {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 700; flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.4);
+}
+.nomina-docentes .nd-card-titles { flex: 1; min-width: 0; }
+.nomina-docentes .nd-card-name {
+    font-weight: 700; font-size: 0.95rem;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.nomina-docentes .nd-card-sub {
+    display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap;
+}
+
+/* Pills */
+.nomina-docentes .nd-pill {
+    display: inline-flex; align-items: center; padding: 2px 9px;
+    border-radius: 999px; font-size: 0.7rem; font-weight: 600;
+    background: rgba(255,255,255,0.25); color: #fff;
+}
+.nomina-docentes .nd-badge {
+    display: inline-flex; align-items: center; padding: 2px 8px;
+    border-radius: 999px; font-size: 0.68rem; font-weight: 600;
+}
+.nomina-docentes .nd-badge--mda { background: rgba(255,255,255,0.2); color: #fff; }
+.nomina-docentes .nd-badge--alerta { background: #fef3c7; color: #92400e; }
+
+/* Body */
+.nomina-docentes .nd-card-body { padding: 16px; }
+
+.nomina-docentes .nd-neto-wrap {
+    text-align: center; padding: 12px 0; margin-bottom: 12px;
+    background: linear-gradient(180deg, #f8fafc, #fff);
+    border-radius: var(--nd-radius-sm);
+}
+.nomina-docentes .nd-neto-label {
+    font-size: 0.7rem; color: var(--nd-text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
+}
+.nomina-docentes .nd-neto-value {
+    font-size: 1.7rem; font-weight: 800; color: #059669;
+    margin-top: 4px; line-height: 1;
+}
+
+.nomina-docentes .nd-mini-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 12px;
+}
+.nomina-docentes .nd-mini-stat {
+    text-align: center; padding: 8px 4px;
+    background: #f9fafb; border-radius: var(--nd-radius-sm);
+}
+.nomina-docentes .nd-mini-num {
+    font-size: 1.05rem; font-weight: 700; color: var(--nd-text);
+}
+.nomina-docentes .nd-mini-cap {
+    font-size: 0.65rem; color: var(--nd-text-muted);
+    text-transform: uppercase; letter-spacing: 0.03em; margin-top: 1px;
+}
+
+.nomina-docentes .nd-mini-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 0.72rem; font-weight: 600; margin-bottom: 10px;
+}
+.nomina-docentes .nd-mini-pill--extra { background: #fef3c7; color: #92400e; }
+
+.nomina-docentes .nd-desglose-mini {
+    border-top: 1px dashed var(--nd-border); padding-top: 10px;
+    font-size: 0.8rem;
+}
+.nomina-docentes .nd-desglose-row {
+    display: flex; justify-content: space-between; padding: 3px 0;
+    color: var(--nd-text-muted);
+}
+.nomina-docentes .nd-desglose-row b { color: var(--nd-text); }
+.nomina-docentes .nd-positive { color: #059669 !important; }
+.nomina-docentes .nd-negative { color: #dc2626 !important; }
+
+.nomina-docentes .nd-btn-detalle {
+    width: 100%; margin-top: 12px;
+    padding: 10px; border: 0; border-radius: var(--nd-radius-sm);
+    background: #f3f4f6; color: var(--nd-text-muted);
+    font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.nomina-docentes .nd-card:hover .nd-btn-detalle {
+    background: linear-gradient(135deg, #10b981, #059669); color: #fff;
+}
+
+/* Vacío */
+.nomina-docentes .nd-vacio {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 60px 20px; color: var(--nd-text-muted);
+}
+.nomina-docentes .nd-vacio i {
+    font-size: 3rem; margin-bottom: 12px; opacity: 0.5;
+}
+.nomina-docentes .nd-vacio p { margin: 0; font-size: 0.95rem; }
+.nomina-docentes .nd-vacio small { color: var(--nd-text-muted); margin-top: 4px; }
+
+/* Loader */
+.nomina-docentes .nd-loader {
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 20px; color: var(--nd-text-muted);
+}
+.nomina-docentes .nd-spinner,
+.nd-modal .nd-spinner {
+    width: 38px; height: 38px;
+    border: 3px solid #e5e7eb; border-top-color: #10b981;
+    border-radius: 50%; animation: nd-spin 0.9s linear infinite;
+    margin-bottom: 12px;
+}
+@keyframes nd-spin { to { transform: rotate(360deg); } }
+
+/* ====== Modal ====== */
+.nd-modal .nd-modal-dialog {
+    max-width: min(1180px, 95vw); width: 95vw; margin: 1.5rem auto;
+}
+.nd-modal .modal-content {
+    border-radius: 14px; border: 0; overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-height: 92vh;
+}
+.nd-modal .nd-modal-header {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff; border-bottom: 0; padding: 18px 24px; align-items: center;
+}
+.nd-modal .nd-modal-header .close {
+    color: #fff; opacity: 0.85; text-shadow: none; font-size: 1.6rem;
+}
+.nd-modal .nd-modal-title-wrap {
+    display: flex; align-items: center; gap: 14px; flex: 1;
+}
+.nd-modal .nd-modal-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem; flex-shrink: 0;
+}
+.nd-modal .modal-title { font-size: 1.2rem; font-weight: 700; }
+.nd-modal .nd-modal-subtitle { font-size: 0.83rem; opacity: 0.9; margin-top: 3px; }
+.nd-modal .modal-body { padding: 0; background: #f8fafc; overflow: hidden; }
+
+.nd-modal .nd-modal-layout {
+    display: grid; grid-template-columns: minmax(0, 1fr) 360px;
+    max-height: calc(92vh - 92px);
+}
+.nd-modal .nd-modal-left { padding: 18px; overflow: auto; background: #fff; }
+.nd-modal .nd-modal-right {
+    background: #f8fafc; border-left: 1px solid var(--nd-border);
+    padding: 18px; overflow: auto;
+}
+
+.nd-modal .nd-section-title {
+    font-size: 0.78rem; font-weight: 700; color: var(--nd-text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+}
+.nd-modal .nd-mt { margin-top: 24px; }
+
+.nd-modal .nd-tabla {
+    width: 100%; border-collapse: collapse; font-size: 0.82rem;
+}
+.nd-modal .nd-tabla thead th {
+    background: #f9fafb; color: var(--nd-text-muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.7rem;
+    padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--nd-border);
+}
+.nd-modal .nd-tabla tbody td {
+    padding: 9px 10px; border-bottom: 1px solid #f3f4f6;
+    color: var(--nd-text); vertical-align: middle;
+}
+.nd-modal .nd-num { text-align: right; }
+
+/* Pills color en el modal (necesita color de fondo plano) */
+.nd-modal .nd-pill {
+    color: #fff; padding: 3px 9px;
+}
+.nd-modal .nd-pill--MAT { background: #4f46e5; }
+.nd-modal .nd-pill--LEN { background: #ec4899; }
+.nd-modal .nd-pill--CIE { background: #059669; }
+.nd-modal .nd-pill--ING { background: #0ea5e9; }
+.nd-modal .nd-pill--SOC { background: #d97706; }
+.nd-modal .nd-pill--CON { background: #7c3aed; }
+.nd-modal .nd-pill--TEC { background: #0891b2; }
+.nd-modal .nd-pill--ART { background: #db2777; }
+.nd-modal .nd-pill--OTR { background: #6b7280; }
+
+.nd-modal .nd-resumen-card {
+    background: #fff; border-radius: var(--nd-radius);
+    padding: 18px; box-shadow: var(--nd-shadow);
+}
+.nd-modal .nd-resumen-row {
+    display: flex; justify-content: space-between; padding: 6px 0;
+    font-size: 0.88rem; color: var(--nd-text);
+}
+.nd-modal .nd-resumen-row span { color: var(--nd-text-muted); }
+.nd-modal .nd-resumen-row b { font-weight: 600; }
+.nd-modal .nd-resumen-row--total { font-weight: 700; }
+.nd-modal .nd-resumen-row--total b { font-size: 1rem; }
+.nd-modal .nd-resumen-divider {
+    border-top: 1px dashed var(--nd-border); margin: 8px 0;
+}
+.nd-modal .nd-resumen-neto {
+    margin-top: 14px; padding: 16px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff; border-radius: var(--nd-radius-sm);
+    text-align: center;
+}
+.nd-modal .nd-resumen-neto-label {
+    font-size: 0.74rem; opacity: 0.92; letter-spacing: 0.06em;
+    text-transform: uppercase; font-weight: 700;
+}
+.nd-modal .nd-resumen-neto-value {
+    font-size: 1.8rem; font-weight: 800; margin-top: 4px;
+}
+
+.nd-modal .nd-modal-loading {
+    padding: 60px; text-align: center;
+}
+
+@media (max-width: 900px) {
+    .nd-modal .nd-modal-layout { grid-template-columns: 1fr; }
+    .nd-modal .nd-modal-right { border-left: 0; border-top: 1px solid var(--nd-border); }
+}

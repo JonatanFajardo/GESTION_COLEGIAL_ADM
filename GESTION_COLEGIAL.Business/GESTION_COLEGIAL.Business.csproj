@@ -137,6 +137,7 @@
     <Compile Include="Models\DuracionDetailViewModel.cs" />
     <Compile Include="Models\EstadoDetailViewModel.cs" />
     <Compile Include="Models\HorarioViewModel.cs" />
+    <Compile Include="Models\NominaDocenteViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\AlumnoFindViewModel.cs" />
     <Compile Include="Models\AlumnoViewModel.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="Services\AulasService.cs" />
     <Compile Include="Services\CargosService.cs" />
     <Compile Include="Services\HorariosService.cs" />
+    <Compile Include="Services\NominaDocentesService.cs" />
     <Compile Include="Services\ModuloFinanzas\ConceptosPagoService.cs" />
     <Compile Include="Services\ModuloFinanzas\CuentasCobrarService.cs" />
     <Compile Include="Services\CursosNivelesService.cs" />

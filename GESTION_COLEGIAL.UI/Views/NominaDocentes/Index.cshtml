@@ -1,0 +1,132 @@
+@{
+    ViewBag.Title = "Nómina de Docentes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/Content/css/pages/nomina-docentes.css" />
+}
+
+<div class="nomina-docentes">
+
+    <!-- Header -->
+    <div class="nd-header">
+        <div class="nd-header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M6 12h.01M18 12h.01"></path>
+            </svg>
+        </div>
+        <div class="nd-header-text">
+            <h2>Nómina de Docentes</h2>
+            <p>Cálculo automático mensual basado en horarios programados y tarifas por área/modalidad.</p>
+        </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="nd-kpis">
+        <div class="nd-kpi nd-kpi--indigo">
+            <div class="nd-kpi-label">Total nómina del mes</div>
+            <div class="nd-kpi-value" id="kpiTotal">L 0.00</div>
+            <div class="nd-kpi-foot">Neto a pagar</div>
+        </div>
+        <div class="nd-kpi nd-kpi--emerald">
+            <div class="nd-kpi-label">Docentes activos</div>
+            <div class="nd-kpi-value" id="kpiDocentes">0</div>
+            <div class="nd-kpi-foot" id="kpiDocentesSub">— en planilla</div>
+        </div>
+        <div class="nd-kpi nd-kpi--amber">
+            <div class="nd-kpi-label">Períodos mensuales</div>
+            <div class="nd-kpi-value" id="kpiPeriodos">0</div>
+            <div class="nd-kpi-foot" id="kpiPeriodosSub">— horas-clase</div>
+        </div>
+        <div class="nd-kpi nd-kpi--rose">
+            <div class="nd-kpi-label">Deducciones totales</div>
+            <div class="nd-kpi-value" id="kpiDeducciones">L 0.00</div>
+            <div class="nd-kpi-foot">IHSS · ISR · Colegio</div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="nd-filtros">
+        <div class="nd-filtros-row">
+            <div class="nd-filtro">
+                <label for="filtroAnio">Año</label>
+                <select id="filtroAnio" class="form-control">
+                    <option value="2026" selected>2026</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            <div class="nd-filtro">
+                <label for="filtroSemestre">Semestre</label>
+                <select id="filtroSemestre" class="form-control">
+                    <option value="1" selected>Primer</option>
+                    <option value="2">Segundo</option>
+                </select>
+            </div>
+            <div class="nd-filtro nd-filtro-search">
+                <label for="filtroBusqueda">Buscar docente</label>
+                <div class="nd-search-wrap">
+                    <i class="bi bi-search nd-search-icon"></i>
+                    <input id="filtroBusqueda" type="text" class="form-control" placeholder="Nombre, código, materia..." />
+                </div>
+            </div>
+            <div class="nd-filtro">
+                <label for="filtroOrden">Ordenar por</label>
+                <select id="filtroOrden" class="form-control">
+                    <option value="neto-desc">Salario neto (mayor)</option>
+                    <option value="neto-asc">Salario neto (menor)</option>
+                    <option value="nombre">Nombre A–Z</option>
+                    <option value="periodos">Períodos (mayor)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contador -->
+    <div class="nd-resultado-info">
+        <span id="ndContador">0 docentes</span>
+    </div>
+
+    <!-- Grid de cards -->
+    <div id="ndCards" class="nd-cards-grid"></div>
+
+    <!-- Vacío -->
+    <div id="ndVacio" class="nd-vacio" style="display:none;">
+        <i class="bi bi-cash-coin"></i>
+        <p>No hay nómina calculada para el período seleccionado.</p>
+        <small>Verifica que existan horarios en tbHorarios para ese año y semestre.</small>
+    </div>
+
+    <!-- Loader -->
+    <div id="ndLoader" class="nd-loader" style="display:none;">
+        <div class="nd-spinner"></div>
+        <p>Calculando nómina...</p>
+    </div>
+</div>
+
+<!-- Modal detalle -->
+<div class="modal fade nd-modal" id="ndModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog nd-modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header nd-modal-header">
+                <div class="nd-modal-title-wrap">
+                    <div class="nd-modal-icon"><i class="bi bi-person-badge"></i></div>
+                    <div>
+                        <h5 class="modal-title" id="ndModalNombre">Docente</h5>
+                        <div class="nd-modal-subtitle" id="ndModalSubtitulo"></div>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ndModalBody"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Content/js/pages/nominadocentes.js"></script>
+}

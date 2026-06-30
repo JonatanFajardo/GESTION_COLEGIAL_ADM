@@ -392,7 +392,7 @@
                 </li>
             }
 
-            @if (tiene("Listado de pagos") || tiene("Listado de cuentas por cobrar") || tiene("Reportes financieros") || tiene("Pagos del Día") || tiene("Pendientes por Cobrar") || tiene("Historial de Transacciones") || tiene("Conciliación Rápida") || tiene("Flujo de Caja") || tiene("Estado de Resultados") || tiene("Análisis Ingresos vs Egresos") || tiene("Comparativo de Años") || tiene("KPIs Financieros"))
+            @if (tiene("Listado de pagos") || tiene("Listado de cuentas por cobrar") || tiene("Reportes financieros") || tiene("Pagos del Día") || tiene("Pendientes por Cobrar") || tiene("Historial de Transacciones") || tiene("Conciliación Rápida") || tiene("Flujo de Caja") || tiene("Estado de Resultados") || tiene("Análisis Ingresos vs Egresos") || tiene("Comparativo de Años") || tiene("KPIs Financieros") || tiene("Nomina Docentes"))
             {
                 <li class="menu">
                     <a href="#Financiero" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -469,6 +469,12 @@
                         @if (tiene("Análisis Ingresos vs Egresos"))     { <li>@Html.ActionLink("Análisis Ingresos",    "Index", "AnalisisIngresos")</li> }
                         @if (tiene("Comparativo de Años"))              { <li>@Html.ActionLink("Comparativo de Años",  "Index", "ComparativoAnios")</li> }
                         @if (tiene("KPIs Financieros"))                 { <li>@Html.ActionLink("KPIs Financieros",     "Index", "KPIsFinancieros")</li> }
+
+                        @if (tiene("Nomina Docentes"))
+                        {
+                            <li class="submenu-header">Nómina</li>
+                            <li>@Html.ActionLink("Nómina de Docentes", "Index", "NominaDocentes")</li>
+                        }
                     </ul>
                 </li>
             }
