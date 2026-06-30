@@ -16,6 +16,9 @@
 
 <div class="dashboard-aulas">
     <header class="da-header">
+        <div class="da-header-icon">
+            <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
         <div>
             <h1>Dashboard de Aulas</h1>
             <p class="da-sub">Vista general de rendimiento, asistencia y deudas por sección</p>
@@ -24,7 +27,12 @@
 
     <div class="filters" id="da-filters">
         <button class="filter-btn active" data-filter="all" type="button">Todas</button>
-        <button class="filter-btn" data-filter="danger" type="button">⚠ Críticas</button>
+        <button class="filter-btn" data-filter="danger" type="button"><i class="fa-solid fa-triangle-exclamation"></i> Críticas</button>
+    </div>
+
+    <div class="filters filters-jornada" id="da-filters-jornada">
+        <span class="filters-label">Jornada:</span>
+        <button class="filter-btn" data-jornada="all" type="button">Todas</button>
     </div>
 
     <div class="summary-strip" id="da-summary"></div>

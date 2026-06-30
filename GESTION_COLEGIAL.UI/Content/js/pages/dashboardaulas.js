@@ -3,10 +3,20 @@ var DashboardAulas = (function () {
 
     var aulas = [];
     var niveles = [];
+    var jornadas = [];
     var bajoDisponible = false;
     var asistenciaDisponible = false;
     var currentFilter = 'all';
+    var currentJornada = 'all';
     var compChart = null;
+
+    function jornadaPorHora() {
+        var h = new Date().getHours();
+        if (h >= 6 && h < 12) return 'Matutina';
+        if (h >= 12 && h < 18) return 'Vespertina';
+        if (h >= 18 && h < 23) return 'Nocturna';
+        return null;
+    }
 
     function escapeHtml(s) {
         if (s === null || s === undefined) return '';
@@ -63,17 +73,34 @@ var DashboardAulas = (function () {
 
     function renderFilters() {
         var container = document.getElementById('da-filters');
-        if (!container) return;
-        var criticasBtn = container.querySelector('[data-filter="danger"]');
-        for (var i = 0; i < niveles.length; i++) {
-            var n = niveles[i];
-            var btn = document.createElement('button');
-            btn.className = 'filter-btn';
-            btn.setAttribute('data-filter', n);
-            btn.type = 'button';
-            btn.textContent = n;
-            if (criticasBtn) container.insertBefore(btn, criticasBtn);
-            else container.appendChild(btn);
+        if (container) {
+            var criticasBtn = container.querySelector('[data-filter="danger"]');
+            for (var i = 0; i < niveles.length; i++) {
+                var n = niveles[i];
+                var btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.setAttribute('data-filter', n);
+                btn.type = 'button';
+                btn.textContent = n;
+                if (criticasBtn) container.insertBefore(btn, criticasBtn);
+                else container.appendChild(btn);
+            }
+        }
+
+        var jornadaContainer = document.getElementById('da-filters-jornada');
+        if (jornadaContainer) {
+            if (!jornadas.length) {
+                jornadaContainer.style.display = 'none';
+            } else {
+                for (var k = 0; k < jornadas.length; k++) {
+                    var jBtn = document.createElement('button');
+                    jBtn.className = 'filter-btn';
+                    jBtn.setAttribute('data-jornada', jornadas[k]);
+                    jBtn.type = 'button';
+                    jBtn.textContent = jornadas[k];
+                    jornadaContainer.appendChild(jBtn);
+                }
+            }
         }
     }
 
@@ -91,36 +118,32 @@ var DashboardAulas = (function () {
             if (getStatus(list[j]) === 'danger') criticas++;
         }
 
-        var html = ''
-            + '<div class="stat-card">'
-            +   '<div class="stat-label">Total alumnos</div>'
-            +   '<div class="stat-value orange">' + totalAlumnos + '</div>'
-            + '</div>';
-
-        if (bajoDisponible) {
-            html += '<div class="stat-card">'
-                +   '<div class="stat-label">Bajo rendimiento</div>'
-                +   '<div class="stat-value red">' + totalBajo + ' <span style="font-size:14px">(' + pct(totalBajo, totalAlumnos) + '%)</span></div>'
-                + '</div>';
+        function card(color, icon, label, value, pctText) {
+            var pctHtml = pctText ? ' <span class="stat-pct">(' + pctText + ')</span>' : '';
+            return '<div class="stat-card ' + color + '">'
+                +    '<div class="stat-icon"><i class="fa-solid ' + icon + '"></i></div>'
+                +    '<div class="stat-body">'
+                +      '<div class="stat-label">' + label + '</div>'
+                +      '<div class="stat-value">' + value + pctHtml + '</div>'
+                +    '</div>'
+                +    '<div class="stat-bg-icon"><i class="fa-solid ' + icon + '"></i></div>'
+                +  '</div>';
         }
 
-        html += '<div class="stat-card">'
-            +     '<div class="stat-label">Con deuda</div>'
-            +     '<div class="stat-value" style="color:#2980B9">' + totalDeuda + ' <span style="font-size:14px">(' + pct(totalDeuda, totalAlumnos) + '%)</span></div>'
-            +   '</div>';
+        var html = card('indigo', 'fa-user-graduate', 'Total alumnos', totalAlumnos, '');
+
+        if (bajoDisponible) {
+            html += card('red', 'fa-chart-line-down', 'Bajo rendimiento', totalBajo, pct(totalBajo, totalAlumnos) + '%');
+        }
+
+        html += card('cyan', 'fa-money-bill-wave', 'Con deuda', totalDeuda, pct(totalDeuda, totalAlumnos) + '%');
 
         if (asistenciaDisponible) {
-            html += '<div class="stat-card">'
-                +     '<div class="stat-label">Asistencia promedio</div>'
-                +     '<div class="stat-value green">' + avgAsis + '%</div>'
-                +   '</div>';
+            html += card('emerald', 'fa-calendar-check', 'Asistencia promedio', avgAsis + '%', '');
         }
 
         if (bajoDisponible) {
-            html += '<div class="stat-card">'
-                +     '<div class="stat-label">Aulas criticas</div>'
-                +     '<div class="stat-value ' + (criticas > 0 ? 'red' : 'green') + '">' + criticas + '</div>'
-                +   '</div>';
+            html += card(criticas > 0 ? 'amber' : 'emerald', 'fa-triangle-exclamation', 'Aulas críticas', criticas, '');
         }
 
         var el = document.getElementById('da-summary');
@@ -291,34 +314,44 @@ var DashboardAulas = (function () {
         if (panel) panel.classList.remove('visible');
     }
 
-    function applyFilter(val) {
-        currentFilter = val;
+    function render() {
         var btns = document.querySelectorAll('#da-filters .filter-btn');
         for (var i = 0; i < btns.length; i++) {
-            if (btns[i].getAttribute('data-filter') === val) {
-                btns[i].classList.add('active');
-            } else {
-                btns[i].classList.remove('active');
-            }
+            if (btns[i].getAttribute('data-filter') === currentFilter) btns[i].classList.add('active');
+            else btns[i].classList.remove('active');
+        }
+        var jBtns = document.querySelectorAll('#da-filters-jornada .filter-btn');
+        for (var b = 0; b < jBtns.length; b++) {
+            if (jBtns[b].getAttribute('data-jornada') === currentJornada) jBtns[b].classList.add('active');
+            else jBtns[b].classList.remove('active');
         }
         closeDetail();
-        var filtered;
-        if (val === 'all') {
-            filtered = aulas;
-        } else if (val === 'danger') {
-            filtered = [];
-            for (var j = 0; j < aulas.length; j++) {
-                if (getStatus(aulas[j]) === 'danger') filtered.push(aulas[j]);
-            }
-        } else {
-            filtered = [];
-            for (var k = 0; k < aulas.length; k++) {
-                if (aulas[k].Nivel === val) filtered.push(aulas[k]);
+
+        var filtered = [];
+        for (var k = 0; k < aulas.length; k++) {
+            var a = aulas[k];
+            if (currentJornada !== 'all' && a.Modalidad !== currentJornada) continue;
+            if (currentFilter === 'all') {
+                filtered.push(a);
+            } else if (currentFilter === 'danger') {
+                if (getStatus(a) === 'danger') filtered.push(a);
+            } else {
+                if (a.Nivel === currentFilter) filtered.push(a);
             }
         }
         renderSummary(filtered);
         renderCards(filtered);
         renderChart(filtered);
+    }
+
+    function applyFilter(val) {
+        currentFilter = val;
+        render();
+    }
+
+    function applyJornada(val) {
+        currentJornada = val;
+        render();
     }
 
     function bindEvents() {
@@ -332,6 +365,20 @@ var DashboardAulas = (function () {
                 if (target && target.classList && target.classList.contains('filter-btn')) {
                     var val = target.getAttribute('data-filter');
                     if (val) applyFilter(val);
+                }
+            });
+        }
+
+        var jornadaFilters = document.getElementById('da-filters-jornada');
+        if (jornadaFilters) {
+            jornadaFilters.addEventListener('click', function (e) {
+                var target = e.target;
+                while (target && target !== jornadaFilters && !(target.classList && target.classList.contains('filter-btn'))) {
+                    target = target.parentNode;
+                }
+                if (target && target.classList && target.classList.contains('filter-btn')) {
+                    var val = target.getAttribute('data-jornada');
+                    if (val) applyJornada(val);
                 }
             });
         }
@@ -377,12 +424,23 @@ var DashboardAulas = (function () {
                 bajoDisponible = !!(data && data.BajoDisponible);
                 asistenciaDisponible = !!(data && data.AsistenciaDisponible);
 
+                var jornadasSet = {};
+                for (var i = 0; i < aulas.length; i++) {
+                    var m = aulas[i].Modalidad;
+                    if (m && m !== '—') jornadasSet[m] = true;
+                }
+                jornadas = Object.keys(jornadasSet).sort();
+
                 var loader = document.getElementById('da-loading');
                 if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
 
                 renderFilters();
                 renderNote();
-                applyFilter('all');
+
+                var jorActual = jornadaPorHora();
+                currentJornada = (jorActual && jornadasSet[jorActual]) ? jorActual : 'all';
+                currentFilter = 'all';
+                render();
             })
             .fail(function (xhr, status, err) {
                 console.warn('DashboardAulas: error al cargar', status, err);

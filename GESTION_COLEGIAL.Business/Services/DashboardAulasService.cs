@@ -35,11 +35,10 @@ namespace GESTION_COLEGIAL.Business.Services
                     .Where(s => !string.IsNullOrWhiteSpace(s))
             );
 
-            var bajosPorNombre = new HashSet<string>(
+            var bajosPorId = new HashSet<int>(
                 promedios
                     .Where(p => p.EsBajo)
-                    .Select(p => Normalizar(p.Alu_NombreCompleto))
-                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Select(p => p.Alu_Id)
             );
 
             bool bajoDisponible = promedios.Count > 0;
@@ -68,7 +67,7 @@ namespace GESTION_COLEGIAL.Business.Services
                     int capacidad = CapacidadPorNivel(nivel, alumnosCount);
 
                     int conDeuda = lista.Count(a => deudoresPorNombre.Contains(NombreCompleto(a)));
-                    int conBajo = lista.Count(a => bajosPorNombre.Contains(NombreCompleto(a)));
+                    int conBajo = lista.Count(a => bajosPorId.Contains(a.Alu_Id));
 
                     string seccion = lista.Select(a => a.Sec_Descripcion).FirstOrDefault(x => !string.IsNullOrWhiteSpace(x))
                                     ?? "Única";
