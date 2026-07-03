@@ -263,6 +263,7 @@
     <Content Include="Content\js\pages\graduacionalumnos.js" />
     <Content Include="Content\js\pages\graduacionalumnos.backfill.js" />
     <Content Include="Content\js\pages\alumnosgraduados.js" />
+    <Content Include="Content\js\pages\constancia-graduado.js" />
     <Content Include="App_Data\graduados-historicos.json" />
     <Content Include="Content\css\pages\graduados-directorio.css" />
     <Content Include="Content\js\pages\dashboardcajero.js" />

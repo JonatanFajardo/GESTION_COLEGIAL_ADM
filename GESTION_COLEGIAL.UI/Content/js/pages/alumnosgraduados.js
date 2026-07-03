@@ -8,6 +8,7 @@ var AlumnosGraduados = (function () {
     var _filtroPromoTexto = '';
     var _filtroDetNivel = '__all__';   // filtro en detalle
     var _filtroDetTexto = '';
+    var _graduadoActual = null;
 
     var NIVELES = ['Preescolar', 'Primaria', 'Secundaria', 'Bachillerato'];
     var NIVEL_COLOR = {
@@ -60,6 +61,17 @@ var AlumnosGraduados = (function () {
         });
         $('#grad-detalle-container').on('click', '.grad-card', function () {
             verDetalle(parseInt($(this).data('id'), 10));
+        });
+
+        // Modal ficha
+        $('#btn-generar-constancia').on('click', function () {
+            if (_graduadoActual && typeof ConstanciaGraduado !== 'undefined') {
+                ConstanciaGraduado.generar(_graduadoActual);
+            }
+        });
+        $('#modal-graduado-detalle').on('hidden.bs.modal', function () {
+            _graduadoActual = null;
+            $('#btn-generar-constancia').prop('disabled', true);
         });
     }
 
@@ -286,6 +298,11 @@ var AlumnosGraduados = (function () {
     // ═══════════ Modal ficha ═══════════
     function verDetalle(id) {
         $('#modal-graduado-body').html('Cargando...');
+        $('#btn-generar-constancia').prop('disabled', true);
+        _graduadoActual = null;
+        if (typeof ConstanciaGraduado !== 'undefined') {
+            ConstanciaGraduado.precargarInstituto();
+        }
         $('#modal-graduado-detalle').modal('show');
         $.getJSON(cfg.findUrl, { id: id }, function (resp) {
             var d = (resp && resp.data) ? resp.data : null;
@@ -293,6 +310,8 @@ var AlumnosGraduados = (function () {
                 $('#modal-graduado-body').html('<div class="alert alert-warning">No se encontró el registro.</div>');
                 return;
             }
+            _graduadoActual = d;
+            $('#btn-generar-constancia').prop('disabled', false);
             $('#modal-graduado-body').html(renderFicha(d));
         });
     }

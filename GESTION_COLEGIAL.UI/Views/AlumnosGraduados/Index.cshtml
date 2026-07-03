@@ -124,6 +124,9 @@
             </div>
             <div class="modal-body" id="modal-graduado-body">Cargando...</div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-generar-constancia" disabled>
+                    <i class="bi bi-file-earmark-pdf"></i> Generar constancia
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
@@ -131,6 +134,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/Content/js/pages/constancia-graduado.js"></script>
     <script src="~/Content/js/pages/alumnosgraduados.js"></script>
     <script>
         AlumnosGraduados.init({
