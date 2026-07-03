@@ -268,6 +268,44 @@
                     </div>
                 </div>
 
+                <!-- Institución -->
+                <div class="ajustes-section-label" style="margin-top:1rem;">Institución</div>
+                <div id="ajustes-instituto-form">
+                    @Html.AntiForgeryToken()
+                    <div class="ajustes-item-label" style="margin-bottom:0.35rem;">Nombre del instituto</div>
+                    <input type="text" id="ajustes-instituto-nombre" class="form-control form-control-sm"
+                           maxlength="120" autocomplete="off" placeholder="Instituto Nova Sula" />
+                    <div class="ajustes-item-label" style="margin-top:0.6rem; margin-bottom:0.35rem;">Dirección</div>
+                    <input type="text" id="ajustes-instituto-direccion" class="form-control form-control-sm"
+                           maxlength="200" autocomplete="off" placeholder="San Pedro Sula, Cortés, Honduras" />
+                    <div id="ajustes-instituto-error" class="text-danger small" style="display:none; margin-top:0.4rem;"></div>
+
+                    <!-- Estado 1: botón Guardar -->
+                    <div id="ajustes-instituto-actions" style="margin-top:0.6rem; text-align:right;">
+                        <button type="button" id="btn-ajustes-instituto-guardar" class="btn btn-primary btn-sm" disabled>
+                            <i class="bi bi-save"></i> Guardar cambios
+                        </button>
+                    </div>
+
+                    <!-- Estado 2: confirmación -->
+                    <div id="ajustes-instituto-confirm" class="alert alert-warning small" style="display:none; margin-top:0.6rem; padding:0.5rem 0.7rem;">
+                        <div style="margin-bottom:0.4rem;">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            ¿Confirmar cambio? Estos datos aparecerán en constancias, boletines y recibos.
+                        </div>
+                        <div style="text-align:right;">
+                            <button type="button" id="btn-ajustes-instituto-cancelar" class="btn btn-secondary btn-sm">Cancelar</button>
+                            <button type="button" id="btn-ajustes-instituto-confirmar" class="btn btn-warning btn-sm">
+                                <i class="bi bi-check2"></i> Confirmar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="ajustes-instituto-ok" class="text-success small" style="display:none; margin-top:0.4rem;">
+                        <i class="bi bi-check-circle"></i> Guardado correctamente.
+                    </div>
+                </div>
+
                 <!-- Regional -->
                 <div class="ajustes-section-label" style="margin-top:1rem;">Regional</div>
                 <div class="ajustes-row-between">

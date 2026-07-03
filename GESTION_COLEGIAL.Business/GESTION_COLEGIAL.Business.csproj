@@ -243,6 +243,7 @@
     <Compile Include="Models\Graduacion\AlumnoGraduadoCompactDto.cs" />
     <Compile Include="Models\Graduacion\BackfillResultViewModel.cs" />
     <Compile Include="Models\Graduacion\ConfiguracionValorViewModel.cs" />
+    <Compile Include="Models\Instituto\InstitutoConfigViewModel.cs" />
     <Compile Include="Models\SeccionCursoViewModel.cs" />
     <Compile Include="Models\SeccionDetailViewModel.cs" />
     <Compile Include="Models\SeccionViewModel.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="Services\PromediosAlumnosService.cs" />
     <Compile Include="Services\GraduacionService.cs" />
     <Compile Include="Services\AlumnosGraduadosService.cs" />
+    <Compile Include="Services\InstitutoConfigService.cs" />
     <Compile Include="Services\SeccionesService.cs" />
     <Compile Include="Services\SemestresService.cs" />
     <Compile Include="Services\ModuloFinanzas\TarifaService.cs" />

@@ -117,6 +117,7 @@
     <Compile Include="Controllers\DashboardAulasController.cs" />
     <Compile Include="Controllers\GraduacionAlumnosController.cs" />
     <Compile Include="Controllers\AlumnosGraduadosController.cs" />
+    <Compile Include="Controllers\InstitutoConfigController.cs" />
     <Compile Include="Controllers\DashboardDirectorController.cs" />
     <Compile Include="Controllers\DashboardDocenteController.cs" />
     <Compile Include="Controllers\DashboardSecretariaController.cs" />
@@ -266,6 +267,7 @@
     <Content Include="Content\js\pages\constancia-graduado.js" />
     <Content Include="App_Data\graduados-historicos.json" />
     <Content Include="Content\css\pages\graduados-directorio.css" />
+    <Content Include="App_Data\instituto-config.json" />
     <Content Include="Content\js\pages\dashboardcajero.js" />
     <Content Include="Content\js\pages\dashboardconsulta.js" />
     <Content Include="Content\js\pages\dashboarddirector.js" />

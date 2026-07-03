@@ -168,6 +168,96 @@
             });
         });
 
+        // ── Institución (nombre y dirección) ──
+        var _instOriginal = { Nombre: '', Direccion: '' };
+
+        function _instRefreshDirtyState() {
+            var n = (document.getElementById('ajustes-instituto-nombre') || {}).value || '';
+            var d = (document.getElementById('ajustes-instituto-direccion') || {}).value || '';
+            var dirty = (n.trim() !== _instOriginal.Nombre) || (d.trim() !== _instOriginal.Direccion);
+            var validos = n.trim().length > 0 && d.trim().length > 0;
+            var btn = document.getElementById('btn-ajustes-instituto-guardar');
+            if (btn) btn.disabled = !(dirty && validos);
+            var ok = document.getElementById('ajustes-instituto-ok');
+            if (ok) ok.style.display = 'none';
+        }
+
+        function _instLoad() {
+            $.getJSON('/InstitutoConfig/GetAsync', function (resp) {
+                var d = (resp && resp.data) || { Nombre: '', Direccion: '' };
+                _instOriginal.Nombre = d.Nombre || '';
+                _instOriginal.Direccion = d.Direccion || '';
+                var nEl = document.getElementById('ajustes-instituto-nombre');
+                var dEl = document.getElementById('ajustes-instituto-direccion');
+                if (nEl) nEl.value = _instOriginal.Nombre;
+                if (dEl) dEl.value = _instOriginal.Direccion;
+                document.getElementById('ajustes-instituto-actions').style.display = '';
+                document.getElementById('ajustes-instituto-confirm').style.display = 'none';
+                document.getElementById('ajustes-instituto-error').style.display = 'none';
+                document.getElementById('ajustes-instituto-ok').style.display = 'none';
+                _instRefreshDirtyState();
+            }).fail(function () {
+                var err = document.getElementById('ajustes-instituto-error');
+                if (err) { err.textContent = 'No se pudo cargar la configuración del instituto.'; err.style.display = ''; }
+            });
+        }
+
+        $('#modal-ajustes').on('shown.bs.modal', function () { _instLoad(); });
+
+        ['ajustes-instituto-nombre', 'ajustes-instituto-direccion'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.addEventListener('input', _instRefreshDirtyState);
+        });
+
+        var btnGuardar = document.getElementById('btn-ajustes-instituto-guardar');
+        if (btnGuardar) btnGuardar.addEventListener('click', function () {
+            document.getElementById('ajustes-instituto-actions').style.display = 'none';
+            document.getElementById('ajustes-instituto-confirm').style.display = '';
+            document.getElementById('ajustes-instituto-error').style.display = 'none';
+        });
+
+        var btnCancelar = document.getElementById('btn-ajustes-instituto-cancelar');
+        if (btnCancelar) btnCancelar.addEventListener('click', function () {
+            document.getElementById('ajustes-instituto-actions').style.display = '';
+            document.getElementById('ajustes-instituto-confirm').style.display = 'none';
+        });
+
+        var btnConfirmar = document.getElementById('btn-ajustes-instituto-confirmar');
+        if (btnConfirmar) btnConfirmar.addEventListener('click', function () {
+            var nombre = document.getElementById('ajustes-instituto-nombre').value.trim();
+            var direccion = document.getElementById('ajustes-instituto-direccion').value.trim();
+            var token = $('#ajustes-instituto-form input[name="__RequestVerificationToken"]').val();
+            btnConfirmar.disabled = true;
+            $.ajax({
+                url: '/InstitutoConfig/SaveAsync',
+                type: 'POST',
+                data: { __RequestVerificationToken: token, Nombre: nombre, Direccion: direccion },
+                success: function (resp) {
+                    btnConfirmar.disabled = false;
+                    if (resp && resp.success) {
+                        _instOriginal.Nombre = nombre;
+                        _instOriginal.Direccion = direccion;
+                        document.getElementById('ajustes-instituto-actions').style.display = '';
+                        document.getElementById('ajustes-instituto-confirm').style.display = 'none';
+                        var ok = document.getElementById('ajustes-instituto-ok');
+                        ok.style.display = '';
+                        _instRefreshDirtyState();
+                        document.dispatchEvent(new CustomEvent('gc:instituto-actualizado', { detail: { Nombre: nombre, Direccion: direccion } }));
+                    } else {
+                        var err = document.getElementById('ajustes-instituto-error');
+                        err.textContent = (resp && resp.message) || 'No se pudo guardar.';
+                        err.style.display = '';
+                    }
+                },
+                error: function () {
+                    btnConfirmar.disabled = false;
+                    var err = document.getElementById('ajustes-instituto-error');
+                    err.textContent = 'Error de red al guardar.';
+                    err.style.display = '';
+                }
+            });
+        });
+
         // ── Moneda ──
         document.querySelectorAll('[data-moneda]').forEach(function (btn) {
             btn.addEventListener('click', function () {
