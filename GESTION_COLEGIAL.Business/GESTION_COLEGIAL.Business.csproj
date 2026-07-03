@@ -240,6 +240,7 @@
     <Compile Include="Models\PromedioAlumnoViewModel.cs" />
     <Compile Include="Models\Graduacion\CandidatoGraduacionViewModel.cs" />
     <Compile Include="Models\Graduacion\AlumnoGraduadoViewModel.cs" />
+    <Compile Include="Models\Graduacion\AlumnoGraduadoCompactDto.cs" />
     <Compile Include="Models\Graduacion\BackfillResultViewModel.cs" />
     <Compile Include="Models\Graduacion\ConfiguracionValorViewModel.cs" />
     <Compile Include="Models\SeccionCursoViewModel.cs" />
