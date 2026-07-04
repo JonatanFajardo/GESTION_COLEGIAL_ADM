@@ -133,6 +133,7 @@
     <Compile Include="Controllers\AlumnosBusquedaController.cs" />
     <Compile Include="Controllers\BitacoraController.cs" />
     <Compile Include="Controllers\CatalogosInstitucionController.cs" />
+    <Compile Include="Controllers\ProgramaAcademicoController.cs" />
     <Compile Include="Controllers\HorariosNuevoController.cs" />
     <Compile Include="Controllers\VisorHorariosController.cs" />
     <Compile Include="Controllers\NominaDocentesController.cs" />
@@ -521,6 +522,8 @@
     <Content Include="Content\js\pages\cargos.js" />
     <Content Include="Content\js\pages\catalogos-institucion.js" />
     <Content Include="Content\css\pages\catalogos-institucion.css" />
+    <Content Include="Content\js\pages\programa-academico.js" />
+    <Content Include="Content\css\pages\programa-academico.css" />
     <Content Include="Content\css\pages\directorio-contacto.css" />
     <Content Include="Content\js\pages\coming-soon\coming-soon.js" />
     <Content Include="Content\js\pages\conceptospago.js" />
@@ -1549,6 +1552,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Modalidades\Index.cshtml" />
     <Content Include="Views\CatalogosInstitucion\Index.cshtml" />
+    <Content Include="Views\ProgramaAcademico\Index.cshtml" />
     <Content Include="Views\DirectorioContacto\Index.cshtml" />
     <Content Include="Views\Semestres\Index.cshtml" />
     <Content Include="Views\Secciones\Index.cshtml" />

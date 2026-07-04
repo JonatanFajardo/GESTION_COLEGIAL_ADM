@@ -1,0 +1,234 @@
+/* ============================================================
+   PROGRAMA ACADÉMICO — Hub unificado
+   Reutiliza toda la maquinaria visual del hub "Estructura Académica"
+   (clases .ci-*) importando su hoja de estilos, y solo redefine
+   la paleta del hero, tabs y modales con un tono académico (indigo/violeta)
+   para diferenciar visualmente ambos hubs.
+   ============================================================ */
+
+@import url('catalogos-institucion.css');
+
+:root {
+    --pa-primary-1: #4f46e5;   /* indigo-600 */
+    --pa-primary-2: #6366f1;   /* indigo-500 */
+    --pa-primary-3: #4338ca;   /* indigo-700 */
+    --pa-primary-soft: #eef2ff;
+    --pa-primary-soft-2: #e0e7ff;
+    --pa-primary-border: #c7d2fe;
+    --pa-primary-shadow: rgba(79, 70, 229, 0.25);
+    --pa-primary-shadow-strong: rgba(79, 70, 229, 0.4);
+}
+
+/* ============================================================
+   HERO — override con paleta indigo
+   ============================================================ */
+.pa-hub .ci-hero {
+    background: linear-gradient(135deg, var(--pa-primary-1) 0%, var(--pa-primary-2) 100%);
+    box-shadow: 0 6px 20px var(--pa-primary-shadow);
+}
+
+.pa-hub .ci-cascade-pill:hover {
+    color: var(--pa-primary-2);
+}
+
+/* ============================================================
+   TABS — override
+   ============================================================ */
+.pa-hub .ci-tab-link:hover {
+    color: var(--pa-primary-2);
+    background: var(--pa-primary-soft);
+}
+
+.pa-hub .ci-tab-item.active .ci-tab-link {
+    color: var(--pa-primary-3);
+    background: linear-gradient(to bottom, var(--pa-primary-soft), var(--pa-primary-soft-2));
+    border-color: var(--pa-primary-border);
+}
+
+.pa-hub .ci-tab-item.active .ci-tab-link::after {
+    background: linear-gradient(90deg, var(--pa-primary-1), var(--pa-primary-2));
+}
+
+.pa-hub .ci-tab-item.active .ci-tab-num {
+    background: linear-gradient(135deg, var(--pa-primary-1), var(--pa-primary-2));
+    box-shadow: 0 2px 6px var(--pa-primary-shadow);
+}
+
+.pa-hub .ci-tab-item.active .ci-tab-count {
+    background: var(--pa-primary-3);
+    border-color: var(--pa-primary-3);
+}
+
+/* ============================================================
+   TOOLBAR + BOTONES — override
+   ============================================================ */
+.pa-hub .ci-search-wrap input:focus {
+    border-color: var(--pa-primary-2);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.pa-hub .ci-view-btn:hover {
+    color: var(--pa-primary-2);
+}
+
+.pa-hub .ci-view-btn.active {
+    color: var(--pa-primary-3);
+}
+
+.pa-hub .ci-btn-ghost:hover {
+    color: var(--pa-primary-2);
+    border-color: var(--pa-primary-border);
+    background: var(--pa-primary-soft);
+}
+
+.pa-hub .ci-btn-primary {
+    background: linear-gradient(135deg, var(--pa-primary-1), var(--pa-primary-2));
+    box-shadow: 0 3px 10px var(--pa-primary-shadow);
+}
+
+.pa-hub .ci-btn-primary:hover {
+    box-shadow: 0 5px 14px var(--pa-primary-shadow-strong);
+}
+
+/* ============================================================
+   CARDS — override sutil
+   ============================================================ */
+.pa-hub .ci-card::before {
+    background: linear-gradient(180deg, var(--pa-primary-1), var(--pa-primary-2));
+}
+
+.pa-hub .ci-card:hover {
+    border-color: var(--pa-primary-border);
+}
+
+.pa-hub .ci-card-icon {
+    background: linear-gradient(135deg, var(--pa-primary-soft), var(--pa-primary-soft-2));
+    color: var(--pa-primary-2);
+}
+
+.pa-hub .ci-card-new {
+    background: repeating-linear-gradient(45deg, var(--pa-primary-soft), var(--pa-primary-soft) 8px, #fff 8px, #fff 16px);
+    border-color: var(--pa-primary-border);
+    color: var(--pa-primary-3);
+}
+
+.pa-hub .ci-card-new:hover {
+    background: var(--pa-primary-soft);
+    border-color: var(--pa-primary-2);
+    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.15);
+}
+
+.pa-hub .ci-table tbody tr:hover {
+    background-color: var(--pa-primary-soft);
+}
+
+/* ============================================================
+   MODALES — override
+   ============================================================ */
+.pa-hub .ci-modal-header {
+    background: linear-gradient(135deg, var(--pa-primary-1), var(--pa-primary-2));
+}
+
+.pa-hub .ci-form-group label i {
+    color: var(--pa-primary-2);
+}
+
+.pa-hub .ci-form-group input.form-control:focus,
+.pa-hub .ci-form-group select.form-control:focus {
+    border-color: var(--pa-primary-2);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.pa-hub .ci-btn-save {
+    background: linear-gradient(135deg, var(--pa-primary-1), var(--pa-primary-2));
+    box-shadow: 0 3px 10px var(--pa-primary-shadow);
+}
+
+.pa-hub .ci-btn-save:hover {
+    box-shadow: 0 5px 14px var(--pa-primary-shadow-strong);
+}
+
+/* ============================================================
+   SELECT (para dropdowns como Nivel Educativo en Grados)
+   ============================================================ */
+.pa-hub .ci-form-group select.form-control {
+    border: 1px solid var(--ci-border);
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.92rem;
+    color: var(--ci-text-dark);
+    background: white;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+/* ============================================================
+   BLOQUE "Formulario completo" para catálogos complejos
+   Se muestra cuando el catálogo activo (Cursos, Materias) tiene
+   FKs y campos que no caben en el modal simple del hub.
+   ============================================================ */
+.pa-hub .pa-complex-form-notice {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1px solid #fcd34d;
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.pa-hub .pa-complex-form-notice .pa-complex-icon {
+    width: 36px;
+    height: 36px;
+    background: #f59e0b;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.pa-hub .pa-complex-form-notice .pa-complex-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.pa-hub .pa-complex-form-notice .pa-complex-text strong {
+    display: block;
+    color: #78350f;
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+}
+
+.pa-hub .pa-complex-form-notice .pa-complex-text span {
+    color: #92400e;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.pa-hub .pa-open-full-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1.1rem;
+    background: linear-gradient(135deg, var(--pa-primary-1), var(--pa-primary-2));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px var(--pa-primary-shadow);
+}
+
+.pa-hub .pa-open-full-form:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px var(--pa-primary-shadow-strong);
+    color: white;
+    text-decoration: none;
+}
