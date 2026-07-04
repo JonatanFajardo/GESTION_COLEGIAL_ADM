@@ -184,6 +184,7 @@
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\DevToolsController.cs" />
     <Compile Include="Controllers\AlumnosDirectorioController.cs" />
+    <Compile Include="Controllers\DirectorioContactoController.cs" />
     <Compile Include="Controllers\AnalisisIngresosController.cs" />
     <Compile Include="Controllers\AsistenciaEmpleadosController.cs" />
     <Compile Include="Controllers\AulasController.cs" />
@@ -242,6 +243,7 @@
     <Content Include="Content\js\pages\alumnos.detail.js" />
     <Content Include="Content\js\pages\alumnosbusqueda.js" />
     <Content Include="Content\js\pages\alumnosdirectorio.js" />
+    <Content Include="Content\js\pages\directoriocontacto.js" />
     <Content Include="Content\js\pages\alumnosenriesgo.js" />
     <Content Include="Content\js\pages\analisisingresos.js" />
     <Content Include="Content\js\pages\arqueosCajaAdm.js" />
@@ -516,6 +518,7 @@
     <Content Include="Content\js\pages\alumnos.js" />
     <Content Include="Content\js\pages\aulas.js" />
     <Content Include="Content\js\pages\cargos.js" />
+    <Content Include="Content\css\pages\directorio-contacto.css" />
     <Content Include="Content\js\pages\coming-soon\coming-soon.js" />
     <Content Include="Content\js\pages\conceptospago.js" />
     <Content Include="Content\js\pages\cursos.js" />
@@ -1542,6 +1545,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Modalidades\Index.cshtml" />
+    <Content Include="Views\DirectorioContacto\Index.cshtml" />
     <Content Include="Views\Semestres\Index.cshtml" />
     <Content Include="Views\Secciones\Index.cshtml" />
     <Content Include="Views\Parentescos\Index.cshtml" />

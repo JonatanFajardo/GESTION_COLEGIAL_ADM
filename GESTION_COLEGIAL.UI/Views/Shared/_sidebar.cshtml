@@ -233,12 +233,14 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Alumnos" data-parent="#accordionExample">
                         @if (tiene("Listado de alumnos"))        { <li>@Html.ActionLink("Alumno",              "Index", "Alumnos")</li> }
-                        @if (tiene("Listado de encargados"))     { <li>@Html.ActionLink("Encargados",           "Index", "Encargados")</li> }
+                        @* Encargados + Directorio fusionados en "Directorio de Contacto" (tabs Por Alumno / Por Encargado) *@
+                        @if (tiene("Directorio de Contacto") || tiene("Listado de encargados") || tiene("Directorio de Alumnos") || esAdmin)
+                                                                 { <li>@Html.ActionLink("Directorio de Contacto","Index", "DirectorioContacto")</li> }
                         @if (tiene("Documentos alumno"))         { <li>@Html.ActionLink("Documentos",           "Index", "DocumentosAlumnoAdm")</li> }
                         @if (tiene("Listado de parentescos"))    { <li>@Html.ActionLink("Parentescos",          "Index", "Parentescos")</li> }
-                        @if (tiene("Directorio de Alumnos"))     { <li>@Html.ActionLink("Directorio",           "Index", "AlumnosDirectorio")</li> }
                         @if (tiene("Pirámide de Matrícula"))     { <li>@Html.ActionLink("Pirámide de Matrícula","Index", "PiramideMatricula")</li> }
-                        @if (tiene("Mensajes a Encargados"))     { <li>@Html.ActionLink("Mensajes a Encargados","Index", "Mensajes")</li> }
+                        @* Mensajes a Encargados: deshabilitado temporalmente — hoy solo persiste en DB sin envío real; ver TODO.md para decisión de producto (SMTP vs portal encargados) *@
+                        @*@if (tiene("Mensajes a Encargados"))     { <li>@Html.ActionLink("Mensajes a Encargados","Index", "Mensajes")</li> }*@
                     </ul>
                 </li>
             }
