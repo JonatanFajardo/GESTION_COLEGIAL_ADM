@@ -89,6 +89,7 @@
                     <li class="submenu-header" style="color:#fbbf24;">Hubs consolidados</li>
                     <li>@Html.ActionLink("Estructura Académica",      "Index", "CatalogosInstitucion")</li>
                     <li>@Html.ActionLink("Programa Académico",        "Index", "ProgramaAcademico")</li>
+                    <li>@Html.ActionLink("Recursos de Horario",       "Index", "RecursosHorario")</li>
 
                     <li class="submenu-header" style="color:#fbbf24;">Dashboards</li>
                     <li>@Html.ActionLink("Dashboard Admin",       "Index", "DashboardAdmin")</li>
@@ -342,7 +343,7 @@
                 </li>
             }
 
-            @if (esAdmin || tiene("Estructura Académica") || tiene("Programa Académico") || tiene("Listado de modalidades") || tiene("Listado de niveles educativos") || tiene("Listado de parciales") || tiene("Listado de secciones") || tiene("Listado de semestres"))
+            @if (esAdmin || tiene("Estructura Académica") || tiene("Programa Académico") || tiene("Recursos de Horario") || tiene("Listado de modalidades") || tiene("Listado de niveles educativos") || tiene("Listado de parciales") || tiene("Listado de secciones") || tiene("Listado de semestres"))
             {
                 <li class="menu">
                     <a href="#Configuracion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -366,6 +367,12 @@
                         {
                             <li style="border-left:3px solid #f97316;padding-left:4px;">
                                 @Html.ActionLink("Programa Académico", "Index", "ProgramaAcademico", null, new { style = "font-weight:600;color:#f97316;" })
+                            </li>
+                        }
+                        @if (esAdmin || tiene("Recursos de Horario"))
+                        {
+                            <li style="border-left:3px solid #f97316;padding-left:4px;">
+                                @Html.ActionLink("Recursos de Horario", "Index", "RecursosHorario", null, new { style = "font-weight:600;color:#f97316;" })
                             </li>
                         }
 
