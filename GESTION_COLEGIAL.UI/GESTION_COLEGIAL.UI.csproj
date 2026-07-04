@@ -136,6 +136,7 @@
     <Compile Include="Controllers\ProgramaAcademicoController.cs" />
     <Compile Include="Controllers\RecursosHorarioController.cs" />
     <Compile Include="Controllers\ConfiguracionCobranzaController.cs" />
+    <Compile Include="Controllers\CatalogosComunesController.cs" />
     <Compile Include="Controllers\HorariosNuevoController.cs" />
     <Compile Include="Controllers\VisorHorariosController.cs" />
     <Compile Include="Controllers\NominaDocentesController.cs" />
@@ -530,6 +531,8 @@
     <Content Include="Content\css\pages\recursos-horario.css" />
     <Content Include="Content\js\pages\configuracion-cobranza.js" />
     <Content Include="Content\css\pages\configuracion-cobranza.css" />
+    <Content Include="Content\js\pages\catalogos-comunes.js" />
+    <Content Include="Content\css\pages\catalogos-comunes.css" />
     <Content Include="Content\css\pages\directorio-contacto.css" />
     <Content Include="Content\js\pages\coming-soon\coming-soon.js" />
     <Content Include="Content\js\pages\conceptospago.js" />
@@ -1561,6 +1564,7 @@
     <Content Include="Views\ProgramaAcademico\Index.cshtml" />
     <Content Include="Views\RecursosHorario\Index.cshtml" />
     <Content Include="Views\ConfiguracionCobranza\Index.cshtml" />
+    <Content Include="Views\CatalogosComunes\Index.cshtml" />
     <Content Include="Views\DirectorioContacto\Index.cshtml" />
     <Content Include="Views\Semestres\Index.cshtml" />
     <Content Include="Views\Secciones\Index.cshtml" />
