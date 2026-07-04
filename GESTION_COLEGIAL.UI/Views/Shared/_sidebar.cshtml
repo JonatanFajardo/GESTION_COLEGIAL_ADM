@@ -101,12 +101,14 @@
                     <li>@Html.ActionLink("Pirámide de Matrícula",   "Index", "PiramideMatricula")</li>
                     <li>@Html.ActionLink("Mensajes a Encargados",   "Index", "Mensajes")</li>
                     <li>@Html.ActionLink("Búsqueda de Alumnos",     "Index", "AlumnosBusqueda")</li>
+                    <li>@Html.ActionLink("Ficha 360° Alumno",       "Index", "Ficha360AlumnoAdm")</li>
 
                     <li class="submenu-header" style="color:#fbbf24;">RRHH</li>
                     <li>@Html.ActionLink("Organigrama",             "Index", "Organigrama")</li>
                     <li>@Html.ActionLink("Cumpleaños Empleados",    "Index", "EmpleadosCumpleanos")</li>
                     <li>@Html.ActionLink("Asistencia Empleados",    "Index", "AsistenciaEmpleados")</li>
                     <li>@Html.ActionLink("Cumplimiento Documentos", "Index", "CumplimientoDocumentos")</li>
+                    <li>@Html.ActionLink("Ficha 360° Empleado",     "Index", "Ficha360EmpleadoAdm")</li>
 
                     <li class="submenu-header" style="color:#fbbf24;">Académico</li>
                     <li>@Html.ActionLink("Centro de Anuncios",       "Index", "CentroAnuncios")</li>
@@ -245,22 +247,8 @@
                 </li>
             }
 
-            @if (tiene("Ficha 360 alumno"))
-            {
-                <li class="menu">
-                    <a href="#Fichas" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <div class="h6">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card nav-icon"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-                            <span>Fichas 360°</span>
-                        </div>
-                        <div><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled" id="Fichas" data-parent="#accordionExample">
-                        @if (tiene("Ficha 360 alumno"))    { <li>@Html.ActionLink("Ficha Alumno",   "Index", "Ficha360AlumnoAdm")</li> }
-                        @if (tiene("Ficha 360 empleado"))  { <li>@Html.ActionLink("Ficha Empleado", "Index", "Ficha360EmpleadoAdm")</li> }
-                    </ul>
-                </li>
-            }
+            @* Ficha 360° movida a un botón dentro del detalle del alumno/empleado.
+               Acceso rápido para dev: sección Dev · Nuevas arriba. *@
 
             @if (tiene("Listado de horarios"))
             {

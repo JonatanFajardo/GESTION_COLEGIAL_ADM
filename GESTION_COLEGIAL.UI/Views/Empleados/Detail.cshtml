@@ -62,6 +62,9 @@
             </div>
 
             <div class="detail-hero-actions">
+                <a href="@Url.Action("Index", "Ficha360EmpleadoAdm")" class="btn-detail-edit" style="background:rgba(255,255,255,0.95);color:#4f46e5;" title="Vista completa del empleado con todos los datos consolidados">
+                    <i class="bi bi-person-vcard"></i> Ficha 360°
+                </a>
                 <a href="@Url.Action("FindAsync", new { id = Model.Emp_Id })" class="btn-detail-edit">
                     <i class="bi bi-pencil"></i> Editar
                 </a>
