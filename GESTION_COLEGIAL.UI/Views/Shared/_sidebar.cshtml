@@ -350,7 +350,7 @@
                 </li>
             }
 
-            @if (tiene("Listado de modalidades") || tiene("Listado de niveles educativos") || tiene("Listado de parciales") || tiene("Listado de secciones") || tiene("Listado de semestres"))
+            @if (esAdmin || tiene("Estructura Académica") || tiene("Listado de modalidades") || tiene("Listado de niveles educativos") || tiene("Listado de parciales") || tiene("Listado de secciones") || tiene("Listado de semestres"))
             {
                 <li class="menu">
                     <a href="#Institucion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -363,11 +363,17 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Institucion" data-parent="#accordionExample">
+                        @if (esAdmin || tiene("Estructura Académica"))
+                        {
+                            <li style="border-left:3px solid #f97316;padding-left:4px;">
+                                @Html.ActionLink("Estructura Académica", "Index", "CatalogosInstitucion", null, new { style = "font-weight:600;color:#f97316;" })
+                            </li>
+                        }
                         @if (tiene("Listado de modalidades"))          { <li>@Html.ActionLink("Modalidades",       "Index", "Modalidades")</li> }
                         @if (tiene("Listado de niveles educativos"))   { <li>@Html.ActionLink("Niveles Educativos","Index", "NivelesEducativos")</li> }
-                        @if (tiene("Listado de parciales"))            { <li>@Html.ActionLink("Parciales",         "Index", "Parciales")</li> }
                         @if (tiene("Listado de secciones"))            { <li>@Html.ActionLink("Secciones",         "Index", "Secciones")</li> }
                         @if (tiene("Listado de semestres"))            { <li>@Html.ActionLink("Semestres",         "Index", "Semestres")</li> }
+                        @if (tiene("Listado de parciales"))            { <li>@Html.ActionLink("Parciales",         "Index", "Parciales")</li> }
                     </ul>
                 </li>
             }
