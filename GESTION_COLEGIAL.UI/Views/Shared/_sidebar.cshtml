@@ -86,6 +86,9 @@
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="DevNuevas" data-parent="#accordionExample">
+                    <li class="submenu-header" style="color:#fbbf24;">Hubs consolidados</li>
+                    <li>@Html.ActionLink("Estructura Académica",      "Index", "CatalogosInstitucion")</li>
+
                     <li class="submenu-header" style="color:#fbbf24;">Dashboards</li>
                     <li>@Html.ActionLink("Dashboard Admin",       "Index", "DashboardAdmin")</li>
                     <li>@Html.ActionLink("Dashboard Director",    "Index", "DashboardDirector")</li>
@@ -341,22 +344,25 @@
             @if (esAdmin || tiene("Estructura Académica") || tiene("Listado de modalidades") || tiene("Listado de niveles educativos") || tiene("Listado de parciales") || tiene("Listado de secciones") || tiene("Listado de semestres"))
             {
                 <li class="menu">
-                    <a href="#Institucion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="#Configuracion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="h6">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book nav-icon"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                            <span>Institución</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings nav-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82 1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                            <span>Configuración</span>
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                         </div>
                     </a>
-                    <ul class="collapse submenu list-unstyled" id="Institucion" data-parent="#accordionExample">
+                    <ul class="collapse submenu list-unstyled" id="Configuracion" data-parent="#accordionExample">
+                        <li class="submenu-header" style="color:#f97316;font-weight:700;">Hubs consolidados</li>
                         @if (esAdmin || tiene("Estructura Académica"))
                         {
                             <li style="border-left:3px solid #f97316;padding-left:4px;">
                                 @Html.ActionLink("Estructura Académica", "Index", "CatalogosInstitucion", null, new { style = "font-weight:600;color:#f97316;" })
                             </li>
                         }
+
+                        <li class="submenu-header" style="color:#94a3b8;font-size:0.72rem;">Legacy · pantallas sueltas</li>
                         @if (tiene("Listado de modalidades"))          { <li>@Html.ActionLink("Modalidades",       "Index", "Modalidades")</li> }
                         @if (tiene("Listado de niveles educativos"))   { <li>@Html.ActionLink("Niveles Educativos","Index", "NivelesEducativos")</li> }
                         @if (tiene("Listado de secciones"))            { <li>@Html.ActionLink("Secciones",         "Index", "Secciones")</li> }
