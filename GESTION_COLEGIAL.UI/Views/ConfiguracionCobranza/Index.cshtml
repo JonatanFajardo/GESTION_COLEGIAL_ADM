@@ -1,0 +1,376 @@
+@{
+    ViewBag.Title = "Configuración de Cobranza";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/css/pages/configuracion-cobranza.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Configuración de Cobranza</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Hero -->
+<div class="cc-hero">
+    <div class="cc-hero-content">
+        <div class="cc-hero-left">
+            <div class="cc-hero-icon">
+                <i class="bi bi-cash-coin"></i>
+            </div>
+            <div class="cc-hero-text">
+                <h1>Configuración de Cobranza</h1>
+                <p>Administre los parámetros que definen qué se cobra, cuánto y cómo</p>
+            </div>
+        </div>
+        <div class="cc-hero-cascade">
+            <span class="cc-cascade-label">Orden lógico</span>
+            <div class="cc-cascade-chain">
+                <span class="cc-cascade-pill" data-jump="conceptospago">1 · Concepto</span>
+                <i class="bi bi-arrow-right"></i>
+                <span class="cc-cascade-pill" data-jump="tarifas">2 · Tarifa</span>
+                <i class="bi bi-arrow-right"></i>
+                <span class="cc-cascade-pill" data-jump="descuentos">3 · Descuento</span>
+                <i class="bi bi-arrow-right"></i>
+                <span class="cc-cascade-pill" data-jump="formaspago">4 · Forma</span>
+                <i class="bi bi-arrow-right"></i>
+                <span class="cc-cascade-pill" data-jump="estadospago">5 · Estado</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+
+    <!-- Tabs -->
+    <div class="cc-tabs-card">
+        <ul class="nav cc-tabs" role="tablist" id="cc-tabs">
+            <li class="nav-item cc-tab-item active" data-catalog="conceptospago">
+                <a href="#" class="cc-tab-link">
+                    <span class="cc-tab-num">1</span>
+                    <span class="cc-tab-icon"><i class="bi bi-tag"></i></span>
+                    <span class="cc-tab-label">Conceptos de Pago</span>
+                    <span class="cc-tab-count" data-count>—</span>
+                </a>
+            </li>
+            <li class="nav-item cc-tab-item" data-catalog="tarifas">
+                <a href="#" class="cc-tab-link">
+                    <span class="cc-tab-num">2</span>
+                    <span class="cc-tab-icon"><i class="bi bi-cash-stack"></i></span>
+                    <span class="cc-tab-label">Tarifas</span>
+                    <span class="cc-tab-count" data-count>—</span>
+                </a>
+            </li>
+            <li class="nav-item cc-tab-item" data-catalog="descuentos">
+                <a href="#" class="cc-tab-link">
+                    <span class="cc-tab-num">3</span>
+                    <span class="cc-tab-icon"><i class="bi bi-percent"></i></span>
+                    <span class="cc-tab-label">Descuentos</span>
+                    <span class="cc-tab-count" data-count>—</span>
+                </a>
+            </li>
+            <li class="nav-item cc-tab-item" data-catalog="formaspago">
+                <a href="#" class="cc-tab-link">
+                    <span class="cc-tab-num">4</span>
+                    <span class="cc-tab-icon"><i class="bi bi-credit-card"></i></span>
+                    <span class="cc-tab-label">Formas de Pago</span>
+                    <span class="cc-tab-count" data-count>—</span>
+                </a>
+            </li>
+            <li class="nav-item cc-tab-item" data-catalog="estadospago">
+                <a href="#" class="cc-tab-link">
+                    <span class="cc-tab-num">5</span>
+                    <span class="cc-tab-icon"><i class="bi bi-flag"></i></span>
+                    <span class="cc-tab-label">Estados de Pago</span>
+                    <span class="cc-tab-count" data-count>—</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Panel activo -->
+    <div class="cc-panel">
+
+        <!-- Toolbar -->
+        <div class="cc-toolbar">
+            <div class="cc-toolbar-left">
+                <div class="cc-search-wrap">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="cc-search" placeholder="Buscar en el catálogo activo..." />
+                </div>
+            </div>
+            <div class="cc-toolbar-right">
+                <div class="cc-view-toggle" role="group" aria-label="Vista">
+                    <button type="button" class="cc-view-btn active" data-view="cards" title="Vista de tarjetas">
+                        <i class="bi bi-grid-3x3-gap-fill"></i>
+                        <span>Cards</span>
+                    </button>
+                    <button type="button" class="cc-view-btn" data-view="table" title="Vista de tabla">
+                        <i class="bi bi-table"></i>
+                        <span>Tabla</span>
+                    </button>
+                </div>
+                <button type="button" class="cc-btn-ghost" id="cc-reload" title="Recargar datos">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <button type="button" class="cc-btn-primary" id="cc-new-btn">
+                    <i class="bi bi-plus-lg"></i>
+                    <span id="cc-new-label">Nuevo</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Info del catálogo activo -->
+        <div class="cc-catalog-info" id="cc-catalog-info">
+            <div class="cc-info-icon"><i class="bi bi-info-circle-fill"></i></div>
+            <div class="cc-info-text">
+                <strong id="cc-info-title">Conceptos de Pago</strong>
+                <span id="cc-info-desc">Rubros por los que la institución cobra (matrícula, mensualidad, transporte, etc.).</span>
+            </div>
+        </div>
+
+        <!-- Vista Cards (default) -->
+        <div class="cc-cards-view" id="cc-cards-view">
+            <div class="cc-cards-grid" id="cc-cards-grid">
+                <!-- Cards inyectadas por JS -->
+            </div>
+            <div class="cc-empty" id="cc-empty" hidden>
+                <div class="cc-empty-icon"><i class="bi bi-inbox"></i></div>
+                <h4>Sin registros</h4>
+                <p>Todavía no hay elementos en este catálogo.</p>
+                <button type="button" class="cc-btn-primary" onclick="document.getElementById('cc-new-btn').click()">
+                    <i class="bi bi-plus-lg"></i> Crear el primero
+                </button>
+            </div>
+        </div>
+
+        <!-- Vista Tabla -->
+        <div class="cc-table-view" id="cc-table-view" hidden>
+            <div class="table-responsive">
+                <table class="table cc-table" id="cc-table">
+                    <thead>
+                        <tr>
+                            <th style="width:80px;">ID</th>
+                            <th>Descripción</th>
+                            <th style="width:160px;">Uso / Monto</th>
+                            <th style="width:140px;">Estado</th>
+                            <th style="width:200px;">Registrado</th>
+                            <th style="width:160px;text-align:center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cc-table-body">
+                        <!-- Filas inyectadas por JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================ -->
+    <!-- Modal: Crear / Editar -->
+    <!-- ============================================ -->
+    <div class="modal fade" id="cc-edit-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content cc-modal-content">
+                <div class="cc-modal-header">
+                    <div class="cc-modal-header-icon"><i class="bi bi-pencil-square"></i></div>
+                    <div class="cc-modal-header-text">
+                        <h5 id="cc-edit-title">Nuevo registro</h5>
+                        <p id="cc-edit-subtitle">Complete los datos del catálogo</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="cc-edit-form" onsubmit="return false;">
+                    <div class="cc-modal-body">
+                        <input type="hidden" id="cc-edit-id" value="0" />
+
+                        <div class="cc-form-group">
+                            <label for="cc-edit-descripcion">
+                                <i class="bi bi-card-text"></i>
+                                Descripción <span class="cc-required">*</span>
+                            </label>
+                            <input type="text" id="cc-edit-descripcion" class="form-control" maxlength="150" required autocomplete="off" placeholder="Ej: Matrícula, Mensualidad, Transporte..." />
+                            <small class="cc-form-hint" id="cc-edit-hint">Ingrese el nombre del registro.</small>
+                        </div>
+
+                        <!-- ConceptosPago: EsRecurrente + EsObligatorio -->
+                        <div class="cc-form-group cc-only-conceptospago" hidden>
+                            <label>
+                                <i class="bi bi-arrow-repeat"></i>
+                                Tipo de concepto
+                            </label>
+                            <div class="cc-checkbox-list">
+                                <label class="cc-checkbox-item">
+                                    <input type="checkbox" id="cc-edit-esrecurrente" />
+                                    <span class="cc-checkbox-body">
+                                        <strong>Es recurrente</strong>
+                                        <small>Se cobra periódicamente (ej: mensualidad).</small>
+                                    </span>
+                                </label>
+                                <label class="cc-checkbox-item">
+                                    <input type="checkbox" id="cc-edit-esobligatorio" />
+                                    <span class="cc-checkbox-body">
+                                        <strong>Es obligatorio</strong>
+                                        <small>Todo alumno debe pagarlo.</small>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="cc-form-group" id="cc-edit-estado-wrap" hidden>
+                            <label>
+                                <i class="bi bi-toggle-on"></i>
+                                Estado
+                            </label>
+                            <div class="cc-switch">
+                                <input type="checkbox" id="cc-edit-esactivo" checked />
+                                <label for="cc-edit-esactivo"></label>
+                                <span id="cc-edit-esactivo-label">Activo</span>
+                            </div>
+                        </div>
+
+                        <!-- Aviso para catálogos que redirigen (Tarifas, Descuentos) -->
+                        <div class="cc-form-redirect-alert" id="cc-edit-redirect" hidden>
+                            <div class="cc-redirect-icon"><i class="bi bi-info-circle-fill"></i></div>
+                            <div class="cc-redirect-body">
+                                <strong id="cc-edit-redirect-title">Este catálogo requiere más campos</strong>
+                                <span id="cc-edit-redirect-desc">Se te redirigirá a la pantalla completa donde podrás configurar todos los parámetros.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cc-modal-footer">
+                        <button type="button" class="cc-btn-cancel" data-dismiss="modal">
+                            <i class="bi bi-x-lg"></i> Cancelar
+                        </button>
+                        <button type="submit" class="cc-btn-save" id="cc-edit-save">
+                            <i class="bi bi-check2"></i> Guardar
+                        </button>
+                        <a href="#" class="cc-btn-save" id="cc-edit-redirect-btn" hidden>
+                            <i class="bi bi-box-arrow-up-right"></i> Ver formulario completo
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- Modal: Detalle -->
+    <!-- ============================================ -->
+    <div class="modal fade" id="cc-detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content cc-modal-content">
+                <div class="cc-modal-header cc-modal-header-detail">
+                    <div class="cc-modal-header-icon"><i class="bi bi-file-earmark-text"></i></div>
+                    <div class="cc-modal-header-text">
+                        <h5>Detalle del registro</h5>
+                        <p id="cc-detail-catalog-name">Catálogo</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="cc-modal-body">
+                    <div class="cc-detail-grid">
+                        <div class="cc-detail-item">
+                            <span class="cc-detail-label">ID</span>
+                            <span class="cc-detail-value" id="cc-detail-id">—</span>
+                        </div>
+                        <div class="cc-detail-item cc-detail-item-wide">
+                            <span class="cc-detail-label">Descripción</span>
+                            <span class="cc-detail-value" id="cc-detail-descripcion">—</span>
+                        </div>
+                        <div class="cc-detail-item cc-detail-item-wide" id="cc-detail-extra-wrap" hidden>
+                            <span class="cc-detail-label" id="cc-detail-extra-label">Uso</span>
+                            <span class="cc-detail-value" id="cc-detail-extra-value">—</span>
+                        </div>
+                    </div>
+
+                    <div class="cc-audit">
+                        <div class="cc-audit-title">
+                            <i class="bi bi-clock-history"></i> Auditoría
+                        </div>
+                        <div class="cc-audit-row">
+                            <div class="cc-audit-icon green"><i class="bi bi-person-plus"></i></div>
+                            <div class="cc-audit-body">
+                                <span class="cc-audit-label">Creado por</span>
+                                <div><strong id="cc-detail-usuarioregistra">—</strong> <span class="cc-audit-date" id="cc-detail-fecharegistra">—</span></div>
+                            </div>
+                        </div>
+                        <div class="cc-audit-row">
+                            <div class="cc-audit-icon blue"><i class="bi bi-pencil-square"></i></div>
+                            <div class="cc-audit-body">
+                                <span class="cc-audit-label">Última modificación</span>
+                                <div><strong id="cc-detail-usuariomodifica">—</strong> <span class="cc-audit-date" id="cc-detail-fechamodifica">—</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cc-modal-footer">
+                    <button type="button" class="cc-btn-cancel" data-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- Modal: Eliminar -->
+    <!-- ============================================ -->
+    <div class="modal fade" id="cc-delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 440px;">
+            <div class="modal-content" style="border-radius: 12px; border: none;">
+                <div class="modal-header" style="border-bottom: none; padding: 20px 24px 0;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding: 0; margin: 0; opacity: 0.5;">
+                        <span aria-hidden="true" style="font-size: 24px;">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center" style="padding: 0 40px 32px;">
+                    <input type="hidden" id="cc-delete-id" value="0" />
+                    <div class="d-flex justify-content-center mb-3">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-exclamation-triangle-fill" style="color: white; font-size: 28px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="mb-3" style="color: #1f2937; font-weight: 600; font-size: 20px;">Eliminar registro</h5>
+                    <p class="mb-4" style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                        ¿Está seguro de que desea eliminar <span id="cc-delete-name" style="font-weight: 600; color:#1f2937;"></span> del catálogo <span id="cc-delete-catalog" style="font-weight:600;"></span>?
+                    </p>
+                    <div class="alert d-flex align-items-start text-left" style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-bottom: 0;">
+                        <div style="flex-shrink: 0; margin-right: 12px;">
+                            <i class="bi bi-exclamation-triangle-fill" style="color: #dc2626; font-size: 18px;"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <p class="mb-1" style="color: #991b1b; font-weight: 600; font-size: 13px; margin: 0;">Esta acción no se puede deshacer</p>
+                            <p class="mb-0" style="color: #991b1b; font-size: 13px; margin: 0;">Si el registro está en uso por otras entidades, la eliminación fallará.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: none; padding: 0 40px 32px; gap: 12px;">
+                    <button type="button" class="btn" data-dismiss="modal" style="flex: 1; padding: 10px 24px; border-radius: 8px; font-weight: 500; background-color: #f3f4f6; border: 1px solid #d1d5db; color: #374151 !important; font-size: 14px;">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" id="cc-delete-confirm" style="flex: 1; padding: 10px 24px; border-radius: 8px; font-weight: 500; background-color: #dc2626; border: none; font-size: 14px;">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/configuracion-cobranza.js"></script>
+}
