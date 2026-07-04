@@ -530,3 +530,111 @@
 
 </div>
 <!--  END SIDEBAR  -->
+
+<script>
+    (function () {
+        function initSidebarSearch() {
+            var $input = $('.sidebar-search-input');
+            if (!$input.length || $input.data('search-bound')) return;
+            $input.data('search-bound', true);
+
+            var $nav = $('#sidebar ul.menu-categories');
+            var $allMenus = $nav.find('> li.menu').not('.menu-heading');
+            var $allHeadings = $nav.find('> li.menu-heading');
+            var $allSubItems = $nav.find('ul.submenu > li').not('.submenu-header');
+            var $allSubHeaders = $nav.find('ul.submenu > li.submenu-header');
+
+            function normalize(s) {
+                return (s || '').toString().toLowerCase()
+                    .normalize('NFD').replace(/[̀-ͯ]/g, '');
+            }
+
+            function reset() {
+                $allMenus.show();
+                $allHeadings.show();
+                $allSubItems.show();
+                $allSubHeaders.show();
+                $nav.find('ul.submenu.collapse').each(function () {
+                    if ($(this).data('was-open')) return;
+                    $(this).removeClass('show').css('display', '');
+                    $(this).prev('a.dropdown-toggle').attr('aria-expanded', 'false').addClass('collapsed');
+                });
+            }
+
+            // Remember which submenus were open before searching
+            $nav.find('ul.submenu').each(function () {
+                $(this).data('was-open', $(this).hasClass('show'));
+            });
+
+            $input.on('input', function () {
+                var q = normalize($(this).val()).trim();
+
+                if (!q) {
+                    reset();
+                    return;
+                }
+
+                // Hide all section headings while searching
+                $allHeadings.hide();
+                $allSubHeaders.hide();
+
+                $allMenus.each(function () {
+                    var $menu = $(this);
+                    var $submenu = $menu.find('> ul.submenu');
+
+                    if ($submenu.length === 0) {
+                        // Simple item (e.g. Home)
+                        var text = normalize($menu.text());
+                        $menu.toggle(text.indexOf(q) !== -1);
+                        return;
+                    }
+
+                    // Parent label text (without submenu contents)
+                    var parentText = normalize($menu.find('> a .h6 span, > div.dropdown-toggle .h6 span').first().text());
+                    var parentMatch = parentText.indexOf(q) !== -1;
+
+                    var anyChildMatch = false;
+                    $submenu.find('> li').not('.submenu-header').each(function () {
+                        var $li = $(this);
+                        var txt = normalize($li.text());
+                        var match = parentMatch || txt.indexOf(q) !== -1;
+                        $li.toggle(match);
+                        if (match) anyChildMatch = true;
+                    });
+
+                    if (anyChildMatch || parentMatch) {
+                        $menu.show();
+                        // Expand the submenu
+                        $submenu.addClass('show').css('display', 'block');
+                        $menu.find('> a.dropdown-toggle')
+                             .attr('aria-expanded', 'true')
+                             .removeClass('collapsed');
+                    } else {
+                        $menu.hide();
+                    }
+                });
+            });
+
+            // Esc clears
+            $input.on('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    $(this).val('').trigger('input').blur();
+                }
+            });
+
+            // Ctrl/Cmd + K to focus
+            $(document).on('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+                    e.preventDefault();
+                    $input.focus().select();
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSidebarSearch);
+        } else {
+            initSidebarSearch();
+        }
+    })();
+</script>
