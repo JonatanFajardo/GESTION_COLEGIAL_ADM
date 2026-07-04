@@ -274,7 +274,18 @@ var datatableAlumnos = (function () {
                 }
             });
 
-            var exportOptions = { columns: [0, 1, 2], orthogonal: "export" };
+            var exportOptions = { columns: [0, 1, 2, 3, 4, 5], orthogonal: "export" };
+
+            function calcularEdad(fechaNac) {
+                if (!fechaNac) return "";
+                var fecha = new Date(fechaNac);
+                if (isNaN(fecha.getTime())) return "";
+                var hoy = new Date();
+                var edad = hoy.getFullYear() - fecha.getFullYear();
+                var m = hoy.getMonth() - fecha.getMonth();
+                if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
+                return edad >= 0 ? edad : "";
+            }
             var table = $('#datatable').DataTable({
                 responsive: false,
                 deferRender: true,
@@ -335,74 +346,65 @@ var datatableAlumnos = (function () {
                 },
                 columns: [
                     {
-                        data: "Per_Imagen",
-                        render: function (data, type, row) {
-                            const imageUrl = data ? data.replace('~/', '/') : '';
-                            const fullImageUrl = imageUrl ? window.location.origin + imageUrl : '/Content/js/pages/default-profile.jpeg';
-                            return `<img src="${fullImageUrl}" alt="Imagen" style="width: 50px; height: 50px; border-radius: 5px;"
-        onerror="this.onerror=null; this.src='/path/to/placeholder.png';">`;
-                        },
-                        targets: 0,
-
-                    },
-                    {
                         data: "Alu_Nombre",
-                        targets: 1,
+                        targets: 0,
+                        render: function (data, type, row) {
+                            if (type !== "display") return data || "";
+                            var imgSrc = row.Per_Imagen
+                                ? row.Per_Imagen.replace('~/', '/')
+                                : '/Content/js/pages/default-profile.jpeg';
+                            return '<div class="d-flex align-items-center">' +
+                                '<img src="' + imgSrc + '" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;margin-right:10px;" onerror="this.onerror=null;this.src=\'/Content/js/pages/default-profile.jpeg\';">' +
+                                '<span>' + (data || "") + '</span>' +
+                                '</div>';
+                        }
                     },
                     {
                         data: "Per_Identidad",
+                        targets: 1,
+                    },
+                    {
+                        data: "Per_FechaNacimiento",
                         targets: 2,
+                        render: function (data, type, row) {
+                            return calcularEdad(data);
+                        }
                     },
                     {
                         data: "Cno_Descripcion",
                         targets: 3,
                     },
                     {
-                        data: "Mda_Descripcion",
+                        data: "Sec_Descripcion",
                         targets: 4,
                     },
                     {
-                        data: "Niv_Descripcion",
-                        targets: 5,
-                    },
-                    {
-                        data: "Sec_Descripcion",
-                        targets: 6,
-                    },
-                    {
-                        data: "AnioCursado",
-                        targets: 7,
-                    },
-
-                    {
                         data: "Est_Descripcion",
+                        targets: 5,
                         render: function (data, type, row) {
-                            // Determinar el color basado en el estado usando switch
+                            if (type !== "display") return data || "";
                             let colorClass = '';
                             switch (data) {
                                 case 'Activo':
-                                    colorClass = 'shadow-none badge badge-success'; // Color verde
+                                    colorClass = 'shadow-none badge badge-success';
                                     break;
                                 case 'Suspendido':
-                                    colorClass = 'shadow-none badge badge-warning'; // Color rojo
+                                    colorClass = 'shadow-none badge badge-warning';
                                     break;
                                 case 'Graduado':
-                                    colorClass = 'shadow-none badge badge-primary'; // Color rojo
+                                    colorClass = 'shadow-none badge badge-primary';
                                     break;
-                               
                             }
-
                             return `<span class="${colorClass}">${data}</span>`;
-                        },
-                        targets: 8,
-                       
+                        }
                     },
                     {
-                        data: null, // No hay datos reales para esta columna
+                        data: null,
                         defaultContent: "",
                         orderable: false,
                         className: "text-center",
                         width: 120,
+                        targets: 6,
                         render: function (data, type, row) {
                             var botones = "";
                             if (type == "display") {
@@ -421,8 +423,7 @@ var datatableAlumnos = (function () {
                                 botones += '</div>';
                             }
                             return botones;
-                        },
-                        targets: 9,
+                        }
                     }
 
                 ]
