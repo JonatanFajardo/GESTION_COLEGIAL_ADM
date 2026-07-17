@@ -107,7 +107,7 @@
                     <li>@Html.ActionLink("Directorio de Alumnos",   "Index", "AlumnosDirectorio")</li>
                     <li>@Html.ActionLink("Pirámide de Matrícula",   "Index", "PiramideMatricula")</li>
                     <li>@Html.ActionLink("Mensajes a Encargados",   "Index", "Mensajes")</li>
-                    <li>@Html.ActionLink("Búsqueda de Alumnos",     "Index", "AlumnosBusqueda")</li>
+                    @* Búsqueda de Alumnos deshabilitada — test §7, ver TODO.md *@
 
                     <li class="submenu-header" style="color:#fbbf24;">RRHH</li>
                     <li>@Html.ActionLink("Organigrama",             "Index", "Organigrama")</li>
@@ -118,8 +118,7 @@
 
                     <li class="submenu-header" style="color:#fbbf24;">Académico</li>
                     <li>@Html.ActionLink("Centro de Anuncios",       "Index", "CentroAnuncios")</li>
-                    <li>@Html.ActionLink("Rendimiento x Sección",    "Index", "RendimientoPorSeccion")</li>
-                    <li>@Html.ActionLink("KPIs Académicos",          "Index", "KPIsAcademicos")</li>
+                    <li>@Html.ActionLink("Analítica Académica",      "Index", "KPIsAcademicos")</li>
 
                     <li class="submenu-header" style="color:#fbbf24;">Financiero · Operativo</li>
                     <li>@Html.ActionLink("Pagos del Día",            "Index", "PagosDelDia")</li>
@@ -292,21 +291,18 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Academico" data-parent="#accordionExample">
-                        @if (tiene("Boletín de calificaciones"))       { <li>@Html.ActionLink("Boletín",              "Index", "BoletinAdm")</li> }
-                        @if (tiene("Cuaderno de notas"))               { <li>@Html.ActionLink("Cuaderno de Notas",    "Index", "NotasAdm")</li> }
-                        @if (tiene("Plan de clases"))                  { <li>@Html.ActionLink("Plan de Clases",       "Index", "PlanClasesAdm")</li> }
-                        @if (tiene("Tareas y entregas"))               { <li>@Html.ActionLink("Tareas",               "Index", "TareasAdm")</li> }
-                        @if (tiene("Mis alumnos"))                     { <li>@Html.ActionLink("Mis Alumnos",          "Index", "MisAlumnosAdm")</li> }
-                        @if (tiene("Mapa de aulas"))                   { <li>@Html.ActionLink("Mapa de Aulas",        "Index", "MapaAulasAdm")</li> }
-                        @if (tiene("Pase de lista"))                   { <li>@Html.ActionLink("Pase de Lista",        "Index", "AsistenciaAdm")</li> }
-                        @if (tiene("Alumnos en Riesgo Académico"))     { <li>@Html.ActionLink("Alumnos en Riesgo",    "Index", "AlumnosEnRiesgo")</li> }
-                        @if (tiene("Búsqueda de Alumnos"))             { <li>@Html.ActionLink("Búsqueda Alumnos",     "Index", "AlumnosBusqueda")</li> }
+                        @* Hubs consolidados (2026-07) — cada hub agrupa en tabs las pantallas que antes eran entradas separadas *@
+                        @if (tiene("Cuaderno de notas") || tiene("Boletín de calificaciones")) { <li>@Html.ActionLink("Notas y Boletín", "Index", "NotasAdm")</li> }
+                        @if (tiene("Pase de lista") || tiene("Plan de clases") || tiene("Tareas y entregas")) { <li>@Html.ActionLink("Docencia Diaria", "Index", "AsistenciaAdm")</li> }
+                        @if (tiene("KPIs Académicos") || tiene("Rendimiento por Sección")) { <li>@Html.ActionLink("Analítica Académica", "Index", "KPIsAcademicos")</li> }
+                        @if (tiene("Graduación de Alumnos") || esAdmin) { <li>@Html.ActionLink("Graduación", "Index", "GraduacionAlumnos")</li> }
                         @if (tiene("Centro de anuncios"))              { <li>@Html.ActionLink("Centro de Anuncios",   "Index", "CentroAnuncios")</li> }
-                        @if (tiene("Rendimiento por Sección"))         { <li>@Html.ActionLink("Rendimiento x Sección","Index", "RendimientoPorSeccion")</li> }
-                        @if (tiene("KPIs Académicos"))                 { <li>@Html.ActionLink("KPIs Académicos",      "Index", "KPIsAcademicos")</li> }
-                        @if (tiene("Graduación de Alumnos") || esAdmin) { <li>@Html.ActionLink("Candidatos a graduación", "Index", "GraduacionAlumnos")</li> }
-                        @if (tiene("Directorio de Graduados") || esAdmin) { <li>@Html.ActionLink("Directorio de graduados", "Index", "AlumnosGraduados")</li> }
-                        @if (tiene("Backfill Graduados") || esAdmin)   { <li>@Html.ActionLink("Backfill graduados (histórico)", "BackfillIndex", "GraduacionAlumnos")</li> }
+                        @* Deshabilitadas por test de utilidad §7 (ver TODO.md — decisión 2026-07-08):
+                           - Mis Alumnos (MisAlumnosAdm): galería sin acciones ni enlace a ficha; redundante con Alumnos/Index
+                           - Mapa de Aulas (MapaAulasAdm): sin capacidad ni sección; data aislada que nadie consume
+                           - Alumnos en Riesgo (AlumnosEnRiesgo): filtros rotos; la tabla de riesgo vive en Analítica Académica
+                           - Búsqueda Alumnos (AlumnosBusqueda): filtro roto; Alumnos/Index la supera
+                           - Backfill graduados: ahora es tab dentro del hub Graduación *@
                     </ul>
                 </li>
             }
