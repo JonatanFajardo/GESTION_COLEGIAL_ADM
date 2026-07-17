@@ -17,7 +17,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         private string HistoricosPath => HttpContext.Server.MapPath("~/App_Data/graduados-historicos.json");
 
-        public ActionResult Index() => View();
+        /// <summary>Ruta legada: el directorio ahora vive como tab del hub de Graduación.</summary>
+        public ActionResult Index() => RedirectToAction("Index", "GraduacionAlumnos", new { tab = "directorio" });
 
         [HttpGet]
         public async Task<ActionResult> ListAsync()

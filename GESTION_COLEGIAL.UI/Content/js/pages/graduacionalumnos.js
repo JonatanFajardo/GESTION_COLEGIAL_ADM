@@ -1,6 +1,9 @@
-/* Modulo: Candidatos a graduacion
- * Renderiza la tabla de candidatos, permite seleccionar varios y
- * lanza Graduar en bucle. Captura los mensajes de RAISERROR del SP.
+/* Modulo: Hub de Graduacion.
+ * - Tab Candidatos: renderiza la tabla de candidatos, permite seleccionar varios
+ *   y lanza Graduar en bucle. Captura los mensajes de RAISERROR del SP.
+ * - initHub(): orquesta las tabs del hub (Candidatos / Directorio / Backfill).
+ *   El contenido de Directorio y Backfill lo manejan alumnosgraduados.js y
+ *   graduacionalumnos.backfill.js respectivamente (sin colisiones de ids).
  */
 var GraduacionAlumnos = (function () {
     var cfg = null;
@@ -13,6 +16,36 @@ var GraduacionAlumnos = (function () {
             loadNotaMinima();
             $('#btn-guardar-nota-minima').on('click', guardarNotaMinima);
         });
+    }
+
+    // ═══════════ Orquestación de tabs del hub ═══════════
+    function initHub() {
+        $(document).ready(function () {
+            $('#grad-hub-tabs').on('click', '.grad-hub-tab', function () {
+                activarTab($(this).data('tab'));
+            });
+            // Tab inicial por querystring: /GraduacionAlumnos?tab=directorio|backfill
+            var tabInicial = '';
+            try {
+                tabInicial = (new URLSearchParams(window.location.search).get('tab') || '').toLowerCase();
+            } catch (e) { /* navegador sin URLSearchParams: queda la tab default */ }
+            if (tabInicial === 'directorio' || tabInicial === 'backfill') {
+                activarTab(tabInicial);
+            }
+        });
+    }
+
+    function activarTab(tab) {
+        if (!tab || !$('#hub-panel-' + tab).length) return;
+        $('#grad-hub-tabs .grad-hub-tab').removeClass('active')
+            .filter('[data-tab="' + tab + '"]').addClass('active');
+        $('.grad-hub-panel').removeClass('active');
+        $('#hub-panel-' + tab).addClass('active');
+        // La tabla se inicializa en la tab default; al volver a mostrarla,
+        // reajustar anchos de columnas (DataTables no mide bien en display:none).
+        if (tab === 'candidatos' && dt) {
+            dt.columns.adjust();
+        }
     }
 
     function loadNotaMinima() {
@@ -179,5 +212,5 @@ var GraduacionAlumnos = (function () {
         };
     }
 
-    return { init: init };
+    return { init: init, initHub: initHub };
 })();

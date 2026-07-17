@@ -6,7 +6,8 @@ using System.Web.Mvc;
 namespace GESTION_COLEGIAL.UI.Controllers
 {
     /// <summary>
-    /// Pantallas del flujo de graduacion (candidatos + backfill).
+    /// Hub de graduacion: tabs de candidatos, directorio de graduados y backfill historico.
+    /// El directorio consume los endpoints existentes de AlumnosGraduadosController.
     /// </summary>
     [SessionManager("Graduación de Alumnos")]
     public class GraduacionAlumnosController : BaseController
@@ -48,7 +49,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(resultado, resultado.Exitoso);
         }
 
-        public ActionResult BackfillIndex() => View();
+        /// <summary>Ruta legada: el backfill ahora vive como tab del hub.</summary>
+        public ActionResult BackfillIndex() => RedirectToAction("Index", new { tab = "backfill" });
 
         [HttpPost]
         public async Task<ActionResult> BackfillAsync(int? anio, int? topN, bool? dryRun)
