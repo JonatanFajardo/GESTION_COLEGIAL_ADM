@@ -275,3 +275,64 @@
 .kpi-stat-valor.promedio-alto  { /* inherits white — semáforo solo en textos sobre fondo claro */ }
 .kpi-stat-valor.promedio-medio { }
 .kpi-stat-valor.promedio-bajo  { }
+
+/* Badge nodata (compartido con tab de rendimiento) */
+.rend-nodata { color: #94a3b8; font-weight: 600; }
+
+/* ─── Tabs del hub Analítica Académica ──────────────────────────────────── */
+.aa-tabs-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.4rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+.aa-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.aa-tab-item { margin: 0; }
+.aa-tab-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 9px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #475569;              /* contraste explícito sobre fondo blanco */
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.aa-tab-link:hover,
+.aa-tab-link:focus {
+    background: #f1f5f9;
+    color: #1e293b;
+    text-decoration: none;
+}
+.aa-tab-item.active .aa-tab-link {
+    background: #4f46e5;
+    color: #ffffff;              /* texto blanco sobre indigo activo */
+}
+.aa-tab-item.active .aa-tab-link:hover,
+.aa-tab-item.active .aa-tab-link:focus {
+    background: #4338ca;
+    color: #ffffff;
+}
+.aa-tab-icon { font-size: 0.95rem; line-height: 1; }
+.aa-tab-label { line-height: 1.2; }
+
+/* Fila clickeable de alumnos en riesgo → ficha 360 */
+.kpi-tabla tbody tr.kpi-riesgo-row { cursor: pointer; }
+.kpi-tabla tbody tr.kpi-riesgo-row:hover td {
+    background: #eef2ff;
+    color: #1e293b;
+}
+.kpi-tabla tbody tr.kpi-riesgo-row:focus td {
+    background: #eef2ff;
+    outline: none;
+}

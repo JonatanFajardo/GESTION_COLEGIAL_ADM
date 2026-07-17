@@ -1,7 +1,23 @@
+/* Analítica Académica — hub con tabs:
+   1. Resumen institucional (KPIs generales, distribución, matrícula, alumnos en riesgo)
+   2. Rendimiento por sección (cards por sección con materias y promedios)
+   Absorbe la lógica de rendimientoporseccion.js. Los dos tabs comparten
+   los filtros Año + Parcial y el mismo endpoint de rendimiento (con caché). */
 var KPIsAcademicos = (function () {
     var obj = {};
     var urls = {};
     var chartInstances = {};
+
+    // Nota mínima de aprobación (configurable vía GraduacionAlumnos/NotaMinimaAsync)
+    var NOTA_MIN_DEFAULT = 70;
+    var notaMin = NOTA_MIN_DEFAULT;
+
+    // Caché del rendimiento compartido entre tabs: una sola petición por (año, parcial)
+    var rendCache = { key: null, data: null };
+
+    // Estado de tabs
+    var tabActiva = 'resumen';
+    var tabCargada = { resumen: false, rendimiento: false };
 
     // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -15,17 +31,35 @@ var KPIsAcademicos = (function () {
             .replace(/'/g, '&#039;');
     }
 
-    function claseScore(prom) {
-        if (prom >= 70) return 'alto';
-        if (prom >= 60) return 'medio';
-        return 'bajo';
+    /* Clasificación ÚNICA de promedios para TODO el hub (colores, doughnut, badges):
+       aprobado  >= notaMin
+       riesgo    >= notaMin - 10 y < notaMin
+       reprobado <  notaMin - 10 */
+    function clasificar(prom) {
+        if (prom == null || isNaN(prom)) return 'nodata';
+        if (prom >= notaMin) return 'aprobado';
+        if (prom >= notaMin - 10) return 'riesgo';
+        return 'reprobado';
     }
 
+    // Mapea la clasificación a las clases CSS de badge (alto/medio/bajo/nodata)
+    function claseScore(prom) {
+        switch (clasificar(prom)) {
+            case 'aprobado': return 'alto';
+            case 'riesgo':   return 'medio';
+            case 'nodata':   return 'nodata';
+            default:         return 'bajo';
+        }
+    }
+
+    // Color por clasificación; los aprobados >= 85 se destacan como sobresalientes
     function colorPorRango(prom) {
-        if (prom >= 85) return '#3b82f6';
-        if (prom >= 70) return '#22c55e';
-        if (prom >= 60) return '#f59e0b';
-        return '#ef4444';
+        switch (clasificar(prom)) {
+            case 'aprobado': return prom >= 85 ? '#3b82f6' : '#22c55e';
+            case 'riesgo':   return '#f59e0b';
+            case 'reprobado': return '#ef4444';
+            default:         return '#94a3b8';
+        }
     }
 
     function destroyChart(key) {
@@ -35,6 +69,13 @@ var KPIsAcademicos = (function () {
         }
     }
 
+    function filtrosActuales() {
+        return {
+            anio:  $("#filtro-anio").val(),
+            parId: $("#filtro-parcial").val()
+        };
+    }
+
     // ─── Init ────────────────────────────────────────────────────────────────────
 
     obj.init = function (urlsObj) {
@@ -42,16 +83,81 @@ var KPIsAcademicos = (function () {
 
         $("#filtro-anio").val(new Date().getFullYear());
 
-        cargarParciales(function () {
-            cargarTodo();
+        // Nota mínima primero: alimenta la clasificación de ambos tabs
+        cargarNotaMinima(function () {
+            cargarParciales(function () {
+                cargarTabActiva(true);
+            });
         });
 
         $("#btn-filtrar").on("click", function () {
-            cargarTodo();
+            // Al consultar se invalida el caché y se recarga solo el tab activo;
+            // el otro tab se recargará al entrar (lazy).
+            rendCache = { key: null, data: null };
+            tabCargada = { resumen: false, rendimiento: false };
+            cargarTabActiva(true);
+        });
+
+        $("#aa-tabs").on("click", ".aa-tab-item", function (e) {
+            e.preventDefault();
+            var tab = $(this).data("tab");
+            if (!tab || tab === tabActiva) return;
+            activarTab(tab);
         });
     };
 
-    // ─── Cargar parciales en select ───────────────────────────────────────────────
+    function activarTab(tab) {
+        tabActiva = tab;
+        $("#aa-tabs .aa-tab-item").removeClass("active");
+        $("#aa-tabs .aa-tab-item[data-tab='" + tab + "']").addClass("active");
+        $(".aa-tab-panel").hide();
+        $("#tab-" + tab).show();
+        cargarTabActiva(false);
+    }
+
+    function cargarTabActiva(forzar) {
+        if (!forzar && tabCargada[tabActiva]) return;
+        tabCargada[tabActiva] = true;
+
+        var f = filtrosActuales();
+        if (tabActiva === 'resumen') {
+            cargarResumen(f.anio, f.parId);
+        } else {
+            cargarTabRendimiento(f.anio, f.parId);
+        }
+    }
+
+    // ─── Nota mínima configurable (fallback 70) ──────────────────────────────────
+
+    function cargarNotaMinima(callback) {
+        if (!urls.urlNotaMinima) {
+            aplicarNotaMinima();
+            if (typeof callback === 'function') callback();
+            return;
+        }
+
+        $.ajax({
+            url: urls.urlNotaMinima,
+            type: 'GET',
+            success: function (resp) {
+                var v = resp && resp.valor != null ? parseFloat(resp.valor) : NaN;
+                notaMin = (!isNaN(v) && v > 0 && v <= 100) ? v : NOTA_MIN_DEFAULT;
+                aplicarNotaMinima();
+                if (typeof callback === 'function') callback();
+            },
+            error: function () {
+                notaMin = NOTA_MIN_DEFAULT;
+                aplicarNotaMinima();
+                if (typeof callback === 'function') callback();
+            }
+        });
+    }
+
+    function aplicarNotaMinima() {
+        $("#sub-en-riesgo").text("Promedio menor a " + notaMin + " — Top 15");
+    }
+
+    // ─── Cargar parciales en select compartido ────────────────────────────────────
 
     function cargarParciales(callback) {
         if (!urls.urlDropdowns) {
@@ -64,7 +170,7 @@ var KPIsAcademicos = (function () {
             type: 'GET',
             success: function (resp) {
                 var $select = $("#filtro-parcial");
-                $select.empty().append('<option value="">Todos</option>');
+                $select.empty();
 
                 var parciales = (resp && resp.parciales) ? resp.parciales : [];
                 $.each(parciales, function (i, p) {
@@ -73,22 +179,53 @@ var KPIsAcademicos = (function () {
                     );
                 });
 
+                if (parciales.length > 0) {
+                    $select.val(parciales[0].id);
+                } else {
+                    $select.append('<option value="">Parcial 1</option>');
+                }
+
                 if (typeof callback === 'function') callback();
             },
             error: function () {
+                $("#filtro-parcial").html('<option value="">Parcial 1</option>');
                 if (typeof callback === 'function') callback();
             }
         });
     }
 
-    // ─── Cargar todo en paralelo ──────────────────────────────────────────────────
+    // ─── Rendimiento compartido (una sola petición por año+parcial) ───────────────
 
-    function cargarTodo() {
-        var anio  = $("#filtro-anio").val();
-        var parId = $("#filtro-parcial").val();
+    function getRendimiento(anio, parId, callback) {
+        if (!urls.urlRendimiento) return;
 
+        var key = anio + '|' + parId;
+        if (rendCache.key === key && rendCache.data) {
+            callback(rendCache.data);
+            return;
+        }
+
+        $.ajax({
+            url: urls.urlRendimiento,
+            type: 'GET',
+            data: { Anio: anio, Par_Id: parId },
+            success: function (resp) {
+                var filas = (resp && resp.data) ? resp.data : [];
+                rendCache = { key: key, data: filas };
+                callback(filas);
+            },
+            error: function (xhr) {
+                console.error("Analítica Académica — rendimiento error:", xhr.status, xhr.responseText);
+                callback(null);
+            }
+        });
+    }
+
+    // ══════════ TAB 1: Resumen institucional ══════════
+
+    function cargarResumen(anio, parId) {
         cargarKPIsGenerales(anio);
-        cargarRendimiento(anio, parId);
+        getRendimiento(anio, parId, renderResumenRendimiento);
         cargarEnRiesgo(anio);
         cargarPiramide(anio);
     }
@@ -110,10 +247,17 @@ var KPIsAcademicos = (function () {
                 var promedio      = d.PromedioGeneralInstitucional != null ? d.PromedioGeneralInstitucional : 0;
                 var asistencia    = d.PorcentajeAsistencia != null ? d.PorcentajeAsistencia : 0;
 
-                // Semáforo promedio
+                // Semáforo promedio — usa la clasificación compartida
                 var promVal = parseFloat(promedio);
                 var promTexto = promedio != null ? promVal.toFixed(2) : "—";
-                var promClase = promedio == null ? "" : (promVal >= 70 ? "promedio-alto" : promVal >= 60 ? "promedio-medio" : "promedio-bajo");
+                var promClase = "";
+                if (promedio != null) {
+                    switch (clasificar(promVal)) {
+                        case 'aprobado': promClase = "promedio-alto"; break;
+                        case 'riesgo':   promClase = "promedio-medio"; break;
+                        default:         promClase = "promedio-bajo"; break;
+                    }
+                }
                 $("#kpi-total-alumnos").text(totalAlumnos);
                 $("#kpi-total-docentes").text(totalDocentes);
                 $("#kpi-promedio-general").text(promTexto).removeClass("promedio-alto promedio-medio promedio-bajo").addClass(promClase);
@@ -145,62 +289,57 @@ var KPIsAcademicos = (function () {
         });
     }
 
-    // ─── 2. Rendimiento por sección/materia ──────────────────────────────────────
+    // ─── 2. Distribución de rendimiento (tab Resumen) ─────────────────────────────
 
-    function cargarRendimiento(anio, parId) {
-        if (!urls.urlRendimiento) return;
+    function renderResumenRendimiento(filas) {
+        if (!filas) return;
 
-        $.ajax({
-            url: urls.urlRendimiento,
-            type: 'GET',
-            data: { Anio: anio, Par_Id: parId },
-            success: function (resp) {
-                var filas = (resp && resp.data) ? resp.data : [];
+        var total         = filas.length;
+        var aprobados     = 0;
+        var enRiesgo      = 0;
+        var reprobados    = 0;
+        var sobresaliente = 0;
 
-                var total         = filas.length;
-                var aprobados     = 0;
-                var enRiesgo      = 0;
-                var reprobados    = 0;
-                var sobresaliente = 0;
+        // Agrupar materias únicas: mayor promedio por Cur_Descripcion
+        var materiasMap = {};
 
-                // Agrupar materias únicas: mayor promedio por Cur_Descripcion
-                var materiasMap = {};
+        $.each(filas, function (i, f) {
+            var prom = parseFloat(f.PromedioGeneral) || 0;
 
-                $.each(filas, function (i, f) {
-                    var prom = parseFloat(f.PromedioGeneral) || 0;
+            switch (clasificar(prom)) {
+                case 'aprobado':
+                    if (prom >= 85) sobresaliente++;
+                    else            aprobados++;
+                    break;
+                case 'riesgo':   enRiesgo++;   break;
+                default:         reprobados++; break;
+            }
 
-                    if (prom >= 85)      sobresaliente++;
-                    else if (prom >= 70) aprobados++;
-                    else if (prom >= 60) enRiesgo++;
-                    else                 reprobados++;
-
-                    var key = f.Cur_Descripcion || '';
-                    if (!materiasMap.hasOwnProperty(key) || prom > materiasMap[key]) {
-                        materiasMap[key] = prom;
-                    }
-                });
-
-                var totalMaterias = Object.keys(materiasMap).length;
-
-                // KPI cards de distribución
-                $("#kpi-aprobados").text(aprobados + sobresaliente);
-                $("#kpi-en-riesgo").text(enRiesgo);
-                $("#kpi-reprobados").text(reprobados);
-                $("#kpi-materias").text(totalMaterias);
-
-                if (total > 0) {
-                    $("#kpi-aprobados-pct").text(((aprobados + sobresaliente) / total * 100).toFixed(0) + '% del total');
-                    $("#kpi-en-riesgo-pct").text((enRiesgo / total * 100).toFixed(0) + '% del total');
-                    $("#kpi-reprobados-pct").text((reprobados / total * 100).toFixed(0) + '% del total');
-                } else {
-                    $("#kpi-aprobados-pct, #kpi-en-riesgo-pct, #kpi-reprobados-pct").text('0%');
-                }
-                $("#kpi-secciones-sub").text(totalMaterias + ' materias únicas');
-
-                renderDistribucion(reprobados, enRiesgo, aprobados, sobresaliente);
-                renderTopMaterias(materiasMap);
+            var key = f.Cur_Descripcion || '';
+            if (!materiasMap.hasOwnProperty(key) || prom > materiasMap[key]) {
+                materiasMap[key] = prom;
             }
         });
+
+        var totalMaterias = Object.keys(materiasMap).length;
+
+        // KPI cards de distribución
+        $("#kpi-aprobados").text(aprobados + sobresaliente);
+        $("#kpi-en-riesgo").text(enRiesgo);
+        $("#kpi-reprobados").text(reprobados);
+        $("#kpi-materias").text(totalMaterias);
+
+        if (total > 0) {
+            $("#kpi-aprobados-pct").text(((aprobados + sobresaliente) / total * 100).toFixed(0) + '% del total');
+            $("#kpi-en-riesgo-pct").text((enRiesgo / total * 100).toFixed(0) + '% del total');
+            $("#kpi-reprobados-pct").text((reprobados / total * 100).toFixed(0) + '% del total');
+        } else {
+            $("#kpi-aprobados-pct, #kpi-en-riesgo-pct, #kpi-reprobados-pct").text('0%');
+        }
+        $("#kpi-secciones-sub").text(totalMaterias + ' materias únicas');
+
+        renderDistribucion(reprobados, enRiesgo, aprobados, sobresaliente);
+        renderTopMaterias(materiasMap);
     }
 
     function renderDistribucion(reprobados, enRiesgo, aprobados, sobresaliente) {
@@ -209,10 +348,17 @@ var KPIsAcademicos = (function () {
         var ctx = document.getElementById('chart-distribucion');
         if (!ctx) return;
 
+        var limReprobado = notaMin - 10;
+
         chartInstances['distribucion'] = new Chart(ctx.getContext('2d'), {
             type: 'doughnut',
             data: {
-                labels: ['Reprobado (<60)', 'En Riesgo (60-69)', 'Aprobado (70-84)', 'Sobresaliente (≥85)'],
+                labels: [
+                    'Reprobado (<' + limReprobado + ')',
+                    'En Riesgo (' + limReprobado + ' a <' + notaMin + ')',
+                    'Aprobado (' + notaMin + ' a <85)',
+                    'Sobresaliente (≥85)'
+                ],
                 datasets: [{
                     data: [reprobados, enRiesgo, aprobados, sobresaliente],
                     backgroundColor: ['#ef4444', '#f59e0b', '#22c55e', '#3b82f6'],
@@ -323,18 +469,37 @@ var KPIsAcademicos = (function () {
 
                 var max = Math.min(filas.length, 15);
                 for (var i = 0; i < max; i++) {
-                    var f    = filas[i];
-                    var prom = parseFloat(f.Promedio) || 0;
-                    var cls  = 'rend-' + claseScore(prom);
+                    var f = filas[i];
+
+                    // El API expone NombreAlumno / PromedioAnual (se dejan los nombres
+                    // antiguos como fallback por compatibilidad).
+                    var nombre  = f.NombreAlumno != null ? f.NombreAlumno : f.Alu_NombreCompleto;
+                    var promRaw = f.PromedioAnual != null ? f.PromedioAnual : f.Promedio;
+                    var prom    = parseFloat(promRaw) || 0;
+                    var cls     = 'rend-' + claseScore(prom);
+                    var aluId   = f.Alu_Id != null ? parseInt(f.Alu_Id, 10) : null;
+
+                    var clickable = aluId && urls.urlDetalleAlumno;
+                    var trAttrs = clickable
+                        ? ' class="kpi-riesgo-row" data-alu-id="' + aluId + '" title="Ver ficha del alumno" tabindex="0"'
+                        : '';
 
                     $tbody.append(
-                        '<tr>' +
-                        '<td>' + escapeHtml(f.Alu_NombreCompleto) + '</td>' +
+                        '<tr' + trAttrs + '>' +
+                        '<td>' + escapeHtml(nombre) + '</td>' +
                         '<td>' + escapeHtml(f.Sec_Descripcion) + '</td>' +
-                        '<td><span class="' + cls + '">' + prom.toFixed(1) + '</span></td>' +
+                        '<td class="text-right"><span class="' + cls + '">' + prom.toFixed(1) + '</span></td>' +
                         '</tr>'
                     );
                 }
+
+                // Fila clickeable → ficha 360 del alumno
+                $tbody.off("click.riesgo").on("click.riesgo", ".kpi-riesgo-row", function () {
+                    var id = $(this).data("alu-id");
+                    if (id && urls.urlDetalleAlumno) {
+                        window.location.href = urls.urlDetalleAlumno + '/' + id;
+                    }
+                });
             },
             error: function () {
                 $("#tabla-en-riesgo").html(
@@ -416,6 +581,108 @@ var KPIsAcademicos = (function () {
                 }
             }
         });
+    }
+
+    // ══════════ TAB 2: Rendimiento por sección ══════════
+    // (portado de rendimientoporseccion.js, usando la clasificación compartida)
+
+    function cargarTabRendimiento(anio, parId) {
+        var container = $("#rendimiento-container");
+        container.html('<div class="rps-loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Cargando datos...</p></div>');
+        $("#rps-kpis").hide();
+
+        getRendimiento(anio, parId, function (datos) {
+            if (datos == null) {
+                container.html('<div class="rps-error"><i class="fa-solid fa-triangle-exclamation"></i><p>Error al cargar los datos. Verifique que la API esté en ejecución.</p></div>');
+                return;
+            }
+            renderSecciones(datos);
+        });
+    }
+
+    function renderSecciones(datos) {
+        var container = $("#rendimiento-container");
+        var kpis      = $("#rps-kpis");
+
+        if (!datos || datos.length === 0) {
+            kpis.hide();
+            container.html('<div class="rps-empty-state"><i class="fa-solid fa-folder-open"></i><h3>Sin datos para los filtros seleccionados</h3><p>Probá con otro año o parcial.</p></div>');
+            return;
+        }
+
+        // Agrupar primero por sección
+        var grupos = {};
+        datos.forEach(function (d) {
+            var sec = d.Sec_Descripcion || "Sin sección";
+            if (!grupos[sec]) grupos[sec] = [];
+            grupos[sec].push(d);
+        });
+
+        // KPIs agregados
+        var promedios   = datos.filter(function (d) { return d.PromedioGeneral != null; }).map(function (d) { return parseFloat(d.PromedioGeneral); });
+        var promGeneral = promedios.length > 0 ? (promedios.reduce(function (a, b) { return a + b; }, 0) / promedios.length) : null;
+
+        // Total alumnos: máximo por sección (no sumar curso a curso, generaría duplicados)
+        var totAlumnos = 0;
+        Object.keys(grupos).forEach(function (sec) {
+            var max = grupos[sec].reduce(function (m, d) { return Math.max(m, d.TotalAlumnos || 0); }, 0);
+            totAlumnos += max;
+        });
+
+        var cursos = {};
+        datos.forEach(function (d) { cursos[d.Cur_Descripcion] = true; });
+
+        $("#kpi-promedio").html(promGeneral != null
+            ? '<span class="' + claseScore(promGeneral) + '">' + promGeneral.toFixed(2) + '</span>'
+            : '—');
+        $("#kpi-alumnos").text(totAlumnos);
+        $("#kpi-secciones").text(Object.keys(grupos).length);
+        $("#kpi-cursos").text(Object.keys(cursos).length);
+        kpis.show();
+
+        // Render cards
+        var html = '<div class="rps-secciones-grid">';
+        Object.keys(grupos).sort().forEach(function (seccion) {
+            var materias = grupos[seccion];
+
+            var promsSec = materias.filter(function (m) { return m.PromedioGeneral != null; }).map(function (m) { return parseFloat(m.PromedioGeneral); });
+            var promSec  = promsSec.length > 0 ? (promsSec.reduce(function (a, b) { return a + b; }, 0) / promsSec.length) : null;
+            var aluSec   = materias.reduce(function (max, m) { return Math.max(max, m.TotalAlumnos || 0); }, 0);
+
+            html += '<div class="rps-seccion">';
+            html +=   '<div class="rps-seccion-header">';
+            html +=     '<div class="rps-seccion-title"><i class="fa-solid fa-users"></i> Sección ' + escapeHtml(seccion) + '</div>';
+            html +=     '<div class="rps-seccion-summary">';
+            html +=       '<span class="rps-summary-pill"><i class="fa-solid fa-user-graduate"></i> ' + aluSec + ' alumnos</span>';
+            if (promSec != null) {
+                html +=   '<span class="rps-summary-pill"><i class="fa-solid fa-chart-line"></i> ' + promSec.toFixed(2) + '</span>';
+            }
+            html +=     '</div>';
+            html +=   '</div>';
+
+            materias.forEach(function (m) {
+                var prom    = m.PromedioGeneral != null ? parseFloat(m.PromedioGeneral) : null;
+                var cls     = claseScore(prom);
+                var width   = prom != null ? Math.max(0, Math.min(100, prom)) : 0;
+                var promTxt = prom != null ? prom.toFixed(2) : 'Sin notas';
+
+                html += '<div class="rps-materia">';
+                html +=   '<div class="rps-materia-nombre">' + escapeHtml(m.Cur_Descripcion) + '</div>';
+                html +=   '<div class="rps-materia-meta">';
+                html +=     '<span class="rps-promedio ' + cls + '">' + promTxt + '</span>';
+                html +=     '<span class="rps-alumnos"><i class="fa-solid fa-user-graduate"></i> ' + (m.TotalAlumnos || 0) + '</span>';
+                html +=   '</div>';
+                html +=   '<div class="rps-progress-wrap">';
+                html +=     '<div class="rps-progress-bar ' + cls + '" style="width:' + width.toFixed(1) + '%"></div>';
+                html +=   '</div>';
+                html += '</div>';
+            });
+
+            html += '</div>';
+        });
+        html += '</div>';
+
+        container.html(html);
     }
 
     return obj;
