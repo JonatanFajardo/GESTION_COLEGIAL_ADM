@@ -21,8 +21,8 @@ Pendientes que quedaron abiertos:
 - [ ] Validar que muestre badge Al día / Con mora arriba, saldo total, y últimos movimientos.
 
 ### `CuadernoNotasAdm` / `BoletinAdm` (rendimiento del alumno)
-- [ ] Desde `Alumnos/Detail`, agregar link "Ver boletín" que abra BoletinAdm con `Alu_Id`.
-- [ ] Revisar duplicación entre CuadernoNotasAdm y BoletinAdm (§4 de las convenciones del proyecto); definir cuál es para docente vs. cuál para admin/director.
+- [ ] Desde `Alumnos/Detail`, agregar link "Ver boletín" que abra el hub `NotasAdm` (tab Boletín) con `Alu_Id`.
+- [x] ~~Revisar duplicación entre CuadernoNotasAdm y BoletinAdm~~ — ✅ FUSIONADOS en hub "Notas y Boletín" (`NotasAdm/Index`, 2026-07-08).
 
 ### `PaseDeLista` (asistencia del alumno)
 - [ ] Desde `Alumnos/Detail`, agregar link "Ver asistencia" que muestre historial de asistencia del alumno (no del grupo).
@@ -45,3 +45,35 @@ Decidir entre:
 - **C. Renombrar a "Notas internas del alumno"** — aceptar el buzón interno como registro no-comunicación.
 
 Al retomar: habilitar el link en `_sidebar.cshtml:241` y aplicar refactor según opción elegida (filtros, destinatario visible, envío masivo por sección/nivel, plantillas, adjuntos).
+
+---
+
+## Refactor sección Académico — hubs consolidados (2026-07-08)
+
+Test de utilidad §7 aplicado a las 15 pantallas de Académico. Resultado: 15 entradas → 5 (Notas y Boletín · Docencia Diaria · Analítica Académica · Graduación · Centro de Anuncios).
+
+### Hubs creados
+- **Notas y Boletín** (`NotasAdm/Index`): tabs Cuaderno + Boletín. Boletín ahora renderiza parciales dinámicos (antes 3 hardcoded), decimales consistentes, umbral rojo desde nota mínima configurable.
+- **Docencia Diaria** (`AsistenciaAdm/Index`): tabs Pase de Lista + Plan de Clases + Tareas, selector de horario compartido.
+- **Analítica Académica** (`KPIsAcademicos/Index`): tabs Resumen + Rendimiento por sección; clasificación de riesgo unificada desde nota mínima (antes 70/60 vs 70/50); tabla de riesgo enlaza a ficha 360.
+- **Graduación** (`GraduacionAlumnos/Index`): tabs Candidatos + Directorio (con constancia PDF) + Backfill histórico (dry-run).
+
+### Pantallas deshabilitadas del sidebar (test §7)
+- `MisAlumnosAdm` — galería sin acciones ni enlace a ficha; `Alumnos/Index` la supera. Reactivar solo si se le da tarea propia (ej. acceso rápido docente con link a ficha).
+- `MapaAulasAdm` — sin capacidad ni sección (`AulaViewModel` no las tiene); nadie consume su data. Reactivar solo integrada a Horarios (choques/capacidad).
+- `AlumnosEnRiesgo` — filtros rotos (JS no enviaba parámetros); la tabla de riesgo vive en Analítica Académica con enlace a ficha 360.
+- `AlumnosBusqueda` — filtro roto (Termino nunca se enviaba); pendiente: darle a `Alumnos/Index` filtros por estado/nivel/sección (§4 top-3).
+
+### Pendientes del refactor
+- [ ] **Matriz roles/pantallas**: unificar permisos por hub. Hoy cada tab conserva su guard viejo — un usuario con "Cuaderno de notas" pero sin "Boletín de calificaciones" ve el tab pero sus AJAX se rechazan (ídem Docencia: "Plan de clases"/"Tareas y entregas"; ídem Graduación: "Directorio de Graduados").
+- [ ] **Limpieza de huérfanos** (commit aparte, tocar csproj): `Views/BoletinAdm/`, `Views/PlanClasesAdm/`, `Views/TareasAdm/`, `Views/GraduacionAlumnos/BackfillIndex.cshtml`, `Views/AlumnosGraduados/Index.cshtml`, JS sin uso (`boletinadm.js`, `planclasesadm.js`, `tareasadm.js`, `rendimientoporseccion.js`, `graduacionalumnos.backfill.js`) y las 4 pantallas deshabilitadas completas si se confirma la decisión.
+- [ ] **Fase 3 pre-golive — cierre de parcial**: campo `Pac_Cerrado`/fecha en Parciales (API + DB) y bloqueo de edición en el Cuaderno; protege la integridad del boletín.
+- [ ] `GraduacionService.cs:19` hardcodea `BaseUrl` — unificar con `SendHttpClient`.
+
+### Backlog post-golive (cortado a propósito)
+- Entregas de tareas con calificación por alumno (hoy "Tareas" es solo el catálogo).
+- Flujo de aprobación de Plan de Clases por director.
+- Acuse de lectura en Centro de Anuncios + destinatarios segmentados.
+- Capacidad/sección en aulas + detección de choques (rehabilitar Mapa de Aulas).
+- Historial visible de cambios de nota (auditoría) y ponderación de parciales.
+- % asistencia agregado por sección + alertas de inasistencia (hoy solo en ficha individual).
