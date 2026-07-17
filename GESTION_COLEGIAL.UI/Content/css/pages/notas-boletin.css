@@ -1,0 +1,194 @@
+/* ============================================================
+   Hub "Notas y Boletín" (Views/NotasAdm/Index.cshtml)
+   Tabs: 1 · Cuaderno de Notas (captura) | 2 · Boletín (consulta)
+   Paleta: indigo #4f46e5 (aprobada para el proyecto)
+   ============================================================ */
+
+/* ---------- Hero ---------- */
+.nb-hero {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    border-radius: 14px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.25);
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.nb-hero::before {
+    content: '';
+    position: absolute;
+    top: -60%; right: -8%;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(255,255,255,0.16) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.nb-hero-content {
+    position: relative; z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.nb-hero-icon {
+    width: 64px; height: 64px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.20);
+    display: flex; align-items: center; justify-content: center;
+    color: #ffffff;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.nb-hero-text h1 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.15;
+    color: #ffffff;
+}
+
+.nb-hero-text p {
+    margin: 0.35rem 0 0 0;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.92);
+    max-width: 560px;
+}
+
+/* ---------- Tabs ---------- */
+.nb-tabs-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1.25rem;
+}
+
+.nb-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border-bottom: none;
+}
+
+.nb-tab-item {
+    flex: 1 1 auto;
+    min-width: 160px;
+}
+
+.nb-tab-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    background: transparent;
+    border: 2px solid transparent;
+    position: relative;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nb-tab-link:hover,
+.nb-tab-link:focus {
+    color: #4f46e5;
+    background: #eef2ff;
+    text-decoration: none;
+}
+
+.nb-tab-item.active .nb-tab-link {
+    color: #3730a3;
+    background: linear-gradient(to bottom, #eef2ff, #e0e7ff);
+    border-color: #c7d2fe;
+    font-weight: 700;
+}
+
+.nb-tab-num {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 0.72rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.nb-tab-item.active .nb-tab-num {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(79,70,229,0.35);
+}
+
+.nb-tab-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    color: inherit;
+}
+
+.nb-tab-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: inherit;
+}
+
+/* ---------- Info del tab activo ---------- */
+.nb-panel-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.nb-info-icon {
+    color: #4f46e5;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    line-height: 1.4;
+}
+
+.nb-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.nb-info-text strong {
+    color: #3730a3;
+    font-size: 0.88rem;
+}
+
+.nb-info-text span {
+    color: #4b5563;
+    font-size: 0.82rem;
+}
+
+/* ---------- Boletín: notas reprobadas ---------- */
+.nb-nota-reprobada {
+    color: #dc2626 !important;
+    font-weight: 700;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 576px) {
+    .nb-hero { padding: 1.25rem 1.25rem; }
+    .nb-hero-text h1 { font-size: 1.3rem; }
+    .nb-tab-item { min-width: 100%; }
+}
