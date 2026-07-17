@@ -9,6 +9,9 @@ namespace GESTION_COLEGIAL.Business.Services
         public async Task<List<dynamic>> ListAsync(int Hor_Id, string Fecha)
             => await SendHttpClient.GetAsync<dynamic>($"Asistencia/ListAsync?Hor_Id={Hor_Id}&Fecha={Fecha}");
 
+        public async Task<List<dynamic>> ByAlumnoAsync(int Alu_Id, int Anio)
+            => await SendHttpClient.GetAsync<dynamic>($"Asistencia/ByAlumnoAsync?Alu_Id={Alu_Id}&Anio={Anio}");
+
         public async Task<bool> CreateAsync(dynamic model)
             => await SendHttpClient.PostAsync("Asistencia/CreateAsync", model);
 

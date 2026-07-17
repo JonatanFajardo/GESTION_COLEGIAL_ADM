@@ -5,7 +5,12 @@ namespace GESTION_COLEGIAL.Business.Services
 {
     public class Ficha360AlumnoAdmService
     {
-        public async Task<dynamic> GetAsync(int Alu_Id)
-            => await SendHttpClient.GetSingleAsync<dynamic>($"Ficha360Alumno/ResumenAsync?Alu_Id={Alu_Id}");
+        private readonly string _url = "Ficha360Alumno";
+
+        public async Task<dynamic> GetResumenAsync(int Alu_Id)
+        {
+            return await SendHttpClient.GetSingleAsync<dynamic>(
+                $"{_url}/ResumenAsync?Alu_Id={Alu_Id}");
+        }
     }
 }

@@ -16,6 +16,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 	public class AlumnosController : BaseController
 	{
 		private readonly AlumnosService alumnosService = new AlumnosService();
+		private readonly BoletinAdmService boletinService = new BoletinAdmService();
+		private readonly EstadoCuentaAdmService estadoCuentaService = new EstadoCuentaAdmService();
+		private readonly DocumentosAlumnoAdmService documentosService = new DocumentosAlumnoAdmService();
+		private readonly AsistenciaAdmService asistenciaService = new AsistenciaAdmService();
+		private readonly Ficha360AlumnoAdmService ficha360Service = new Ficha360AlumnoAdmService();
+		private readonly BitacoraService bitacoraService = new BitacoraService();
+		private readonly EncargadosService encargadosService = new EncargadosService();
 
 		/// <summary>
 		/// Muestra la vista del índice.
@@ -265,6 +272,177 @@ namespace GESTION_COLEGIAL.UI.Controllers
 				return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
 			}
 			return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
+		}
+
+		// ============================================================
+		// FICHA DEL ALUMNO — endpoints AJAX que alimentan los 7 tabs.
+		// Por ahora devuelven partial views con placeholder data;
+		// cuando estén los agregadores reales, se pasa el DTO como model.
+		// ============================================================
+
+		/// <summary>KPIs del hero (Promedio, Asistencia, Cuenta, Tareas).</summary>
+		public async Task<ActionResult> GetKPIsAsync(int id)
+		{
+			double promedio = 0;
+			int asistencia = 0;
+			string cuentaEstado = "—";
+			string proximoCargo = "—";
+
+			try
+			{
+				dynamic resumen = await ficha360Service.GetResumenAsync(id);
+				if (resumen != null)
+				{
+					// Promedio anual (viene en DatosPersonales.PromedioAnual)
+					try
+					{
+						var promRaw = resumen.DatosPersonales?.PromedioAnual;
+						if (promRaw != null) promedio = (double)promRaw;
+					}
+					catch { }
+
+					// % asistencia: se calcula desde AsistenciaReciente
+					try
+					{
+						var asistenciaList = resumen.AsistenciaReciente;
+						if (asistenciaList != null)
+						{
+							int total = 0, presentes = 0;
+							foreach (var a in asistenciaList)
+							{
+								total++;
+								string estado = (string)(a.Asi_Estado ?? "");
+								if (estado.Equals("Presente", System.StringComparison.OrdinalIgnoreCase) ||
+									estado.Equals("P", System.StringComparison.OrdinalIgnoreCase))
+								{
+									presentes++;
+								}
+							}
+							if (total > 0) asistencia = (int)System.Math.Round((presentes * 100.0) / total);
+						}
+					}
+					catch { }
+
+					// Estado de cuenta y próximo cargo desde CuentasPorCobrar
+					try
+					{
+						var cuentas = resumen.CuentasPorCobrar;
+						if (cuentas != null)
+						{
+							decimal totalPend = 0m;
+							System.DateTime? proxFecha = null;
+							foreach (var c in cuentas)
+							{
+								decimal pend = 0m;
+								try { pend = (decimal)(c.Cco_MontoPendiente ?? 0m); } catch { }
+								totalPend += pend;
+								if (pend > 0)
+								{
+									try
+									{
+										System.DateTime f = (System.DateTime)c.Cco_FechaVencimiento;
+										if (proxFecha == null || f < proxFecha.Value) proxFecha = f;
+									}
+									catch { }
+								}
+							}
+							cuentaEstado = totalPend > 0 ? $"L. {totalPend:N2} pendiente" : "Al día";
+							proximoCargo = proxFecha.HasValue ? proxFecha.Value.ToString("dd/MM/yyyy") : "—";
+						}
+					}
+					catch { }
+				}
+			}
+			catch { }
+
+			return Json(new
+			{
+				promedio = promedio,
+				promedioTrend = 0,
+				asistencia = asistencia,
+				asistenciaTrend = 0,
+				cuentaEstado = cuentaEstado,
+				proximoCargo = proximoCargo,
+				tareasEntregadas = 0,
+				tareasTotal = 0
+			}, JsonRequestBehavior.AllowGet);
+		}
+
+		public async Task<ActionResult> GetResumenAsync(int id)
+		{
+			try
+			{
+				dynamic data = await ficha360Service.GetResumenAsync(id);
+				return PartialView("_TabResumen", (object)data);
+			}
+			catch
+			{
+				return PartialView("_TabResumen", (object)null);
+			}
+		}
+
+		public async Task<ActionResult> GetAcademicoAsync(int id)
+		{
+			var data = await boletinService.GetAsync(id, System.DateTime.Now.Year);
+			return PartialView("_TabAcademico", data);
+		}
+
+		public async Task<ActionResult> GetAsistenciaAsync(int id)
+		{
+			try
+			{
+				var data = await asistenciaService.ByAlumnoAsync(id, System.DateTime.Now.Year);
+				return PartialView("_TabAsistencia", (object)data);
+			}
+			catch
+			{
+				return PartialView("_TabAsistencia", (object)null);
+			}
+		}
+
+		public async Task<ActionResult> GetPagosAsync(int id)
+		{
+			try
+			{
+				var data = await estadoCuentaService.GetAsync(id, System.DateTime.Now.Year);
+				return PartialView("_TabPagos", (object)data);
+			}
+			catch
+			{
+				return PartialView("_TabPagos", (object)null);
+			}
+		}
+
+		public async Task<ActionResult> GetFamiliaAsync(int id)
+		{
+			try
+			{
+				var data = await encargadosService.ByAlumnoAsync(id);
+				return PartialView("_TabFamilia", data);
+			}
+			catch
+			{
+				return PartialView("_TabFamilia", (object)null);
+			}
+		}
+
+		public async Task<ActionResult> GetDocumentosAsync(int id)
+		{
+			var data = await documentosService.ListAsync(id);
+			return PartialView("_TabDocumentos", data);
+		}
+
+		public async Task<ActionResult> GetHistorialAsync(int id)
+		{
+			try
+			{
+				var data = await bitacoraService.ByAlumnoAsync(id);
+				return PartialView("_TabHistorial", data);
+			}
+			catch
+			{
+				return PartialView("_TabHistorial", (object)null);
+			}
 		}
 	}
 }

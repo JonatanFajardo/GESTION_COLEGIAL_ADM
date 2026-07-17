@@ -1,10 +1,11 @@
 @model GESTION_COLEGIAL.Business.Models.AlumnoViewModel
 @{
-    ViewBag.Title = "Detalle del Alumno";
+    ViewBag.Title = "Ficha del Alumno";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles{
     <link href="~/Content/css/detalle.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/alumno-ficha.css" rel="stylesheet" />
 }
 @{
     var estadoColor = Model.Est_Descripcion == "Activo" ? "badge-success" :
@@ -28,17 +29,18 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
             <li class="breadcrumb-item"><a href="@Url.Action("Index")">Alumnos</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Detalle</li>
+            <li class="breadcrumb-item active" aria-current="page">Ficha</li>
         </ol>
     </nav>
 </div>
 
 <div class="fluid-container">
 
-    <!-- Hero / Encabezado de perfil -->
+    <!-- ============================================================
+         HERO — perfil del alumno
+         ============================================================ -->
     <div class="detail-hero">
         <div class="detail-hero-inner">
-            <!-- Avatar -->
             <div class="detail-hero-avatar">
                 @if (!string.IsNullOrEmpty(Model.Per_Imagen))
                 {
@@ -54,7 +56,6 @@
                 <div class="detail-id-badge">#@Model.Alu_Id.ToString().PadLeft(4, '0')</div>
             </div>
 
-            <!-- Info -->
             <div class="detail-hero-info">
                 <h2 class="detail-name">@nombreCompleto</h2>
                 <p class="detail-subtitle">
@@ -81,11 +82,7 @@
                 </div>
             </div>
 
-            <!-- Acciones -->
             <div class="detail-hero-actions">
-                <a href="@Url.Action("Index", "Ficha360AlumnoAdm")" class="btn-detail-edit" style="background:rgba(255,255,255,0.95);color:#4f46e5;" title="Vista completa del alumno con todos los datos consolidados">
-                    <i class="bi bi-person-vcard"></i> Ficha 360°
-                </a>
                 <a href="@Url.Action("FindAsync", new { id = Model.Alu_Id })" class="btn-detail-edit">
                     <i class="bi bi-pencil"></i> Editar
                 </a>
@@ -96,204 +93,293 @@
         </div>
     </div>
 
-    <div class="row">
-        <!-- Columna izquierda: Nombres + Datos Personales -->
-        <div class="col-md-6 detail-col-stretch">
-            <!-- Nombres -->
-            <div class="detail-info-card">
-                <div class="detail-info-card-header">
-                    <i class="bi bi-person"></i>
-                    <h6>Nombres</h6>
-                </div>
-                <div class="detail-info-card-body">
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person"></i></div>
-                        <div>
-                            <span class="detail-field-label">Primer Nombre</span>
-                            <span class="detail-field-value">@Model.Per_PrimerNombre</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person"></i></div>
-                        <div>
-                            <span class="detail-field-label">Segundo Nombre</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_SegundoNombre) ? "—" : Model.Per_SegundoNombre)</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person-badge"></i></div>
-                        <div>
-                            <span class="detail-field-label">Apellido Paterno</span>
-                            <span class="detail-field-value">@Model.Per_ApellidoPaterno</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person-badge"></i></div>
-                        <div>
-                            <span class="detail-field-label">Apellido Materno</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_ApellidoMaterno) ? "—" : Model.Per_ApellidoMaterno)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Datos Personales -->
-            <div class="detail-info-card">
-                <div class="detail-info-card-header">
-                    <i class="bi bi-card-text"></i>
-                    <h6>Datos Personales</h6>
-                </div>
-                <div class="detail-info-card-body">
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-card-text"></i></div>
-                        <div>
-                            <span class="detail-field-label">Identidad</span>
-                            <span class="detail-field-value">@Model.Per_Identidad</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-calendar2-heart"></i></div>
-                        <div>
-                            <span class="detail-field-label">Fecha de Nacimiento</span>
-                            <span class="detail-field-value">@Model.Per_FechaNacimiento.ToString("dd/MM/yyyy")</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi @sexoIcono"></i></div>
-                        <div>
-                            <span class="detail-field-label">Sexo</span>
-                            <span class="detail-field-value">@sexoTexto</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- ============================================================
+         KPIs — cargados vía AJAX (AlumnoFicha.init)
+         ============================================================ -->
+    <div class="af-kpis-row">
+        <div class="af-kpi-card indigo">
+            <div class="af-kpi-icon"><i class="bi bi-mortarboard-fill"></i></div>
+            <div class="af-kpi-label">Promedio</div>
+            <div class="af-kpi-value" id="af-kpi-promedio">—</div>
+            <div class="af-kpi-foot"><span id="af-kpi-promedio-trend">—</span></div>
         </div>
-
-        <div class="col-md-6 detail-col-stretch">
-            <!-- Informacion de Contacto -->
-            <div class="detail-info-card">
-                <div class="detail-info-card-header">
-                    <i class="bi bi-telephone"></i>
-                    <h6>Informacion de Contacto</h6>
-                </div>
-                <div class="detail-info-card-body">
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-telephone"></i></div>
-                        <div>
-                            <span class="detail-field-label">Telefono</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_Telefono) ? "—" : Model.Per_Telefono)</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-envelope"></i></div>
-                        <div>
-                            <span class="detail-field-label">Correo Electronico</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_CorreoElectronico) ? "—" : Model.Per_CorreoElectronico)</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-geo-alt"></i></div>
-                        <div>
-                            <span class="detail-field-label">Direccion</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_Direccion) ? "—" : Model.Per_Direccion)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Informacion Academica -->
-            <div class="detail-info-card">
-                <div class="detail-info-card-header">
-                    <i class="bi bi-mortarboard"></i>
-                    <h6>Informacion Academica</h6>
-                </div>
-                <div class="detail-info-card-body">
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-layers"></i></div>
-                        <div>
-                            <span class="detail-field-label">Nivel Educativo</span>
-                            <span class="detail-field-value">@Model.Niv_Descripcion</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-hash"></i></div>
-                        <div>
-                            <span class="detail-field-label">Grado Academico</span>
-                            <span class="detail-field-value">@Model.Cno_Descripcion</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-grid"></i></div>
-                        <div>
-                            <span class="detail-field-label">Modalidad</span>
-                            <span class="detail-field-value">@Model.Mda_Descripcion</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-book"></i></div>
-                        <div>
-                            <span class="detail-field-label">Curso</span>
-                            <span class="detail-field-value">@Model.Cur_Descripcion</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-bookmark"></i></div>
-                        <div>
-                            <span class="detail-field-label">Seccion</span>
-                            <span class="detail-field-value">@Model.Sec_Descripcion</span>
-                        </div>
-                    </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-calendar-range"></i></div>
-                        <div>
-                            <span class="detail-field-label">Anio Cursado</span>
-                            <span class="detail-field-value">@Model.AnioCursado</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="af-kpi-card emerald">
+            <div class="af-kpi-icon"><i class="bi bi-check2-circle"></i></div>
+            <div class="af-kpi-label">Asistencia</div>
+            <div class="af-kpi-value" id="af-kpi-asistencia">—</div>
+            <div class="af-kpi-foot"><span id="af-kpi-asistencia-trend">—</span></div>
+        </div>
+        <div class="af-kpi-card amber">
+            <div class="af-kpi-icon"><i class="bi bi-cash-coin"></i></div>
+            <div class="af-kpi-label">Cuenta</div>
+            <div class="af-kpi-value" id="af-kpi-cuenta">—</div>
+            <div class="af-kpi-foot"><span id="af-kpi-cuenta-trend">—</span></div>
+        </div>
+        <div class="af-kpi-card cyan">
+            <div class="af-kpi-icon"><i class="bi bi-journal-check"></i></div>
+            <div class="af-kpi-label">Tareas</div>
+            <div class="af-kpi-value" id="af-kpi-tareas">—</div>
+            <div class="af-kpi-foot"><span id="af-kpi-tareas-trend">—</span></div>
         </div>
     </div>
 
-    <!-- Informacion de Registro -->
-    <div class="detail-info-card">
-        <div class="detail-info-card-header">
-            <i class="bi bi-clock-history"></i>
-            <h6>Informacion de Registro</h6>
+    <!-- ============================================================
+         TABS
+         ============================================================ -->
+    <div class="af-tabs-wrap">
+        <div class="af-tabs" role="tablist">
+            <button type="button" class="af-tab active" data-tab="resumen" role="tab" aria-selected="true">
+                <span class="af-tab-icon"><i class="bi bi-clipboard-data"></i></span>
+                <span class="af-tab-label">Resumen</span>
+            </button>
+            <button type="button" class="af-tab" data-tab="datos" role="tab" aria-selected="false">
+                <span class="af-tab-icon"><i class="bi bi-person-vcard"></i></span>
+                <span class="af-tab-label">Datos</span>
+            </button>
+            <button type="button" class="af-tab" data-tab="academico" role="tab" aria-selected="false">
+                <span class="af-tab-icon"><i class="bi bi-book"></i></span>
+                <span class="af-tab-label">Académico</span>
+            </button>
+            <button type="button" class="af-tab" data-tab="asistencia" role="tab" aria-selected="false">
+                <span class="af-tab-icon"><i class="bi bi-calendar-check"></i></span>
+                <span class="af-tab-label">Asistencia</span>
+            </button>
+            <button type="button" class="af-tab" data-tab="pagos" role="tab" aria-selected="false">
+                <span class="af-tab-icon"><i class="bi bi-cash-stack"></i></span>
+                <span class="af-tab-label">Pagos</span>
+            </button>
+            <button type="button" class="af-tab" data-tab="familia" role="tab" aria-selected="false">
+                <span class="af-tab-icon"><i class="bi bi-people"></i></span>
+                <span class="af-tab-label">Familia</span>
+            </button>
+            <button type="button" class="af-tab" data-tab="documentos" role="tab" aria-selected="false">
+                <span class="af-tab-icon"><i class="bi bi-file-earmark-text"></i></span>
+                <span class="af-tab-label">Documentos</span>
+            </button>
+            <button type="button" class="af-tab" data-tab="historial" role="tab" aria-selected="false">
+                <span class="af-tab-icon"><i class="bi bi-clock-history"></i></span>
+                <span class="af-tab-label">Historial</span>
+            </button>
         </div>
-        <div class="detail-info-card-body">
-            <div class="detail-audit-entry">
-                <div class="detail-audit-icon created">
-                    <i class="bi bi-plus-circle"></i>
+    </div>
+
+    <!-- ============================================================
+         TAB CONTENT — Resumen (default, lazy-load vía AJAX)
+         ============================================================ -->
+    <div class="af-tab-panel active" id="af-tab-content-resumen" role="tabpanel"></div>
+
+    <!-- ============================================================
+         TAB CONTENT — Datos (server-side, contenido actual del Detail)
+         ============================================================ -->
+    <div class="af-tab-panel" id="af-tab-content-datos" role="tabpanel" hidden>
+        <div class="row">
+            <!-- Columna izquierda: Nombres + Datos Personales -->
+            <div class="col-md-6 detail-col-stretch">
+                <div class="detail-info-card">
+                    <div class="detail-info-card-header">
+                        <i class="bi bi-person"></i>
+                        <h6>Nombres</h6>
+                    </div>
+                    <div class="detail-info-card-body">
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-person"></i></div>
+                            <div>
+                                <span class="detail-field-label">Primer Nombre</span>
+                                <span class="detail-field-value">@Model.Per_PrimerNombre</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-person"></i></div>
+                            <div>
+                                <span class="detail-field-label">Segundo Nombre</span>
+                                <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_SegundoNombre) ? "—" : Model.Per_SegundoNombre)</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-person-badge"></i></div>
+                            <div>
+                                <span class="detail-field-label">Apellido Paterno</span>
+                                <span class="detail-field-value">@Model.Per_ApellidoPaterno</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-person-badge"></i></div>
+                            <div>
+                                <span class="detail-field-label">Apellido Materno</span>
+                                <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_ApellidoMaterno) ? "—" : Model.Per_ApellidoMaterno)</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <div class="detail-audit-label">Registrado por</div>
-                    <div class="detail-audit-who">@Model.Per_UsuarioRegistraNombre</div>
-                    <div class="detail-audit-date">
-                        <i class="bi bi-clock"></i> @Model.Per_FechaRegistra.ToString("dd/MM/yyyy HH:mm")
+
+                <div class="detail-info-card">
+                    <div class="detail-info-card-header">
+                        <i class="bi bi-card-text"></i>
+                        <h6>Datos Personales</h6>
+                    </div>
+                    <div class="detail-info-card-body">
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-card-text"></i></div>
+                            <div>
+                                <span class="detail-field-label">Identidad</span>
+                                <span class="detail-field-value">@Model.Per_Identidad</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-calendar2-heart"></i></div>
+                            <div>
+                                <span class="detail-field-label">Fecha de Nacimiento</span>
+                                <span class="detail-field-value">@Model.Per_FechaNacimiento.ToString("dd/MM/yyyy")</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi @sexoIcono"></i></div>
+                            <div>
+                                <span class="detail-field-label">Sexo</span>
+                                <span class="detail-field-value">@sexoTexto</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            @if (Model.Per_FechaModifica.HasValue)
-            {
+
+            <div class="col-md-6 detail-col-stretch">
+                <div class="detail-info-card">
+                    <div class="detail-info-card-header">
+                        <i class="bi bi-telephone"></i>
+                        <h6>Información de Contacto</h6>
+                    </div>
+                    <div class="detail-info-card-body">
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-telephone"></i></div>
+                            <div>
+                                <span class="detail-field-label">Teléfono</span>
+                                <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_Telefono) ? "—" : Model.Per_Telefono)</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-envelope"></i></div>
+                            <div>
+                                <span class="detail-field-label">Correo Electrónico</span>
+                                <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_CorreoElectronico) ? "—" : Model.Per_CorreoElectronico)</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-geo-alt"></i></div>
+                            <div>
+                                <span class="detail-field-label">Dirección</span>
+                                <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_Direccion) ? "—" : Model.Per_Direccion)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-info-card">
+                    <div class="detail-info-card-header">
+                        <i class="bi bi-mortarboard"></i>
+                        <h6>Información Académica</h6>
+                    </div>
+                    <div class="detail-info-card-body">
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-layers"></i></div>
+                            <div>
+                                <span class="detail-field-label">Nivel Educativo</span>
+                                <span class="detail-field-value">@Model.Niv_Descripcion</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-hash"></i></div>
+                            <div>
+                                <span class="detail-field-label">Grado Académico</span>
+                                <span class="detail-field-value">@Model.Cno_Descripcion</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-grid"></i></div>
+                            <div>
+                                <span class="detail-field-label">Modalidad</span>
+                                <span class="detail-field-value">@Model.Mda_Descripcion</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-book"></i></div>
+                            <div>
+                                <span class="detail-field-label">Curso</span>
+                                <span class="detail-field-value">@Model.Cur_Descripcion</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-bookmark"></i></div>
+                            <div>
+                                <span class="detail-field-label">Sección</span>
+                                <span class="detail-field-value">@Model.Sec_Descripcion</span>
+                            </div>
+                        </div>
+                        <div class="detail-field">
+                            <div class="detail-field-icon"><i class="bi bi-calendar-range"></i></div>
+                            <div>
+                                <span class="detail-field-label">Año Cursado</span>
+                                <span class="detail-field-value">@Model.AnioCursado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-info-card">
+            <div class="detail-info-card-header">
+                <i class="bi bi-clock-history"></i>
+                <h6>Información de Registro</h6>
+            </div>
+            <div class="detail-info-card-body">
                 <div class="detail-audit-entry">
-                    <div class="detail-audit-icon modified">
-                        <i class="bi bi-pencil"></i>
+                    <div class="detail-audit-icon created">
+                        <i class="bi bi-plus-circle"></i>
                     </div>
                     <div>
-                        <div class="detail-audit-label">Modificado por</div>
-                        <div class="detail-audit-who">@Model.Per_UsuarioModificaNombre</div>
+                        <div class="detail-audit-label">Registrado por</div>
+                        <div class="detail-audit-who">@Model.Per_UsuarioRegistraNombre</div>
                         <div class="detail-audit-date">
-                            <i class="bi bi-clock"></i> @Model.Per_FechaModifica.Value.ToString("dd/MM/yyyy HH:mm")
+                            <i class="bi bi-clock"></i> @Model.Per_FechaRegistra.ToString("dd/MM/yyyy HH:mm")
                         </div>
                     </div>
                 </div>
-            }
+                @if (Model.Per_FechaModifica.HasValue)
+                {
+                    <div class="detail-audit-entry">
+                        <div class="detail-audit-icon modified">
+                            <i class="bi bi-pencil"></i>
+                        </div>
+                        <div>
+                            <div class="detail-audit-label">Modificado por</div>
+                            <div class="detail-audit-who">@Model.Per_UsuarioModificaNombre</div>
+                            <div class="detail-audit-date">
+                                <i class="bi bi-clock"></i> @Model.Per_FechaModifica.Value.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
+
+    <!-- ============================================================
+         TAB CONTENT — Placeholders (lazy-load vía AJAX)
+         ============================================================ -->
+    <div class="af-tab-panel" id="af-tab-content-academico"  role="tabpanel" hidden></div>
+    <div class="af-tab-panel" id="af-tab-content-asistencia" role="tabpanel" hidden></div>
+    <div class="af-tab-panel" id="af-tab-content-pagos"      role="tabpanel" hidden></div>
+    <div class="af-tab-panel" id="af-tab-content-familia"    role="tabpanel" hidden></div>
+    <div class="af-tab-panel" id="af-tab-content-documentos" role="tabpanel" hidden></div>
+    <div class="af-tab-panel" id="af-tab-content-historial"  role="tabpanel" hidden></div>
 
 </div>
 
 @section Scripts{
     <script src="~/Content/js/pages/alumnos.detail.js"></script>
+    <script src="~/Content/js/pages/alumno-ficha.js"></script>
+    <script>
+        AlumnoFicha.init(@Model.Alu_Id);
+    </script>
 }

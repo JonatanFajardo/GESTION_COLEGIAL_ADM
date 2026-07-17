@@ -15,5 +15,10 @@ namespace GESTION_COLEGIAL.Business.Services
             string url = "Bitacora/ListAsync" + (qs.Length > 0 ? "?" + qs.TrimStart('&') : "");
             return await SendHttpClient.GetAsync<dynamic>(url);
         }
+
+        public async Task<List<dynamic>> ByAlumnoAsync(int Alu_Id)
+        {
+            return await SendHttpClient.GetAsync<dynamic>($"Bitacora/ByAlumnoAsync?Alu_Id={Alu_Id}");
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GESTION_COLEGIAL.Business.Extensions;
+using GESTION_COLEGIAL.Business.Helpers;
 using GESTION_COLEGIAL.Business.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,15 @@ namespace GESTION_COLEGIAL.Business.Services
     /// </summary>
     public class EncargadosService
     {
+        /// <summary>
+        /// Obtiene los encargados vinculados a un alumno.
+        /// </summary>
+        public async Task<List<dynamic>> ByAlumnoAsync(int Alu_Id)
+        {
+            return await SendHttpClient.GetAsync<dynamic>($"Encargados/ByAlumnoAsync?Alu_Id={Alu_Id}");
+        }
+
+
         /// <summary>
         /// Obtiene una lista de encargados de forma asincrónica.
         /// </summary>
