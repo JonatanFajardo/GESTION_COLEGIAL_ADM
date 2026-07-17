@@ -134,33 +134,6 @@
 }
 
 /* ----------------------------------------
-   TARJETAS DE REGISTRO
-   ---------------------------------------- */
-.asi-rec-card {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 1rem 1.125rem;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
-    border: 1px solid #e5e7eb;
-    border-left: 5px solid #dee2e6;   /* default, sobreescrito por tipo */
-    display: flex;
-    align-items: flex-start;
-    gap: 0.875rem;
-    margin-bottom: 1rem;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.asi-rec-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1);
-}
-
-.asi-rec-card.tipo-presente { border-left-color: var(--present-color); }
-.asi-rec-card.tipo-ausente  { border-left-color: var(--absent-color);  }
-.asi-rec-card.tipo-tardanza { border-left-color: var(--late-color);    }
-.asi-rec-card.tipo-permiso  { border-left-color: var(--permit-color);  }
-
-/* ----------------------------------------
    AVATAR DE INICIALES
    ---------------------------------------- */
 .asi-avatar {
@@ -175,7 +148,7 @@
     color: #ffffff;
     flex-shrink: 0;
     overflow: hidden;
-    background: #94a3b8;     /* fallback; JS asigna color real */
+    background: #94a3b8;
 }
 
 .asi-avatar img {
@@ -184,91 +157,395 @@
     object-fit: cover;
 }
 
-/* Colores de avatar según tipo */
-.tipo-presente .asi-avatar { background: var(--present-color); }
-.tipo-ausente  .asi-avatar { background: var(--absent-color);  }
-.tipo-tardanza .asi-avatar { background: var(--late-color);    }
-.tipo-permiso  .asi-avatar { background: var(--permit-color);  }
+.asi-avatar-sm { width: 34px; height: 34px; font-size: 0.75rem; }
+.asi-avatar-md { width: 52px; height: 52px; font-size: 1rem; }
 
 /* ----------------------------------------
-   CUERPO DE LA TARJETA DE REGISTRO
+   SPLIT VIEW: LISTA + CALENDARIO
    ---------------------------------------- */
-.asi-rec-body {
+.asi-split-view {
+    display: grid;
+    grid-template-columns: minmax(300px, 380px) 1fr;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.asi-split-left,
+.asi-split-right {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* Panel header */
+.asi-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.1rem;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.asi-panel-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+}
+
+.asi-panel-title i { color: #6b7280; }
+
+.asi-panel-count {
+    background: #F7A400;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 20px;
+    min-width: 26px;
+    text-align: center;
+}
+
+/* Buscador de la lista */
+.asi-list-search {
+    position: relative;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.asi-list-search i {
+    position: absolute;
+    left: 1.55rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.asi-list-search .form-control {
+    padding-left: 2.3rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #1f2937;
+    height: auto;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.asi-list-search .form-control:focus {
+    border-color: #F7A400;
+    box-shadow: 0 0 0 3px rgba(247, 164, 0, 0.15);
+    outline: none;
+}
+
+/* ----------------------------------------
+   LISTA DE EMPLEADOS
+   ---------------------------------------- */
+.asi-empleados-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.asi-emp-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    position: relative;
+}
+
+.asi-emp-item:hover {
+    background: #f9fafb;
+}
+
+.asi-emp-item.is-active {
+    background: rgba(247, 164, 0, 0.08);
+    box-shadow: inset 3px 0 0 #F7A400;
+}
+
+.asi-emp-item.is-active .asi-emp-nombre { color: #b45309; }
+
+.asi-emp-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    flex-shrink: 0;
+}
+
+.asi-emp-dot.estado-ok     { background: var(--present-color); }
+.asi-emp-dot.estado-medio  { background: var(--late-color);    }
+.asi-emp-dot.estado-bajo   { background: var(--absent-color);  }
+.asi-emp-dot.estado-sinreg { background: #cbd5e1;              }
+
+.asi-emp-body {
     flex: 1;
     min-width: 0;
 }
 
-.asi-rec-nombre {
-    font-weight: 700;
-    color: #111827;
-    font-size: 0.9375rem;
+.asi-emp-nombre {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #1f2937;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.25rem;
 }
 
-.asi-rec-meta {
+.asi-emp-meta {
     display: flex;
     align-items: center;
+    gap: 0.3rem;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    font-size: 0.8125rem;
-    color: #6b7280;
 }
 
-.asi-rec-fecha {
+.asi-mini-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-}
-
-.asi-rec-obs {
-    font-size: 0.8125rem;
-    color: #9ca3af;
-    font-style: italic;
-    margin-top: 0.35rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* ----------------------------------------
-   BADGE DE TIPO
-   ---------------------------------------- */
-.asi-badge {
-    display: inline-block;
-    padding: 0.28em 0.72em;
-    border-radius: 20px;
-    font-size: 0.75rem;
+    gap: 0.25rem;
+    font-size: 0.7rem;
     font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 10px;
+    background: #f1f5f9;
+    color: #64748b;
     line-height: 1;
     white-space: nowrap;
 }
 
-.asi-badge.badge-presente {
-    background: var(--present-soft);
-    color: var(--present-color);
-    border: 1px solid rgba(0, 176, 155, 0.25);
+.asi-mini-badge i { font-size: 0.7rem; }
+
+.asi-mini-badge.mini-presente { background: var(--present-soft); color: var(--present-color); }
+.asi-mini-badge.mini-ausente  { background: var(--absent-soft);  color: var(--absent-color);  }
+.asi-mini-badge.mini-tardanza { background: var(--late-soft);    color: var(--late-color);    }
+.asi-mini-badge.mini-permiso  { background: var(--permit-soft);  color: var(--permit-color);  }
+
+.asi-emp-estado {
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 54px;
 }
 
-.asi-badge.badge-ausente {
-    background: var(--absent-soft);
-    color: var(--absent-color);
-    border: 1px solid rgba(231, 76, 60, 0.25);
+.asi-emp-pct {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #1f2937;
 }
 
-.asi-badge.badge-tardanza {
-    background: var(--late-soft);
-    color: var(--late-color);
-    border: 1px solid rgba(247, 151, 30, 0.25);
+.asi-emp-pct.estado-ok    { color: var(--present-color); }
+.asi-emp-pct.estado-medio { color: var(--late-color);    }
+.asi-emp-pct.estado-bajo  { color: var(--absent-color);  }
+
+.asi-emp-sinreg {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    font-style: italic;
 }
 
-.asi-badge.badge-permiso {
-    background: var(--permit-soft);
-    color: var(--permit-color);
-    border: 1px solid rgba(58, 123, 213, 0.25);
+.asi-empty-inline {
+    padding: 2rem 1rem;
 }
+
+/* ----------------------------------------
+   PANEL CALENDARIO
+   ---------------------------------------- */
+.asi-calendar-panel {
+    padding: 1.25rem;
+    min-height: 480px;
+}
+
+.asi-cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.asi-cal-emp {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+}
+
+.asi-cal-emp-info { min-width: 0; }
+
+.asi-cal-emp-nombre {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 260px;
+}
+
+.asi-cal-emp-codigo {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.15rem;
+}
+
+.asi-cal-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.asi-cal-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1.5px solid #e5e7eb;
+    background: #ffffff;
+    color: #6b7280;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.asi-cal-btn:hover {
+    border-color: #F7A400;
+    color: #F7A400;
+    background: rgba(247, 164, 0, 0.06);
+}
+
+.asi-cal-mes {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #1f2937;
+    min-width: 130px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.asi-cal-sub {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+/* Grid del calendario */
+.asi-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.asi-cal-dow {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.35rem 0;
+}
+
+.asi-cal-dow.es-finde { color: #9ca3af; }
+
+.asi-cal-cell {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    background: #f9fafb;
+    border: 1.5px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.35rem;
+    transition: transform 0.12s ease;
+    overflow: hidden;
+}
+
+.asi-cal-cell:hover { transform: scale(1.03); }
+
+.asi-cal-cell.asi-cal-empty {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    pointer-events: none;
+}
+
+.asi-cal-day-num {
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.asi-cal-day-icon {
+    font-size: 0.95rem;
+    line-height: 1;
+    opacity: 0.85;
+}
+
+.asi-cal-cell.es-finde { background: #f3f4f6; border-color: #eceff3; color: #9ca3af; }
+
+.asi-cal-cell.es-hoy {
+    outline: 2px solid #F7A400;
+    outline-offset: -2px;
+}
+
+.asi-cal-cell.dia-sinreg   { background: #f9fafb; color: #cbd5e1; }
+.asi-cal-cell.dia-presente { background: var(--present-soft); border-color: rgba(0, 176, 155, 0.35);  color: var(--present-color); }
+.asi-cal-cell.dia-ausente  { background: var(--absent-soft);  border-color: rgba(231, 76, 60, 0.35);  color: var(--absent-color);  }
+.asi-cal-cell.dia-tardanza { background: var(--late-soft);    border-color: rgba(247, 151, 30, 0.35); color: var(--late-color);    }
+.asi-cal-cell.dia-permiso  { background: var(--permit-soft);  border-color: rgba(58, 123, 213, 0.35); color: var(--permit-color);  }
+
+/* Leyenda */
+.asi-cal-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid #f1f5f9;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.legend-swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1.5px solid transparent;
+}
+
+.legend-swatch.swatch-presente { background: var(--present-soft); border-color: rgba(0, 176, 155, 0.35);  }
+.legend-swatch.swatch-ausente  { background: var(--absent-soft);  border-color: rgba(231, 76, 60, 0.35);  }
+.legend-swatch.swatch-tardanza { background: var(--late-soft);    border-color: rgba(247, 151, 30, 0.35); }
+.legend-swatch.swatch-permiso  { background: var(--permit-soft);  border-color: rgba(58, 123, 213, 0.35); }
+.legend-swatch.swatch-sinreg   { background: #f9fafb;             border-color: #e5e7eb;                  }
 
 /* ----------------------------------------
    ESTADO VACÍO
@@ -305,6 +582,13 @@
    RESPONSIVE
    ---------------------------------------- */
 /* Tablet */
+@media (max-width: 992px) {
+    .asi-split-view {
+        grid-template-columns: 1fr;
+    }
+    .asi-empleados-list { max-height: 380px; }
+}
+
 @media (max-width: 768px) {
     .asi-kpi-card {
         padding: 1rem 1.125rem;
@@ -314,54 +598,39 @@
     .asi-kpi-value { font-size: 1.5rem; }
 
     .asi-filtros-card { padding: 1rem; }
+
+    .asi-cal-emp-nombre { max-width: 180px; }
+    .asi-cal-mes { min-width: 100px; font-size: 0.875rem; }
 }
 
 /* Teléfonos */
 @media (max-width: 575px) {
-    /* KPI cards: 2 por fila en móvil */
     #asi-kpis > [class*="col-"] {
         flex: 0 0 50%;
         max-width: 50%;
     }
 
-    .asi-kpi-card {
-        gap: 0.75rem;
-        padding: 0.875rem 1rem;
-    }
-
-    .asi-kpi-icon {
-        width: 38px;
-        height: 38px;
-        font-size: 0.95rem;
-    }
-
+    .asi-kpi-card { gap: 0.75rem; padding: 0.875rem 1rem; }
+    .asi-kpi-icon { width: 38px; height: 38px; font-size: 0.95rem; }
     .asi-kpi-value { font-size: 1.375rem; }
     .asi-kpi-label { font-size: 0.7rem; }
 
-    /* Cards de registro a 1 columna — ya están en col-md-12 */
-    .asi-rec-card {
-        padding: 0.75rem;
-        gap: 0.625rem;
-    }
-
-    .asi-avatar {
-        width: 36px;
-        height: 36px;
-        font-size: 0.75rem;
-    }
-
-    .asi-rec-nombre { font-size: 0.875rem; }
-    .asi-rec-meta   { font-size: 0.75rem; }
-    .asi-rec-obs    { font-size: 0.75rem; }
-
-    /* Tap targets: inputs y botón */
     .asi-filtros-card .form-control,
     .asi-filtros-card .btn {
         min-height: 44px;
-        font-size: 16px; /* evita zoom iOS */
+        font-size: 16px;
     }
-
     .asi-filtros-card { padding: 0.875rem; }
+
+    .asi-calendar-panel { padding: 0.85rem; }
+    .asi-cal-cell { padding: 0.2rem; font-size: 0.75rem; }
+    .asi-cal-day-num { font-size: 0.65rem; }
+    .asi-cal-day-icon { font-size: 0.8rem; }
+    .asi-cal-dow { font-size: 0.65rem; }
+    .asi-cal-grid { gap: 4px; }
+
+    .asi-emp-item { padding: 0.65rem 0.85rem; gap: 0.6rem; }
+    .asi-mini-badge { font-size: 0.65rem; padding: 0.12rem 0.35rem; }
 }
 
 /* Teléfono muy pequeño */
@@ -384,43 +653,27 @@
     .asi-kpi-icon  { width: 52px; height: 52px; font-size: 1.25rem; }
     .asi-kpi-label { font-size: 0.8125rem; }
 
-    .asi-rec-card   { padding: 1.125rem 1.375rem; }
-    .asi-rec-nombre { font-size: 1rem; }
-    .asi-rec-meta   { font-size: 0.875rem; }
-
-    .asi-avatar { width: 48px; height: 48px; font-size: 0.9375rem; }
+    .asi-split-view { grid-template-columns: minmax(340px, 420px) 1fr; }
+    .asi-cal-emp-nombre { font-size: 1.125rem; max-width: 320px; }
 }
 
 /* ─────────────────────────────────────────
    4 K: 2560 px y superior
    ───────────────────────────────────────── */
 @media (min-width: 2560px) {
-    /* KPIs: mantener 4 columnas pero con padding mayor */
     .asi-kpi-card  { padding: 1.875rem 2.25rem; }
     .asi-kpi-value { font-size: 2.75rem; }
     .asi-kpi-icon  { width: 62px; height: 62px; font-size: 1.5rem; }
     .asi-kpi-label { font-size: 0.875rem; letter-spacing: 0.08em; }
 
-    /* Tarjetas de registro: 3 columnas en 4K (col-xl-4 natural de BS4) */
-    #asi-cards-container > [class*="col-"] {
-        flex: 0 0 33.3333%;
-        max-width: 33.3333%;
-    }
-
-    .asi-rec-card   { padding: 1.375rem 1.625rem; border-left-width: 6px; }
-    .asi-rec-nombre { font-size: 1.0625rem; }
-    .asi-rec-meta   { font-size: 0.9rem; }
-    .asi-rec-obs    { font-size: 0.875rem; }
-
-    .asi-avatar { width: 54px; height: 54px; font-size: 1rem; }
-
-    .asi-badge {
-        font-size: 0.8125rem;
-        padding: 0.35em 0.9em;
-    }
+    .asi-split-view { grid-template-columns: minmax(400px, 480px) 1fr; }
 
     .asi-filtros-card { padding: 1.5rem 2rem; }
     .asi-filtros-card .form-control { padding: 0.875rem 1.125rem; font-size: 1rem; }
+
+    .asi-cal-cell { font-size: 1rem; }
+    .asi-cal-day-num { font-size: 0.875rem; }
+    .asi-cal-day-icon { font-size: 1.15rem; }
 
     .asi-empty-state .asi-empty-icon { font-size: 4.5rem; }
     .asi-empty-state p { font-size: 1.125rem; }

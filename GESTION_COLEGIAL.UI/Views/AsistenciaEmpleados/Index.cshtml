@@ -32,7 +32,7 @@
         </div>
         <div class="header-action-catalogo">
             <button id="btn-registrar-asistencia" class="btn-nuevo-catalogo">
-                <i class="mdi mdi-plus-circle-outline"></i> Registrar Asistencia
+                <i class="fa-solid fa-plus-circle"></i> Registrar Asistencia
             </button>
         </div>
     </div>
@@ -73,8 +73,31 @@
     @* KPI Cards — llenado por JS *@
     <div id="asi-kpis" class="row"></div>
 
-    @* Tarjetas de registro — llenado por JS *@
-    <div id="asi-cards-container" class="row"></div>
+    @* Split view: lista de empleados (izquierda) + calendario (derecha) *@
+    <div id="asi-split-view" class="asi-split-view">
+        <div class="asi-split-left">
+            <div class="asi-panel-header">
+                <div class="asi-panel-title">
+                    <i class="fa-solid fa-users mr-2"></i>
+                    <span>Empleados</span>
+                </div>
+                <span id="asi-empleados-count" class="asi-panel-count">0</span>
+            </div>
+            <div class="asi-list-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="asi-buscar-empleado" class="form-control" placeholder="Buscar empleado..." autocomplete="off" />
+            </div>
+            <div id="asi-empleados-list" class="asi-empleados-list"></div>
+        </div>
+        <div class="asi-split-right">
+            <div id="asi-calendar-panel" class="asi-calendar-panel">
+                <div class="asi-empty-state">
+                    <div class="asi-empty-icon"><i class="fa-regular fa-calendar"></i></div>
+                    <p>Selecciona un empleado de la lista para ver su calendario de asistencia.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
