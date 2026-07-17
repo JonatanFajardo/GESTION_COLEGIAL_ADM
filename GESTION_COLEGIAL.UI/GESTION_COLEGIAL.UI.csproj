@@ -534,6 +534,7 @@
     <Content Include="Content\js\pages\alumno-ficha.js" />
     <Content Include="Content\css\pages\alumno-ficha.css" />
     <Content Include="Content\css\pages\notas-boletin.css" />
+    <Content Include="Content\css\pages\docencia-diaria.css" />
     <Content Include="Content\css\pages\directorio-contacto.css" />
     <Content Include="Content\js\pages\coming-soon\coming-soon.js" />
     <Content Include="Content\js\pages\conceptospago.js" />

@@ -1,0 +1,139 @@
+/* ============================================================
+   Docencia Diaria — hub con tabs (Pase de Lista / Plan / Tareas)
+   Contraste: color explícito declarado en cada capa.
+   ============================================================ */
+
+/* ---- Selector de horario compartido ---- */
+.dd-selector-card {
+    border: 1px solid #e5e7eb;
+    border-left: 4px solid #4f46e5;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.dd-selector-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.dd-selector-label i {
+    color: #4f46e5;
+    margin-right: 4px;
+}
+
+.dd-selector-hint {
+    font-size: 12.5px;
+    color: #6b7280;
+}
+
+.dd-selector-hint i {
+    color: #4f46e5;
+    margin-right: 3px;
+}
+
+/* ---- Tabs ---- */
+.dd-tabs-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 6px;
+    margin-bottom: 16px;
+}
+
+.dd-tabs {
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.dd-tab-item {
+    flex: 1 1 auto;
+}
+
+.dd-tab-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.dd-tab-link:hover {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.dd-tab-item.active .dd-tab-link {
+    background-color: #4f46e5;
+    color: #ffffff;
+}
+
+.dd-tab-item.active .dd-tab-link .dd-tab-icon i {
+    color: #ffffff;
+}
+
+.dd-tab-icon i {
+    font-size: 16px;
+    color: inherit;
+}
+
+.dd-tab-label {
+    color: inherit;
+}
+
+/* ---- Toolbar interna de los tabs Plan / Tareas ---- */
+.dd-panel-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.dd-panel-desc {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.dd-panel-desc i {
+    color: #4f46e5;
+    margin-right: 4px;
+}
+
+/* ---- Labels de campos dentro de los tabs ---- */
+.dd-field-label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 767.98px) {
+    .dd-tab-link {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .dd-selector-label,
+    .dd-selector-hint {
+        margin-bottom: 4px;
+    }
+}
