@@ -367,6 +367,40 @@
     pointer-events: none;
 }
 
+/* Miembros ocultos por defecto (tras el umbral "Ver más") */
+.dep-employees.has-toggle .emp-card.emp-extra { display: none; }
+.dep-employees.has-toggle.expanded .emp-card.emp-extra { display: flex; }
+
+/* Botón "Ver más / Ver menos" por columna */
+.dep-toggle {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 2px;
+    border: 1px dashed #c2cbe0;
+    background: #fff;
+    color: var(--dep-color, #3a7bd5);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, box-shadow .15s;
+    line-height: 1;
+}
+
+.dep-toggle:hover {
+    background: var(--dep-color-soft, rgba(58,123,213,.10));
+    border-color: var(--dep-color, #3a7bd5);
+    box-shadow: 0 2px 6px rgba(20,30,60,.08);
+}
+
+.dep-toggle:focus { outline: none; box-shadow: 0 0 0 3px rgba(58,123,213,.18); }
+
+.dep-toggle i { font-size: 11px; }
+
 /* Tarjeta de empleado (tree) */
 .emp-card {
     background: #fff;

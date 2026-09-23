@@ -8,6 +8,9 @@ var Organigrama = (function () {
 
     var PALETTE = ['#3a7bd5', '#00b09b', '#f7971e', '#8e44ad', '#e74c3c', '#16a085', '#d35400'];
 
+    /* Nº de miembros visibles por defecto en cada columna (tree). */
+    var TREE_LIMIT = 5;
+
     var _employees  = [];
     var _mode       = 'directory'; /* 'tree' | 'directory' */
     var _activeDept = 'all';
@@ -79,6 +82,17 @@ var Organigrama = (function () {
 
     /* ── TREE VIEW ──────────────────────────────────────────────── */
 
+    /* Refresca el texto/ícono del botón "Ver más / Ver menos" de una columna. */
+    function refreshDepToggle($empList) {
+        var $btn = $empList.find('.dep-toggle');
+        if (!$btn.length) return;
+        var expanded = $empList.hasClass('expanded');
+        var hidden   = parseInt($btn.attr('data-hidden'), 10) || 0;
+        $btn.html(expanded
+            ? '<i class="bi bi-chevron-up"></i> Ver menos'
+            : '<i class="bi bi-chevron-down"></i> Ver más (' + hidden + ')');
+    }
+
     function updateConnector() {
         var $deps = $('#org-deps-row');
         if (!$deps.length) return;
@@ -134,7 +148,7 @@ var Organigrama = (function () {
                 var cargo  = (emp.Emp_Cargo && emp.Emp_Cargo.trim()) ? emp.Emp_Cargo.trim() : '—';
                 var rawIni = initials(emp.Emp_NombreCompleto, emp.Emp_Codigo);
                 var ini    = (rawIni !== '??') ? rawIni : (fallbackNum.length === 1 ? '0' + fallbackNum : fallbackNum.slice(0, 2));
-                $('<div class="emp-card">' +
+                $('<div class="emp-card' + (empIdx >= TREE_LIMIT ? ' emp-extra' : '') + '">' +
                     '<div class="emp-avatar">' + esc(ini) + '</div>' +
                     '<div class="emp-info">' +
                         '<div class="emp-name" title="' + esc(nombre) + '">' + esc(nombre) + '</div>' +
@@ -142,6 +156,19 @@ var Organigrama = (function () {
                     '</div>' +
                 '</div>').css('--avatar-bg', color).appendTo($empList);
             });
+
+            /* Toggle "Ver más / Ver menos" cuando la columna supera el umbral. */
+            if (emps.length > TREE_LIMIT) {
+                var hiddenCount = emps.length - TREE_LIMIT;
+                var $toggle = $('<button type="button" class="dep-toggle" data-hidden="' + hiddenCount + '"></button>');
+                $toggle.on('click', function (e) {
+                    e.stopPropagation();
+                    $empList.toggleClass('expanded');
+                    refreshDepToggle($empList);
+                });
+                $empList.addClass('has-toggle').append($toggle);
+                refreshDepToggle($empList);
+            }
 
             $depCard.on('click', function () { $dep.toggleClass('collapsed'); });
             $dep.append($depCard).append($empList);
@@ -278,8 +305,17 @@ var Organigrama = (function () {
                 if (!q) {
                     $('.emp-card').removeClass('dim match');
                     $('.org-dep').removeClass('collapsed');
+                    /* Al limpiar la búsqueda, volver a colapsar los "Ver más". */
+                    $('.dep-employees.has-toggle').removeClass('expanded').each(function () {
+                        refreshDepToggle($(this));
+                    });
                     return;
                 }
+                /* Con búsqueda activa se expanden todas las columnas para poder
+                   resaltar miembros que estaban ocultos tras "Ver más". */
+                $('.dep-employees.has-toggle').addClass('expanded').each(function () {
+                    refreshDepToggle($(this));
+                });
                 $('.emp-card').each(function () {
                     var hit = $(this).find('.emp-name').text().toLowerCase().indexOf(q) !== -1 ||
                               $(this).find('.emp-cargo').text().toLowerCase().indexOf(q) !== -1;
