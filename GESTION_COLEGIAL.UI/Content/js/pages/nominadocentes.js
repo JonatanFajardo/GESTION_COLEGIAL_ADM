@@ -5,6 +5,7 @@
 
     var URL_LIST = "/NominaDocentes/ListAsync";
     var URL_DETALLE = "/NominaDocentes/DetalleAsync";
+    var URL_PLANILLA = "/NominaDocentes/PlanillaAsync";
 
     var DIAS_LABEL = {
         1: "Lunes", 2: "Martes", 3: "Miércoles", 4: "Jueves",
@@ -289,11 +290,125 @@
     }
 
     /* ------------------------------------------------------------ */
+    /* Exportación CSV (cliente, sin librerías externas)             */
+    /* ------------------------------------------------------------ */
+    function csvCampo(valor) {
+        // Envuelve en comillas y escapa comillas internas. Prefijo BOM aparte.
+        var s = (valor == null) ? "" : String(valor);
+        s = s.replace(/"/g, '""');
+        return '"' + s + '"';
+    }
+
+    function numeroCsv(n) {
+        // Número plano con 2 decimales, punto decimal (compatible con Excel/Sheets).
+        if (n == null || isNaN(n)) return "0.00";
+        return Number(n).toFixed(2);
+    }
+
+    function nombrePeriodo() {
+        var anio = $("#filtroAnio").val();
+        var sem = $("#filtroSemestre").val();
+        return anio + "-S" + sem;
+    }
+
+    function exportarCsv() {
+        if (!state.filtered || state.filtered.length === 0) {
+            if (window.alert) window.alert("No hay docentes para exportar en este período.");
+            return;
+        }
+
+        var encabezados = [
+            "Codigo", "Docente", "Titulo", "Area", "Modalidad",
+            "Materias", "Secciones", "Periodos/mes", "Extra/mes",
+            "Sueldo bruto", "Horas extra", "Total bruto",
+            "IHSS", "ISR", "Colegio profesional", "Total deducciones", "Neto a pagar"
+        ];
+
+        var lineas = [encabezados.map(csvCampo).join(",")];
+
+        state.filtered.forEach(function (n) {
+            var fila = [
+                csvCampo(n.Emp_Codigo),
+                csvCampo(n.NombreCompleto),
+                csvCampo(n.TituloDescripcion),
+                csvCampo(AREA_LABEL[n.AreaPrincipal] || n.AreaPrincipal || ""),
+                csvCampo(n.ModalidadPrincipal),
+                csvCampo(n.MateriasDistintas),
+                csvCampo(n.SeccionesAtendidas),
+                csvCampo(n.PeriodosMensuales),
+                csvCampo(n.PeriodosExtraMensuales),
+                numeroCsv(n.SueldoBruto),
+                numeroCsv(n.HorasExtraMonto),
+                numeroCsv(n.TotalBruto),
+                numeroCsv(n.DeduccionIHSS),
+                numeroCsv(n.DeduccionISR),
+                numeroCsv(n.DeduccionColegio),
+                numeroCsv(n.TotalDeducciones),
+                numeroCsv(n.NetoAPagar)
+            ];
+            lineas.push(fila.join(","));
+        });
+
+        // Fila de totales
+        var t = state.filtered.reduce(function (acc, n) {
+            acc.bruto += n.SueldoBruto || 0;
+            acc.extra += n.HorasExtraMonto || 0;
+            acc.totalBruto += n.TotalBruto || 0;
+            acc.ihss += n.DeduccionIHSS || 0;
+            acc.isr += n.DeduccionISR || 0;
+            acc.colegio += n.DeduccionColegio || 0;
+            acc.ded += n.TotalDeducciones || 0;
+            acc.neto += n.NetoAPagar || 0;
+            return acc;
+        }, { bruto: 0, extra: 0, totalBruto: 0, ihss: 0, isr: 0, colegio: 0, ded: 0, neto: 0 });
+
+        var totales = [
+            csvCampo("TOTALES (" + state.filtered.length + " docentes)"),
+            "", "", "", "", "", "", "", "",
+            numeroCsv(t.bruto),
+            numeroCsv(t.extra),
+            numeroCsv(t.totalBruto),
+            numeroCsv(t.ihss),
+            numeroCsv(t.isr),
+            numeroCsv(t.colegio),
+            numeroCsv(t.ded),
+            numeroCsv(t.neto)
+        ];
+        lineas.push(totales.join(","));
+
+        // BOM UTF-8 (﻿) para que Excel respete acentos (á, é, í, ñ...).
+        var contenido = "﻿" + lineas.join("\r\n");
+        var blob = new Blob([contenido], { type: "text/csv;charset=utf-8;" });
+        var nombre = "nomina-docentes-" + nombrePeriodo() + ".csv";
+
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = nombre;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 100);
+    }
+
+    /* ------------------------------------------------------------ */
+    /* Impresión / PDF — abre la vista imprimible en pestaña nueva   */
+    /* ------------------------------------------------------------ */
+    function imprimirPlanilla() {
+        var anio = $("#filtroAnio").val();
+        var sem = $("#filtroSemestre").val();
+        var url = URL_PLANILLA + "?anio=" + encodeURIComponent(anio) + "&semestre=" + encodeURIComponent(sem);
+        window.open(url, "_blank");
+    }
+
+    /* ------------------------------------------------------------ */
     /* Eventos                                                       */
     /* ------------------------------------------------------------ */
     function bind() {
         $("#filtroAnio, #filtroSemestre").on("change", cargar);
         $("#filtroOrden").on("change", aplicarFiltros);
+        $("#btnExportCsv").on("click", exportarCsv);
+        $("#btnImprimir").on("click", imprimirPlanilla);
         var deb;
         $("#filtroBusqueda").on("input", function () {
             clearTimeout(deb);

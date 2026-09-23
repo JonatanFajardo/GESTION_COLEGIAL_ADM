@@ -5,6 +5,24 @@
 
 @section styles {
     <link rel="stylesheet" href="~/Content/css/pages/nomina-docentes.css" />
+    <style>
+        .nomina-docentes .nd-resultado-info {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; flex-wrap: wrap;
+        }
+        .nomina-docentes .nd-acciones { display: flex; gap: 8px; }
+        .nomina-docentes .nd-btn-accion {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #fff; color: #059669;
+            border: 1px solid #059669; border-radius: 8px;
+            padding: 7px 14px; font-size: 0.82rem; font-weight: 600;
+            cursor: pointer; transition: background .15s, color .15s;
+        }
+        .nomina-docentes .nd-btn-accion:hover { background: #059669; color: #fff; }
+        .nomina-docentes .nd-btn-accion:disabled { opacity: .5; cursor: not-allowed; }
+        .nomina-docentes .nd-btn-accion--print { color: #4f46e5; border-color: #4f46e5; }
+        .nomina-docentes .nd-btn-accion--print:hover { background: #4f46e5; color: #fff; }
+    </style>
 }
 
 <div class="nomina-docentes">
@@ -84,9 +102,17 @@
         </div>
     </div>
 
-    <!-- Contador -->
+    <!-- Contador + acciones de exportación -->
     <div class="nd-resultado-info">
         <span id="ndContador">0 docentes</span>
+        <div class="nd-acciones">
+            <button type="button" id="btnExportCsv" class="nd-btn-accion">
+                <i class="bi bi-filetype-csv"></i> Exportar CSV
+            </button>
+            <button type="button" id="btnImprimir" class="nd-btn-accion nd-btn-accion--print">
+                <i class="bi bi-printer"></i> Imprimir / PDF
+            </button>
+        </div>
     </div>
 
     <!-- Grid de cards -->
