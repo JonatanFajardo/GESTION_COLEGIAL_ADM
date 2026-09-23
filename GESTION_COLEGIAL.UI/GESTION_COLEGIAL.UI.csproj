@@ -214,6 +214,8 @@
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\OrganigramaController.cs" />
     <Compile Include="Controllers\PagosDelDiaController.cs" />
+    <Compile Include="Controllers\CarteraController.cs" />
+    <Compile Include="Controllers\MatriculaController.cs" />
     <Compile Include="Controllers\PendientesCobrarController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\PersonasController.cs" />
@@ -313,8 +315,9 @@
     <Content Include="Content\js\pages\notificaciones.js" />
     <Content Include="Content\js\pages\organigrama.js" />
     <Content Include="Content\js\pages\pagos.js" />
-    <Content Include="Content\js\pages\pagosdelia.js" />
     <Content Include="Content\js\pages\pagosdia.js" />
+    <Content Include="Content\js\pages\cartera.js" />
+    <Content Include="Content\js\pages\matricula.js" />
     <Content Include="Content\js\pages\pendientescobrar.js" />
     <Content Include="Content\js\pages\piramidematricula.js" />
     <Content Include="Content\js\pages\planclasesadm.js" />
@@ -1601,6 +1604,7 @@
     <Content Include="Views\ds HorarioProfesores\Index.cshtml" />
     <Content Include="Views\ds Notas\Index.cshtml" />
     <Content Include="Views\Shared\_sidebar.cshtml" />
+    <Content Include="Views\Shared\_commandPalette.cshtml" />
     <Content Include="Views\Shared\_header.cshtml" />
     <Content Include="Views\Shared\_footer.cshtml" />
     <Content Include="Views\CursosNiveles\Index.cshtml" />
@@ -1617,6 +1621,9 @@
     <Content Include="Views\DashboardAulas\Index.cshtml" />
     <Content Include="Views\VisorHorarios\Index.cshtml" />
     <Content Include="Views\NominaDocentes\Index.cshtml" />
+    <Content Include="Views\NominaDocentes\Planilla.cshtml" />
+    <Content Include="Views\Cartera\Index.cshtml" />
+    <Content Include="Views\Matricula\Index.cshtml" />
     <Content Include="Views\GraduacionAlumnos\Index.cshtml" />
     <Content Include="Views\GraduacionAlumnos\BackfillIndex.cshtml" />
     <Content Include="Views\AlumnosGraduados\Index.cshtml" />
