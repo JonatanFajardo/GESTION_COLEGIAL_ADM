@@ -6,6 +6,35 @@
 @section Styles{
     <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
     <link href="~/Content/css/pages/cumplimientodocumentos.css" rel="stylesheet" />
+    <style>
+        .cdoc-stat-card-icon.icon-vencimientos { background: #fef2f2; color: #ef4444; }
+        .cdoc-venc-badge { display:inline-block; padding:1px 8px; border-radius:20px; font-size:.66rem; font-weight:700; margin-left:4px; }
+        .cdoc-venc-vencido    { background:#fee2e2; color:#b91c1c; }
+        .cdoc-venc-por-vencer { background:#fef3c7; color:#92400e; }
+        .cdoc-venc-vigente    { background:#dcfce7; color:#166534; }
+        .cdoc-doc-item { cursor: pointer; }
+        .cdoc-doc-item:hover { background: #f8fafc; }
+
+        /* Tabs Incompletos / Completos */
+        .cdoc-tabs { border-bottom: 2px solid #e5e7eb; margin-bottom: 1.25rem; padding-left: 0; list-style: none; display: flex; gap: .25rem; }
+        .cdoc-tab-item { margin-bottom: -2px; }
+        .cdoc-tab-link {
+            display: inline-flex; align-items: center; gap: .5rem;
+            padding: .6rem 1.1rem; border: none; background: transparent;
+            color: #64748b; font-weight: 600; font-size: .9rem;
+            border-bottom: 2px solid transparent; cursor: pointer;
+        }
+        .cdoc-tab-link:hover { color: #4f46e5; }
+        .cdoc-tab-item.active .cdoc-tab-link { color: #4f46e5; border-bottom-color: #4f46e5; }
+        .cdoc-tab-count {
+            display: inline-block; min-width: 22px; text-align: center;
+            padding: 1px 8px; border-radius: 20px; font-size: .72rem; font-weight: 700;
+            background: #e5e7eb; color: #334155;
+        }
+        .cdoc-tab-item.active .cdoc-tab-link .cdoc-tab-count { background: #4f46e5; color: #fff; }
+        .cdoc-tab-item[data-tab="completos"].active .cdoc-tab-link { color: #166534; border-bottom-color: #166534; }
+        .cdoc-tab-item[data-tab="completos"].active .cdoc-tab-link .cdoc-tab-count { background: #166534; color: #fff; }
+    </style>
 }
 
 @* BREADCRUMB *@
@@ -39,7 +68,7 @@
     <div id="cdoc-stats" class="row mb-4">
 
         @* Tarjeta: % Cumplimiento Global *@
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="cdoc-stat-card stat-global">
                 <div class="cdoc-stat-card-header">
                     <p class="cdoc-stat-card-title">Cumplimiento Global</p>
@@ -62,7 +91,7 @@
         </div>
 
         @* Tarjeta: Documentos Entregados *@
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="cdoc-stat-card stat-entregados">
                 <div class="cdoc-stat-card-header">
                     <p class="cdoc-stat-card-title">Documentos Entregados</p>
@@ -76,7 +105,7 @@
         </div>
 
         @* Tarjeta: Documentos Pendientes *@
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="cdoc-stat-card stat-pendientes">
                 <div class="cdoc-stat-card-header">
                     <p class="cdoc-stat-card-title">Documentos Pendientes</p>
@@ -86,6 +115,20 @@
                 </div>
                 <p class="cdoc-stat-value" id="cdoc-stat-pendientes">—</p>
                 <p class="cdoc-stat-sub">aún sin registrar entrega</p>
+            </div>
+        </div>
+
+        @* Tarjeta: Vencimientos (accionable) *@
+        <div class="col-md-3 mb-3">
+            <div class="cdoc-stat-card stat-vencimientos">
+                <div class="cdoc-stat-card-header">
+                    <p class="cdoc-stat-card-title">Vencimientos</p>
+                    <div class="cdoc-stat-card-icon icon-vencimientos">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+                <p class="cdoc-stat-value" id="cdoc-stat-vencidos">—</p>
+                <p class="cdoc-stat-sub"><span id="cdoc-stat-porvencer">—</span> por vencer (≤30 días)</p>
             </div>
         </div>
 
@@ -107,9 +150,65 @@
         </div>
     </div>
 
-    @* SECCIÓN 3 — GRID DE EMPLEADOS (tarjetas inyectadas por JS) *@
-    <div id="cdoc-grid" class="row"></div>
+    @* SECCIÓN 3 — TABS: INCOMPLETOS / COMPLETOS *@
+    <ul class="cdoc-tabs" id="cdoc-tabs" role="tablist">
+        <li class="cdoc-tab-item active" data-tab="incompletos" role="presentation">
+            <button type="button" class="cdoc-tab-link" role="tab">
+                <i class="fa-solid fa-hourglass-half"></i>
+                <span>Incompletos</span>
+                <span class="cdoc-tab-count" id="cdoc-count-incompletos">0</span>
+            </button>
+        </li>
+        <li class="cdoc-tab-item" data-tab="completos" role="presentation">
+            <button type="button" class="cdoc-tab-link" role="tab">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Completos</span>
+                <span class="cdoc-tab-count" id="cdoc-count-completos">0</span>
+            </button>
+        </li>
+    </ul>
 
+    @* GRIDS DE EMPLEADOS (tarjetas inyectadas por JS) *@
+    <div id="cdoc-grid-incompletos" class="row"></div>
+    <div id="cdoc-grid-completos" class="row" hidden></div>
+
+</div>
+
+@* MODAL — Registrar / actualizar documento *@
+<div class="modal fade" id="cdoc-modal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cdoc-modal-title">Documento</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="cdoc-form">
+                <div class="modal-body">
+                    <input type="hidden" id="cdoc-emp-id" />
+                    <input type="hidden" id="cdoc-documento" />
+                    <p class="mb-2"><strong id="cdoc-modal-emp"></strong></p>
+                    <div class="form-group">
+                        <label>Fecha de entrega <small class="text-muted">(dejar vacío si aún no se entrega)</small></label>
+                        <input type="date" id="cdoc-fecha-entrega" class="form-control" />
+                        <small class="form-text text-muted">Al registrar una fecha de entrega el documento se marca como entregado automáticamente.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de vencimiento <small class="text-muted">(dejar vacío si no vence)</small></label>
+                        <input type="date" id="cdoc-fecha-vencimiento" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Observación</label>
+                        <textarea id="cdoc-observacion" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div id="cdoc-form-error" class="text-danger small font-weight-bold" style="display:none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Scripts{
@@ -117,7 +216,8 @@
     <script>
         CumplimientoDocumentos.init(
             "@Url.Action("ListAsync")",
-            "@Url.Action("EmpleadosDropdownAsync")"
+            "@Url.Action("EmpleadosDropdownAsync")",
+            "@Url.Action("MarcarEntregadoAsync")"
         );
     </script>
 }

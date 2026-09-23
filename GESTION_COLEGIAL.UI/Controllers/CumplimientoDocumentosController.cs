@@ -1,4 +1,5 @@
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Filters;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,6 +31,24 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             string json = await _service.ListRawAsync(Emp_Id);
             return Content(json, "application/json");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> MarcarEntregadoAsync(int Emp_Id, string Documento, bool EsEntregado,
+            string FechaEntrega, string Doc_FechaVencimiento, string Observacion)
+        {
+            bool err = await _service.MarcarEntregadoAsync(new
+            {
+                Emp_Id,
+                Documento,
+                EsEntregado,
+                FechaEntrega = string.IsNullOrWhiteSpace(FechaEntrega) ? (string)null : FechaEntrega,
+                Doc_FechaVencimiento = string.IsNullOrWhiteSpace(Doc_FechaVencimiento) ? (string)null : Doc_FechaVencimiento,
+                Observacion,
+                UsuarioRegistra = GetUsuarioId()
+            });
+            return err ? AjaxResult(false, AlertMessage.AlertMessageCustomType.Error)
+                       : AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
         }
     }
 }

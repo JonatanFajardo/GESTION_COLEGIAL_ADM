@@ -18,5 +18,13 @@ namespace GESTION_COLEGIAL.Business.Services
             string arrayJson = await SendHttpClient.GetRawAsync(url);
             return "{\"data\":" + arrayJson + "}";
         }
+
+        /// <summary>
+        /// Marca (o desmarca) un documento como entregado, con fecha de
+        /// entrega, fecha de vencimiento y observación opcionales.
+        /// Devuelve true si hubo error (convención invertida de SendHttpClient).
+        /// </summary>
+        public async Task<bool> MarcarEntregadoAsync(dynamic model)
+            => await SendHttpClient.PutAsync("CumplimientoDocumentos/MarcarEntregadoAsync", model);
     }
 }
