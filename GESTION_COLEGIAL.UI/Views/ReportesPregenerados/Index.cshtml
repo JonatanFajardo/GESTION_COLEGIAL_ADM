@@ -1,6 +1,12 @@
 @{
     ViewBag.Title = "Reportes Pre-generados";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string pantallas = HttpContext.Current.Session["pantallas"] as string ?? "";
+    var listaPantallas = pantallas.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                  .Select(p => p.Trim())
+                                  .ToList();
+    Func<string, bool> tiene = (nombre) => listaPantallas.Contains(nombre, StringComparer.OrdinalIgnoreCase);
 }
 @section Styles{
     <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
@@ -33,177 +39,196 @@
 
     <h5 class="mb-3 text-muted">Financiero</h5>
     <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","AgingCuentas")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-warning text-white"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                    <div><strong>Aging de Cuentas</strong><br/><small class="text-muted">Antigüedad de saldos</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","TopDeudores")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-danger text-white"><i class="fa-solid fa-ranking-star"></i></div>
-                    <div><strong>Top Deudores</strong><br/><small class="text-muted">Mayores saldos pendientes</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","MorosidadPorNivel")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-orange text-white" style="background:#fd7e14!important;"><i class="fa-solid fa-chart-bar"></i></div>
-                    <div><strong>Morosidad por Nivel</strong><br/><small class="text-muted">Saldos por nivel educativo</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","EstadoCuentaAdm")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                    <div><strong>Estado de Cuenta</strong><br/><small class="text-muted">Por alumno</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","PagosDelDia")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-primary text-white"><i class="fa-solid fa-cash-register"></i></div>
-                    <div><strong>Pagos del Día</strong><br/><small class="text-muted">Cobros registrados hoy</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","PendientesCobrar")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-danger text-white"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div><strong>Pendientes por Cobrar</strong><br/><small class="text-muted">Cuentas vencidas</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","HistorialTransacciones")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-info text-white"><i class="fa-solid fa-receipt"></i></div>
-                    <div><strong>Historial Transacciones</strong><br/><small class="text-muted">Por período y alumno</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","KPIsFinancieros")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-gauge-high"></i></div>
-                    <div><strong>KPIs Financieros</strong><br/><small class="text-muted">Indicadores clave</small></div>
-                </div>
-            </a>
-        </div>
+        @if (tiene("Aging de Cuentas por Cobrar"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","AgingCuentas")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-warning text-white"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                        <div><strong>Aging de Cuentas</strong><br/><small class="text-muted">Antigüedad de saldos</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Top Alumnos con Deuda"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","TopDeudores")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-danger text-white"><i class="fa-solid fa-ranking-star"></i></div>
+                        <div><strong>Top Deudores</strong><br/><small class="text-muted">Mayores saldos pendientes</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Morosidad por Nivel"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","MorosidadPorNivel")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-orange text-white" style="background:#fd7e14!important;"><i class="fa-solid fa-chart-bar"></i></div>
+                        <div><strong>Morosidad por Nivel</strong><br/><small class="text-muted">Saldos por nivel educativo</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Estado de cuenta alumno"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","EstadoCuentaAdm")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                        <div><strong>Estado de Cuenta</strong><br/><small class="text-muted">Por alumno</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @* Tarjeta "Pagos del Día" eliminada — la pantalla-dashboard PagosDelDia/Index fue removida. *@
+        @if (tiene("Pendientes por Cobrar"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","PendientesCobrar")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-danger text-white"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div><strong>Pendientes por Cobrar</strong><br/><small class="text-muted">Cuentas vencidas</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Historial de Transacciones"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","HistorialTransacciones")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-info text-white"><i class="fa-solid fa-receipt"></i></div>
+                        <div><strong>Historial Transacciones</strong><br/><small class="text-muted">Por período y alumno</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("KPIs Financieros"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","KPIsFinancieros")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-gauge-high"></i></div>
+                        <div><strong>KPIs Financieros</strong><br/><small class="text-muted">Indicadores clave</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Comparativo de Años"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","ComparativoAnios")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-purple text-white" style="background:#6f42c1!important;"><i class="fa-solid fa-arrows-left-right"></i></div>
+                        <div><strong>Comparativo Años</strong><br/><small class="text-muted">Comparativo financiero interanual</small></div>
+                    </div>
+                </a>
+            </div>
+        }
     </div>
 
     <h5 class="mb-3 text-muted">Académico</h5>
     <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","AlumnosEnRiesgo")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-danger text-white"><i class="fa-solid fa-user-slash"></i></div>
-                    <div><strong>Alumnos en Riesgo</strong><br/><small class="text-muted">Indicadores académicos</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","ComparativoAnios")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-purple text-white" style="background:#6f42c1!important;"><i class="fa-solid fa-arrows-left-right"></i></div>
-                    <div><strong>Comparativo Años</strong><br/><small class="text-muted">Matrícula interanual</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","RendimientoPorSeccion")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-primary text-white"><i class="fa-solid fa-chart-pie"></i></div>
-                    <div><strong>Rendimiento por Sección</strong><br/><small class="text-muted">Promedios por grupo</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","PiramideMatricula")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-info text-white"><i class="fa-solid fa-layer-group"></i></div>
-                    <div><strong>Pirámide de Matrícula</strong><br/><small class="text-muted">Alumnos por nivel</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","AlumnosBusqueda")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-secondary text-white"><i class="fa-solid fa-magnifying-glass"></i></div>
-                    <div><strong>Búsqueda de Alumnos</strong><br/><small class="text-muted">Búsqueda global</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","KPIsAcademicos")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-gauge-high"></i></div>
-                    <div><strong>KPIs Académicos</strong><br/><small class="text-muted">Indicadores educativos</small></div>
-                </div>
-            </a>
-        </div>
+        @* Alumnos en Riesgo, Rendimiento por Sección y Búsqueda de Alumnos: deshabilitadas por test §7
+           (ver TODO.md / docs/auditoria-pantallas/INDEX.md) — ya no existen en el sidebar, se quitan las tarjetas. *@
+        @if (tiene("Pirámide de Matrícula"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","PiramideMatricula")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-info text-white"><i class="fa-solid fa-layer-group"></i></div>
+                        <div><strong>Pirámide de Matrícula</strong><br/><small class="text-muted">Alumnos por nivel</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("KPIs Académicos"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","KPIsAcademicos")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-gauge-high"></i></div>
+                        <div><strong>KPIs Académicos</strong><br/><small class="text-muted">Indicadores educativos</small></div>
+                    </div>
+                </a>
+            </div>
+        }
     </div>
 
     <h5 class="mb-3 text-muted">Recursos Humanos</h5>
     <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","EmpleadosAntiguedad")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-warning text-white"><i class="fa-solid fa-award"></i></div>
-                    <div><strong>Reporte de Antigüedad</strong><br/><small class="text-muted">Años de servicio</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","EmpleadosCumpleanos")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-pink text-white" style="background:#e83e8c!important;"><i class="fa-solid fa-birthday-cake"></i></div>
-                    <div><strong>Cumpleaños</strong><br/><small class="text-muted">Empleados del mes</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","CumplimientoDocumentos")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-folder-open"></i></div>
-                    <div><strong>Cumplimiento Docs.</strong><br/><small class="text-muted">Expediente empleados</small></div>
-                </div>
-            </a>
-        </div>
+        @if (tiene("Reporte de Antigüedad"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","EmpleadosAntiguedad")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-warning text-white"><i class="fa-solid fa-award"></i></div>
+                        <div><strong>Reporte de Antigüedad</strong><br/><small class="text-muted">Años de servicio</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Cumpleaños Empleados"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","EmpleadosCumpleanos")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-pink text-white" style="background:#e83e8c!important;"><i class="fa-solid fa-birthday-cake"></i></div>
+                        <div><strong>Cumpleaños</strong><br/><small class="text-muted">Empleados del mes</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Cumplimiento de Documentos"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","CumplimientoDocumentos")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-folder-open"></i></div>
+                        <div><strong>Cumplimiento Docs.</strong><br/><small class="text-muted">Expediente empleados</small></div>
+                    </div>
+                </a>
+            </div>
+        }
     </div>
 
     <h5 class="mb-3 text-muted">Seguridad</h5>
     <div class="row g-3 mb-4">
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","Bitacora")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-dark text-white"><i class="fa-solid fa-scroll"></i></div>
-                    <div><strong>Bitácora de Actividad</strong><br/><small class="text-muted">Registro de acciones</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","SesionesActivas")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-user-check"></i></div>
-                    <div><strong>Sesiones Activas</strong><br/><small class="text-muted">Usuarios conectados</small></div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="@Url.Action("Index","MatrizRolPantallas")" class="card reporte-card p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="icon-wrap bg-primary text-white"><i class="fa-solid fa-table-columns"></i></div>
-                    <div><strong>Matriz Rol × Pantallas</strong><br/><small class="text-muted">Permisos por rol</small></div>
-                </div>
-            </a>
-        </div>
+        @if (tiene("Bitácora de actividad"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","Bitacora")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-dark text-white"><i class="fa-solid fa-scroll"></i></div>
+                        <div><strong>Bitácora de Actividad</strong><br/><small class="text-muted">Registro de acciones</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Sesiones Activas"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","SesionesActivas")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-user-check"></i></div>
+                        <div><strong>Sesiones Activas</strong><br/><small class="text-muted">Usuarios conectados</small></div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (tiene("Matriz Rol Pantallas"))
+        {
+            <div class="col-md-3">
+                <a href="@Url.Action("Index","MatrizRolPantallas")" class="card reporte-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-wrap bg-primary text-white"><i class="fa-solid fa-table-columns"></i></div>
+                        <div><strong>Matriz Rol × Pantallas</strong><br/><small class="text-muted">Permisos por rol</small></div>
+                    </div>
+                </a>
+            </div>
+        }
     </div>
 </div>
