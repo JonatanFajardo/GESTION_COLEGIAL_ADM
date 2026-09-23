@@ -323,6 +323,136 @@ body {
     color: #64748b;
 }
 
+/* ===== Acceso demo para reclutadores ===== */
+.demo-access {
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 0.75rem;
+    padding: 1rem 1rem 1.1rem;
+    margin-bottom: 1.25rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out 0.25s forwards;
+}
+
+.demo-access-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.35rem;
+}
+
+.demo-access-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #4f46e5;
+}
+
+.demo-access-badge svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.demo-access-hint {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: #4338ca;
+    margin-bottom: 0.85rem;
+}
+
+.demo-access-hint strong { font-weight: 700; }
+.demo-access-hint em { font-style: normal; font-weight: 600; }
+
+.demo-access-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #4338ca;
+    margin-bottom: 0.45rem;
+}
+
+.demo-access-select {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    border: 1px solid #c7d2fe;
+    border-radius: 0.5rem;
+    padding: 0.7rem 2.5rem 0.7rem 0.85rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #1e1b4b;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.demo-access-select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.demo-access-meta {
+    display: none;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    padding: 0.55rem 0.7rem;
+    background: rgba(79, 70, 229, 0.08);
+    border-radius: 0.45rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #4338ca;
+}
+
+.demo-access-meta.show { display: flex; }
+
+.demo-access-meta svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    color: #4f46e5;
+}
+
+.demo-access-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    color: #94a3b8;
+    font-size: 0.78rem;
+}
+
+.demo-access-divider::before,
+.demo-access-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+/* Resaltado de campos autocompletados por el acceso demo */
+.input-wrapper input.demo-autofilled {
+    border-color: #4f46e5;
+    background-color: #eef2ff;
+    animation: demoPop 0.4s ease;
+}
+
+@keyframes demoPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.015); }
+    100% { transform: scale(1); }
+}
+
 /* Error message */
 .error-message {
     background-color: #fee2e2;

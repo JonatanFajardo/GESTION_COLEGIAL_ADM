@@ -9,7 +9,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduManager - Iniciar Sesion</title>
-    <link rel="stylesheet" href="~/Content/login.css">
+    @{
+        var cssPath = Server.MapPath("~/Content/login.css");
+        var cssVer = System.IO.File.Exists(cssPath)
+                     ? System.IO.File.GetLastWriteTimeUtc(cssPath).Ticks.ToString()
+                     : DateTime.UtcNow.Ticks.ToString();
+    }
+    <link rel="stylesheet" href="~/Content/login.css?v=@cssVer">
 </head>
 <body>
     <div class="container">
@@ -73,6 +79,44 @@
                             <h2>Bienvenido</h2>
                             <p>Ingresa tus credenciales para acceder al sistema</p>
                         </div>
+
+                        <!-- ===== Acceso demo para reclutadores ===== -->
+                        <div class="demo-access" id="demoAccess">
+                            <div class="demo-access-header">
+                                <span class="demo-access-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M12 16v-4M12 8h.01"></path>
+                                    </svg>
+                                    Acceso demo · para reclutadores
+                                </span>
+                            </div>
+                            <p class="demo-access-hint">
+                                Este es un proyecto de portafolio. <strong>Elige un rol</strong> y completaré el usuario y la contraseña automáticamente — solo pulsa <em>Iniciar Sesión</em>.
+                            </p>
+
+                            <label class="demo-access-label" for="demoRole">Explorar como…</label>
+                            <select class="demo-access-select" id="demoRole">
+                                <option value="" selected disabled>Selecciona un rol para probar</option>
+                                <option value="admin">Administrador del sistema</option>
+                                <option value="director">Director / Supervisión académica</option>
+                                <option value="docente">Docente</option>
+                                <option value="rrhh">RRHH / Nómina</option>
+                                <option value="cajero">Cajero / Cobros</option>
+                                <option value="contador">Contador / Análisis financiero</option>
+                                <option value="secretaria">Secretaría</option>
+                                <option value="consulta">Consulta (solo lectura)</option>
+                            </select>
+
+                            <div class="demo-access-meta" id="demoRoleMeta">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6 9 17l-5-5"></path>
+                                </svg>
+                                <span id="demoRoleMetaText"></span>
+                            </div>
+                        </div>
+
+                        <div class="demo-access-divider"><span>o ingresa manualmente</span></div>
 
                         @using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "login-form", id = "loginForm" }))
                         {
@@ -152,6 +196,12 @@
         </div>
     </div>
 
-    <script src="~/Scripts/login.js"></script>
+    @{
+        var jsPath = Server.MapPath("~/Scripts/login.js");
+        var jsVer = System.IO.File.Exists(jsPath)
+                    ? System.IO.File.GetLastWriteTimeUtc(jsPath).Ticks.ToString()
+                    : DateTime.UtcNow.Ticks.ToString();
+    }
+    <script src="~/Scripts/login.js?v=@jsVer"></script>
 </body>
 </html>
