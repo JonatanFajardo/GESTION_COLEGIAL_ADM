@@ -4,6 +4,63 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/finanzas-dashboard.css" rel="stylesheet" />
+    <style>
+        /* ── Búsqueda de alumno ── */
+        .ec-search-card {
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+            padding: 22px 24px; box-shadow: 0 1px 3px rgba(15,23,42,.06);
+        }
+        .ec-search-card h3 { font-size: 1.05rem; font-weight: 700; color: #0f172a; margin: 0 0 3px; }
+        .ec-search-card .ec-search-sub { font-size: .82rem; color: #64748b; margin-bottom: 16px; }
+        .ec-search-input .form-control { border-radius: 10px 0 0 10px; height: 46px; border-color: #cbd5e1; }
+        .ec-search-input .btn {
+            border-radius: 0 10px 10px 0; background: #4f46e5; border-color: #4f46e5;
+            color: #fff; font-weight: 600; padding: 0 20px;
+        }
+        .ec-search-input .btn:hover { background: #4338ca; border-color: #4338ca; }
+
+        /* ── Placeholder / bienvenida ── */
+        .ec-placeholder { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 44px 24px; text-align: center; }
+        .ec-placeholder-icon {
+            width: 96px; height: 96px; margin: 0 auto 18px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: #eef2ff; color: #4f46e5; font-size: 44px;
+        }
+        .ec-placeholder h3 { font-weight: 700; color: #0f172a; }
+        .ec-feature { padding: 18px 14px; }
+        .ec-feature-ic { font-size: 30px; margin-bottom: 8px; }
+        .ec-feature h5 { font-size: .95rem; font-weight: 700; color: #1e293b; margin: 6px 0 4px; }
+        .ec-feature p { font-size: .8rem; color: #94a3b8; margin: 0; }
+
+        /* ── Ficha del alumno ── */
+        .ec-student { display: flex; flex-wrap: wrap; gap: 14px 32px; }
+        .ec-student-field { min-width: 200px; }
+        .ec-student-field .lbl { font-size: .68rem; text-transform: uppercase; letter-spacing: .5px; color: #94a3b8; font-weight: 700; }
+        .ec-student-field .val { font-size: .92rem; color: #1e293b; font-weight: 600; }
+
+        /* ── Estado de fila en tablas ── */
+        #tabla-cargos-pendientes th, #tabla-historico-pagos th { font-size: .72rem; text-transform: uppercase; letter-spacing: .4px; color: #64748b; }
+
+        /* ── Impresión limpia ── */
+        @@media print {
+            .sidebar-wrapper, .overlay, .search-overlay, .navbar, .header, .footer,
+            .breadcrumb-wrapper-content, .page-header-catalogo, #panel-busqueda, #card-placeholder,
+            #btn-cambiar-alumno, #btn-imprimir-ec, #btn-registrar-pago,
+            #tabla-cargos-pendientes th:last-child, #tabla-cargos-pendientes td:last-child,
+            #tabla-historico-pagos th:last-child, #tabla-historico-pagos td:last-child {
+                display: none !important;
+            }
+            #content, .main-content { margin: 0 !important; }
+            .layout-px-spacing, .layout-top-spacing { padding: 0 !important; margin: 0 !important; }
+            body { background: #fff !important; }
+            .fd-hero { box-shadow: none !important; }
+        }
+    </style>
+}
+
 <div class="breadcrumb-wrapper-content ">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -15,197 +72,218 @@
     </nav>
 </div>
 
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <i class="fa-solid fa-file-invoice-dollar" style="font-size:32px;"></i>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Estado de Cuenta</h1>
+                <p>Ficha financiera del alumno: deuda, pagos realizados, mora e histórico</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="fluid-container">
     <!-- Panel de Búsqueda de Alumno -->
-    <div class="card" id="panel-busqueda">
-        <div class="card-header" style="background-color:white;">
-            <h3>Buscar Alumno</h3>
-            <small class="text-muted">Ingrese el número de identidad del alumno para ver su estado de cuenta</small>
-        </div>
-        <div class="card-body">
+    <div id="panel-busqueda">
+        <div class="ec-search-card">
+            <h3><i class="bi bi-search"></i> Buscar Alumno</h3>
+            <p class="ec-search-sub">Ingrese el número de identidad del alumno para ver su estado de cuenta</p>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="alumno-identidad-search">Número de Identidad</label>
+                    <div class="form-group mb-0 ec-search-input">
                         <div class="input-group">
                             <input type="text" class="form-control" id="alumno-identidad-search" placeholder="Ingrese la identidad del alumno..." maxlength="13" />
                             <div class="input-group-append">
-                                <button class="btn btn-info" type="button" id="btn-buscar-alumno">
-                                    <i class="mdi mdi-magnify"></i> Buscar
+                                <button class="btn" type="button" id="btn-buscar-alumno">
+                                    <i class="bi bi-search"></i> Buscar
                                 </button>
                             </div>
                         </div>
-                        <small class="form-text text-muted">Ingrese el número de identidad (13 dígitos)</small>
+                        <small class="form-text text-muted">Número de identidad (13 dígitos)</small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-<!-- Card de Bienvenida / Placeholder -->
-<div id="card-placeholder" class="card mt-3">
-    <div class="card-body text-center py-5">
-        <div class="mb-4">
-            <i class="mdi mdi-account-search" style="font-size: 80px; color: #4361ee;"></i>
-        </div>
-        <h3 class="mb-3">Estado de Cuenta de Alumnos</h3>
-        <p class="text-muted mb-4">Busque un alumno por su número de identidad para visualizar su estado financiero completo</p>
+    <!-- Card de Bienvenida / Placeholder -->
+    <div id="card-placeholder" class="ec-placeholder mt-3">
+        <div class="ec-placeholder-icon"><i class="bi bi-person-vcard"></i></div>
+        <h3 class="mb-2">Estado de Cuenta de Alumnos</h3>
+        <p class="text-muted mb-2">Busque un alumno por su número de identidad para visualizar su estado financiero completo</p>
 
-        <div class="row mt-5">
+        <div class="row mt-4">
             <div class="col-md-4">
-                <div class="p-3">
-                    <i class="mdi mdi-cash-multiple text-success" style="font-size: 40px;"></i>
-                    <h5 class="mt-2">Cargos Pendientes</h5>
-                    <p class="text-muted small">Visualice todos los cargos pendientes de pago del alumno</p>
+                <div class="ec-feature">
+                    <div class="ec-feature-ic" style="color:#059669;"><i class="bi bi-cash-stack"></i></div>
+                    <h5>Cargos Pendientes</h5>
+                    <p>Visualice todos los cargos pendientes de pago del alumno</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="p-3">
-                    <i class="mdi mdi-chart-line text-primary" style="font-size: 40px;"></i>
-                    <h5 class="mt-2">Resumen Financiero</h5>
-                    <p class="text-muted small">Consulte el resumen completo de deudas, pagos y mora</p>
+                <div class="ec-feature">
+                    <div class="ec-feature-ic" style="color:#4f46e5;"><i class="bi bi-graph-up"></i></div>
+                    <h5>Resumen Financiero</h5>
+                    <p>Consulte el resumen completo de deudas, pagos y mora</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="p-3">
-                    <i class="mdi mdi-history text-info" style="font-size: 40px;"></i>
-                    <h5 class="mt-2">Histórico de Pagos</h5>
-                    <p class="text-muted small">Revise todos los pagos realizados por el alumno</p>
+                <div class="ec-feature">
+                    <div class="ec-feature-ic" style="color:#0891b2;"><i class="bi bi-clock-history"></i></div>
+                    <h5>Histórico de Pagos</h5>
+                    <p>Revise todos los pagos realizados por el alumno</p>
                 </div>
             </div>
         </div>
 
-        <div class="alert alert-info mt-4 d-inline-block" role="alert">
-            <i class="mdi mdi-information-outline mr-2"></i>
+        <div class="alert alert-info mt-3 d-inline-block" role="alert">
+            <i class="bi bi-info-circle mr-1"></i>
             <strong>Tip:</strong> Use el campo de búsqueda arriba para comenzar
         </div>
     </div>
-</div>
 
-<div id="paneles-informacion" style="display: none;">
+    <div id="paneles-informacion" style="display: none;">
 
-    <!-- Panel de Información del Alumno -->
-    <div class="card" id="panel-info-alumno" style="display:none;">
-        <div class="card-header" style="background-color:white;">
-            <div class="row">
-                <div class="col-md-9">
-                    <h3>Información del Alumno</h3>
-                    <small class="text-muted">Detalle financiero completo del alumno seleccionado</small>
+        <!-- Membrete solo para impresión -->
+        <div class="d-none d-print-block" style="text-align:center; margin-bottom:16px;">
+            <h3 style="margin:0;">Instituto San Francisco</h3>
+            <p style="margin:0; color:#555;">Estado de Cuenta del Alumno</p>
+            <hr />
+        </div>
+
+        <!-- Panel de Información del Alumno -->
+        <div class="fd-panel" id="panel-info-alumno" style="display:none;">
+            <div class="fd-panel-head">
+                <div>
+                    <p class="fd-panel-title"><i class="fa-solid fa-user-graduate"></i> Información del Alumno</p>
+                    <p class="fd-panel-sub">Detalle del alumno seleccionado</p>
                 </div>
-                <div class="col-md-3">
-                    <button class="btn btn-secondary float-right" id="btn-cambiar-alumno">
-                        <i class="mdi mdi-account-search"></i> Cambiar Alumno
+                <div class="d-flex" style="gap:8px;">
+                    <button class="btn-nuevo-catalogo" id="btn-imprimir-ec" style="background:#0891b2;border-color:#0891b2;">
+                        <i class="fa-solid fa-print"></i> Imprimir / PDF
+                    </button>
+                    <button class="btn-cancel-catalogo" id="btn-cambiar-alumno">
+                        <i class="fa-solid fa-user-pen"></i> Cambiar Alumno
                     </button>
                 </div>
             </div>
-        </div>
-        <div class="card-body" style="background-color:white;">
-            <div class="row">
-                <div class="col-md-6">
-                    <p style="color: #333;"><strong>Nombre:</strong> <span id="alumno-nombre"></span></p>
-                    <p style="color: #333;"><strong>Identidad:</strong> <span id="alumno-identidad"></span></p>
-                    <p style="color: #333;"><strong>Nivel:</strong> <span id="alumno-nivel"></span></p>
-                </div>
-                <div class="col-md-6">
-                    <p style="color: #333;"><strong>Curso:</strong> <span id="alumno-curso"></span></p>
-                    <p style="color: #333;"><strong>Sección:</strong> <span id="alumno-seccion"></span></p>
-                    <p style="color: #333;"><strong>Encargado:</strong> <span id="alumno-encargado"></span></p>
+            <div class="fd-panel-body">
+                <div class="ec-student">
+                    <div class="ec-student-field">
+                        <div class="lbl">Nombre</div>
+                        <div class="val"><span id="alumno-nombre"></span></div>
+                    </div>
+                    <div class="ec-student-field">
+                        <div class="lbl">Identidad</div>
+                        <div class="val"><span id="alumno-identidad"></span></div>
+                    </div>
+                    <div class="ec-student-field">
+                        <div class="lbl">Nivel</div>
+                        <div class="val"><span id="alumno-nivel"></span></div>
+                    </div>
+                    <div class="ec-student-field">
+                        <div class="lbl">Curso</div>
+                        <div class="val"><span id="alumno-curso"></span></div>
+                    </div>
+                    <div class="ec-student-field">
+                        <div class="lbl">Sección</div>
+                        <div class="val"><span id="alumno-seccion"></span></div>
+                    </div>
+                    <div class="ec-student-field">
+                        <div class="lbl">Encargado</div>
+                        <div class="val"><span id="alumno-encargado"></span></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Panel de Resumen Financiero -->
-    <div class="row mt-3">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Total Deuda</h5>
-                    <h3 class="text-danger" id="total-deuda">L. 0.00</h3>
+        <!-- Resumen Financiero (KPIs) -->
+        <div class="fd-hero mt-3">
+            <div class="fd-hero-grid">
+                <div class="fd-hero-main">
+                    <p class="fd-hero-label"><i class="fa-solid fa-hourglass-half"></i> Saldo Pendiente</p>
+                    <p class="fd-hero-value" id="total-pendiente">L. 0.00</p>
+                    <p class="fd-hero-sub">Monto que el alumno debe actualmente</p>
+                </div>
+                <div class="fd-hero-stat">
+                    <p class="fd-hero-stat-label">Total Deuda</p>
+                    <p class="fd-hero-stat-value" id="total-deuda">L. 0.00</p>
+                    <p class="fd-hero-stat-trend">emitido acumulado</p>
+                </div>
+                <div class="fd-hero-stat">
+                    <p class="fd-hero-stat-label">Total Pagado</p>
+                    <p class="fd-hero-stat-value" id="total-pagado">L. 0.00</p>
+                    <p class="fd-hero-stat-trend">abonado a la fecha</p>
+                </div>
+                <div class="fd-hero-stat">
+                    <p class="fd-hero-stat-label">Mora</p>
+                    <p class="fd-hero-stat-value" id="total-mora">L. 0.00</p>
+                    <p class="fd-hero-stat-trend">recargo por atraso</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Total Pagado</h5>
-                    <h3 class="text-success" id="total-pagado">L. 0.00</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Pendiente</h5>
-                    <h3 class="text-warning" id="total-pendiente">L. 0.00</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Mora</h5>
-                    <h3 class="text-danger" id="total-mora">L. 0.00</h3>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Panel de Cargos Pendientes -->
-    <div class="card mt-3">
-        <div class="card-header" style="background-color:white;">
-            <div class="row space-between">
-                <div class="col-md-9"><h3>Cargos Pendientes</h3></div>
-                <div class="col-md-3">
-                    <button class="btn btn-primary float-right" id="btn-registrar-pago">
-                        <i class="mdi mdi-cash-multiple"></i> Registrar Pago
-                    </button>
+        <!-- Panel de Cargos Pendientes -->
+        <div class="fd-panel mt-3">
+            <div class="fd-panel-head">
+                <div>
+                    <p class="fd-panel-title"><i class="fa-solid fa-list-check"></i> Cargos Pendientes</p>
+                    <p class="fd-panel-sub">Conceptos por cobrar del alumno</p>
                 </div>
+                <button class="btn-nuevo-catalogo" id="btn-registrar-pago">
+                    <i class="bi bi-cash-coin"></i> Registrar Pago
+                </button>
+            </div>
+            <div class="fd-panel-body fd-flush fd-scroll">
+                <table class="table table-striped mb-0" id="tabla-cargos-pendientes">
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Monto Original</th>
+                            <th>Descuento</th>
+                            <th>Mora</th>
+                            <th>Total</th>
+                            <th>Fecha Venc.</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-cargos-pendientes">
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-striped" id="tabla-cargos-pendientes">
-                <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Monto Original</th>
-                        <th>Descuento</th>
-                        <th>Mora</th>
-                        <th>Total</th>
-                        <th>Fecha Venc.</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-cargos-pendientes">
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <!-- Panel de Histórico de Pagos -->
-    <div class="card mt-3">
-        <div class="card-header" style="background-color:white;">
-            <h3>Histórico de Pagos</h3>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-striped" id="tabla-historico-pagos">
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Monto</th>
-                        <th>Forma de Pago</th>
-                        <th>Referencia</th>
-                        <th>Usuario</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-historico-pagos">
-                </tbody>
-            </table>
+        <!-- Panel de Histórico de Pagos -->
+        <div class="fd-panel mt-3">
+            <div class="fd-panel-head">
+                <div>
+                    <p class="fd-panel-title"><i class="fa-solid fa-clock-rotate-left"></i> Histórico de Pagos</p>
+                    <p class="fd-panel-sub">Pagos registrados del alumno</p>
+                </div>
+            </div>
+            <div class="fd-panel-body fd-flush fd-scroll">
+                <table class="table table-striped mb-0" id="tabla-historico-pagos">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Forma de Pago</th>
+                            <th>Referencia</th>
+                            <th>Usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-historico-pagos">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
 </div>
 
@@ -215,7 +293,7 @@
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="detailCargoModalLabel">
-                    <i class="mdi mdi-file-document-outline mr-2"></i>Detalle del Cargo
+                    <i class="bi bi-file-earmark-text mr-2"></i>Detalle del Cargo
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -278,7 +356,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    <i class="mdi mdi-close mr-1"></i>Cerrar
+                    <i class="bi bi-x-lg mr-1"></i>Cerrar
                 </button>
             </div>
         </div>
@@ -291,7 +369,7 @@
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="detailPagoModalLabel">
-                    <i class="mdi mdi-cash-multiple mr-2"></i>Detalle del Pago
+                    <i class="bi bi-cash-coin mr-2"></i>Detalle del Pago
                 </h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -365,10 +443,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info btn-ver-recibo-detail" id="btn-ver-recibo-modal">
-                    <i class="mdi mdi-receipt mr-1"></i>Ver Recibo
+                    <i class="bi bi-receipt mr-1"></i>Ver Recibo
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    <i class="mdi mdi-close mr-1"></i>Cerrar
+                    <i class="bi bi-x-lg mr-1"></i>Cerrar
                 </button>
             </div>
         </div>
@@ -376,12 +454,18 @@
 </div>
 
 @section Scripts{
-    <script src="~/Content/js/pages/estadocuenta.js"></script>
+    @{
+        var ecJsPath = Server.MapPath("~/Content/js/pages/estadocuenta.js");
+        var ecJsVer = System.IO.File.Exists(ecJsPath) ? System.IO.File.GetLastWriteTimeUtc(ecJsPath).Ticks.ToString() : DateTime.UtcNow.Ticks.ToString();
+    }
+    <script src="~/Content/js/pages/estadocuenta.js?v=@ecJsVer"></script>
     <script>
         var alumnoId = @ViewBag.AlumnoId;
         EstadoCuenta.init({
             alumnoId: alumnoId,
+            identidad: "@(ViewBag.Identidad ?? "")",
             urlFindAlumnoByIdentidad: "@Url.Action("FindByIdentidadAsync", "Alumnos")",
+            urlFindAlumnoById: "@Url.Action("FindAsync", "Alumnos")",
             urlCargosPendientes: "@Url.Action("ObtenerCargosPendientesAsync", "CuentasCobrar")",
             urlResumenFinanciero: "@Url.Action("ObtenerResumenFinancieroAsync", "CuentasCobrar")",
             urlHistoricoPagos: "@Url.Action("ObtenerHistoricoPagosAsync", "CuentasCobrar")",

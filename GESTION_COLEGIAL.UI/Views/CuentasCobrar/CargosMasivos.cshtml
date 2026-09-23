@@ -284,7 +284,9 @@
                     $('button').prop('disabled', true);
                 },
                 success: function (response) {
-                    if (response.success && response.data) {
+                    // El controlador responde con AjaxResult(result) => { data: {...} }
+                    // (no incluye una propiedad "success"). Si viene data, fue exitoso.
+                    if (response && response.data) {
                         mostrarResultado(response.data);
                         toastr.success('Mensualidades generadas exitosamente');
                     } else {

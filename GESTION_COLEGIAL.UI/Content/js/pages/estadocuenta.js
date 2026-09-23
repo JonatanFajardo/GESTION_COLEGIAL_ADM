@@ -2,6 +2,7 @@ var EstadoCuenta = (function () {
     var obj = {};
     var urls = {};
     var alumnoId = 0;
+    var alumnoIdentidad = "";   // se usa para precargar NuevoPago (mismo criterio que Cartera)
     var cargosPendientesData = [];
     var historicoPagosData = [];
     var pagoIdActual = 0;
@@ -14,8 +15,17 @@ var EstadoCuenta = (function () {
             initializeAlumnoSearch();
             initializeDetailEvents();
 
-            // Si ya viene con alumnoId, cargar directamente
-            if (alumnoId > 0) {
+            // Precarga: si viene identidad (desde Cartera), usar la búsqueda que
+            // ya funciona; si no, caer al alumnoId.
+            if (config.identidad) {
+                $("#alumno-identidad-search").val(config.identidad);
+                $("#panel-busqueda").hide();
+                $("#card-placeholder").hide();
+                $("#paneles-informacion").show();
+                $("#panel-info-alumno").show();
+                buscarAlumnoPorIdentidad(config.identidad);
+            } else if (alumnoId > 0) {
+                cargarInfoAlumno();
                 cargarEstadoCuenta();
                 $("#panel-busqueda").hide();
                 $("#card-placeholder").hide();
@@ -24,11 +34,18 @@ var EstadoCuenta = (function () {
             }
 
             $("#btn-registrar-pago").click(function() {
-                if (alumnoId > 0) {
+                if (alumnoIdentidad) {
+                    // Precarga real: NuevoPago busca y avanza al paso de conceptos.
+                    window.location.href = "/Pagos/NuevoPago?identidad=" + encodeURIComponent(alumnoIdentidad);
+                } else if (alumnoId > 0) {
                     window.location.href = "/Pagos/NuevoPago?alumnoId=" + alumnoId;
                 } else {
                     toastr.warning("Debe seleccionar un alumno primero");
                 }
+            });
+
+            $("#btn-imprimir-ec").click(function() {
+                window.print();
             });
 
             $("#btn-cambiar-alumno").click(function() {
@@ -161,18 +178,7 @@ var EstadoCuenta = (function () {
                     if (alumno.Alu_Id) {
                         alumnoId = alumno.Alu_Id;
 
-                        // Cargar información del alumno en el panel
-                        var nombreCompleto = (alumno.Per_PrimerNombre || "") + " " +
-                                            (alumno.Per_SegundoNombre || "") + " " +
-                                            (alumno.Per_ApellidoPaterno || "") + " " +
-                                            (alumno.Per_ApellidoMaterno || "");
-
-                        $("#alumno-nombre").text(nombreCompleto.trim() || "N/A");
-                        $("#alumno-identidad").text(alumno.Per_Identidad || "N/A");
-                        $("#alumno-nivel").text(alumno.Niv_Descripcion || "N/A");
-                        $("#alumno-curso").text(alumno.Cur_Descripcion || "N/A");
-                        $("#alumno-seccion").text(alumno.Sec_Descripcion || "N/A");
-                        $("#alumno-encargado").text("Por implementar");
+                        poblarInfoAlumno(alumno);
 
                         $("#panel-busqueda").hide();
                         $("#card-placeholder").hide();
@@ -206,8 +212,49 @@ var EstadoCuenta = (function () {
         });
     }
 
+    // Rellena el panel "Información del Alumno" a partir de un AlumnoViewModel.
+    function poblarInfoAlumno(alumno) {
+        if (!alumno) { return; }
+
+        var nombreCompleto = (alumno.Per_PrimerNombre || "") + " " +
+                            (alumno.Per_SegundoNombre || "") + " " +
+                            (alumno.Per_ApellidoPaterno || "") + " " +
+                            (alumno.Per_ApellidoMaterno || "");
+
+        alumnoIdentidad = alumno.Per_Identidad || "";
+        $("#alumno-nombre").text(nombreCompleto.trim() || "N/A");
+        $("#alumno-identidad").text(alumno.Per_Identidad || "N/A");
+        $("#alumno-nivel").text(alumno.Niv_Descripcion || "N/A");
+        $("#alumno-curso").text(alumno.Cur_Descripcion || "N/A");
+        $("#alumno-seccion").text(alumno.Sec_Descripcion || "N/A");
+        $("#alumno-encargado").text("Por implementar");
+    }
+
+    // Carga la información del alumno por ID (cuando se llega con ?alumnoId=).
+    function cargarInfoAlumno() {
+        if (!(alumnoId > 0) || !urls.urlFindAlumnoById) { return; }
+
+        $.ajax({
+            url: urls.urlFindAlumnoById,
+            type: "GET",
+            data: { id: alumnoId },
+            success: function (response) {
+                if (response && response.data) {
+                    poblarInfoAlumno(response.data);
+                } else {
+                    console.log("No se pudo cargar la información del alumno");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log("Error al cargar la información del alumno:", xhr, status, error);
+                toastr.warning("No se pudo cargar la información del alumno");
+            }
+        });
+    }
+
     function limpiarEstadoCuenta() {
         alumnoId = 0;
+        alumnoIdentidad = "";
         $("#alumno-nombre").text("");
         $("#alumno-identidad").text("");
         $("#alumno-nivel").text("");

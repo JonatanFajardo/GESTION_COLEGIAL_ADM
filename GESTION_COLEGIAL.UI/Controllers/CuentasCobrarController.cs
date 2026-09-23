@@ -36,9 +36,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción para mostrar el estado de cuenta de un alumno.
         /// </summary>
-        public ActionResult EstadoCuenta(int? alumnoId = null)
+        public ActionResult EstadoCuenta(int? alumnoId = null, string identidad = null)
         {
             ViewBag.AlumnoId = alumnoId ?? 0;
+            ViewBag.Identidad = identidad ?? string.Empty;
             return View();
         }
 

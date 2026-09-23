@@ -1,11 +1,24 @@
 var EstadoCuentaAdm = (function () {
     var obj = {};
+    var _instituto = { Nombre: "Instituto", Direccion: "" };
 
     obj.init = function (urlGet, urlDD) {
+        // Precargar datos de la institución para el membrete de impresión
+        $.getJSON("/InstitutoConfig/GetAsync", function (resp) {
+            var d = (resp && resp.data) || {};
+            _instituto = {
+                Nombre: d.Nombre || "Instituto",
+                Direccion: d.Direccion || ""
+            };
+        });
+
         $.getJSON(urlDD, function (data) {
             var sel = $("#f-alu");
             $.each(data, function (_, a) { sel.append('<option value="' + a.id + '">' + a.texto + '</option>'); });
         });
+
+        // Botón Imprimir / PDF — abre el diálogo de impresión sobre la vista imprimible
+        $("#btn-imprimir").on("click", function () { window.print(); });
 
         $("#btn-ver").on("click", function () {
             var id   = $("#f-alu").val();
@@ -14,9 +27,11 @@ var EstadoCuentaAdm = (function () {
             var params = { Alu_Id: id };
             if (anio) params.Anio = anio;
 
+            var nombreAlumno = $("#f-alu option:selected").text();
+
             $.getJSON(urlGet, params, function (res) {
                 var d = res.item || res || {};
-                var sym = window.GC ? window.GC.currencySymbol() : 'Q';
+                var sym = window.GC ? window.GC.currencySymbol() : 'L';
                 $("#kpi-cobrado").text(sym + " " + (d.TotalCobrado   || "0.00"));
                 $("#kpi-pendiente").text(sym + " " + (d.TotalPendiente || "0.00"));
                 $("#kpi-descuento").text(sym + " " + (d.TotalDescuento || "0.00"));
@@ -37,7 +52,15 @@ var EstadoCuentaAdm = (function () {
                             '<td>' + (c.Est_Descripcion || '—') + '</td></tr>');
                     });
                 }
+                // Poblar membrete de impresión
+                $("#print-institucion").text(_instituto.Nombre);
+                $("#print-direccion").text(_instituto.Direccion);
+                $("#print-alumno").text(nombreAlumno);
+                $("#print-anio").text(anio || new Date().getFullYear());
+                $("#print-fecha").text(new Date().toLocaleDateString("es-HN", { day: "2-digit", month: "long", year: "numeric" }));
+
                 $("#panel-estado").show();
+                $("#btn-imprimir").show();
             });
         });
     };
