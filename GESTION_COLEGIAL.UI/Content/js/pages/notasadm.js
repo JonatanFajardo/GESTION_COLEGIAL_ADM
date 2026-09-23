@@ -73,9 +73,10 @@ var NotasAdm = (function () {
             });
         });
 
-        $(document).on("click", ".btn-guardar", function () {
-            var btn  = $(this);
-            var nota = btn.closest("tr").find(".nota-input").val();
+        // Guarda la nota de una fila. cb(success) es opcional (usado por Guardar Todo).
+        function guardarNota(tr, cb) {
+            var btn  = tr.find(".btn-guardar");
+            var nota = tr.find(".nota-input").val();
             $.post(urls.guardar, {
                 Not_Id:   btn.data("id"),
                 Alu_Id:   btn.data("alu"),
@@ -86,9 +87,55 @@ var NotasAdm = (function () {
                 Not_Nota: nota,
                 Not_Año:  new Date().getFullYear() + "-01-01"
             }, function (res) {
-                if (res && res.success) {
+                var ok = !!(res && res.success);
+                if (ok) {
                     btn.removeClass("btn-success").addClass("btn-secondary").text("Guardado");
                 }
+                if (cb) cb(ok);
+            }).fail(function () {
+                if (cb) cb(false);
+            });
+        }
+
+        $(document).on("click", ".btn-guardar", function () {
+            guardarNota($(this).closest("tr"));
+        });
+
+        // ---------- Guardar Todo (mismo patrón loop que Pase de Lista en asistenciaadm.js) ----------
+        $("#btn-guardar-todo").on("click", function () {
+            var filas = $("#tbody-notas tr").filter(function () {
+                return esNumero($(this).find(".nota-input").val());
+            });
+
+            if (filas.length === 0) {
+                toastr.warning("No hay notas capturadas para guardar.");
+                return;
+            }
+
+            var $btn = $(this).prop("disabled", true);
+            var htmlOriginal = $btn.html();
+            var total = filas.length, procesadas = 0, exitosas = 0;
+
+            function actualizarProgreso() {
+                $btn.html('<i class="fa-solid fa-spinner fa-spin"></i> Guardando ' + procesadas + '/' + total + '...');
+            }
+            actualizarProgreso();
+
+            filas.each(function () {
+                guardarNota($(this), function (ok) {
+                    procesadas++;
+                    if (ok) exitosas++;
+                    if (procesadas < total) {
+                        actualizarProgreso();
+                        return;
+                    }
+                    $btn.prop("disabled", false).html(htmlOriginal);
+                    if (exitosas === total) {
+                        toastr.success("Se guardaron " + exitosas + " nota(s) correctamente.");
+                    } else {
+                        toastr.warning(exitosas + " de " + total + " nota(s) guardadas. " + (total - exitosas) + " fallaron, intente de nuevo.");
+                    }
+                });
             });
         });
     }

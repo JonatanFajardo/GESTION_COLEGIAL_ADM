@@ -12,12 +12,29 @@ namespace GESTION_COLEGIAL.UI.Controllers
     {
         private readonly AsistenciaAdmService _service  = new AsistenciaAdmService();
         private readonly HorariosService      _horarios = new HorariosService();
+        private readonly UsuariosService      _usuarios = new UsuariosService();
 
         public ActionResult Index() => View();
 
         public async Task<ActionResult> DropdownsAsync()
         {
-            var horarios = await _horarios.ListAsync();
+            var horariosTask = _horarios.ListAsync();
+            // La sesión solo guarda Usu_Id/Rol/Token (ver AccountController.Login), no el Emp_Id
+            // del docente. Se resuelve aquí vía Usuarios/FindAsync para poder filtrar sin tocar
+            // AccountController/BaseController (fuera del alcance de este cambio).
+            var usuarioTask  = _usuarios.Find(GetUsuarioId());
+
+            await Task.WhenAll(horariosTask, usuarioTask);
+
+            var horarios = horariosTask.Result;
+            var usuario  = usuarioTask.Result;
+
+            // Si el usuario logueado tiene un Empleado (docente) asociado, mostrar solo sus horarios.
+            // Si no tiene Emp_Id (p.ej. un admin sin vínculo a empleado), se deja el listado completo
+            // para no romper el acceso de otros roles (Director también usa Pase de Lista).
+            if (usuario != null && usuario.Emp_Id > 0)
+                horarios = horarios.Where(h => h.Emp_Id == usuario.Emp_Id);
+
             return Json(new
             {
                 horarios = horarios.Select(h => new {
