@@ -138,6 +138,18 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		}
 
 		/// <summary>
+		/// Busca un alumno por su ID y devuelve sus datos en formato Ajax (JSON).
+		/// </summary>
+		/// <param name="id">ID del alumno.</param>
+		/// <returns>El resultado en formato Ajax con los datos del alumno.</returns>
+		[HttpGet]
+		public async Task<ActionResult> FindAsync(int id)
+		{
+			var result = await alumnosService.Find(id);
+			return AjaxResult(result);
+		}
+
+		/// <summary>
 		/// Guarda los cambios realizados en un alumno.
 		/// </summary>
 		/// <param name="model">El modelo del alumno.</param>

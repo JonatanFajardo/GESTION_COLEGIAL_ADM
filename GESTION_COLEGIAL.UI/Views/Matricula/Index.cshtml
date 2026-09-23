@@ -1,0 +1,471 @@
+@model GESTION_COLEGIAL.Business.Models.AlumnoViewModel
+@{
+    ViewBag.Title = "Matrícula nueva";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        /* ===== Wizard de Matrícula (auto-contenido) ===== */
+        .mat-header {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            border-radius: 12px;
+            padding: 1.75rem 2rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+        .mat-header .mat-header-icon {
+            width: 56px; height: 56px;
+            background: rgba(255,255,255,.18);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; flex-shrink: 0;
+        }
+        .mat-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0; color: #fff; }
+        .mat-header p { margin: .25rem 0 0; font-size: .9rem; color: rgba(255,255,255,.9); }
+
+        /* Barra de progreso por pasos */
+        .mat-steps { display: flex; list-style: none; padding: 0; margin: 0 0 1.75rem; }
+        .mat-steps li { flex: 1; text-align: center; position: relative; color: #94a3b8; font-size: .82rem; font-weight: 600; }
+        .mat-steps li .mat-step-num {
+            width: 38px; height: 38px; line-height: 38px; border-radius: 50%;
+            background: #e2e8f0; color: #64748b; display: inline-block; margin-bottom: .4rem;
+            font-weight: 700; transition: all .2s ease; position: relative; z-index: 2;
+        }
+        .mat-steps li::before {
+            content: ''; position: absolute; top: 19px; left: -50%; width: 100%; height: 3px;
+            background: #e2e8f0; z-index: 1;
+        }
+        .mat-steps li:first-child::before { display: none; }
+        .mat-steps li.active { color: #4f46e5; }
+        .mat-steps li.active .mat-step-num { background: #4f46e5; color: #fff; box-shadow: 0 0 0 4px rgba(79,70,229,.18); }
+        .mat-steps li.done { color: #059669; }
+        .mat-steps li.done .mat-step-num { background: #059669; color: #fff; }
+        .mat-steps li.done::before, .mat-steps li.active::before { background: #4f46e5; }
+
+        .mat-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+        .mat-panel { display: none; }
+        .mat-panel.active { display: block; animation: matFade .25s ease; }
+        @@keyframes matFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+        .mat-section-title { font-size: 1.05rem; font-weight: 700; color: #1e293b; margin: 0 0 1rem; display: flex; align-items: center; gap: .5rem; }
+        .mat-section-title i { color: #4f46e5; }
+        .mat-subtitle { font-size: .8rem; color: #64748b; margin: -.6rem 0 1.1rem; }
+
+        .mat-label { font-size: .8rem; font-weight: 600; color: #374151; margin-bottom: .3rem; display: block; }
+        .mat-label .req { color: #dc2626; }
+        .mat-input, .mat-select { width: 100%; padding: .55rem .75rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: .88rem; background: #fff; }
+        .mat-input:focus, .mat-select:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,.12); }
+        .mat-input:disabled, .mat-select:disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+        .mat-field { margin-bottom: 1rem; }
+        .mat-err { color: #dc2626; font-size: .75rem; margin-top: .25rem; display: none; }
+        .mat-field.has-error .mat-input, .mat-field.has-error .mat-select { border-color: #dc2626; }
+        .mat-field.has-error .mat-err { display: block; }
+
+        .mat-cascade-note { background: #eef2ff; border: 1px solid #c7d2fe; color: #3730a3; border-radius: 8px; padding: .6rem .85rem; font-size: .78rem; margin-bottom: 1rem; }
+
+        .mat-toggle-group { display: flex; gap: .75rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+        .mat-toggle-group .mat-toggle-btn {
+            flex: 1; min-width: 200px; border: 2px solid #e5e7eb; border-radius: 10px; padding: .9rem 1rem;
+            cursor: pointer; text-align: left; background: #fff; transition: all .15s ease;
+        }
+        .mat-toggle-group .mat-toggle-btn.active { border-color: #4f46e5; background: #eef2ff; }
+        .mat-toggle-group .mat-toggle-btn strong { display: block; color: #1e293b; font-size: .9rem; }
+        .mat-toggle-group .mat-toggle-btn span { font-size: .76rem; color: #64748b; }
+
+        .mat-doc-item { display: flex; align-items: center; gap: .75rem; padding: .65rem .85rem; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: .55rem; }
+        .mat-doc-item input[type=checkbox] { width: 18px; height: 18px; }
+        .mat-doc-item .mat-doc-name { font-weight: 600; color: #1e293b; font-size: .88rem; }
+        .mat-doc-item .mat-doc-badge { margin-left: auto; font-size: .7rem; padding: .15rem .5rem; border-radius: 20px; }
+        .mat-doc-badge.req { background: #fee2e2; color: #b91c1c; }
+        .mat-doc-badge.opt { background: #f1f5f9; color: #475569; }
+
+        .mat-warn { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; border-radius: 8px; padding: .75rem 1rem; font-size: .8rem; margin-bottom: 1rem; }
+        .mat-warn i { margin-right: .35rem; }
+
+        .mat-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+        .mat-summary-box { border: 1px solid #e5e7eb; border-radius: 10px; padding: 1rem 1.15rem; }
+        .mat-summary-box h4 { font-size: .82rem; text-transform: uppercase; letter-spacing: .03em; color: #6366f1; margin: 0 0 .6rem; font-weight: 700; }
+        .mat-summary-box .mat-row { display: flex; justify-content: space-between; font-size: .84rem; padding: .2rem 0; border-bottom: 1px dashed #f1f5f9; }
+        .mat-summary-box .mat-row span:first-child { color: #64748b; }
+        .mat-summary-box .mat-row span:last-child { color: #1e293b; font-weight: 600; text-align: right; }
+
+        .mat-nav { display: flex; justify-content: space-between; margin-top: 1.5rem; gap: .75rem; }
+        .mat-btn { padding: .6rem 1.4rem; border-radius: 8px; font-weight: 600; font-size: .88rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; }
+        .mat-btn-prev { background: #f1f5f9; color: #475569; }
+        .mat-btn-next, .mat-btn-confirm { background: #4f46e5; color: #fff; }
+        .mat-btn-confirm { background: #059669; }
+        .mat-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .mat-btn-prev[hidden], .mat-btn-next[hidden], .mat-btn-confirm[hidden] { display: none; }
+
+        .mat-hint { font-size: .78rem; color: #64748b; }
+        .mat-success-box { text-align: center; padding: 2rem 1rem; }
+        .mat-success-box .mat-success-icon { font-size: 54px; color: #059669; }
+        .mat-success-box h3 { margin: .75rem 0 .35rem; color: #1e293b; }
+    </style>
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="/Alumnos">Alumnos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Matrícula nueva</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <div class="mat-header">
+        <div class="mat-header-icon"><i class="fas fa-user-graduate"></i></div>
+        <div>
+            <h1>Matrícula nueva</h1>
+            <p>Registro guiado del estudiante paso a paso: datos, encargado, documentos y confirmación.</p>
+        </div>
+    </div>
+
+    <ul class="mat-steps" id="matSteps">
+        <li data-step="1" class="active"><span class="mat-step-num">1</span><br>Datos del alumno</li>
+        <li data-step="2"><span class="mat-step-num">2</span><br>Encargado</li>
+        <li data-step="3"><span class="mat-step-num">3</span><br>Documentos</li>
+        <li data-step="4"><span class="mat-step-num">4</span><br>Confirmación</li>
+    </ul>
+
+    <div class="mat-card">
+        <!-- ================= PASO 1 ================= -->
+        <div class="mat-panel active" data-panel="1">
+            <h3 class="mat-section-title"><i class="fas fa-id-card"></i> Datos personales del alumno</h3>
+            <div class="row">
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Identidad <span class="req">*</span></label>
+                    <input type="text" id="Per_Identidad" name="Per_Identidad" class="mat-input" maxlength="13" placeholder="0801200012345" data-req data-len="13">
+                    <div class="mat-err">Ingrese los 13 dígitos de identidad.</div>
+                    <div class="mat-hint" id="identidadAviso"></div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Primer nombre <span class="req">*</span></label>
+                    <input type="text" id="Per_PrimerNombre" name="Per_PrimerNombre" class="mat-input" data-req>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Segundo nombre</label>
+                    <input type="text" id="Per_SegundoNombre" name="Per_SegundoNombre" class="mat-input">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Apellido paterno <span class="req">*</span></label>
+                    <input type="text" id="Per_ApellidoPaterno" name="Per_ApellidoPaterno" class="mat-input" data-req>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Apellido materno</label>
+                    <input type="text" id="Per_ApellidoMaterno" name="Per_ApellidoMaterno" class="mat-input">
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Fecha de nacimiento <span class="req">*</span></label>
+                    <input type="date" id="Per_FechaNacimiento" name="Per_FechaNacimiento" class="mat-input" data-req>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Sexo <span class="req">*</span></label>
+                    <select id="Per_Sexo" name="Per_Sexo" class="mat-select" data-req>
+                        <option value="">-- Seleccionar --</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </select>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Teléfono <span class="req">*</span></label>
+                    <input type="text" id="Per_Telefono" name="Per_Telefono" class="mat-input" maxlength="11" placeholder="98765432" data-req>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">Correo electrónico <span class="req">*</span></label>
+                    <input type="email" id="Per_CorreoElectronico" name="Per_CorreoElectronico" class="mat-input" placeholder="alumno@correo.com" data-req>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mat-field" data-field>
+                    <label class="mat-label">Dirección <span class="req">*</span></label>
+                    <input type="text" id="Per_Direccion" name="Per_Direccion" class="mat-input" placeholder="Barrio, referencia" data-req>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+            </div>
+
+            <hr />
+            <h3 class="mat-section-title"><i class="fas fa-layer-group"></i> Ubicación académica</h3>
+            <div class="mat-cascade-note">
+                <i class="fas fa-circle-info"></i> Seleccione en cascada: cada nivel habilita el siguiente
+                (Nivel → Grado → Modalidad → Curso → Sección → Estado).
+            </div>
+            <div class="row">
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">1 · Nivel educativo <span class="req">*</span></label>
+                    @Html.DropDownList("Niv_Id", Model.NivelesEducativosList, "-- Seleccionar Nivel --", new { @class = "mat-select", data_req = "true" })
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">2 · Grado académico <span class="req">*</span></label>
+                    <select id="Cun_Id" name="Cun_Id" class="mat-select" data-req disabled>
+                        <option value="">-- Seleccione el nivel primero --</option>
+                    </select>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">3 · Modalidad <span class="req">*</span></label>
+                    <select id="Mda_Id" name="Mda_Id" class="mat-select" data-req disabled>
+                        <option value="">-- Seleccione el grado primero --</option>
+                    </select>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">4 · Curso <span class="req">*</span></label>
+                    <select id="Cur_Id" name="Cur_Id" class="mat-select" data-req disabled>
+                        <option value="">-- Seleccione la modalidad primero --</option>
+                    </select>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">5 · Sección <span class="req">*</span></label>
+                    <select id="Sec_Id" name="Sec_Id" class="mat-select" data-req disabled>
+                        <option value="">-- Seleccione el curso primero --</option>
+                    </select>
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+                <div class="col-md-4 mat-field" data-field>
+                    <label class="mat-label">6 · Estado <span class="req">*</span></label>
+                    @Html.DropDownList("Est_Id", Model.EstadosList, "-- Seleccionar Estado --", new { @class = "mat-select", data_req = "true" })
+                    <div class="mat-err">Campo requerido.</div>
+                </div>
+            </div>
+
+            @* Ocultos que el AlumnoViewModel necesita al crear *@
+            <input type="hidden" id="Alu_Id" name="Alu_Id" value="0" />
+            <input type="hidden" id="Per_Id" name="Per_Id" value="0" />
+            <input type="hidden" id="Per_EsActivo" name="Per_EsActivo" value="true" />
+        </div>
+
+        <!-- ================= PASO 2 ================= -->
+        <div class="mat-panel" data-panel="2">
+            <h3 class="mat-section-title"><i class="fas fa-user-shield"></i> Encargado del alumno</h3>
+            <p class="mat-subtitle">Vincule un encargado ya registrado o cree uno nuevo, e indique el parentesco.</p>
+
+            <div class="mat-toggle-group">
+                <div class="mat-toggle-btn active" data-enc-mode="existente">
+                    <strong><i class="fas fa-user-check"></i> Vincular existente</strong>
+                    <span>Buscar un encargado ya registrado.</span>
+                </div>
+                <div class="mat-toggle-btn" data-enc-mode="nuevo">
+                    <strong><i class="fas fa-user-plus"></i> Registrar nuevo</strong>
+                    <span>Dar de alta un encargado nuevo.</span>
+                </div>
+            </div>
+
+            <div class="mat-warn">
+                <i class="fas fa-triangle-exclamation"></i>
+                <strong>Nota:</strong> el API actual no expone un endpoint para persistir el vínculo
+                alumno–encargado–parentesco durante el alta. El parentesco se registra aquí sólo para el
+                resumen; deberá confirmarse en la ficha del alumno una vez creada.
+            </div>
+
+            <!-- Modo existente -->
+            <div id="encExistente">
+                <div class="row">
+                    <div class="col-md-8 mat-field" data-field data-group="enc-existente">
+                        <label class="mat-label">Encargado registrado <span class="req">*</span></label>
+                        <select id="encExistenteSel" class="mat-select">
+                            <option value="">-- Seleccionar encargado --</option>
+                        </select>
+                        <div class="mat-err">Seleccione un encargado.</div>
+                    </div>
+                    <div class="col-md-4 mat-field" data-field data-group="enc-existente">
+                        <label class="mat-label">Parentesco <span class="req">*</span></label>
+                        <select id="parExistenteSel" class="mat-select mat-par">
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                        <div class="mat-err">Seleccione el parentesco.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modo nuevo -->
+            <div id="encNuevo" style="display:none;">
+                <div class="row">
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Identidad <span class="req">*</span></label>
+                        <input type="text" id="enc_Per_Identidad" class="mat-input" maxlength="13" data-req-enc>
+                        <div class="mat-err">Campo requerido (13 dígitos).</div>
+                    </div>
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Primer nombre <span class="req">*</span></label>
+                        <input type="text" id="enc_Per_PrimerNombre" class="mat-input" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Segundo nombre <span class="req">*</span></label>
+                        <input type="text" id="enc_Per_SegundoNombre" class="mat-input" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Apellido paterno <span class="req">*</span></label>
+                        <input type="text" id="enc_Per_ApellidoPaterno" class="mat-input" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Apellido materno <span class="req">*</span></label>
+                        <input type="text" id="enc_Per_ApellidoMaterno" class="mat-input" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Fecha de nacimiento <span class="req">*</span></label>
+                        <input type="date" id="enc_Per_FechaNacimiento" class="mat-input" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Sexo <span class="req">*</span></label>
+                        <select id="enc_Per_Sexo" class="mat-select" data-req-enc>
+                            <option value="">-- Seleccionar --</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Teléfono <span class="req">*</span></label>
+                        <input type="text" id="enc_Per_Telefono" class="mat-input" maxlength="11" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                    <div class="col-md-4 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Correo electrónico <span class="req">*</span></label>
+                        <input type="email" id="enc_Per_CorreoElectronico" class="mat-input" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Dirección <span class="req">*</span></label>
+                        <input type="text" id="enc_Per_Direccion" class="mat-input" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                    <div class="col-md-3 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Ocupación <span class="req">*</span></label>
+                        <input type="text" id="enc_Enc_Ocupacion" class="mat-input" data-req-enc>
+                        <div class="mat-err">Campo requerido.</div>
+                    </div>
+                    <div class="col-md-3 mat-field" data-field data-group="enc-nuevo">
+                        <label class="mat-label">Parentesco <span class="req">*</span></label>
+                        <select id="parNuevoSel" class="mat-select mat-par">
+                            <option value="">-- Seleccionar --</option>
+                        </select>
+                        <div class="mat-err">Seleccione el parentesco.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PASO 3 ================= -->
+        <div class="mat-panel" data-panel="3">
+            <h3 class="mat-section-title"><i class="fas fa-folder-open"></i> Checklist de documentos requeridos</h3>
+            <p class="mat-subtitle">Marque los documentos entregados. El seguimiento formal se realiza en la pantalla Documentos del alumno.</p>
+
+            <div class="mat-warn">
+                <i class="fas fa-triangle-exclamation"></i>
+                <strong>Nota:</strong> el API no genera aún la lista de documentos requeridos para un alumno
+                nuevo. Este checklist es de referencia y no se persiste. Tras crear la matrícula podrá gestionar
+                los documentos reales en <em>Documentos del alumno</em>.
+            </div>
+
+            <div id="matDocsList">
+                <div class="mat-doc-item">
+                    <input type="checkbox" class="mat-doc-check" data-doc="Partida de nacimiento">
+                    <span class="mat-doc-name">Partida de nacimiento</span>
+                    <span class="mat-doc-badge req">Requerido</span>
+                </div>
+                <div class="mat-doc-item">
+                    <input type="checkbox" class="mat-doc-check" data-doc="Tarjeta de identidad del encargado">
+                    <span class="mat-doc-name">Tarjeta de identidad del encargado</span>
+                    <span class="mat-doc-badge req">Requerido</span>
+                </div>
+                <div class="mat-doc-item">
+                    <input type="checkbox" class="mat-doc-check" data-doc="Certificado de estudios previos">
+                    <span class="mat-doc-name">Certificado de estudios previos</span>
+                    <span class="mat-doc-badge req">Requerido</span>
+                </div>
+                <div class="mat-doc-item">
+                    <input type="checkbox" class="mat-doc-check" data-doc="Constancia de conducta">
+                    <span class="mat-doc-name">Constancia de conducta</span>
+                    <span class="mat-doc-badge opt">Opcional</span>
+                </div>
+                <div class="mat-doc-item">
+                    <input type="checkbox" class="mat-doc-check" data-doc="Fotografías tamaño carné">
+                    <span class="mat-doc-name">Fotografías tamaño carné</span>
+                    <span class="mat-doc-badge opt">Opcional</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PASO 4 ================= -->
+        <div class="mat-panel" data-panel="4">
+            <h3 class="mat-section-title"><i class="fas fa-clipboard-check"></i> Resumen de confirmación</h3>
+            <p class="mat-subtitle">Revise los datos antes de guardar la matrícula.</p>
+
+            <div class="mat-summary-grid">
+                <div class="mat-summary-box" id="sumAlumno">
+                    <h4><i class="fas fa-user"></i> Alumno</h4>
+                </div>
+                <div class="mat-summary-box" id="sumAcademico">
+                    <h4><i class="fas fa-layer-group"></i> Ubicación académica</h4>
+                </div>
+                <div class="mat-summary-box" id="sumEncargado">
+                    <h4><i class="fas fa-user-shield"></i> Encargado</h4>
+                </div>
+                <div class="mat-summary-box" id="sumDocumentos">
+                    <h4><i class="fas fa-folder-open"></i> Documentos marcados</h4>
+                </div>
+            </div>
+
+            <div id="matResultado" style="display:none;"></div>
+        </div>
+
+        <!-- ================= NAV ================= -->
+        <div class="mat-nav" id="matNav">
+            <button type="button" class="mat-btn mat-btn-prev" id="btnPrev" hidden><i class="fas fa-arrow-left"></i> Anterior</button>
+            <div style="flex:1"></div>
+            <button type="button" class="mat-btn mat-btn-next" id="btnNext">Siguiente <i class="fas fa-arrow-right"></i></button>
+            <button type="button" class="mat-btn mat-btn-confirm" id="btnConfirm" hidden><i class="fas fa-check"></i> Confirmar matrícula</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Content/js/pages/matricula.js"></script>
+    <script>
+        Matricula.init({
+            urlGrados:       "@Url.Action("GetGradosAsync", "Matricula")",
+            urlModalidades:  "@Url.Action("GetModalidadesAsync", "Matricula")",
+            urlCursos:       "@Url.Action("GetCursosAsync", "Matricula")",
+            urlSecciones:    "@Url.Action("GetSeccionesAsync", "Matricula")",
+            urlBuscarAlumno: "@Url.Action("BuscarAlumnoPorIdentidadAsync", "Matricula")",
+            urlEncargados:   "@Url.Action("ListarEncargadosAsync", "Matricula")",
+            urlParentescos:  "@Url.Action("ListarParentescosAsync", "Matricula")",
+            urlGuardarEnc:   "@Url.Action("GuardarEncargadoAsync", "Matricula")",
+            urlGuardarAlu:   "@Url.Action("GuardarAlumnoAsync", "Matricula")",
+            urlDocumentos:   "@Url.Action("Index", "DocumentosAlumnoAdm")",
+            urlAlumnos:      "@Url.Action("Index", "Alumnos")"
+        });
+    </script>
+}
