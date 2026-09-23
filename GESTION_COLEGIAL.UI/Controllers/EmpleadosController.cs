@@ -21,6 +21,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <returns>Vista principal de los empleados.</returns>
         public ActionResult Index()
         {
+            ViewBag.PuedeCrear = TienePantalla("Crear empleados");
+            ViewBag.PuedeEditar = TienePantalla("Editar empleados");
+            ViewBag.PuedeEliminar = TienePantalla("Eliminar empleados");
             return View();
         }
 

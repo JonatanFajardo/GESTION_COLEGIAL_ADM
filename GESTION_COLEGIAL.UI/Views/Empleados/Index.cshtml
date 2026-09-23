@@ -2,9 +2,24 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    bool puedeCrear = ViewBag.PuedeCrear == true;
+    bool puedeEditar = ViewBag.PuedeEditar == true;
+    bool puedeEliminar = ViewBag.PuedeEliminar == true;
+
+    // Oculta por CSS las acciones de escritura del datatable cuando el rol no tiene permiso.
+    // El datatable de Empleados usa el helper genérico (Content/js/components/datatable.init.js),
+    // que no soporta un objeto "permisos" como el de Alumnos, así que se refuerza con CSS.
+    var reglasCssPermisos = new System.Text.StringBuilder();
+    if (!puedeCrear) { reglasCssPermisos.Append("#add-btn{display:none !important;}"); }
+    if (!puedeEditar) { reglasCssPermisos.Append("#datatable .edit-btn{display:none !important;}"); }
+    if (!puedeEliminar) { reglasCssPermisos.Append("#datatable .delete-btn{display:none !important;}"); }
 }
 @section Styles{
     <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    @if (reglasCssPermisos.Length > 0)
+    {
+        <style>@Html.Raw(reglasCssPermisos.ToString())</style>
+    }
 }
 
 <div class="breadcrumb-wrapper-content ">
@@ -32,15 +47,51 @@
             </div>
         </div>
         <div class="header-action-catalogo">
-            <a href="@Url.Action("CreateAsync", "Empleados")" class="btn-nuevo-catalogo">
-                <i class="mdi mdi-plus-circle-outline"></i>
-                Nuevo Empleado
-            </a>
+            @if (puedeCrear)
+            {
+                <a href="@Url.Action("CreateAsync", "Empleados")" class="btn-nuevo-catalogo">
+                    <i class="mdi mdi-plus-circle-outline"></i>
+                    Nuevo Empleado
+                </a>
+            }
         </div>
     </div>
 </div>
 
 <div class="fluid-container">
+
+    @* ── Filtros ── *@
+    <div class="card-listado-catalogo mb-3">
+        <div class="card-body-listado-catalogo">
+            <div class="row align-items-end g-2">
+                <div class="col-md-4 col-sm-12 mb-2 mb-md-0">
+                    <label for="custom-table-search" class="form-label">Buscar</label>
+                    <input type="text" id="custom-table-search" class="form-control" placeholder="Código o nombre..." autocomplete="off" />
+                </div>
+                <div class="col-md-3 col-sm-4 mb-2 mb-md-0">
+                    <label for="filtro-estado" class="form-label">Estado</label>
+                    <select id="filtro-estado" class="form-control">
+                        <option value="">Todos</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-4 mb-2 mb-md-0">
+                    <label for="filtro-cargo" class="form-label">Cargo</label>
+                    <select id="filtro-cargo" class="form-control">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label for="filtro-titulo" class="form-label">Título</label>
+                    <select id="filtro-titulo" class="form-control">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card-listado-catalogo">
         <div class="card-header-listado-catalogo">
             <h3>
@@ -76,46 +127,49 @@
     </div>
 </div>
 
-<!-- Modal Delete-->
-<div class="modal" id="delete-modal-secondary" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        @using (Ajax.BeginForm("DeleteAsync", "Empleados", new AjaxOptions
-        {
-            HttpMethod = "Post",
-            OnBegin = "Modals.begin",
-            OnComplete = "Modals.complete",
-            OnFailure = "Modals.failure",
-            OnSuccess = "Modals.success"
-        }))
-        {
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h5>
-                </h5>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            @Html.HiddenFor(model => model.Emp_Id, new { @id = "delete-item-id" })
-                            <p>¿Está seguro de que desea eliminar este registro?</p>
+@if (puedeEliminar)
+{
+    <!-- Modal Delete-->
+    <div class="modal" id="delete-modal-secondary" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            @using (Ajax.BeginForm("DeleteAsync", "Empleados", new AjaxOptions
+            {
+                HttpMethod = "Post",
+                OnBegin = "Modals.begin",
+                OnComplete = "Modals.complete",
+                OnFailure = "Modals.failure",
+                OnSuccess = "Modals.success"
+            }))
+            {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" hidden>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.Emp_Id, new { @id = "delete-item-id" })
+                                <p>¿Está seguro de que desea eliminar este registro?</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" id="accept-delete-btn" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" id="accept-delete-btn" class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
-            </div>
+            }
         </div>
-        }
     </div>
-</div>
-<!-- Fin Modal -->
+    <!-- Fin Modal -->
+}
 
 @section Scripts{
     <script src="~/Content/js/pages/empleados.js"></script>
@@ -124,7 +178,12 @@
             urlList: "@Url.Action("ListAsync")",
             urlInsert: "@Url.Action("CreateAsync")",
             urlUpdate: "@Url.Action("FindAsync")",
-            urlDetail: "@Url.Action("DetailAsync")"
+            urlDetail: "@Url.Action("DetailAsync")",
+            permisos: {
+                crear: @(puedeCrear ? "true" : "false"),
+                editar: @(puedeEditar ? "true" : "false"),
+                eliminar: @(puedeEliminar ? "true" : "false")
+            }
         });
     </script>
 }
