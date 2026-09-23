@@ -4,6 +4,90 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/finanzas-dashboard.css" rel="stylesheet" />
+    <style>
+        /* ── Stepper ── */
+        .np-steps { display: flex; list-style: none; padding: 0; margin: 0 0 26px; gap: 8px; }
+        .np-steps .nav-item { flex: 1; }
+        .np-steps .nav-link {
+            display: flex; align-items: center; gap: 10px; cursor: default;
+            padding: 12px 14px; border-radius: 12px; background: #f1f5f9;
+            color: #64748b; font-weight: 600; font-size: .84rem; border: 1px solid #e2e8f0;
+            transition: background .15s, color .15s, border-color .15s;
+        }
+        .np-steps .nav-link .np-step-num {
+            width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: #cbd5e1; color: #fff; font-size: .8rem; font-weight: 700;
+        }
+        .np-steps .nav-link.active { background: #eef2ff; color: #4338ca; border-color: #c7d2fe; }
+        .np-steps .nav-link.active .np-step-num { background: #4f46e5; }
+        .np-steps .nav-link.done { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+        .np-steps .nav-link.done .np-step-num { background: #059669; }
+        .np-step-label { line-height: 1.15; }
+        @@media (max-width: 991px) {
+            .np-steps { flex-wrap: wrap; }
+            .np-steps .nav-item { flex: 1 1 45%; }
+        }
+
+        /* ── Bloques del wizard ── */
+        .np-step-title { font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 16px; }
+        .np-block { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+        .np-block-head {
+            padding: 12px 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;
+            font-weight: 700; font-size: .86rem; color: #334155; display: flex; align-items: center; gap: 8px;
+        }
+        .np-block-head i { color: #4f46e5; }
+        .np-block-body { padding: 16px; }
+        .np-hint { font-size: .78rem; color: #94a3b8; margin-top: 8px; }
+
+        /* ── Ficha del alumno ── */
+        .np-student { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .np-student-avatar {
+            width: 96px; height: 96px; flex-shrink: 0; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: #eef2ff; color: #4f46e5; font-size: 42px;
+        }
+        .np-student-fields { display: flex; flex-wrap: wrap; gap: 12px 28px; }
+        .np-student-field .lbl { font-size: .66rem; text-transform: uppercase; letter-spacing: .5px; color: #94a3b8; font-weight: 700; }
+        .np-student-field .val { font-size: .9rem; color: #1e293b; font-weight: 600; }
+
+        /* ── Resumen (subtotales) ── */
+        .np-summary {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 10px;
+            padding: 12px 18px; margin: 4px 0 18px; color: #3730a3; font-weight: 600;
+        }
+        .np-summary .np-summary-val { font-size: 1.25rem; font-weight: 800; color: #4338ca; }
+
+        /* ── Confirmación ── */
+        .np-confirm { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 22px; }
+        .np-confirm-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: .9rem; }
+        .np-confirm-row:last-child { border-bottom: none; }
+        .np-confirm-row .lbl { color: #64748b; font-weight: 600; }
+        .np-confirm-row .val { color: #1e293b; font-weight: 600; text-align: right; }
+        .np-confirm-total { font-size: 1.15rem; }
+        .np-confirm-total .val { color: #059669; font-weight: 800; }
+
+        /* ── Nav de botones ── */
+        .np-actions { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+        .np-btn { border: none; border-radius: 10px; padding: 10px 22px; font-weight: 600; font-size: .88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+        .np-btn-next { background: #4f46e5; color: #fff; }
+        .np-btn-next:hover:not(:disabled) { background: #4338ca; }
+        .np-btn-next:disabled { opacity: .5; cursor: not-allowed; }
+        .np-btn-prev { background: #f1f5f9; color: #475569; }
+        .np-btn-prev:hover { background: #e2e8f0; }
+        .np-btn-confirm { background: #059669; color: #fff; }
+        .np-btn-confirm:hover { background: #047857; }
+        .np-btn-inline { background: #4f46e5; color: #fff; border: none; border-radius: 8px; padding: 9px 14px; font-weight: 600; font-size: .82rem; cursor: pointer; width: 100%; }
+        .np-btn-inline:hover { background: #4338ca; }
+        .np-btn-inline.np-btn-add { background: #059669; }
+        .np-btn-inline.np-btn-add:hover { background: #047857; }
+    </style>
+}
+
 <div class="breadcrumb-wrapper-content ">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -15,38 +99,60 @@
     </nav>
 </div>
 
-<div class="fluid-container">
-    <div class="card">
-        <div class="card-header" style="background-color:white;">
-            <h3>Registrar Nuevo Pago</h3>
-        </div>
-        <div class="card-body">
-            <!-- Progress Bar -->
-            <div class="row mb-4">
-                <div class="col-md-12">
-                    <ul class="nav nav-pills nav-fill" id="payment-steps">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="step1-tab" data-step="1">1. Seleccionar Alumno</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="step2-tab" data-step="2">2. Seleccionar Conceptos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="step3-tab" data-step="3">3. Aplicar Descuentos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="step4-tab" data-step="4">4. Forma de Pago</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="step5-tab" data-step="5">5. Confirmación</a>
-                        </li>
-                    </ul>
-                </div>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <i class="fa-solid fa-cash-register" style="font-size:32px;"></i>
             </div>
+            <div class="header-text-catalogo">
+                <h1>Registrar Nuevo Pago</h1>
+                <p>Cobre a un alumno paso a paso: busque, seleccione conceptos, aplique descuentos y genere el recibo</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+    <div class="fd-panel">
+        <div class="fd-panel-body">
+            <!-- Stepper -->
+            <ul class="np-steps" id="payment-steps">
+                <li class="nav-item">
+                    <a class="nav-link active" id="step1-tab" data-step="1">
+                        <span class="np-step-num">1</span>
+                        <span class="np-step-label">Seleccionar<br>Alumno</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="step2-tab" data-step="2">
+                        <span class="np-step-num">2</span>
+                        <span class="np-step-label">Seleccionar<br>Conceptos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="step3-tab" data-step="3">
+                        <span class="np-step-num">3</span>
+                        <span class="np-step-label">Aplicar<br>Descuentos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="step4-tab" data-step="4">
+                        <span class="np-step-num">4</span>
+                        <span class="np-step-label">Forma de<br>Pago</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="step5-tab" data-step="5">
+                        <span class="np-step-num">5</span>
+                        <span class="np-step-label">Confirmación</span>
+                    </a>
+                </li>
+            </ul>
 
             <!-- Paso 1: Seleccionar Alumno -->
             <div id="step1" class="payment-step">
-                <h4>Seleccionar Alumno</h4>
+                <h4 class="np-step-title">Seleccionar Alumno</h4>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -54,8 +160,8 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" id="alumno-identidad-search" placeholder="Ingrese la identidad del alumno..." maxlength="13" />
                                 <div class="input-group-append">
-                                    <button class="btn btn-info" type="button" id="btn-buscar-alumno">
-                                        <i class="mdi mdi-magnify"></i> Buscar
+                                    <button class="btn btn-primary" type="button" id="btn-buscar-alumno">
+                                        <i class="bi bi-search"></i> Buscar
                                     </button>
                                 </div>
                             </div>
@@ -65,53 +171,41 @@
                 </div>
 
                 <div id="alumno-info" style="display:none;">
-                    <div class="card">
-                        <div class="card-body" style="background-color:white;">
-                            <div class="row">
-                                <div class="col-md-3 text-center">
-                                    <div id="alumno-avatar-wrapper">
-                                        <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center" style="width:140px;height:140px;font-size:64px;color:#fff;">
-                                            <i class="fa-solid fa-user"></i>
-                                        </div>
-                                    </div>
+                    <div class="np-block">
+                        <div class="np-block-head"><i class="bi bi-person-badge"></i> Información del Alumno</div>
+                        <div class="np-block-body">
+                            <div class="np-student">
+                                <div id="alumno-avatar-wrapper">
+                                    <div class="np-student-avatar"><i class="fa-solid fa-user"></i></div>
                                 </div>
-                                <div class="col-md-9">
-                                    <h5 class="text-black">Información del Alumno</h5>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p style="color:#333;"><strong>Nombre completo:</strong> <span id="alumno-nombre-completo"></span></p>
-                                            <p style="color:#333;"><strong>Identidad:</strong> <span id="alumno-identidad"></span></p>
-                                            <p style="color:#333;"><strong>Fecha de nacimiento:</strong> <span id="alumno-fecha-nacimiento"></span></p>
-                                            <p style="color:#333;"><strong>Sexo:</strong> <span id="alumno-sexo"></span></p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p style="color:#333;"><strong>Correo:</strong> <span id="alumno-correo"></span></p>
-                                            <p style="color:#333;"><strong>Teléfono:</strong> <span id="alumno-telefono"></span></p>
-                                            <p style="color:#333;"><strong>Nivel:</strong> <span id="alumno-nivel"></span></p>
-                                            <p style="color:#333;"><strong>Curso:</strong> <span id="alumno-curso"></span></p>
-                                        </div>
-                                    </div>
+                                <div class="np-student-fields">
+                                    <div class="np-student-field"><div class="lbl">Nombre completo</div><div class="val"><span id="alumno-nombre-completo"></span></div></div>
+                                    <div class="np-student-field"><div class="lbl">Identidad</div><div class="val"><span id="alumno-identidad"></span></div></div>
+                                    <div class="np-student-field"><div class="lbl">Fecha de nacimiento</div><div class="val"><span id="alumno-fecha-nacimiento"></span></div></div>
+                                    <div class="np-student-field"><div class="lbl">Sexo</div><div class="val"><span id="alumno-sexo"></span></div></div>
+                                    <div class="np-student-field"><div class="lbl">Correo</div><div class="val"><span id="alumno-correo"></span></div></div>
+                                    <div class="np-student-field"><div class="lbl">Teléfono</div><div class="val"><span id="alumno-telefono"></span></div></div>
+                                    <div class="np-student-field"><div class="lbl">Nivel</div><div class="val"><span id="alumno-nivel"></span></div></div>
+                                    <div class="np-student-field"><div class="lbl">Curso</div><div class="val"><span id="alumno-curso"></span></div></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-3">
-                    <button type="button" class="btn btn-primary" id="btn-step1-next" disabled>Siguiente</button>
+                <div class="np-actions" style="justify-content:flex-end;">
+                    <button type="button" class="np-btn np-btn-next" id="btn-step1-next" disabled>Siguiente <i class="bi bi-arrow-right"></i></button>
                 </div>
             </div>
 
             <!-- Paso 2: Seleccionar Conceptos -->
             <div id="step2" class="payment-step" style="display:none;">
-                <h4>Seleccionar Conceptos a Pagar</h4>
+                <h4 class="np-step-title">Seleccionar Conceptos a Pagar</h4>
 
                 <!-- Sección 1: Cargos pendientes existentes -->
-                <div class="card mb-3">
-                    <div class="card-header bg-light">
-                        <strong><i class="mdi mdi-clipboard-list"></i> Cargos pendientes existentes</strong>
-                    </div>
-                    <div class="card-body">
+                <div class="np-block">
+                    <div class="np-block-head"><i class="bi bi-card-checklist"></i> Cargos pendientes existentes</div>
+                    <div class="np-block-body" style="padding:0;">
                         <div class="table-responsive">
                             <table class="table table-striped mb-0">
                                 <thead>
@@ -132,11 +226,9 @@
                 </div>
 
                 <!-- Sección 2: Generar mensualidad adelantada -->
-                <div class="card mb-3">
-                    <div class="card-header bg-light">
-                        <strong><i class="mdi mdi-calendar-month"></i> Generar mensualidad adelantada</strong>
-                    </div>
-                    <div class="card-body">
+                <div class="np-block">
+                    <div class="np-block-head"><i class="bi bi-calendar-month"></i> Generar mensualidad adelantada</div>
+                    <div class="np-block-body">
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="mensualidad-mes">Mes</label>
@@ -164,21 +256,19 @@
                                 <input type="number" step="0.01" class="form-control" id="mensualidad-monto" placeholder="Monto sugerido" />
                             </div>
                             <div class="col-md-2 d-flex align-items-end">
-                                <button type="button" class="btn btn-info btn-block" id="btn-generar-mensualidad">
-                                    <i class="mdi mdi-plus-circle"></i> Generar
+                                <button type="button" class="np-btn-inline" id="btn-generar-mensualidad">
+                                    <i class="bi bi-plus-circle"></i> Generar
                                 </button>
                             </div>
                         </div>
-                        <small class="form-text text-muted mt-2">Crea una mensualidad para un mes específico y la añade a la lista de cargos pendientes.</small>
+                        <p class="np-hint">Crea una mensualidad para un mes específico y la añade a la lista de cargos pendientes.</p>
                     </div>
                 </div>
 
                 <!-- Sección 3: Cargo puntual ad-hoc -->
-                <div class="card mb-3">
-                    <div class="card-header bg-light">
-                        <strong><i class="mdi mdi-plus-box"></i> Agregar cargo puntual</strong>
-                    </div>
-                    <div class="card-body">
+                <div class="np-block">
+                    <div class="np-block-head"><i class="bi bi-plus-square"></i> Agregar cargo puntual</div>
+                    <div class="np-block-body">
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="adhoc-concepto">Concepto</label>
@@ -199,88 +289,108 @@
                                 <input type="text" class="form-control" id="adhoc-observaciones" placeholder="(opcional)" />
                             </div>
                             <div class="col-md-2 d-flex align-items-end">
-                                <button type="button" class="btn btn-success btn-block" id="btn-agregar-cargo">
-                                    <i class="mdi mdi-plus"></i> Agregar
+                                <button type="button" class="np-btn-inline np-btn-add" id="btn-agregar-cargo">
+                                    <i class="bi bi-plus-lg"></i> Agregar
                                 </button>
                             </div>
                         </div>
-                        <small class="form-text text-muted mt-2">Crea un cargo puntual (Materiales, Examen, Transporte, etc.) con monto personalizado.</small>
+                        <p class="np-hint">Crea un cargo puntual (Materiales, Examen, Transporte, etc.) con monto personalizado.</p>
                     </div>
                 </div>
 
-                <div class="alert alert-success">
-                    <strong>Subtotal seleccionado:</strong> L. <span id="subtotal-conceptos">0.00</span>
+                <div class="np-summary">
+                    <span>Subtotal seleccionado</span>
+                    <span class="np-summary-val">L. <span id="subtotal-conceptos">0.00</span></span>
                 </div>
-                <button type="button" class="btn btn-secondary" id="btn-step2-prev">Anterior</button>
-                <button type="button" class="btn btn-primary" id="btn-step2-next">Siguiente</button>
+                <div class="np-actions">
+                    <button type="button" class="np-btn np-btn-prev" id="btn-step2-prev"><i class="bi bi-arrow-left"></i> Anterior</button>
+                    <button type="button" class="np-btn np-btn-next" id="btn-step2-next">Siguiente <i class="bi bi-arrow-right"></i></button>
+                </div>
             </div>
 
             <!-- Paso 3: Aplicar Descuentos -->
             <div id="step3" class="payment-step" style="display:none;">
-                <h4>Aplicar Descuentos (Opcional)</h4>
-                <div class="form-group">
-                    <label for="descuento-select">Seleccionar Descuento</label>
-                    <select class="form-control" id="descuento-select">
-                        <option value="">-- Sin descuento --</option>
-                    </select>
+                <h4 class="np-step-title">Aplicar Descuentos <span class="text-muted" style="font-size:.85rem;font-weight:400;">(Opcional)</span></h4>
+                <div class="np-block">
+                    <div class="np-block-body">
+                        <div class="form-group">
+                            <label for="descuento-select">Seleccionar Descuento</label>
+                            <select class="form-control" id="descuento-select">
+                                <option value="">-- Sin descuento --</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-0">
+                            <label for="descuento-justificacion">Justificación</label>
+                            <textarea class="form-control" id="descuento-justificacion" rows="3"></textarea>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="descuento-justificacion">Justificación</label>
-                    <textarea class="form-control" id="descuento-justificacion" rows="3"></textarea>
+                <div class="np-summary">
+                    <span>Total con descuento</span>
+                    <span class="np-summary-val">L. <span id="total-con-descuento">0.00</span></span>
                 </div>
-                <div class="alert alert-info">
-                    <strong>Total con descuento:</strong> L. <span id="total-con-descuento">0.00</span>
+                <div class="np-actions">
+                    <button type="button" class="np-btn np-btn-prev" id="btn-step3-prev"><i class="bi bi-arrow-left"></i> Anterior</button>
+                    <button type="button" class="np-btn np-btn-next" id="btn-step3-next">Siguiente <i class="bi bi-arrow-right"></i></button>
                 </div>
-                <button type="button" class="btn btn-secondary" id="btn-step3-prev">Anterior</button>
-                <button type="button" class="btn btn-primary" id="btn-step3-next">Siguiente</button>
             </div>
 
             <!-- Paso 4: Forma de Pago -->
             <div id="step4" class="payment-step" style="display:none;">
-                <h4>Forma de Pago</h4>
-                <div class="form-group">
-                    <label for="forma-pago-select">Seleccionar Forma de Pago</label>
-                    <select class="form-control" id="forma-pago-select" required>
-                        <option value="">-- Seleccione --</option>
-                    </select>
+                <h4 class="np-step-title">Forma de Pago</h4>
+                <div class="np-block">
+                    <div class="np-block-body">
+                        <div class="form-group">
+                            <label for="forma-pago-select">Seleccionar Forma de Pago</label>
+                            <select class="form-control" id="forma-pago-select" required>
+                                <option value="">-- Seleccione --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="numero-referencia">Número de Referencia</label>
+                            <input type="text" class="form-control" id="numero-referencia" />
+                        </div>
+                        <div class="form-group mb-0">
+                            <label for="observaciones">Observaciones</label>
+                            <textarea class="form-control" id="observaciones" rows="3"></textarea>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="numero-referencia">Número de Referencia</label>
-                    <input type="text" class="form-control" id="numero-referencia" />
+                <div class="np-actions">
+                    <button type="button" class="np-btn np-btn-prev" id="btn-step4-prev"><i class="bi bi-arrow-left"></i> Anterior</button>
+                    <button type="button" class="np-btn np-btn-next" id="btn-step4-next">Siguiente <i class="bi bi-arrow-right"></i></button>
                 </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <textarea class="form-control" id="observaciones" rows="3"></textarea>
-                </div>
-                <button type="button" class="btn btn-secondary" id="btn-step4-prev">Anterior</button>
-                <button type="button" class="btn btn-primary" id="btn-step4-next">Siguiente</button>
             </div>
 
             <!-- Paso 5: Confirmación -->
             <div id="step5" class="payment-step" style="display:none;">
-                <h4>Confirmación del Pago</h4>
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Resumen del Pago</h5>
-                        <p><strong>Alumno:</strong> <span id="confirm-alumno"></span></p>
-                        <p><strong>Conceptos:</strong> <span id="confirm-conceptos"></span></p>
-                        <p><strong>Forma de Pago:</strong> <span id="confirm-forma-pago"></span></p>
-                        <p><strong>Total a Pagar:</strong> L. <span id="confirm-total"></span></p>
-                    </div>
+                <h4 class="np-step-title">Confirmación del Pago</h4>
+                <div class="np-confirm">
+                    <div class="np-confirm-row"><span class="lbl">Alumno</span><span class="val" id="confirm-alumno"></span></div>
+                    <div class="np-confirm-row"><span class="lbl">Conceptos</span><span class="val" id="confirm-conceptos"></span></div>
+                    <div class="np-confirm-row"><span class="lbl">Forma de Pago</span><span class="val" id="confirm-forma-pago"></span></div>
+                    <div class="np-confirm-row np-confirm-total"><span class="lbl">Total a Pagar</span><span class="val">L. <span id="confirm-total"></span></span></div>
                 </div>
-                <button type="button" class="btn btn-secondary" id="btn-step5-prev">Anterior</button>
-                <button type="button" class="btn btn-success" id="btn-confirmar-pago">
-                    <i class="mdi mdi-check-circle"></i> Confirmar y Generar Recibo
-                </button>
+                <div class="np-actions">
+                    <button type="button" class="np-btn np-btn-prev" id="btn-step5-prev"><i class="bi bi-arrow-left"></i> Anterior</button>
+                    <button type="button" class="np-btn np-btn-confirm" id="btn-confirmar-pago">
+                        <i class="bi bi-check-circle"></i> Confirmar y Generar Recibo
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts{
-    <script src="~/Content/js/pages/nuevopago.js"></script>
+    @{
+        var npJsPath = Server.MapPath("~/Content/js/pages/nuevopago.js");
+        var npJsVer = System.IO.File.Exists(npJsPath) ? System.IO.File.GetLastWriteTimeUtc(npJsPath).Ticks.ToString() : DateTime.UtcNow.Ticks.ToString();
+    }
+    <script src="~/Content/js/pages/nuevopago.js?v=@npJsVer"></script>
     <script>
         NuevoPago.init({
+            identidad: "@(ViewBag.Identidad ?? "")",
             urlFindAlumnoByIdentidad: "@Url.Action("FindByIdentidadAsync", "Alumnos")",
             urlConceptosAlumno: "@Url.Action("ListByAlumnoAsync", "CuentasCobrar")",
             urlDescuentos: "@Url.Action("DropdownAsync", "Descuentos")",

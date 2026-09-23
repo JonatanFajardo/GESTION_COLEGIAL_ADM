@@ -29,6 +29,16 @@ var NuevoPago = (function () {
             var vence = new Date();
             vence.setDate(vence.getDate() + 10);
             $("#adhoc-vence").val(toIsoDate(vence));
+
+            // Precarga desde Cartera / Estado de Cuenta: si viene identidad,
+            // busca el alumno y avanza directo al paso de conceptos.
+            if (config.identidad) {
+                $("#alumno-identidad-search").val(config.identidad);
+                buscarAlumnoPorIdentidad(config.identidad, function () {
+                    goToStep(2);
+                    loadConceptosAlumno();
+                });
+            }
         });
     }
 
@@ -78,7 +88,10 @@ var NuevoPago = (function () {
         // Step 5
         $("#btn-step5-prev").click(function() { goToStep(4); });
         $("#btn-confirmar-pago").click(function() {
-            confirmarPago();
+            // Se abre la pestaña en blanco de forma síncrona (dentro del gesto de click)
+            // para evitar que el navegador bloquee el popup cuando se setee la URL más tarde.
+            var reciboWindow = window.open("", "_blank");
+            confirmarPago(reciboWindow);
         });
 
         $("#select-all-conceptos").change(function() {
@@ -117,7 +130,7 @@ var NuevoPago = (function () {
         });
     }
 
-    function buscarAlumnoPorIdentidad(identidad) {
+    function buscarAlumnoPorIdentidad(identidad, onLoaded) {
         $.ajax({
             url: urls.urlFindAlumnoByIdentidad,
             data: { identidad: identidad },
@@ -131,6 +144,7 @@ var NuevoPago = (function () {
                     mostrarDatosAlumno(response.data);
                     $("#alumno-info").show();
                     $("#btn-step1-next").prop("disabled", false);
+                    if (typeof onLoaded === "function") { onLoaded(); }
                 } else {
                     toastr.warning("No se encontró ningún alumno con el número de identidad especificado");
                     limpiarDatosAlumno();
@@ -233,7 +247,7 @@ var NuevoPago = (function () {
         } else {
             conceptos.forEach(function(concepto) {
                 html += "<tr>";
-                html += '<td><input type="checkbox" class="concepto-checkbox" data-concepto=\'' + JSON.stringify(concepto) + '\' /></td>';
+                html += '<td><input type="checkbox" class="concepto-checkbox" checked data-concepto=\'' + JSON.stringify(concepto) + '\' /></td>';
                 html += "<td>" + concepto.ConceptoDescripcion + "</td>";
                 html += "<td>L. " + formatMoney(concepto.MontoOriginal) + "</td>";
                 html += "<td>L. " + formatMoney(concepto.MontoDescuento) + "</td>";
@@ -247,6 +261,11 @@ var NuevoPago = (function () {
         $(".concepto-checkbox").change(function() {
             calculateSubtotal();
         });
+
+        // Por defecto vienen todos los cargos pendientes seleccionados.
+        var hayConceptos = $(".concepto-checkbox").length > 0;
+        $("#select-all-conceptos").prop("checked", hayConceptos);
+        calculateSubtotal();
     }
 
     function calculateSubtotal() {
@@ -261,10 +280,13 @@ var NuevoPago = (function () {
     function loadDescuentos() {
         $.ajax({
             url: urls.urlDescuentos,
-            success: function(data) {
+            success: function(response) {
+                var data = response && response.data ? response.data : (response || []);
                 var html = '<option value="">-- Sin descuento --</option>';
                 data.forEach(function(item) {
-                    html += '<option value="' + item.value + '">' + item.text + '</option>';
+                    if (item.EsActivo && !item.EsEliminado) {
+                        html += '<option value="' + item.DescuentoId + '">' + item.Descripcion + '</option>';
+                    }
                 });
                 $("#descuento-select").html(html);
             }
@@ -274,10 +296,13 @@ var NuevoPago = (function () {
     function loadFormasPago() {
         $.ajax({
             url: urls.urlFormasPago,
-            success: function(data) {
+            success: function(response) {
+                var data = response && response.data ? response.data : (response || []);
                 var html = '<option value="">-- Seleccione --</option>';
                 data.forEach(function(item) {
-                    html += '<option value="' + item.value + '">' + item.text + '</option>';
+                    if (item.EsActivo && !item.EsEliminado) {
+                        html += '<option value="' + item.FormaPagoId + '">' + item.Descripcion + '</option>';
+                    }
                 });
                 $("#forma-pago-select").html(html);
             }
@@ -300,10 +325,15 @@ var NuevoPago = (function () {
         $("#confirm-total").text($("#total-con-descuento").text());
     }
 
-    function confirmarPago() {
+    function confirmarPago(reciboWindow) {
+        // Monto total confirmado (total con descuento aplicado). Se envía al API:
+        // sin él el pago se insertaba con MontoTotal = 0.
+        var montoTotal = parseFloat($("#total-con-descuento").text().replace(/,/g, '')) || 0;
+
         var pagoData = {
             alumnoId: selectedAlumno.Alu_Id,
             formaPagoId: $("#forma-pago-select").val(),
+            montoTotal: montoTotal,
             numeroReferencia: $("#numero-referencia").val(),
             observaciones: $("#observaciones").val(),
             conceptos: selectedConceptos,
@@ -319,13 +349,47 @@ var NuevoPago = (function () {
             success: function(response) {
                 if (response.success) {
                     toastr.success("Pago registrado exitosamente");
-                    window.location.href = "/Pagos/Index";
+                    abrirReciboUltimoPago(selectedAlumno.Alu_Id, reciboWindow);
                 } else {
                     toastr.error(response.message || "Error al registrar el pago");
+                    if (reciboWindow) { reciboWindow.close(); }
                 }
             },
             error: function() {
                 toastr.error("Error al procesar el pago. Por favor intente nuevamente.");
+                if (reciboWindow) { reciboWindow.close(); }
+            }
+        });
+    }
+
+    // El endpoint CreateAsync de Pagos no retorna el Id del pago recién creado
+    // (la API externa aún no expone el NewId del insert). Como workaround se
+    // busca el pago más reciente del alumno vía el endpoint ya existente
+    // ListByAlumnoAsync y se abre su recibo en la pestaña pre-abierta.
+    function abrirReciboUltimoPago(alumnoId, reciboWindow) {
+        $.ajax({
+            url: "/Pagos/ListByAlumnoAsync",
+            type: "GET",
+            data: { alumnoId: alumnoId },
+            success: function (response) {
+                var lista = response && response.data ? response.data : response;
+                var ultimoPago = null;
+                if (lista && lista.length > 0) {
+                    ultimoPago = lista.reduce(function (max, item) {
+                        return (!max || item.PagoId > max.PagoId) ? item : max;
+                    }, null);
+                }
+                if (ultimoPago && ultimoPago.PagoId && reciboWindow) {
+                    reciboWindow.location.href = "/Pagos/Recibo?pagoId=" + ultimoPago.PagoId;
+                } else if (reciboWindow) {
+                    reciboWindow.close();
+                }
+            },
+            error: function () {
+                if (reciboWindow) { reciboWindow.close(); }
+            },
+            complete: function () {
+                window.location.href = "/Pagos/Index";
             }
         });
     }

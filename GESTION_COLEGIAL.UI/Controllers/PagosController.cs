@@ -24,14 +24,26 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         public ActionResult Index()
         {
+            ViewBag.PuedeCrear = TienePantalla("Crear pagos");
+
+            // Nombre del mes actual en español (es-HN) para títulos/subtítulos.
+            var cultura = new System.Globalization.CultureInfo("es-HN");
+            var ahora = DateTime.Now;
+            string mesActual = cultura.TextInfo.ToTitleCase(ahora.ToString("MMMM 'de' yyyy", cultura));
+            ViewBag.MesActual = mesActual;
+
             return View();
         }
 
         /// <summary>
         /// Acción para mostrar la vista de registro de pago.
+        /// Acepta identidad (o alumnoId) para precargar el alumno al llegar
+        /// desde Cartera/Estado de Cuenta.
         /// </summary>
-        public ActionResult NuevoPago()
+        public ActionResult NuevoPago(string identidad = null, int alumnoId = 0)
         {
+            ViewBag.Identidad = identidad ?? string.Empty;
+            ViewBag.AlumnoId = alumnoId;
             return View();
         }
 
@@ -49,6 +61,17 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> ListAsync()
         {
             var result = await pagosService.ListAsync();
+
+            // El listado de esta pantalla muestra únicamente los pagos del mes en curso.
+            // El histórico completo vive en CuentasCobrar/HistoricoPagos.
+            var ahora = DateTime.Now;
+            if (result != null)
+            {
+                result = result
+                    .Where(p => p.FechaPago.Year == ahora.Year && p.FechaPago.Month == ahora.Month)
+                    .ToList();
+            }
+
             return AjaxResult(result);
         }
 
@@ -76,6 +99,16 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(PagoViewModel model)
         {
+            if (model == null)
+            {
+                return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
+            }
+
+            // La fecha de pago la fija el servidor (reloj autoritativo). El wizard no la envía,
+            // y sin ella FechaPago quedaba en DateTime.MinValue (0001-01-01), fuera del rango
+            // de SQL Server datetime, provocando que el insert del API fallara.
+            model.FechaPago = DateTime.Now;
+
             bool result = await pagosService.Create(model);
             if (result)
             {
