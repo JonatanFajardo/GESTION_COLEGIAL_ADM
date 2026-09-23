@@ -2,6 +2,7 @@ var HistorialTransacciones = (function () {
     var obj = {};
     var listUrl;
     var allRows = [];
+    var currentRows = [];   // filas actualmente en pantalla (rango + filtro de alumno)
 
     var COLORS = ["#4f46e5", "#10b981", "#f59e0b", "#06b6d4", "#8b5cf6", "#f43f5e", "#22d3ee", "#fb923c"];
 
@@ -41,6 +42,7 @@ var HistorialTransacciones = (function () {
     }
 
     function render(rows) {
+        currentRows = rows;
         var total = 0, maximo = 0, mayorAlumno = "";
         var formas = {}, cajeros = {}, alumnos = {}, dias = {};
 
@@ -212,6 +214,72 @@ var HistorialTransacciones = (function () {
         }
     }
 
+    // ── Exportación CSV (cliente, respeta rango + filtro de alumno aplicado) ──
+    function csvCell(v) {
+        var s = String(v == null ? "" : v);
+        // Escapar comillas duplicándolas y envolver siempre entre comillas
+        return '"' + s.replace(/"/g, '""') + '"';
+    }
+
+    function exportarCsv() {
+        var rows = currentRows || [];
+        if (!rows.length) {
+            alert("No hay transacciones para exportar con los filtros actuales.");
+            return;
+        }
+
+        var SEP = ";"; // separador; robusto para Excel en configuración regional es-HN
+        var encabezados = ["Fecha", "Hora", "Alumno", "Forma de Pago", "Cajero", "Conceptos", "Monto (L)"];
+
+        // Ordenar por fecha descendente, igual que el feed en pantalla
+        var sorted = rows.slice().sort(function (a, b) {
+            var da = parseDate(a.Pag_FechaPago), db = parseDate(b.Pag_FechaPago);
+            return (db ? db.getTime() : 0) - (da ? da.getTime() : 0);
+        });
+
+        var lineas = [encabezados.map(csvCell).join(SEP)];
+        var total = 0;
+
+        sorted.forEach(function (r) {
+            var d = parseDate(r.Pag_FechaPago);
+            var fecha = d ? d.toLocaleDateString("es-HN", { day: "2-digit", month: "2-digit", year: "numeric" }) : "";
+            var hora  = d ? d.toLocaleTimeString("es-HN", { hour: "2-digit", minute: "2-digit" }) : "";
+            var monto = parseFloat(r.Pag_MontoTotal) || 0;
+            total += monto;
+
+            lineas.push([
+                csvCell(fecha),
+                csvCell(hora),
+                csvCell(r.Alu_NombreCompleto || ""),
+                csvCell(r.Fpa_Descripcion || ""),
+                csvCell(r.CajeroNombre || ""),
+                csvCell(parseInt(r.CantidadConceptos) || 0),
+                csvCell(monto.toFixed(2))
+            ].join(SEP));
+        });
+
+        // Totales al pie
+        lineas.push("");
+        lineas.push([csvCell("TOTAL"), "", "", "", "", csvCell(sorted.length + " transacciones"), csvCell(total.toFixed(2))].join(SEP));
+
+        // BOM UTF-8 (﻿) para que Excel respete acentos
+        var contenido = "﻿" + lineas.join("\r\n");
+        var blob = new Blob([contenido], { type: "text/csv;charset=utf-8;" });
+
+        var desde = ($("#input-fecha-desde").val() || "").replace(/[^0-9]/g, "") || "inicio";
+        var hasta = ($("#input-fecha-hasta").val() || "").replace(/[^0-9]/g, "") || "fin";
+        var nombre = "historial-transacciones_" + desde + "_" + hasta + ".csv";
+
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = nombre;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    }
+
     function aplicarFiltro() {
         var q = ($("#input-alumno").val() || "").toLowerCase().trim();
         if (!q) return render(allRows);
@@ -241,6 +309,7 @@ var HistorialTransacciones = (function () {
         $("#btn-buscar").on("click", cargar);
         $("#input-fecha-desde, #input-fecha-hasta").on("change", cargar);
         $("#input-alumno").on("input", aplicarFiltro);
+        $("#btn-exportar-csv").on("click", exportarCsv);
         cargar();
     };
 
