@@ -33,6 +33,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        public async Task<ActionResult> SaldoAsync(int Emp_Id)
+        {
+            var result = await _service.SaldoAsync(Emp_Id);
+            return AjaxResult(result);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateAsync(int Emp_Id, string Vac_FechaInicio, string Vac_FechaFin, string Vac_Tipo, string Vac_Motivo)
         {

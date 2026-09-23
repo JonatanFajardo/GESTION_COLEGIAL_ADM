@@ -12,6 +12,12 @@ namespace GESTION_COLEGIAL.Business.Services
             return await SendHttpClient.GetAsync<dynamic>(url);
         }
 
+        public async Task<List<dynamic>> SaldoAsync(int Emp_Id)
+        {
+            string url = $"Vacaciones/SaldoAsync?Emp_Id={Emp_Id}";
+            return await SendHttpClient.GetAsync<dynamic>(url);
+        }
+
         public async Task<bool> CreateAsync(dynamic model)
             => await SendHttpClient.PostAsync("Vacaciones/CreateAsync", model);
 
