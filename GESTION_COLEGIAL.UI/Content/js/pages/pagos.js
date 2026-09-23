@@ -25,7 +25,7 @@ $(document).ready(function () {
             {
                 data: null,
                 render: function (data) {
-                    return '<button class="btn btn-sm btn-primary recibo-btn" data-id="' + data.PagoId + '"><i class="mdi mdi-printer"></i> Recibo</button>';
+                    return '<button class="btn btn-sm btn-primary recibo-btn" data-id="' + data.PagoId + '"><i class="bi bi-printer"></i> Recibo</button>';
                 }
             }
         ],
