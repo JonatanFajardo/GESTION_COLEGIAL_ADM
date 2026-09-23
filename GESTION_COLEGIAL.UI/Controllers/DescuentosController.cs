@@ -37,6 +37,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción asincrónica para obtener la lista de descuentos para dropdown.
+        /// </summary>
+        public async Task<ActionResult> DropdownAsync()
+        {
+            var result = await descuentosService.ListAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
         /// Acción asincrónica para obtener los detalles de un descuento específico.
         /// </summary>
         /// <param name="id">ID del descuento.</param>

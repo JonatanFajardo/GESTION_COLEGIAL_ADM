@@ -37,6 +37,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
+        /// Acción asincrónica para obtener la lista de formas de pago para dropdown.
+        /// </summary>
+        public async Task<ActionResult> DropdownAsync()
+        {
+            var result = await formasPagoService.ListAsync();
+            return AjaxResult(result);
+        }
+
+        /// <summary>
         /// Acción asincrónica para obtener los detalles de una forma de pago específica.
         /// </summary>
         /// <param name="id">ID de la forma de pago.</param>
