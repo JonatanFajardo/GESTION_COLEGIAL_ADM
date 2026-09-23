@@ -31,6 +31,34 @@
 </div>
 
 <div class="fluid-container">
+    <div class="card-listado-catalogo mb-3">
+        <div class="card-body-listado-catalogo">
+            <div class="row align-items-end g-2">
+                <div class="col-md-5">
+                    <label for="filtro-texto" class="form-label">Buscar por empleado o cargo</label>
+                    <input type="text" id="filtro-texto" class="form-control" placeholder="Ej. Pérez, Docente..." />
+                </div>
+                <div class="col-md-2">
+                    <label for="filtro-anios-min" class="form-label">Años (mín.)</label>
+                    <input type="number" id="filtro-anios-min" class="form-control" min="0" placeholder="0" />
+                </div>
+                <div class="col-md-2">
+                    <label for="filtro-anios-max" class="form-label">Años (máx.)</label>
+                    <input type="number" id="filtro-anios-max" class="form-control" min="0" placeholder="—" />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" id="btn-filtrar" class="btn btn-primary w-100">
+                        <i class="bi bi-filter"></i> Filtrar
+                    </button>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" id="btn-limpiar-filtro" class="btn btn-outline-secondary w-100" title="Limpiar filtros">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card-listado-catalogo">
         <div class="card-body-listado-catalogo">
             <div class="table-responsive">
