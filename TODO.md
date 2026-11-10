@@ -36,6 +36,23 @@ Pendientes que quedaron abiertos:
 
 ## Pantallas deshabilitadas — decisión de producto pendiente
 
+### `EstadoCuentaAdm` → consolidar en `CuentasCobrar/EstadoCuenta` (2026-09-19)
+Dos "Estado de cuenta" del alumno hacían lo mismo. Se dejó **`CuentasCobrar/EstadoCuenta`** como canónica (accionable: cobra, descuentos, mora, histórico con recibos) y se le **agregó Imprimir/PDF** (membrete + `@media print`) que solo tenía la otra. `EstadoCuentaAdm` se **ocultó solo para cajero** (`!esCajero` en sidebar) y se corrigió su símbolo "Q"→"L".
+- [ ] Verificar que director/contador/consulta que usan `EstadoCuentaAdm` tengan acceso a `CuentasCobrar/EstadoCuenta` (permiso "Listado de cuentas por cobrar") antes de ocultarla globalmente.
+- [ ] Luego: comentar globalmente el `<li>` de `EstadoCuentaAdm` y retirar `estadocuentaadm.js` / vista.
+- [ ] Opcional: cargar nombre real del instituto en el membrete de impresión (hoy es texto fijo "Instituto San Francisco"; `EstadoCuentaAdm` lo traía de `InstitutoConfig/GetAsync`).
+
+### Vistas de deuda → consolidadas en hub `Cartera` (2026-09-19)
+El hub `Cartera` (`/Cartera`, permiso "Cartera", Pan 9068) reemplaza las vistas de deuda dispersas con pestañas: **Por Nivel** (drill Curso→Sección→Alumno), **Antigüedad de saldos**, **Top Deudores** y **Pendientes**. Todas se calculan en cliente desde `Cartera/PendientesAsync` (endpoint propio, no depende de permisos de las pantallas viejas). Botones por alumno: 📄 Estado de cuenta y 💵 Registrar pago (precarga por identidad). Además "Solicitar cobro" = correo simulado a encargados (no hay SMTP; ver [[feedback]]).
+
+Estado del retiro:
+- [x] Permiso "Cartera" concedido al rol **cajero** (1005).
+- [x] **Solo para cajero** (reversible, `bool esCajero` en `_sidebar.cshtml`): ocultos **Deudores** y **Cargos pendientes** del bloque Cuentas por Cobrar. Las otras 5 (Aging, Top, Morosidad, Morosos, Pendientes por Cobrar) el cajero **no las tenía concedidas**, así que ya no le aparecían.
+- [ ] **Conceder "Cartera" a contador (1006) y director (1002)** antes de retirar globalmente sus vistas de deuda (hoy las usan y no tienen el reemplazo).
+- [ ] Una vez todos los roles tengan Cartera: comentar globalmente los `<li>` de Deudores, Cargos pendientes, Pendientes por Cobrar, Aging de Cuentas, Top Alumnos con Deuda, Morosidad por Nivel y Morosos; dejar controllers vivos (endpoints reutilizados).
+- [ ] Revisar **"Intereses por mora"** (`CuentasCobrar/Moratorias`): si solo lista, fusionar en Cartera; si calcula/aplica mora, mantener.
+- [ ] Drill-down: el tope es Curso (`Cur_Nombre`), no Nivel; y falta % morosidad por sección (requiere total de matriculados, dato de API).
+
 ### `Mensajes a Encargados` (Controller `Mensajes`) — DESHABILITADA en sidebar (2026-07-03)
 Motivo: hoy la pantalla solo hace `INSERT` en `app.tbMensajes` de la API externa. No envía correo, SMS ni notificación; no hay portal de encargados que lea la tabla. El nombre promete comunicación pero nadie lee el mensaje.
 
@@ -77,3 +94,31 @@ Test de utilidad §7 aplicado a las 15 pantallas de Académico. Resultado: 15 en
 - Capacidad/sección en aulas + detección de choques (rehabilitar Mapa de Aulas).
 - Historial visible de cambios de nota (auditoría) y ponderación de parciales.
 - % asistencia agregado por sección + alertas de inasistencia (hoy solo en ficha individual).
+
+---
+
+## Refactor catálogos — hubs consolidados de Configuración (2026-09-12)
+
+Test de utilidad §7 aplicado a las ~18 pantallas sueltas de catálogos. Todas comparten rol dueño (Admin académico / de sistema) y tarea (mantener un catálogo que rara vez cambia); todas **duplican** un hub → veredicto **Fusionar → deshabilitar link suelto**.
+
+### Hubs y qué consolida cada uno
+- **Estructura Académica** (`CatalogosInstitucion`): Modalidades · Niveles Educativos · Secciones · Semestres · Parciales.
+- **Programa Académico** (`ProgramaAcademico`): Cursos · Grados Académicos (CursosNiveles) · Materias · Duraciones.
+- **Recursos de Horario** (`RecursosHorario`): Aulas · Días · Horas.
+- **Config. de Cobranza** (`ConfiguracionCobranza`): Conceptos de Pago · Tarifas · Descuentos · Formas de Pago · Estados de Pago.
+- **Catálogos Comunes** (`CatalogosComunes`): Estados · Parentescos · Títulos · Cargos.
+
+### Links sueltos deshabilitados en `_sidebar.cshtml` (comentados con Razor `@* *@`, 2026-09-12)
+- Menú "Cursos" completo (Cursos · Grados Académicos · Duraciones · Materias) → Programa Académico.
+- Menú "Configuración → Legacy · pantallas sueltas" (Modalidades · Niveles · Secciones · Semestres · Parciales) → Estructura Académica.
+- Horarios: Horas · Días · Aulas → Recursos de Horario (se conservan Crear Horario Semanal, Horario Semanal Nuevo y Visor: NO son catálogos, siguen su propia duplicación §3/§4).
+- Financiero → Configuración (Conceptos · Formas de Pago · Descuentos · Estados de Pago · Tarifas) → Config. de Cobranza.
+- Alumnos → Parentescos y RRHH → Cargos → Catálogos Comunes.
+
+### IMPORTANTE — no borrar los controllers legacy
+Los 5 hubs **reutilizan los endpoints de los controllers originales** (`/Modalidades/ListAsync`, `/Cargos/CreateAsync`, `/Tarifas/DeleteAsync`, etc.). Borrar los controllers rompe los hubs. Los links del sidebar están solo **comentados** — reversibles quitando el `@* *@`.
+
+### Pendientes de este refactor
+- [ ] **Validar en navegador** que cada hub hace CRUD real de todos sus catálogos (crear/editar/eliminar/detalle) antes de considerar el borrado definitivo.
+- [ ] **Matriz roles/pantallas**: dar de alta las permission strings de los 5 hubs ("Estructura Académica", "Programa Académico", "Recursos de Horario", "Configuración de Cobranza", "Catálogos Comunes") y migrar los permisos de los catálogos sueltos hacia ellas (hoy los hubs se ven vía `esAdmin`; los CRUD internos aún dependen del guard viejo de cada controller).
+- [ ] **Limpieza post-validación** (commit aparte, tocar csproj): eliminar las vistas `Index.cshtml` sueltas de los catálogos ya consolidados (Modalidades, NivelesEducativos, Secciones, Semestres, Parciales, Cursos, CursosNiveles, Duraciones, Materias, Aulas, Dias, Horas, ConceptosPago, FormasPago, Descuentos, EstadosPago, Tarifas, Estados, Parentescos, Titulos, Cargos) — **dejando** cada controller y sus vistas Create/Edit/Delete/Detail que el hub reutiliza. Recién ahí quitar los bloques comentados del sidebar.
