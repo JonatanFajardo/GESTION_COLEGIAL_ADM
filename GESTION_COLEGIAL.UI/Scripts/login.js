@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const demoRoles = {
         admin:     { user: 'jona',            pass: 'admin', desc: 'Acceso total: catálogos, usuarios, matriz de roles y bitácora.' },
         director:  { user: 'director_test',   pass: 'admin', desc: 'Dashboards académicos, rendimiento por sección y alumnos en riesgo.' },
-        docente:   { user: 'docente_test',    pass: 'admin', desc: 'Cuaderno de notas, pase de lista, tareas y mis alumnos.' },
+        docente:   { user: 'docente_test',    pass: 'admin', desc: 'Usuario real: ligado a un docente con horario y clases reales. Cuaderno de notas, pase de lista, tareas y mis alumnos.' },
         rrhh:      { user: 'rrhh_test',       pass: 'admin', desc: 'Empleados, asistencia, nómina docente y cumplimiento documental.' },
         cajero:    { user: 'cajero_test',     pass: 'admin', desc: 'Pagos, recibos, cuentas por cobrar y arqueo de caja.' },
         contador:  { user: 'contador_test',   pass: 'admin', desc: 'Flujo de caja, aging, top deudores y proyección de cobros.' },
