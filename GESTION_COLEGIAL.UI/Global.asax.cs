@@ -36,6 +36,7 @@ namespace GESTION_COLEGIAL.UI
 
                 var data = JObject.Parse(ticket.UserData);
                 ctx.Session["UserId"] = (int)data["UserId"];
+                ctx.Session["EmpId"] = data["EmpId"] != null ? (int)data["EmpId"] : 0;
                 ctx.Session["Username"] = (string)data["Username"];
                 ctx.Session["RolId"] = (int)data["RolId"];
                 ctx.Session["RoleName"] = (string)data["RoleName"];

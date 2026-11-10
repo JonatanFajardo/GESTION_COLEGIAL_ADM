@@ -49,6 +49,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                     // Guardar datos del usuario en sesión
                     Session["UserId"] = result.User.Usu_Id;
                     Session["Username"] = result.User.Usu_Name;
+                    Session["EmpId"] = result.User.Emp_Id;
                     Session["RolId"] = result.User.Rol_Id;
                     Session["RoleName"] = result.User.Rol_Nombre;
                     Session["Token"] = result.Token;
@@ -63,6 +64,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                     string userData = JsonConvert.SerializeObject(new
                     {
                         UserId = result.User.Usu_Id,
+                        EmpId = result.User.Emp_Id,
                         RolId = result.User.Rol_Id,
                         RoleName = result.User.Rol_Nombre,
                         Username = result.User.Usu_Name,

@@ -41,6 +41,7 @@ namespace GESTION_COLEGIAL.UI.Filters
                     {
                         var obj = JObject.Parse(formsIdentity.Ticket.UserData);
                         session["UserId"] = obj["UserId"].Value<int>();
+                        session["EmpId"] = obj["EmpId"] != null ? obj["EmpId"].Value<int>() : 0;
                         session["RolId"] = obj["RolId"].Value<int>();
                         session["RoleName"] = obj["RoleName"].Value<string>();
                         session["Username"] = obj["Username"].Value<string>();
