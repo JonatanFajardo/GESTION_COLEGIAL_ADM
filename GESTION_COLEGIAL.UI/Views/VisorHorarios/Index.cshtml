@@ -1,6 +1,8 @@
 @{
     ViewBag.Title = "Visor de Horarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    bool esDocente = ViewBag.EsDocente != null && (bool)ViewBag.EsDocente;
+    int empId = ViewBag.EmpId != null ? (int)ViewBag.EmpId : 0;
 }
 
 @section styles {
@@ -20,8 +22,16 @@
             </svg>
         </div>
         <div class="vh-header-text">
-            <h2>Visor de Horarios Académicos</h2>
-            <p>Explora el horario semanal por sección, profesor o aula.</p>
+            @if (esDocente)
+            {
+                <h2>Mi Horario Semanal</h2>
+                <p>Consulta las clases que tienes programadas durante la semana.</p>
+            }
+            else
+            {
+                <h2>Visor de Horarios Académicos</h2>
+                <p>Explora el horario semanal por sección, profesor o aula.</p>
+            }
         </div>
     </div>
 
@@ -35,10 +45,13 @@
             <div class="vh-kpi-label">Secciones</div>
             <div class="vh-kpi-value" id="kpiSecciones">0</div>
         </div>
-        <div class="vh-kpi vh-kpi--amber">
-            <div class="vh-kpi-label">Profesores activos</div>
-            <div class="vh-kpi-value" id="kpiProfesores">0</div>
-        </div>
+        @if (!esDocente)
+        {
+            <div class="vh-kpi vh-kpi--amber">
+                <div class="vh-kpi-label">Profesores activos</div>
+                <div class="vh-kpi-value" id="kpiProfesores">0</div>
+            </div>
+        }
         <div class="vh-kpi vh-kpi--cyan">
             <div class="vh-kpi-label">Aulas en uso</div>
             <div class="vh-kpi-value" id="kpiAulas">0</div>
@@ -47,36 +60,42 @@
 
     <!-- Filtros -->
     <div class="vh-filtros">
-        <div class="vh-filtros-grupo-vista">
-            <span class="vh-filtros-label">Agrupar por</span>
-            <div class="vh-toggle">
-                <button type="button" class="vh-toggle-btn is-active" data-vista="seccion">
-                    <i class="bi bi-people-fill"></i> Sección
-                </button>
-                <button type="button" class="vh-toggle-btn" data-vista="profesor">
-                    <i class="bi bi-person-badge"></i> Profesor
-                </button>
-                <button type="button" class="vh-toggle-btn" data-vista="aula">
-                    <i class="bi bi-door-open"></i> Aula
-                </button>
+        @if (!esDocente)
+        {
+            <div class="vh-filtros-grupo-vista">
+                <span class="vh-filtros-label">Agrupar por</span>
+                <div class="vh-toggle">
+                    <button type="button" class="vh-toggle-btn is-active" data-vista="seccion">
+                        <i class="bi bi-people-fill"></i> Sección
+                    </button>
+                    <button type="button" class="vh-toggle-btn" data-vista="profesor">
+                        <i class="bi bi-person-badge"></i> Profesor
+                    </button>
+                    <button type="button" class="vh-toggle-btn" data-vista="aula">
+                        <i class="bi bi-door-open"></i> Aula
+                    </button>
+                </div>
             </div>
-        </div>
+        }
 
         <div class="vh-filtros-row">
-            <div class="vh-filtro">
-                <label for="filtroAnio">Año</label>
-                <select id="filtroAnio" class="form-control"></select>
-            </div>
-            <div class="vh-filtro">
-                <label for="filtroSemestre">Semestre</label>
-                <select id="filtroSemestre" class="form-control"></select>
-            </div>
-            <div class="vh-filtro">
-                <label for="filtroModalidad">Modalidad</label>
-                <select id="filtroModalidad" class="form-control">
-                    <option value="">Todas</option>
-                </select>
-            </div>
+            @if (!esDocente)
+            {
+                <div class="vh-filtro">
+                    <label for="filtroAnio">Año</label>
+                    <select id="filtroAnio" class="form-control"></select>
+                </div>
+                <div class="vh-filtro">
+                    <label for="filtroSemestre">Semestre</label>
+                    <select id="filtroSemestre" class="form-control"></select>
+                </div>
+                <div class="vh-filtro">
+                    <label for="filtroModalidad">Modalidad</label>
+                    <select id="filtroModalidad" class="form-control">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+            }
             <div class="vh-filtro vh-filtro-search">
                 <label for="filtroBusqueda">Buscar</label>
                 <div class="vh-search-wrap">
@@ -150,5 +169,9 @@
 </div>
 
 @section scripts {
+    <script>
+        window.VH_ES_DOCENTE = @(esDocente ? "true" : "false");
+        window.VH_EMP_ID = @empId;
+    </script>
     <script src="~/Content/js/pages/visorhorarios.js"></script>
 }

@@ -7,6 +7,11 @@
 
     var URL_LIST = "/VisorHorarios/ListAsync";
 
+    // Modo docente: solo ve su propio horario. El backend ya filtra las clases
+    // por su Emp_Id; aquí solo ajustamos la presentacion (vista fija + mensajes).
+    var ES_DOCENTE = !!window.VH_ES_DOCENTE;
+    var EMP_ID = window.VH_EMP_ID || 0;
+
     // Mapeo Mat_Id -> Area academica (para colorear cards).
     var AREA_POR_MATERIA = {
         2: "MAT", 15: "MAT", 16: "MAT", 17: "MAT", 19: "MAT",
@@ -51,7 +56,8 @@
     var state = {
         all: [],
         filtered: [],
-        vista: "seccion"
+        // El docente ve su horario consolidado en una sola grilla (vista "profesor").
+        vista: ES_DOCENTE ? "profesor" : "seccion"
     };
 
     /* ------------------------------------------------------------ */
@@ -186,6 +192,12 @@
         actualizarContador();
         var $cont = $("#vhCards").empty();
         if (state.filtered.length === 0) {
+            // Docente sin empleado asociado: el backend no pudo resolver su Emp_Id.
+            if (ES_DOCENTE && EMP_ID <= 0) {
+                $("#vhVacio p").text("No se encontró un docente asociado a tu usuario.");
+            } else if (ES_DOCENTE) {
+                $("#vhVacio p").text("No tienes clases programadas en tu horario.");
+            }
             setVacio(true);
             return;
         }
