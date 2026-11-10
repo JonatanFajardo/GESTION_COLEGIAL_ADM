@@ -226,6 +226,7 @@
     <Compile Include="Controllers\SesionesActivasController.cs" />
     <Compile Include="Controllers\VisorGraficosController.cs" />
     <Compile Include="Extensions\AlertMessage.cs" />
+    <Compile Include="Filters\BloquearRolAttribute.cs" />
     <Compile Include="Filters\SessionManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -12,6 +12,8 @@
     // El cajero usa el hub de Cartera en vez de las vistas de deuda sueltas.
     // Se ocultan sus duplicados SOLO para este rol (reversible). Ver TODO.md.
     bool esCajero = roleName.Equals("cajero", StringComparison.OrdinalIgnoreCase);
+    // El docente NO arma/edita horarios (tarea administrativa); solo consulta el visor. Se ocultan sus enlaces de armado.
+    bool esDocente = roleName.IndexOf("docente", StringComparison.OrdinalIgnoreCase) >= 0;
     var nameParts   = username.Trim().Split(new[]{' '}, StringSplitOptions.RemoveEmptyEntries);
     string initials = nameParts.Length >= 2
         ? $"{nameParts[0][0]}{nameParts[1][0]}".ToUpper()
@@ -286,12 +288,12 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Horario" data-parent="#accordionExample">
-                        @if (tiene("Listado de horarios"))  { <li>@Html.ActionLink("Armar horario",   "Index", "Horarios")</li> }
+                        @if (tiene("Listado de horarios") && !esDocente)  { <li>@Html.ActionLink("Armar horario",   "Index", "Horarios")</li> }
                         @* Horas · Días · Aulas → consolidados en hub "Recursos de Horario" (RecursosHorario). Links sueltos deshabilitados (test §7, ver TODO.md). Controllers Horas/Dias/Aulas siguen vivos: el hub reutiliza sus endpoints.
                         @if (tiene("Listado de horas"))     { <li>@Html.ActionLink("Horas",                   "Index", "Horas")</li> }
                         @if (tiene("Listado de dias"))      { <li>@Html.ActionLink("Dias",                    "Index", "Dias")</li> }
                         @if (tiene("Listado de aulas"))     { <li>@Html.ActionLink("Aulas",                   "Index", "Aulas")</li> } *@
-                        @if (tiene("Horario semanal"))      { <li>@Html.ActionLink("Horario semanal", "Index", "HorariosNuevo")</li> }
+                        @if (tiene("Horario semanal") && !esDocente)      { <li>@Html.ActionLink("Horario semanal", "Index", "HorariosNuevo")</li> }
                         @if (tiene("Horario semanal"))      { <li>@Html.ActionLink("Consultar horarios",       "Index", "VisorHorarios")</li> }
                     </ul>
                 </li>

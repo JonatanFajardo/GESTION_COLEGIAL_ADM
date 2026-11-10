@@ -8,6 +8,7 @@ using System.Web.Mvc;
 namespace GESTION_COLEGIAL.UI.Controllers
 {
     [SessionManager("Horario semanal")]
+    [BloquearRol("docente")] // Armar/editar horarios es tarea administrativa; el docente solo consulta (VisorHorarios).
     public class HorariosNuevoController : BaseController
     {
         private readonly HorariosService _service = new HorariosService();

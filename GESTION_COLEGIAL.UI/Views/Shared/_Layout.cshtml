@@ -181,6 +181,18 @@
     @RenderSection("Scripts", required: false)
 
     <script src="~/Content/js/theme.js"></script>
+
+    @* Aviso global (ej. rol sin permiso a una pantalla) enviado vía TempData["Aviso"] *@
+    @if (TempData["Aviso"] != null)
+    {
+        <script>
+            $(function () {
+                if (window.toastr) {
+                    toastr.warning('@Html.Raw(HttpUtility.JavaScriptStringEncode(TempData["Aviso"].ToString()))');
+                }
+            });
+        </script>
+    }
 </body>
 </html>
 

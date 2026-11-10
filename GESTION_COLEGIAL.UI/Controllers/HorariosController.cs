@@ -13,6 +13,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     /// Controlador para gestionar la entidad Horarios.
     /// </summary>
     [SessionManager("Listado de horarios")]
+    [BloquearRol("docente")] // Armar horarios es tarea administrativa; el docente solo consulta (VisorHorarios).
     public class HorariosController : BaseController
     {
         private readonly HorariosService horariosService = new HorariosService();
