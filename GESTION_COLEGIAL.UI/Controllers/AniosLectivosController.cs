@@ -15,6 +15,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class AniosLectivosController : BaseController
     {
         private readonly AniosLectivosService aniosLectivosService = new AniosLectivosService();
+        private readonly EnfoqueAnioService enfoqueAnioService = new EnfoqueAnioService();
 
         // GET: AniosLectivos
         public ActionResult Index()
@@ -58,6 +59,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
             await aniosLectivosService.Edit(model);
             return RedirectToAction("Setup", new { id = model.Ani_Id, step = 2 });
+        }
+
+        /// <summary>Paso 2 del wizard: guarda el enfoque de enseñanza (upsert) del año.</summary>
+        [HttpPost]
+        public async Task<ActionResult> SetupStep2(EnfoqueAnioViewModel model)
+        {
+            bool error = await enfoqueAnioService.Set(model);   // true = error (boolean invertido)
+            return Json(new { success = !error });
         }
 
         /// <summary>Último paso: publica el año (estado → Abierto).</summary>

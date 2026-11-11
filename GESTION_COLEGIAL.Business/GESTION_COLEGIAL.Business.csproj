@@ -249,6 +249,10 @@
     <Compile Include="Models\SeccionViewModel.cs" />
     <Compile Include="Models\SemestreDetailViewModel.cs" />
     <Compile Include="Models\AnioLectivoViewModel.cs" />
+    <Compile Include="Models\PeriodoAnioViewModel.cs" />
+    <Compile Include="Models\EnfoqueAnioViewModel.cs" />
+    <Compile Include="Models\SeccionAnioViewModel.cs" />
+    <Compile Include="Models\OfertaAnioViewModel.cs" />
     <Compile Include="Models\SemestreViewModel.cs" />
     <Compile Include="Models\TituloDetailViewModel.cs" />
     <Compile Include="Models\TituloViewModel.cs" />
@@ -331,6 +335,10 @@
     <Compile Include="Services\InstitutoConfigService.cs" />
     <Compile Include="Services\SeccionesService.cs" />
     <Compile Include="Services\AniosLectivosService.cs" />
+    <Compile Include="Services\PeriodosAnioService.cs" />
+    <Compile Include="Services\EnfoqueAnioService.cs" />
+    <Compile Include="Services\SeccionesAnioService.cs" />
+    <Compile Include="Services\OfertasAnioService.cs" />
     <Compile Include="Services\SemestresService.cs" />
     <Compile Include="Services\ModuloFinanzas\TarifaService.cs" />
     <Compile Include="Services\TitulosService.cs" />
