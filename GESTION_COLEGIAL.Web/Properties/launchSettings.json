@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "GESTION_COLEGIAL.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "account/login",
+      "applicationUrl": "http://localhost:5180",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+Archivos estáticos propios de la UI nueva.
+Durante la migración, /Content y /Scripts se sirven desde ../GESTION_COLEGIAL.UI (ver Program.cs).

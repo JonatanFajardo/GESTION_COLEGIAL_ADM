@@ -1,0 +1,6 @@
+@using GESTION_COLEGIAL.UI
+@using GESTION_COLEGIAL.UI.Compat
+@using System.Web
+@* Todas las vistas exponen Session["..."] como en MVC 5 (ver Compat/PaginaBase.cs). *@
+@inherits GESTION_COLEGIAL.UI.Compat.PaginaBase<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

@@ -1,0 +1,121 @@
+﻿@using GESTION_COLEGIAL.UI.Controllers
+@using System.Threading.Tasks;
+@model GESTION_COLEGIAL.Business.Models.HomeAndChartsViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<link rel="stylesheet" href="~/Content/css/pages/home-modern.css">
+
+<div class="home-content-wrapper">
+    <!-- Welcome Card -->
+    <div class="welcome-card-modern">
+        <div class="welcome-content-modern">
+            <h1>Bienvenido</h1>
+            <p class="welcome-text-modern">
+                Disfruta de la gestión online, mantén todo organizado y al día
+            </p>
+
+            <div class="weather-info-modern">
+                <div class="weather-item-modern">
+                    <i class="bi bi-thermometer-half weather-icon-modern"></i>
+                    <span><span id="temp-c">25</span>°C Temperatura exterior</span>
+                </div>
+                <div class="weather-item-modern">
+                    <i class="bi bi-droplet weather-icon-modern"></i>
+                    <span><span id="humidity">68</span>% Humedad</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="welcome-decoration-modern">
+            <i class="bi bi-cloud-fill cloud-icon-modern"></i>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid-modern">
+        <div class="stat-card-modern">
+            <div class="stat-header-modern">
+                <div class="stat-icon-modern orange">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+            </div>
+            <div class="stat-label-modern">Total de Graduados</div>
+            <div class="stat-value-modern" id="graduados">3,092</div>
+        </div>
+
+        <div class="stat-card-modern">
+            <div class="stat-header-modern">
+                <div class="stat-icon-modern green">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="stat-change-modern positive" id="diferenciaPromedioAnualBadge">+0.5%</div>
+            </div>
+            <div class="stat-label-modern">Diferencia Promedio Anual</div>
+            <div class="stat-value-modern" id="diferenciaPromedioAnual">3%</div>
+        </div>
+
+        <div class="stat-card-modern">
+            <div class="stat-header-modern">
+                <div class="stat-icon-modern blue">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <div class="stat-change-modern positive" id="actualPromedioAnualBadge">+3</div>
+            </div>
+            <div class="stat-label-modern">Promedio Anual Actual</div>
+            <div class="stat-value-modern" id="actualPromedioAnual">85</div>
+        </div>
+
+        <div class="stat-card-modern">
+            <div class="stat-header-modern">
+                <div class="stat-icon-modern purple">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <div class="stat-change-modern negative" id="diferenciaNuevoIngresoBadge">-5%</div>
+            </div>
+            <div class="stat-label-modern">Diferencia Nuevo Ingreso</div>
+            <div class="stat-value-modern" id="diferenciaNuevoIngreso">-18%</div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-grid-modern">
+        <div class="chart-card-modern pie-chart-container-modern">
+            <h3>Cantidad de Alumnos por Curso</h3>
+            <canvas id="obtenerCantidadAlumnosPorCurso" width="400" height="400"></canvas>
+        </div>
+
+        <div class="charts-column-modern">
+            <div class="chart-card-modern">
+                <div class="chart-header-modern">
+                    <h3>Promedio Anual</h3>
+                    <div class="chart-legend-inline-modern">
+                        <div class="legend-dot-modern"></div>
+                        <span>Promedio Anual</span>
+                    </div>
+                </div>
+                <canvas id="ObtenerPromedioCursoUltimosAnios" width="600" height="280"></canvas>
+            </div>
+
+            <div class="chart-card-modern">
+                <h3>Matrícula: Variación Anual por Curso</h3>
+                <div class="enrollment-list-modern" id="HomeAndCharts"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/eventos.js"></script>
+    <script src="~/Content/js/pages/home.js"></script>
+    <script>
+        Eventos.datatableCatalogs({
+            urlList: "@Url.Action("ListAsync")",
+            urlInsert: "@Url.Action("CreateAsync")",
+            urlUpdate: "@Url.Action("FindAsync")",
+            urlDetail: "@Url.Action("DetailAsync")"
+        });
+    </script>
+}
