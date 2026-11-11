@@ -285,15 +285,30 @@
                 break;
 
             case 5:
-                <h2>Revisar y publicar</h2>
-                <p class="sub">Revisa el resumen y publica el año lectivo.</p>
-                <div class="wz-sum">
-                    <div><div class="k">Año</div><div class="v">@(Model != null ? Model.Ani_Anio.ToString() : "—")</div></div>
-                    <div><div class="k">Nombre</div><div class="v">@(Model != null ? Model.Ani_Nombre : "—")</div></div>
-                    <div><div class="k">Inicio</div><div class="v">@(string.IsNullOrEmpty(fIni) ? "—" : fIni)</div></div>
-                    <div><div class="k">Fin</div><div class="v">@(string.IsNullOrEmpty(fFin) ? "—" : fFin)</div></div>
-                </div>
-                <div class="wz-note"><i class="fas fa-info-circle"></i> Al publicar, el estado del año pasa a <strong>Abierto</strong>. (Periodos/estructura/asignaturas se completan en las fases siguientes.)</div>
+                {
+                    int cPer = ViewBag.CountPeriodos != null ? (int)ViewBag.CountPeriodos : 0;
+                    int cSec = ViewBag.CountSecciones != null ? (int)ViewBag.CountSecciones : 0;
+                    bool okFechas = !string.IsNullOrEmpty(fIni) && !string.IsNullOrEmpty(fFin);
+                    <h2>Revisar y publicar</h2>
+                    <p class="sub">Revisa el resumen y publica el año lectivo.</p>
+                    @if (TempData["PublishError"] != null)
+                    {
+                        <div class="wz-note" style="background:#fef2f2;border-color:#fecaca;color:#991b1b;"><i class="fas fa-exclamation-triangle"></i> @TempData["PublishError"]</div>
+                    }
+                    <div class="wz-sum">
+                        <div><div class="k">Año</div><div class="v">@(Model != null ? Model.Ani_Anio.ToString() : "—")</div></div>
+                        <div><div class="k">Nombre</div><div class="v">@(Model != null ? Model.Ani_Nombre : "—")</div></div>
+                        <div><div class="k">Inicio</div><div class="v">@(string.IsNullOrEmpty(fIni) ? "—" : fIni)</div></div>
+                        <div><div class="k">Fin</div><div class="v">@(string.IsNullOrEmpty(fFin) ? "—" : fFin)</div></div>
+                    </div>
+                    <div style="margin-top:18px;">
+                        <div class="wz-lbl">Requisitos para publicar</div>
+                        <div style="padding:4px 0;">@(okFechas ? "✅" : "⬜") Fechas de inicio y fin</div>
+                        <div style="padding:4px 0;">@(cPer > 0 ? "✅" : "⬜") Al menos un período de reporte <span style="color:#6b7280;">(@cPer)</span></div>
+                        <div style="padding:4px 0;">@(cSec > 0 ? "✅" : "⬜") Al menos una sección <span style="color:#6b7280;">(@cSec)</span></div>
+                    </div>
+                    <div class="wz-note"><i class="fas fa-info-circle"></i> Al publicar, el estado del año pasa a <strong>Abierto</strong>. Si falta algún requisito, el botón te devolverá aquí con el detalle.</div>
+                }
                 break;
         }
 

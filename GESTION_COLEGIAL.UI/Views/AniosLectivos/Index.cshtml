@@ -105,6 +105,32 @@
     </div>
 </div>
 
+    <!-- Modal Rollover -->
+    <div class="modal fade" id="rollover-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:460px;">
+            <div class="modal-content" style="border-radius:12px;border:none;">
+                <div class="modal-header" style="border-bottom:none;padding:20px 24px 0;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="opacity:.5;"><span aria-hidden="true" style="font-size:24px;">&times;</span></button>
+                </div>
+                <div class="modal-body" style="padding:0 40px 24px;">
+                    <div class="d-flex justify-content-center mb-3">
+                        <div style="width:72px;height:72px;background:#eef2ff;border-radius:50%;display:flex;align-items:center;justify-content:center;"><i class="fas fa-copy" style="color:#4f46e5;font-size:26px;"></i></div>
+                    </div>
+                    <h5 class="mb-2 text-center" style="color:#1f2937;font-weight:600;">Arrastrar estructura de otro año</h5>
+                    <p class="mb-4 text-center" style="color:#6b7280;font-size:14px;">Copia períodos, secciones y asignaturas al año <span id="rollover-destino-nombre" style="font-weight:600;color:#4f46e5;"></span> como <b>borrador</b>. No arrastra alumnos ni docentes. Puede repetirse: omite lo que ya exista.</p>
+                    <input type="hidden" id="rollover-destino" />
+                    <label for="rollover-origen" style="font-size:13px;font-weight:600;color:#374151;">Año origen</label>
+                    <select id="rollover-origen" class="form-control" style="border-radius:8px;"></select>
+                    <div id="rollover-result" class="alert text-left mt-3" style="display:none;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:14px;color:#065f46;font-size:13px;"></div>
+                </div>
+                <div class="modal-footer" style="border-top:none;padding:0 40px 32px;gap:12px;">
+                    <button type="button" class="btn" data-dismiss="modal" style="flex:1;padding:10px;border-radius:8px;background:#f3f4f6;border:1px solid #d1d5db;color:#374151;">Cerrar</button>
+                    <button type="button" id="rollover-confirm" class="btn" style="flex:1;padding:10px;border-radius:8px;background:#4f46e5;border:none;color:#fff;">Arrastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @section Scripts{
     <script>
         var AniosLectivos = (function () {
@@ -112,7 +138,8 @@
             var urls = {
                 list: "@Url.Action("ListAsync")",
                 setup: "@Url.Action("Setup")",
-                setActivo: "@Url.Action("SetActivoAsync")"
+                setActivo: "@Url.Action("SetActivoAsync")",
+                rollforward: "@Url.Action("RollForwardAsync", "Rollover")"
             };
 
             function notify(type, msg) {
@@ -137,6 +164,7 @@
                         { data: null, orderable: false, render: function (r) { return r.Ani_EsActual ? '<span class="badge-actual"><i class="fas fa-check"></i> Activo</span>' : '<button type="button" class="btn-activar" data-id="' + r.Ani_Id + '">Marcar activo</button>'; } },
                         { data: null, orderable: false, render: function (r) {
                             return '<button type="button" class="btn-accion edit" data-id="' + r.Ani_Id + '" title="Configurar / editar"><i class="fas fa-pen"></i></button>' +
+                                   '<button type="button" class="btn-accion roll" style="color:#4f46e5" data-anio="' + r.Ani_Anio + '" data-name="' + r.Ani_Nombre + '" title="Arrastrar estructura de otro año"><i class="fas fa-copy"></i></button>' +
                                    '<button type="button" class="btn-accion del" data-id="' + r.Ani_Id + '" data-name="' + r.Ani_Nombre + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
                         } }
                     ]
@@ -144,11 +172,43 @@
 
                 $("#datatable tbody").on("click", ".btn-activar", function () { setActivo($(this).data("id")); });
                 $("#datatable tbody").on("click", ".btn-accion.edit", function () { window.location.href = urls.setup + "?id=" + $(this).data("id"); });
+                $("#datatable tbody").on("click", ".btn-accion.roll", function () { openRollover($(this).data("anio"), $(this).data("name")); });
+                $("#rollover-confirm").on("click", confirmRollover);
                 $("#datatable tbody").on("click", ".btn-accion.del", function () {
                     $("#delete-item-id").val($(this).data("id"));
                     $("#delete-item-name").text($(this).data("name"));
                     $("#delete-modal").modal("show");
                 });
+            }
+
+            function openRollover(destinoAnio, destinoNombre) {
+                $("#rollover-destino").val(destinoAnio);
+                $("#rollover-destino-nombre").text(destinoNombre || destinoAnio);
+                $("#rollover-result").hide().empty();
+                var $sel = $("#rollover-origen").empty();
+                table.rows().data().each(function (r) {
+                    if (parseInt(r.Ani_Anio, 10) !== parseInt(destinoAnio, 10)) {
+                        $sel.append('<option value="' + r.Ani_Anio + '">' + r.Ani_Nombre + '</option>');
+                    }
+                });
+                if ($sel.children().length === 0) $sel.append('<option value="">(no hay otro año)</option>');
+                $("#rollover-modal").modal("show");
+            }
+
+            function confirmRollover() {
+                var origen = $("#rollover-origen").val(), destino = $("#rollover-destino").val();
+                if (!origen || !destino) { notify("error", "Seleccione un año origen válido."); return; }
+                var $btn = $("#rollover-confirm").prop("disabled", true).text("Arrastrando…");
+                $.post(urls.rollforward, { origen: origen, destino: destino })
+                    .done(function (resp) {
+                        var it = resp && resp.item ? resp.item : null;
+                        if (!it) { notify("error", "No se pudo arrastrar la estructura."); return; }
+                        $("#rollover-result").html('<b>Copiado:</b> ' + it.PeriodosCopiados + ' período(s), ' + it.SeccionesCopiadas + ' sección(es), ' + it.OfertasCopiadas + ' asignatura(s).').show();
+                        notify("success", "Estructura arrastrada como borrador.");
+                        reload();
+                    })
+                    .fail(function () { notify("error"); })
+                    .always(function () { $btn.prop("disabled", false).text("Arrastrar"); });
             }
 
             function setActivo(id) {

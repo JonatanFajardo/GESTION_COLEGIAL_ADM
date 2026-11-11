@@ -3,6 +3,7 @@ using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Filters;
 using GESTION_COLEGIAL.UI.Helpers;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -16,6 +17,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
     {
         private readonly AniosLectivosService aniosLectivosService = new AniosLectivosService();
         private readonly EnfoqueAnioService enfoqueAnioService = new EnfoqueAnioService();
+        private readonly PeriodosAnioService periodosAnioService = new PeriodosAnioService();
+        private readonly SeccionesAnioService seccionesAnioService = new SeccionesAnioService();
 
         // GET: AniosLectivos
         public ActionResult Index()
@@ -41,6 +44,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
             if (step < 1) step = 1;
             if (step > 5) step = 5;
+
+            if (step == 5 && model.Ani_Id > 0)
+            {
+                var pers = await periodosAnioService.ListAsync(model.Ani_Id);
+                var secs = await seccionesAnioService.ListAsync(model.Ani_Id);
+                ViewBag.CountPeriodos = pers == null ? 0 : pers.Count();
+                ViewBag.CountSecciones = secs == null ? 0 : secs.Count();
+            }
+
             ViewBag.Step = step;
             return View("Setup", model);
         }
@@ -74,11 +86,26 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> PublishAsync(int id)
         {
             var model = await aniosLectivosService.Find(id);
-            if (model != null)
+            if (model == null) return RedirectToAction("Index");
+
+            // Checklist de publicación (espejo de Skuul): fechas + al menos 1 período + al menos 1 sección.
+            var pers = await periodosAnioService.ListAsync(id);
+            var secs = await seccionesAnioService.ListAsync(id);
+            bool okFechas = model.Ani_FechaInicio.HasValue && model.Ani_FechaFin.HasValue;
+            bool okPeriodos = (pers == null ? 0 : pers.Count()) > 0;
+            bool okSecciones = (secs == null ? 0 : secs.Count()) > 0;
+
+            if (!(okFechas && okPeriodos && okSecciones))
             {
-                model.Ani_Estado = 3; // Abierto
-                await aniosLectivosService.Edit(model);
+                TempData["PublishError"] = "No se puede publicar todavía: "
+                    + (!okFechas ? "faltan fechas de inicio/fin. " : "")
+                    + (!okPeriodos ? "define al menos un período. " : "")
+                    + (!okSecciones ? "crea al menos una sección. " : "");
+                return RedirectToAction("Setup", new { id = id, step = 5 });
             }
+
+            model.Ani_Estado = 3; // Abierto
+            await aniosLectivosService.Edit(model);
             return RedirectToAction("Index");
         }
 

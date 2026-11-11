@@ -382,6 +382,12 @@
                                 @Html.ActionLink("Años Lectivos", "Index", "AniosLectivos", null, new { style = "font-weight:600;color:#4f46e5;" })
                             </li>
                         }
+                        @if (esAdmin || tiene("Promociones y expediente por año"))
+                        {
+                            <li style="border-left:3px solid #4f46e5;padding-left:4px;">
+                                @Html.ActionLink("Promociones", "Index", "MatriculaAnio", null, new { style = "font-weight:600;color:#4f46e5;" })
+                            </li>
+                        }
                         @if (esAdmin || tiene("Estructura Académica"))
                         {
                             <li style="border-left:3px solid #f97316;padding-left:4px;">
