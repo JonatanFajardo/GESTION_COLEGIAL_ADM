@@ -158,10 +158,12 @@ namespace GESTION_COLEGIAL.UI.Compat
             form.MergeAttribute("method", "post");
             form.MergeAttributes((ajaxOptions ?? new AjaxOptions()).ToUnobtrusiveHtmlAttributes());
 
-            // MVC 5 numeraba los formularios sin id (form0, form1…) cuando había validación en cliente.
+            // MVC 5 numeraba los formularios (form0, form1…) cuando había validación en cliente;
+            // el número se consume aunque el form ya traiga su propio id.
+            var numero = SiguienteNumeroFormulario();
             if (!form.Attributes.ContainsKey("id"))
             {
-                form.Attributes["id"] = "form" + SiguienteNumeroFormulario();
+                form.Attributes["id"] = "form" + numero;
             }
 
             var encoder = _viewContext.HttpContext.RequestServices.GetRequiredService<HtmlEncoder>();
