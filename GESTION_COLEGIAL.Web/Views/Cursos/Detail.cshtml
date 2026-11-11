@@ -1,0 +1,111 @@
+@model GESTION_COLEGIAL.Business.Models.CursoDetailViewModel
+@{
+    ViewBag.Title = "Detalle del Curso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/Content/css/detalle.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Cursos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Detalle</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+
+    <!-- Hero / Encabezado -->
+    <div class="detail-hero">
+        <div class="detail-hero-inner">
+            <div class="detail-hero-avatar">
+                <div class="detail-avatar-placeholder">
+                    <i class="bi bi-book"></i>
+                </div>
+                <div class="detail-id-badge">#@Model.Cur_Id.ToString().PadLeft(4, '0')</div>
+            </div>
+
+            <div class="detail-hero-info">
+                <h2 class="detail-name">@Model.Cur_Nombre</h2>
+                <p class="detail-subtitle">
+                    <i class="bi bi-book-half"></i> Curso académico
+                </p>
+            </div>
+
+            <div class="detail-hero-actions">
+                <a href="@Url.Action("Index")" class="btn-detail-back">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información del Curso -->
+    <div class="detail-info-card">
+        <div class="detail-info-card-header">
+            <i class="bi bi-info-circle"></i>
+            <h6>Información del Curso</h6>
+        </div>
+        <div class="detail-info-card-body">
+            <div class="detail-field">
+                <div class="detail-field-icon"><i class="bi bi-hash"></i></div>
+                <div>
+                    <span class="detail-field-label">ID</span>
+                    <span class="detail-field-value">@Model.Cur_Id.ToString().PadLeft(4, '0')</span>
+                </div>
+            </div>
+            <div class="detail-field">
+                <div class="detail-field-icon"><i class="bi bi-book"></i></div>
+                <div>
+                    <span class="detail-field-label">Nombre del Curso</span>
+                    <span class="detail-field-value">@Model.Cur_Nombre</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información de Registro -->
+    <div class="detail-info-card">
+        <div class="detail-info-card-header">
+            <i class="bi bi-clock-history"></i>
+            <h6>Información de Registro</h6>
+        </div>
+        <div class="detail-info-card-body">
+            <div class="detail-audit-entry">
+                <div class="detail-audit-icon created">
+                    <i class="bi bi-plus-circle"></i>
+                </div>
+                <div>
+                    <div class="detail-audit-label">Registrado por</div>
+                    <div class="detail-audit-who">@(string.IsNullOrEmpty(Model.Cur_UsuarioRegistraNombre) ? "—" : Model.Cur_UsuarioRegistraNombre)</div>
+                    @if (Model.Cur_FechaRegistra.HasValue)
+                    {
+                        <div class="detail-audit-date">
+                            <i class="bi bi-clock"></i> @Model.Cur_FechaRegistra.Value.ToString("dd/MM/yyyy HH:mm")
+                        </div>
+                    }
+                </div>
+            </div>
+            @if (Model.Cur_FechaModifica.HasValue)
+            {
+                <div class="detail-audit-entry">
+                    <div class="detail-audit-icon modified">
+                        <i class="bi bi-pencil"></i>
+                    </div>
+                    <div>
+                        <div class="detail-audit-label">Modificado por</div>
+                        <div class="detail-audit-who">@(string.IsNullOrEmpty(Model.Cur_UsuarioModificaNombre) ? "—" : Model.Cur_UsuarioModificaNombre)</div>
+                        <div class="detail-audit-date">
+                            <i class="bi bi-clock"></i> @Model.Cur_FechaModifica.Value.ToString("dd/MM/yyyy HH:mm")
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
