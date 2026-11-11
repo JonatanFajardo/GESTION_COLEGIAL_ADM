@@ -1,0 +1,377 @@
+@{
+    ViewBag.Title = "Dashboard Consulta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* ── Wrapper ── */
+    .cons-wrapper { padding: 0 6px 32px; }
+    .cons-wrapper .row { margin-bottom: 22px; }
+    .cons-wrapper .row:last-child { margin-bottom: 0; }
+    .cons-wrapper [class*="col-"] { padding-left: 10px; padding-right: 10px; }
+
+    /* ── Header ── */
+    .cons-header {
+        display: flex; align-items: center; justify-content: space-between;
+        flex-wrap: wrap; gap: 12px;
+        margin-bottom: 22px; padding: 16px 22px;
+        background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #7c3aed 100%);
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(67,56,202,.3);
+    }
+    .cons-header-left { display: flex; align-items: center; gap: 14px; }
+    .cons-header-icon {
+        width: 46px; height: 46px;
+        background: rgba(255,255,255,.15); border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem; color: #fff;
+    }
+    .cons-header h2 { margin: 0; font-size: 1.25rem; font-weight: 700; color: #fff; }
+    .cons-header-sub { font-size: .78rem; color: rgba(255,255,255,.65); margin-top: 2px; }
+    .cons-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .cons-controls label { font-size: .8rem; color: rgba(255,255,255,.75); font-weight: 600; margin: 0; }
+    .cons-controls select {
+        height: 34px; padding: 0 10px;
+        background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+        border-radius: 7px; font-size: .84rem; color: #fff; outline: none; cursor: pointer;
+    }
+    .cons-controls select option { background: #312e81; color: #fff; }
+    .btn-actualizar {
+        height: 34px; padding: 0 18px;
+        background: #fff; color: #4338ca;
+        border: none; border-radius: 7px;
+        font-size: .84rem; font-weight: 700; cursor: pointer;
+        transition: all .2s; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-actualizar:hover { background: #ede9fe; transform: translateY(-1px); }
+
+    /* ── Section ── */
+    .cons-section { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .cons-section-accent { width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0; }
+    .cons-section-label {
+        font-size: .78rem; font-weight: 800; color: #475569;
+        text-transform: uppercase; letter-spacing: .7px; white-space: nowrap;
+    }
+    .cons-section-line { flex: 1; height: 1px; background: #e2e8f0; }
+
+    /* ── KPI Cards ── */
+    .kpi-card {
+        background: #fff; border-radius: 12px; padding: 16px 18px 14px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+        position: relative; overflow: hidden;
+        transition: transform .15s, box-shadow .15s;
+        border-left: 4px solid transparent;
+    }
+    .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+    .kpi-card.c-indigo { border-left-color: #4338ca; }
+    .kpi-card.c-violet { border-left-color: #7c3aed; }
+    .kpi-card.c-blue   { border-left-color: #3b82f6; }
+    .kpi-card.c-teal   { border-left-color: #14b8a6; }
+    .kpi-card.c-green  { border-left-color: #22c55e; }
+    .kpi-card.c-amber  { border-left-color: #f59e0b; }
+    .kpi-card.c-rose   { border-left-color: #f43f5e; }
+    .kpi-card.c-sky    { border-left-color: #0ea5e9; }
+    .kpi-card .kpi-icon-bg {
+        position: absolute; right: -6px; bottom: -6px;
+        font-size: 3.8rem; opacity: .05; color: #0f172a; pointer-events: none;
+    }
+    .kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+    .kpi-icon {
+        width: 36px; height: 36px; border-radius: 9px;
+        display: flex; align-items: center; justify-content: center; font-size: .95rem;
+    }
+    .kpi-icon.indigo { background: #eef2ff; color: #4338ca; }
+    .kpi-icon.violet { background: #f5f3ff; color: #7c3aed; }
+    .kpi-icon.blue   { background: #eff6ff; color: #3b82f6; }
+    .kpi-icon.teal   { background: #f0fdfa; color: #14b8a6; }
+    .kpi-icon.green  { background: #f0fdf4; color: #22c55e; }
+    .kpi-icon.amber  { background: #fffbeb; color: #f59e0b; }
+    .kpi-icon.rose   { background: #fff1f2; color: #f43f5e; }
+    .kpi-icon.sky    { background: #f0f9ff; color: #0ea5e9; }
+    .kpi-value { font-size: 1.7rem; font-weight: 800; color: #0f172a; line-height: 1; }
+    .kpi-label { font-size: .7rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+    .kpi-sub   { font-size: .68rem; color: #64748b; margin-top: 2px; }
+
+    /* ── Panel ── */
+    .cons-panel {
+        background: #fff; border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+        padding: 18px 20px;
+    }
+    .chart-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+    .chart-title { font-size: .8rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .5px; }
+    .chart-stat { font-size: .82rem; font-weight: 700; }
+
+    /* ── Indicadores institucionales ── */
+    .ind-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .ind-card {
+        display: flex; align-items: center; gap: 14px;
+        padding: 14px 16px; border-radius: 10px;
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border: 1px solid #e2e8f0;
+        transition: transform .15s, box-shadow .15s;
+    }
+    .ind-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(67,56,202,.12); }
+    .ind-card.positive { background: linear-gradient(135deg, #f0fdf4, #ecfdf5); border-color: #bbf7d0; }
+    .ind-card.negative { background: linear-gradient(135deg, #fef2f2, #fff1f2); border-color: #fecaca; }
+    .ind-card.neutral  { background: linear-gradient(135deg, #eef2ff, #f5f3ff); border-color: #c7d2fe; }
+    .ind-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .ind-card.positive .ind-icon { background: #dcfce7; color: #16a34a; }
+    .ind-card.negative .ind-icon { background: #fee2e2; color: #dc2626; }
+    .ind-card.neutral  .ind-icon { background: #e0e7ff; color: #4338ca; }
+    .ind-info { flex: 1; min-width: 0; }
+    .ind-label { font-size: .7rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 3px; line-height: 1.2; }
+    .ind-value { font-size: 1.25rem; font-weight: 800; color: #0f172a; line-height: 1; }
+
+    /* ── Tabla ── */
+    .cons-table { width: 100%; font-size: .82rem; border-collapse: collapse; }
+    .cons-table th { background: #f8fafc; color: #64748b; font-weight: 700; font-size: .7rem; text-transform: uppercase; letter-spacing: .5px; padding: 8px 12px; border-bottom: 2px solid #e2e8f0; }
+    .cons-table td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; }
+    .cons-table tr:last-child td { border-bottom: none; }
+    .cons-table tr:hover td { background: #f8fafc; }
+
+    .scroll-box { max-height: 430px; overflow-y: auto; }
+
+    /* ── Animaciones ── */
+    @@keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .kpi-card   { animation: fadeInUp .35s ease both; }
+    .cons-panel { animation: fadeInUp .4s ease both; }
+    .ind-card   { animation: fadeInUp .35s ease both; }
+    .kpi-card:nth-child(1){animation-delay:.04s}.kpi-card:nth-child(2){animation-delay:.08s}
+    .kpi-card:nth-child(3){animation-delay:.12s}.kpi-card:nth-child(4){animation-delay:.16s}
+</style>
+
+<div class="cons-wrapper">
+
+    <!-- ══ Header ══ -->
+    <div class="cons-header">
+        <div class="cons-header-left">
+            <div class="cons-header-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+            <div>
+                <h2>Dashboard de Consulta Institucional</h2>
+                <div class="cons-header-sub">Vista ejecutiva de indicadores académicos y operativos</div>
+            </div>
+        </div>
+        <div class="cons-controls">
+            <label>Año</label>
+            <select id="sel-anio"></select>
+            <button class="btn-actualizar" id="btn-actualizar">
+                <i class="fa-solid fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ Crecimiento Institucional ══ -->
+    <div class="cons-section">
+        <div class="cons-section-accent" style="background:#7c3aed;"></div>
+        <span class="cons-section-label"><i class="fa-solid fa-arrow-trend-up" style="margin-right:5px;"></i>Crecimiento Institucional</span>
+        <div class="cons-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="cons-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-chart-line" style="margin-right:5px;color:#7c3aed;"></i>Evolución de Matrícula (últimos 5 años)</span>
+                    <span class="chart-stat" id="stat-evolucion" style="color:#7c3aed;"></span>
+                </div>
+                <canvas id="chart-evolucion" style="max-height:230px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Población Estudiantil ══ -->
+    <div class="cons-section">
+        <div class="cons-section-accent" style="background:#4338ca;"></div>
+        <span class="cons-section-label"><i class="fa-solid fa-user-graduate" style="margin-right:5px;"></i>Población Estudiantil</span>
+        <div class="cons-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="cons-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-layer-group" style="margin-right:5px;color:#4338ca;"></i>Por Nivel Educativo</span>
+                </div>
+                <canvas id="chart-nivel" style="max-height:240px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="cons-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-clock" style="margin-right:5px;color:#f43f5e;"></i>Por Jornada</span>
+                </div>
+                <canvas id="chart-jornada" style="max-height:240px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="cons-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-venus-mars" style="margin-right:5px;color:#a855f7;"></i>Por Género</span>
+                </div>
+                <canvas id="chart-genero" style="max-height:240px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Distribución de Matrícula ══ -->
+    <div class="cons-section">
+        <div class="cons-section-accent" style="background:#0ea5e9;"></div>
+        <span class="cons-section-label"><i class="fa-solid fa-chart-column" style="margin-right:5px;"></i>Distribución de Matrícula</span>
+        <div class="cons-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="cons-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-book" style="margin-right:5px;color:#0ea5e9;"></i>Top 10 Cursos por Matrícula</span>
+                    <span class="chart-stat" id="stat-cursos" style="color:#0ea5e9;"></span>
+                </div>
+                <canvas id="chart-cursos" style="max-height:340px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="cons-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-children" style="margin-right:5px;color:#f59e0b;"></i>Distribución por Edad</span>
+                </div>
+                <canvas id="chart-edad" style="max-height:340px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Personal ══ -->
+    <div class="cons-section">
+        <div class="cons-section-accent" style="background:#14b8a6;"></div>
+        <span class="cons-section-label"><i class="fa-solid fa-people-roof" style="margin-right:5px;"></i>Personal Institucional</span>
+        <div class="cons-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="cons-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-sitemap" style="margin-right:5px;color:#14b8a6;"></i>Empleados por Departamento</span>
+                    <span class="chart-stat" id="stat-deptos" style="color:#14b8a6;"></span>
+                </div>
+                <canvas id="chart-departamento" style="max-height:300px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="cons-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-briefcase" style="margin-right:5px;color:#22c55e;"></i>Top Cargos</span>
+                </div>
+                <canvas id="chart-cargo" style="max-height:300px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ KPIs Principales ══ -->
+    <div class="cons-section">
+        <div class="cons-section-accent" style="background:#4338ca;"></div>
+        <span class="cons-section-label"><i class="fa-solid fa-gauge-high" style="margin-right:5px;"></i>Resumen Institucional</span>
+        <div class="cons-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-indigo">
+                <i class="fa-solid fa-user-graduate kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon indigo"><i class="fa-solid fa-user-graduate"></i></div></div>
+                <div class="kpi-value" id="kpi-alumnos">—</div>
+                <div class="kpi-label">Total Alumnos</div>
+                <div class="kpi-sub" id="kpi-alumnos-activos">—</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-violet">
+                <i class="fa-solid fa-people-group kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon violet"><i class="fa-solid fa-people-group"></i></div></div>
+                <div class="kpi-value" id="kpi-empleados">—</div>
+                <div class="kpi-label">Total Empleados</div>
+                <div class="kpi-sub">Personal activo</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-blue">
+                <i class="fa-solid fa-chalkboard-user kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-chalkboard-user"></i></div></div>
+                <div class="kpi-value" id="kpi-docentes">—</div>
+                <div class="kpi-label">Total Docentes</div>
+                <div class="kpi-sub">Asignados al año</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-teal">
+                <i class="fa-solid fa-book-open kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon teal"><i class="fa-solid fa-book-open"></i></div></div>
+                <div class="kpi-value" id="kpi-cursos">—</div>
+                <div class="kpi-label">Cursos Activos</div>
+                <div class="kpi-sub">Catálogo institucional</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-sky">
+                <i class="fa-solid fa-calendar-week kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon sky"><i class="fa-solid fa-calendar-week"></i></div></div>
+                <div class="kpi-value" id="kpi-clases">—</div>
+                <div class="kpi-label">Clases Programadas</div>
+                <div class="kpi-sub">Horario del año</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-amber">
+                <i class="fa-solid fa-layer-group kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon amber"><i class="fa-solid fa-layer-group"></i></div></div>
+                <div class="kpi-value" id="kpi-niveles">—</div>
+                <div class="kpi-label">Niveles Educativos</div>
+                <div class="kpi-sub">En operación</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-rose">
+                <i class="fa-solid fa-clock kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon rose"><i class="fa-solid fa-clock"></i></div></div>
+                <div class="kpi-value" id="kpi-jornadas">—</div>
+                <div class="kpi-label">Jornadas</div>
+                <div class="kpi-sub">Modalidades activas</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-green">
+                <i class="fa-solid fa-percent kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-percent"></i></div></div>
+                <div class="kpi-value" id="kpi-cobrado">—</div>
+                <div class="kpi-label">% Cobrado</div>
+                <div class="kpi-sub">Eficiencia financiera</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Indicadores Institucionales ══ -->
+    <div class="cons-section">
+        <div class="cons-section-accent" style="background:#f59e0b;"></div>
+        <span class="cons-section-label"><i class="fa-solid fa-bullseye" style="margin-right:5px;"></i>Indicadores Institucionales</span>
+        <div class="cons-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="cons-panel">
+                <div id="lista-indicadores" class="ind-grid">
+                    <p style="color:#94a3b8;font-size:.82rem;margin:0;">Cargando indicadores...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/dashboardconsulta.js"></script>
+    <script>
+        DashboardConsulta.init("@Url.Action("ResumenAsync")");
+    </script>
+}

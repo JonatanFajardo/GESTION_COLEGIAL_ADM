@@ -1,0 +1,56 @@
+@{
+    ViewBag.Title = "Visor de Gráficos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{ <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" /> }
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Visor de Gráficos</li>
+        </ol>
+    </nav>
+</div>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="fa-solid fa-chart-line" style="font-size:32px;"></i></div>
+            <div class="header-text-catalogo">
+                <h1>Visor de Gráficos Consolidados</h1>
+                <p>Indicadores clave en formato visual</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fluid-container">
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card p-3">
+                <h6 class="fw-bold mb-3"><i class="fa-solid fa-coins text-success me-2"></i>Resumen Financiero</h6>
+                <canvas id="chart-financiero" height="200"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3">
+                <h6 class="fw-bold mb-3"><i class="fa-solid fa-graduation-cap text-primary me-2"></i>Resumen Institucional</h6>
+                <canvas id="chart-admin" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-12">
+            <div id="loading-msg" class="text-center py-4 text-muted">
+                <i class="fa-solid fa-spinner fa-spin"></i> Cargando datos...
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Content/js/pages/visitorgraficos.js"></script>
+    <script>
+        VisorGraficos.init(
+            "@Url.Action("FinancieroAsync")",
+            "@Url.Action("ResumenAsync")"
+        );
+    </script>
+}
