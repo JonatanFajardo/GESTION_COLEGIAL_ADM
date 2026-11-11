@@ -1,7 +1,12 @@
 using System.Globalization;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Microsoft.Extensions.WebEncoders;
 using GESTION_COLEGIAL.UI.Compat;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Serialization;
 
@@ -18,13 +23,31 @@ builder.Services
 
         // Igual que el binder global de MVC 5: recorta espacios en los textos y los vacíos quedan en null.
         opciones.ModelBinderProviders.Insert(0, new RecortarTextosBinderProvider());
+
+        // Mensajes de validación en español, como los traía MVC 5.
+        opciones.ModelMetadataDetailsProviders.Add(new MensajesValidacionMetadataProvider());
+        MensajesValidacion.ConfigurarModelBinding(opciones.ModelBindingMessageProvider);
     })
     .AddNewtonsoftJson(opciones =>
     {
         // Las vistas leen las propiedades tal cual vienen (Alu_Id), sin pasarlas a camelCase.
         opciones.SerializerSettings.ContractResolver = new DefaultContractResolver();
+    })
+    .AddViewOptions(opciones =>
+    {
+        // Como en MVC 5: el hidden de cada CheckBoxFor va junto al checkbox, no al final del form.
+        opciones.HtmlHelperOptions.CheckBoxHiddenInputRenderMode = CheckBoxHiddenInputRenderMode.Inline;
+
+        // Como en MVC 5: los campos enteros llevan data-val-number.
+        opciones.ClientModelValidatorProviders.Add(new NumerosEnterosClientValidatorProvider());
     });
 
+// Escribir acentos y ñ tal cual en el HTML ("Año", no "A&#xF1;o"); también evita entidades
+// dentro de los textos que las vistas meten en JavaScript.
+builder.Services.Configure<WebEncoderOptions>(opciones =>
+    opciones.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
+
+builder.Services.AddSingleton<IValidationAttributeAdapterProvider, MensajesValidacionAdapterProvider>();
 builder.Services.AddRouting(opciones => opciones.LowercaseUrls = true);
 
 // Sesión: solo guarda datos que cambian durante la visita (ej. "ver como rol" de DevTools).
@@ -59,6 +82,7 @@ CultureInfo.DefaultThreadCurrentUICulture = cultura;
 var rutaLegado = Path.GetFullPath(Path.Combine(
     app.Environment.ContentRootPath,
     app.Configuration["RecursosLegado"] ?? "../GESTION_COLEGIAL.UI"));
+RutasApp.Configurar(app.Environment.ContentRootPath, rutaLegado);
 if (Directory.Exists(rutaLegado))
 {
     app.Environment.WebRootFileProvider = new CompositeFileProvider(
