@@ -12,15 +12,28 @@ namespace GESTION_COLEGIAL.Business.Helpers
 	/// </summary>
 	public static class SendHttpClient
 	{
-		private const string baseUrl = "http://localhost:5076/api/v1/";  // Development - API local (HTTP, HTTPS cert issue on dev)
-		//private const string baseUrl = "https://localhost:44325/api/v1/";
-		//private const string baseUrl = "http://www.gestioncolegialapi.somee.com/api/v1/";  // Production
+		// Dirección de la API. En Docker se pasa por la variable de entorno GC_API_BASEURL
+		// (ej. http://api:5076/api/v1/); sin ella se usa la API local de desarrollo.
+		private static readonly string baseUrl = ResolverBaseUrl();
 
-		static SendHttpClient()
+		// Un solo cliente para toda la app: crear uno por petición agota las conexiones.
+		private static readonly HttpClient httpclient = CrearCliente();
+
+		private static string ResolverBaseUrl()
 		{
-			// Ignorar errores de certificado SSL en desarrollo
-			System.Net.ServicePointManager.ServerCertificateValidationCallback =
-				delegate { return true; };
+			var url = Environment.GetEnvironmentVariable("GC_API_BASEURL");
+			if (string.IsNullOrWhiteSpace(url)) return "http://localhost:5076/api/v1/";
+			return url.EndsWith("/") ? url : url + "/";
+		}
+
+		private static HttpClient CrearCliente()
+		{
+			var handler = new HttpClientHandler
+			{
+				// Acepta el certificado autofirmado de la API en desarrollo (mismo comportamiento que antes).
+				ServerCertificateCustomValidationCallback = (mensaje, certificado, cadena, errores) => true
+			};
+			return new HttpClient(handler);
 		}
 
 		#region Asincrono
@@ -35,7 +48,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		{
 			try
 			{
-				var httpclient = new HttpClient();
 				var httpResponse = await httpclient.GetAsync($"{baseUrl}{url}");
 				if (!httpResponse.IsSuccessStatusCode) return "[]";
 				var content = await httpResponse.Content.ReadAsStringAsync();
@@ -48,7 +60,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		{
 			try
 			{
-				var httpclient = new HttpClient();
 				var httpResponse = await httpclient.GetAsync($"{baseUrl}{url}");
 
 				if (!httpResponse.IsSuccessStatusCode)
@@ -81,7 +92,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 			try
 			{
 				string direction = $"{baseUrl}{url}?id={id}";
-				var httpclient = new HttpClient();
 				var httpResponse = await httpclient.GetAsync(direction);
 
 				if (!httpResponse.IsSuccessStatusCode)
@@ -106,7 +116,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		/// <returns></returns>
 		public static async Task<bool> PostAsync(string url, object model)
 		{
-			var httpclient = new HttpClient();
 			var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
 			var contentSerialized = new StringContent(content, Encoding.UTF8, "application/json");//Agregamos informacion adicional al json
 
@@ -131,7 +140,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		/// <returns></returns>
 		public static async Task<bool> DeleteAsync(string url, int id)
 		{
-			var httpclient = new HttpClient();
 			var content = JsonConvert.SerializeObject(id);//se convierte a json el contenido a enviar
 			var contentSerialized = new StringContent(content, Encoding.UTF8, "application/json");//Agregamos informacion adicional al json
 			var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}?value={id}", contentSerialized);
@@ -151,7 +159,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		/// <returns></returns>
 		public static async Task<bool> PutAsync(string url, object model)
 		{
-			var httpclient = new HttpClient();
 			var content = JsonConvert.SerializeObject(model);//se convierte a json el contenido a enviar
 			var contentSerialized = new StringContent(content, Encoding.UTF8, "application/json");//Agregamos informacion adicional al json
 			var httpResponse = await httpclient.PutAsync($"{baseUrl}{url}", contentSerialized);
@@ -175,7 +182,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 			try
 			{
 				string direction = $"{baseUrl}{url}?value={value.Trim()}";
-				var httpclient = new HttpClient();
 				var httpResponse = await httpclient.GetAsync(direction);
 
 				if (!httpResponse.IsSuccessStatusCode)
@@ -204,7 +210,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 			try
 			{
 				string direction = $"{baseUrl}{url}?value={value}";
-				var httpclient = new HttpClient();
 				var httpResponse = await httpclient.GetAsync(direction);
 
 				var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
@@ -222,7 +227,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 			try
 			{
 				string direction = $"{baseUrl}{url}?value={value}";
-				var httpclient = new HttpClient();
 				var httpResponse = await httpclient.GetAsync(direction);
 
 				var content = await httpResponse.Content.ReadAsStringAsync();//resultado de la respuesta y tambien la convertimos al tipo de dato que desiemos.
@@ -246,7 +250,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		{
 			try
 			{
-				var httpclient = new HttpClient();
 				var content = JsonConvert.SerializeObject(model);
 				var contentSerialized = new StringContent(content, Encoding.UTF8, "application/json");
 
@@ -279,7 +282,6 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		{
 			try
 			{
-				var httpclient = new HttpClient();
 				var httpResponse = await httpclient.GetAsync($"{baseUrl}{url}");
 
 				if (!httpResponse.IsSuccessStatusCode)
