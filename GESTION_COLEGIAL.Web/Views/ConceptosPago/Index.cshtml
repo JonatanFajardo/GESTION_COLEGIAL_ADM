@@ -1,0 +1,326 @@
+@model GESTION_COLEGIAL.Business.Models.ConceptoPagoFindViewModel
+@{
+    ViewBag.Title = "Conceptos de Pago";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/css/modal-detail.css" rel="stylesheet" />
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="#">Financiero</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Conceptos de Pago</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-11zm2 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3z"/>
+                </svg>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Gestión de Conceptos de Pago</h1>
+                <p>Administre los conceptos y categorías de pagos del sistema</p>
+            </div>
+        </div>
+        <div class="header-action-catalogo">
+            <button class="btn-nuevo-catalogo" id="add-btn-header" data-toggle="modal" data-target="#edit-modal">
+                <i class="mdi mdi-plus-circle-outline"></i>
+                Nuevo Concepto
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+    @* Listado *@
+    <div class="card-listado-catalogo">
+        <div class="card-header-listado-catalogo">
+            <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
+                </svg>
+                Listado de Conceptos de Pago
+            </h3>
+        </div>
+        <div class="card-body-listado-catalogo">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered nowrap" id="datatable">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Descripción</th>
+                            <th>Recurrente</th>
+                            <th>Obligatorio</th>
+                            <th>Activo</th>
+                            <th>Cant. Tarifas</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <!-- Header with Orange Gradient -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <i class="mdi mdi-pencil"></i>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Ajax.BeginForm("CreateAsync", "ConceptosPago", new AjaxOptions
+                {
+                    HttpMethod = "Post",
+                    OnBegin = "Catalogs.begin",
+                    OnComplete = "Catalogs.complete",
+                    OnFailure = "Catalogs.failure",
+                    OnSuccess = "Catalogs.success"
+                }))
+                {
+                    <div class="fluid-container">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @Html.HiddenFor(model => model.ConceptoPagoId, new { @id = "item-id" })
+                        <div class="modal-body">
+                            <!-- Form Card -->
+                            <div class="form-card">
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Descripcion, "Descripción", htmlAttributes: new { @class = "form-label" })
+                                            @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control form-control-modern", placeholder = "Ingrese la descripción del concepto de pago" } })
+                                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.EsRecurrente, new { @class = "form-check-input" })
+                                            @Html.LabelFor(model => model.EsRecurrente, "Es Recurrente", htmlAttributes: new { @class = "form-check-label" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.EsObligatorio, new { @class = "form-check-input" })
+                                            @Html.LabelFor(model => model.EsObligatorio, "Es Obligatorio", htmlAttributes: new { @class = "form-check-label" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.EsActivo, new { @class = "form-check-input", @checked = "checked" })
+                                            @Html.LabelFor(model => model.EsActivo, "Activo", htmlAttributes: new { @class = "form-check-label" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-modern-cancel" data-dismiss="modal">
+                                <i class="mdi mdi-close mr-1"></i>Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-modern-save">
+                                <i class="mdi mdi-content-save mr-1"></i>Guardar
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- Fin Modal -->
+    <!-- Modal Delete-->
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="deleteModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 440px;">
+            @using (Ajax.BeginForm("DeleteAsync", "ConceptosPago", new AjaxOptions
+            {
+                HttpMethod = "Post",
+                OnBegin = "Catalogs.begin",
+                OnComplete = "Catalogs.complete",
+                OnFailure = "Catalogs.failure",
+                OnSuccess = "Catalogs.success"
+            }))
+            {
+                <div class="modal-content" style="border-radius: 12px; border: none;">
+                    <!-- Header sin título, solo botón cerrar -->
+                    <div class="modal-header" style="border-bottom: none; padding: 20px 24px 0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding: 0; margin: 0; opacity: 0.5;">
+                            <span aria-hidden="true" style="font-size: 24px;">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body text-center" style="padding: 0 40px 32px;">
+                        @Html.HiddenFor(model => model.ConceptoPagoId, new { @id = "delete-item-id" })
+
+                        <!-- Ícono de advertencia grande -->
+                        <div class="d-flex justify-content-center mb-3">
+                            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-exclamation-triangle" style="color: white; font-size: 28px;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Título -->
+                        <h5 class="mb-3" style="color: #1f2937; font-weight: 600; font-size: 20px;">Eliminar concepto de pago</h5>
+
+                        <!-- Mensaje de confirmación -->
+                        <p class="mb-4" style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                            ¿Está seguro de que desea eliminar el concepto de pago <span id="delete-item-name" style="font-weight: 600;"></span>?
+                        </p>
+
+                        <!-- Área de advertencia -->
+                        <div class="alert d-flex align-items-start text-left" style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-bottom: 0;">
+                            <div style="flex-shrink: 0; margin-right: 12px;">
+                                <i class="fas fa-exclamation-triangle" style="color: #dc2626; font-size: 18px;"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <p class="mb-1" style="color: #991b1b; font-weight: 600; font-size: 13px; margin: 0;">Esta acción no se puede deshacer</p>
+                                <p class="mb-0" style="color: #991b1b; font-size: 13px; margin: 0;">El registro será eliminado permanentemente del sistema.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="border-top: none; padding: 0 40px 32px; gap: 12px;">
+                        <button type="button" class="btn btn-modern-cancel" data-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger" style="flex: 1; padding: 10px 24px; border-radius: 8px; font-weight: 500; background-color: #dc2626; border: none; font-size: 14px;">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <!-- Fin Modal -->
+
+    <!-- Modal Detalle -->
+    <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <!-- Header with Orange Gradient -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailModalLabel">
+                        <i class="fas fa-file-alt"></i>
+                        Detalle del Concepto de Pago
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Info Card - ID and Description -->
+                    <div class="info-card">
+                        <div class="info-grid">
+                            <div>
+                                <label class="info-label">ID</label>
+                                <p class="info-value" id="detail-cpa-id"></p>
+                            </div>
+                            <div>
+                                <label class="info-label">Descripción</label>
+                                <p class="info-value" id="detail-cpa-descripcion"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audit Section -->
+                    <div class="audit-section">
+                        <h6 class="audit-section-title">
+                            <i class="fas fa-history"></i>
+                            Información de Auditoría
+                        </h6>
+
+                        <!-- Created -->
+                        <div class="audit-card">
+                            <div class="audit-icon green">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="audit-info">
+                                <div>
+                                    <label class="audit-label">Creado por</label>
+                                    <p class="audit-value" id="detail-cpa-usuarioregistranombre"></p>
+                                </div>
+                                <div>
+                                    <label class="audit-label">
+                                        <i class="fas fa-calendar icon-small"></i>
+                                        Fecha de creación
+                                    </label>
+                                    <p class="audit-value" id="detail-cpa-fecharegistra"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modified -->
+                        <div class="audit-card">
+                            <div class="audit-icon blue">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="audit-info">
+                                <div>
+                                    <label class="audit-label">Modificado por</label>
+                                    <p class="audit-value" id="detail-cpa-usuariomodificanombre"></p>
+                                </div>
+                                <div>
+                                    <label class="audit-label">
+                                        <i class="fas fa-calendar icon-small"></i>
+                                        Fecha de modificación
+                                    </label>
+                                    <p class="audit-value" id="detail-cpa-fechamodifica"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="mdi mdi-close mr-1"></i>Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Modal Detalle -->
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/conceptospago.js"></script>
+    <script>
+        ConceptosPago.datatableCatalogs({
+            urlList: "@Url.Action("ListAsync")",
+            urlDetail: "@Url.Action("DetailAsync")"
+        });
+    </script>
+    <script>
+        Catalogs.configure({
+            displayName: "concepto de pago",
+            urlUpdate: "@Url.Action("FindAsync")"
+        });
+        CatalogsCfg.configure({
+            displayName: "concepto de pago",
+            getUrl: "@Url.Action("DetailAsync")"
+        });
+    </script>
+    @if (ViewBag.JavaScriptFunction != null)
+    {
+        <script type="text/javascript">
+        @Html.Raw(ViewBag.JavaScriptFunction);
+        </script>
+    }
+}

@@ -1,0 +1,129 @@
+@{
+    ViewBag.Title = "Proyección de Cobros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Módulo Financiero</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Reportes Financieros</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Proyección de Cobros</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <!-- Filtros -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="mes-select">Mes</label>
+                        <select class="form-control" id="mes-select">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="anio-select">Año</label>
+                        <input type="number" class="form-control" id="anio-select" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" class="btn btn-primary btn-block" id="btn-generar">
+                            <i class="mdi mdi-file-chart"></i> Generar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Proyección Total</h5>
+                    <h3 class="text-info" id="proyeccion-total">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Monto Cobrado</h5>
+                    <h3 class="text-success" id="monto-cobrado">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>% Cumplimiento</h5>
+                    <h3 class="text-primary" id="porcentaje-cumplimiento">0%</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráfico -->
+    <div class="card mb-3">
+        <div class="card-header" style="background-color:white;">
+            <h4>Proyección vs Cobrado</h4>
+        </div>
+        <div class="card-body">
+            <canvas id="chart-proyeccion" height="80"></canvas>
+        </div>
+    </div>
+
+    <!-- Tabla por Nivel -->
+    <div class="card">
+        <div class="card-header" style="background-color:white;">
+            <h4>Desglose por Nivel Educativo</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nivel</th>
+                        <th>Alumnos</th>
+                        <th>Proyección</th>
+                        <th>Cobrado</th>
+                        <th>Pendiente</th>
+                        <th>% Cumplimiento</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-niveles">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/Content/js/pages/proyeccioncobros.js"></script>
+    <script>
+        ProyeccionCobros.init({
+            urlReporte: "@Url.Action("ProyeccionCobrosAsync", "ReportesFinancieros")"
+        });
+    </script>
+}

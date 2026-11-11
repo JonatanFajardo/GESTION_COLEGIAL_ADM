@@ -1,0 +1,110 @@
+@{
+    ViewBag.Title = "Reporte de Morosos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumb-wrapper-content ">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Módulo Financiero</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0);">Reportes Financieros</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Morosos</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container">
+    <!-- Filtros -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <label>Filtrar por días de atraso:</label>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary active" data-dias="0">Todos</button>
+                        <button type="button" class="btn btn-outline-warning" data-dias="30">30+ días</button>
+                        <button type="button" class="btn btn-outline-danger" data-dias="60">60+ días</button>
+                        <button type="button" class="btn btn-outline-dark" data-dias="90">90+ días</button>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-success btn-block" id="btn-exportar">
+                        <i class="mdi mdi-file-excel"></i> Exportar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Total Morosos</h5>
+                    <h3 class="text-danger" id="total-morosos">0</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Deuda Total</h5>
+                    <h3 class="text-warning" id="deuda-total">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Mora Acumulada</h5>
+                    <h3 class="text-danger" id="mora-acumulada">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Promedio Deuda</h5>
+                    <h3 class="text-info" id="promedio-deuda">L. 0.00</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Listado -->
+    <div class="card">
+        <div class="card-header" style="background-color:white;">
+            <h4>Lista de Alumnos Morosos</h4>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered nowrap" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Identidad</th>
+                        <th>Encargado</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Total Deuda</th>
+                        <th>Mora</th>
+                        <th>Días Atraso</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/morosos.js"></script>
+    <script>
+        Morosos.datatable({
+            urlList: "@Url.Action("ListadoMorososAsync", "ReportesFinancieros")",
+            urlEstadoCuenta: "@Url.Action("EstadoCuenta", "CuentasCobrar")"
+        });
+    </script>
+}
