@@ -248,6 +248,7 @@
     <Compile Include="Models\SeccionDetailViewModel.cs" />
     <Compile Include="Models\SeccionViewModel.cs" />
     <Compile Include="Models\SemestreDetailViewModel.cs" />
+    <Compile Include="Models\AnioLectivoViewModel.cs" />
     <Compile Include="Models\SemestreViewModel.cs" />
     <Compile Include="Models\TituloDetailViewModel.cs" />
     <Compile Include="Models\TituloViewModel.cs" />
@@ -329,6 +330,7 @@
     <Compile Include="Services\AlumnosGraduadosService.cs" />
     <Compile Include="Services\InstitutoConfigService.cs" />
     <Compile Include="Services\SeccionesService.cs" />
+    <Compile Include="Services\AniosLectivosService.cs" />
     <Compile Include="Services\SemestresService.cs" />
     <Compile Include="Services\ModuloFinanzas\TarifaService.cs" />
     <Compile Include="Services\TitulosService.cs" />

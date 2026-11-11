@@ -1,0 +1,182 @@
+@model GESTION_COLEGIAL.Business.Models.AnioLectivoViewModel
+@{
+    ViewBag.Title = "Configurar Año Lectivo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int step = (int)(ViewBag.Step ?? 1);
+    int id = Model != null ? Model.Ani_Id : 0;
+    string[] titulos = { "Fechas y períodos", "Enfoque de enseñanza", "Clases y profesores", "Asignaturas para este año", "Revisar y publicar" };
+    string fIni = Model != null && Model.Ani_FechaInicio.HasValue ? Model.Ani_FechaInicio.Value.ToString("yyyy-MM-dd") : "";
+    string fFin = Model != null && Model.Ani_FechaFin.HasValue ? Model.Ani_FechaFin.Value.ToString("yyyy-MM-dd") : "";
+}
+
+@section Styles{
+    <style>
+        .wz-wrap { max-width: 920px; margin: 0 auto; padding: 24px 16px 48px; }
+        .wz-head { display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px; }
+        .wz-head h1 { font-size: 1.6rem; font-weight: 700; color:#1f2937; margin:0; }
+        .wz-steps { display:flex; align-items:flex-start; justify-content:space-between; margin: 28px 0 32px; position:relative; }
+        .wz-step { flex:1; text-align:center; position:relative; }
+        .wz-step .circle { width:36px; height:36px; border-radius:50%; background:#e5e7eb; color:#6b7280; display:flex; align-items:center; justify-content:center; font-weight:700; margin:0 auto 8px; border:2px solid #e5e7eb; z-index:2; position:relative; }
+        .wz-step.done .circle { background:#4f46e5; border-color:#4f46e5; color:#fff; }
+        .wz-step.active .circle { background:#fff; border-color:#4f46e5; color:#4f46e5; box-shadow:0 0 0 4px #eef2ff; }
+        .wz-step .lbl { font-size:.8rem; color:#6b7280; }
+        .wz-step.active .lbl, .wz-step.done .lbl { color:#1f2937; font-weight:600; }
+        .wz-step:not(:last-child):after { content:""; position:absolute; top:18px; left:50%; width:100%; height:2px; background:#e5e7eb; z-index:1; }
+        .wz-step.done:not(:last-child):after { background:#4f46e5; }
+        .wz-card { background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:28px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+        .wz-card h2 { font-size:1.3rem; font-weight:700; color:#1f2937; margin:0 0 4px; }
+        .wz-card .sub { color:#6b7280; margin:0 0 22px; }
+        .wz-lbl { display:block; font-weight:600; color:#374151; margin-bottom:6px; font-size:.9rem; }
+        .wz-inp { width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:.95rem; }
+        .wz-req { color:#ef4444; }
+        .wz-foot { display:flex; align-items:center; justify-content:space-between; margin-top:26px; }
+        .wz-btn { border:none; border-radius:8px; padding:10px 18px; font-weight:600; cursor:pointer; font-size:.9rem; }
+        .wz-btn-primary { background:#4f46e5; color:#fff; }
+        .wz-btn-primary:hover { background:#4338ca; }
+        .wz-btn-ghost { background:transparent; color:#6b7280; text-decoration:none; }
+        .wz-opt { display:block; border:1px solid #e5e7eb; border-radius:10px; padding:14px 16px; margin-bottom:10px; cursor:pointer; }
+        .wz-opt:hover { border-color:#4f46e5; background:#fafaff; }
+        .wz-note { background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:8px; padding:10px 14px; font-size:.85rem; margin-top:16px; }
+        .wz-sum { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .wz-sum .k { color:#6b7280; font-size:.8rem; } .wz-sum .v { font-weight:600; color:#1f2937; }
+    </style>
+}
+
+<div class="wz-wrap">
+    <div class="breadcrumb-wrapper-content">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Index")">Años Lectivos</a></li>
+                <li class="breadcrumb-item active">Configurar</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="wz-head">
+        <h1>Configurar un año lectivo</h1>
+        <span style="color:#6b7280;font-size:.85rem;">@DateTime.Now.ToString("ddd, dd MMM yyyy")</span>
+    </div>
+
+    <!-- Stepper -->
+    <div class="wz-steps">
+        @for (int i = 1; i <= 5; i++)
+        {
+            string cls = i < step ? "wz-step done" : (i == step ? "wz-step active" : "wz-step");
+            <div class="@cls">
+                <div class="circle">@(i < step ? "✓" : i.ToString())</div>
+                <div class="lbl">@titulos[i - 1]</div>
+            </div>
+        }
+    </div>
+
+    <div class="wz-card">
+        @switch (step)
+        {
+            case 1:
+                <h2>Fechas y períodos</h2>
+                <p class="sub">Define el rango del ciclo escolar y su estructura de reporte.</p>
+                using (Html.BeginForm("SetupStep1", "AniosLectivos", FormMethod.Post))
+                {
+                    @Html.Hidden("Ani_Id", id)
+                    @Html.Hidden("Ani_Estado", (int)(Model != null ? Model.Ani_Estado : (byte)1))
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="wz-lbl">Año <span class="wz-req">*</span></label>
+                            <input type="number" name="Ani_Anio" class="wz-inp" min="1900" max="2100" required
+                                   value="@(Model != null && Model.Ani_Anio > 0 ? Model.Ani_Anio.ToString() : "")" placeholder="2027" />
+                        </div>
+                        <div class="col-md-8">
+                            <label class="wz-lbl">Nombre <span class="wz-req">*</span></label>
+                            <input type="text" name="Ani_Nombre" class="wz-inp" maxlength="20" required
+                                   value="@(Model != null ? Model.Ani_Nombre : "")" placeholder="Ej: 2027 o 2027-2028" />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:14px;">
+                        <div class="col-md-6">
+                            <label class="wz-lbl">Fecha de inicio</label>
+                            <input type="date" name="Ani_FechaInicio" class="wz-inp" value="@fIni" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="wz-lbl">Fecha de fin</label>
+                            <input type="date" name="Ani_FechaFin" class="wz-inp" value="@fFin" />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:14px;">
+                        <div class="col-md-12">
+                            <label class="wz-lbl">Estructura de reporte</label>
+                            <select class="wz-inp" id="estructura" disabled>
+                                <option>2 semestres</option>
+                                <option selected>3 trimestres</option>
+                                <option>4 parciales</option>
+                                <option>Personalizado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="wz-note"><i class="fas fa-info-circle"></i> El detalle de los <strong>períodos de reporte</strong> (parciales/semestres con sus fechas) se configura en la siguiente fase. Por ahora el paso 1 guarda el año, nombre y fechas como <strong>borrador</strong>.</div>
+                    <div class="wz-foot">
+                        <a href="@Url.Action("Index")" class="wz-btn wz-btn-ghost">Cancelar</a>
+                        <button type="submit" class="wz-btn wz-btn-primary">
+                            @(id == 0 ? "Crear borrador y continuar" : "Guardar y continuar") →
+                        </button>
+                    </div>
+                }
+                break;
+
+            case 2:
+                <h2>Elige el enfoque de enseñanza</h2>
+                <p class="sub">Establezca la agrupación predeterminada para los grupos.</p>
+                <label class="wz-opt"><input type="radio" name="enfoque" checked /> <strong>Un mismo grupo todo el día</strong> — el alumno permanece con su sección (homeroom).</label>
+                <label class="wz-opt"><input type="radio" name="enfoque" /> <strong>Un grupo, con excepciones</strong> — híbrido.</label>
+                <label class="wz-opt"><input type="radio" name="enfoque" /> <strong>Horario de materias separadas</strong> — cada materia su bloque.</label>
+                <div class="wz-note"><i class="fas fa-info-circle"></i> Paso en construcción (Fase siguiente). Ya puedes navegar la estructura del wizard.</div>
+                break;
+
+            case 3:
+                <h2>Clases y profesores</h2>
+                <p class="sub">Crea las secciones del año y asigna el docente guía (homeroom).</p>
+                <div class="wz-note"><i class="fas fa-info-circle"></i> Paso en construcción (Fase siguiente): aquí irán los niveles/grados, secciones por año y el profesor guía de cada sección.</div>
+                break;
+
+            case 4:
+                <h2>Asignaturas para este año</h2>
+                <p class="sub">Define qué materias cursa cada clase (ofertas de curso).</p>
+                <div class="wz-note"><i class="fas fa-info-circle"></i> Paso en construcción (Fase siguiente): ofertas de materia por grado/periodo y asignación de docentes por materia.</div>
+                break;
+
+            case 5:
+                <h2>Revisar y publicar</h2>
+                <p class="sub">Revisa el resumen y publica el año lectivo.</p>
+                <div class="wz-sum">
+                    <div><div class="k">Año</div><div class="v">@(Model != null ? Model.Ani_Anio.ToString() : "—")</div></div>
+                    <div><div class="k">Nombre</div><div class="v">@(Model != null ? Model.Ani_Nombre : "—")</div></div>
+                    <div><div class="k">Inicio</div><div class="v">@(string.IsNullOrEmpty(fIni) ? "—" : fIni)</div></div>
+                    <div><div class="k">Fin</div><div class="v">@(string.IsNullOrEmpty(fFin) ? "—" : fFin)</div></div>
+                </div>
+                <div class="wz-note"><i class="fas fa-info-circle"></i> Al publicar, el estado del año pasa a <strong>Abierto</strong>. (Periodos/estructura/asignaturas se completan en las fases siguientes.)</div>
+                break;
+        }
+
+        @if (step > 1)
+        {
+            <div class="wz-foot">
+                <a href="@Url.Action("Setup", new { id = id, step = step - 1 })" class="wz-btn wz-btn-ghost">← Atrás</a>
+                @if (step < 5)
+                {
+                    <a href="@Url.Action("Setup", new { id = id, step = step + 1 })" class="wz-btn wz-btn-primary">Continuar →</a>
+                }
+                else
+                {
+                    using (Html.BeginForm("PublishAsync", "AniosLectivos", FormMethod.Post, new { style = "display:inline;" }))
+                    {
+                        @Html.Hidden("id", id)
+                        <button type="submit" class="wz-btn wz-btn-primary"><i class="fas fa-check"></i> Publicar y finalizar</button>
+                    }
+                }
+            </div>
+            <div style="text-align:right;margin-top:10px;">
+                <a href="@Url.Action("Index")" class="wz-btn wz-btn-ghost">Guardar y finalizar más tarde</a>
+            </div>
+        }
+    </div>
+</div>

@@ -376,6 +376,12 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Configuracion" data-parent="#accordionExample">
                         <li class="submenu-header" style="color:#f97316;font-weight:700;">Hubs consolidados</li>
+                        @if (esAdmin || tiene("Listado de años lectivos"))
+                        {
+                            <li style="border-left:3px solid #4f46e5;padding-left:4px;">
+                                @Html.ActionLink("Años Lectivos", "Index", "AniosLectivos", null, new { style = "font-weight:600;color:#4f46e5;" })
+                            </li>
+                        }
                         @if (esAdmin || tiene("Estructura Académica"))
                         {
                             <li style="border-left:3px solid #f97316;padding-left:4px;">
