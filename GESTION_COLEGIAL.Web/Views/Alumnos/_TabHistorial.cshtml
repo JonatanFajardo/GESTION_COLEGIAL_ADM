@@ -1,0 +1,94 @@
+@using System.Collections.Generic
+@using System.Globalization
+@model List<dynamic>
+@{
+    Layout = null;
+
+    string ColorPorTabla(string tabla)
+    {
+        if (string.IsNullOrEmpty(tabla)) return "#6b7280";
+        switch (tabla.ToLowerInvariant())
+        {
+            case "alumnos": return "#4f46e5";              // indigo
+            case "matriculas": return "#22c55e";           // verde
+            case "encargados_alumnos": return "#06b6d4";   // cyan
+            default: return "#6b7280";                     // gris
+        }
+    }
+
+    string EtiquetaTabla(string tabla)
+    {
+        if (string.IsNullOrEmpty(tabla)) return "Evento";
+        switch (tabla.ToLowerInvariant())
+        {
+            case "alumnos": return "Alumno";
+            case "matriculas": return "Matrícula";
+            case "encargados_alumnos": return "Encargado";
+            default: return tabla;
+        }
+    }
+
+    int total = Model != null ? Model.Count : 0;
+}
+
+<div class="af-section-card">
+    <div class="af-section-header">
+        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Historial administrativo</h5>
+        <span class="text-muted small">@total evento@(total == 1 ? "" : "s") registrado@(total == 1 ? "" : "s")</span>
+    </div>
+
+    @if (Model == null || total == 0)
+    {
+        <div class="af-empty">
+            <i class="bi bi-inbox display-4 text-muted"></i>
+            <p class="text-muted mt-2">No hay eventos registrados aún.</p>
+        </div>
+    }
+    else
+    {
+        <ul class="af-timeline">
+            @foreach (dynamic ev in Model)
+            {
+                string tabla = ev.Bit_Tabla != null ? (string)ev.Bit_Tabla : "";
+                string accion = ev.Bit_Accion != null ? (string)ev.Bit_Accion : "";
+                string descripcion = ev.Bit_Descripcion != null ? (string)ev.Bit_Descripcion : "";
+                string usuario = ev.Usu_Name != null ? (string)ev.Usu_Name : "Sistema";
+                string color = ColorPorTabla(tabla);
+                string etiqueta = EtiquetaTabla(tabla);
+                string fechaStr = "—";
+                try
+                {
+                    System.DateTime f = (System.DateTime)ev.Bit_Fecha;
+                    fechaStr = f.ToString("dd/MM/yyyy HH:mm", CultureInfo.GetCultureInfo("es-HN"));
+                }
+                catch { }
+
+                <li class="af-timeline-item">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-1">
+                        <div>
+                            <span class="badge me-2" style="background-color:@color;color:#fff;">@etiqueta</span>
+                            @if (!string.IsNullOrEmpty(accion))
+                            {
+                                <span class="badge bg-light text-dark border me-2">@accion</span>
+                            }
+                            <span class="text-muted small"><i class="bi bi-calendar3 me-1"></i>@fechaStr</span>
+                        </div>
+                        <span class="text-muted small">
+                            <i class="bi bi-person-circle me-1"></i>@usuario
+                        </span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(descripcion))
+                    {
+                        <div class="mt-1">@descripcion</div>
+                    }
+                </li>
+            }
+        </ul>
+    }
+
+    <div class="text-end mt-3">
+        <a href="/Bitacora" class="af-btn-link">
+            Ver bitácora completa <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>

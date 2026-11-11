@@ -1,0 +1,386 @@
+@{
+    ViewBag.Title = "Graduación";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/Content/css/listado-catalogos.css" />
+    <link rel="stylesheet" href="~/Content/css/pages/graduados-directorio.css" />
+    <style>
+        /* ── Hub Graduación: tabs ─────────────────────────────────────── */
+        .grad-hub-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, .05);
+        }
+
+        .grad-hub-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #475569;
+            font-weight: 600;
+            font-size: .9rem;
+            padding: 9px 16px;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: background .15s ease, color .15s ease;
+        }
+
+            .grad-hub-tab i { font-size: 1rem; color: #64748b; }
+
+            .grad-hub-tab:hover { background: #f1f5f9; color: #1e293b; }
+
+            .grad-hub-tab:hover i { color: #1e293b; }
+
+            .grad-hub-tab.active { background: #4f46e5; border-color: #4f46e5; color: #ffffff; }
+
+                .grad-hub-tab.active i { color: #ffffff; }
+
+        /* Tab de herramienta avanzada (backfill): estilo discreto */
+        .grad-hub-tab-tool {
+            margin-left: auto;
+            border: 1px dashed #cbd5e1;
+            color: #64748b;
+            font-weight: 500;
+            font-size: .85rem;
+        }
+
+            .grad-hub-tab-tool.active { background: #334155; border-color: #334155; color: #ffffff; }
+
+        .grad-hub-panel { display: none; }
+
+            .grad-hub-panel.active { display: block; }
+
+        /* Sub-breadcrumb interno del directorio (lo maneja alumnosgraduados.js) */
+        .grad-hub-subnav .breadcrumb {
+            background: transparent;
+            padding: 0 0 .5rem 0;
+            margin: 0;
+            font-size: .85rem;
+        }
+
+            .grad-hub-subnav .breadcrumb .breadcrumb-item,
+            .grad-hub-subnav .breadcrumb .breadcrumb-item.active { color: #64748b; }
+
+                .grad-hub-subnav .breadcrumb .breadcrumb-item a { color: #4f46e5; }
+
+        /* Aviso del backfill */
+        .grad-hub-aviso {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+            color: #78350f;
+            padding: 12px 16px;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+            .grad-hub-aviso i { color: #b45309; font-size: 1.15rem; margin-top: 1px; }
+
+            .grad-hub-aviso strong { color: #78350f; }
+    </style>
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Graduación</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-text-catalogo">
+                <h1>Graduación</h1>
+                <p>Candidatos del ciclo actual, directorio de egresados y carga histórica.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+
+    <!-- ═══════════════ Tabs del hub ═══════════════ -->
+    <div class="grad-hub-tabs" role="tablist" id="grad-hub-tabs">
+        <button type="button" class="grad-hub-tab active" data-tab="candidatos" role="tab">
+            <i class="bi bi-person-check-fill"></i> Candidatos
+        </button>
+        <button type="button" class="grad-hub-tab" data-tab="directorio" role="tab">
+            <i class="bi bi-mortarboard-fill"></i> Directorio de graduados
+        </button>
+        <button type="button" class="grad-hub-tab grad-hub-tab-tool" data-tab="backfill" role="tab" title="Herramienta avanzada de carga histórica">
+            <i class="bi bi-tools"></i> Backfill histórico
+        </button>
+    </div>
+
+    <!-- ═══════════════ TAB 1: CANDIDATOS ═══════════════ -->
+    <div id="hub-panel-candidatos" class="grad-hub-panel active" role="tabpanel">
+
+        <div class="card-listado-catalogo" style="margin-bottom: 1rem;">
+            <div class="card-body" style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                <label for="nota-minima-input" style="margin:0; font-weight:500;">
+                    Nota mínima de aprobación:
+                </label>
+                <input type="number" id="nota-minima-input" class="form-control" min="0" max="100" step="1"
+                       style="width:90px;" value="70" />
+                <button id="btn-guardar-nota-minima" class="btn btn-outline-primary btn-sm" type="button">
+                    <i class="bi bi-save"></i> Guardar
+                </button>
+                <small id="nota-minima-status" style="color:#6c757d;"></small>
+                <small style="color:#6c757d; margin-left:auto;">
+                    Cambia el umbral usado para evaluar las notas finales de los candidatos.
+                </small>
+            </div>
+        </div>
+
+        <div class="card-listado-catalogo">
+            <div class="card-header-listado-catalogo" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+                <h3 style="margin:0;">Listado de candidatos</h3>
+                <button id="btn-graduar-seleccionados" class="btn btn-primary" disabled>
+                    <i class="bi bi-mortarboard-fill"></i> Graduar seleccionados
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tbl-candidatos" class="table table-striped table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="chk-all-candidatos" /></th>
+                                <th>Alumno</th>
+                                <th>Nivel</th>
+                                <th>Curso</th>
+                                <th>Sección</th>
+                                <th>Notas</th>
+                                <th>Deuda</th>
+                                <th>Estado</th>
+                                <th>Motivos de bloqueo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ TAB 2: DIRECTORIO DE GRADUADOS ═══════════════ -->
+    <div id="hub-panel-directorio" class="grad-hub-panel" role="tabpanel">
+
+        <!-- Sub-breadcrumb interno (drill-down promociones → detalle) -->
+        <nav class="grad-hub-subnav" aria-label="Navegación del directorio">
+            <ol class="breadcrumb" id="grad-breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item active" id="grad-breadcrumb-current">Directorio de graduados</li>
+            </ol>
+        </nav>
+
+        <!-- VISTA 1: LANDING (promociones) -->
+        <div id="grad-view-promociones">
+
+            <!-- KPI cards -->
+            <div class="grad-kpis">
+                <div class="grad-kpi">
+                    <div class="grad-kpi-icon indigo"><i class="bi bi-mortarboard-fill"></i></div>
+                    <div class="grad-kpi-body">
+                        <div class="grad-kpi-label">Total graduados</div>
+                        <div class="grad-kpi-value" id="kpi-total">—</div>
+                    </div>
+                </div>
+                <div class="grad-kpi">
+                    <div class="grad-kpi-icon emerald"><i class="bi bi-calendar2-check"></i></div>
+                    <div class="grad-kpi-body">
+                        <div class="grad-kpi-label">Promociones</div>
+                        <div class="grad-kpi-value" id="kpi-promociones">—</div>
+                        <div class="grad-kpi-hint" id="kpi-promociones-hint"></div>
+                    </div>
+                </div>
+                <div class="grad-kpi">
+                    <div class="grad-kpi-icon amber"><i class="bi bi-star-fill"></i></div>
+                    <div class="grad-kpi-body">
+                        <div class="grad-kpi-label">Más reciente</div>
+                        <div class="grad-kpi-value" id="kpi-ultimo-anio">—</div>
+                        <div class="grad-kpi-hint" id="kpi-ultimo-count"></div>
+                    </div>
+                </div>
+                <div class="grad-kpi">
+                    <div class="grad-kpi-icon cyan"><i class="bi bi-bar-chart-line-fill"></i></div>
+                    <div class="grad-kpi-body">
+                        <div class="grad-kpi-label">Nivel dominante</div>
+                        <div class="grad-kpi-value" id="kpi-nivel-top">—</div>
+                        <div class="grad-kpi-hint" id="kpi-nivel-top-pct"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toolbar: búsqueda de año + chips -->
+            <div class="grad-toolbar">
+                <div class="grad-search">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="grad-search-promo" placeholder="Buscar promoción por año..." autocomplete="off" />
+                </div>
+                <div class="grad-chips" id="grad-chips-niveles-promo">
+                    <!-- Chips generados dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Grid de promociones -->
+            <div id="grad-promos-container">
+                <div class="grad-empty">
+                    <i class="bi bi-hourglass-split"></i>
+                    <div>Cargando promociones...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 2: DETALLE DE PROMOCIÓN -->
+        <div id="grad-view-detalle" style="display:none;">
+            <button type="button" class="grad-back-btn" id="btn-volver-promos">
+                <i class="bi bi-arrow-left"></i> Volver a promociones
+            </button>
+
+            <div class="grad-promo-hero">
+                <div class="grad-promo-hero-icon"><i class="bi bi-mortarboard-fill"></i></div>
+                <div>
+                    <h2 id="detalle-anio">Promoción 2025</h2>
+                    <div class="grad-promo-hero-sub" id="detalle-sub">— egresados</div>
+                </div>
+            </div>
+
+            <div class="grad-toolbar">
+                <div class="grad-search">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="grad-search-detalle" placeholder="Buscar por nombre, identidad o título..." autocomplete="off" />
+                </div>
+                <div class="grad-chips" id="grad-chips-niveles-detalle">
+                    <!-- Chips generados dinámicamente para esta promoción -->
+                </div>
+            </div>
+
+            <div id="grad-detalle-container" class="grad-grid"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ TAB 3: BACKFILL HISTÓRICO ═══════════════ -->
+    <div id="hub-panel-backfill" class="grad-hub-panel" role="tabpanel">
+
+        <div class="grad-hub-aviso" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <div>
+                <strong>Herramienta avanzada de carga histórica (one-off).</strong>
+                Procesa graduaciones antiguas en lote para poblar el directorio. Se ejecuta en
+                <strong>modo simulación (dry-run)</strong> por defecto: revise el resultado antes de
+                desmarcar la casilla y ejecutar la carga real.
+            </div>
+        </div>
+
+        <div class="card-listado-catalogo">
+            <div class="card-header-listado-catalogo">
+                <h3>Parámetros</h3>
+            </div>
+            <div class="card-body">
+                <form id="form-backfill" class="form-inline" onsubmit="return false;">
+                    <div class="form-group mr-3">
+                        <label for="bf-anio" class="mr-2">Año:</label>
+                        <input type="number" min="2000" max="2100" id="bf-anio" class="form-control" placeholder="(todos)" />
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="bf-topn" class="mr-2">Top N:</label>
+                        <input type="number" min="1" max="500" id="bf-topn" class="form-control" value="50" />
+                    </div>
+                    <div class="form-check mr-3">
+                        <input type="checkbox" class="form-check-input" id="bf-dryrun" checked />
+                        <label class="form-check-label" for="bf-dryrun">Dry-run (simular)</label>
+                    </div>
+                    <button type="button" id="btn-ejecutar-backfill" class="btn btn-primary">
+                        <i class="bi bi-play-fill"></i> Ejecutar
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card-listado-catalogo mt-3">
+            <div class="card-header-listado-catalogo">
+                <h3>Resultado</h3>
+            </div>
+            <div class="card-body">
+                <div id="bf-resumen" class="mb-3"></div>
+                <div class="table-responsive">
+                    <table id="tbl-backfill" class="table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Alu_Id</th>
+                                <th>Alumno</th>
+                                <th>Año</th>
+                                <th>Resultado</th>
+                                <th>Mensaje</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de ficha del graduado (tab Directorio) -->
+<div class="modal fade" id="modal-graduado-detalle" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ficha del graduado</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-graduado-body">Cargando...</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-generar-constancia" disabled>
+                    <i class="bi bi-file-earmark-pdf"></i> Generar constancia
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Content/js/pages/constancia-graduado.js"></script>
+    <script src="~/Content/js/pages/alumnosgraduados.js"></script>
+    <script src="~/Content/js/pages/graduacionalumnos.backfill.js"></script>
+    <script src="~/Content/js/pages/graduacionalumnos.js"></script>
+    <script>
+        // Tab 1: Candidatos (+ orquestación de tabs del hub)
+        GraduacionAlumnos.init({
+            listUrl:        '@Url.Action("ListCandidatosAsync")',
+            graduarUrl:     '@Url.Action("GraduarAsync")',
+            notaMinimaUrl:  '@Url.Action("NotaMinimaAsync")'
+        });
+        GraduacionAlumnos.initHub();
+
+        // Tab 2: Directorio de graduados (endpoints existentes de AlumnosGraduados)
+        AlumnosGraduados.init({
+            listUrl: '@Url.Action("ListAsync", "AlumnosGraduados")',
+            findUrl: '@Url.Action("FindAsync", "AlumnosGraduados")'
+        });
+
+        // Tab 3: Backfill histórico
+        GraduacionBackfill.init({
+            ejecutarUrl: '@Url.Action("BackfillAsync")'
+        });
+    </script>
+}

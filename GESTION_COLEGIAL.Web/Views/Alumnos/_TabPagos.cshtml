@@ -1,0 +1,305 @@
+@using System.Globalization
+@{
+    Layout = null;
+    dynamic m = Model;
+}
+@functions {
+    static CultureInfo CulturaHN = new CultureInfo("es-HN");
+
+    static string FormatMoneda(object valor)
+    {
+        if (valor == null) return "L. 0.00";
+        decimal d;
+        if (decimal.TryParse(valor.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+            return "L. " + d.ToString("N2", CulturaHN);
+        return "L. " + valor.ToString();
+    }
+
+    static string FormatFecha(object valor)
+    {
+        if (valor == null) return "—";
+        System.DateTime f;
+        if (System.DateTime.TryParse(valor.ToString(), out f))
+            return f.ToString("dd/MM/yyyy");
+        return valor.ToString();
+    }
+
+    static bool TieneDeuda(dynamic modelo)
+    {
+        try
+        {
+            if (modelo == null) return false;
+            var s = modelo.TotalPendiente;
+            if (s == null) return false;
+            decimal d;
+            if (decimal.TryParse(s.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out d))
+                return d > 0;
+        }
+        catch { }
+        return false;
+    }
+}
+@if (m == null)
+{
+    <div class="af-empty text-center p-4 text-muted">
+        <i class="bi bi-inbox" style="font-size:2rem;"></i>
+        <div class="mt-2">No hay información de pagos disponible.</div>
+    </div>
+    return;
+}
+@{
+    // Extracción defensiva de campos del DTO EstadoCuenta
+    object saldoPendiente = null;
+    object totalCobrado = null;
+    object totalDescuento = null;
+    object cuotasPendientes = null;
+    System.Collections.IEnumerable cuentas = null;
+
+    try { saldoPendiente = m.TotalPendiente; } catch { }
+    try { totalCobrado = m.TotalCobrado; } catch { }
+    try { totalDescuento = m.TotalDescuento; } catch { }
+    try { cuotasPendientes = m.CuotasPendientes; } catch { }
+    try { cuentas = m.Cuentas as System.Collections.IEnumerable; } catch { }
+
+    bool debe = TieneDeuda(m);
+
+    // Derivar "Próximo cargo" = primera cuenta con saldo > 0 y fecha de vencimiento más próxima
+    dynamic proximoCargo = null;
+    // Derivar "Últimos pagos" = cuentas con Cue_Pagado > 0 (aprox. últimos abonos)
+    var ultimosPagos = new System.Collections.Generic.List<dynamic>();
+
+    if (cuentas != null)
+    {
+        System.DateTime? mejorFecha = null;
+        foreach (dynamic c in cuentas)
+        {
+            try
+            {
+                decimal saldo = 0m;
+                decimal pagado = 0m;
+                decimal.TryParse((c.Cue_Saldo ?? "0").ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out saldo);
+                decimal.TryParse((c.Cue_Pagado ?? "0").ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out pagado);
+
+                if (saldo > 0)
+                {
+                    System.DateTime fv;
+                    if (System.DateTime.TryParse((c.Cue_FechaVence ?? "").ToString(), out fv))
+                    {
+                        if (mejorFecha == null || fv < mejorFecha.Value)
+                        {
+                            mejorFecha = fv;
+                            proximoCargo = c;
+                        }
+                    }
+                    else if (proximoCargo == null)
+                    {
+                        proximoCargo = c;
+                    }
+                }
+
+                if (pagado > 0)
+                {
+                    ultimosPagos.Add(c);
+                }
+            }
+            catch { }
+        }
+    }
+}
+
+<div class="af-tab-pagos">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="af-section-card h-100">
+                <div class="af-section-header">
+                    <h5 class="mb-0"><i class="bi bi-wallet2 me-2"></i>Estado de cuenta</h5>
+                </div>
+                <div class="p-3 text-center">
+                    <div class="text-muted small">Saldo pendiente</div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: @(debe ? "#d97706" : "#059669"); line-height: 1;">
+                        @FormatMoneda(saldoPendiente)
+                    </div>
+                    <div class="mt-3">
+                        @if (debe)
+                        {
+                            <span class="badge bg-warning" style="font-size: 0.95rem;">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Debe
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success" style="font-size: 0.95rem;">
+                                <i class="bi bi-check-circle-fill me-1"></i> Al día
+                            </span>
+                        }
+                    </div>
+                    <div class="text-muted small mt-3">
+                        Total cobrado: <strong>@FormatMoneda(totalCobrado)</strong>
+                        @if (totalDescuento != null)
+                        {
+                            <span> · Descuentos: <strong>@FormatMoneda(totalDescuento)</strong></span>
+                        }
+                    </div>
+                    <div class="text-muted small">Actualizado al @System.DateTime.Now.ToString("dd/MM/yyyy")</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="af-section-card h-100">
+                <div class="af-section-header">
+                    <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Próximo cargo</h5>
+                </div>
+                <div class="p-3">
+                    @if (proximoCargo == null)
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-check2-circle" style="font-size:1.8rem;"></i>
+                            <div class="mt-2">Sin cargos pendientes.</div>
+                        </div>
+                    }
+                    else
+                    {
+                        string concepto = "—";
+                        object montoProx = null;
+                        object fechaVence = null;
+                        int? diasRestantes = null;
+
+                        try { concepto = (proximoCargo.Con_Descripcion ?? "—").ToString(); } catch { }
+                        try { montoProx = proximoCargo.Cue_Saldo; } catch { }
+                        try { fechaVence = proximoCargo.Cue_FechaVence; } catch { }
+
+                        try
+                        {
+                            System.DateTime fv;
+                            if (fechaVence != null && System.DateTime.TryParse(fechaVence.ToString(), out fv))
+                            {
+                                diasRestantes = (int)(fv.Date - System.DateTime.Now.Date).TotalDays;
+                            }
+                        }
+                        catch { }
+
+                        <dl class="row mb-0">
+                            <dt class="col-sm-5 text-muted">Concepto</dt>
+                            <dd class="col-sm-7 fw-semibold">@concepto</dd>
+
+                            <dt class="col-sm-5 text-muted">Monto</dt>
+                            <dd class="col-sm-7 fw-bold">@FormatMoneda(montoProx)</dd>
+
+                            <dt class="col-sm-5 text-muted">Vencimiento</dt>
+                            <dd class="col-sm-7">@FormatFecha(fechaVence)</dd>
+
+                            <dt class="col-sm-5 text-muted">Días restantes</dt>
+                            <dd class="col-sm-7">
+                                @if (diasRestantes.HasValue)
+                                {
+                                    if (diasRestantes.Value < 0)
+                                    {
+                                        <span class="badge bg-danger-subtle text-danger">Vencido hace @Math.Abs(diasRestantes.Value) días</span>
+                                    }
+                                    else if (diasRestantes.Value == 0)
+                                    {
+                                        <span class="badge bg-warning-subtle text-warning">Vence hoy</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-info-subtle text-info">@diasRestantes.Value días</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                            </dd>
+                        </dl>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="af-section-card">
+                <div class="af-section-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Últimos pagos</h5>
+                    <small class="text-muted">Ordenados por fecha</small>
+                </div>
+                <div class="p-3">
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Vencimiento</th>
+                                    <th>Concepto</th>
+                                    <th class="text-end">Monto pagado</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ultimosPagos.Count == 0)
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-3">
+                                            <i class="bi bi-inbox me-1"></i> Sin pagos registrados este año.
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int mostrados = 0;
+                                    foreach (dynamic p in ultimosPagos)
+                                    {
+                                        if (mostrados >= 5) { break; }
+                                        object fecha = null;
+                                        string desc = "—";
+                                        object pagado = null;
+                                        string estado = "—";
+                                        try { fecha = p.Cue_FechaVence; } catch { }
+                                        try { desc = (p.Con_Descripcion ?? "—").ToString(); } catch { }
+                                        try { pagado = p.Cue_Pagado; } catch { }
+                                        try { estado = (p.Est_Descripcion ?? "—").ToString(); } catch { }
+                                        <tr>
+                                            <td>@FormatFecha(fecha)</td>
+                                            <td>@desc</td>
+                                            <td class="text-end fw-semibold">@FormatMoneda(pagado)</td>
+                                            <td><span class="badge bg-light text-dark">@estado</span></td>
+                                        </tr>
+                                        mostrados++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @if (cuotasPendientes != null)
+                    {
+                        <div class="text-muted small mt-2">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Cuotas pendientes en el año: <strong>@cuotasPendientes</strong>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="af-section-card">
+                <div class="af-section-header">
+                    <h5 class="mb-0"><i class="bi bi-arrow-right-circle me-2"></i>Acciones</h5>
+                </div>
+                <div class="p-3 d-flex flex-wrap gap-3">
+                    <a href="/EstadoCuentaAdm" class="af-btn-link">
+                        <i class="bi bi-file-earmark-ruled me-1"></i>
+                        Estado de cuenta completo <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                    <a href="/Pagos/NuevoPago" class="af-btn-link">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Registrar nuevo pago <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
