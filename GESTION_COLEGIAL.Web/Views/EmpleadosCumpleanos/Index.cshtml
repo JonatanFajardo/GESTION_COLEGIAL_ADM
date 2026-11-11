@@ -1,0 +1,62 @@
+@{
+    ViewBag.Title = "Cumpleaños del Personal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/empleadoscumpleanos.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Cumpleaños del Personal</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <i class="fa-solid fa-cake-candles"></i>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Cumpleaños del Personal</h1>
+                <p>Consulte los empleados que cumplen años en cada mes</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+    <div class="card-listado-catalogo">
+        <div class="card-body-listado-catalogo">
+
+            @* ── Selector de mes ── *@
+            <div class="bday-month-nav mb-4" id="bday-month-nav">
+                @* Los pills se generan dinámicamente por JS *@
+            </div>
+
+            @* ── Banner de resumen ── *@
+            <div id="bday-summary" class="mb-4">
+                @* JS inyecta el contenido *@
+            </div>
+
+            @* ── Grid de tarjetas ── *@
+            <div class="row" id="bday-grid">
+                @* JS inyecta las tarjetas *@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/empleadoscumpleanos.js"></script>
+    <script>
+        EmpleadosCumpleanos.init("@Url.Action("ListAsync")");
+    </script>
+}

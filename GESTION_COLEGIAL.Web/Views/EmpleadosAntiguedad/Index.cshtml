@@ -1,0 +1,78 @@
+@{
+    ViewBag.Title = "Reporte de Antigüedad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Reporte de Antigüedad</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo">
+                <i class="fa-solid fa-award" style="font-size:32px;"></i>
+            </div>
+            <div class="header-text-catalogo">
+                <h1>Reporte de Antigüedad</h1>
+                <p>Antigüedad laboral de empleados</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+    <div class="card-listado-catalogo mb-3">
+        <div class="card-body-listado-catalogo">
+            <div class="row align-items-end g-2">
+                <div class="col-md-5">
+                    <label for="filtro-texto" class="form-label">Buscar por empleado o cargo</label>
+                    <input type="text" id="filtro-texto" class="form-control" placeholder="Ej. Pérez, Docente..." />
+                </div>
+                <div class="col-md-2">
+                    <label for="filtro-anios-min" class="form-label">Años (mín.)</label>
+                    <input type="number" id="filtro-anios-min" class="form-control" min="0" placeholder="0" />
+                </div>
+                <div class="col-md-2">
+                    <label for="filtro-anios-max" class="form-label">Años (máx.)</label>
+                    <input type="number" id="filtro-anios-max" class="form-control" min="0" placeholder="—" />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" id="btn-filtrar" class="btn btn-primary w-100">
+                        <i class="bi bi-filter"></i> Filtrar
+                    </button>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" id="btn-limpiar-filtro" class="btn btn-outline-secondary w-100" title="Limpiar filtros">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-listado-catalogo">
+        <div class="card-body-listado-catalogo">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered nowrap" id="datatable-empleadosantiguedad">
+                    <thead><tr><th>Empleado</th><th>Cargo</th><th>Ingreso</th><th>Años</th></tr></thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/empleadosantiguedad.js"></script>
+    <script>
+        EmpleadosAntiguedad.init("@Url.Action("ListAsync")");
+    </script>
+}

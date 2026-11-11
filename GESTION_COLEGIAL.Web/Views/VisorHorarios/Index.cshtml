@@ -1,0 +1,177 @@
+@{
+    ViewBag.Title = "Visor de Horarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool esDocente = ViewBag.EsDocente != null && (bool)ViewBag.EsDocente;
+    int empId = ViewBag.EmpId != null ? (int)ViewBag.EmpId : 0;
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/Content/css/pages/visor-horarios.css" />
+}
+
+<div class="visor-horarios">
+
+    <!-- Encabezado -->
+    <div class="vh-header">
+        <div class="vh-header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+        </div>
+        <div class="vh-header-text">
+            @if (esDocente)
+            {
+                <h2>Mi Horario Semanal</h2>
+                <p>Consulta las clases que tienes programadas durante la semana.</p>
+            }
+            else
+            {
+                <h2>Visor de Horarios Académicos</h2>
+                <p>Explora el horario semanal por sección, profesor o aula.</p>
+            }
+        </div>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="vh-kpis">
+        <div class="vh-kpi vh-kpi--indigo">
+            <div class="vh-kpi-label">Clases programadas</div>
+            <div class="vh-kpi-value" id="kpiClases">0</div>
+        </div>
+        <div class="vh-kpi vh-kpi--emerald">
+            <div class="vh-kpi-label">Secciones</div>
+            <div class="vh-kpi-value" id="kpiSecciones">0</div>
+        </div>
+        @if (!esDocente)
+        {
+            <div class="vh-kpi vh-kpi--amber">
+                <div class="vh-kpi-label">Profesores activos</div>
+                <div class="vh-kpi-value" id="kpiProfesores">0</div>
+            </div>
+        }
+        <div class="vh-kpi vh-kpi--cyan">
+            <div class="vh-kpi-label">Aulas en uso</div>
+            <div class="vh-kpi-value" id="kpiAulas">0</div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="vh-filtros">
+        @if (!esDocente)
+        {
+            <div class="vh-filtros-grupo-vista">
+                <span class="vh-filtros-label">Agrupar por</span>
+                <div class="vh-toggle">
+                    <button type="button" class="vh-toggle-btn is-active" data-vista="seccion">
+                        <i class="bi bi-people-fill"></i> Sección
+                    </button>
+                    <button type="button" class="vh-toggle-btn" data-vista="profesor">
+                        <i class="bi bi-person-badge"></i> Profesor
+                    </button>
+                    <button type="button" class="vh-toggle-btn" data-vista="aula">
+                        <i class="bi bi-door-open"></i> Aula
+                    </button>
+                </div>
+            </div>
+        }
+
+        <div class="vh-filtros-row">
+            @if (!esDocente)
+            {
+                <div class="vh-filtro">
+                    <label for="filtroAnio">Año</label>
+                    <select id="filtroAnio" class="form-control"></select>
+                </div>
+                <div class="vh-filtro">
+                    <label for="filtroSemestre">Semestre</label>
+                    <select id="filtroSemestre" class="form-control"></select>
+                </div>
+                <div class="vh-filtro">
+                    <label for="filtroModalidad">Modalidad</label>
+                    <select id="filtroModalidad" class="form-control">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+            }
+            <div class="vh-filtro vh-filtro-search">
+                <label for="filtroBusqueda">Buscar</label>
+                <div class="vh-search-wrap">
+                    <i class="bi bi-search vh-search-icon"></i>
+                    <input id="filtroBusqueda" type="text" class="form-control" placeholder="Sección, profesor, materia, aula..." />
+                </div>
+            </div>
+            <div class="vh-filtro vh-filtro-acciones">
+                <button type="button" id="btnLimpiar" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-counterclockwise"></i> Limpiar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leyenda de áreas -->
+    <div class="vh-leyenda">
+        <span class="vh-leyenda-label">Áreas:</span>
+        <span class="vh-pill vh-pill--MAT">Matemáticas</span>
+        <span class="vh-pill vh-pill--LEN">Lenguaje</span>
+        <span class="vh-pill vh-pill--CIE">Ciencias</span>
+        <span class="vh-pill vh-pill--ING">Inglés</span>
+        <span class="vh-pill vh-pill--SOC">Sociales</span>
+        <span class="vh-pill vh-pill--CON">Contabilidad</span>
+        <span class="vh-pill vh-pill--TEC">Tecnología</span>
+        <span class="vh-pill vh-pill--ART">Arte/EF</span>
+        <span class="vh-pill vh-pill--OTR">Otros</span>
+    </div>
+
+    <!-- Contador de resultados -->
+    <div class="vh-resultado-info">
+        <span id="vhContador">0 resultados</span>
+    </div>
+
+    <!-- Grid de cards -->
+    <div id="vhCards" class="vh-cards-grid"></div>
+
+    <!-- Estado vacío -->
+    <div id="vhVacio" class="vh-vacio" style="display:none;">
+        <i class="bi bi-calendar2-x"></i>
+        <p>No se encontraron horarios con los filtros aplicados.</p>
+    </div>
+
+    <!-- Loader -->
+    <div id="vhLoader" class="vh-loader" style="display:none;">
+        <div class="vh-spinner"></div>
+        <p>Cargando horarios...</p>
+    </div>
+
+</div>
+
+<!-- Modal grande de horario expandido -->
+<div class="modal fade vh-modal" id="vhModalDetalle" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog vh-modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header vh-modal-header">
+                <div class="vh-modal-title-wrap">
+                    <div class="vh-modal-icon" id="vhModalIcon"><i class="bi bi-calendar3"></i></div>
+                    <div>
+                        <h5 class="modal-title" id="vhModalTitulo">Horario</h5>
+                        <div class="vh-modal-subtitle" id="vhModalSubtitulo"></div>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="vhModalBody"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        window.VH_ES_DOCENTE = @(esDocente ? "true" : "false");
+        window.VH_EMP_ID = @empId;
+    </script>
+    <script src="~/Content/js/pages/visorhorarios.js"></script>
+}
