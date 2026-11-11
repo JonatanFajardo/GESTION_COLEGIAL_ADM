@@ -1,0 +1,378 @@
+/* Configuración — página-índice con tarjetas-enlace a cada hub (patrón "School setup" de Skuul).
+   Colores explícitos en cada capa para mantener el contraste en tema claro, azul y oscuro. */
+
+/* ── Encabezado ── */
+.cfg-hero {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    /* Misma familia ámbar/naranja de los hubs, un tono más oscura para que el texto blanco se lea bien */
+    background: linear-gradient(135deg, #d97706 0%, #c2410c 100%);
+    color: #ffffff;
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.75rem;
+    box-shadow: 0 6px 20px rgba(194, 65, 12, 0.22);
+}
+
+html.gc-theme-blue .cfg-hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f4c81 100%);
+    box-shadow: 0 6px 20px rgba(15, 76, 129, 0.28);
+}
+
+.cfg-hero-icono {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.cfg-hero-texto h1 {
+    color: #ffffff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+}
+
+.cfg-hero-texto p {
+    color: #ffffff;
+    opacity: 0.95;
+    margin: 0;
+}
+
+/* ── Grupos ──
+   Mismas columnas afuera (grupos) y adentro (tarjetas), para que todo quede alineado. */
+.cfg-grupos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+    column-gap: 1.25rem;
+}
+
+.cfg-grupo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.75rem;
+}
+
+.cfg-grupo--ancho {
+    grid-column: 1 / -1;
+}
+
+/* Grupos lado a lado: encabezados de igual alto para que las tarjetas arranquen parejas */
+@supports (grid-template-rows: subgrid) {
+    .cfg-grupos > section.cfg-grupo {
+        display: grid;
+        grid-row: span 2;
+        grid-template-rows: subgrid;
+        row-gap: 0;
+    }
+}
+
+.cfg-grupo-cabecera {
+    display: flex;
+    align-items: baseline;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.75rem;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.cfg-grupo-titulo {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #334155;
+    margin: 0;
+}
+
+.cfg-grupo-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.cfg-grupo-cantidad {
+    font-size: 0.75rem;
+    color: #64748b;
+    background: #f1f5f9;
+    border-radius: 999px;
+    padding: 0.05rem 0.55rem;
+}
+
+/* Grupo plegable (lo que casi no cambia) */
+.cfg-grupo--plegable > summary {
+    cursor: pointer;
+    list-style: none;
+}
+
+.cfg-grupo--plegable > summary::-webkit-details-marker {
+    display: none;
+}
+
+.cfg-grupo--plegable > summary:focus-visible {
+    outline: 2px solid #c2410c;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.cfg-grupo-flecha {
+    margin-left: auto;
+    color: #64748b;
+    transition: transform 0.2s ease;
+}
+
+.cfg-grupo--plegable[open] .cfg-grupo-flecha {
+    transform: rotate(180deg);
+}
+
+/* ── Tarjetas ── */
+.cfg-tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+    gap: 1rem 1.25rem;
+    /* En los grupos lado a lado, las tarjetas de una misma fila quedan de igual alto */
+    flex: 1 1 auto;
+}
+
+.cfg-tarjeta {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 1.1rem 1.15rem;
+    background: #ffffff;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.cfg-tarjeta:hover,
+.cfg-tarjeta:focus-visible {
+    color: #1e293b;
+    text-decoration: none;
+    border-color: #ea580c;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    transform: translateY(-1px);
+}
+
+.cfg-tarjeta:focus-visible {
+    outline: 2px solid #c2410c;
+    outline-offset: 2px;
+}
+
+.cfg-tarjeta-icono {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #fff7ed;
+    color: #c2410c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.cfg-tarjeta-cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.cfg-tarjeta-titulo {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #0f172a;
+}
+
+.cfg-tarjeta-desc {
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: #475569;
+}
+
+.cfg-tarjeta-contenido {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.35rem;
+}
+
+.cfg-chip {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+}
+
+.cfg-tarjeta-flecha {
+    align-self: center;
+    color: #94a3b8;
+    font-size: 1rem;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.cfg-tarjeta:hover .cfg-tarjeta-flecha,
+.cfg-tarjeta:focus-visible .cfg-tarjeta-flecha {
+    color: #c2410c;
+    transform: translateX(2px);
+}
+
+/* Tema azul */
+html.gc-theme-blue .cfg-tarjeta:hover,
+html.gc-theme-blue .cfg-tarjeta:focus-visible {
+    border-color: #0f4c81;
+}
+
+html.gc-theme-blue .cfg-tarjeta:focus-visible,
+html.gc-theme-blue .cfg-grupo--plegable > summary:focus-visible {
+    outline-color: #0f4c81;
+}
+
+html.gc-theme-blue .cfg-tarjeta-icono {
+    background: #e0ecf7;
+    color: #0f4c81;
+}
+
+html.gc-theme-blue .cfg-tarjeta:hover .cfg-tarjeta-flecha,
+html.gc-theme-blue .cfg-tarjeta:focus-visible .cfg-tarjeta-flecha {
+    color: #0f4c81;
+}
+
+/* ── Sin acceso ── */
+.cfg-vacio {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    background: #ffffff;
+    color: #475569;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+}
+
+.cfg-vacio i {
+    font-size: 2rem;
+    color: #94a3b8;
+}
+
+.cfg-vacio p {
+    margin: 0.75rem 0 0;
+    color: #475569;
+}
+
+/* ── Modo oscuro ── */
+html.gc-dark .cfg-grupo-cabecera {
+    border-bottom-color: #334155;
+}
+
+html.gc-dark .cfg-grupo-titulo {
+    color: #e2e8f0;
+}
+
+html.gc-dark .cfg-grupo-desc,
+html.gc-dark .cfg-grupo-flecha {
+    color: #94a3b8;
+}
+
+html.gc-dark .cfg-grupo-cantidad {
+    background: #1e293b;
+    color: #cbd5e1;
+}
+
+html.gc-dark .cfg-tarjeta {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-color: #334155;
+}
+
+html.gc-dark .cfg-tarjeta:hover,
+html.gc-dark .cfg-tarjeta:focus-visible {
+    color: #e2e8f0;
+    border-color: #fb923c;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+html.gc-dark .cfg-tarjeta-titulo {
+    color: #f8fafc;
+}
+
+html.gc-dark .cfg-tarjeta-desc {
+    color: #cbd5e1;
+}
+
+html.gc-dark .cfg-tarjeta-icono {
+    background: rgba(251, 146, 60, 0.16);
+    color: #fdba74;
+}
+
+html.gc-dark .cfg-chip {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-color: #334155;
+}
+
+html.gc-dark .cfg-tarjeta:hover .cfg-tarjeta-flecha,
+html.gc-dark .cfg-tarjeta:focus-visible .cfg-tarjeta-flecha {
+    color: #fdba74;
+}
+
+html.gc-dark.gc-theme-blue .cfg-tarjeta:hover,
+html.gc-dark.gc-theme-blue .cfg-tarjeta:focus-visible {
+    border-color: #60a5fa;
+}
+
+html.gc-dark.gc-theme-blue .cfg-tarjeta-icono {
+    background: rgba(96, 165, 250, 0.16);
+    color: #93c5fd;
+}
+
+html.gc-dark.gc-theme-blue .cfg-tarjeta:hover .cfg-tarjeta-flecha,
+html.gc-dark.gc-theme-blue .cfg-tarjeta:focus-visible .cfg-tarjeta-flecha {
+    color: #93c5fd;
+}
+
+html.gc-dark .cfg-vacio {
+    background: #1e293b;
+    color: #cbd5e1;
+    border-color: #334155;
+}
+
+html.gc-dark .cfg-vacio p {
+    color: #cbd5e1;
+}
+
+/* ── Celular ── */
+@media (max-width: 575.98px) {
+    .cfg-hero {
+        padding: 1.15rem 1.1rem;
+    }
+
+    .cfg-hero-texto h1 {
+        font-size: 1.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cfg-tarjeta,
+    .cfg-tarjeta-flecha,
+    .cfg-grupo-flecha {
+        transition: none;
+    }
+
+    .cfg-tarjeta:hover,
+    .cfg-tarjeta:focus-visible {
+        transform: none;
+    }
+}

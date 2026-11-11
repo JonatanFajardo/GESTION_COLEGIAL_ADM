@@ -1,0 +1,19 @@
+@model GESTION_COLEGIAL.UI.Models.TarjetaConfiguracion
+@* Tarjeta-enlace: toda la tarjeta abre el Index del hub. *@
+<a class="cfg-tarjeta" href="@Url.Action("Index", Model.Controller)">
+    <span class="cfg-tarjeta-icono" aria-hidden="true"><i class="bi @Model.Icono"></i></span>
+    <span class="cfg-tarjeta-cuerpo">
+        <span class="cfg-tarjeta-titulo">@Model.Titulo</span>
+        <span class="cfg-tarjeta-desc">@Model.Descripcion</span>
+        @if (Model.Contenido.Length > 0)
+        {
+            <span class="cfg-tarjeta-contenido">
+                @foreach (var item in Model.Contenido)
+                {
+                    <span class="cfg-chip">@item</span>
+                }
+            </span>
+        }
+    </span>
+    <i class="bi bi-chevron-right cfg-tarjeta-flecha" aria-hidden="true"></i>
+</a>

@@ -1,0 +1,73 @@
+@model GESTION_COLEGIAL.UI.Models.ConfiguracionViewModel
+@{
+    ViewBag.Title = "Configuración";
+}
+
+@section Styles{
+    <link href="~/css/pages/configuracion.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Configuración</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="cfg-hero">
+    <div class="cfg-hero-icono" aria-hidden="true"><i class="bi bi-gear"></i></div>
+    <div class="cfg-hero-texto">
+        <h1>Configuración</h1>
+        <p>Elija qué desea ajustar. Cada tarjeta abre su sección.</p>
+    </div>
+</div>
+
+@if (!Model.TieneTarjetas)
+{
+    <div class="cfg-vacio">
+        <i class="bi bi-lock" aria-hidden="true"></i>
+        <p>No tiene acceso a ninguna sección de configuración.<br />Contacte al administrador si necesita acceso.</p>
+    </div>
+}
+
+@* Los grupos de una sola tarjeta se acomodan lado a lado; los de varias (y el plegable) ocupan todo el ancho. *@
+<div class="cfg-grupos">
+@foreach (var grupo in Model.Grupos)
+{
+    var claseAncho = grupo.Tarjetas.Count > 1 || grupo.Plegado ? " cfg-grupo--ancho" : "";
+    if (grupo.Plegado)
+    {
+        <details class="cfg-grupo cfg-grupo--plegable@(claseAncho)" id="cfg-@grupo.Id">
+            <summary class="cfg-grupo-cabecera">
+                <h2 class="cfg-grupo-titulo">@grupo.Titulo</h2>
+                <span class="cfg-grupo-desc">@grupo.Descripcion</span>
+                <span class="cfg-grupo-cantidad">@grupo.Tarjetas.Count @(grupo.Tarjetas.Count == 1 ? "sección" : "secciones")</span>
+                <i class="bi bi-chevron-down cfg-grupo-flecha" aria-hidden="true"></i>
+            </summary>
+            <div class="cfg-tarjetas">
+                @foreach (var tarjeta in grupo.Tarjetas)
+                {
+                    <partial name="_TarjetaConfiguracion" model="tarjeta" />
+                }
+            </div>
+        </details>
+    }
+    else
+    {
+        <section class="cfg-grupo@(claseAncho)" id="cfg-@grupo.Id" aria-labelledby="cfg-titulo-@grupo.Id">
+            <div class="cfg-grupo-cabecera">
+                <h2 class="cfg-grupo-titulo" id="cfg-titulo-@grupo.Id">@grupo.Titulo</h2>
+                <span class="cfg-grupo-desc">@grupo.Descripcion</span>
+            </div>
+            <div class="cfg-tarjetas">
+                @foreach (var tarjeta in grupo.Tarjetas)
+                {
+                    <partial name="_TarjetaConfiguracion" model="tarjeta" />
+                }
+            </div>
+        </section>
+    }
+}
+</div>

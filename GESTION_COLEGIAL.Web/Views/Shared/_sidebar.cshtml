@@ -14,6 +14,9 @@
     bool esCajero = roleName.Equals("cajero", StringComparison.OrdinalIgnoreCase);
     // El docente NO arma/edita horarios (tarea administrativa); solo consulta el visor. Se ocultan sus enlaces de armado.
     bool esDocente = roleName.IndexOf("docente", StringComparison.OrdinalIgnoreCase) >= 0;
+    // Puerta de entrada de Configuración (/configuracion): se ve si el usuario tiene permiso a alguno de sus hubs.
+    bool tieneConfiguracion = esAdmin || tiene("Estructura Académica") || tiene("Programa Académico") || tiene("Configuración de Cobranza")
+                              || tiene("Recursos de Horario") || tiene("Catálogos Comunes") || tiene("Configuración del Sistema");
     var nameParts   = username.Trim().Split(new[]{' '}, StringSplitOptions.RemoveEmptyEntries);
     string initials = nameParts.Length >= 2
         ? $"{nameParts[0][0]}{nameParts[1][0]}".ToUpper()
@@ -91,12 +94,9 @@
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="DevNuevas" data-parent="#accordionExample">
-                    <li class="submenu-header" style="color:#fbbf24;">Hubs consolidados</li>
-                    <li>@Html.ActionLink("Estructura Académica",      "Index", "CatalogosInstitucion")</li>
-                    <li>@Html.ActionLink("Programa Académico",        "Index", "ProgramaAcademico")</li>
-                    <li>@Html.ActionLink("Recursos de Horario",       "Index", "RecursosHorario")</li>
-                    <li>@Html.ActionLink("Configuración de Cobranza", "Index", "ConfiguracionCobranza")</li>
-                    <li>@Html.ActionLink("Catálogos Comunes",         "Index", "CatalogosComunes")</li>
+                    <li class="submenu-header" style="color:#fbbf24;">Configuración</li>
+                    @* Los 6 hubs de catálogos y parámetros se abren desde la puerta de entrada /configuracion. *@
+                    <li>@Html.ActionLink("Panel de configuración",    "Index", "Configuracion")</li>
 
                     <li class="submenu-header" style="color:#fbbf24;">Dashboards</li>
                     <li>@Html.ActionLink("Dashboard Admin",       "Index", "DashboardAdmin")</li>
@@ -148,7 +148,6 @@
                     <li class="submenu-header" style="color:#fbbf24;">Seguridad</li>
                     <li>@Html.ActionLink("Sesiones Activas",         "Index", "SesionesActivas")</li>
                     <li>@Html.ActionLink("Matriz Roles/Pantallas",   "Index", "MatrizRolPantallas")</li>
-                    <li>@Html.ActionLink("Configuración Sistema",    "Index", "ConfiguracionSistema")</li>
                     <li>@Html.ActionLink("Logs de Errores",          "Index", "LogsErrores")</li>
                     <li>@Html.ActionLink("Importador / Exportador",  "Index", "Importador")</li>
                 </ul>
@@ -362,7 +361,7 @@
                 </li>
             }
 
-            @if (esAdmin || tiene("Estructura Académica") || tiene("Programa Académico") || tiene("Recursos de Horario") || tiene("Configuración de Cobranza") || tiene("Catálogos Comunes") || tiene("Listado de modalidades") || tiene("Listado de niveles educativos") || tiene("Listado de parciales") || tiene("Listado de secciones") || tiene("Listado de semestres"))
+            @if (tieneConfiguracion || tiene("Listado de años lectivos") || tiene("Promociones y expediente por año"))
             {
                 <li class="menu">
                     <a href="#Configuracion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -375,7 +374,13 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Configuracion" data-parent="#accordionExample">
-                        <li class="submenu-header" style="color:#f97316;font-weight:700;">Hubs consolidados</li>
+                        @if (tieneConfiguracion)
+                        {
+                            @* Puerta de entrada: reúne en tarjetas los 6 hubs de catálogos y parámetros (patrón Skuul). *@
+                            <li style="border-left:3px solid #f97316;padding-left:4px;">
+                                @Html.ActionLink("Panel de configuración", "Index", "Configuracion", null, new { style = "font-weight:600;color:#f97316;" })
+                            </li>
+                        }
                         @if (esAdmin || tiene("Listado de años lectivos"))
                         {
                             <li style="border-left:3px solid #4f46e5;padding-left:4px;">
@@ -388,36 +393,8 @@
                                 @Html.ActionLink("Promociones", "Index", "MatriculaAnio", null, new { style = "font-weight:600;color:#4f46e5;" })
                             </li>
                         }
-                        @if (esAdmin || tiene("Estructura Académica"))
-                        {
-                            <li style="border-left:3px solid #f97316;padding-left:4px;">
-                                @Html.ActionLink("Estructura académica", "Index", "CatalogosInstitucion", null, new { style = "font-weight:600;color:#f97316;" })
-                            </li>
-                        }
-                        @if (esAdmin || tiene("Programa Académico"))
-                        {
-                            <li style="border-left:3px solid #f97316;padding-left:4px;">
-                                @Html.ActionLink("Programa académico", "Index", "ProgramaAcademico", null, new { style = "font-weight:600;color:#f97316;" })
-                            </li>
-                        }
-                        @if (esAdmin || tiene("Recursos de Horario"))
-                        {
-                            <li style="border-left:3px solid #f97316;padding-left:4px;">
-                                @Html.ActionLink("Recursos de horario", "Index", "RecursosHorario", null, new { style = "font-weight:600;color:#f97316;" })
-                            </li>
-                        }
-                        @if (esAdmin || tiene("Configuración de Cobranza"))
-                        {
-                            <li style="border-left:3px solid #f97316;padding-left:4px;">
-                                @Html.ActionLink("Configuración de cobranza", "Index", "ConfiguracionCobranza", null, new { style = "font-weight:600;color:#f97316;" })
-                            </li>
-                        }
-                        @if (esAdmin || tiene("Catálogos Comunes"))
-                        {
-                            <li style="border-left:3px solid #f97316;padding-left:4px;">
-                                @Html.ActionLink("Catálogos comunes", "Index", "CatalogosComunes", null, new { style = "font-weight:600;color:#f97316;" })
-                            </li>
-                        }
+                        @* Estructura académica, Programa académico, Recursos de horario, Configuración de cobranza,
+                           Catálogos comunes y Configuración del sistema ahora se abren desde el Panel de configuración. *@
 
                         @* Legacy · pantallas sueltas → consolidadas en hub "Estructura Académica" (CatalogosInstitucion). Links deshabilitados (test §7, ver TODO.md). Controllers Modalidades/NivelesEducativos/Secciones/Semestres/Parciales siguen vivos: el hub reutiliza sus endpoints.
                         <li class="submenu-header" style="color:#94a3b8;font-size:0.72rem;">Legacy · pantallas sueltas</li>
@@ -549,7 +526,7 @@
                 </li>
             }
 
-            @if (tiene("Listado de usuarios") || tiene("Listado de roles") || tiene("Sesiones Activas") || tiene("Matriz Rol Pantallas") || tiene("Configuración del Sistema") || tiene("Logs de Errores") || tiene("Importador / Exportador"))
+            @if (tiene("Listado de usuarios") || tiene("Listado de roles") || tiene("Bitácora de actividad") || tiene("Sesiones Activas") || tiene("Matriz Rol Pantallas") || tiene("Logs de Errores") || tiene("Importador / Exportador"))
             {
                 <li class="menu">
                     <a href="#Seguridad" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -567,7 +544,7 @@
                         @if (tiene("Bitácora de actividad"))       { <li>@Html.ActionLink("Bitácora",               "Index", "Bitacora")</li> }
                         @if (tiene("Sesiones Activas"))            { <li>@Html.ActionLink("Sesiones activas",       "Index", "SesionesActivas")</li> }
                         @if (tiene("Matriz Rol Pantallas"))        { <li>@Html.ActionLink("Permisos por rol", "Index", "MatrizRolPantallas")</li> }
-                        @if (tiene("Configuración del Sistema"))   { <li>@Html.ActionLink("Configuración del sistema",  "Index", "ConfiguracionSistema")</li> }
+                        @* "Configuración del sistema" se movió al Panel de configuración (grupo Sistema). *@
                         @if (tiene("Logs de Errores"))             { <li>@Html.ActionLink("Registro de errores",        "Index", "LogsErrores")</li> }
                         @if (tiene("Importador / Exportador"))     { <li>@Html.ActionLink("Importar / Exportar","Index", "Importador")</li> }
                     </ul>
