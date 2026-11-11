@@ -1,0 +1,145 @@
+@{
+    ViewBag.Title = "Directorio de graduados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/css/listado-catalogos.css" />
+<link rel="stylesheet" href="~/Content/css/pages/graduados-directorio.css" />
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb" id="grad-breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" id="grad-breadcrumb-current">Directorio de graduados</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-text-catalogo">
+                <h1 id="grad-page-title">Directorio de graduados</h1>
+                <p id="grad-page-subtitle">Egresados del Instituto agrupados por promoción.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fluid-container">
+
+    <!-- ═══════════════ VISTA 1: LANDING (promociones) ═══════════════ -->
+    <div id="grad-view-promociones">
+
+        <!-- KPI cards -->
+        <div class="grad-kpis">
+            <div class="grad-kpi">
+                <div class="grad-kpi-icon indigo"><i class="bi bi-mortarboard-fill"></i></div>
+                <div class="grad-kpi-body">
+                    <div class="grad-kpi-label">Total graduados</div>
+                    <div class="grad-kpi-value" id="kpi-total">—</div>
+                </div>
+            </div>
+            <div class="grad-kpi">
+                <div class="grad-kpi-icon emerald"><i class="bi bi-calendar2-check"></i></div>
+                <div class="grad-kpi-body">
+                    <div class="grad-kpi-label">Promociones</div>
+                    <div class="grad-kpi-value" id="kpi-promociones">—</div>
+                    <div class="grad-kpi-hint" id="kpi-promociones-hint"></div>
+                </div>
+            </div>
+            <div class="grad-kpi">
+                <div class="grad-kpi-icon amber"><i class="bi bi-star-fill"></i></div>
+                <div class="grad-kpi-body">
+                    <div class="grad-kpi-label">Más reciente</div>
+                    <div class="grad-kpi-value" id="kpi-ultimo-anio">—</div>
+                    <div class="grad-kpi-hint" id="kpi-ultimo-count"></div>
+                </div>
+            </div>
+            <div class="grad-kpi">
+                <div class="grad-kpi-icon cyan"><i class="bi bi-bar-chart-line-fill"></i></div>
+                <div class="grad-kpi-body">
+                    <div class="grad-kpi-label">Nivel dominante</div>
+                    <div class="grad-kpi-value" id="kpi-nivel-top">—</div>
+                    <div class="grad-kpi-hint" id="kpi-nivel-top-pct"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar: búsqueda de año + chips -->
+        <div class="grad-toolbar">
+            <div class="grad-search">
+                <i class="bi bi-search"></i>
+                <input type="text" id="grad-search-promo" placeholder="Buscar promoción por año..." autocomplete="off" />
+            </div>
+            <div class="grad-chips" id="grad-chips-niveles-promo">
+                <!-- Chips generados dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Grid de promociones -->
+        <div id="grad-promos-container">
+            <div class="grad-empty">
+                <i class="bi bi-hourglass-split"></i>
+                <div>Cargando promociones...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ VISTA 2: DETALLE DE PROMOCIÓN ═══════════════ -->
+    <div id="grad-view-detalle" style="display:none;">
+        <button type="button" class="grad-back-btn" id="btn-volver-promos">
+            <i class="bi bi-arrow-left"></i> Volver a promociones
+        </button>
+
+        <div class="grad-promo-hero">
+            <div class="grad-promo-hero-icon"><i class="bi bi-mortarboard-fill"></i></div>
+            <div>
+                <h2 id="detalle-anio">Promoción 2025</h2>
+                <div class="grad-promo-hero-sub" id="detalle-sub">— egresados</div>
+            </div>
+        </div>
+
+        <div class="grad-toolbar">
+            <div class="grad-search">
+                <i class="bi bi-search"></i>
+                <input type="text" id="grad-search-detalle" placeholder="Buscar por nombre, identidad o título..." autocomplete="off" />
+            </div>
+            <div class="grad-chips" id="grad-chips-niveles-detalle">
+                <!-- Chips generados dinámicamente para esta promoción -->
+            </div>
+        </div>
+
+        <div id="grad-detalle-container" class="grad-grid"></div>
+    </div>
+</div>
+
+<!-- Modal de ficha -->
+<div class="modal fade" id="modal-graduado-detalle" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ficha del graduado</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-graduado-body">Cargando...</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-generar-constancia" disabled>
+                    <i class="bi bi-file-earmark-pdf"></i> Generar constancia
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Content/js/pages/constancia-graduado.js"></script>
+    <script src="~/Content/js/pages/alumnosgraduados.js"></script>
+    <script>
+        AlumnosGraduados.init({
+            listUrl: '@Url.Action("ListAsync")',
+            findUrl: '@Url.Action("FindAsync")'
+        });
+    </script>
+}

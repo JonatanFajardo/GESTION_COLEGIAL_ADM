@@ -1,0 +1,19 @@
+﻿using GESTION_COLEGIAL.UI.Filters;
+
+namespace GESTION_COLEGIAL.UI.Controllers
+{
+    [SessionManager("Listado de notas")]
+    public class NotasController : BaseController
+    {
+        // GET: Notas
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Create()
+        {
+            return View("CreateAsync");
+        }
+    }
+}

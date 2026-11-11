@@ -1,0 +1,164 @@
+@{
+    ViewBag.Title = "Arqueo de Caja";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/modal-catalogos.css" rel="stylesheet" />
+    <style>
+        /* ── Cuadre de arqueo ── */
+        .arq-cuadre-table { width: 100%; border-collapse: collapse; }
+        .arq-cuadre-table th,
+        .arq-cuadre-table td { padding: 10px 12px; text-align: right; vertical-align: middle; }
+        .arq-cuadre-table th { font-size: .78rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .3px; border-bottom: 2px solid #e2e8f0; }
+        .arq-cuadre-table th:first-child,
+        .arq-cuadre-table td:first-child { text-align: left; }
+        .arq-cuadre-table tbody td { border-bottom: 1px solid #f1f5f9; font-size: .9rem; }
+        .arq-forma { font-weight: 600; color: #0f172a; }
+        .arq-esperado { font-variant-numeric: tabular-nums; color: #334155; font-weight: 600; }
+        .arq-input-contado { width: 130px; text-align: right; font-variant-numeric: tabular-nums; }
+        .arq-dif { font-variant-numeric: tabular-nums; font-weight: 800; }
+        .arq-dif.ok { color: #059669; }
+        .arq-dif.bad { color: #dc2626; }
+        .arq-dif.zero { color: #94a3b8; }
+        .arq-cuadre-table tfoot td { border-top: 2px solid #e2e8f0; font-size: .95rem; font-weight: 800; color: #0f172a; padding-top: 14px; }
+        .arq-otros-note { font-size: .8rem; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 8px 12px; margin-top: 10px; display: none; }
+        .arq-banner { margin-top: 14px; border-radius: 10px; padding: 12px 16px; font-weight: 700; font-size: .95rem; display: flex; align-items: center; gap: 10px; }
+        .arq-banner.ok { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+        .arq-banner.bad { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .arq-banner i { font-size: 1.15rem; }
+        .arq-loading { font-size: .82rem; color: #64748b; font-style: italic; }
+        /* Panel último arqueo */
+        .arq-last-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+        .arq-last-cell { background: #f8fafc; border: 1px solid #eef2f7; border-radius: 10px; padding: 10px 12px; }
+        .arq-last-cell .lbl { font-size: .72rem; color: #64748b; text-transform: uppercase; letter-spacing: .3px; font-weight: 700; }
+        .arq-last-cell .val { font-size: 1.05rem; font-weight: 800; color: #0f172a; font-variant-numeric: tabular-nums; margin-top: 2px; }
+        .arq-last-total { grid-column: 1 / -1; background: #eef2ff; border-color: #c7d2fe; }
+        .arq-last-total .val { color: #4f46e5; }
+    </style>
+}
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Arqueo de Caja</li>
+        </ol>
+    </nav>
+</div>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="fa-solid fa-scale-balanced" style="font-size:32px;"></i></div>
+            <div class="header-text-catalogo">
+                <h1>Arqueo de Caja</h1>
+                <p>Cuadre el efectivo, transferencias y tarjetas contra lo que el sistema registró</p>
+            </div>
+        </div>
+        <div class="header-action-catalogo">
+            <button class="btn-nuevo-catalogo" data-toggle="modal" data-target="#modal-arqueo">
+                <i class="bi bi-plus-circle"></i> Nuevo Arqueo
+            </button>
+        </div>
+    </div>
+</div>
+<div class="fluid-container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4" id="panel-ultimo" style="display:none;">
+                <h5 class="fw-bold mb-3">Último Arqueo</h5>
+                <div id="info-arqueo"></div>
+            </div>
+            <div class="card p-4 text-center text-muted" id="panel-sin-arqueo">
+                <i class="fa-solid fa-scale-balanced fa-3x mb-3 opacity-25"></i>
+                <p>No hay arqueos registrados. Cree el primero.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Nuevo Arqueo -->
+<div class="modal fade" id="modal-arqueo" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:640px;">
+        <div class="modal-content modal-content-catalogo">
+            <div class="modal-header-catalogo">
+                <div><h5 class="modal-title-catalogo">Nuevo Arqueo de Caja</h5></div>
+                <button type="button" class="close close-catalogo" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="form-arqueo">
+                <div class="modal-body-catalogo">
+                    <div class="form-card-catalogo">
+                        <div class="row">
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Fecha del arqueo *</label>
+                                <input type="date" name="Arq_Fecha" id="arq-fecha" class="form-control form-input-catalogo">
+                                <small class="arq-loading" id="arq-estado-carga"></small>
+                            </div>
+                        </div>
+
+                        <table class="arq-cuadre-table">
+                            <thead>
+                                <tr>
+                                    <th>Forma de pago</th>
+                                    <th>Esperado (sistema)</th>
+                                    <th>Contado (caja)</th>
+                                    <th>Diferencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-forma="efectivo">
+                                    <td class="arq-forma"><i class="bi bi-cash-coin"></i> Efectivo</td>
+                                    <td class="arq-esperado" id="esp-efectivo">L 0.00</td>
+                                    <td><input type="number" step="0.01" min="0" name="Arq_TotalEfectivo" class="form-control form-input-catalogo arq-input-contado" value="0"></td>
+                                    <td class="arq-dif zero" id="dif-efectivo">L 0.00</td>
+                                </tr>
+                                <tr data-forma="transferencia">
+                                    <td class="arq-forma"><i class="bi bi-bank"></i> Transferencia</td>
+                                    <td class="arq-esperado" id="esp-transferencia">L 0.00</td>
+                                    <td><input type="number" step="0.01" min="0" name="Arq_TotalTransferencia" class="form-control form-input-catalogo arq-input-contado" value="0"></td>
+                                    <td class="arq-dif zero" id="dif-transferencia">L 0.00</td>
+                                </tr>
+                                <tr data-forma="tarjeta">
+                                    <td class="arq-forma"><i class="bi bi-credit-card"></i> Tarjeta</td>
+                                    <td class="arq-esperado" id="esp-tarjeta">L 0.00</td>
+                                    <td><input type="number" step="0.01" min="0" name="Arq_TotalTarjeta" class="form-control form-input-catalogo arq-input-contado" value="0"></td>
+                                    <td class="arq-dif zero" id="dif-tarjeta">L 0.00</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>Total</td>
+                                    <td class="arq-esperado" id="esp-total">L 0.00</td>
+                                    <td class="arq-esperado" id="con-total" style="text-align:right;">L 0.00</td>
+                                    <td class="arq-dif zero" id="dif-total">L 0.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="arq-otros-note" id="arq-otros-note"></div>
+                        <div class="arq-banner ok" id="arq-banner" style="display:none;"></div>
+
+                        <div class="row" style="margin-top:14px;">
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Observación</label>
+                                <textarea name="Arq_Observaciones" class="form-control form-input-catalogo" rows="2" placeholder="Ej. sobrante/faltante justificado, incidencias del turno..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer-catalogo">
+                    <button type="button" class="btn-cancel-catalogo" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-save-catalogo">Guardar Arqueo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Content/js/pages/arqueosCajaAdm.js"></script>
+    <script>
+        ArqueosCajaAdm.init({
+            urlLast: "@Url.Action("LastAsync")",
+            urlCreate: "@Url.Action("CreateAsync")",
+            urlPagosDia: "@Url.Action("ListAsync", "PagosDelDia")"
+        });
+    </script>
+}

@@ -1,0 +1,113 @@
+@{
+    ViewBag.Title = "Centro de Anuncios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/modal-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/centroanuncios.css" rel="stylesheet" />
+}
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Centro de Anuncios</li>
+        </ol>
+    </nav>
+</div>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="fa-solid fa-bullhorn header-icon-fa"></i></div>
+            <div class="header-text-catalogo">
+                <h1>Centro de Anuncios</h1>
+                <p>Gestione los comunicados y anuncios del colegio</p>
+            </div>
+        </div>
+        <div class="header-action-catalogo">
+            <button class="btn-nuevo-catalogo" data-toggle="modal" data-target="#modal-nuevo">
+                <i class="mdi mdi-plus-circle-outline"></i> Nuevo Anuncio
+            </button>
+        </div>
+    </div>
+</div>
+<div class="fluid-container">
+    <div class="card-listado-catalogo">
+        <div class="card-body-listado-catalogo">
+
+            <!-- Tabs de filtro -->
+            <ul class="nav nav-tabs tabs-anuncios" id="tabs-anuncios" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" data-filtro="todos" role="tab">Todos <span class="tab-count">0</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-filtro="vigentes" role="tab">Vigentes <span class="tab-count">0</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-filtro="expirados" role="tab">Expirados <span class="tab-count">0</span></a>
+                </li>
+            </ul>
+
+            <!-- Muro de cards -->
+            <div class="row" id="cards-anuncios">
+                <!-- Generado por centroanuncios.js -->
+            </div>
+
+            <!-- Estado vacío -->
+            <div id="anuncios-vacio" class="anuncios-vacio" style="display:none">
+                <i class="fa-solid fa-bell-slash fa-3x"></i>
+                <p>No hay anuncios en esta categoría</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nuevo Anuncio -->
+<div class="modal fade" id="modal-nuevo" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modal-content-catalogo">
+            <div class="modal-header-catalogo">
+                <div class="modal-title-wrapper-catalogo">
+                    <div><h5 class="modal-title-catalogo">Nuevo Anuncio</h5></div>
+                </div>
+                <button type="button" class="close close-catalogo" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="form-nuevo">
+                <div class="modal-body-catalogo">
+                    <div class="form-card-catalogo">
+                        <div class="row">
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Titulo *</label>
+                                <input type="text" name="Anu_Titulo" class="form-control form-input-catalogo" placeholder="Titulo del anuncio" maxlength="200">
+                            </div>
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Contenido *</label>
+                                <textarea name="Anu_Contenido" class="form-control form-input-catalogo" rows="4" placeholder="Descripcion del anuncio o comunicado..."></textarea>
+                            </div>
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Fecha de Expiracion</label>
+                                <input type="date" name="Anu_FechaExpiracion" class="form-control form-input-catalogo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer-catalogo">
+                    <button type="button" class="btn-cancel-catalogo" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-save-catalogo">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/centroanuncios.js"></script>
+    <script>
+        CentroAnuncios.init(
+            "@Url.Action("ListAsync")",
+            "@Url.Action("CreateAsync")",
+            "@Url.Action("DeleteAsync")"
+        );
+    </script>
+}

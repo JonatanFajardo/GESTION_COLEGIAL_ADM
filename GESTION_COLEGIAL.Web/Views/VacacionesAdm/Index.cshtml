@@ -1,0 +1,180 @@
+@{
+    ViewBag.Title = "Control de Vacaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/Content/css/modal-catalogos.css" rel="stylesheet" />
+    <style>
+        .vac-saldo-panel {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+            padding: 12px 14px; margin-bottom: 14px;
+        }
+        .vac-saldo-item { display: flex; flex-direction: column; align-items: center; min-width: 78px; }
+        .vac-saldo-num { font-size: 1.35rem; font-weight: 800; color: #0f172a; line-height: 1; }
+        .vac-saldo-lbl { font-size: .68rem; text-transform: uppercase; letter-spacing: .4px; color: #94a3b8; font-weight: 700; margin-top: 3px; }
+        .vac-saldo-item--dispo .vac-saldo-num { color: #059669; }
+        .vac-saldo-item--dispo.agotado .vac-saldo-num { color: #dc2626; }
+        .vac-saldo-antig { margin-left: auto; font-size: .74rem; color: #64748b; font-weight: 600; text-align: right; }
+        .vac-tipo-hint { font-size: .78rem; color: #64748b; padding: 8px 10px; background: #eff6ff; border-radius: 8px; margin-bottom: 12px; }
+        .vac-form-error {
+            font-size: .82rem; color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca;
+            border-radius: 8px; padding: 9px 12px; font-weight: 600;
+        }
+        .vac-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; }
+        .vac-badge-V { background: #dbeafe; color: #1d4ed8; }
+        .vac-badge-P { background: #dcfce7; color: #166534; }
+        .vac-badge-I { background: #fce7f3; color: #9d174d; }
+        .vac-badge-est-P { background: #fef3c7; color: #92400e; }
+        .vac-badge-est-A { background: #dcfce7; color: #166534; }
+        .vac-badge-est-R { background: #fee2e2; color: #b91c1c; }
+    </style>
+}
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Vacaciones / Permisos</li>
+        </ol>
+    </nav>
+</div>
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="fa-solid fa-umbrella-beach" style="font-size:32px;"></i></div>
+            <div class="header-text-catalogo"><h1>Vacaciones y Permisos</h1><p>Gestione las solicitudes de vacaciones del personal</p></div>
+        </div>
+        <div class="header-action-catalogo">
+            <button class="btn-nuevo-catalogo" data-toggle="modal" data-target="#modal-nueva">
+                <i class="bi bi-plus-circle"></i> Nueva Solicitud
+            </button>
+        </div>
+    </div>
+</div>
+<div class="fluid-container">
+    <div class="card-listado-catalogo">
+        <div class="card-body-listado-catalogo">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered nowrap" id="datatable-vac">
+                    <thead><tr>
+                        <th>Empleado</th><th>Tipo</th><th>Inicio</th><th>Fin</th>
+                        <th>Días</th><th>Estado</th><th>Acciones</th>
+                    </tr></thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Nueva Solicitud -->
+<div class="modal fade" id="modal-nueva" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content modal-content-catalogo">
+            <div class="modal-header-catalogo">
+                <div class="modal-title-wrapper-catalogo">
+                    <div><h5 class="modal-title-catalogo">Nueva Solicitud</h5></div>
+                </div>
+                <button type="button" class="close close-catalogo" data-dismiss="modal">&times;</button>
+            </div>
+            <form id="form-nueva">
+                <div class="modal-body-catalogo">
+                    <div class="form-card-catalogo">
+                        <div class="row">
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Empleado *</label>
+                                <select name="Emp_Id" class="form-control form-input-catalogo">
+                                    <option value="">-- Seleccione Empleado --</option>
+                                </select>
+                            </div>
+
+                            @* Panel de saldo de vacaciones — se llena por JS al elegir empleado *@
+                            <div class="col-md-12">
+                                <div id="vac-saldo-panel" class="vac-saldo-panel" style="display:none;">
+                                    <div class="vac-saldo-item">
+                                        <span class="vac-saldo-num" id="vac-saldo-derecho">—</span>
+                                        <span class="vac-saldo-lbl">Días por año</span>
+                                    </div>
+                                    <div class="vac-saldo-item">
+                                        <span class="vac-saldo-num" id="vac-saldo-tomados">—</span>
+                                        <span class="vac-saldo-lbl">Tomados</span>
+                                    </div>
+                                    <div class="vac-saldo-item vac-saldo-item--dispo">
+                                        <span class="vac-saldo-num" id="vac-saldo-disponible">—</span>
+                                        <span class="vac-saldo-lbl">Disponibles</span>
+                                    </div>
+                                    <div class="vac-saldo-antig" id="vac-saldo-antig"></div>
+                                </div>
+                                <div id="vac-saldo-msg" class="vac-tipo-hint" style="display:none;"></div>
+                            </div>
+
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Fecha Inicio *</label>
+                                <input type="date" name="Vac_FechaInicio" class="form-control form-input-catalogo">
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Fecha Fin *</label>
+                                <input type="date" name="Vac_FechaFin" class="form-control form-input-catalogo">
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Tipo *</label>
+                                <select name="Vac_Tipo" class="form-control form-input-catalogo">
+                                    <option value="Vacaciones">Vacaciones</option>
+                                    <option value="Permiso">Permiso</option>
+                                    <option value="Incapacidad">Incapacidad</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group-catalogo">
+                                <label class="form-label-catalogo">Días solicitados</label>
+                                <input type="text" id="vac-dias-calc" class="form-control form-input-catalogo" readonly value="—">
+                            </div>
+
+                            @* Horas — solo visibles cuando el Tipo = Permiso *@
+                            <div class="col-md-12" id="vac-horas-row" style="display:none;">
+                                <div class="row">
+                                    <div class="col-md-6 form-group-catalogo">
+                                        <label class="form-label-catalogo">Hora Inicio *</label>
+                                        <input type="time" name="Vac_HoraInicio" class="form-control form-input-catalogo">
+                                    </div>
+                                    <div class="col-md-6 form-group-catalogo">
+                                        <label class="form-label-catalogo">Hora Fin *</label>
+                                        <input type="time" name="Vac_HoraFin" class="form-control form-input-catalogo">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="vac-tipo-hint">
+                                            <i class="bi bi-clock"></i> El permiso se registra por horas dentro del día. Indique la hora de inicio y de fin.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group-catalogo">
+                                <label class="form-label-catalogo">Observación</label>
+                                <textarea name="Vac_Motivo" class="form-control form-input-catalogo" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="vac-form-error" class="vac-form-error" style="display:none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer-catalogo">
+                    <button type="button" class="btn-cancel-catalogo" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-save-catalogo">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/vacacionesadm.js"></script>
+    <script>
+        VacacionesAdm.init(
+            "@Url.Action("ListAsync")",
+            "@Url.Action("CreateAsync")",
+            "@Url.Action("ApproveAsync")",
+            "@Url.Action("DropdownsAsync")",
+            "@Url.Action("SaldoAsync")"
+        );
+    </script>
+}
