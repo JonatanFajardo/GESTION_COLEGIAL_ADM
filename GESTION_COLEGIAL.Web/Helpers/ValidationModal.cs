@@ -34,9 +34,10 @@ namespace GESTION_COLEGIAL.UI.Helpers
         /// Valida los espacios en blanco
         /// </summary>
         /// <returns></returns>
+        // En ASP.NET Core un texto vacío o con solo espacios llega como null (en MVC 5 llegaba "").
         public string BlankSpaces()
         {
-            if (string.IsNullOrEmpty(sendMessage.Trim()))
+            if (string.IsNullOrEmpty((sendMessage ?? string.Empty).Trim()))
             {
                 return requestMessage = "No se permiten nulos";
             }
@@ -50,7 +51,7 @@ namespace GESTION_COLEGIAL.UI.Helpers
         public string SpecialCharacters()
         {
             var regexItem = new Regex("^[a-zA-Z0-9 ]*$");
-            if (!regexItem.IsMatch(sendMessage.Trim()))
+            if (!regexItem.IsMatch((sendMessage ?? string.Empty).Trim()))
             {
                 return requestMessage = "No se permiten caracteres especiales";
             }
