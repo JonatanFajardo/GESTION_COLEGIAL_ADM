@@ -10,7 +10,7 @@ var AlumnosEnRiesgo = (function () {
             { data: "Sec_Descripcion", title: "Sección" },
             { data: "Promedio", title: "Promedio" }
             ],
-            language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json" },
+            language: { url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json" },
             responsive: true,
             pageLength: 25
         });

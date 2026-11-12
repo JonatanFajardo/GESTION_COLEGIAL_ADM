@@ -39,6 +39,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		private readonly AlumnosService alumnosService = new AlumnosService();
 		private readonly EncargadosService encargadosService = new EncargadosService();
 		private readonly ParentescosService parentescosService = new ParentescosService();
+		private readonly MatriculaAnioService matriculaAnioService = new MatriculaAnioService();
 		private readonly DocumentosAlumnoAdmService documentosService = new DocumentosAlumnoAdmService();
 
 		/// <summary>
@@ -167,7 +168,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			// El API no regresa el Alu_Id recién creado desde CreateAsync (sólo boolean invertido,
 			// ver SendHttpClient). Se recupera por identidad para poder enlazar a Documentos/Detalle.
 			var creado = await alumnosService.FindByIdentidad(model.Per_Identidad);
-			return AjaxResult(new { alu_Id = creado?.Alu_Id ?? 0, alu_Nombre = creado?.Alu_Nombre }, true);
+			// Lo inscribe en el año activo, en la sección del año de su ubicación (si falta, la crea).
+			// Si falla, la matrícula igual queda hecha: se puede inscribir después en Inscripción y promociones.
+			bool inscritoEnAnio = false;
+			if (creado != null && creado.Alu_Id > 0)
+			{
+				var inscripcion = await matriculaAnioService.InscribirDesdeUbicacionAsync(null, creado.Alu_Id, true, true, GetUsuarioId());
+				inscritoEnAnio = inscripcion != null && (inscripcion.Inscritos + inscripcion.Reactivados + inscripcion.YaInscritos) > 0;
+			}
+			return AjaxResult(new { alu_Id = creado?.Alu_Id ?? 0, alu_Nombre = creado?.Alu_Nombre, inscrito_anio = inscritoEnAnio }, true);
 		}
 	}
 }
