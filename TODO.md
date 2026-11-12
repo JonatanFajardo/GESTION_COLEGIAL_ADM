@@ -4,6 +4,42 @@ Este archivo agrupa tareas que surgen al revisar una pantalla pero pertenecen a 
 
 ---
 
+## Paridad con la app guía (Skuul) — qué falta copiar (2026-11-12)
+
+Regla: si un módulo existe en Skuul, se copia con su misma profundidad, sus mismas pantallas y su mismo aspecto (no una versión mínima). Si Skuul lo resuelve en varias pantallas, aquí también.
+
+### Ya copiado ✅
+- Año Lectivo + asistente de 5 pasos (fechas y períodos · enfoque de enseñanza · clases y profesores · asignaturas · revisar y publicar).
+- Períodos del año, enfoque de enseñanza, secciones y ofertas de materia por año.
+- Rollover (copiar la estructura al año nuevo) · Inscripción del año y promociones · Expediente por año.
+- Calendario escolar (mes, editor del día, para quién, feriados de Honduras) · Pase de lista conectado al calendario.
+- Graduación · Centro de anuncios · Importador.
+
+### Falta copiar ❌ (en este orden)
+| # | Módulo de Skuul | Qué resuelve | Rol dueño | Esfuerzo | Estado |
+|---|---|---|---|---|---|
+| 1 | **Disciplina** (casos / incidentes) | Registrar qué pasó, quiénes participaron, qué hizo el colegio y cómo avanzó el caso | Dirección | medio | ✅ hecho (2026-11-12): *Académico › Disciplina*, script 062 de la API; revisado en navegador |
+| 2 | **Reporte de asistencia de alumnos** | % por sección y por alumno descontando feriados; alertas de inasistencia | Dirección, docente | poco | pendiente |
+| 3 | **Escala de notas + cuadro de honor** | Notas en letra/concepto y ranking de los mejores | Dirección | poco | pendiente |
+| 4 | **Constancias y expediente** (boletín y transcript congelados) | Imprimir el historial oficial de varios años | Secretaría | medio | pendiente |
+| 5 | **Portal de padres** | El encargado ve notas, cuenta y calendario y hace solicitudes | Encargado | mucho | pendiente |
+| 6 | Notas ponderadas (categorías y plantillas de evaluación) | Hoy los parciales no tienen peso | Docente | medio | pendiente |
+| 7 | Sustitución de docente | Cubrir la clase de un profesor ausente | Dirección | medio | pendiente |
+| 8 | Plan de apoyo al alumno | Seguimiento a un alumno en riesgo, con acciones y notas | Dirección | medio | pendiente |
+| 9 | Ficha de salud | Alergias, condición médica, contacto de emergencia | Secretaría | poco | pendiente |
+| 10 | Lista de espera de admisión | Aspirantes antes de matricular | Secretaría | poco | pendiente |
+
+No aplican: biblioteca, internado/dormitorios, varias sedes, presupuesto contable (el ADM ya va adelante en finanzas y nómina).
+
+### 1 · Disciplina — cómo lo tiene Skuul (se copia igual, en 3 pantallas)
+- **Casos** (listado): filtros por estado y tipo, "solo los que necesitan trabajo", contador de abiertos; tabla Caso (resumen + referencia + n.º de personas) · Tipo (con candado si es reservado) · Estado · Ocurrió · Lo atiende · Abrir.
+- **Registrar un caso**: resumen, tipo (Conducta / Protección del menor = reservado), cuándo (no futuro), dónde, quién lo atiende, qué pasó; filas de personas (alumno + papel + nota, hasta 20). Papeles: implicado, afectado, testigo, quien reporta, quien atiende.
+- **Ficha del caso**: referencia `CASO-AA-XXXXXX`, datos clave (estado, cuándo/dónde, quién lo atiende, pendientes), mover de estado con motivo, personas, acciones (tipo, qué hay que hacer, responsable, fecha, marcar hecha), notas que no se editan (privadas o no) e historial de estados.
+- Estados: Reportado → En revisión → Derivado → Con medidas → Resuelto → Cerrado (con transiciones permitidas; cerrado = solo lectura; resuelto se puede reabrir).
+- Un caso de protección del menor solo lo ven quien tiene el permiso de casos reservados, quien lo reportó y quien lo atiende.
+- Hecho así en el ADM: `DisciplinaController` (Index · Registrar · Caso), tablas `app.tbCasosDisciplina*`, API `CasosDisciplina/*`. Permisos: "Casos de disciplina", "Registrar caso de disciplina", "Atender casos de disciplina", "Ver casos reservados" (admin y dirección, como Skuul).
+- Pendiente: decidir si docentes pueden **registrar** casos (en Skuul no; en un colegio suele hacerlo el docente que ve la falta). Mostrar los casos de un alumno en su ficha 360 (enlace, no copia). Dato con codificación rota en `tbPersonas` ("Ã“scar").
+
 ## Cola de trabajo (2026-11-12)
 
 1. ✅ **Inscripción inicial del año** (hecho 2026-11-12) — pestaña "Inscripción del año" en *Inscripción y promociones* (crea las secciones del año que faltan e inscribe en lote; los inscritos que figuraban como Graduado pasan a Activo) y la Matrícula inscribe sola al alumno nuevo en el año activo.

@@ -1,0 +1,144 @@
+@model GESTION_COLEGIAL.UI.Models.CasoRegistrarPaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    ViewBag.Title = "Registrar un caso";
+    var M = Model;
+    string ahora = M.Ahora.ToString("yyyy-MM-ddTHH:mm");
+}
+
+@section Styles{
+    <link href="~/css/pages/disciplina.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Casos de disciplina</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Registrar un caso</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="dis-page">
+    <div class="dis-columna">
+        <div class="dis-encabezado">
+            <div class="dis-encabezado-texto">
+                <div class="dis-encabezado-icono" aria-hidden="true"><i class="bi bi-journal-plus"></i></div>
+                <div>
+                    <h1>Registrar un caso</h1>
+                    <p>Anote lo que pasó y a quiénes involucra. Después, desde el caso, podrá moverlo de estado y agregar acciones y notas.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dis-alerta dis-alerta--error" id="dis-error-general" role="alert" hidden></div>
+
+        <form id="dis-form-registrar" class="dis-form" aria-label="Registrar un caso" novalidate
+              data-url="@Url.Action("RegistrarAsync")" data-max="@M.MaxPersonas">
+            @Html.AntiForgeryToken()
+
+            <div class="dis-rejilla">
+                <div class="dis-campo dis-ancho-completo">
+                    <label for="resumen">Resumen</label>
+                    <input id="resumen" class="dis-control" maxlength="255" placeholder="Una línea que nombre lo que pasó" autocomplete="off" />
+                    <p class="dis-error" data-error="resumen"></p>
+                </div>
+
+                <div class="dis-campo">
+                    <label for="tipo">Tipo de caso</label>
+                    <select id="tipo" class="dis-control">
+                        @foreach (var t in CatalogoCasos.Tipos)
+                        {
+                            <option value="@t.Codigo">@t.Etiqueta</option>
+                        }
+                    </select>
+                    <p class="dis-nota-campo" id="marca-reservado" hidden><i class="bi bi-lock" aria-hidden="true"></i> Reservado: solo lo leen quienes lo atienden</p>
+                    <p class="dis-error" data-error="tipo"></p>
+                </div>
+
+                <div class="dis-campo">
+                    <label for="fecha">Cuándo</label>
+                    <input type="datetime-local" id="fecha" class="dis-control" value="@ahora" max="@ahora" />
+                    <p class="dis-error" data-error="fecha"></p>
+                </div>
+
+                <div class="dis-campo">
+                    <label for="lugar">Dónde</label>
+                    <input id="lugar" class="dis-control" maxlength="150" placeholder="Opcional" autocomplete="off" />
+                    <p class="dis-error" data-error="lugar"></p>
+                </div>
+
+                <div class="dis-campo">
+                    <label for="atiende">Lo atiende</label>
+                    <select id="atiende" class="dis-control">
+                        <option value="">Nadie todavía</option>
+                        @foreach (var e in M.Empleados)
+                        {
+                            <option value="@e.Emp_Id">@e.Nombre@(string.IsNullOrWhiteSpace(e.Cargo) ? "" : " · " + e.Cargo)</option>
+                        }
+                    </select>
+                    <p class="dis-error" data-error="atiende"></p>
+                </div>
+
+                <div class="dis-campo dis-ancho-completo">
+                    <label for="descripcion">Qué pasó</label>
+                    <textarea id="descripcion" class="dis-control" rows="5" maxlength="5000"
+                              placeholder="Lo que usted vio, no lo que cree que significa"></textarea>
+                    <p class="dis-error" data-error="descripcion"></p>
+                </div>
+            </div>
+
+            <fieldset class="dis-grupo">
+                <legend>Personas</legend>
+                <ul class="dis-filas" id="dis-filas"></ul>
+                <div style="margin-top:0.75rem">
+                    <button type="button" class="dis-btn dis-btn--fantasma" id="dis-agregar-persona">
+                        <i class="bi bi-plus-lg" aria-hidden="true"></i> Agregar una persona
+                    </button>
+                </div>
+            </fieldset>
+
+            <div class="dis-pie-form">
+                <a class="dis-btn dis-btn--fantasma" href="@Url.Action("Index")">Cancelar</a>
+                <button type="submit" class="dis-btn dis-btn--primario" id="dis-guardar">Registrar el caso</button>
+            </div>
+        </form>
+    </div>
+
+    @* Una fila de persona: se clona por cada "Agregar una persona" (la lista de alumnos va una sola vez). *@
+    <template id="dis-plantilla-fila">
+        <li class="dis-fila-persona">
+            <div>
+                <label class="sr-only-dis" data-for="alumno">Alumno</label>
+                <select class="dis-control" data-campo="alumno">
+                    <option value="">Elija un alumno</option>
+                    @foreach (var a in M.Alumnos)
+                    {
+                        <option value="@a.Alu_Id">@a.Nombre@(string.IsNullOrWhiteSpace(a.Identidad) ? "" : " · " + a.Identidad)</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="sr-only-dis" data-for="papel">Por qué aparece</label>
+                <select class="dis-control" data-campo="papel">
+                    @foreach (var p in CatalogoCasos.Papeles)
+                    {
+                        <option value="@p.Codigo">@p.Etiqueta</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="sr-only-dis" data-for="nota">Nota</label>
+                <input class="dis-control" data-campo="nota" maxlength="255" placeholder="Nota (opcional)" autocomplete="off" />
+            </div>
+            <button type="button" class="dis-btn dis-btn--fantasma dis-btn--icono" data-quitar>
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+        </li>
+    </template>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/disciplina.js" asp-append-version="true"></script>
+}
