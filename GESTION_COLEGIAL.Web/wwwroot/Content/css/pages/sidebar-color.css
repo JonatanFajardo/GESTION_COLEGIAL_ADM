@@ -427,3 +427,22 @@
 .sidebar-closed #content {
     margin-left: 0 !important;
 }
+
+/* ── Móvil / tablet (< 992px): el sidebar es un cajón que abre la hamburguesa ── */
+@media (max-width: 991.98px) {
+    .main-container #content { margin-left: 0; }
+    .main-container > .sidebar-wrapper {
+        width: 256px !important;
+        top: 0 !important;
+        bottom: 0;
+        height: auto;
+        max-height: none !important;
+        transform: translateX(-100%);
+        visibility: hidden;
+        transition: transform .25s ease, visibility .25s;
+    }
+    .main-container.sbar-open > .sidebar-wrapper {
+        transform: none;
+        visibility: visible;
+    }
+}
