@@ -6,7 +6,7 @@ Este archivo agrupa tareas que surgen al revisar una pantalla pero pertenecen a 
 
 ## Cola de trabajo (2026-11-12)
 
-1. **Inscripción inicial del año** — cierra el hueco #1 (Año Lectivo): inscribir en el año activo a los alumnos que hoy solo existen en `tbAlumnos`, y que la Matrícula nueva también inscriba en el año. La API ya tiene `MatriculaAnio/EnrollAsync`; falta la pantalla en el ADM.
+1. ✅ **Inscripción inicial del año** (hecho 2026-11-12) — pestaña "Inscripción del año" en *Inscripción y promociones* (crea las secciones del año que faltan e inscribe en lote; los inscritos que figuraban como Graduado pasan a Activo) y la Matrícula inscribe sola al alumno nuevo en el año activo.
 2. **Calendario escolar** — espejo de Skuul (`/dashboard/calendar-events`): eventos por tipo (feriado, cierre, exámenes, reunión de padres, acto, actividad…), para toda la escuela o una sección, en borrador o publicados. Conectarlo con el pase de lista (no pedir asistencia en feriados ni cierres) y con el % de asistencia. Punto de partida: `EventosService` (la API no tiene esa parte) y FullCalendar (incluido, sin uso).
 3. Disciplina · 4. Reportes de asistencia de alumnos · 5. Constancias · 6. Escala de notas + cuadro de honor · 7. Portal de padres.
 

@@ -6,7 +6,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 {
     /// <summary>
     /// Matrícula por Año + Promociones (capa multi-año, expediente/transcript).
-    /// Pantalla de Promociones: elegir año/sección origen → ver alumnos →
+    /// Pantalla "Inscripción y promociones": pestaña Inscripción (inscribir a los alumnos en el año)
+    /// y pestaña Promover: elegir año/sección origen → ver alumnos →
     /// elegir año/sección destino → promover.
     /// </summary>
     [SessionManager("Promociones y expediente por año")]
@@ -65,6 +66,57 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
             int promovidos = await matriculaAnioService.Promover(anioOrigen, seccionOrigen, anioDestino, seccionDestino);
             return Json(new { success = true, promovidos = promovidos, message = promovidos + " alumno(s) promovido(s)." });
+        }
+
+        // ── Inscripción inicial del año ───────────────────────────────
+
+        /// <summary>Resumen de la inscripción del año: grupos de ubicación de los alumnos vs secciones del año e inscritos.</summary>
+        public async Task<ActionResult> ResumenInscripcionAsync(int? aniId)
+        {
+            var result = await matriculaAnioService.ResumenInscripcionAsync(aniId);
+            return AjaxResult(result);
+        }
+
+        /// <summary>Crea las secciones del año que faltan según dónde están ubicados los alumnos.</summary>
+        [HttpPost]
+        public async Task<ActionResult> CrearSeccionesAsync(int aniId)
+        {
+            if (aniId <= 0)
+            {
+                return Json(new { success = false, message = "Seleccione un año lectivo." });
+            }
+
+            var r = await matriculaAnioService.CrearSeccionesDesdeUbicacionAsync(aniId, null, GetUsuarioId());
+            if (r == null)
+            {
+                return Json(new { success = false, message = "No se pudieron crear las secciones del año." });
+            }
+
+            return Json(new { success = true, resultado = r, message = r.SeccionesCreadas + " sección(es) del año creada(s)." });
+        }
+
+        /// <summary>Inscribe en el año a todos sus alumnos; antes crea las secciones del año que falten.</summary>
+        [HttpPost]
+        public async Task<ActionResult> InscribirAsync(int aniId, bool activarEstado = true)
+        {
+            if (aniId <= 0)
+            {
+                return Json(new { success = false, message = "Seleccione un año lectivo." });
+            }
+
+            var r = await matriculaAnioService.InscribirDesdeUbicacionAsync(aniId, null, true, activarEstado, GetUsuarioId());
+            if (r == null)
+            {
+                return Json(new { success = false, message = "No se pudo completar la inscripción." });
+            }
+
+            var partes = new List<string> { (r.Inscritos + r.Reactivados) + " alumno(s) inscrito(s)" };
+            if (r.SeccionesCreadas > 0) partes.Add(r.SeccionesCreadas + " sección(es) del año creada(s)");
+            if (r.Activados > 0) partes.Add(r.Activados + " pasado(s) a Activo");
+            if (r.YaInscritos > 0) partes.Add(r.YaInscritos + " ya estaban inscritos");
+            if (r.SinSeccion > 0) partes.Add(r.SinSeccion + " sin sección del año");
+
+            return Json(new { success = true, resultado = r, message = string.Join(" · ", partes) + "." });
         }
     }
 }

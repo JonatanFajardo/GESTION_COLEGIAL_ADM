@@ -42,5 +42,32 @@ namespace GESTION_COLEGIAL.Business.Services
                 + "&seccionDestino=" + seccionDestino;
             return await ApiRequests.PostAsyncWithResponse<int>(url, new { });
         }
+
+        /// <summary>Grupos de ubicación de los alumnos del año frente a las secciones del año e inscritos (aniId null = año activo).</summary>
+        public async Task<IEnumerable<ResumenInscripcionViewModel>> ResumenInscripcionAsync(int? aniId)
+        {
+            string url = "MatriculaAnio/ResumenInscripcionAsync" + (aniId.HasValue ? "?value=" + aniId.Value : "");
+            return await ApiRequests.ListAsync<ResumenInscripcionViewModel>(url);
+        }
+
+        /// <summary>Crea las secciones del año que faltan según la ubicación de los alumnos (aniId null = año activo).</summary>
+        public async Task<ResultadoInscripcionViewModel> CrearSeccionesDesdeUbicacionAsync(int? aniId, int? aluId, int usuario)
+        {
+            string url = "MatriculaAnio/CrearSeccionesDesdeUbicacionAsync?usuario=" + usuario
+                + (aniId.HasValue ? "&aniId=" + aniId.Value : "")
+                + (aluId.HasValue ? "&aluId=" + aluId.Value : "");
+            return await ApiRequests.PostAsyncWithResponse<ResultadoInscripcionViewModel>(url, new { });
+        }
+
+        /// <summary>Inscribe en el año (en lote, o solo aluId) según la ubicación de los alumnos (aniId null = año activo).</summary>
+        public async Task<ResultadoInscripcionViewModel> InscribirDesdeUbicacionAsync(int? aniId, int? aluId, bool crearSecciones, bool activarEstado, int usuario)
+        {
+            string url = "MatriculaAnio/InscribirDesdeUbicacionAsync?usuario=" + usuario
+                + "&crearSecciones=" + (crearSecciones ? "true" : "false")
+                + "&activarEstado=" + (activarEstado ? "true" : "false")
+                + (aniId.HasValue ? "&aniId=" + aniId.Value : "")
+                + (aluId.HasValue ? "&aluId=" + aluId.Value : "");
+            return await ApiRequests.PostAsyncWithResponse<ResultadoInscripcionViewModel>(url, new { });
+        }
     }
 }
