@@ -1,0 +1,240 @@
+@model GESTION_COLEGIAL.UI.Models.ReporteAsistenciaSeccionViewModel
+@using GESTION_COLEGIAL.UI.Models
+@{
+    var M = Model;
+    var I = M.Info;
+    // El nombre de la sección ya suele traer el grado ("Séptimo A · Matutina"): no repetirlo.
+    string nombre = string.IsNullOrWhiteSpace(I.Grado) || (I.Seccion ?? "").StartsWith(I.Grado, StringComparison.OrdinalIgnoreCase)
+        ? (I.Seccion ?? "").Trim()
+        : (I.Grado + " " + I.Seccion).Trim();
+    ViewBag.Title = "Asistencia " + nombre;
+    string urlVolver = Url.Action("Index", new { desde = M.DesdeIso, hasta = M.HastaIso, nivId = M.NivId, cunId = M.CunId, seaId = M.SeaIdFiltro });
+    string archivo = ("asistencia-" + nombre + "-" + M.DesdeIso + "-a-" + M.HastaIso).Replace(" ", "-").ToLowerInvariant() + ".csv";
+}
+
+@section Styles{
+    <link href="~/css/pages/reporte-asistencia.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@urlVolver">Asistencia de alumnos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@nombre</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="ras-page">
+    <div class="ras-encabezado">
+        <div class="ras-encabezado-texto">
+            <div class="ras-encabezado-icono" aria-hidden="true"><i class="bi bi-people"></i></div>
+            <div>
+                <h1>@nombre</h1>
+                <p>Asistencia del @FormatoAsistencia.Dia(M.Desde) al @FormatoAsistencia.Dia(M.Hasta).</p>
+            </div>
+        </div>
+        <a class="ras-btn ras-btn--fantasma" href="@urlVolver">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Todas las secciones
+        </a>
+    </div>
+
+    <section class="ras-tarjeta" aria-label="Datos de la sección">
+        <dl class="ras-datos">
+            <div><dt>Sección</dt><dd>@I.Seccion</dd></div>
+            <div><dt>Grado</dt><dd>@I.Grado</dd></div>
+            <div><dt>Nivel</dt><dd>@I.Nivel</dd></div>
+            <div>
+                <dt>Docente guía</dt>
+                @if (string.IsNullOrWhiteSpace(I.Guia))
+                {
+                    <dd class="ras-dd-suave">Sin asignar</dd>
+                }
+                else
+                {
+                    <dd>@I.Guia</dd>
+                }
+            </div>
+        </dl>
+    </section>
+
+    <section class="ras-tarjeta" aria-labelledby="ras-alumnos-titulo">
+        <div class="ras-tarjeta-cabecera">
+            <div>
+                <h2 class="ras-tarjeta-titulo" id="ras-alumnos-titulo">Alumnos</h2>
+                <p class="ras-tarjeta-desc">
+                    P presente · T tardanza · A ausente · J justificado.
+                    @if (M.EnRiesgo > 0)
+                    {
+                        <span>@M.EnRiesgo @(M.EnRiesgo == 1 ? "alumno está" : "alumnos están") en riesgo.</span>
+                    }
+                </p>
+            </div>
+            @if (M.Alumnos.Count > 0)
+            {
+                <div class="ras-acciones">
+                    <label class="ras-casilla">
+                        <input type="checkbox" id="ras-solo-riesgo" data-tabla="#ras-tabla-alumnos" />
+                        Solo en riesgo
+                    </label>
+                    <button type="button" class="ras-btn" data-exportar="#ras-tabla-alumnos" data-archivo="@archivo">
+                        <i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i> Exportar a Excel
+                    </button>
+                </div>
+            }
+        </div>
+
+        @if (M.Alumnos.Count == 0)
+        {
+            <div class="ras-vacio">
+                <div class="ras-vacio-icono" aria-hidden="true"><i class="bi bi-people"></i></div>
+                <h3>Esta sección no tiene alumnos</h3>
+                <p>Cuando haya alumnos matriculados en la sección, aquí verá su asistencia.</p>
+            </div>
+        }
+        else
+        {
+            if (!M.HayRegistros)
+            {
+                <div class="ras-alerta" role="status">
+                    <i class="bi bi-info-circle" aria-hidden="true"></i>
+                    <span>Todavía no hay pase de lista en estas fechas. Pruebe con otro rango desde <a href="@urlVolver">el reporte general</a>.</span>
+                </div>
+            }
+            <div class="ras-tabla-envoltura">
+                <table class="ras-tabla" id="ras-tabla-alumnos">
+                    <thead>
+                        <tr>
+                            <th scope="col">Alumno</th>
+                            <th scope="col" class="ras-num"><abbr title="Presentes">P</abbr></th>
+                            <th scope="col" class="ras-num"><abbr title="Tardanzas">T</abbr></th>
+                            <th scope="col" class="ras-num"><abbr title="Ausentes">A</abbr></th>
+                            <th scope="col" class="ras-num"><abbr title="Justificados">J</abbr></th>
+                            <th scope="col">%</th>
+                            <th scope="col">Última ausencia</th>
+                            <th scope="col">Situación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in M.Alumnos)
+                        {
+                            <tr data-riesgo="@(a.EnRiesgo ? "1" : "0")">
+                                <td data-csv="@a.NombreAlumno">
+                                    <span class="ras-enlace-fuerte">@a.NombreAlumno</span>
+                                    @if (!string.IsNullOrWhiteSpace(a.Identidad))
+                                    {
+                                        <span class="ras-sub">@a.Identidad</span>
+                                    }
+                                </td>
+                                <td class="ras-num">@a.Presentes</td>
+                                <td class="ras-num">@a.Tardanzas</td>
+                                <td class="ras-num">@a.Ausentes</td>
+                                <td class="ras-num">@a.Justificados</td>
+                                <td data-csv="@(a.PorcAsistencia.HasValue ? a.PorcAsistencia.Value.ToString("0.0", FormatoAsistencia.Cultura) : "")">
+                                    <div class="ras-porcentaje ras-porcentaje--chico">
+                                        <span class="ras-porcentaje-texto">@FormatoAsistencia.Porcentaje(a.PorcAsistencia)</span>
+                                        @if (a.PorcAsistencia.HasValue)
+                                        {
+                                            <span class="ras-barra" aria-hidden="true">
+                                                <span class="ras-barra-relleno ras-tono--@FormatoAsistencia.Tono(a.PorcAsistencia)" style="width:@(FormatoAsistencia.Ancho(a.PorcAsistencia))%"></span>
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="ras-suave" style="white-space:nowrap">
+                                    @(a.UltimaAusencia.HasValue ? FormatoAsistencia.Dia(a.UltimaAusencia.Value) : "Ninguna")
+                                </td>
+                                <td data-csv="@(a.EnRiesgo ? "En riesgo" : "")">
+                                    @if (a.EnRiesgo)
+                                    {
+                                        <span class="ras-pastilla ras-pastilla--riesgo"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> En riesgo</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <p class="ras-sin-datos" id="ras-sin-riesgo" hidden>Ningún alumno está en riesgo en estas fechas.</p>
+            </div>
+        }
+    </section>
+
+    @if (M.Alumnos.Count > 0)
+    {
+        <section class="ras-tarjeta" aria-labelledby="ras-planilla-titulo">
+            <h2 class="ras-tarjeta-titulo" id="ras-planilla-titulo">Planilla día por día</h2>
+            <p class="ras-tarjeta-desc">Cada columna es un día de clase (lunes a viernes). Deslice hacia los lados para ver más días.</p>
+
+            <ul class="ras-leyenda" aria-label="Leyenda de colores">
+                <li><span class="ras-celda ras-celda--P">P</span> Presente</li>
+                <li><span class="ras-celda ras-celda--T">T</span> Tardanza</li>
+                <li><span class="ras-celda ras-celda--A">A</span> Ausente</li>
+                <li><span class="ras-celda ras-celda--J">J</span> Justificado</li>
+                <li><span class="ras-celda ras-celda--cierre"></span> Sin clases (feriado o cierre)</li>
+                <li><span class="ras-celda ras-celda--vacia"></span> Sin pase de lista</li>
+            </ul>
+
+            @if (M.Dias.Count == 0)
+            {
+                <p class="ras-sin-datos">No hay días de clase en estas fechas.</p>
+            }
+            else
+            {
+                <div class="ras-planilla-envoltura" tabindex="0" role="region" aria-label="Planilla de asistencia, se desplaza hacia los lados">
+                    <table class="ras-planilla">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="ras-planilla-fija">Alumno</th>
+                                @foreach (var d in M.Dias)
+                                {
+                                    <th scope="col" class="@(d.EsCierre ? "ras-dia--cierre" : "")"
+                                        title="@(FormatoAsistencia.Dia(d.Fecha))@(d.EsCierre && !string.IsNullOrWhiteSpace(d.Motivo) ? " · " + d.Motivo : "")">
+                                        <span class="ras-dia-semana">@FormatoAsistencia.DiaSemana(d.Fecha)</span>
+                                        <span class="ras-dia-fecha">@FormatoAsistencia.DiaCorto(d.Fecha)</span>
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var a in M.Alumnos)
+                            {
+                                <tr data-riesgo="@(a.EnRiesgo ? "1" : "0")">
+                                    <th scope="row" class="ras-planilla-fija">@a.NombreAlumno</th>
+                                    @foreach (var d in M.Dias)
+                                    {
+                                        if (d.EsCierre)
+                                        {
+                                            <td class="ras-dia--cierre" title="@(string.IsNullOrWhiteSpace(d.Motivo) ? "Sin clases" : d.Motivo)">
+                                                <span class="ras-celda ras-celda--cierre"><span class="sr-only-ras">Sin clases</span></span>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            string e = M.EstadoDe(a.Alu_Id, d.Fecha);
+                                            string etiqueta = FormatoAsistencia.Estado(e);
+                                            if (string.IsNullOrEmpty(etiqueta))
+                                            {
+                                                <td><span class="ras-celda ras-celda--vacia"><span class="sr-only-ras">Sin pase de lista</span></span></td>
+                                            }
+                                            else
+                                            {
+                                                <td title="@etiqueta · @FormatoAsistencia.Dia(d.Fecha)">
+                                                    <span class="ras-celda ras-celda--@e" aria-label="@etiqueta">@e</span>
+                                                </td>
+                                            }
+                                        }
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </section>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/reporte-asistencia.js" asp-append-version="true"></script>
+}

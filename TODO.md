@@ -19,7 +19,7 @@ Regla: si un módulo existe en Skuul, se copia con su misma profundidad, sus mis
 | # | Módulo de Skuul | Qué resuelve | Rol dueño | Esfuerzo | Estado |
 |---|---|---|---|---|---|
 | 1 | **Disciplina** (casos / incidentes) | Registrar qué pasó, quiénes participaron, qué hizo el colegio y cómo avanzó el caso | Dirección | medio | ✅ hecho (2026-11-12): *Académico › Disciplina*, script 062 de la API; revisado en navegador |
-| 2 | **Reporte de asistencia de alumnos** | % por sección y por alumno descontando feriados; alertas de inasistencia | Dirección, docente | poco | pendiente |
+| 2 | **Reporte de asistencia de alumnos** | % por sección y por alumno descontando feriados; alertas de inasistencia | Dirección, docente | poco | ✅ hecho (2026-11-12): *Académico › Reporte de asistencia* (resumen por sección + planilla alumno × día), script 063 de la API. Skuul no lo tiene como pantalla; se tomó de RosarioSIS (Average Daily Attendance + Attendance Chart) |
 | 3 | **Escala de notas + cuadro de honor** | Notas en letra/concepto y ranking de los mejores | Dirección | poco | pendiente |
 | 4 | **Constancias y expediente** (boletín y transcript congelados) | Imprimir el historial oficial de varios años | Secretaría | medio | pendiente |
 | 5 | **Portal de padres** | El encargado ve notas, cuenta y calendario y hace solicitudes | Encargado | mucho | pendiente |
