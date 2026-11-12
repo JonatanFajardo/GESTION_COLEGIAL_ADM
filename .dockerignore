@@ -1,0 +1,16 @@
+# La imagen solo necesita GESTION_COLEGIAL.Business y GESTION_COLEGIAL.Web.
+# Los bin/obj de Windows NO deben entrar: traen rutas de Windows y rompen la compilación en Linux.
+**/bin/
+**/obj/
+**/.vs/
+**/*.user
+.git/
+packages/
+GESTION_COLEGIAL.UI/
+Correcciones/
+docs/
+Scripts/
+*.png
+*.md
+Dockerfile
+.dockerignore
