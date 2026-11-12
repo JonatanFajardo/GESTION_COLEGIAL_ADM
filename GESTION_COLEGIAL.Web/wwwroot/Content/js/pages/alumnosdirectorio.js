@@ -26,7 +26,7 @@ var AlumnosDirectorio = (function () {
                 { data: "Enc_Telefono",       title: "Telefono",   defaultContent: "" },
                 { data: "Enc_Correo",         title: "Email",      defaultContent: "" }
             ],
-            language: { url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json" },
+            language: { url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json" },
             responsive: true,
             pageLength: 25
         });

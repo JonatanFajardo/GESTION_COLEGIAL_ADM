@@ -325,7 +325,7 @@ var DirectorioContacto = (function () {
         dtAlumno = $("#dc-datatable-alumno").DataTable({
             data: list,
             deferRender: true,
-            language: { url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
+            language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
             pageLength: 25,
             order: [],
             columns: [
@@ -394,7 +394,7 @@ var DirectorioContacto = (function () {
         dtEncargado = $("#dc-datatable-encargado").DataTable({
             data: list,
             deferRender: true,
-            language: { url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
+            language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json" },
             pageLength: 25,
             order: [[2, "asc"]],
             columnDefs: [{ targets: 0, visible: false }],
