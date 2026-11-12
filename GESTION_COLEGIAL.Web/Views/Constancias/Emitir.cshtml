@@ -1,0 +1,160 @@
+@model GESTION_COLEGIAL.UI.Models.ConstanciaEmitirPaginaViewModel
+@using GESTION_COLEGIAL.UI.Models
+@{
+    ViewBag.Title = "Emitir un documento";
+    var M = Model;
+    string tipoInicial = M.Tipo ?? "";
+}
+
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/css/pages/constancias.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Constancias y expediente</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Emitir un documento</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="bi bi-file-earmark-plus" style="font-size:2rem" aria-hidden="true"></i></div>
+            <div class="header-text-catalogo">
+                <h1>Emitir un documento</h1>
+                <p>Elija el documento y el alumno, revise la vista previa y emítalo. Lo emitido queda fijo; una corrección se emite como revisión nueva.</p>
+            </div>
+        </div>
+        <div class="header-action-catalogo">
+            <a class="btn-nuevo-catalogo" href="@Url.Action("Index")">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Volver
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="cst-page">
+    <div class="cst-alerta cst-alerta--error" id="cst-error-general" role="alert" hidden></div>
+
+    <form id="cst-form-emitir" class="cst-form" novalidate aria-label="Emitir un documento"
+          data-url-previa="@Url.Action("VistaPreviaAsync")" data-url-emitir="@Url.Action("EmitirAsync")">
+        @Html.AntiForgeryToken()
+
+        @* 1 · Tipo *@
+        <section class="cst-tarjeta">
+            <h2 class="cst-tarjeta-titulo"><span class="cst-paso">1</span> Qué documento</h2>
+            <fieldset class="cst-tipos">
+                <legend class="sr-only-cst">Tipo de documento</legend>
+                @foreach (var t in CatalogoDocumentos.Tipos)
+                {
+                    <label class="cst-tipo">
+                        <input type="radio" name="tipo" value="@t.Codigo" checked="@(t.Codigo == tipoInicial)"
+                               data-pide-anio="@(t.PideAnio ? "1" : "0")" data-pide-parcial="@(t.PideParcial ? "1" : "0")" />
+                        <span class="cst-tipo-caja">
+                            <i class="@t.Icono cst-tipo-icono" aria-hidden="true"></i>
+                            <span class="cst-tipo-nombre">@t.Titulo</span>
+                            <span class="cst-tipo-explica">@t.Explicacion</span>
+                        </span>
+                    </label>
+                }
+            </fieldset>
+            <p class="cst-error" data-error="tipo"></p>
+        </section>
+
+        @* 2 · Alumno *@
+        <section class="cst-tarjeta">
+            <h2 class="cst-tarjeta-titulo"><span class="cst-paso">2</span> Alumno</h2>
+            <div class="cst-rejilla">
+                <div class="cst-campo">
+                    <label for="cst-buscar-alumno">Buscar</label>
+                    <input id="cst-buscar-alumno" type="search" class="cst-control" placeholder="Escriba nombre o identidad para acortar la lista" autocomplete="off" />
+                </div>
+                <div class="cst-campo">
+                    <label for="alumno">Alumno</label>
+                    <select id="alumno" class="cst-control">
+                        <option value="">Elija un alumno</option>
+                        @foreach (var a in M.Alumnos)
+                        {
+                            <option value="@a.Alu_Id" selected="@(a.Alu_Id == M.AluId)"
+                                    data-buscar="@((a.Nombre + " " + a.Identidad).ToLowerInvariant())">@a.Nombre@(string.IsNullOrWhiteSpace(a.Identidad) ? "" : " · " + a.Identidad)@(string.IsNullOrWhiteSpace(a.Ubicacion) ? "" : " · " + a.Ubicacion)</option>
+                        }
+                    </select>
+                    <p class="cst-error" data-error="alumno"></p>
+                </div>
+            </div>
+            @if (M.Alumnos.Count == 0)
+            {
+                <p class="cst-nota-campo">No se pudo cargar la lista de alumnos. Recargue la página.</p>
+            }
+        </section>
+
+        @* 3 · Año y parcial *@
+        <section class="cst-tarjeta" id="cst-bloque-anio">
+            <h2 class="cst-tarjeta-titulo"><span class="cst-paso">3</span> Año lectivo</h2>
+            <p class="cst-tarjeta-desc" id="cst-anio-expediente" hidden>El expediente lleva todos los años que el alumno cursó: no hace falta elegir año.</p>
+            <div class="cst-rejilla" id="cst-campos-anio">
+                <div class="cst-campo">
+                    <label for="anio">Año lectivo</label>
+                    <select id="anio" class="cst-control">
+                        <option value="">Elija el año</option>
+                        @foreach (var a in M.Anios)
+                        {
+                            <option value="@a.Ani_Id" selected="@(a.Ani_Id == M.AniIdSugerido)">@(string.IsNullOrWhiteSpace(a.Ani_Nombre) ? a.Ani_Anio.ToString() : a.Ani_Nombre)@(a.Ani_EsActual ? " (actual)" : "")</option>
+                        }
+                    </select>
+                    <p class="cst-error" data-error="anio"></p>
+                </div>
+                <div class="cst-campo" id="cst-campo-parcial" hidden>
+                    <label for="parcial">Parcial</label>
+                    <select id="parcial" class="cst-control">
+                        <option value="">Todos los parciales</option>
+                        @foreach (var p in M.Parciales)
+                        {
+                            <option value="@p.Pac_Id" selected="@(p.Pac_Id == M.PacId)">@p.Pac_Descripcion</option>
+                        }
+                    </select>
+                    <p class="cst-nota-campo">Opcional: deje "Todos" para el boletín del año completo.</p>
+                </div>
+            </div>
+        </section>
+
+        @* 4 · Vista previa *@
+        <section class="cst-tarjeta">
+            <h2 class="cst-tarjeta-titulo"><span class="cst-paso">4</span> Vista previa</h2>
+            <p class="cst-tarjeta-desc">Así quedará el documento. Revíselo antes de emitirlo.</p>
+            <button type="button" class="gc-btn gc-btn--suave" id="cst-ver-previa">
+                <i class="bi bi-eye" aria-hidden="true"></i> Ver vista previa
+            </button>
+            <p class="cst-estado-carga" id="cst-previa-cargando" role="status" hidden>Preparando la vista previa…</p>
+
+            <div class="cst-alerta cst-alerta--aviso" id="cst-aviso-revision" role="status" hidden></div>
+
+            <div class="cst-campo cst-motivo" id="cst-campo-motivo" hidden>
+                <label for="motivo">Motivo de la revisión</label>
+                <textarea id="motivo" class="cst-control" rows="2" maxlength="500"
+                          placeholder="Qué se corrige y por qué (ej. se corrigió la nota de Matemáticas del segundo parcial)"></textarea>
+                <p class="cst-error" data-error="motivo"></p>
+            </div>
+
+            <div class="cst-previa-marco" id="cst-previa" aria-live="polite"></div>
+        </section>
+
+        @* 5 · Emitir *@
+        <div class="cst-pie-form">
+            <a class="gc-btn gc-btn--fantasma" href="@Url.Action("Index")">Cancelar</a>
+            <button type="submit" class="gc-btn gc-btn--principal" id="cst-emitir" disabled>
+                <i class="bi bi-check2-circle" aria-hidden="true"></i> Emitir documento
+            </button>
+        </div>
+        <p class="cst-nota-campo cst-derecha" id="cst-emitir-nota">Primero vea la vista previa.</p>
+    </form>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/constancias.js" asp-append-version="true"></script>
+}

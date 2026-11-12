@@ -1,0 +1,182 @@
+@model GESTION_COLEGIAL.UI.Models.DocumentoImpreso
+@using GESTION_COLEGIAL.UI.Models
+@*
+    El papel: lo usan el documento emitido (Ver) y la vista previa (Emitir), así se ven igual.
+*@
+@{
+    var D = Model;
+    var A = D.Alumno ?? new GESTION_COLEGIAL.Business.Models.DocumentoContenidoAlumno();
+    string anioTexto = D.Anio.HasValue ? D.Anio.Value.ToString() : D.AnioNombre;
+    Func<string, bool> hay = s => !string.IsNullOrWhiteSpace(s);
+    var ubicacion = new List<string>();
+    if (hay(A.Grado)) ubicacion.Add(A.Grado);
+    if (hay(A.Curso)) ubicacion.Add(A.Curso);
+    if (hay(A.Seccion)) ubicacion.Add("sección " + A.Seccion);
+    string ubicacionTexto = string.Join(", ", ubicacion);
+}
+
+<article class="cst-hoja @(D.EsVistaPrevia ? "cst-hoja--previa" : "")" data-revision="@D.Revision"
+         aria-label="@D.TipoInfo.Titulo de @A.Nombre">
+    @if (D.EsVistaPrevia)
+    {
+        <div class="cst-marca-agua" aria-hidden="true">VISTA PREVIA</div>
+    }
+
+    <header class="cst-membrete">
+        <div class="cst-escudo" aria-hidden="true"><i class="bi bi-mortarboard"></i></div>
+        <div class="cst-membrete-texto">
+            <p class="cst-colegio">@D.Institucion</p>
+            <p class="cst-direccion">@D.Direccion</p>
+        </div>
+        <div class="cst-membrete-ref">
+            <span class="cst-ref-etiqueta">Referencia</span>
+            <span class="cst-ref-valor">@(D.EsVistaPrevia ? "Se asigna al emitir" : D.Referencia)</span>
+            <span class="cst-ref-etiqueta">Revisión @D.Revision</span>
+        </div>
+    </header>
+
+    <h2 class="cst-titulo">@D.TipoInfo.Titulo</h2>
+    @if (D.Tipo == CatalogoDocumentos.Boletin && hay(anioTexto))
+    {
+        <p class="cst-subtitulo">Año lectivo @anioTexto@(hay(D.Parcial) ? " · Parcial " + D.Parcial : " · Todos los parciales")</p>
+    }
+
+    <dl class="cst-datos">
+        <div><dt>Alumno</dt><dd>@(hay(A.Nombre) ? A.Nombre : "—")</dd></div>
+        <div><dt>Identidad</dt><dd>@(hay(A.Identidad) ? A.Identidad : "—")</dd></div>
+        @if (D.Tipo != CatalogoDocumentos.Expediente)
+        {
+            <div><dt>Nivel</dt><dd>@(hay(A.Nivel) ? A.Nivel : "—")</dd></div>
+            <div><dt>Grado y sección</dt><dd>@(hay(A.Grado) ? A.Grado : "—")@(hay(A.Seccion) ? " · " + A.Seccion : "")</dd></div>
+            <div><dt>Curso</dt><dd>@(hay(A.Curso) ? A.Curso : "—")</dd></div>
+            <div><dt>Modalidad</dt><dd>@(hay(A.Modalidad) ? A.Modalidad : "—")</dd></div>
+        }
+        else
+        {
+            <div><dt>Curso actual</dt><dd>@(hay(A.Curso) ? A.Curso : "—")</dd></div>
+            <div><dt>Años en el expediente</dt><dd>@D.Anios.Count</dd></div>
+        }
+    </dl>
+
+    <div class="cst-cuerpo">
+        @if (D.Tipo == CatalogoDocumentos.Estudio)
+        {
+            <p class="cst-parrafo">
+                La Secretaría de <strong>@D.Institucion</strong> hace constar que
+                <strong>@(hay(A.Nombre) ? A.Nombre : "el alumno")</strong>@(hay(A.Identidad) ? ", con número de identidad " + A.Identidad + "," : "")
+                está matriculado(a) en esta institución en el año lectivo <strong>@(hay(anioTexto) ? anioTexto : "—")</strong>@(hay(ubicacionTexto) ? ", cursando " + ubicacionTexto : "")@(hay(A.Nivel) ? ", nivel " + A.Nivel : "")@(hay(A.Modalidad) ? ", modalidad " + A.Modalidad : "").
+            </p>
+            <p class="cst-parrafo">
+                Y para los fines que al interesado convengan, se extiende la presente en la ciudad de @D.Ciudad,
+                @CatalogoDocumentos.FechaLarga(D.FechaEmision).
+            </p>
+        }
+        else if (D.Tipo == CatalogoDocumentos.Boletin)
+        {
+            if (D.Filas.Count == 0)
+            {
+                <p class="cst-parrafo cst-sin-notas">Este boletín no tiene notas registradas.</p>
+            }
+            else
+            {
+                <table class="cst-tabla">
+                    <thead>
+                        <tr>
+                            <th scope="col">Materia</th>
+                            @foreach (var p in D.Parciales)
+                            {
+                                <th scope="col" class="cst-num">@(hay(p) ? p : "Parcial")</th>
+                            }
+                            <th scope="col" class="cst-num">Promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var f in D.Filas)
+                        {
+                            <tr>
+                                <th scope="row">@f.Materia</th>
+                                @foreach (var p in D.Parciales)
+                                {
+                                    <td class="cst-num">@CatalogoDocumentos.Nota(f.Notas.TryGetValue(p, out var n) ? n : null)</td>
+                                }
+                                <td class="cst-num cst-fuerte">@CatalogoDocumentos.Promedio(f.Promedio)</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th scope="row" colspan="@(D.Parciales.Count + 1)">Promedio general</th>
+                            <td class="cst-num cst-fuerte">@CatalogoDocumentos.Promedio(D.PromedioGeneral)</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            }
+        }
+        else if (D.Tipo == CatalogoDocumentos.Expediente)
+        {
+            if (D.Anios.Count == 0)
+            {
+                <p class="cst-parrafo cst-sin-notas">Este expediente no tiene notas registradas.</p>
+            }
+            foreach (var y in D.Anios)
+            {
+                <section class="cst-anio">
+                    <h3 class="cst-anio-titulo">
+                        Año @(y.Anio?.ToString() ?? "sin año")@(hay(y.Grado) ? " · " + y.Grado : "")@(hay(y.Seccion) ? " · Sección " + y.Seccion : "")
+                    </h3>
+                    <table class="cst-tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">Materia</th>
+                                <th scope="col" class="cst-num">Promedio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in y.Materias)
+                            {
+                                <tr>
+                                    <th scope="row">@m.Key</th>
+                                    <td class="cst-num">@CatalogoDocumentos.Promedio(m.Value)</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="row">Promedio del año</th>
+                                <td class="cst-num cst-fuerte">@CatalogoDocumentos.Promedio(y.Promedio)</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </section>
+            }
+            if (D.Anios.Count > 0)
+            {
+                <p class="cst-promedio-general">Promedio general: <strong>@CatalogoDocumentos.Promedio(D.PromedioGeneral)</strong></p>
+            }
+        }
+    </div>
+
+    @if (D.Tipo != CatalogoDocumentos.Estudio)
+    {
+        <p class="cst-lugar">@D.Ciudad, @CatalogoDocumentos.FechaLarga(D.FechaEmision).</p>
+    }
+
+    <div class="cst-firmas">
+        <div class="cst-firma"><span class="cst-linea"></span>Secretaría</div>
+        <div class="cst-firma"><span class="cst-linea"></span>Dirección</div>
+    </div>
+
+    <footer class="cst-pie">
+        <p>
+            Documento emitido el @CatalogoDocumentos.FechaHora(D.FechaEmision)@(hay(D.EmitidoPor) ? " por " + D.EmitidoPor : ""); revisión @D.Revision.
+            @if (D.EsVistaPrevia)
+            {
+                <text>Vista previa: todavía no se ha emitido.</text>
+            }
+        </p>
+        @if (hay(D.Motivo))
+        {
+            <p>Motivo de esta revisión: @D.Motivo</p>
+        }
+    </footer>
+</article>

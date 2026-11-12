@@ -86,6 +86,13 @@
                 <a href="@Url.Action("FindAsync", new { id = Model.Alu_Id })" class="btn-detail-edit">
                     <i class="bi bi-pencil"></i> Editar
                 </a>
+                @if ((Session["RoleName"] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase)
+                     || GESTION_COLEGIAL.UI.Filters.SessionManager.TienePantalla(Session["pantallas"] as string, "Constancias y expediente"))
+                {
+                    <a href="@Url.Action("Index", "Constancias", new { aluId = Model.Alu_Id })" class="btn-detail-back">
+                        <i class="bi bi-file-earmark-text"></i> Constancias
+                    </a>
+                }
                 <a href="@Url.Action("Index")" class="btn-detail-back">
                     <i class="bi bi-arrow-left"></i> Volver
                 </a>

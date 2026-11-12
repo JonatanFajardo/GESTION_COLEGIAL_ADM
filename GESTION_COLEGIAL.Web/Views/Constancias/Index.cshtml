@@ -1,0 +1,230 @@
+@model GESTION_COLEGIAL.UI.Models.ConstanciasIndexViewModel
+@using GESTION_COLEGIAL.UI.Models
+@{
+    ViewBag.Title = "Constancias y expediente";
+    var M = Model;
+    Func<string, string> urlTipo = t => Url.Action("Index", new { tipo = t, aniId = M.AniId, aluId = M.AluId, q = M.Buscar });
+    Func<int, string> urlPagina = p => Url.Action("Index", new { tipo = M.Tipo, aniId = M.AniId, aluId = M.AluId, q = M.Buscar, pagina = p });
+    string urlEmitir = Url.Action("Emitir", new { tipo = M.Tipo, aluId = M.AluId });
+}
+
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/css/pages/constancias.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item cst-miga">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Constancias y expediente</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="bi bi-file-earmark-text" style="font-size:2rem" aria-hidden="true"></i></div>
+            <div class="header-text-catalogo">
+                <h1>Constancias y expediente</h1>
+                <p>Documentos oficiales de los alumnos. Un documento emitido no cambia: para corregirlo se emite una revisión nueva.</p>
+            </div>
+        </div>
+        @if (M.PuedeEmitir)
+        {
+            <div class="header-action-catalogo">
+                <a class="btn-nuevo-catalogo" href="@urlEmitir">
+                    <i class="bi bi-plus-lg" aria-hidden="true"></i> Emitir documento
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="cst-page">
+    @if (!string.IsNullOrEmpty(M.Aviso))
+    {
+        <div class="cst-alerta cst-alerta--error" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> @M.Aviso</div>
+    }
+    <section class="cst-tarjeta" aria-labelledby="cst-filtros-titulo">
+        <h2 class="cst-tarjeta-titulo" id="cst-filtros-titulo">Buscar un documento</h2>
+        <p class="cst-tarjeta-desc">Filtre por tipo y año, o busque por nombre, identidad o referencia.</p>
+
+        @if (M.AluId.HasValue)
+        {
+            <p class="cst-filtro-alumno">
+                <i class="bi bi-person" aria-hidden="true"></i>
+                Solo los documentos de <strong>@(string.IsNullOrWhiteSpace(M.AlumnoFiltro) ? "este alumno" : M.AlumnoFiltro)</strong>
+                <a class="gc-btn gc-btn--fantasma gc-btn--chico" href="@Url.Action("Index", new { tipo = M.Tipo, aniId = M.AniId, q = M.Buscar })">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i> Ver de todos
+                </a>
+            </p>
+        }
+
+        <div class="cst-chips" role="group" aria-label="Tipo de documento">
+            <a class="gc-chip @(M.Tipo == null ? "gc-chip--activo" : "")" href="@urlTipo(null)" aria-current="@(M.Tipo == null ? "true" : null)">Todos</a>
+            @foreach (var t in CatalogoDocumentos.Tipos)
+            {
+                <a class="gc-chip @(M.Tipo == t.Codigo ? "gc-chip--activo" : "")" href="@urlTipo(t.Codigo)"
+                   aria-current="@(M.Tipo == t.Codigo ? "true" : null)">@t.Etiqueta</a>
+            }
+        </div>
+
+        <form method="get" action="@Url.Action("Index")" id="cst-form-filtros" class="cst-filtros">
+            @if (M.Tipo != null) { <input type="hidden" name="tipo" value="@M.Tipo" /> }
+            @if (M.AluId.HasValue) { <input type="hidden" name="aluId" value="@M.AluId" /> }
+            <div class="cst-campo">
+                <label for="filtro-anio">Año lectivo</label>
+                <select id="filtro-anio" name="aniId" class="cst-control" data-auto>
+                    <option value="">Todos los años</option>
+                    @foreach (var a in M.Anios)
+                    {
+                        <option value="@a.Ani_Id" selected="@(a.Ani_Id == M.AniId)">@(string.IsNullOrWhiteSpace(a.Ani_Nombre) ? a.Ani_Anio.ToString() : a.Ani_Nombre)</option>
+                    }
+                </select>
+            </div>
+            <div class="cst-campo">
+                <label for="filtro-buscar">Alumno o referencia</label>
+                <input id="filtro-buscar" name="q" type="search" class="cst-control" value="@M.Buscar"
+                       placeholder="Nombre, identidad o CE-26-…" autocomplete="off" maxlength="100" />
+            </div>
+            <div class="cst-filtros-botones">
+                <button type="submit" class="gc-btn gc-btn--suave"><i class="bi bi-search" aria-hidden="true"></i> Buscar</button>
+                @if (M.HayFiltros)
+                {
+                    <a class="gc-btn gc-btn--fantasma" href="@Url.Action("Index")"><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtros</a>
+                }
+            </div>
+        </form>
+        <p class="cst-estado-carga" id="cst-cargando" role="status" hidden>Actualizando documentos…</p>
+    </section>
+
+    <section class="cst-tarjeta" aria-labelledby="cst-lista-titulo">
+        <h2 class="cst-tarjeta-titulo" id="cst-lista-titulo">Documentos emitidos</h2>
+        <p class="cst-tarjeta-desc">El más reciente va primero. Abra uno para leerlo o imprimirlo.</p>
+
+        @if (M.Documentos.Count == 0)
+        {
+            if (M.HayFiltros)
+            {
+                <div class="cst-vacio">
+                    <div class="cst-vacio-icono" aria-hidden="true"><i class="bi bi-search"></i></div>
+                    <h3>Nada coincide con este filtro</h3>
+                    <p>No hay documentos emitidos con esos datos.</p>
+                    <div class="cst-vacio-botones">
+                        <a class="gc-btn gc-btn--suave" href="@Url.Action("Index")">Ver todos los documentos</a>
+                        @if (M.PuedeEmitir)
+                        {
+                            <a class="gc-btn gc-btn--principal" href="@urlEmitir">Emitir uno</a>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="cst-vacio">
+                    <div class="cst-vacio-icono" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></div>
+                    <h3>Todavía no se ha emitido ningún documento</h3>
+                    <p>Aquí aparecerán las constancias de estudio, los boletines y los expedientes que emita la Secretaría.</p>
+                    @if (M.PuedeEmitir)
+                    {
+                        <a class="gc-btn gc-btn--principal" href="@urlEmitir">Emitir el primero</a>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="cst-tabla-envoltura">
+                <table class="cst-lista">
+                    <thead>
+                        <tr>
+                            <th scope="col">Referencia</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Alumno</th>
+                            <th scope="col">Año / parcial</th>
+                            <th scope="col">Revisión</th>
+                            <th scope="col">Emitido</th>
+                            <th scope="col" class="cst-derecha">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in M.Documentos)
+                        {
+                            var t = CatalogoDocumentos.Tipo(d.Doc_Tipo);
+                            <tr class="@(d.Doc_EsUltima ? "" : "cst-fila-reemplazada")">
+                                <td><a class="cst-ref-enlace" href="@Url.Action("Ver", new { id = d.Doc_Id })">@d.Doc_Referencia</a></td>
+                                <td><span class="cst-badge cst-badge--@d.Doc_Tipo?.ToLowerInvariant()"><i class="@t.Icono" aria-hidden="true"></i> @t.Etiqueta</span></td>
+                                <td>
+                                    <span class="cst-nombre">@d.Alu_Nombre</span>
+                                    <span class="cst-sub">@d.Alu_Identidad</span>
+                                </td>
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(d.Ani_Nombre) ? "Todos los años" : d.Ani_Nombre)
+                                    @if (!string.IsNullOrWhiteSpace(d.Pac_Descripcion))
+                                    {
+                                        <span class="cst-sub">Parcial @d.Pac_Descripcion</span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="cst-badge cst-badge--revision">r@(d.Doc_Revision)</span>
+                                    @if (!d.Doc_EsUltima)
+                                    {
+                                        <span class="cst-sub cst-reemplazada"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> Reemplazada</span>
+                                    }
+                                </td>
+                                <td class="cst-suave" style="white-space:nowrap">
+                                    @CatalogoDocumentos.Fecha(d.Doc_FechaEmision)
+                                    <span class="cst-sub">@(string.IsNullOrWhiteSpace(d.Doc_EmitidoPor) ? "" : "por " + d.Doc_EmitidoPor)</span>
+                                </td>
+                                <td class="cst-derecha">
+                                    <a class="gc-btn gc-btn--suave gc-btn--chico" href="@Url.Action("Ver", new { id = d.Doc_Id })"
+                                       aria-label="Ver el documento @d.Doc_Referencia">
+                                        <i class="bi bi-eye" aria-hidden="true"></i> Ver
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (M.Paginas > 1)
+            {
+                <nav class="cst-paginacion" aria-label="Páginas de documentos">
+                    <span>Mostrando @M.Desde–@M.Hasta de @M.Total</span>
+                    <div class="cst-paginas">
+                        <a class="cst-pagina @(M.Pagina <= 1 ? "cst-pagina--off" : "")" href="@urlPagina(M.Pagina - 1)" aria-label="Página anterior">
+                            <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                        </a>
+                        @for (int p = 1; p <= M.Paginas; p++)
+                        {
+                            if (p == 1 || p == M.Paginas || Math.Abs(p - M.Pagina) <= 1)
+                            {
+                                <a class="cst-pagina @(p == M.Pagina ? "cst-pagina--actual" : "")" href="@urlPagina(p)"
+                                   aria-current="@(p == M.Pagina ? "page" : null)">@p</a>
+                            }
+                            else if (p == 2 || p == M.Paginas - 1)
+                            {
+                                <span class="cst-pagina cst-pagina--off" aria-hidden="true">…</span>
+                            }
+                        }
+                        <a class="cst-pagina @(M.Pagina >= M.Paginas ? "cst-pagina--off" : "")" href="@urlPagina(M.Pagina + 1)" aria-label="Página siguiente">
+                            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </nav>
+            }
+            else
+            {
+                <p class="cst-paginacion">@M.Total @(M.Total == 1 ? "documento" : "documentos")</p>
+            }
+        }
+    </section>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/constancias.js" asp-append-version="true"></script>
+}
