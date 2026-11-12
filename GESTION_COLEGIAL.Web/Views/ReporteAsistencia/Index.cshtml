@@ -1,0 +1,270 @@
+@model GESTION_COLEGIAL.UI.Models.ReporteAsistenciaIndexViewModel
+@using GESTION_COLEGIAL.UI.Models
+@{
+    ViewBag.Title = "Asistencia de alumnos";
+    var M = Model;
+    Func<DateTime, DateTime, string> urlRango = (d, h) =>
+        Url.Action("Index", new { desde = FormatoAsistencia.Iso(d), hasta = FormatoAsistencia.Iso(h), nivId = M.NivId, cunId = M.CunId, seaId = M.SeaId });
+    // Para la cascada en el navegador: cada sección con su grado y nivel.
+    var filtrosJson = Newtonsoft.Json.JsonConvert.SerializeObject(M.Filtros.Select(f => new { s = f.Sea_Id, sn = f.Seccion, n = f.Niv_Id, nn = f.Nivel, c = f.Cun_Id, cn = f.Grado }));
+    bool hayDatos = M.Secciones.Count > 0 && M.Registros > 0;
+}
+
+@section Styles{
+    <link href="~/css/pages/reporte-asistencia.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item ras-miga">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Asistencia de alumnos</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="ras-page">
+    <div class="ras-encabezado">
+        <div class="ras-encabezado-texto">
+            <div class="ras-encabezado-icono" aria-hidden="true"><i class="bi bi-clipboard-check"></i></div>
+            <div>
+                <h1>Asistencia de alumnos</h1>
+                <p>
+                    Cómo va la asistencia de cada sección según el pase de lista, y quiénes necesitan atención.
+                    @if (!M.VerTodas) { <span>Usted ve solo las secciones donde da clase.</span> }
+                </p>
+            </div>
+        </div>
+        @if (hayDatos)
+        {
+            <button type="button" class="ras-btn" data-exportar="#ras-tabla-secciones"
+                    data-archivo="asistencia-secciones-@(M.DesdeIso)-a-@(M.HastaIso).csv">
+                <i class="bi bi-file-earmark-spreadsheet" aria-hidden="true"></i> Exportar a Excel
+            </button>
+        }
+    </div>
+
+    @if (M.Anio == null)
+    {
+        <section class="ras-tarjeta">
+            <div class="ras-vacio">
+                <div class="ras-vacio-icono" aria-hidden="true"><i class="bi bi-calendar-x"></i></div>
+                <h3>No hay un año lectivo para hoy</h3>
+                <p>El reporte se arma con las secciones del año lectivo en curso. Cuando el año esté abierto, aquí aparecerá la asistencia.</p>
+            </div>
+        </section>
+    }
+    else
+    {
+        <section class="ras-tarjeta" aria-labelledby="ras-filtros-titulo">
+            <h2 class="ras-tarjeta-titulo" id="ras-filtros-titulo">Año lectivo @M.Anio.Ani_Nombre</h2>
+            <p class="ras-tarjeta-desc">Elija las fechas y, si quiere, un nivel, un grado o una sección.</p>
+
+            <div class="ras-atajos" role="group" aria-label="Atajos de fechas">
+                @foreach (var a in M.Atajos)
+                {
+                    <a class="ras-atajo @(a.Activo ? "ras-atajo--activo" : "")" href="@urlRango(a.Desde, a.Hasta)"
+                       aria-current="@(a.Activo ? "true" : null)" title="@FormatoAsistencia.Dia(a.Desde) al @FormatoAsistencia.Dia(a.Hasta)">@a.Nombre</a>
+                }
+            </div>
+
+            <form method="get" action="@Url.Action("Index")" id="ras-form-filtros" class="ras-filtros" novalidate
+                  data-filtros="@filtrosJson" data-max-dias="@FormatoAsistencia.MaxDias">
+                <div class="ras-campo">
+                    <label for="ras-desde">Desde</label>
+                    <input type="date" id="ras-desde" name="desde" class="ras-control" value="@M.DesdeIso" max="@M.HoyIso" required />
+                </div>
+                <div class="ras-campo">
+                    <label for="ras-hasta">Hasta</label>
+                    <input type="date" id="ras-hasta" name="hasta" class="ras-control" value="@M.HastaIso" max="@M.HoyIso" required />
+                </div>
+                <div class="ras-campo">
+                    <label for="ras-nivel">Nivel</label>
+                    <select id="ras-nivel" name="nivId" class="ras-control" disabled="@(M.Filtros.Count == 0)">
+                        <option value="">Todos los niveles</option>
+                        @foreach (var n in M.Niveles)
+                        {
+                            <option value="@n.Niv_Id" selected="@(n.Niv_Id == M.NivId)">@n.Nivel</option>
+                        }
+                    </select>
+                </div>
+                <div class="ras-campo">
+                    <label for="ras-grado">Grado</label>
+                    <select id="ras-grado" name="cunId" class="ras-control" disabled="@(!M.NivId.HasValue)">
+                        <option value="">@(M.NivId.HasValue ? "Todos los grados" : "Elija un nivel primero")</option>
+                        @foreach (var g in M.Grados)
+                        {
+                            <option value="@g.Cun_Id" selected="@(g.Cun_Id == M.CunId)">@g.Grado</option>
+                        }
+                    </select>
+                </div>
+                <div class="ras-campo">
+                    <label for="ras-seccion">Sección</label>
+                    <select id="ras-seccion" name="seaId" class="ras-control" disabled="@(!M.CunId.HasValue)">
+                        <option value="">@(M.CunId.HasValue ? "Todas las secciones" : "Elija un grado primero")</option>
+                        @foreach (var s in M.SeccionesFiltro)
+                        {
+                            <option value="@s.Sea_Id" selected="@(s.Sea_Id == M.SeaId)">@s.Seccion</option>
+                        }
+                    </select>
+                </div>
+                <div class="ras-filtros-botones">
+                    <button type="submit" class="ras-btn ras-btn--primario"><i class="bi bi-search" aria-hidden="true"></i> Ver reporte</button>
+                    @if (M.HayFiltros)
+                    {
+                        <a class="ras-btn ras-btn--fantasma" href="@Url.Action("Index", new { desde = M.DesdeIso, hasta = M.HastaIso })">
+                            <i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtros
+                        </a>
+                    }
+                </div>
+            </form>
+            <p class="ras-error" id="ras-error-fechas" role="alert">@M.Error</p>
+            <p class="ras-estado-carga" id="ras-cargando" role="status" hidden>Armando el reporte…</p>
+        </section>
+
+        @if (M.Error == null && M.Filtros.Count == 0)
+        {
+            <section class="ras-tarjeta">
+                <div class="ras-vacio">
+                    <div class="ras-vacio-icono" aria-hidden="true"><i class="bi bi-people"></i></div>
+                    <h3>No hay secciones para mostrar</h3>
+                    <p>
+                        @(M.VerTodas ? "El año lectivo todavía no tiene secciones con alumnos."
+                                     : "Usted no tiene secciones asignadas en el horario de este año. Si da clase, pida que lo agreguen al horario.")
+                    </p>
+                </div>
+            </section>
+        }
+        else if (M.Error == null)
+        {
+            <div class="ras-kpis" aria-label="Resumen del período">
+                <div class="ras-kpi ras-kpi--indigo">
+                    <div class="ras-kpi-icono" aria-hidden="true"><i class="bi bi-percent"></i></div>
+                    <div>
+                        <p class="ras-kpi-valor">@(M.PorcGeneral.HasValue ? FormatoAsistencia.Porcentaje(M.PorcGeneral) : "—")</p>
+                        <p class="ras-kpi-nombre">Asistencia general</p>
+                        <p class="ras-kpi-ayuda">Presentes y tardanzas sobre todos los registros</p>
+                    </div>
+                </div>
+                <div class="ras-kpi ras-kpi--esmeralda">
+                    <div class="ras-kpi-icono" aria-hidden="true"><i class="bi bi-person-x"></i></div>
+                    <div>
+                        <p class="ras-kpi-valor">@M.Ausentes.ToString("N0", FormatoAsistencia.Cultura)</p>
+                        <p class="ras-kpi-nombre">Ausencias</p>
+                        <p class="ras-kpi-ayuda">Más @M.Justificados.ToString("N0", FormatoAsistencia.Cultura) justificadas</p>
+                    </div>
+                </div>
+                <div class="ras-kpi ras-kpi--ambar">
+                    <div class="ras-kpi-icono" aria-hidden="true"><i class="bi bi-alarm"></i></div>
+                    <div>
+                        <p class="ras-kpi-valor">@M.Tardanzas.ToString("N0", FormatoAsistencia.Cultura)</p>
+                        <p class="ras-kpi-nombre">Tardanzas</p>
+                        <p class="ras-kpi-ayuda">Cuentan como asistencia</p>
+                    </div>
+                </div>
+                <div class="ras-kpi ras-kpi--cian">
+                    <div class="ras-kpi-icono" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div>
+                        <p class="ras-kpi-valor">@M.EnRiesgo.ToString("N0", FormatoAsistencia.Cultura)</p>
+                        <p class="ras-kpi-nombre">Alumnos en riesgo</p>
+                        <p class="ras-kpi-ayuda">Menos de 90 % o 3 ausencias sin justificar</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="ras-tarjeta" aria-labelledby="ras-secciones-titulo">
+                <h2 class="ras-tarjeta-titulo" id="ras-secciones-titulo">Asistencia por sección</h2>
+                <p class="ras-tarjeta-desc">
+                    Del @FormatoAsistencia.Dia(M.Desde) al @FormatoAsistencia.Dia(M.Hasta).
+                    Abra la planilla de una sección para ver a cada alumno día por día.
+                </p>
+
+                @if (!hayDatos)
+                {
+                    <div class="ras-vacio">
+                        <div class="ras-vacio-icono" aria-hidden="true"><i class="bi bi-clipboard"></i></div>
+                        <h3>Todavía no hay pase de lista en estas fechas</h3>
+                        <p>Cuando los docentes pasen lista, aquí verá cómo va cada sección. Pruebe con otro rango de fechas.</p>
+                        @if (M.HayFiltros)
+                        {
+                            <a class="ras-btn" href="@Url.Action("Index", new { desde = M.DesdeIso, hasta = M.HastaIso })">Ver todas las secciones</a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="ras-tabla-envoltura">
+                        <table class="ras-tabla" id="ras-tabla-secciones">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sección</th>
+                                    <th scope="col">Grado</th>
+                                    <th scope="col" class="ras-num">Alumnos</th>
+                                    <th scope="col" class="ras-num">Días de clase</th>
+                                    <th scope="col">% asistencia</th>
+                                    <th scope="col" class="ras-num">Ausencias</th>
+                                    <th scope="col" class="ras-num">Tardanzas</th>
+                                    <th scope="col" class="ras-num">En riesgo</th>
+                                    <th scope="col" class="ras-derecha" data-csv-omitir><span class="sr-only-ras">Acciones</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var s in M.Secciones)
+                                {
+                                    var urlSeccion = Url.Action("Seccion", new { id = s.Sea_Id, desde = M.DesdeIso, hasta = M.HastaIso, nivId = M.NivId, cunId = M.CunId, seaId = M.SeaId });
+                                    <tr>
+                                        <td>
+                                            <a class="ras-enlace-fuerte" href="@urlSeccion">@s.Seccion</a>
+                                        </td>
+                                        <td data-csv="@s.Grado - @s.Nivel">
+                                            @s.Grado
+                                            <span class="ras-sub">@s.Nivel</span>
+                                        </td>
+                                        <td class="ras-num">@s.Alumnos</td>
+                                        <td class="ras-num" data-csv="@s.DiasClase">
+                                            @s.DiasClase
+                                            <span class="ras-sub">@s.DiasConRegistro con pase de lista</span>
+                                        </td>
+                                        <td data-csv="@(s.PorcAsistencia.HasValue ? s.PorcAsistencia.Value.ToString("0.0", FormatoAsistencia.Cultura) : "")">
+                                            <div class="ras-porcentaje">
+                                                <span class="ras-porcentaje-texto">@FormatoAsistencia.Porcentaje(s.PorcAsistencia)</span>
+                                                @if (s.PorcAsistencia.HasValue)
+                                                {
+                                                    <span class="ras-barra" aria-hidden="true">
+                                                        <span class="ras-barra-relleno ras-tono--@FormatoAsistencia.Tono(s.PorcAsistencia)" style="width:@(FormatoAsistencia.Ancho(s.PorcAsistencia))%"></span>
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="ras-num">@s.Ausentes</td>
+                                        <td class="ras-num">@s.Tardanzas</td>
+                                        <td class="ras-num" data-csv="@s.AlumnosEnRiesgo">
+                                            @if (s.AlumnosEnRiesgo > 0)
+                                            {
+                                                <span class="ras-pastilla ras-pastilla--riesgo">@s.AlumnosEnRiesgo</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="ras-suave">0</span>
+                                            }
+                                        </td>
+                                        <td class="ras-derecha" data-csv-omitir>
+                                            <a class="ras-btn ras-btn--chico" href="@urlSeccion" aria-label="Ver la planilla de @s.Grado @s.Seccion">
+                                                <i class="bi bi-table" aria-hidden="true"></i> Ver planilla
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </section>
+        }
+    }
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/reporte-asistencia.js" asp-append-version="true"></script>
+}

@@ -298,7 +298,7 @@
                 </li>
             }
 
-            @if (tiene("Cuaderno de notas") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Calendario escolar") || tiene("Casos de disciplina") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
+            @if (tiene("Cuaderno de notas") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Calendario escolar") || tiene("Casos de disciplina") || tiene("Reporte de asistencia de alumnos") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
             {
                 <li class="menu">
                     <a href="#Academico" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -319,6 +319,7 @@
                         @if (tiene("Graduación de Alumnos") || esAdmin) { <li>@Html.ActionLink("Graduación", "Index", "GraduacionAlumnos")</li> }
                         @if (tiene("Centro de anuncios"))              { <li>@Html.ActionLink("Comunicados",   "Index", "CentroAnuncios")</li> }
                         @if (tiene("Casos de disciplina") || esAdmin)  { <li>@Html.ActionLink("Disciplina",    "Index", "Disciplina")</li> }
+                        @if (tiene("Reporte de asistencia de alumnos") || esAdmin) { <li>@Html.ActionLink("Reporte de asistencia", "Index", "ReporteAsistencia")</li> }
                         @* Deshabilitadas por test de utilidad §7 (ver TODO.md — decisión 2026-07-08):
                            - Mis Alumnos (MisAlumnosAdm): galería sin acciones ni enlace a ficha; redundante con Alumnos/Index
                            - Mapa de Aulas (MapaAulasAdm): sin capacidad ni sección; data aislada que nadie consume
