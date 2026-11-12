@@ -1,0 +1,50 @@
+﻿[
+  {
+    "outputFile": "wwwroot/Content/css/_forms.css",
+    "inputFile": "wwwroot/Content/scss/components/_forms.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/app.css",
+    "inputFile": "wwwroot/Content/scss/app.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/_general.css",
+    "inputFile": "wwwroot/Content/scss/app.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/structure.css",
+    "inputFile": "wwwroot/Content/scss/assets/structure.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/main.css",
+    "inputFile": "wwwroot/Content/scss/assets/main.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/main.css",
+    "inputFile": "wwwroot/Content/sass/assets/main.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/loader.css",
+    "inputFile": "wwwroot/Content/sass/assets/loader.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/scrollspyNav.css",
+    "inputFile": "wwwroot/Content/sass/assets/scrollspyNav.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/structure.css",
+    "inputFile": "wwwroot/Content/sass/assets/structure.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/custom.css",
+    "inputFile": "wwwroot/Content/sass/assets/custom.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/custom.css",
+    "inputFile": "wwwroot/Content/sass/base/_custom.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/css/base.css",
+    "inputFile": "wwwroot/Content/sass/base/_base.scss"
+  }
+]
