@@ -1,0 +1,287 @@
+@model GESTION_COLEGIAL.UI.Models.CasoPaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@using GESTION_COLEGIAL.UI.Models
+@{
+    var M = Model;
+    var C = M.Caso;
+    ViewBag.Title = "Caso " + C.Cas_Referencia;
+    bool abierto = M.EstaAbierto;
+    bool atender = M.PuedeAtender && abierto;
+}
+
+@section Styles{
+    <link href="~/css/pages/disciplina.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Casos de disciplina</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@C.Cas_Referencia</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="dis-page" id="dis-caso" data-caso="@C.Cas_Id"
+     data-url-estado="@Url.Action("CambiarEstadoAsync")" data-url-accion="@Url.Action("AgregarAccionAsync")"
+     data-url-completar="@Url.Action("CompletarAccionAsync")" data-url-nota="@Url.Action("AgregarNotaAsync")">
+    @Html.AntiForgeryToken()
+
+    <div class="dis-columna dis-columna--ancha">
+        <div class="dis-encabezado">
+            <div class="dis-encabezado-texto">
+                <div class="dis-encabezado-icono" aria-hidden="true"><i class="bi bi-shield-exclamation"></i></div>
+                <div>
+                    <h1>@C.Cas_Resumen</h1>
+                    <p>Caso @C.Cas_Referencia</p>
+                </div>
+            </div>
+            <a class="dis-btn dis-btn--fantasma" href="@Url.Action("Index")">
+                <i class="bi bi-arrow-left" aria-hidden="true"></i> Casos
+            </a>
+        </div>
+
+        @if (!string.IsNullOrEmpty(M.Aviso))
+        {
+            <div class="dis-alerta" role="status"><i class="bi bi-check-circle" aria-hidden="true"></i> <strong>@M.Aviso</strong></div>
+        }
+        <div class="dis-alerta dis-alerta--error" id="dis-error-general" role="alert" hidden></div>
+
+        <div class="dis-caso">
+            @* ── Resumen del caso ── *@
+            <section class="dis-seccion" aria-label="Resumen del caso">
+                <p class="dis-meta">
+                    <strong>@C.Cas_Referencia</strong>
+                    <span>· @CatalogoCasos.Tipo(C.Cas_Tipo)</span>
+                    <span>· Lo registró @(string.IsNullOrWhiteSpace(C.Reporta) ? "una persona desconocida" : C.Reporta)</span>
+                    @if (!string.IsNullOrWhiteSpace(C.Ani_Nombre))
+                    {
+                        <span>· Año @C.Ani_Nombre@(string.IsNullOrWhiteSpace(C.Pan_Nombre) ? "" : ", " + C.Pan_Nombre)</span>
+                    }
+                    @if (C.Cas_EsReservado)
+                    {
+                        <span class="dis-candado dis-candado--inline" style="color:var(--dis-texto)"><i class="bi bi-lock" aria-hidden="true"></i> Reservado</span>
+                    }
+                </p>
+
+                <dl class="dis-datos">
+                    <div>
+                        <dt>Estado</dt>
+                        <dd id="dis-estado-actual">@CatalogoCasos.Estado(C.Cas_Estado)</dd>
+                    </div>
+                    <div>
+                        <dt>Ocurrió</dt>
+                        <dd>@FormatoCaso.DiaHora(C.Cas_FechaOcurrio)</dd>
+                        @if (!string.IsNullOrWhiteSpace(C.Cas_Lugar))
+                        {
+                            <dd class="dis-dd-suave">@C.Cas_Lugar</dd>
+                        }
+                    </div>
+                    <div>
+                        <dt>Lo atiende</dt>
+                        <dd class="@(string.IsNullOrWhiteSpace(C.Atiende) ? "dis-dd-suave" : "")">@(string.IsNullOrWhiteSpace(C.Atiende) ? "—" : C.Atiende)</dd>
+                    </div>
+                    <div>
+                        <dt>Pendiente</dt>
+                        <dd>@C.Pendientes</dd>
+                    </div>
+                </dl>
+
+                @if (!string.IsNullOrWhiteSpace(C.Cas_Descripcion))
+                {
+                    <p class="dis-texto-largo">@C.Cas_Descripcion</p>
+                }
+
+                @if (M.PuedeAtender && M.Siguientes.Count > 0)
+                {
+                    <form class="dis-linea-form" id="dis-form-estado" aria-label="Mover el caso" novalidate>
+                        <div class="dis-w-estado">
+                            <label for="estado" class="sr-only-dis">Mover el caso a</label>
+                            <select id="estado" class="dis-control">
+                                @foreach (var s in M.Siguientes)
+                                {
+                                    <option value="@s.Codigo">@s.Etiqueta</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="dis-crece">
+                            <label for="motivo" class="sr-only-dis">Por qué</label>
+                            <input id="motivo" class="dis-control" maxlength="500" placeholder="Por qué (opcional)" autocomplete="off" />
+                        </div>
+                        <button type="submit" class="dis-btn dis-btn--primario dis-btn--bloque-movil">Mover el caso</button>
+                    </form>
+                    <p class="dis-error" data-error="estado"></p>
+                    <p class="dis-error" data-error="motivo"></p>
+                }
+            </section>
+
+            @* ── Personas ── *@
+            <section class="dis-seccion" aria-labelledby="dis-personas-titulo">
+                <h2 id="dis-personas-titulo">Personas</h2>
+                @if (M.Personas.Count == 0)
+                {
+                    <p class="dis-sin-datos">No se nombró a nadie.</p>
+                }
+                else
+                {
+                    <ul class="dis-lista">
+                        @foreach (var p in M.Personas)
+                        {
+                            <li class="dis-persona">
+                                <span class="dis-persona-nombre">
+                                    @(string.IsNullOrWhiteSpace(p.Nombre) ? "Sin nombre" : p.Nombre)
+                                    @if (!string.IsNullOrWhiteSpace(p.Ubicacion))
+                                    {
+                                        <span class="dis-suave" style="font-weight:400;margin-left:0.25rem">@p.Ubicacion</span>
+                                    }
+                                </span>
+                                <span class="dis-suave">@CatalogoCasos.Papel(p.Cpe_Papel)@(string.IsNullOrWhiteSpace(p.Cpe_Nota) ? "" : " · " + p.Cpe_Nota)</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </section>
+
+            @* ── Acciones ── *@
+            <section class="dis-seccion" aria-labelledby="dis-acciones-titulo">
+                <h2 id="dis-acciones-titulo">Acciones</h2>
+                @if (M.Acciones.Count == 0)
+                {
+                    <p class="dis-sin-datos">Todavía no hay acciones.</p>
+                }
+                else
+                {
+                    <ul class="dis-lista">
+                        @foreach (var a in M.Acciones)
+                        {
+                            <li class="dis-accion @(a.Pendiente ? "" : "dis-accion--hecha")">
+                                <div class="dis-accion-texto">
+                                    <p class="dis-accion-tipo">@a.Cac_Tipo</p>
+                                    <p class="dis-suave">@a.Cac_Descripcion</p>
+                                    <p class="dis-accion-meta">
+                                        @(string.IsNullOrWhiteSpace(a.Responsable) ? "Nadie todavía" : a.Responsable)
+                                        · @(a.Cac_FechaLimite.HasValue ? FormatoCaso.Dia(a.Cac_FechaLimite.Value) : "Sin fecha")
+                                        @if (!a.Pendiente)
+                                        {
+                                            @: · Hecha el @FormatoCaso.Dia(a.Cac_FechaHecha.Value)
+                                        }
+                                    </p>
+                                </div>
+                                @if (a.Pendiente && atender)
+                                {
+                                    <button type="button" class="dis-btn" data-completar="@a.Cac_Id" style="flex-shrink:0">
+                                        <i class="bi bi-check-lg" aria-hidden="true"></i> Marcar hecha
+                                    </button>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+
+                @if (atender)
+                {
+                    <form class="dis-linea-form" id="dis-form-accion" aria-label="Agregar una acción" novalidate style="flex-direction:column;align-items:stretch;padding-top:0.5rem">
+                        <div class="dis-rejilla-accion">
+                            <div>
+                                <label for="accion-tipo" class="sr-only-dis">Qué tipo</label>
+                                <input id="accion-tipo" class="dis-control" maxlength="100" placeholder="Reunión, derivación…" autocomplete="off" />
+                                <p class="dis-error" data-error="tipo" style="margin-top:0.25rem"></p>
+                            </div>
+                            <div>
+                                <label for="accion-descripcion" class="sr-only-dis">Qué tiene que pasar</label>
+                                <input id="accion-descripcion" class="dis-control" maxlength="1000" placeholder="Qué tiene que pasar" autocomplete="off" />
+                                <p class="dis-error" data-error="descripcion" style="margin-top:0.25rem"></p>
+                            </div>
+                        </div>
+                        <div class="dis-linea-form">
+                            <div class="dis-crece">
+                                <label for="accion-responsable" class="sr-only-dis">Quién</label>
+                                <select id="accion-responsable" class="dis-control">
+                                    <option value="">Nadie todavía</option>
+                                    @foreach (var e in M.Empleados)
+                                    {
+                                        <option value="@e.Emp_Id">@e.Nombre@(string.IsNullOrWhiteSpace(e.Cargo) ? "" : " · " + e.Cargo)</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="dis-w-fecha">
+                                <label for="accion-fecha" class="sr-only-dis">Para cuándo</label>
+                                <input type="date" id="accion-fecha" class="dis-control" />
+                            </div>
+                            <button type="submit" class="dis-btn dis-btn--bloque-movil">Agregar acción</button>
+                        </div>
+                    </form>
+                }
+            </section>
+
+            @* ── Notas ── *@
+            <section class="dis-seccion" aria-labelledby="dis-notas-titulo">
+                <h2 id="dis-notas-titulo">Notas</h2>
+                @if (M.Notas.Count == 0)
+                {
+                    <p class="dis-sin-datos">Todavía no hay notas.</p>
+                }
+                else
+                {
+                    <ol class="dis-lista">
+                        @foreach (var n in M.Notas)
+                        {
+                            <li class="dis-nota">
+                                <p class="dis-nota-cabecera">
+                                    <strong>@(string.IsNullOrWhiteSpace(n.Usuario) ? "Persona desconocida" : n.Usuario)</strong>
+                                    <span>@FormatoCaso.DiaHora(n.Cno_Fecha)</span>
+                                    @if (n.Cno_EsPrivada)
+                                    {
+                                        <span class="dis-candado dis-candado--inline"><i class="bi bi-lock" aria-hidden="true"></i> Privada</span>
+                                    }
+                                </p>
+                                <p class="dis-nota-texto">@n.Cno_Texto</p>
+                            </li>
+                        }
+                    </ol>
+                }
+
+                @if (atender)
+                {
+                    <form id="dis-form-nota" class="dis-linea-form" aria-label="Agregar una nota" novalidate style="flex-direction:column;align-items:stretch;padding-top:0.5rem">
+                        <label for="nota" class="sr-only-dis">Nota</label>
+                        <textarea id="nota" class="dis-control" rows="3" maxlength="5000" placeholder="Agregar una nota"></textarea>
+                        <p class="dis-error" data-error="nota"></p>
+                        <div class="dis-nota-pie">
+                            <label class="dis-casilla" for="nota-privada">
+                                <input type="checkbox" id="nota-privada" checked />
+                                Privada: solo para quienes atienden el caso
+                            </label>
+                            <button type="submit" class="dis-btn dis-btn--bloque-movil">Agregar nota</button>
+                        </div>
+                    </form>
+                }
+            </section>
+
+            @* ── Historial ── *@
+            <section class="dis-seccion" aria-labelledby="dis-historial-titulo">
+                <h2 id="dis-historial-titulo">Historial</h2>
+                <ol class="dis-historial">
+                    <li>
+                        <p class="dis-historial-titulo">Reportado</p>
+                        <p class="dis-suave">@FormatoCaso.Dia(C.Cas_FechaRegistra) · @(string.IsNullOrWhiteSpace(C.Reporta) ? "Persona desconocida" : C.Reporta)</p>
+                    </li>
+                    @foreach (var h in M.Historial)
+                    {
+                        <li>
+                            <p class="dis-historial-titulo">@CatalogoCasos.Estado(h.Ces_De) → @CatalogoCasos.Estado(h.Ces_A)</p>
+                            <p class="dis-suave">
+                                @FormatoCaso.Dia(h.Ces_Fecha) · @(string.IsNullOrWhiteSpace(h.Usuario) ? "Persona desconocida" : h.Usuario)@(string.IsNullOrWhiteSpace(h.Ces_Motivo) ? "" : " · " + h.Ces_Motivo)
+                            </p>
+                        </li>
+                    }
+                </ol>
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/disciplina.js" asp-append-version="true"></script>
+}

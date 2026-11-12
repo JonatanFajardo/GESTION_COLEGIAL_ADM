@@ -1,0 +1,191 @@
+@model GESTION_COLEGIAL.UI.Models.CasosIndexViewModel
+@using GESTION_COLEGIAL.Business.Models
+@using GESTION_COLEGIAL.UI.Models
+@{
+    ViewBag.Title = "Casos de disciplina";
+    var M = Model;
+    Func<int, string> urlPagina = p => Url.Action("Index", new { estado = M.Estado, tipo = M.Tipo, abiertos = M.SoloAbiertos ? "true" : null, pagina = p });
+}
+
+@section Styles{
+    <link href="~/css/pages/disciplina.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item dis-miga">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Casos de disciplina</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="dis-page">
+    <div class="dis-encabezado">
+        <div class="dis-encabezado-texto">
+            <div class="dis-encabezado-icono" aria-hidden="true"><i class="bi bi-shield-exclamation"></i></div>
+            <div>
+                <h1>Casos de disciplina</h1>
+                <p>Qué pasó, quiénes participaron, qué hizo el colegio y cómo avanzó cada caso.</p>
+            </div>
+        </div>
+        @if (M.PuedeRegistrar)
+        {
+            <a class="dis-btn dis-btn--primario" href="@Url.Action("Registrar")">
+                <i class="bi bi-plus-lg" aria-hidden="true"></i> Registrar un caso
+            </a>
+        }
+    </div>
+
+    <section class="dis-tarjeta" aria-labelledby="dis-filtros-titulo">
+        <h2 class="dis-tarjeta-titulo" id="dis-filtros-titulo">Registros de conducta y de protección del menor</h2>
+        <p class="dis-tarjeta-desc">
+            @M.Abiertos @(M.Abiertos == 1 ? "caso todavía necesita" : "casos todavía necesitan") trabajo.
+            Un caso de protección del menor solo lo leen quienes lo atienden, así que esta lista puede ser más corta que la del colegio.
+        </p>
+
+        <form method="get" action="@Url.Action("Index")" id="dis-form-filtros" class="dis-filtros">
+            <div class="dis-campo">
+                <label for="filtro-estado">Estado</label>
+                <select id="filtro-estado" name="estado" class="dis-control" data-auto>
+                    <option value="">Todos los estados</option>
+                    @foreach (var e in CatalogoCasos.Estados)
+                    {
+                        <option value="@e.Codigo" selected="@(e.Codigo == M.Estado)">@e.Etiqueta</option>
+                    }
+                </select>
+            </div>
+            <div class="dis-campo">
+                <label for="filtro-tipo">Tipo</label>
+                <select id="filtro-tipo" name="tipo" class="dis-control" data-auto>
+                    <option value="">Todos los tipos</option>
+                    @foreach (var t in CatalogoCasos.Tipos)
+                    {
+                        <option value="@t.Codigo" selected="@(t.Codigo == M.Tipo)">@t.Etiqueta</option>
+                    }
+                </select>
+            </div>
+            <label class="dis-casilla">
+                <input type="checkbox" name="abiertos" value="true" checked="@M.SoloAbiertos" data-auto />
+                Solo los que necesitan trabajo
+            </label>
+            @if (M.HayFiltros)
+            {
+                <a class="dis-btn" href="@Url.Action("Index")"><i class="bi bi-x-lg" aria-hidden="true"></i> Quitar filtros</a>
+            }
+            <noscript><button type="submit" class="dis-btn">Filtrar</button></noscript>
+        </form>
+        <p class="dis-estado-carga" id="dis-cargando" role="status" hidden>Actualizando casos…</p>
+    </section>
+
+    <section class="dis-tarjeta" aria-labelledby="dis-lista-titulo">
+        <h2 class="dis-tarjeta-titulo" id="dis-lista-titulo">Casos registrados</h2>
+        <p class="dis-tarjeta-desc">El más reciente va primero. Abra un caso para leerlo y para hacerlo avanzar.</p>
+
+        @if (M.Casos.Count == 0)
+        {
+            if (M.HayFiltros)
+            {
+                <div class="dis-vacio">
+                    <div class="dis-vacio-icono" aria-hidden="true"><i class="bi bi-search"></i></div>
+                    <h3>Nada coincide con este filtro</h3>
+                    <p>No hay casos que usted pueda leer en ese estado.</p>
+                    <a class="dis-btn" href="@Url.Action("Index")">Ver todos los casos</a>
+                </div>
+            }
+            else
+            {
+                <div class="dis-vacio">
+                    <div class="dis-vacio-icono" aria-hidden="true"><i class="bi bi-shield-exclamation"></i></div>
+                    <h3>Todavía no hay casos</h3>
+                    <p>Un caso registra qué pasó, quiénes participaron y qué hizo el colegio al respecto.</p>
+                    @if (M.PuedeRegistrar)
+                    {
+                        <a class="dis-btn dis-btn--primario" href="@Url.Action("Registrar")">Registrar el primer caso</a>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="dis-tabla-envoltura">
+                <table class="dis-tabla">
+                    <thead>
+                        <tr>
+                            <th scope="col">Caso</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Ocurrió</th>
+                            <th scope="col">Lo atiende</th>
+                            <th scope="col" class="dis-derecha">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in M.Casos)
+                        {
+                            <tr>
+                                <td>
+                                    <a class="dis-caso-resumen" href="@Url.Action("Caso", new { id = c.Cas_Id })">@c.Cas_Resumen</a>
+                                    <span class="dis-sub">
+                                        @c.Cas_Referencia · @c.Personas @(c.Personas == 1 ? "persona nombrada" : "personas nombradas")
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="dis-pastilla">@CatalogoCasos.Tipo(c.Cas_Tipo)</span>
+                                    @if (c.Cas_EsReservado)
+                                    {
+                                        <span class="dis-candado"><i class="bi bi-lock" aria-hidden="true"></i> Reservado</span>
+                                    }
+                                </td>
+                                <td><span class="dis-pastilla">@CatalogoCasos.Estado(c.Cas_Estado)</span></td>
+                                <td class="dis-suave" style="white-space:nowrap">
+                                    @FormatoCaso.Dia(c.Cas_FechaOcurrio)
+                                    <span class="dis-sub">@FormatoCaso.Hora(c.Cas_FechaOcurrio)</span>
+                                </td>
+                                <td class="dis-suave">@(string.IsNullOrWhiteSpace(c.Atiende) ? "Nadie todavía" : c.Atiende)</td>
+                                <td class="dis-derecha">
+                                    <a class="dis-btn dis-btn--chico" href="@Url.Action("Caso", new { id = c.Cas_Id })"
+                                       aria-label="Abrir el caso @c.Cas_Referencia">
+                                        <i class="bi bi-eye" aria-hidden="true"></i> Abrir
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (M.Paginas > 1)
+            {
+                <nav class="dis-paginacion" aria-label="Páginas de casos">
+                    <span>Mostrando @M.Desde–@M.Hasta de @M.Total</span>
+                    <div class="dis-paginas">
+                        <a class="dis-pagina @(M.Pagina <= 1 ? "dis-pagina--off" : "")" href="@urlPagina(M.Pagina - 1)" aria-label="Página anterior">
+                            <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                        </a>
+                        @for (int p = 1; p <= M.Paginas; p++)
+                        {
+                            if (p == 1 || p == M.Paginas || Math.Abs(p - M.Pagina) <= 1)
+                            {
+                                <a class="dis-pagina @(p == M.Pagina ? "dis-pagina--actual" : "")" href="@urlPagina(p)"
+                                   aria-current="@(p == M.Pagina ? "page" : null)">@p</a>
+                            }
+                            else if (p == 2 || p == M.Paginas - 1)
+                            {
+                                <span class="dis-pagina dis-pagina--off" aria-hidden="true">…</span>
+                            }
+                        }
+                        <a class="dis-pagina @(M.Pagina >= M.Paginas ? "dis-pagina--off" : "")" href="@urlPagina(M.Pagina + 1)" aria-label="Página siguiente">
+                            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </nav>
+            }
+        }
+    </section>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/disciplina.js" asp-append-version="true"></script>
+}
