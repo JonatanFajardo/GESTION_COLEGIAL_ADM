@@ -298,7 +298,7 @@ function fillDetailModalCatalog(data) {
                     }
 
                     // Verificar si la fecha es válida
-                    if (date && !isNaN(date.getTime())) {
+                    if (date && !isNaN(date.getTime()) && date.getFullYear() > 1) { // año 1 = fecha vacía (0001-01-01)
                         value = date.toLocaleDateString('es-HN', {
                             year: 'numeric',
                             month: '2-digit',

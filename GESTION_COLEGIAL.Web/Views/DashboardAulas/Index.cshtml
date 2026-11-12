@@ -1,0 +1,69 @@
+@{
+    ViewBag.Title = "Dashboard de Aulas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/css/pages/dashboard-aulas.css">
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Dashboard de Aulas</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="dashboard-aulas">
+    <header class="da-header">
+        <div class="da-header-icon">
+            <i class="fa-solid fa-chalkboard-user"></i>
+        </div>
+        <div>
+            <h1>Dashboard de Aulas</h1>
+            <p class="da-sub">Vista general de rendimiento, asistencia y deudas por sección</p>
+        </div>
+    </header>
+
+    <div class="filters" id="da-filters">
+        <button class="filter-btn active" data-filter="all" type="button">Todas</button>
+        <button class="filter-btn" data-filter="danger" type="button"><i class="fa-solid fa-triangle-exclamation"></i> Críticas</button>
+    </div>
+
+    <div class="filters filters-jornada" id="da-filters-jornada">
+        <span class="filters-label">Jornada:</span>
+        <button class="filter-btn" data-jornada="all" type="button">Todas</button>
+    </div>
+
+    <div class="summary-strip" id="da-summary"></div>
+
+    <div class="section-title">Vista por aulas</div>
+    <div class="aulas-grid" id="da-grid">
+        <div class="da-empty" id="da-loading">Cargando datos…</div>
+    </div>
+
+    <div class="detail-panel" id="da-detail">
+        <span class="detail-close" id="da-detail-close" role="button" aria-label="Cerrar">✕</span>
+        <div id="da-detail-content"></div>
+    </div>
+
+    <div class="section-title">Comparativo general</div>
+    <div class="chart-legend">
+        <span><span class="leg-sq" style="background:#E8A445"></span>Alumnos</span>
+        <span><span class="leg-sq" style="background:#E74C3C"></span>Bajo rendimiento</span>
+        <span><span class="leg-sq" style="background:#2980B9"></span>Con deuda</span>
+        <span><span class="leg-sq" style="background:#27AE60"></span>Asistencia %</span>
+    </div>
+    <div class="chart-wrap">
+        <canvas id="da-chart" role="img" aria-label="Gráfico de barras comparando alumnos, bajo rendimiento y deudas por aula"></canvas>
+    </div>
+
+    <p class="da-note" id="da-note"></p>
+</div>
+
+@section Scripts {
+    <script src="~/Content/js/pages/dashboardaulas.js"></script>
+    <script>
+        DashboardAulas.init('@Url.Action("AulasAsync")');
+    </script>
+}

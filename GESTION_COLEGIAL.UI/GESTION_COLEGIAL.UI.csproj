@@ -181,6 +181,12 @@
     <Compile Include="Controllers\ParcialesController.cs" />
     <Compile Include="Controllers\ParentescosController.cs" />
     <Compile Include="Controllers\SeccionesController.cs" />
+    <Compile Include="Controllers\AniosLectivosController.cs" />
+    <Compile Include="Controllers\PeriodosAnioController.cs" />
+    <Compile Include="Controllers\SeccionesAnioController.cs" />
+    <Compile Include="Controllers\OfertasAnioController.cs" />
+    <Compile Include="Controllers\RolloverController.cs" />
+    <Compile Include="Controllers\MatriculaAnioController.cs" />
     <Compile Include="Controllers\SemestresController.cs" />
     <Compile Include="Controllers\TarifasController.cs" />
     <Compile Include="Controllers\TitulosController.cs" />
@@ -1579,6 +1585,9 @@
     <Content Include="Views\Alumnos\_TabDocumentos.cshtml" />
     <Content Include="Views\Alumnos\_TabHistorial.cshtml" />
     <Content Include="Views\DirectorioContacto\Index.cshtml" />
+    <Content Include="Views\AniosLectivos\Index.cshtml" />
+    <Content Include="Views\AniosLectivos\Setup.cshtml" />
+    <Content Include="Views\MatriculaAnio\Index.cshtml" />
     <Content Include="Views\Semestres\Index.cshtml" />
     <Content Include="Views\Secciones\Index.cshtml" />
     <Content Include="Views\Parentescos\Index.cshtml" />

@@ -1,0 +1,150 @@
+@using Newtonsoft.Json.Linq
+@{
+    Layout = null;
+    var encargados = Model as System.Collections.Generic.List<dynamic>;
+
+    // Helper: leer campo defensivo sobre JObject / ExpandoObject / POCO
+    Func<dynamic, string, object> getVal = (obj, key) =>
+    {
+        if (obj == null) return null;
+        try
+        {
+            var jo = obj as JObject;
+            if (jo != null && jo.TryGetValue(key, System.StringComparison.OrdinalIgnoreCase, out var v))
+                return v.Type == JTokenType.Null ? null : v.ToObject<object>();
+        }
+        catch { }
+        try
+        {
+            var dict = obj as System.Collections.Generic.IDictionary<string, object>;
+            if (dict != null && dict.ContainsKey(key)) return dict[key];
+        }
+        catch { }
+        try
+        {
+            var prop = ((object)obj).GetType().GetProperty(key);
+            if (prop != null) return prop.GetValue(obj);
+        }
+        catch { }
+        return null;
+    };
+
+    Func<dynamic, string> nombreCompleto = (e) =>
+    {
+        var partes = new[] {
+            (getVal(e, "Per_PrimerNombre") ?? "").ToString(),
+            (getVal(e, "Per_SegundoNombre") ?? "").ToString(),
+            (getVal(e, "Per_ApellidoPaterno") ?? "").ToString(),
+            (getVal(e, "Per_ApellidoMaterno") ?? "").ToString()
+        };
+        return string.Join(" ", partes.Where(p => !string.IsNullOrWhiteSpace(p))).Trim();
+    };
+
+    Func<string, string> iniciales = (nombre) =>
+    {
+        if (string.IsNullOrWhiteSpace(nombre)) return "?";
+        var partes = nombre.Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+        if (partes.Length >= 2) return (partes[0][0].ToString() + partes[partes.Length - 2][0].ToString()).ToUpper();
+        return partes[0][0].ToString().ToUpper();
+    };
+
+    // Paleta rotativa para avatares
+    var colores = new[] { "#4f46e5", "#f97316", "#10b981", "#06b6d4", "#8b5cf6", "#ef4444" };
+}
+
+@if (encargados == null || !encargados.Any())
+{
+    <div class="af-empty">
+        <i class="bi bi-inbox"></i>
+        <h4>Sin encargados vinculados</h4>
+        <p>Este alumno no tiene encargados registrados en el sistema.</p>
+        <a href="/Encargados/Index" class="af-btn-link">
+            Gestionar encargados <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    return;
+}
+
+<div class="af-section-card">
+    <div class="af-section-header">
+        <h5 class="mb-0"><i class="bi bi-people-fill me-2"></i>Encargados del alumno</h5>
+        <span class="text-muted small">@encargados.Count registrado@(encargados.Count == 1 ? "" : "s")</span>
+    </div>
+
+    <div class="af-family-grid">
+        @{ var idx = 0; }
+        @foreach (var enc in encargados)
+        {
+            var encId = getVal(enc, "Enc_Id");
+            var nombre = nombreCompleto(enc);
+            var parentesco = (getVal(enc, "Par_Descripcion") ?? "Sin parentesco").ToString();
+            var telefono = (getVal(enc, "Per_Telefono") ?? "").ToString();
+            var email = (getVal(enc, "Per_CorreoElectronico") ?? "").ToString();
+            var direccion = (getVal(enc, "Per_Direccion") ?? "").ToString();
+            var ocupacion = (getVal(enc, "Enc_Ocupacion") ?? "").ToString();
+            var principalRaw = getVal(enc, "EncargadoPrincipal");
+            var esPrincipal = false;
+            if (principalRaw is bool b) { esPrincipal = b; }
+            else if (principalRaw != null) { bool.TryParse(principalRaw.ToString(), out esPrincipal); }
+            var color = colores[idx % colores.Length];
+            idx++;
+
+            <div class="af-family-card">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="af-avatar-circle d-flex align-items-center justify-content-center"
+                         style="width:52px;height:52px;border-radius:50%;font-weight:700;flex-shrink:0;background:@color;color:#fff;">
+                        @iniciales(nombre)
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                            <strong>@(string.IsNullOrWhiteSpace(nombre) ? "(Sin nombre)" : nombre)</strong>
+                            @if (esPrincipal)
+                            {
+                                <span class="badge" style="background-color:#f97316;color:#fff;">
+                                    <i class="bi bi-star-fill"></i> Encargado principal
+                                </span>
+                            }
+                        </div>
+                        <div class="mb-2">
+                            <span class="badge bg-light text-dark border">@parentesco</span>
+                            @if (!string.IsNullOrWhiteSpace(ocupacion))
+                            {
+                                <span class="badge bg-light text-muted border ms-1">@ocupacion</span>
+                            }
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(telefono))
+                        {
+                            <div class="small text-muted mb-1">
+                                <i class="bi bi-telephone me-1"></i>@telefono
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(email))
+                        {
+                            <div class="small text-muted mb-1">
+                                <i class="bi bi-envelope me-1"></i>@email
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(direccion))
+                        {
+                            <div class="small text-muted mb-2">
+                                <i class="bi bi-geo-alt me-1"></i>@direccion
+                            </div>
+                        }
+                        @if (encId != null)
+                        {
+                            <a href="/Encargados/Detalle/@encId" class="af-btn-link">
+                                Ver ficha del encargado <i class="bi bi-arrow-right"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-end mt-3">
+        <a href="/Encargados/Index" class="af-btn-link">
+            Ver todos los encargados <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>

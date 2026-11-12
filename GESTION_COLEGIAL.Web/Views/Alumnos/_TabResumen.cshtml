@@ -1,0 +1,230 @@
+@using System.Globalization
+@{
+    Layout = null;
+    dynamic dto = Model;
+
+    // ─── Datos personales ────────────────────────────────────────────
+    dynamic dp = null;
+    try { dp = dto?.DatosPersonales; } catch { }
+
+    string primerNombre = null, segundoNombre = null, apPaterno = null, apMaterno = null;
+    string dni = null, sexo = null;
+    System.DateTime? fechaNac = null;
+    int? anioCursado = null;
+    string curNombre = null, cunDesc = null, secDesc = null;
+
+    if (dp != null)
+    {
+        try { primerNombre = (string)dp.Per_PrimerNombre; } catch { }
+        try { segundoNombre = (string)dp.Per_SegundoNombre; } catch { }
+        try { apPaterno = (string)dp.Per_ApellidoPaterno; } catch { }
+        try { apMaterno = (string)dp.Per_ApellidoMaterno; } catch { }
+        try { dni = (string)dp.Per_Identidad; } catch { }
+        try { sexo = (string)dp.Per_Sexo; } catch { }
+        try { fechaNac = (System.DateTime?)dp.Per_FechaNacimiento; } catch { }
+        try { anioCursado = (int?)dp.AnioCursado; } catch { }
+        try { curNombre = (string)dp.Cur_Nombre; } catch { }
+        try { cunDesc = (string)dp.Cun_Descripcion; } catch { }
+        try { secDesc = (string)dp.Sec_Descripcion; } catch { }
+    }
+
+    string nombreCompleto = string.Join(" ", new[] { primerNombre, segundoNombre, apPaterno, apMaterno }
+        .Where(s => !string.IsNullOrWhiteSpace(s))).Trim();
+    if (string.IsNullOrWhiteSpace(nombreCompleto)) nombreCompleto = "—";
+
+    string edadTxt = "—";
+    if (fechaNac.HasValue)
+    {
+        var hoy = System.DateTime.Today;
+        int edad = hoy.Year - fechaNac.Value.Year;
+        if (fechaNac.Value.Date > hoy.AddYears(-edad)) edad--;
+        edadTxt = edad + " años";
+    }
+
+    string sexoTxt = "—";
+    if (!string.IsNullOrWhiteSpace(sexo))
+    {
+        var s = sexo.Trim().ToUpperInvariant();
+        if (s == "M") sexoTxt = "Masculino";
+        else if (s == "F") sexoTxt = "Femenino";
+        else sexoTxt = sexo;
+    }
+
+    // ─── Últimos eventos: timeline unificado (cuentas + asistencia) ─
+    var eventos = new List<dynamic>();
+
+    try
+    {
+        var cuentas = dto?.CuentasPorCobrar;
+        if (cuentas != null)
+        {
+            foreach (var c in cuentas)
+            {
+                System.DateTime fecha = System.DateTime.MinValue;
+                try { fecha = (System.DateTime)c.Cco_FechaVencimiento; } catch { }
+                decimal montoTotal = 0m, pend = 0m;
+                try { montoTotal = (decimal)(c.Cco_MontoTotal ?? 0m); } catch { }
+                try { pend = (decimal)(c.Cco_MontoPendiente ?? 0m); } catch { }
+                string epa = null, cpa = null;
+                try { epa = (string)c.Epa_Descripcion; } catch { }
+                try { cpa = (string)c.Cpa_Descripcion; } catch { }
+
+                bool pagado = pend <= 0m;
+                eventos.Add(new
+                {
+                    Fecha = fecha,
+                    Categoria = pagado ? "Pago" : "Cargo",
+                    Color = pagado ? "success" : "warning",
+                    Titulo = pagado ? "Cargo saldado" : "Cargo pendiente",
+                    Detalle = $"{cpa ?? "Concepto"} — L. {montoTotal:N2}" +
+                              (pagado ? "" : $" (pendiente L. {pend:N2})") +
+                              (string.IsNullOrWhiteSpace(epa) ? "" : $" · {epa}")
+                });
+            }
+        }
+    }
+    catch { }
+
+    try
+    {
+        var asis = dto?.AsistenciaReciente;
+        if (asis != null)
+        {
+            foreach (var a in asis)
+            {
+                System.DateTime fecha = System.DateTime.MinValue;
+                try { fecha = (System.DateTime)a.Asi_Fecha; } catch { }
+                string estado = null, materia = null;
+                try { estado = (string)a.Asi_Estado; } catch { }
+                try { materia = (string)a.Mat_Nombre; } catch { }
+
+                string color = "info";
+                string estadoNorm = (estado ?? "").Trim().ToUpperInvariant();
+                if (estadoNorm.StartsWith("P")) color = "success";
+                else if (estadoNorm.StartsWith("T")) color = "warning";
+                else if (estadoNorm.StartsWith("A") || estadoNorm.StartsWith("I")) color = "danger";
+                else if (estadoNorm.StartsWith("J")) color = "info";
+
+                eventos.Add(new
+                {
+                    Fecha = fecha,
+                    Categoria = "Asistencia",
+                    Color = color,
+                    Titulo = string.IsNullOrWhiteSpace(estado) ? "Asistencia" : estado,
+                    Detalle = string.IsNullOrWhiteSpace(materia) ? "—" : materia
+                });
+            }
+        }
+    }
+    catch { }
+
+    var ultimosEventos = eventos
+        .Where(e => ((System.DateTime)e.Fecha) > System.DateTime.MinValue)
+        .OrderByDescending(e => (System.DateTime)e.Fecha)
+        .Take(5)
+        .ToList();
+}
+
+<div class="af-tab-resumen">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="af-section-card">
+                <div class="af-section-header">
+                    <h5 class="mb-0"><i class="bi bi-person-vcard me-2"></i>Datos personales</h5>
+                </div>
+                <div class="p-3">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5 text-muted">Nombre completo</dt>
+                        <dd class="col-sm-7 fw-semibold">@nombreCompleto</dd>
+
+                        <dt class="col-sm-5 text-muted">DNI</dt>
+                        <dd class="col-sm-7">@(string.IsNullOrWhiteSpace(dni) ? "—" : dni)</dd>
+
+                        <dt class="col-sm-5 text-muted">Edad</dt>
+                        <dd class="col-sm-7">@edadTxt</dd>
+
+                        <dt class="col-sm-5 text-muted">Fecha nacimiento</dt>
+                        <dd class="col-sm-7">@(fechaNac.HasValue ? fechaNac.Value.ToString("dd/MM/yyyy") : "—")</dd>
+
+                        <dt class="col-sm-5 text-muted">Sexo</dt>
+                        <dd class="col-sm-7">@sexoTxt</dd>
+
+                        <dt class="col-sm-5 text-muted">Estado</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge bg-success">Activo</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="af-section-card">
+                <div class="af-section-header">
+                    <h5 class="mb-0"><i class="bi bi-mortarboard me-2"></i>Datos académicos</h5>
+                </div>
+                <div class="p-3">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5 text-muted">Grado académico</dt>
+                        <dd class="col-sm-7 fw-semibold">@(string.IsNullOrWhiteSpace(cunDesc) ? "—" : cunDesc)</dd>
+
+                        <dt class="col-sm-5 text-muted">Curso</dt>
+                        <dd class="col-sm-7">@(string.IsNullOrWhiteSpace(curNombre) ? "—" : curNombre)</dd>
+
+                        <dt class="col-sm-5 text-muted">Sección</dt>
+                        <dd class="col-sm-7">@(string.IsNullOrWhiteSpace(secDesc) ? "—" : secDesc)</dd>
+
+                        <dt class="col-sm-5 text-muted">Año cursado</dt>
+                        <dd class="col-sm-7">@(anioCursado.HasValue && anioCursado.Value > 0 ? anioCursado.Value.ToString(CultureInfo.InvariantCulture) : "—")</dd>
+
+                        <dt class="col-sm-5 text-muted">Código alumno</dt>
+                        <dd class="col-sm-7">—</dd>
+
+                        <dt class="col-sm-5 text-muted">Modalidad</dt>
+                        <dd class="col-sm-7">—</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="af-section-card">
+                <div class="af-section-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Últimos eventos</h5>
+                    <small class="text-muted">Últimos 5 movimientos</small>
+                </div>
+                <div class="p-3">
+                    @if (ultimosEventos.Count == 0)
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-inbox display-6 d-block mb-2"></i>
+                            <div>No hay eventos recientes para mostrar.</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <ul class="af-timeline">
+                            @foreach (var ev in ultimosEventos)
+                            {
+                                <li class="af-timeline-item">
+                                    <span class="af-timeline-dot bg-@ev.Color"></span>
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <strong>@ev.Titulo</strong> — @ev.Detalle
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge bg-@(ev.Color)-subtle text-@ev.Color">@ev.Categoria</span>
+                                            <div class="text-muted small">@(((System.DateTime)ev.Fecha).ToString("dd/MM/yyyy"))</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

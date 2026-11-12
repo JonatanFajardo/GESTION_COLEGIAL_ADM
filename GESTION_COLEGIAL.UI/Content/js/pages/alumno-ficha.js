@@ -75,6 +75,7 @@ window.AlumnoFicha = (function () {
             var m = /\/Date\((\d+)/.exec(v);
             var d = m ? new Date(parseInt(m[1], 10)) : new Date(v);
             if (isNaN(d.getTime())) return String(v);
+            if (d.getFullYear() <= 1) return '—'; // año 1 = fecha vacía (0001-01-01)
             var pad = function (n) { return n < 10 ? '0' + n : n; };
             return pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear();
         } catch (e) {

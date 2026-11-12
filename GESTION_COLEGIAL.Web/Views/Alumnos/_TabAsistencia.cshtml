@@ -1,0 +1,182 @@
+@using System.Collections.Generic
+@using System.Linq
+@{
+    Layout = null;
+
+    // Normalizamos el modelo: puede ser null, lista vacía o lista dinámica.
+    var items = Model as IEnumerable<dynamic>;
+    var lista = items != null ? items.ToList() : new List<dynamic>();
+
+    // Helpers defensivos para leer campos de un dynamic (JObject o ExpandoObject).
+    Func<dynamic, string, string> getStr = (obj, key) =>
+    {
+        try
+        {
+            var val = ((Newtonsoft.Json.Linq.JObject)obj)[key];
+            return val == null ? null : val.ToString();
+        }
+        catch
+        {
+            try { return (string)((IDictionary<string, object>)obj)[key]; }
+            catch { return null; }
+        }
+    };
+
+    Func<dynamic, string, DateTime?> getDate = (obj, key) =>
+    {
+        try
+        {
+            var val = ((Newtonsoft.Json.Linq.JObject)obj)[key];
+            if (val == null) return (DateTime?)null;
+            return val.ToObject<DateTime?>();
+        }
+        catch
+        {
+            try
+            {
+                var raw = ((IDictionary<string, object>)obj)[key];
+                if (raw == null) return (DateTime?)null;
+                if (raw is DateTime) return (DateTime)raw;
+                DateTime parsed;
+                if (DateTime.TryParse(raw.ToString(), out parsed)) return parsed;
+            }
+            catch { }
+            return (DateTime?)null;
+        }
+    };
+
+    // Cálculos totales
+    var total = lista.Count;
+    var presentes = lista.Count(x => string.Equals(getStr(x, "Asi_Estado"), "Presente", StringComparison.OrdinalIgnoreCase));
+    var ausentes = lista.Count(x => string.Equals(getStr(x, "Asi_Estado"), "Ausente", StringComparison.OrdinalIgnoreCase));
+    var tardanzas = lista.Count(x => string.Equals(getStr(x, "Asi_Estado"), "Tardanza", StringComparison.OrdinalIgnoreCase));
+    var justificadas = lista.Count(x => string.Equals(getStr(x, "Asi_Estado"), "Justificada", StringComparison.OrdinalIgnoreCase));
+    var pct = total > 0 ? (presentes * 100.0 / total) : 0.0;
+
+    // Últimas 10, ordenadas por fecha desc
+    var ultimas = lista
+        .Select(x => new
+        {
+            Fecha = getDate(x, "Asi_Fecha"),
+            Estado = getStr(x, "Asi_Estado"),
+            Observacion = getStr(x, "Asi_Observacion"),
+            Materia = getStr(x, "Mat_Nombre")
+        })
+        .OrderByDescending(x => x.Fecha ?? DateTime.MinValue)
+        .Take(10)
+        .ToList();
+
+    Func<string, string> dotClass = (estado) =>
+    {
+        if (string.Equals(estado, "Presente", StringComparison.OrdinalIgnoreCase)) return "bg-success";
+        if (string.Equals(estado, "Ausente", StringComparison.OrdinalIgnoreCase)) return "bg-danger";
+        if (string.Equals(estado, "Tardanza", StringComparison.OrdinalIgnoreCase)) return "bg-warning";
+        if (string.Equals(estado, "Justificada", StringComparison.OrdinalIgnoreCase)) return "bg-primary";
+        return "bg-secondary";
+    };
+
+    Func<string, string> badgeClass = (estado) =>
+    {
+        if (string.Equals(estado, "Presente", StringComparison.OrdinalIgnoreCase)) return "bg-success-subtle text-success";
+        if (string.Equals(estado, "Ausente", StringComparison.OrdinalIgnoreCase)) return "bg-danger-subtle text-danger";
+        if (string.Equals(estado, "Tardanza", StringComparison.OrdinalIgnoreCase)) return "bg-warning-subtle text-warning";
+        if (string.Equals(estado, "Justificada", StringComparison.OrdinalIgnoreCase)) return "bg-primary-subtle text-primary";
+        return "bg-secondary-subtle text-secondary";
+    };
+}
+
+<div class="af-tab-asistencia">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="af-section-card">
+                <div class="af-section-header">
+                    <h5 class="mb-0"><i class="bi bi-calendar2-check me-2"></i>Resumen de asistencia @DateTime.Now.Year</h5>
+                </div>
+                <div class="p-3">
+                    <div class="row text-center g-3">
+                        <div class="col-6 col-md">
+                            <div class="text-muted small">Total registros</div>
+                            <div class="fs-4 fw-bold">@total</div>
+                        </div>
+                        <div class="col-6 col-md">
+                            <div class="text-muted small">Presentes</div>
+                            <div class="fs-4 fw-bold text-success">@presentes</div>
+                        </div>
+                        <div class="col-6 col-md">
+                            <div class="text-muted small">Ausentes</div>
+                            <div class="fs-4 fw-bold text-danger">@ausentes</div>
+                        </div>
+                        <div class="col-6 col-md">
+                            <div class="text-muted small">Tardanzas</div>
+                            <div class="fs-4 fw-bold text-warning">@tardanzas</div>
+                        </div>
+                        <div class="col-6 col-md">
+                            <div class="text-muted small">Justificadas</div>
+                            <div class="fs-4 fw-bold text-primary">@justificadas</div>
+                        </div>
+                        <div class="col-12 col-md">
+                            <div class="text-muted small">% Asistencia</div>
+                            <div style="font-size: 2.25rem; font-weight: 700; color: #059669; line-height: 1;">@pct.ToString("0.0")%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="af-section-card">
+                <div class="af-section-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0"><i class="bi bi-list-check me-2"></i>Últimas 10 asistencias</h5>
+                    <small class="text-muted">Ordenadas por fecha (más reciente primero)</small>
+                </div>
+                <div class="p-3">
+                    @if (ultimas.Count == 0)
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            <div>Sin registros de asistencia para @DateTime.Now.Year.</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <ul class="af-timeline">
+                            @foreach (var item in ultimas)
+                            {
+                                var fechaTxt = item.Fecha.HasValue ? item.Fecha.Value.ToString("dd/MM/yyyy") : "—";
+                                var estadoTxt = string.IsNullOrWhiteSpace(item.Estado) ? "Sin estado" : item.Estado;
+                                var detalle = !string.IsNullOrWhiteSpace(item.Materia)
+                                    ? item.Materia
+                                    : (!string.IsNullOrWhiteSpace(item.Observacion) ? item.Observacion : "Jornada completa");
+                                <li class="af-timeline-item">
+                                    <span class="af-timeline-dot @dotClass(item.Estado)"></span>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div><strong>@fechaTxt</strong> — @detalle</div>
+                                        <span class="badge @badgeClass(item.Estado)">@estadoTxt</span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="af-section-card">
+                <div class="af-section-header">
+                    <h5 class="mb-0"><i class="bi bi-arrow-right-circle me-2"></i>Acciones</h5>
+                </div>
+                <div class="p-3">
+                    <a href="/AsistenciaAdm" class="af-btn-link">
+                        <i class="bi bi-clipboard-check me-1"></i>
+                        Ver histórico completo (Pase de Lista) <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

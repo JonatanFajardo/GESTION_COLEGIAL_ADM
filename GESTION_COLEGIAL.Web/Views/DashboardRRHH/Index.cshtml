@@ -1,0 +1,464 @@
+@{
+    ViewBag.Title = "Dashboard Recursos Humanos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* ── Wrapper ── */
+    .rrhh-wrapper { padding: 0 6px 32px; }
+    .rrhh-wrapper .row { margin-bottom: 22px; }
+    .rrhh-wrapper .row:last-child { margin-bottom: 0; }
+    .rrhh-wrapper [class*="col-"] { padding-left: 10px; padding-right: 10px; }
+
+    /* ── Header ── */
+    .rrhh-header {
+        display: flex; align-items: center; justify-content: space-between;
+        flex-wrap: wrap; gap: 12px;
+        margin-bottom: 22px; padding: 16px 22px;
+        background: linear-gradient(135deg, #0f4c81 0%, #1e3a5f 60%, #14532d 100%);
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(15,76,129,.3);
+    }
+    .rrhh-header-left { display: flex; align-items: center; gap: 14px; }
+    .rrhh-header-icon {
+        width: 46px; height: 46px;
+        background: rgba(255,255,255,.15); border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem; color: #fff;
+    }
+    .rrhh-header h2 { margin: 0; font-size: 1.25rem; font-weight: 700; color: #fff; }
+    .rrhh-header-sub { font-size: .78rem; color: rgba(255,255,255,.6); margin-top: 2px; }
+    .rrhh-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .rrhh-controls label { font-size: .8rem; color: rgba(255,255,255,.7); font-weight: 600; margin: 0; }
+    .rrhh-controls select {
+        height: 34px; padding: 0 10px;
+        background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+        border-radius: 7px; font-size: .84rem; color: #fff; outline: none; cursor: pointer;
+    }
+    .rrhh-controls select option { background: #1e3a5f; color: #fff; }
+    .btn-actualizar {
+        height: 34px; padding: 0 18px;
+        background: #fff; color: #1e3a5f;
+        border: none; border-radius: 7px;
+        font-size: .84rem; font-weight: 700; cursor: pointer;
+        transition: all .2s; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-actualizar:hover { background: #e0f2fe; transform: translateY(-1px); }
+
+    /* ── Section heading ── */
+    .rrhh-section { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .rrhh-section-accent { width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0; }
+    .rrhh-section-label {
+        font-size: .78rem; font-weight: 800; color: #475569;
+        text-transform: uppercase; letter-spacing: .7px; white-space: nowrap;
+    }
+    .rrhh-section-line { flex: 1; height: 1px; background: #e2e8f0; }
+
+    /* ── KPI Cards ── */
+    .kpi-card {
+        background: #fff; border-radius: 12px; padding: 16px 18px 14px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+        position: relative; overflow: hidden;
+        transition: transform .15s, box-shadow .15s;
+        border-left: 4px solid transparent;
+    }
+    .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+    .kpi-card.c-blue   { border-left-color: #3b82f6; }
+    .kpi-card.c-green  { border-left-color: #22c55e; }
+    .kpi-card.c-teal   { border-left-color: #14b8a6; }
+    .kpi-card.c-red    { border-left-color: #ef4444; }
+    .kpi-card.c-orange { border-left-color: #f97316; }
+    .kpi-card.c-purple { border-left-color: #a855f7; }
+    .kpi-card.c-amber  { border-left-color: #f59e0b; }
+    .kpi-card.c-indigo { border-left-color: #6366f1; }
+    .kpi-card .kpi-icon-bg {
+        position: absolute; right: -6px; bottom: -6px;
+        font-size: 3.8rem; opacity: .05; color: #0f172a; pointer-events: none;
+    }
+    .kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+    .kpi-icon {
+        width: 36px; height: 36px; border-radius: 9px;
+        display: flex; align-items: center; justify-content: center; font-size: .95rem;
+    }
+    .kpi-icon.blue   { background: #eff6ff; color: #3b82f6; }
+    .kpi-icon.green  { background: #f0fdf4; color: #22c55e; }
+    .kpi-icon.teal   { background: #f0fdfa; color: #14b8a6; }
+    .kpi-icon.red    { background: #fef2f2; color: #ef4444; }
+    .kpi-icon.orange { background: #fff7ed; color: #f97316; }
+    .kpi-icon.purple { background: #faf5ff; color: #a855f7; }
+    .kpi-icon.amber  { background: #fffbeb; color: #f59e0b; }
+    .kpi-icon.indigo { background: #eef2ff; color: #6366f1; }
+    .kpi-value { font-size: 1.7rem; font-weight: 800; color: #0f172a; line-height: 1; }
+    .kpi-label { font-size: .7rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+
+    /* ── Asistencia hoy ── */
+    .asist-row { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+    .asist-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 20px; border-radius: 10px; min-width: 90px; }
+    .asist-stat.pres { background: #f0fdf4; }
+    .asist-stat.ause { background: #fef2f2; }
+    .asist-stat.tard { background: #fffbeb; }
+    .asist-val { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+    .asist-lbl { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-top: 3px; }
+    .asist-val.pres { color: #16a34a; } .asist-lbl.pres { color: #86efac; }
+    .asist-val.ause { color: #dc2626; } .asist-lbl.ause { color: #fca5a5; }
+    .asist-val.tard { color: #d97706; } .asist-lbl.tard { color: #fcd34d; }
+    .asist-pct-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 16px; }
+    .asist-pct-num { font-size: 2.6rem; font-weight: 900; color: #0f172a; line-height: 1; }
+    .asist-pct-lbl { font-size: .72rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+
+    /* ── Panel ── */
+    .rrhh-panel { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04); padding: 18px 20px; }
+    .chart-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+    .chart-title { font-size: .8rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .5px; }
+    .chart-stat { font-size: .82rem; font-weight: 700; }
+
+    /* ── Tablas ── */
+    .rrhh-table { width: 100%; font-size: .82rem; border-collapse: collapse; }
+    .rrhh-table th { background: #f8fafc; color: #64748b; font-weight: 700; font-size: .7rem; text-transform: uppercase; letter-spacing: .5px; padding: 8px 12px; border-bottom: 2px solid #e2e8f0; }
+    .rrhh-table td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; }
+    .rrhh-table tr:last-child td { border-bottom: none; }
+    .rrhh-table tr:hover td { background: #f8fafc; }
+
+    /* ── Cumpleaños ── */
+    .cumple-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .cumple-card { display: flex; flex-direction: column; align-items: center; padding: 14px 10px; border-radius: 10px; background: linear-gradient(135deg, #faf5ff, #eff6ff); border: 1px solid #e9d5ff; text-align: center; transition: transform .15s, box-shadow .15s; }
+    .cumple-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(168,85,247,.15); }
+    .cumple-card.es-hoy { border-color: #f59e0b; background: linear-gradient(135deg, #fffbeb, #fef9c3); }
+    .cumple-avatar { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12); margin-bottom: 8px; }
+    .cumple-avatar-ph { width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+    .cumple-nombre { font-size: .78rem; font-weight: 700; color: #1e293b; line-height: 1.2; margin-bottom: 3px; }
+    .cumple-cargo  { font-size: .68rem; color: #64748b; margin-bottom: 5px; }
+    .cumple-dia    { font-size: .7rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; background: #f3e8ff; color: #7c3aed; }
+    .cumple-card.es-hoy .cumple-dia { background: #f59e0b; color: #fff; }
+
+    /* ── Antigüedad ── */
+    .antig-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+    .antig-item:last-child { border-bottom: none; }
+    .antig-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid #e2e8f0; }
+    .antig-avatar-ph { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #6366f1); display: flex; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 700; flex-shrink: 0; }
+    .antig-info { flex: 1; min-width: 0; }
+    .antig-nombre { font-size: .82rem; font-weight: 700; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .antig-cargo  { font-size: .7rem; color: #64748b; }
+    .antig-badge  { font-size: .72rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; background: #eff6ff; color: #1d4ed8; white-space: nowrap; flex-shrink: 0; }
+
+    /* ── Alertas ── */
+    .alertas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+    .alerta-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 10px; font-size: .83rem; border-left: 3px solid transparent; }
+    .alerta-item.alta  { background: #fef2f2; border-left-color: #ef4444; }
+    .alerta-item.media { background: #fffbeb; border-left-color: #f59e0b; }
+    .alerta-item.baja  { background: #eff6ff; border-left-color: #3b82f6; }
+    .alerta-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .alerta-msg  { color: #1e293b; font-weight: 600; line-height: 1.3; flex: 1; }
+    .alerta-badge { display: inline-block; margin-top: 4px; font-size: .62rem; padding: 1px 7px; border-radius: 20px; font-weight: 700; }
+    .badge-alta  { background: #fee2e2; color: #b91c1c; }
+    .badge-media { background: #fef3c7; color: #92400e; }
+    .badge-baja  { background: #dbeafe; color: #1d4ed8; }
+
+    /* ── Tipo badges ── */
+    .tipo-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: .68rem; font-weight: 700; }
+    .tipo-V { background: #dbeafe; color: #1d4ed8; }
+    .tipo-P { background: #dcfce7; color: #166534; }
+    .tipo-I { background: #fce7f3; color: #9d174d; }
+
+    /* ── Animaciones ── */
+    @@keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .kpi-card  { animation: fadeInUp .35s ease both; }
+    .rrhh-panel { animation: fadeInUp .4s ease both; }
+    .kpi-card:nth-child(1) { animation-delay:.04s; } .kpi-card:nth-child(2) { animation-delay:.08s; }
+    .kpi-card:nth-child(3) { animation-delay:.12s; } .kpi-card:nth-child(4) { animation-delay:.16s; }
+    .kpi-card:nth-child(5) { animation-delay:.20s; } .kpi-card:nth-child(6) { animation-delay:.24s; }
+    .kpi-card:nth-child(7) { animation-delay:.28s; } .kpi-card:nth-child(8) { animation-delay:.32s; }
+</style>
+
+<div class="rrhh-wrapper">
+
+    <!-- ══ Header ══ -->
+    <div class="rrhh-header">
+        <div class="rrhh-header-left">
+            <div class="rrhh-header-icon"><i class="fa-solid fa-people-group"></i></div>
+            <div>
+                <h2>Dashboard Recursos Humanos</h2>
+                <div class="rrhh-header-sub">Resumen del capital humano en tiempo real</div>
+            </div>
+        </div>
+        <div class="rrhh-controls">
+            <label>Año</label>
+            <select id="sel-anio"></select>
+            <label>Mes</label>
+            <select id="sel-mes"></select>
+            <button class="btn-actualizar" id="btn-actualizar">
+                <i class="fa-solid fa-rotate-right"></i> Actualizar
+            </button>
+        </div>
+    </div>
+
+    <!-- ══ KPIs Plantilla ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#3b82f6;"></div>
+        <span class="rrhh-section-label"><i class="fa-solid fa-gauge-high" style="margin-right:5px;"></i>Plantilla</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-blue">
+                <i class="fa-solid fa-users kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon blue"><i class="fa-solid fa-users"></i></div></div>
+                <div class="kpi-value" id="kpi-activos">—</div>
+                <div class="kpi-label">Empleados Activos</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-teal">
+                <i class="fa-solid fa-building kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon teal"><i class="fa-solid fa-building"></i></div></div>
+                <div class="kpi-value" id="kpi-departamentos">—</div>
+                <div class="kpi-label">Departamentos</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-indigo">
+                <i class="fa-solid fa-briefcase kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon indigo"><i class="fa-solid fa-briefcase"></i></div></div>
+                <div class="kpi-value" id="kpi-cargos">—</div>
+                <div class="kpi-label">Cargos</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-green">
+                <i class="fa-solid fa-user-plus kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon green"><i class="fa-solid fa-user-plus"></i></div></div>
+                <div class="kpi-value" id="kpi-nuevos">—</div>
+                <div class="kpi-label">Nuevos Año Actual</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Asistencia Hoy + Diaria ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#22c55e;"></div>
+        <span class="rrhh-section-label"><i class="fa-solid fa-clipboard-user" style="margin-right:5px;"></i>Asistencia</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="rrhh-panel" style="height:100%;">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-calendar-day" style="margin-right:5px;color:#22c55e;"></i>Asistencia Hoy</span>
+                    <span class="chart-stat" id="stat-pct-hoy" style="color:#22c55e;"></span>
+                </div>
+                <div class="asist-row" style="margin-bottom:16px;">
+                    <div class="asist-pct-wrap">
+                        <div class="asist-pct-num" id="kpi-pct-hoy">—</div>
+                        <div class="asist-pct-lbl">% Presencia</div>
+                    </div>
+                    <div style="width:1px;background:#e2e8f0;margin:0 6px;"></div>
+                    <div class="asist-stat pres">
+                        <div class="asist-val pres" id="kpi-presentes">—</div>
+                        <div class="asist-lbl pres">Presentes</div>
+                    </div>
+                    <div class="asist-stat ause">
+                        <div class="asist-val ause" id="kpi-ausentes">—</div>
+                        <div class="asist-lbl ause">Ausentes</div>
+                    </div>
+                    <div class="asist-stat tard">
+                        <div class="asist-val tard" id="kpi-tardanzas">—</div>
+                        <div class="asist-lbl tard">Tardanzas</div>
+                    </div>
+                </div>
+                <canvas id="chart-asistencia-hoy" style="max-height:130px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="rrhh-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-chart-line" style="margin-right:5px;color:#3b82f6;"></i>Últimos 14 Días</span>
+                </div>
+                <canvas id="chart-asistencia-diaria" style="max-height:210px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Distribución Plantilla ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#6366f1;"></div>
+        <span class="rrhh-section-label"><i class="fa-solid fa-sitemap" style="margin-right:5px;"></i>Distribución de Plantilla</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="rrhh-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-building-columns" style="margin-right:5px;color:#6366f1;"></i>Por Departamento</span>
+                    <span class="chart-stat" id="stat-total-depto" style="color:#6366f1;"></span>
+                </div>
+                <canvas id="chart-departamento" style="max-height:240px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="rrhh-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-briefcase" style="margin-right:5px;color:#14b8a6;"></i>Por Cargo</span>
+                </div>
+                <canvas id="chart-cargo" style="max-height:240px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Demografía ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#f59e0b;"></div>
+        <span class="rrhh-section-label"><i class="fa-solid fa-chart-pie" style="margin-right:5px;"></i>Demografía</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="rrhh-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-venus-mars" style="margin-right:5px;color:#a855f7;"></i>Por Género</span>
+                </div>
+                <canvas id="chart-genero" style="max-height:200px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="rrhh-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-person-half-dress" style="margin-right:5px;color:#f59e0b;"></i>Rango de Edad</span>
+                </div>
+                <canvas id="chart-edad" style="max-height:200px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="rrhh-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-user-plus" style="margin-right:5px;color:#22c55e;"></i>Nuevos por Mes</span>
+                </div>
+                <canvas id="chart-nuevos" style="max-height:200px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Cumpleaños del Mes ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#a855f7;"></div>
+        <span class="rrhh-section-label"><i class="fa-solid fa-cake-candles" style="margin-right:5px;"></i>Cumpleaños del Mes</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="rrhh-panel">
+                <div id="lista-cumpleanos" class="cumple-grid">
+                    <p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin cumpleaños este mes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ KPIs Solicitudes ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#f97316;"></div>
+        <span class="rrhh-section-label"><i class="fa-solid fa-clipboard-list" style="margin-right:5px;"></i>Solicitudes y Cumpleaños</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-amber">
+                <i class="fa-solid fa-umbrella-beach kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon amber"><i class="fa-solid fa-umbrella-beach"></i></div></div>
+                <div class="kpi-value" id="kpi-vac-pend">—</div>
+                <div class="kpi-label">Vacaciones Pend.</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-orange">
+                <i class="fa-solid fa-file-pen kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon orange"><i class="fa-solid fa-file-pen"></i></div></div>
+                <div class="kpi-value" id="kpi-per-pend">—</div>
+                <div class="kpi-label">Permisos Pend.</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-red">
+                <i class="fa-solid fa-hospital kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon red"><i class="fa-solid fa-hospital"></i></div></div>
+                <div class="kpi-value" id="kpi-inca-pend">—</div>
+                <div class="kpi-label">Incapacidades Pend.</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-6" style="margin-bottom:18px;">
+            <div class="kpi-card c-purple">
+                <i class="fa-solid fa-cake-candles kpi-icon-bg"></i>
+                <div class="kpi-top"><div class="kpi-icon purple"><i class="fa-solid fa-cake-candles"></i></div></div>
+                <div class="kpi-value" id="kpi-cumple-mes">—</div>
+                <div class="kpi-label">Cumpleaños Mes</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Solicitudes Pendientes + Antigüedad ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#ef4444;"></div>
+        <span class="rrhh-section-label"><i class="fa-solid fa-inbox" style="margin-right:5px;"></i>Solicitudes y Antigüedad</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="rrhh-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-file-circle-question" style="margin-right:5px;color:#ef4444;"></i>Solicitudes Pendientes</span>
+                    <span class="chart-stat" id="stat-total-sol" style="color:#ef4444;"></span>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="rrhh-table">
+                        <thead>
+                            <tr>
+                                <th>Empleado</th>
+                                <th>Cargo / Dpto.</th>
+                                <th style="text-align:center;">Tipo</th>
+                                <th>Período</th>
+                                <th style="text-align:center;width:50px;">Días</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-solicitudes">
+                            <tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px;">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="rrhh-panel">
+                <div class="chart-header">
+                    <span class="chart-title"><i class="fa-solid fa-medal" style="margin-right:5px;color:#f59e0b;"></i>Top Antigüedad</span>
+                </div>
+                <div id="lista-antiguedad"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Alertas ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#ef4444;"></div>
+        <span class="rrhh-section-label"><i class="fa-solid fa-bell" style="margin-right:5px;"></i>Alertas RRHH</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="rrhh-panel">
+                <div class="alertas-grid" id="lista-alertas">
+                    <p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin alertas activas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/dashboardrrhh.js"></script>
+    <script>
+        DashboardRRHH.init("@Url.Action("ResumenAsync")");
+    </script>
+}

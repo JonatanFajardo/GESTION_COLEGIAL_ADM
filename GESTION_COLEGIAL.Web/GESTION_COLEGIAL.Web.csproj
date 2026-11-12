@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    UI nueva del ADM (ASP.NET Core MVC, .NET 10). Reemplaza a GESTION_COLEGIAL.UI (MVC 5).
+    RootNamespace se mantiene como GESTION_COLEGIAL.UI para portar controllers,
+    filtros y vistas sin renombrar namespaces.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>GESTION_COLEGIAL.UI</RootNamespace>
+    <AssemblyName>GESTION_COLEGIAL.Web</AssemblyName>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GESTION_COLEGIAL.Business\GESTION_COLEGIAL.Business.csproj" />
+    <!-- Business devuelve objetos de Newtonsoft (JObject); System.Text.Json no los serializa bien. -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.12" />
+  </ItemGroup>
+
+  <!-- Reemplazan los "using System.Web.Mvc;" de cada controller portado. -->
+  <ItemGroup>
+    <Using Include="Microsoft.AspNetCore.Mvc" />
+    <Using Include="Microsoft.AspNetCore.Mvc.Rendering" />
+    <Using Include="GESTION_COLEGIAL.UI.Compat" />
+  </ItemGroup>
+
+</Project>

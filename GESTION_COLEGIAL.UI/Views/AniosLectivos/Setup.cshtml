@@ -1,0 +1,337 @@
+@model GESTION_COLEGIAL.Business.Models.AnioLectivoViewModel
+@{
+    ViewBag.Title = "Configurar Año Lectivo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int step = (int)(ViewBag.Step ?? 1);
+    int id = Model != null ? Model.Ani_Id : 0;
+    string[] titulos = { "Fechas y períodos", "Enfoque de enseñanza", "Clases y profesores", "Asignaturas para este año", "Revisar y publicar" };
+    string fIni = Model != null && Model.Ani_FechaInicio.HasValue ? Model.Ani_FechaInicio.Value.ToString("yyyy-MM-dd") : "";
+    string fFin = Model != null && Model.Ani_FechaFin.HasValue ? Model.Ani_FechaFin.Value.ToString("yyyy-MM-dd") : "";
+}
+
+@section Styles{
+    <style>
+        .wz-wrap { max-width: 920px; margin: 0 auto; padding: 24px 16px 48px; }
+        .wz-head { display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px; }
+        .wz-head h1 { font-size: 1.6rem; font-weight: 700; color:#1f2937; margin:0; }
+        .wz-steps { display:flex; align-items:flex-start; justify-content:space-between; margin: 28px 0 32px; position:relative; }
+        .wz-step { flex:1; text-align:center; position:relative; }
+        .wz-step .circle { width:36px; height:36px; border-radius:50%; background:#e5e7eb; color:#6b7280; display:flex; align-items:center; justify-content:center; font-weight:700; margin:0 auto 8px; border:2px solid #e5e7eb; z-index:2; position:relative; }
+        .wz-step.done .circle { background:#4f46e5; border-color:#4f46e5; color:#fff; }
+        .wz-step.active .circle { background:#fff; border-color:#4f46e5; color:#4f46e5; box-shadow:0 0 0 4px #eef2ff; }
+        .wz-step .lbl { font-size:.8rem; color:#6b7280; }
+        .wz-step.active .lbl, .wz-step.done .lbl { color:#1f2937; font-weight:600; }
+        .wz-step:not(:last-child):after { content:""; position:absolute; top:18px; left:50%; width:100%; height:2px; background:#e5e7eb; z-index:1; }
+        .wz-step.done:not(:last-child):after { background:#4f46e5; }
+        .wz-card { background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:28px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+        .wz-card h2 { font-size:1.3rem; font-weight:700; color:#1f2937; margin:0 0 4px; }
+        .wz-card .sub { color:#6b7280; margin:0 0 22px; }
+        .wz-lbl { display:block; font-weight:600; color:#374151; margin-bottom:6px; font-size:.9rem; }
+        .wz-inp { width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:.95rem; }
+        .wz-req { color:#ef4444; }
+        .wz-foot { display:flex; align-items:center; justify-content:space-between; margin-top:26px; }
+        .wz-btn { border:none; border-radius:8px; padding:10px 18px; font-weight:600; cursor:pointer; font-size:.9rem; }
+        .wz-btn-primary { background:#4f46e5; color:#fff; }
+        .wz-btn-primary:hover { background:#4338ca; }
+        .wz-btn-ghost { background:transparent; color:#6b7280; text-decoration:none; }
+        .wz-opt { display:block; border:1px solid #e5e7eb; border-radius:10px; padding:14px 16px; margin-bottom:10px; cursor:pointer; }
+        .wz-opt:hover { border-color:#4f46e5; background:#fafaff; }
+        .wz-note { background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:8px; padding:10px 14px; font-size:.85rem; margin-top:16px; }
+        .wz-sum { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .wz-sum .k { color:#6b7280; font-size:.8rem; } .wz-sum .v { font-weight:600; color:#1f2937; }
+    </style>
+}
+
+<div class="wz-wrap">
+    <div class="breadcrumb-wrapper-content">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Index")">Años Lectivos</a></li>
+                <li class="breadcrumb-item active">Configurar</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="wz-head">
+        <h1>Configurar un año lectivo</h1>
+        <span style="color:#6b7280;font-size:.85rem;">@DateTime.Now.ToString("ddd, dd MMM yyyy")</span>
+    </div>
+
+    <!-- Stepper -->
+    <div class="wz-steps">
+        @for (int i = 1; i <= 5; i++)
+        {
+            string cls = i < step ? "wz-step done" : (i == step ? "wz-step active" : "wz-step");
+            <div class="@cls">
+                <div class="circle">@(i < step ? "✓" : i.ToString())</div>
+                <div class="lbl">@titulos[i - 1]</div>
+            </div>
+        }
+    </div>
+
+    <div class="wz-card">
+        @switch (step)
+        {
+            case 1:
+                <h2>Fechas y períodos</h2>
+                <p class="sub">Define el rango del ciclo escolar y su estructura de reporte.</p>
+                using (Html.BeginForm("SetupStep1", "AniosLectivos", FormMethod.Post))
+                {
+                    @Html.Hidden("Ani_Id", id)
+                    @Html.Hidden("Ani_Estado", (int)(Model != null ? Model.Ani_Estado : (byte)1))
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="wz-lbl">Año <span class="wz-req">*</span></label>
+                            <input type="number" name="Ani_Anio" class="wz-inp" min="1900" max="2100" required
+                                   value="@(Model != null && Model.Ani_Anio > 0 ? Model.Ani_Anio.ToString() : "")" placeholder="2027" />
+                        </div>
+                        <div class="col-md-8">
+                            <label class="wz-lbl">Nombre <span class="wz-req">*</span></label>
+                            <input type="text" name="Ani_Nombre" class="wz-inp" maxlength="20" required
+                                   value="@(Model != null ? Model.Ani_Nombre : "")" placeholder="Ej: 2027 o 2027-2028" />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:14px;">
+                        <div class="col-md-6">
+                            <label class="wz-lbl">Fecha de inicio</label>
+                            <input type="date" name="Ani_FechaInicio" class="wz-inp" value="@fIni" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="wz-lbl">Fecha de fin</label>
+                            <input type="date" name="Ani_FechaFin" class="wz-inp" value="@fFin" />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:14px;">
+                        <div class="col-md-12">
+                            <label class="wz-lbl">Estructura de reporte</label>
+                            <select class="wz-inp" id="estructura" disabled>
+                                <option>2 semestres</option>
+                                <option selected>3 trimestres</option>
+                                <option>4 parciales</option>
+                                <option>Personalizado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="wz-note"><i class="fas fa-info-circle"></i> El detalle de los <strong>períodos de reporte</strong> (parciales/semestres con sus fechas) se configura en la siguiente fase. Por ahora el paso 1 guarda el año, nombre y fechas como <strong>borrador</strong>.</div>
+                    <div class="wz-foot">
+                        <a href="@Url.Action("Index")" class="wz-btn wz-btn-ghost">Cancelar</a>
+                        <button type="submit" class="wz-btn wz-btn-primary">
+                            @(id == 0 ? "Crear borrador y continuar" : "Guardar y continuar") →
+                        </button>
+                    </div>
+                }
+
+                <div class="wz-card" style="margin-top:18px;">
+                    <h2 style="font-size:1.15rem;">Períodos de reporte</h2>
+                    <p class="sub">Parciales / semestres del año con sus fechas.</p>
+                    @if (id == 0)
+                    {
+                        <div class="wz-note"><i class="fas fa-info-circle"></i> Guarda el año (botón de arriba) para poder definir sus períodos.</div>
+                    }
+                    else
+                    {
+                        <table class="table table-sm" id="tblPeriodos" style="width:100%">
+                            <thead><tr><th>Nombre</th><th>Tipo</th><th>Inicio</th><th>Fin</th><th style="width:90px;"></th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                        <button type="button" class="wz-btn wz-btn-ghost" id="btnAddPeriodo" style="border:1px dashed #c7d2fe;color:#4f46e5;">＋ Agregar período</button>
+                        <script>
+                        (function () {
+                            var aniId = @id;
+                            var urlList = '@Url.Action("ListAsync","PeriodosAnio")';
+                            var urlCreate = '@Url.Action("CreateAsync","PeriodosAnio")';
+                            var urlDelete = '@Url.Action("DeleteAsync","PeriodosAnio")';
+                            var $b = $('#tblPeriodos tbody');
+                            function rowHtml(p){ p=p||{};
+                                return '<tr data-id="'+(p.Pan_Id||0)+'">'
+                                 +'<td><input class="form-control form-control-sm p-nom" maxlength="40" value="'+(p.Pan_Nombre||'')+'" placeholder="I Parcial"></td>'
+                                 +'<td><select class="form-control form-control-sm p-tipo">'
+                                   +['parcial','bimestre','trimestre','semestre','otro'].map(function(t){return '<option'+((p.Pan_Tipo===t)?' selected':'')+'>'+t+'</option>';}).join('')
+                                 +'</select></td>'
+                                 +'<td><input type="date" class="form-control form-control-sm p-ini" value="'+(p.Pan_FechaInicio?p.Pan_FechaInicio.substring(0,10):'')+'"></td>'
+                                 +'<td><input type="date" class="form-control form-control-sm p-fin" value="'+(p.Pan_FechaFin?p.Pan_FechaFin.substring(0,10):'')+'"></td>'
+                                 +'<td style="white-space:nowrap;"><button type="button" class="btn btn-sm btn-success p-save" title="Guardar"><i class="fas fa-check"></i></button> '
+                                   +'<button type="button" class="btn btn-sm btn-danger p-del" title="Quitar"><i class="fas fa-trash"></i></button></td></tr>';
+                            }
+                            function load(){ $.getJSON(urlList,{anioId:aniId},function(res){ var d=(res&&res.data)?res.data:(res||[]); $b.empty(); d.forEach(function(p){$b.append(rowHtml(p));}); }); }
+                            $('#btnAddPeriodo').on('click',function(){ $b.append(rowHtml({})); });
+                            $b.on('click','.p-save',function(){ var $r=$(this).closest('tr');
+                                var m={Pan_Id:parseInt($r.data('id'),10)||0,Ani_Id:aniId,Pan_Nombre:$r.find('.p-nom').val().trim(),Pan_Tipo:$r.find('.p-tipo').val(),Pan_Orden:$r.index()+1,Pan_FechaInicio:$r.find('.p-ini').val()||null,Pan_FechaFin:$r.find('.p-fin').val()||null,Pan_Estado:1};
+                                if(!m.Pan_Nombre){alert('El nombre es requerido.');return;}
+                                $.post(urlCreate,m,function(){load();}); });
+                            $b.on('click','.p-del',function(){ var $r=$(this).closest('tr'); var id=parseInt($r.data('id'),10)||0; if(!id){$r.remove();return;} if(!confirm('¿Quitar período?'))return; $.post(urlDelete,{Pan_Id:id},function(){load();}); });
+                            load();
+                        })();
+                        </script>
+                    }
+                </div>
+                break;
+
+            case 2:
+                <h2>Elige el enfoque de enseñanza</h2>
+                <p class="sub">Establece la agrupación predeterminada para los grupos de este año.</p>
+                <label class="wz-opt"><input type="radio" name="Enf_Modelo" value="grupo_fijo" checked /> <strong>Un mismo grupo todo el día</strong> — el alumno permanece con su sección (homeroom).</label>
+                <label class="wz-opt"><input type="radio" name="Enf_Modelo" value="hibrido" /> <strong>Un grupo, con excepciones</strong> — híbrido (base fija + bloques por materia).</label>
+                <label class="wz-opt"><input type="radio" name="Enf_Modelo" value="horario_materias" /> <strong>Horario de materias separadas</strong> — cada materia tiene su propio bloque.</label>
+                <label class="wz-lbl" style="margin-top:16px;">Razón (opcional)</label>
+                <textarea id="Enf_Razon" class="wz-inp" rows="3" maxlength="500" placeholder="¿Por qué este enfoque para el año?"></textarea>
+                <div class="wz-foot">
+                    <a href="@Url.Action("Setup", new { id = id, step = 1 })" class="wz-btn wz-btn-ghost">← Atrás</a>
+                    <button type="button" class="wz-btn wz-btn-primary" onclick="guardarEnfoque(@id)">Guardar y continuar →</button>
+                </div>
+                <script>
+                    function guardarEnfoque(aniId){
+                        var m=document.querySelector('input[name="Enf_Modelo"]:checked');
+                        if(!m){alert('Selecciona un enfoque.');return;}
+                        fetch('@Url.Action("SetupStep2","AniosLectivos")',{method:'POST',headers:{'Content-Type':'application/json'},
+                            body:JSON.stringify({Ani_Id:aniId,Enf_Modelo:m.value,Enf_Razon:document.getElementById('Enf_Razon').value})})
+                        .then(function(r){return r.json();})
+                        .then(function(res){ if(res&&res.success!==false){ window.location='@Url.Action("Setup","AniosLectivos")'+'?id='+aniId+'&step=3'; } else { alert('No se pudo guardar el enfoque.'); } })
+                        .catch(function(){alert('Error de red.');});
+                    }
+                </script>
+                break;
+
+            case 3:
+                <h2>Clases y profesores</h2>
+                <p class="sub">Crea las secciones del año y asigna el docente guía (homeroom).</p>
+                @if (id == 0)
+                {
+                    <div class="wz-note">Primero crea el borrador (paso 1) para agregar secciones.</div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-3"><label class="wz-lbl">Nivel</label><select id="f4Nivel" class="wz-inp"><option value="">Seleccione…</option></select></div>
+                        <div class="col-md-3"><label class="wz-lbl">Grado</label><select id="f4Grado" class="wz-inp" disabled><option value="">Seleccione…</option></select></div>
+                        <div class="col-md-2"><label class="wz-lbl">Sección</label><select id="f4Seccion" class="wz-inp" disabled><option value="">Seleccione…</option></select></div>
+                        <div class="col-md-2"><label class="wz-lbl">Modalidad</label><select id="f4Mod" class="wz-inp" disabled><option value="">—</option></select></div>
+                        <div class="col-md-2"><label class="wz-lbl">Cupo</label><input type="number" id="f4Cupo" class="wz-inp" min="1" /></div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-10"><label class="wz-lbl">Profesor guía (opcional)</label><select id="f4Profe" class="wz-inp" disabled><option value="">— Sin asignar —</option></select></div>
+                        <div class="col-md-2" style="display:flex;align-items:flex-end;"><button type="button" id="f4Add" class="wz-btn wz-btn-primary" disabled>＋ Agregar</button></div>
+                    </div>
+                    <table class="table table-sm" style="width:100%;margin-top:16px;">
+                        <thead><tr><th>Nivel</th><th>Grado</th><th>Sección</th><th>Modalidad</th><th>Profe guía</th><th>Cupo</th><th>Estado</th><th></th></tr></thead>
+                        <tbody id="f4Body"><tr><td colspan="8" class="text-center text-muted">Cargando…</td></tr></tbody>
+                    </table>
+                    <script>
+                    $(function(){
+                        var aniId=@id, grados=[];
+                        var $n=$('#f4Nivel'),$g=$('#f4Grado'),$s=$('#f4Seccion'),$m=$('#f4Mod'),$p=$('#f4Profe'),$c=$('#f4Cupo'),$a=$('#f4Add'),$b=$('#f4Body');
+                        function opt(v,t){return '<option value="'+v+'">'+t+'</option>';}
+                        function ready(){ $a.prop('disabled',!($n.val()&&$g.val()&&$s.val())); }
+                        $.getJSON('@Url.Action("ListAsync","NivelesEducativos")',function(r){(r.data||[]).forEach(function(x){$n.append(opt(x.Niv_Id,x.Niv_Descripcion));});});
+                        $.getJSON('@Url.Action("ListAsync","CursosNiveles")',function(r){grados=r.data||[];});
+                        $.getJSON('@Url.Action("ListAsync","Secciones")',function(r){(r.data||[]).forEach(function(x){$s.append(opt(x.Sec_Id,x.Sec_Descripcion));});});
+                        $.getJSON('@Url.Action("ListAsync","Modalidades")',function(r){(r.data||[]).forEach(function(x){$m.append(opt(x.Mda_Id,x.Mda_Descripcion));});});
+                        $.getJSON('@Url.Action("ListAsync","Empleados")',function(r){(r.data||[]).forEach(function(x){$p.append(opt(x.Emp_Id,x.Emp_Nombre||''));});});
+                        $n.on('change',function(){var nv=parseInt(this.value,10);$g.html('<option value="">Seleccione…</option>').prop('disabled',true);$s.val('').prop('disabled',true);$m.val('').prop('disabled',true);$p.val('').prop('disabled',true);
+                            if(nv){grados.filter(function(x){return x.Niv_Id===nv;}).forEach(function(x){$g.append(opt(x.Cun_Id,x.Cun_Descripcion));});$g.prop('disabled',false);} ready();});
+                        $g.on('change',function(){var ok=!!this.value;$s.prop('disabled',!ok);$m.prop('disabled',!ok);$p.prop('disabled',!ok); if(!ok){$s.val('');$m.val('');$p.val('');} ready();});
+                        $s.on('change',ready);
+                        function load(){ $.getJSON('@Url.Action("ListAsync","SeccionesAnio")'+'?aniId='+aniId,function(r){var rows=(r&&r.data)||[];
+                            if(!rows.length){$b.html('<tr><td colspan="8" class="text-center text-muted">Aún no hay secciones.</td></tr>');return;}
+                            $b.html(rows.map(function(x){return '<tr><td>'+(x.Niv_Descripcion||'')+'</td><td>'+(x.Cun_Descripcion||'')+'</td><td>'+(x.Sec_Descripcion||'')+'</td><td>'+(x.Mda_Descripcion||'—')+'</td><td>'+(x.Emp_Nombre||'<span class="text-muted">Sin asignar</span>')+'</td><td>'+(x.Sea_Cupo||'—')+'</td><td>'+(x.Sea_EstadoDescripcion||'')+'</td><td><button type="button" class="btn btn-sm btn-danger f4-del" data-id="'+x.Sea_Id+'"><i class="fas fa-trash"></i></button></td></tr>';}).join(''));});}
+                        $a.on('click',function(){var model={Sea_Id:0,Ani_Id:aniId,Niv_Id:parseInt($n.val(),10),Cun_Id:parseInt($g.val(),10),Sec_Id:parseInt($s.val(),10),Mda_Id:$m.val()?parseInt($m.val(),10):null,Emp_Id:$p.val()?parseInt($p.val(),10):null,Sea_Cupo:$c.val()?parseInt($c.val(),10):null,Sea_Nombre:($g.find('option:selected').text()+' '+$s.find('option:selected').text()).trim(),Sea_Estado:2};
+                            $a.prop('disabled',true); $.post('@Url.Action("CreateAsync","SeccionesAnio")',model,function(res){ if(res&&res.success){$n.val('').trigger('change');$c.val('');load();}else{alert('No se pudo agregar (¿sección duplicada?).');ready();} });});
+                        $b.on('click','.f4-del',function(){if(!confirm('¿Eliminar sección?'))return;$.post('@Url.Action("DeleteAsync","SeccionesAnio")',{Sea_Id:$(this).data('id')},function(){load();});});
+                        load();
+                    });
+                    </script>
+                }
+                break;
+
+            case 4:
+                <h2>Asignaturas para este año</h2>
+                <p class="sub">Define qué materias se dictan este año, en qué grado y con qué docente.</p>
+                @if (id == 0)
+                {
+                    <div class="wz-note">Primero crea el borrador (paso 1) para agregar asignaturas.</div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-4"><label class="wz-lbl">Materia</label><select id="ofaMat" class="wz-inp"></select></div>
+                        <div class="col-md-3"><label class="wz-lbl">Grado</label><select id="ofaGra" class="wz-inp"><option value="">— Todos —</option></select></div>
+                        <div class="col-md-3"><label class="wz-lbl">Docente</label><select id="ofaDoc" class="wz-inp"><option value="">— Sin asignar —</option></select></div>
+                        <div class="col-md-1"><label class="wz-lbl">Hrs/sem</label><input type="number" id="ofaHrs" class="wz-inp" min="0" /></div>
+                        <div class="col-md-1" style="display:flex;align-items:flex-end;"><button type="button" id="ofaAdd" class="wz-btn wz-btn-primary">＋</button></div>
+                    </div>
+                    <table class="table table-sm" style="width:100%;margin-top:16px;">
+                        <thead><tr><th>Materia</th><th>Grado</th><th>Docente</th><th>Hrs</th><th>Estado</th><th></th></tr></thead>
+                        <tbody id="ofaBody"><tr><td colspan="6" class="text-center text-muted">Cargando…</td></tr></tbody>
+                    </table>
+                    <script>
+                    $(function(){
+                        var aniId=@id;
+                        var $mat=$('#ofaMat'),$gra=$('#ofaGra'),$doc=$('#ofaDoc'),$hrs=$('#ofaHrs'),$b=$('#ofaBody');
+                        function opt(v,t){return '<option value="'+v+'">'+t+'</option>';}
+                        $.getJSON('@Url.Action("ListAsync","Materias")',function(r){(r.data||[]).forEach(function(x){$mat.append(opt(x.Mat_Id,x.Mat_Nombre));});});
+                        $.getJSON('@Url.Action("ListAsync","CursosNiveles")',function(r){(r.data||[]).forEach(function(x){$gra.append(opt(x.Cun_Id,x.Cun_Descripcion));});});
+                        $.getJSON('@Url.Action("ListAsync","Empleados")',function(r){(r.data||[]).forEach(function(x){$doc.append(opt(x.Emp_Id,x.Emp_Nombre||''));});});
+                        function load(){ $.getJSON('@Url.Action("ListAsync","OfertasAnio")'+'?id='+aniId,function(r){var rows=(r&&r.data)||[];
+                            if(!rows.length){$b.html('<tr><td colspan="6" class="text-center text-muted">Aún no hay asignaturas.</td></tr>');return;}
+                            $b.html(rows.map(function(o){return '<tr><td>'+(o.Mat_Nombre||'')+'</td><td>'+(o.Cun_Descripcion||'—')+'</td><td>'+(o.Emp_Nombre||'<span class="text-muted">Sin asignar</span>')+'</td><td>'+(o.Ofa_HorasSemana!=null?o.Ofa_HorasSemana:'—')+'</td><td>'+(o.Ofa_EstadoDescripcion||'')+'</td><td><button type="button" class="btn btn-sm btn-danger ofa-del" data-id="'+o.Ofa_Id+'"><i class="fas fa-trash"></i></button></td></tr>';}).join(''));});}
+                        $('#ofaAdd').on('click',function(){var mat=$mat.val(); if(!mat){alert('Seleccione una materia.');return;}
+                            $.post('@Url.Action("CreateAsync","OfertasAnio")',{Ofa_Id:0,Ani_Id:aniId,Mat_Id:mat,Cun_Id:$gra.val()||null,Emp_Id:$doc.val()||null,Ofa_HorasSemana:$hrs.val()||null,Ofa_Estado:3},function(){$hrs.val('');load();});});
+                        $b.on('click','.ofa-del',function(){if(!confirm('¿Quitar asignatura?'))return;$.post('@Url.Action("DeleteAsync","OfertasAnio")',{Ofa_Id:$(this).data('id')},function(){load();});});
+                        load();
+                    });
+                    </script>
+                }
+                break;
+
+            case 5:
+                {
+                    int cPer = ViewBag.CountPeriodos != null ? (int)ViewBag.CountPeriodos : 0;
+                    int cSec = ViewBag.CountSecciones != null ? (int)ViewBag.CountSecciones : 0;
+                    bool okFechas = !string.IsNullOrEmpty(fIni) && !string.IsNullOrEmpty(fFin);
+                    <h2>Revisar y publicar</h2>
+                    <p class="sub">Revisa el resumen y publica el año lectivo.</p>
+                    @if (TempData["PublishError"] != null)
+                    {
+                        <div class="wz-note" style="background:#fef2f2;border-color:#fecaca;color:#991b1b;"><i class="fas fa-exclamation-triangle"></i> @TempData["PublishError"]</div>
+                    }
+                    <div class="wz-sum">
+                        <div><div class="k">Año</div><div class="v">@(Model != null ? Model.Ani_Anio.ToString() : "—")</div></div>
+                        <div><div class="k">Nombre</div><div class="v">@(Model != null ? Model.Ani_Nombre : "—")</div></div>
+                        <div><div class="k">Inicio</div><div class="v">@(string.IsNullOrEmpty(fIni) ? "—" : fIni)</div></div>
+                        <div><div class="k">Fin</div><div class="v">@(string.IsNullOrEmpty(fFin) ? "—" : fFin)</div></div>
+                    </div>
+                    <div style="margin-top:18px;">
+                        <div class="wz-lbl">Requisitos para publicar</div>
+                        <div style="padding:4px 0;">@(okFechas ? "✅" : "⬜") Fechas de inicio y fin</div>
+                        <div style="padding:4px 0;">@(cPer > 0 ? "✅" : "⬜") Al menos un período de reporte <span style="color:#6b7280;">(@cPer)</span></div>
+                        <div style="padding:4px 0;">@(cSec > 0 ? "✅" : "⬜") Al menos una sección <span style="color:#6b7280;">(@cSec)</span></div>
+                    </div>
+                    <div class="wz-note"><i class="fas fa-info-circle"></i> Al publicar, el estado del año pasa a <strong>Abierto</strong>. Si falta algún requisito, el botón te devolverá aquí con el detalle.</div>
+                }
+                break;
+        }
+
+        @if (step > 1 && step != 2)
+        {
+            <div class="wz-foot">
+                <a href="@Url.Action("Setup", new { id = id, step = step - 1 })" class="wz-btn wz-btn-ghost">← Atrás</a>
+                @if (step < 5)
+                {
+                    <a href="@Url.Action("Setup", new { id = id, step = step + 1 })" class="wz-btn wz-btn-primary">Continuar →</a>
+                }
+                else
+                {
+                    using (Html.BeginForm("PublishAsync", "AniosLectivos", FormMethod.Post, new { style = "display:inline;" }))
+                    {
+                        @Html.Hidden("id", id)
+                        <button type="submit" class="wz-btn wz-btn-primary"><i class="fas fa-check"></i> Publicar y finalizar</button>
+                    }
+                }
+            </div>
+            <div style="text-align:right;margin-top:10px;">
+                <a href="@Url.Action("Index")" class="wz-btn wz-btn-ghost">Guardar y finalizar más tarde</a>
+            </div>
+        }
+    </div>
+</div>

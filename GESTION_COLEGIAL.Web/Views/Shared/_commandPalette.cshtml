@@ -1,0 +1,435 @@
+@{
+    string cpUsername = Session["Username"] as string ?? "Usuario";
+    string cpRoleName = Session["RoleName"] as string ?? "";
+    string cpImpersonando = Session["impersonando_rol"] as string ?? "";
+    string cpRolMostrado = !string.IsNullOrEmpty(cpImpersonando) ? cpImpersonando : cpRoleName;
+    string cpPrimerNombre = cpUsername.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? cpUsername;
+}
+
+@* ══════════════════════════════════════════════════════════════════════
+   COMMAND PALETTE · "¿Qué querés hacer?"
+   Lee los links que el sidebar YA pintó (filtrados por rol vía Session)
+   → cero configuración duplicada. Abre con el botón o con Ctrl/Cmd+K.
+   ══════════════════════════════════════════════════════════════════════ *@
+
+<div id="cmdk-backdrop" class="cmdk-backdrop" aria-hidden="true"></div>
+
+<div id="cmdk-panel" class="cmdk-panel" role="dialog" aria-modal="true" aria-labelledby="cmdk-title" aria-hidden="true">
+    <div class="cmdk-head">
+        <div class="cmdk-head-top">
+            <span id="cmdk-title" class="cmdk-title">¿Qué querés hacer?</span>
+            <span class="cmdk-role" title="Estás viendo las acciones de tu rol">@cpRolMostrado</span>
+        </div>
+        <div class="cmdk-search">
+            <svg class="cmdk-search-ic" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input id="cmdk-input" type="text" autocomplete="off" spellcheck="false"
+                   placeholder="Escribí una tarea… (ej: cobrar, deudores, nómina)" />
+            <kbd class="cmdk-esc">esc</kbd>
+        </div>
+    </div>
+
+    <div id="cmdk-results" class="cmdk-results" role="listbox" aria-label="Acciones disponibles"></div>
+
+    <div class="cmdk-foot">
+        <span><kbd>↑</kbd><kbd>↓</kbd> moverse</span>
+        <span><kbd>↵</kbd> abrir</span>
+        <span><kbd>esc</kbd> cerrar</span>
+        <span class="cmdk-foot-spacer"></span>
+        <span id="cmdk-count"></span>
+    </div>
+</div>
+
+@* ── Bienvenida (una sola vez por usuario) ── *@
+<div id="cmdk-welcome-backdrop" class="cmdk-backdrop"></div>
+<div id="cmdk-welcome" class="cmdk-welcome" role="dialog" aria-labelledby="cmdk-welcome-title">
+    <div class="cmdk-welcome-ic">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+    </div>
+    <h3 id="cmdk-welcome-title">¡Hola, @cpPrimerNombre!</h3>
+    <p>
+        No hace falta que te sepas todo el menú de memoria. Abrí el buscador de acciones
+        y vas a ver <strong>todo lo que podés hacer según tu rol (@cpRolMostrado)</strong>,
+        agrupado y con dónde queda cada cosa.
+    </p>
+    <div class="cmdk-welcome-hint">
+        Se abre con <kbd>Ctrl</kbd>+<kbd>K</kbd> o con el botón <span class="cmdk-welcome-chip">🔎 ¿Qué querés hacer?</span> arriba del menú.
+    </div>
+    <div class="cmdk-welcome-actions">
+        <button type="button" id="cmdk-welcome-skip" class="cmdk-btn cmdk-btn-ghost">Ahora no</button>
+        <button type="button" id="cmdk-welcome-open" class="cmdk-btn cmdk-btn-primary">Ver qué puedo hacer</button>
+    </div>
+</div>
+
+<style>
+    :root {
+        --cmdk-bg: #ffffff;
+        --cmdk-ink: #1a1c2e;
+        --cmdk-muted: #6b6f89;
+        --cmdk-line: #e9eaf3;
+        --cmdk-hover: #f4f5fb;
+        --cmdk-accent: #4f46e5;
+        --cmdk-accent-soft: #eef0fe;
+        --cmdk-shadow: 0 20px 60px rgba(20, 22, 45, .28);
+    }
+    .gc-dark {
+        --cmdk-bg: #191b27;
+        --cmdk-ink: #eceef7;
+        --cmdk-muted: #9a9fbf;
+        --cmdk-line: #2a2d3d;
+        --cmdk-hover: #232532;
+        --cmdk-accent: #8b85f5;
+        --cmdk-accent-soft: #262747;
+        --cmdk-shadow: 0 20px 60px rgba(0, 0, 0, .55);
+    }
+
+    .cmdk-backdrop {
+        position: fixed; inset: 0; z-index: 1080;
+        background: rgba(20, 22, 45, .45);
+        backdrop-filter: blur(2px);
+        opacity: 0; visibility: hidden; transition: opacity .16s ease, visibility .16s;
+    }
+    .cmdk-backdrop.is-open { opacity: 1; visibility: visible; }
+
+    .cmdk-panel {
+        position: fixed; z-index: 1090;
+        top: 12vh; left: 50%; transform: translateX(-50%) scale(.97);
+        width: min(640px, calc(100vw - 32px));
+        max-height: 72vh; display: flex; flex-direction: column;
+        background: var(--cmdk-bg); color: var(--cmdk-ink);
+        border: 1px solid var(--cmdk-line); border-radius: 16px;
+        box-shadow: var(--cmdk-shadow); overflow: hidden;
+        font-family: 'Quicksand', system-ui, sans-serif;
+        opacity: 0; visibility: hidden; transition: opacity .16s ease, transform .16s ease, visibility .16s;
+    }
+    .cmdk-panel.is-open { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
+
+    .cmdk-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--cmdk-line); }
+    .cmdk-head-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .cmdk-title { font-size: 15px; font-weight: 700; color: var(--cmdk-ink); }
+    .cmdk-role {
+        font-size: 11px; font-weight: 700; letter-spacing: .02em; text-transform: capitalize;
+        color: var(--cmdk-accent); background: var(--cmdk-accent-soft);
+        padding: 3px 10px; border-radius: 999px;
+    }
+    .cmdk-search { position: relative; display: flex; align-items: center; }
+    .cmdk-search-ic { position: absolute; left: 12px; color: var(--cmdk-muted); pointer-events: none; }
+    #cmdk-input {
+        width: 100%; padding: 11px 44px 11px 38px;
+        border: 1.5px solid var(--cmdk-line); border-radius: 11px;
+        background: var(--cmdk-hover); color: var(--cmdk-ink);
+        font-size: 15px; font-family: inherit; outline: none;
+    }
+    #cmdk-input:focus { border-color: var(--cmdk-accent); background: var(--cmdk-bg); box-shadow: 0 0 0 3px var(--cmdk-accent-soft); }
+    .cmdk-esc {
+        position: absolute; right: 10px; font-size: 10px; font-weight: 700;
+        color: var(--cmdk-muted); background: var(--cmdk-bg);
+        border: 1px solid var(--cmdk-line); border-radius: 5px; padding: 2px 6px;
+    }
+
+    .cmdk-results { overflow-y: auto; padding: 8px; flex: 1; }
+    .cmdk-group-label {
+        font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+        color: var(--cmdk-muted); padding: 12px 10px 6px;
+    }
+    .cmdk-item {
+        display: flex; align-items: center; gap: 12px;
+        padding: 9px 10px; border-radius: 10px; cursor: pointer;
+        text-decoration: none; color: var(--cmdk-ink);
+    }
+    .cmdk-item:hover, .cmdk-item.is-active { background: var(--cmdk-hover); }
+    .cmdk-item.is-active { box-shadow: inset 0 0 0 1.5px var(--cmdk-accent-soft); }
+    .cmdk-item-ic {
+        flex: 0 0 30px; height: 30px; width: 30px; border-radius: 8px;
+        display: grid; place-items: center; color: var(--cmdk-accent);
+        background: var(--cmdk-accent-soft);
+    }
+    .cmdk-item-body { min-width: 0; flex: 1; }
+    .cmdk-item-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cmdk-item-path { font-size: 11.5px; color: var(--cmdk-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cmdk-item-title mark { background: transparent; color: var(--cmdk-accent); font-weight: 700; padding: 0; }
+    .cmdk-item-go { flex: 0 0 auto; color: var(--cmdk-muted); opacity: 0; }
+    .cmdk-item.is-active .cmdk-item-go { opacity: 1; }
+    .cmdk-empty { text-align: center; color: var(--cmdk-muted); padding: 40px 20px; font-size: 14px; }
+
+    .cmdk-foot {
+        display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+        padding: 9px 16px; border-top: 1px solid var(--cmdk-line);
+        font-size: 11px; color: var(--cmdk-muted);
+    }
+    .cmdk-foot-spacer { flex: 1; }
+    .cmdk-foot kbd, .cmdk-welcome kbd {
+        font-family: inherit; font-size: 10px; font-weight: 700;
+        background: var(--cmdk-hover); border: 1px solid var(--cmdk-line);
+        border-radius: 4px; padding: 1px 5px; margin: 0 1px; color: var(--cmdk-muted);
+    }
+
+    /* ── Botón que vive en el sidebar ── */
+    .cmdk-trigger {
+        display: flex; align-items: center; gap: 8px; width: 100%;
+        margin: 0; padding: 9px 12px; cursor: pointer;
+        background: rgba(255,255,255,.08); color: #fff;
+        border: 1px solid rgba(255,255,255,.14); border-radius: 10px;
+        font-family: inherit; font-size: 13px; font-weight: 600; text-align: left;
+        transition: background .15s;
+    }
+    .cmdk-trigger:hover { background: rgba(255,255,255,.16); }
+    .cmdk-trigger .cmdk-trigger-label { flex: 1; opacity: .92; }
+    .cmdk-trigger kbd {
+        font-family: inherit; font-size: 10px; font-weight: 700;
+        background: rgba(255,255,255,.14); border: none; border-radius: 4px;
+        padding: 2px 6px; color: #fff;
+    }
+
+    /* ── Bienvenida ── */
+    .cmdk-welcome {
+        position: fixed; z-index: 1095; top: 50%; left: 50%;
+        transform: translate(-50%, -46%); width: min(440px, calc(100vw - 32px));
+        background: var(--cmdk-bg); color: var(--cmdk-ink);
+        border: 1px solid var(--cmdk-line); border-radius: 18px;
+        box-shadow: var(--cmdk-shadow); padding: 28px 26px 22px; text-align: center;
+        font-family: 'Quicksand', system-ui, sans-serif;
+        opacity: 0; visibility: hidden; transition: opacity .18s ease, transform .18s ease, visibility .18s;
+    }
+    .cmdk-welcome.is-open { opacity: 1; visibility: visible; transform: translate(-50%, -50%); }
+    .cmdk-welcome-ic {
+        width: 54px; height: 54px; margin: 0 auto 14px; border-radius: 14px;
+        display: grid; place-items: center; color: #fff;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+    }
+    .cmdk-welcome h3 { margin: 0 0 8px; font-size: 20px; font-weight: 700; color: var(--cmdk-ink); }
+    .cmdk-welcome p { margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--cmdk-muted); }
+    .cmdk-welcome p strong { color: var(--cmdk-ink); }
+    .cmdk-welcome-hint {
+        font-size: 12.5px; color: var(--cmdk-muted); background: var(--cmdk-hover);
+        border: 1px solid var(--cmdk-line); border-radius: 10px; padding: 10px 12px; margin-bottom: 18px;
+    }
+    .cmdk-welcome-chip { font-weight: 700; color: var(--cmdk-accent); }
+    .cmdk-welcome-actions { display: flex; gap: 10px; justify-content: center; }
+    .cmdk-btn { font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; border-radius: 10px; padding: 10px 18px; border: 1px solid transparent; }
+    .cmdk-btn-ghost { background: transparent; color: var(--cmdk-muted); border-color: var(--cmdk-line); }
+    .cmdk-btn-ghost:hover { background: var(--cmdk-hover); }
+    .cmdk-btn-primary { background: var(--cmdk-accent); color: #fff; }
+    .cmdk-btn-primary:hover { filter: brightness(1.06); }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .cmdk-panel, .cmdk-backdrop, .cmdk-welcome { transition: none; }
+    }
+</style>
+
+<script>
+(function () {
+    // Icono por defecto para cada acción
+    var GO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+    var DOT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>';
+
+    var RECENT_KEY = 'gc-cmdk-recientes';
+    var WELCOME_KEY = 'gc-cmdk-welcome-visto';
+
+    var $panel, $backdrop, $input, $results, $count;
+    var commands = [];      // { title, path, href, group, hay (normalizado) }
+    var flat = [];          // items actualmente renderizados (para navegación con flechas)
+    var activeIdx = -1;
+
+    function normalize(s) {
+        return (s || '').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    }
+
+    // Lee los links que el sidebar YA pintó (auto-filtrado por rol)
+    function buildCommands() {
+        commands = [];
+        var $nav = $('#sidebar ul.menu-categories');
+        if (!$nav.length) return;
+
+        var currentHeading = 'General';
+        $nav.children('li').each(function () {
+            var $li = $(this);
+
+            if ($li.hasClass('menu-heading')) {
+                currentHeading = $.trim($li.find('.heading span').text()) || currentHeading;
+                return;
+            }
+            // Saltar la sección "Dev · Nuevas" (herramientas internas, no tareas de usuario)
+            if ($li.find('> ul.submenu').attr('id') === 'DevNuevas') return;
+
+            var parentLabel = $.trim($li.find('> a .h6 span, > div.dropdown-toggle .h6 span').first().text());
+            var $submenu = $li.find('> ul.submenu');
+
+            if ($submenu.length) {
+                var lastSubHeader = '';
+                $submenu.children('li').each(function () {
+                    var $sub = $(this);
+                    if ($sub.hasClass('submenu-header')) { lastSubHeader = $.trim($sub.text()); return; }
+                    var $a = $sub.find('a').first();
+                    if (!$a.length || !$a.attr('href')) return;
+                    var title = $.trim($a.text());
+                    if (!title) return;
+                    var pathParts = [parentLabel];
+                    if (lastSubHeader) pathParts.push(lastSubHeader);
+                    commands.push({
+                        title: title,
+                        path: pathParts.filter(Boolean).join(' › '),
+                        href: $a.attr('href'),
+                        group: currentHeading,
+                        hay: normalize(title + ' ' + parentLabel + ' ' + lastSubHeader + ' ' + currentHeading)
+                    });
+                });
+            } else {
+                var $a = $li.find('a').first();
+                if (!$a.length || !$a.attr('href')) return;
+                var title = $.trim($a.text());
+                if (!title) return;
+                commands.push({
+                    title: title, path: currentHeading, href: $a.attr('href'),
+                    group: currentHeading, hay: normalize(title + ' ' + currentHeading)
+                });
+            }
+        });
+    }
+
+    function getRecientes() {
+        try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); } catch (e) { return []; }
+    }
+    function pushReciente(cmd) {
+        var list = getRecientes().filter(function (r) { return r.href !== cmd.href; });
+        list.unshift({ title: cmd.title, path: cmd.path, href: cmd.href });
+        localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 4)));
+    }
+
+    function highlight(title, q) {
+        if (!q) return $('<div>').text(title).html();
+        var n = normalize(title), idx = n.indexOf(q);
+        if (idx === -1) return $('<div>').text(title).html();
+        var esc = function (s) { return $('<div>').text(s).html(); };
+        return esc(title.slice(0, idx)) + '<mark>' + esc(title.slice(idx, idx + q.length)) + '</mark>' + esc(title.slice(idx + q.length));
+    }
+
+    function itemHtml(cmd, q, icon) {
+        return '<a class="cmdk-item" href="' + cmd.href + '" role="option">' +
+            '<span class="cmdk-item-ic">' + (icon || DOT_SVG) + '</span>' +
+            '<span class="cmdk-item-body">' +
+            '<span class="cmdk-item-title">' + highlight(cmd.title, q) + '</span>' +
+            '<span class="cmdk-item-path">' + $('<div>').text(cmd.path).html() + '</span>' +
+            '</span><span class="cmdk-item-go">' + GO_SVG + '</span></a>';
+    }
+
+    function render(q) {
+        flat = []; activeIdx = -1;
+        var html = '';
+
+        if (!q) {
+            // MODO EXPLORAR (sin escribir): recientes + todo agrupado por sección
+            var rec = getRecientes();
+            if (rec.length) {
+                html += '<div class="cmdk-group-label">Recientes</div>';
+                rec.forEach(function (r) { html += itemHtml(r, '', null); flat.push(r); });
+            }
+            var groups = {};
+            commands.forEach(function (c) { (groups[c.group] = groups[c.group] || []).push(c); });
+            Object.keys(groups).forEach(function (g) {
+                html += '<div class="cmdk-group-label">' + $('<div>').text(g).html() + '</div>';
+                groups[g].forEach(function (c) { html += itemHtml(c, '', null); flat.push(c); });
+            });
+        } else {
+            // MODO BUSCAR: filtro por coincidencia
+            var matches = commands.filter(function (c) { return c.hay.indexOf(q) !== -1; });
+            if (!matches.length) {
+                html = '<div class="cmdk-empty">Nada coincide con «' + $('<div>').text(q).html() + '».<br>Probá con otra palabra.</div>';
+            } else {
+                matches.forEach(function (c) { html += itemHtml(c, q, null); flat.push(c); });
+            }
+        }
+
+        $results.html(html);
+        $count.text(flat.length ? flat.length + (flat.length === 1 ? ' acción' : ' acciones') : '');
+        if (flat.length) setActive(0);
+    }
+
+    function setActive(i) {
+        var $items = $results.find('.cmdk-item');
+        if (!$items.length) return;
+        activeIdx = Math.max(0, Math.min(i, $items.length - 1));
+        $items.removeClass('is-active').eq(activeIdx).addClass('is-active');
+        var el = $items.get(activeIdx);
+        if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
+    }
+
+    function go(i) {
+        var cmd = flat[i];
+        if (!cmd) return;
+        pushReciente(cmd);
+        window.location.href = cmd.href;
+    }
+
+    function open() {
+        buildCommands();
+        $backdrop.addClass('is-open').attr('aria-hidden', 'false');
+        $panel.addClass('is-open').attr('aria-hidden', 'false');
+        $input.val('');
+        render('');
+        setTimeout(function () { $input.focus(); }, 30);
+    }
+    function close() {
+        $backdrop.removeClass('is-open').attr('aria-hidden', 'true');
+        $panel.removeClass('is-open').attr('aria-hidden', 'true');
+    }
+    function isOpen() { return $panel.hasClass('is-open'); }
+
+    // ── Bienvenida (una sola vez) ──
+    function maybeWelcome() {
+        if (localStorage.getItem(WELCOME_KEY)) return;
+        var $wb = $('#cmdk-welcome-backdrop'), $w = $('#cmdk-welcome');
+        setTimeout(function () { $wb.addClass('is-open'); $w.addClass('is-open'); }, 500);
+        function dismiss() {
+            $wb.removeClass('is-open'); $w.removeClass('is-open');
+            localStorage.setItem(WELCOME_KEY, '1');
+        }
+        $('#cmdk-welcome-skip, #cmdk-welcome-backdrop').on('click', dismiss);
+        $('#cmdk-welcome-open').on('click', function () { dismiss(); open(); });
+    }
+
+    function boot() {
+        $panel = $('#cmdk-panel'); $backdrop = $('#cmdk-backdrop');
+        $input = $('#cmdk-input'); $results = $('#cmdk-results'); $count = $('#cmdk-count');
+
+        $backdrop.on('click', close);
+        $results.on('mouseenter', '.cmdk-item', function () {
+            setActive($results.find('.cmdk-item').index(this));
+        });
+        $results.on('click', '.cmdk-item', function (e) {
+            e.preventDefault();
+            go($results.find('.cmdk-item').index(this));
+        });
+
+        $input.on('input', function () { render(normalize($(this).val()).trim()); });
+        $input.on('keydown', function (e) {
+            if (e.key === 'ArrowDown') { e.preventDefault(); setActive(activeIdx + 1); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(activeIdx - 1); }
+            else if (e.key === 'Enter') { e.preventDefault(); go(activeIdx); }
+            else if (e.key === 'Escape') { e.preventDefault(); close(); }
+        });
+
+        // Ctrl/Cmd + K abre el palette (reemplaza el foco al buscador del sidebar)
+        $(document).on('keydown.cmdk', function (e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+                e.preventDefault(); e.stopImmediatePropagation();
+                isOpen() ? close() : open();
+            }
+        });
+
+        // Botón(es) que abren el palette (sidebar / header)
+        $(document).on('click', '.cmdk-trigger, [data-cmdk-open]', function (e) {
+            e.preventDefault(); open();
+        });
+
+        maybeWelcome();
+        window.gcCommandPalette = { open: open, close: close };
+    }
+
+    // jQuery se carga al final del <body>; esperar a que exista antes de usar $
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+    } else {
+        boot();
+    }
+})();
+</script>
