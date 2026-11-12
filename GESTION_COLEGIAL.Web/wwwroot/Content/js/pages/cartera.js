@@ -156,12 +156,12 @@ var Cartera = (function () {
 
         var texto =
             "Para: encargado de " + (r.primer) + "  (y " + Math.max(0, r.destinatarios - 1) + " más)\n" +
-            "Asunto: Recordatorio de pago — Instituto San Francisco\n\n" +
+            "Asunto: Recordatorio de pago — Instituto Nova Sula\n\n" +
             "Estimado encargado:\n\n" +
             "Le recordamos que en el sistema figura un saldo pendiente asociado a su representado. " +
             "Le agradecemos regularizar el pago a más tardar el " + fLimite + " para evitar recargos por mora.\n\n" +
             "Puede acercarse a caja o comunicarse con administración. Si ya realizó el pago, ignore este mensaje.\n\n" +
-            "Atentamente,\nAdministración — Instituto San Francisco";
+            "Atentamente,\nAdministración — Instituto Nova Sula";
         $("#sc-preview").text(texto);
         $("#sc-btn-enviar").html('<i class="fa-solid fa-paper-plane"></i> Enviar ' + r.destinatarios + ' recordatorio' + (r.destinatarios === 1 ? "" : "s"));
     }

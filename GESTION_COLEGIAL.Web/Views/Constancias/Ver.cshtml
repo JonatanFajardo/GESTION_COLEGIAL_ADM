@@ -1,0 +1,120 @@
+@model GESTION_COLEGIAL.UI.Models.ConstanciaVerViewModel
+@using GESTION_COLEGIAL.UI.Models
+@{
+    var M = Model;
+    var D = M.Documento;
+    var tipo = CatalogoDocumentos.Tipo(D.Doc_Tipo);
+    ViewBag.Title = tipo.Titulo + " " + D.Doc_Referencia;
+    bool reemplazada = M.Ultima != null && M.Ultima.Doc_Id != D.Doc_Id;
+}
+
+@section Styles{
+    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
+    <link href="~/css/pages/constancias.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content cst-no-imprimir">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Constancias y expediente</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@D.Doc_Referencia</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="page-header-catalogo cst-no-imprimir">
+    <div class="header-content-wrapper-catalogo">
+        <div class="header-left-catalogo">
+            <div class="header-icon-catalogo"><i class="@tipo.Icono" style="font-size:2rem" aria-hidden="true"></i></div>
+            <div class="header-text-catalogo">
+                <h1>@tipo.Titulo · @D.Doc_Referencia</h1>
+                <p>@D.Alu_Nombre · revisión @D.Doc_Revision · emitido el @CatalogoDocumentos.Fecha(D.Doc_FechaEmision)</p>
+            </div>
+        </div>
+        <div class="header-action-catalogo">
+            <button type="button" class="btn-nuevo-catalogo" data-imprimir>
+                <i class="bi bi-printer" aria-hidden="true"></i> Imprimir
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="cst-page">
+    @if (!string.IsNullOrEmpty(M.Aviso))
+    {
+        <div class="cst-alerta cst-alerta--ok cst-no-imprimir" role="status">
+            <i class="bi bi-check-circle" aria-hidden="true"></i> @M.Aviso
+        </div>
+    }
+    @if (reemplazada)
+    {
+        <div class="cst-alerta cst-alerta--aviso cst-no-imprimir" role="alert">
+            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+            Hay una revisión más nueva. Esta es la revisión @D.Doc_Revision; el colegio emitió después la revisión @M.Ultima.Doc_Revision.
+            Esta página queda tal como se emitió.
+            <a href="@Url.Action("Ver", new { id = M.Ultima.Doc_Id })">Abrir la revisión @M.Ultima.Doc_Revision</a>
+        </div>
+    }
+    @if (M.ContenidoIlegible)
+    {
+        <div class="cst-alerta cst-alerta--error cst-no-imprimir" role="alert">
+            No se pudo leer el contenido guardado de este documento. Se muestran solo los datos generales.
+        </div>
+    }
+
+    <div class="cst-barra cst-no-imprimir">
+        <a class="gc-btn gc-btn--fantasma" href="@Url.Action("Index", new { aluId = D.Alu_Id })">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Volver
+        </a>
+        <div class="cst-barra-derecha">
+            @if (M.PuedeEmitir)
+            {
+                <a class="gc-btn gc-btn--suave" href="@Url.Action("Emitir", new { tipo = D.Doc_Tipo, aluId = D.Alu_Id, aniId = D.Ani_Id, pacId = D.Pac_Id })">
+                    <i class="bi bi-arrow-repeat" aria-hidden="true"></i> Emitir una revisión
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="cst-papel">
+        <partial name="_Documento" model="M.Impreso" />
+    </div>
+
+    <section class="cst-tarjeta cst-no-imprimir" aria-labelledby="cst-revisiones-titulo">
+        <h2 class="cst-tarjeta-titulo" id="cst-revisiones-titulo">Historial de revisiones</h2>
+        <p class="cst-tarjeta-desc">Un documento emitido nunca cambia. Una corrección se emite como la revisión siguiente y las anteriores siguen disponibles.</p>
+        <ol class="cst-revisiones">
+            @foreach (var r in M.Revisiones)
+            {
+                bool actual = r.Doc_Id == D.Doc_Id;
+                <li class="cst-revision @(actual ? "cst-revision--actual" : "")">
+                    <div>
+                        <p class="cst-revision-titulo">
+                            Revisión @r.Doc_Revision · @r.Doc_Referencia
+                            @if (actual) { <span class="cst-sub-inline">(está leyendo esta)</span> }
+                        </p>
+                        <p class="cst-sub">
+                            @CatalogoDocumentos.Fecha(r.Doc_FechaEmision)@(string.IsNullOrWhiteSpace(r.Doc_EmitidoPor) ? "" : " · " + r.Doc_EmitidoPor)@(string.IsNullOrWhiteSpace(r.Doc_Motivo) ? "" : " · " + r.Doc_Motivo)
+                        </p>
+                    </div>
+                    <div class="cst-revision-derecha">
+                        @if (r.Doc_Promedio.HasValue)
+                        {
+                            <span class="cst-suave">Promedio @CatalogoDocumentos.Promedio(r.Doc_Promedio)</span>
+                        }
+                        @if (!actual)
+                        {
+                            <a class="gc-btn gc-btn--suave gc-btn--chico" href="@Url.Action("Ver", new { id = r.Doc_Id })"
+                               aria-label="Abrir la revisión @r.Doc_Revision">Abrir</a>
+                        }
+                    </div>
+                </li>
+            }
+        </ol>
+    </section>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/constancias.js" asp-append-version="true"></script>
+}

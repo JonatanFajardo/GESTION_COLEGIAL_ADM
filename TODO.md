@@ -21,7 +21,7 @@ Regla: si un módulo existe en Skuul, se copia con su misma profundidad, sus mis
 | 1 | **Disciplina** (casos / incidentes) | Registrar qué pasó, quiénes participaron, qué hizo el colegio y cómo avanzó el caso | Dirección | medio | ✅ hecho (2026-11-12): *Académico › Disciplina*, script 062 de la API; revisado en navegador |
 | 2 | **Reporte de asistencia de alumnos** | % por sección y por alumno descontando feriados; alertas de inasistencia | Dirección, docente | poco | ✅ hecho (2026-11-12): *Académico › Reporte de asistencia* (resumen por sección + planilla alumno × día), script 063 de la API. Skuul no lo tiene como pantalla; se tomó de RosarioSIS (Average Daily Attendance + Attendance Chart) |
 | 3 | **Escala de notas + cuadro de honor** | Notas en letra/concepto y ranking de los mejores | Dirección | poco | pendiente |
-| 4 | **Constancias y expediente** (boletín y transcript congelados) | Imprimir el historial oficial de varios años | Secretaría | medio | pendiente |
+| 4 | **Constancias y expediente** (boletín y transcript congelados) | Imprimir el historial oficial de varios años | Secretaría | medio | ✅ hecho (2026-11-12): *Académico › Constancias y expediente*, script 064 de la API. Listado con filtros (tipo, año, alumno/referencia) · Emitir (tipo → alumno → año/parcial → vista previa → emitir) · documento imprimible tamaño carta con historial de revisiones; constancia de estudio, boletín (semestre × parcial) y expediente (todos los años). Enlace "Constancias" en la ficha del alumno |
 | 5 | **Portal de padres** | El encargado ve notas, cuenta y calendario y hace solicitudes | Encargado | mucho | pendiente |
 | 6 | Notas ponderadas (categorías y plantillas de evaluación) | Hoy los parciales no tienen peso | Docente | medio | pendiente |
 | 7 | Sustitución de docente | Cubrir la clase de un profesor ausente | Dirección | medio | pendiente |
@@ -39,6 +39,14 @@ No aplican: biblioteca, internado/dormitorios, varias sedes, presupuesto contabl
 - Un caso de protección del menor solo lo ven quien tiene el permiso de casos reservados, quien lo reportó y quien lo atiende.
 - Hecho así en el ADM: `DisciplinaController` (Index · Registrar · Caso), tablas `app.tbCasosDisciplina*`, API `CasosDisciplina/*`. Permisos: "Casos de disciplina", "Registrar caso de disciplina", "Atender casos de disciplina", "Ver casos reservados" (admin y dirección, como Skuul).
 - Pendiente: decidir si docentes pueden **registrar** casos (en Skuul no; en un colegio suele hacerlo el docente que ve la falta). Mostrar los casos de un alumno en su ficha 360 (enlace, no copia). Dato con codificación rota en `tbPersonas` ("Ã“scar").
+
+### 4 · Constancias y expediente — pendientes
+- Hecho así en el ADM: `ConstanciasController` (Index · Emitir · Ver), API `DocumentosEmitidos/*`. Permisos: "Constancias y expediente" (ver: admin, dirección, secretaría) y "Emitir constancias" (admin, secretaría). Un documento emitido no se edita ni se borra; una corrección es la revisión siguiente y exige motivo.
+- El membrete toma el nombre y la dirección de *Ajustes › Institución* (`App_Data/instituto-config.json`). Hoy no está configurado y sale el valor por defecto "Instituto Nova Sula", mientras el menú dice "Inst. San Francisco": dejar un solo nombre del colegio.
+- No hay logo del colegio en el documento (se usa un ícono). Agregar el logo a la configuración institucional.
+- La lista de alumnos de *Emitir* se reutiliza de Disciplina (`CasosDisciplina/AlumnosAsync`, todos los alumnos). Si crece, cambiar a búsqueda en el servidor.
+- El listado filtra por texto en el ADM después de traer todo; si hay muchos documentos, pasar la búsqueda y la paginación a la API.
+- Falta "Emitir boletines de toda una sección" de una vez (Skuul lo hace por sección y período).
 
 ## Cola de trabajo (2026-11-12)
 
