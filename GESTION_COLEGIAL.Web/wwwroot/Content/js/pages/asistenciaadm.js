@@ -12,6 +12,7 @@ var AsistenciaAdm = (function () {
     var planCache = {};       // Pla_Id -> row
     var tareaCache = {};      // Tar_Id -> row
     var cargado = { asistencia: false, plan: false, tareas: false };
+    var linkCalendario = "";  // enlace al Calendario escolar (aviso de día cerrado)
 
     function esc(v) {
         if (v === null || v === undefined) return "";
@@ -47,47 +48,110 @@ var AsistenciaAdm = (function () {
     }
 
     /* ---------------- Tab 1: Pase de Lista ---------------- */
+    /* Si el colegio cierra ese día (feriado o cierre publicado en el Calendario escolar),
+       no hay pase de lista: se muestra el aviso en vez de la lista.
+       Cada consulta recuerda su horario y fecha: si mientras tanto se pidió otra, su respuesta se descarta. */
+    var consulta = 0;
+    var ESTADOS = [["P", "Presente"], ["A", "Ausente"], ["T", "Tardanza"], ["J", "Justificado"]];
+
+    function avisar(tipo, texto) {
+        // toastr inserta HTML: el texto (puede traer el título de un evento del calendario) va escapado
+        if (window.toastr) toastr[tipo](esc(texto)); else alert(texto);
+    }
+
     function cargarAsistencia() {
         horId = $("#dd-hor").val();
         fecha = $("#f-fecha").val();
         if (!horId || !fecha) { alert("Seleccione horario y fecha."); return; }
 
-        $.getJSON(urls.asisList, { Hor_Id: horId, Fecha: fecha }, function (data) {
+        var n = ++consulta, h = horId, f = fecha;
+        $("#tbody-asistencia").html('<tr><td colspan="4" class="text-center text-muted">Cargando…</td></tr>');
+        $.getJSON(urls.asisCierre, { Hor_Id: h, Fecha: f }).always(function (c) {
+            if (n !== consulta) return;  // llegó tarde: ya se pidió otro horario u otra fecha
+            if (c && c.cerrado) {
+                cargado.asistencia = true;
+                $("#asis-cierre-texto").text(c.mensaje || "El colegio cierra ese día.");
+                $("#asis-cierre-link").attr("href", linkCalendario + "?mes=" + f.substr(0, 7));
+                $("#asis-cierre").prop("hidden", false);
+                $("#btn-guardar-todos").prop("disabled", true);
+                $("#tbody-asistencia").html('<tr><td colspan="4" class="text-center text-muted">Ese día no tiene pase de lista.</td></tr>');
+                return;
+            }
+            $("#asis-cierre").prop("hidden", true);
+            $("#btn-guardar-todos").prop("disabled", false);
+            listarAsistencia(n, h, f);
+        });
+    }
+
+    /* Alumnos de la sección del horario con su asistencia de ese día (estado guardado como letra) */
+    function listarAsistencia(n, h, f) {
+        $.getJSON(urls.asisList, { Hor_Id: h, Fecha: f }, function (respuesta) {
+            if (n !== consulta) return;
             cargado.asistencia = true;
+            // El controller responde { data: [...] } (AjaxResult); se acepta también la lista directa
+            var data = $.isArray(respuesta) ? respuesta : ((respuesta && respuesta.data) || []);
             var tbody = $("#tbody-asistencia").empty();
             if (!data || data.length === 0) {
-                tbody.append('<tr><td colspan="4" class="text-center text-muted">Sin registros para este horario.</td></tr>');
+                tbody.append('<tr><td colspan="4" class="text-center text-muted">No hay alumnos en la sección de este horario.</td></tr>');
                 return;
             }
             $.each(data, function (_, row) {
-                var estados = ["Presente", "Ausente", "Tardanza", "Justificado"].map(function (e) {
-                    var sel = row.Asi_Estado === e ? " selected" : "";
-                    return "<option" + sel + ">" + e + "</option>";
+                var actual = String(row.Asi_Estado || "P").charAt(0).toUpperCase();
+                var estados = $.map(ESTADOS, function (e) {
+                    return "<option value='" + e[0] + "'" + (actual === e[0] ? " selected" : "") + ">" + e[1] + "</option>";
                 }).join("");
                 tbody.append(
                     "<tr data-asi='" + (row.Asi_Id || 0) + "' data-alu='" + row.Alu_Id + "'>" +
-                    "<td>" + esc(row.Alu_NombreCompleto) + "</td>" +
-                    "<td><select class='form-control est-select'>" + estados + "</select></td>" +
-                    "<td><input class='form-control obs-input' value=\"" + esc(row.Asi_Observacion) + "\"></td>" +
+                    "<td>" + esc(row.NombreAlumno || row.Alu_NombreCompleto) + "</td>" +
+                    "<td><select class='form-control est-select' aria-label='Estado'>" + estados + "</select></td>" +
+                    "<td><input class='form-control obs-input' maxlength='200' aria-label='Observación' value=\"" + esc(row.Asi_Observacion) + "\"></td>" +
                     "<td><button class='btn btn-sm btn-primary btn-marcar'>Guardar</button></td></tr>"
                 );
             });
         });
     }
 
-    function guardarFila(tr, cb) {
-        $.post(urls.asisMarcar, {
+    function guardarFila(tr) {
+        return $.post(urls.asisMarcar, {
             Asi_Id:          tr.data("asi"),
             Hor_Id:          horId,
             Alu_Id:          tr.data("alu"),
             Asi_Fecha:       fecha,
             Asi_Estado:      tr.find(".est-select").val(),
             Asi_Observacion: tr.find(".obs-input").val()
-        }, function (res) { if (cb) cb(res); });
+        });
+    }
+
+    function guardarUno($btn) {
+        $btn.prop("disabled", true);
+        guardarFila($btn.closest("tr"))
+            .done(function (res) {
+                if (res && res.success) avisar("success", "Asistencia guardada.");
+                else avisar("error", (res && res.message) || "No se pudo guardar la asistencia.");
+            })
+            .fail(function () { avisar("error", "No se pudo guardar la asistencia."); })
+            .always(function () { $btn.prop("disabled", false); });
     }
 
     function guardarTodos() {
-        $("#tbody-asistencia tr[data-alu]").each(function () { guardarFila($(this)); });
+        var filas = $("#tbody-asistencia tr[data-alu]");
+        if (!filas.length) return;
+        var $btn = $("#btn-guardar-todos").prop("disabled", true);
+        var pendientes = filas.length, ok = 0, error = null;
+        filas.each(function () {
+            guardarFila($(this))
+                .done(function (res) {
+                    if (res && res.success) ok++;
+                    else if (!error) error = (res && res.message) || "No se pudo guardar la asistencia.";
+                })
+                .fail(function () { if (!error) error = "No se pudo guardar la asistencia."; })
+                .always(function () {
+                    if (--pendientes > 0) return;
+                    $btn.prop("disabled", false);
+                    if (error) avisar("error", error + (ok > 0 ? " (" + ok + " sí se guardaron)" : ""));
+                    else avisar("success", "Asistencia guardada: " + ok + (ok === 1 ? " alumno." : " alumnos."));
+                });
+        });
     }
 
     /* ---------------- Tab 2: Plan de Clases ---------------- */
@@ -167,8 +231,11 @@ var AsistenciaAdm = (function () {
     obj.init = function (u) {
         urls = u;
 
-        var hoy = new Date().toISOString().split("T")[0];
+        // Fecha local (toISOString daría el día UTC: después de las 6 p. m. en Honduras saldría mañana)
+        var ahora = new Date();
+        var hoy = ahora.getFullYear() + "-" + ("0" + (ahora.getMonth() + 1)).slice(-2) + "-" + ("0" + ahora.getDate()).slice(-2);
         $("#f-fecha").val(hoy);
+        linkCalendario = ($("#asis-cierre-link").attr("href") || "").split("?")[0];
         fecha = hoy;
 
         // Horarios compartidos (un solo dropdown para los 3 tabs)
@@ -195,7 +262,7 @@ var AsistenciaAdm = (function () {
             cargado.asistencia = false;
             if (horId && fecha) cargarAsistencia();
         });
-        $(document).on("click", ".btn-marcar", function () { guardarFila($(this).closest("tr")); });
+        $(document).on("click", ".btn-marcar", function () { guardarUno($(this)); });
 
         /* --- Plan de Clases --- */
         $("#btn-nuevo-plan").on("click", function () {

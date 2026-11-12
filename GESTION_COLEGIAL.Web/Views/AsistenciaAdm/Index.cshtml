@@ -6,6 +6,7 @@
     <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
     <link href="~/Content/css/modal-catalogos.css" rel="stylesheet" />
     <link href="~/Content/css/pages/docencia-diaria.css" rel="stylesheet" />
+    <link href="~/css/pages/calendario-escolar.css" rel="stylesheet" asp-append-version="true" />
 }
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
@@ -89,6 +90,15 @@
                         <i class="bi bi-check2-all"></i> Guardar Todo
                     </button>
                 </div>
+            </div>
+        </div>
+        @* Día en que el colegio cierra (Calendario escolar): sin pase de lista *@
+        <div class="cal-banner-cierre" id="asis-cierre" role="alert" hidden>
+            <i class="bi bi-lock-fill" aria-hidden="true"></i>
+            <div>
+                <strong>Ese día no hay pase de lista</strong>
+                <p id="asis-cierre-texto"></p>
+                <p><a href="@Url.Action("Index", "CalendarioEscolar")" id="asis-cierre-link">Ver el calendario escolar</a></p>
             </div>
         </div>
         <div class="card-listado-catalogo">
@@ -264,6 +274,7 @@
             dropdowns:      "@Url.Action("DropdownsAsync", "AsistenciaAdm")",
             asisList:       "@Url.Action("ListAsync", "AsistenciaAdm")",
             asisMarcar:     "@Url.Action("MarcarAsync", "AsistenciaAdm")",
+            asisCierre:     "@Url.Action("CierreAsync", "AsistenciaAdm")",
             planList:       "@Url.Action("ListAsync", "PlanClasesAdm")",
             planCreate:     "@Url.Action("CreateAsync", "PlanClasesAdm")",
             planEdit:       "@Url.Action("EditAsync", "PlanClasesAdm")",
