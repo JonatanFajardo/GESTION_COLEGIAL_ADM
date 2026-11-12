@@ -7,7 +7,20 @@ Este archivo agrupa tareas que surgen al revisar una pantalla pero pertenecen a 
 ## Cola de trabajo (2026-11-12)
 
 1. ✅ **Inscripción inicial del año** (hecho 2026-11-12) — pestaña "Inscripción del año" en *Inscripción y promociones* (crea las secciones del año que faltan e inscribe en lote; los inscritos que figuraban como Graduado pasan a Activo) y la Matrícula inscribe sola al alumno nuevo en el año activo.
-2. **Calendario escolar** — espejo de Skuul (`/dashboard/calendar-events`): eventos por tipo (feriado, cierre, exámenes, reunión de padres, acto, actividad…), para toda la escuela o una sección, en borrador o publicados. Conectarlo con el pase de lista (no pedir asistencia en feriados ni cierres) y con el % de asistencia. Punto de partida: `EventosService` (la API no tiene esa parte) y FullCalendar (incluido, sin uso).
+2. ✅ **Calendario escolar** (hecho 2026-11-12) — *Académico › Calendario escolar*, espejo de Skuul: vista de mes + "Qué hay este mes", 9 tipos de día, todo el día o con hora, borrador/publicado, "para quién" (secciones del año, roles, personas), carga de feriados de Honduras (Semana Santa calculada; Morazánico y asueto quedan en borrador para confirmar fecha). Un feriado o cierre publicado bloquea el pase de lista de esa sección (aviso en pantalla + rechazo en el servidor). Tarjeta "Próximos 7 días" en los 8 dashboards. Permisos: "Calendario escolar" (ver, todos) y "Editar calendario escolar" (admin, dirección, secretaría). API: `EventosCalendario/*`, script 060. Se borró `EventosService` (llamaba a una API que no existía).
+   - Queda para el **portal de padres (7)**: la API ya tiene `EventosCalendario/ParaAlumnoAsync` (todo el colegio + su sección del año + él con nombre); falta la pantalla y, en las citas, el botón "Solicitar este horario" como en Skuul.
+   - Queda para los **reportes de asistencia (4)**: el % de asistencia debe contar solo días con clase (descontar feriados y cierres publicados de la sección).
+   - Las "plantillas de calendario" de Skuul son la estructura del año para varias sedes (períodos, apertura automática): en el ADM eso lo cubre Año Lectivo; no aplica.
+   - `wwwroot/Content/plugins/fullcalendar` quedó sin uso (el calendario usa su propia cuadrícula, como Skuul): se puede borrar.
+   - De paso se arregló el **pase de lista**, que nunca había funcionado: la asistencia apuntaba a la tabla de horarios vieja (`tbHorario`, 1 fila) y no se podía guardar; la lista solo traía asistencias ya guardadas (nunca alumnos); el estado se guardaba como letra pero se mostraba siempre "Presente"; la API respondía "error" aunque guardara. Script 061 de la API.
+   - Decisión tomada: quien no edita el calendario ve lo de todo el colegio y lo que es para él (su rol, su nombre, sus secciones), igual en el mes, el detalle y la tarjeta de dashboards. Quien edita ve todo. Feriado y cierre: siempre de día completo y solo para todo el colegio o secciones.
+
+## Hallazgos generales (fuera del calendario, 2026-11-12)
+
+- **API sin autenticación:** ningún controlador de la API exige login y docker-compose publica el puerto 5076. Cualquiera que llegue a ese puerto puede leer o cambiar datos sin pasar por el ADM. Antes del go-live: exigir token o no publicar el puerto fuera del servidor.
+- **Modo oscuro:** el menú lateral y la barra de migas siguen claros; en *Docencia diaria* la etiqueta "Horario" desaparece; `text-muted` tiene poco contraste en toda la app.
+- **Pase de lista para dirección:** el selector de horarios muestra solo los del empleado ligado al usuario; un director (o el admin "jona", ligado a un empleado sin horario) no ve ninguno. Decidir si dirección debe ver todos.
+- **"Sidebar compacto" en escritorio:** la preferencia está rota desde antes (el sidebar tapa el contenido). Arreglarla exige mostrar la hamburguesa también en escritorio.
 3. Disciplina · 4. Reportes de asistencia de alumnos · 5. Constancias · 6. Escala de notas + cuadro de honor · 7. Portal de padres.
 
 ---

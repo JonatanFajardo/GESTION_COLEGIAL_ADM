@@ -271,3 +271,23 @@
         });
     });
 })();
+
+/* ── Sidebar en móvil/tablet (< 992px): hamburguesa abre/cierra el cajón + overlay ── */
+document.addEventListener('DOMContentLoaded', function () {
+    var container = document.getElementById('container');
+    var overlay = document.querySelector('.overlay');
+    if (!container) return;
+    function setDrawer(open) {
+        container.classList.toggle('sbar-open', open);
+        if (overlay) overlay.classList.toggle('show', open);
+        document.documentElement.classList.toggle('sidebar-noneoverflow', open); // bloquea el scroll del fondo (regla existente < 992px)
+    }
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.sidebarCollapse')) { e.preventDefault(); setDrawer(!container.classList.contains('sbar-open')); }
+        else if (e.target.closest('.overlay')) { setDrawer(false); }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setDrawer(false); });
+    var mq = window.matchMedia('(min-width: 992px)');
+    var onMq = function () { if (mq.matches) setDrawer(false); };
+    if (mq.addEventListener) mq.addEventListener('change', onMq); else mq.addListener(onMq);
+});

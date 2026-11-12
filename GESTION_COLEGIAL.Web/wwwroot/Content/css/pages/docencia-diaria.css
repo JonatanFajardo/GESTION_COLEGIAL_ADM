@@ -125,6 +125,14 @@
     margin-bottom: 4px;
 }
 
+/* ---- Botón deshabilitado (p. ej. "Guardar Todo" en un día que el colegio cierra) ----
+   main.css deja los .btn deshabilitados con su color normal: aquí se ven apagados. */
+.dd-panel .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 767.98px) {
     .dd-tab-link {

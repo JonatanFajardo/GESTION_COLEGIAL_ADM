@@ -1,0 +1,324 @@
+@model GESTION_COLEGIAL.UI.Models.CalendarioMesViewModel
+@using GESTION_COLEGIAL.Business.Models
+@using GESTION_COLEGIAL.UI.Models
+@{
+    ViewBag.Title = "Calendario escolar";
+    var M = Model;
+    var cultura = CalendarioMesViewModel.Cultura;
+    string borr = M.SoloBorradores ? "true" : null;
+    Func<DateTime, string> urlMes = d => Url.Action("Index", new { mes = CalendarioMesViewModel.Clave(d), tipo = M.Tipo, borradores = borr });
+    var delMes = M.DelMes;
+    var semana = new[] { "Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do" };
+}
+
+@section Styles{
+    <link href="~/css/pages/calendario-escolar.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item cal-miga">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Calendario escolar</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="cal-page">
+    @Html.AntiForgeryToken()
+
+    <div class="cal-encabezado">
+        <div class="cal-encabezado-texto">
+            <div class="cal-encabezado-icono" aria-hidden="true"><i class="bi bi-calendar3"></i></div>
+            <div>
+                <h1>Calendario escolar</h1>
+                <p>Feriados, cierres, actos, reuniones y exámenes. Un feriado o cierre publicado cierra el colegio: ese día no hay pase de lista.</p>
+            </div>
+        </div>
+        @if (M.PuedeEditar)
+        {
+            <div class="cal-acciones">
+                <button type="button" class="cal-btn" id="cal-btn-feriados" data-anio="@M.Mes.Year">
+                    <i class="bi bi-flag"></i> Feriados de Honduras
+                </button>
+                <a class="cal-btn cal-btn--primario" href="@Url.Action("Nuevo")">
+                    <i class="bi bi-plus-lg"></i> Agregar un día
+                </a>
+            </div>
+        }
+    </div>
+
+    @if (!string.IsNullOrEmpty(M.Aviso))
+    {
+        <div class="cal-alerta cal-alerta--ok" role="status">
+            <i class="bi bi-check-circle" aria-hidden="true"></i>
+            <div><strong>@M.Aviso</strong></div>
+        </div>
+    }
+
+    @if (M.PuedeEditar && M.Borradores > 0)
+    {
+        <div class="cal-alerta" role="note">
+            <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+            <div>
+                <strong>@M.Borradores @(M.Borradores == 1 ? "día sigue" : "días siguen") en borrador</strong>
+                <p>
+                    Un borrador no aparece en el calendario que lee el colegio, y un cierre en borrador no cierra el colegio.
+                </p>
+                <p>
+                    @* Un enlace por mes con borradores: el filtro "Solo borradores" es por mes. *@
+                    @for (int i = 0; i < M.BorradoresPorMes.Count; i++)
+                    {
+                        var b = M.BorradoresPorMes[i];
+                        DateTime mesB;
+                        bool okMes = DateTime.TryParseExact(b.Mes, "yyyy-MM", System.Globalization.CultureInfo.InvariantCulture,
+                                                            System.Globalization.DateTimeStyles.None, out mesB);
+                        string nombreB = okMes ? CalendarioMesViewModel.NombreMes(mesB) : b.Mes;
+                        bool esEste = b.Mes == CalendarioMesViewModel.Clave(M.Mes);
+                        if (i > 0) { @: ·
+                        }
+                        if (esEste && M.SoloBorradores)
+                        {
+                            <strong>@nombreB (@b.Borradores)</strong>
+                        }
+                        else
+                        {
+                            <a class="cal-btn--link" href="@Url.Action("Index", new { mes = b.Mes, borradores = "true" })">@nombreB (@b.Borradores)</a>
+                        }
+                    }
+                </p>
+            </div>
+        </div>
+    }
+
+    @* ── Mes ── *@
+    <section class="cal-tarjeta" aria-labelledby="cal-titulo-mes">
+        <h2 class="cal-tarjeta-titulo" id="cal-titulo-mes">@CalendarioMesViewModel.NombreMes(M.Mes)</h2>
+        <p class="cal-tarjeta-desc @(M.Cierres.Count > 0 ? "cal-tarjeta-desc--cierra" : "")">
+            @if (M.Cierres.Count > 0) { <i class="bi bi-lock-fill" aria-hidden="true"></i> }
+            @M.FraseCierres()
+        </p>
+
+        <div class="cal-barra">
+            <div class="cal-nav">
+                <a class="cal-btn cal-btn--chico" href="@urlMes(M.MesAnterior)" aria-label="Mes anterior">
+                    <i class="bi bi-chevron-left"></i> @CalendarioMesViewModel.MesCorto(M.MesAnterior)
+                </a>
+                <a class="cal-btn cal-btn--chico" href="@urlMes(new DateTime(M.Hoy.Year, M.Hoy.Month, 1))">Hoy</a>
+                <a class="cal-btn cal-btn--chico" href="@urlMes(M.MesSiguiente)" aria-label="Mes siguiente">
+                    @CalendarioMesViewModel.MesCorto(M.MesSiguiente) <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+
+            <form class="cal-filtros" method="get" action="@Url.Action("Index")" id="cal-filtros">
+                <input type="hidden" name="mes" value="@CalendarioMesViewModel.Clave(M.Mes)" />
+                <label for="cal-filtro-tipo">Tipo de día</label>
+                <select class="cal-select" id="cal-filtro-tipo" name="tipo">
+                    <option value="">Todos los tipos</option>
+                    @foreach (var t in TipoDiaCalendario.Todos)
+                    {
+                        <option value="@t.Codigo" selected="@(M.Tipo == t.Codigo)">@t.Etiqueta</option>
+                    }
+                </select>
+                @if (M.PuedeEditar)
+                {
+                    <label class="cal-check">
+                        <input type="checkbox" name="borradores" value="true" checked="@M.SoloBorradores" id="cal-filtro-borradores" />
+                        Solo borradores
+                    </label>
+                }
+                @if (M.HayFiltro)
+                {
+                    <a class="cal-btn cal-btn--chico" href="@Url.Action("Index", new { mes = CalendarioMesViewModel.Clave(M.Mes) })">
+                        <i class="bi bi-x-lg"></i> Quitar filtros
+                    </a>
+                }
+                <noscript><button type="submit" class="cal-btn cal-btn--chico">Filtrar</button></noscript>
+            </form>
+        </div>
+
+        <div class="cal-grilla" role="grid" aria-label="@CalendarioMesViewModel.NombreMes(M.Mes)">
+            @foreach (var s in semana)
+            {
+                <div class="cal-semana-dia" role="columnheader">@s</div>
+            }
+            @foreach (var d in M.Dias)
+            {
+                var eventosDia = M.EventosDe(d).ToList();
+                bool fuera = d.Month != M.Mes.Month;
+                bool esHoy = d == M.Hoy;
+                bool cerrado = M.CierraEl(d);
+                string clases = "cal-dia" + (fuera ? " cal-dia--fuera" : "") + (esHoy ? " cal-dia--hoy" : "") + (cerrado ? " cal-dia--cerrado" : "");
+                <div class="@clases" role="gridcell" data-dia="@d.ToString("yyyy-MM-dd")">
+                    <div class="cal-dia-cabeza">
+                        <span class="cal-dia-numero" aria-current="@(esHoy ? "date" : null)">@d.Day</span>
+                        <span>
+                            @if (cerrado)
+                            {
+                                <span class="cal-dia-cerrado" title="El colegio cierra"><i class="bi bi-lock-fill" aria-hidden="true"></i><span class="sr-only">El colegio cierra</span></span>
+                            }
+                            @if (M.PuedeEditar)
+                            {
+                                <a class="cal-dia-mas" href="@Url.Action("Nuevo", new { dia = d.ToString("yyyy-MM-dd") })"
+                                   aria-label="Agregar un día el @d.ToString("d 'de' MMMM 'de' yyyy", cultura)"><i class="bi bi-plus-lg"></i></a>
+                            }
+                        </span>
+                    </div>
+                    @if (eventosDia.Count > 0)
+                    {
+                        <ul class="cal-dia-eventos">
+                            @foreach (var e in eventosDia)
+                            {
+                                <li>
+                                    <a class="cal-chip @e.Tipo.Clase @(e.Eve_EsPublicado ? "" : "cal-chip--borrador")"
+                                       href="@Url.Action("Dia", new { id = e.Eve_Id })"
+                                       title="@e.Eve_Titulo@(e.Eve_EsPublicado ? "" : " (borrador)")">@e.Eve_Titulo</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+    </section>
+
+    @* ── Qué hay este mes ── *@
+    <section class="cal-tarjeta" aria-labelledby="cal-titulo-lista">
+        <h2 class="cal-tarjeta-titulo" id="cal-titulo-lista">Qué hay este mes</h2>
+        <p class="cal-tarjeta-desc">Un día sin secciones, roles ni personas es para todo el colegio.</p>
+
+        @if (delMes.Count == 0)
+        {
+            if (M.HayFiltro)
+            {
+                <div class="cal-vacio">
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <h3>Nada coincide con el filtro</h3>
+                    <p>No hay días de ese tipo en este mes.</p>
+                    <a class="cal-btn" href="@Url.Action("Index", new { mes = CalendarioMesViewModel.Clave(M.Mes) })">Ver todos los días</a>
+                </div>
+            }
+            else
+            {
+                <div class="cal-vacio">
+                    <i class="bi bi-calendar-x" aria-hidden="true"></i>
+                    <h3>No hay nada este mes</h3>
+                    <p>Agregue feriados, cierres y actividades para que el colegio y las familias lean el mismo calendario.</p>
+                    @if (M.PuedeEditar)
+                    {
+                        <a class="cal-btn cal-btn--primario" href="@Url.Action("Nuevo", new { dia = M.Mes.ToString("yyyy-MM-dd") })">
+                            <i class="bi bi-plus-lg"></i> Agregar el primer día
+                        </a>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="table-responsive mt-3">
+                <table class="cal-tabla">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="cal-col-dia">Día</th>
+                            <th scope="col">Qué hay</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Para quién</th>
+                            <th scope="col" class="cal-col-acciones"><span class="sr-only">Acciones</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in delMes)
+                        {
+                            <tr>
+                                <td class="cal-col-dia">
+                                    <strong>@CalendarioMesViewModel.Rango(e)</strong>
+                                    <span class="cal-sub">@CalendarioMesViewModel.Horario(e)</span>
+                                </td>
+                                <td>
+                                    @e.Eve_Titulo
+                                    @if (!string.IsNullOrWhiteSpace(e.Eve_Lugar))
+                                    {
+                                        <span class="cal-sub"><i class="bi bi-geo-alt" aria-hidden="true"></i> @e.Eve_Lugar</span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="cal-tipo @e.Tipo.Clase"><i class="bi @e.Tipo.Icono" aria-hidden="true"></i> @e.Tipo.Etiqueta</span>
+                                    @if (e.Eve_CierraColegio)
+                                    {
+                                        <span class="cal-cierra d-block mt-1">
+                                            <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                                            @(e.EsParaTodos ? "El colegio cierra" : "Cierra para esas secciones")
+                                        </span>
+                                    }
+                                </td>
+                                <td>@(e.EsParaTodos ? "Todo el colegio" : e.Audiencia)</td>
+                                <td class="cal-col-acciones">
+                                    <span class="cal-tabla-acciones">
+                                        @if (!e.Eve_EsPublicado)
+                                        {
+                                            <span class="cal-badge-borrador"><i class="bi bi-pencil" aria-hidden="true"></i> Borrador</span>
+                                        }
+                                        <a class="cal-btn cal-btn--chico" href="@Url.Action("Dia", new { id = e.Eve_Id })" aria-label="Abrir @e.Eve_Titulo">
+                                            <i class="bi bi-eye" aria-hidden="true"></i> Abrir
+                                        </a>
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+
+    @if (M.PuedeEditar)
+    {
+        @* ── Feriados de Honduras ── *@
+        <div class="modal fade" id="cal-modal-feriados" tabindex="-1" role="dialog" aria-labelledby="cal-feriados-titulo" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div>
+                            <h5 class="modal-title" id="cal-feriados-titulo">Feriados de Honduras <span id="cal-feriados-anio"></span></h5>
+                            <small class="cal-modal-sub">Marque los días que quiere agregar al calendario. Los que ya están no se repiten.</small>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="cal-nav">
+                                <button type="button" class="cal-btn cal-btn--chico" id="cal-feriados-prev" aria-label="Año anterior"><i class="bi bi-chevron-left"></i></button>
+                                <button type="button" class="cal-btn cal-btn--chico" id="cal-feriados-next" aria-label="Año siguiente"><i class="bi bi-chevron-right"></i></button>
+                            </div>
+                            <button type="button" class="cal-btn--link" id="cal-feriados-todos">Marcar los sugeridos</button>
+                        </div>
+                        <div id="cal-feriados-lista"><p class="cal-cargando">Cargando…</p></div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <label class="cal-check">
+                            <input type="checkbox" id="cal-feriados-publicar" checked />
+                            Publicar al cargar <small class="cal-modal-sub">(los de fecha por confirmar quedan en borrador)</small>
+                        </label>
+                        <div class="d-flex" style="gap:.5rem">
+                            <button type="button" class="cal-btn" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="cal-btn cal-btn--primario" id="cal-feriados-cargar" disabled>Cargar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/calendarioescolar.js" asp-append-version="true"></script>
+    <script>
+        CalendarioEscolar.initMes({
+            puedeEditar: @(M.PuedeEditar ? "true" : "false"),
+            tipos: @Json.Serialize(TipoDiaCalendario.Todos),
+            urlFeriados: "@Url.Action("FeriadosAsync")",
+            urlCargarFeriados: "@Url.Action("CargarFeriadosAsync")"
+        });
+    </script>
+}

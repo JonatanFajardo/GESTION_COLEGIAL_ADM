@@ -236,6 +236,18 @@
         </div>
     </div>
 
+    <!-- ══ Calendario escolar ══ -->
+    <div class="rrhh-section">
+        <div class="rrhh-section-accent" style="background:#4f46e5;"></div>
+        <span class="rrhh-section-label"><i class="bi bi-calendar3" style="margin-right:5px;"></i>Calendario</span>
+        <div class="rrhh-section-line"></div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            @await Html.PartialAsync("_ProximosDias")
+        </div>
+    </div>
+
     <!-- ══ Asistencia Hoy + Diaria ══ -->
     <div class="rrhh-section">
         <div class="rrhh-section-accent" style="background:#22c55e;"></div>
