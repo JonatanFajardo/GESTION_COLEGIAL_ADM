@@ -61,3 +61,7 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# El Dockerfile y los scripts de shell se usan en Linux: siempre con saltos de línea LF.
+Dockerfile text eol=lf
+*.sh text eol=lf

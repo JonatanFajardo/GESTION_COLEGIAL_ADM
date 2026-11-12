@@ -4,10 +4,10 @@ using System.Text.Unicode;
 using Microsoft.Extensions.WebEncoders;
 using GESTION_COLEGIAL.UI.Compat;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Serialization;
 
 // Arranque de la UI. Reemplaza Global.asax, App_Start (rutas, filtros, bundles) y Web.config.
@@ -70,6 +70,17 @@ builder.Services
         opciones.SlidingExpiration = true;
     });
 
+// Llaves que cifran la cookie de login y los tokens de formularios. En Docker se guardan en un
+// volumen (DataProtection__KeysPath) para que reiniciar el contenedor no cierre las sesiones.
+// En desarrollo, sin esa variable, .NET las guarda en el perfil del usuario.
+var rutaLlaves = builder.Configuration["DataProtection:KeysPath"];
+if (!string.IsNullOrWhiteSpace(rutaLlaves))
+{
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(rutaLlaves))
+        .SetApplicationName("GestionColegial.Web");
+}
+
 var app = builder.Build();
 
 // Cultura de Honduras para fechas, números y moneda (antes en <globalization> del Web.config).
@@ -77,19 +88,8 @@ var cultura = new CultureInfo("es-HN");
 CultureInfo.DefaultThreadCurrentCulture = cultura;
 CultureInfo.DefaultThreadCurrentUICulture = cultura;
 
-// Mientras dure la migración, /Content y /Scripts se leen de la UI vieja (una sola copia).
-// Al retirar la UI vieja: mover esas carpetas a wwwroot y borrar este bloque.
-var rutaLegado = Path.GetFullPath(Path.Combine(
-    app.Environment.ContentRootPath,
-    app.Configuration["RecursosLegado"] ?? "../GESTION_COLEGIAL.UI"));
-RutasApp.Configurar(app.Environment.ContentRootPath, rutaLegado);
-if (Directory.Exists(rutaLegado))
-{
-    app.Environment.WebRootFileProvider = new CompositeFileProvider(
-        app.Environment.WebRootFileProvider,
-        new CarpetaConPrefijoFileProvider("/Content", Path.Combine(rutaLegado, "Content")),
-        new CarpetaConPrefijoFileProvider("/Scripts", Path.Combine(rutaLegado, "Scripts")));
-}
+// ~/App_Data/... (graduados históricos, datos del instituto, logs) vive en la carpeta del proyecto.
+RutasApp.Configurar(app.Environment.ContentRootPath);
 
 if (!app.Environment.IsDevelopment())
 {

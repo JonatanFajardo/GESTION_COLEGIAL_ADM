@@ -1,14 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!--
-    Business compila para dos plataformas mientras dura la migración:
-      net10.0 -> UI nueva (ASP.NET Core MVC)
-      net472  -> UI vieja (ASP.NET MVC 5), sigue funcionando igual
-    Al retirar la UI vieja: borrar net472 de TargetFrameworks, su ItemGroup
-    y los bloques #if NETFRAMEWORK (Models/BaseViewModel.cs).
-  -->
   <PropertyGroup>
-    <TargetFrameworks>net10.0;net472</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>GESTION_COLEGIAL.Business</RootNamespace>
     <AssemblyName>GESTION_COLEGIAL.Business</AssemblyName>
     <LangVersion>latest</LangVersion>
@@ -17,25 +10,12 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
 
-  <!--
-    Business solo usa SelectListItem, SelectList y [Remote] de MVC.
-    Existen con el mismo nombre en ambas plataformas; solo cambia el namespace,
-    por eso se importan aquí y no en cada archivo.
-  -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+  <!-- Business usa SelectListItem, SelectList y [Remote] de ASP.NET Core MVC; se importan aquí y no en cada archivo. -->
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <Using Include="Microsoft.AspNetCore.Mvc" />
     <Using Include="Microsoft.AspNetCore.Mvc.Rendering" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Net.Http" />
-    <Using Include="System.Web.Mvc" />
   </ItemGroup>
 
 </Project>

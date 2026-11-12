@@ -4,12 +4,34 @@
     string cpImpersonando = Session["impersonando_rol"] as string ?? "";
     string cpRolMostrado = !string.IsNullOrEmpty(cpImpersonando) ? cpImpersonando : cpRoleName;
     string cpPrimerNombre = cpUsername.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? cpUsername;
+
+    // Hubs de Configuración: no están sueltos en el sidebar (se abren desde /configuracion),
+    // pero se suman al buscador para encontrarlos por nombre o por lo que contienen (ej. "tarifas").
+    var cpPantallas = (Session["pantallas"] as string ?? "")
+        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+        .Select(p => p.Trim())
+        .ToList();
+    var cpHubs = GESTION_COLEGIAL.UI.Models.CatalogoConfiguracion
+        .Visibles(cpRoleName.Equals("admin", StringComparison.OrdinalIgnoreCase),
+                  p => cpPantallas.Contains(p, StringComparer.OrdinalIgnoreCase))
+        .SelectMany(g => g.Tarjetas.Select(t => new
+        {
+            title = t.Titulo,
+            path = "Configuración › " + g.Titulo,
+            href = Url.Action("Index", t.Controller),
+            keywords = string.Join(" ", t.Contenido) + " " + t.Descripcion
+        }))
+        .ToList();
 }
+
+<script type="application/json" id="cmdk-extra">@Json.Serialize(cpHubs)</script>
 
 @* ══════════════════════════════════════════════════════════════════════
    COMMAND PALETTE · "¿Qué querés hacer?"
    Lee los links que el sidebar YA pintó (filtrados por rol vía Session)
-   → cero configuración duplicada. Abre con el botón o con Ctrl/Cmd+K.
+   → cero configuración duplicada. Además suma los hubs de Configuración
+   (Models/CatalogoConfiguracion.cs), que no están sueltos en el sidebar.
+   Abre con el botón o con Ctrl/Cmd+K.
    ══════════════════════════════════════════════════════════════════════ *@
 
 <div id="cmdk-backdrop" class="cmdk-backdrop" aria-hidden="true"></div>
@@ -284,6 +306,21 @@
                 });
             }
         });
+
+        // Hubs de Configuración (vienen del servidor, ya filtrados por permiso):
+        // se buscan por su nombre y por lo que contienen.
+        var extra = document.getElementById('cmdk-extra');
+        if (extra) {
+            try {
+                JSON.parse(extra.textContent || '[]').forEach(function (x) {
+                    if (commands.some(function (c) { return c.href === x.href; })) return;
+                    commands.push({
+                        title: x.title, path: x.path, href: x.href, group: 'Configuración',
+                        hay: normalize(x.title + ' ' + x.path + ' ' + x.keywords)
+                    });
+                });
+            } catch (e) { /* si el bloque viene mal, el buscador sigue solo con el sidebar */ }
+        }
     }
 
     function getRecientes() {
