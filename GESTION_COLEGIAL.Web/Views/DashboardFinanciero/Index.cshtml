@@ -190,6 +190,18 @@
         </div>
     </div>
 
+    <!-- ══ Calendario escolar ══ -->
+    <div class="fin-section">
+        <div class="fin-section-accent" style="background:#4f46e5;"></div>
+        <span class="fin-section-label"><i class="bi bi-calendar3" style="margin-right:5px;"></i>Calendario</span>
+        <div class="fin-section-line"></div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            @await Html.PartialAsync("_ProximosDias")
+        </div>
+    </div>
+
     <!-- ══ Estado y distribución ══ -->
     <div class="fin-section">
         <div class="fin-section-accent" style="background:#a855f7;"></div>

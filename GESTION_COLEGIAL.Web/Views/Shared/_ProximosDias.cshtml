@@ -1,0 +1,24 @@
+@* Tarjeta "Próximos 7 días" del Calendario escolar (espejo de Skuul "Next 7 days").
+   Se carga sola por AJAX. Quien edita el calendario ve todo lo publicado; el resto ve lo de todo
+   el colegio, su rol, su nombre y (docentes) sus secciones. Vista agregada: el detalle vive en el calendario. *@
+@{
+    string pantallasCal = Session["pantallas"] as string ?? "";
+    bool esAdminCal = (Session["RoleName"] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase);
+    bool veCalendario = esAdminCal || pantallasCal.Split(',').Any(p => p.Trim().Equals("Calendario escolar", StringComparison.OrdinalIgnoreCase));
+}
+@if (veCalendario)
+{
+    <link href="~/css/pages/calendario-escolar.css" rel="stylesheet" asp-append-version="true" />
+    <section class="cal-proximos" aria-labelledby="cal-proximos-titulo"
+             data-url="@Url.Action("ProximosAsync", "CalendarioEscolar")"
+             data-dia="@Url.Action("Dia", "CalendarioEscolar")">
+        <div class="cal-proximos-cabeza">
+            <h3 id="cal-proximos-titulo"><i class="bi bi-calendar3" aria-hidden="true"></i> Próximos 7 días</h3>
+            <a href="@Url.Action("Index", "CalendarioEscolar")">Calendario <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="cal-proximos-cuerpo" aria-live="polite">
+            <p class="cal-proximos-vacio">Cargando…</p>
+        </div>
+    </section>
+    <script src="~/Content/js/components/proximos-dias.js" asp-append-version="true" defer></script>
+}

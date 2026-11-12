@@ -246,6 +246,18 @@
         </div>
     </div>
 
+    <!-- ══ Calendario escolar ══ -->
+    <div class="caj-section">
+        <div class="caj-section-accent" style="background:#4f46e5;"></div>
+        <span class="caj-section-label"><i class="bi bi-calendar3" style="margin-right:5px;"></i>Calendario</span>
+        <div class="caj-section-line"></div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            @await Html.PartialAsync("_ProximosDias")
+        </div>
+    </div>
+
     <!-- ══ Distribución ══ -->
     <div class="caj-section">
         <div class="caj-section-accent" style="background:#6366f1;"></div>

@@ -311,6 +311,18 @@
         </div>
     </div>
 
+    <!-- ══ Calendario escolar ══ -->
+    <div class="dd-section">
+        <div class="dd-section-accent" style="background:#4f46e5;"></div>
+        <span class="dd-section-label"><i class="bi bi-calendar3" style="margin-right:5px;"></i>Calendario</span>
+        <div class="dd-section-line"></div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            @await Html.PartialAsync("_ProximosDias")
+        </div>
+    </div>
+
     <!-- Bandeja Tramites de Hoy -->
     <div class="dd-section">
         <div class="dd-section-accent" style="background:#ef4444;"></div>

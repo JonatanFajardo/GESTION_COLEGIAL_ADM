@@ -1,0 +1,313 @@
+@model GESTION_COLEGIAL.UI.Models.CalendarioDiaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@using GESTION_COLEGIAL.UI.Models
+@{
+    var M = Model;
+    var e = M.Evento;
+    var cultura = CalendarioMesViewModel.Cultura;
+    ViewBag.Title = M.EsNuevo ? "Agregar un día" : e.Eve_Titulo;
+    string mesVolver = CalendarioMesViewModel.Clave(e.Eve_Inicio);
+    string fmt = e.Eve_TodoElDia ? "yyyy-MM-dd" : "yyyy-MM-ddTHH:mm";
+    var secSel = new HashSet<int>(M.Ids("seccion"));
+    var rolSel = new HashSet<int>(M.Ids("rol"));
+    var personas = M.Audiencia.Where(a => a.Eva_Tipo == "empleado" || a.Eva_Tipo == "alumno").ToList();
+    var niveles = M.Secciones.GroupBy(s => s.Niv_Descripcion ?? "Sin nivel").ToList();
+    int anioSecciones = M.AnioSecciones;
+    string cuando = e.Eve_TodoElDia
+        ? (e.VariosDias
+            ? e.Eve_Inicio.ToString("dddd d 'de' MMMM", cultura) + " al " + e.Eve_Fin.ToString("dddd d 'de' MMMM 'de' yyyy", cultura)
+            : e.Eve_Inicio.ToString("dddd d 'de' MMMM 'de' yyyy", cultura)) + " · todo el día"
+        : e.Eve_Inicio.ToString("dddd d 'de' MMMM 'de' yyyy, HH:mm", cultura) + " a "
+          + (e.VariosDias ? e.Eve_Fin.ToString("dddd d 'de' MMMM, HH:mm", cultura) : e.Eve_Fin.ToString("HH:mm"));
+}
+
+@section Styles{
+    <link href="~/css/pages/calendario-escolar.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", new { mes = mesVolver })">Calendario escolar</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@(M.EsNuevo ? "Agregar un día" : e.Eve_Titulo)</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="cal-page cal-editor">
+    @Html.AntiForgeryToken()
+
+    <div class="cal-encabezado">
+        <div class="cal-encabezado-texto">
+            <div class="cal-encabezado-icono" aria-hidden="true"><i class="bi @(M.EsNuevo ? "bi-calendar-plus" : e.Tipo.Icono)"></i></div>
+            <div>
+                <h1>@(M.EsNuevo ? "Agregar un día" : e.Eve_Titulo)</h1>
+                <p>
+                    @if (M.EsNuevo)
+                    {
+                        @:Se guarda como borrador. Publíquelo cuando esté listo para que el colegio lo vea.
+                    }
+                    else
+                    {
+                        @cuando
+                    }
+                </p>
+            </div>
+        </div>
+        <div class="cal-acciones">
+            <a class="cal-btn" href="@Url.Action("Index", new { mes = mesVolver })"><i class="bi bi-arrow-left"></i> Volver al calendario</a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(M.Aviso))
+    {
+        <div class="cal-alerta cal-alerta--ok" role="status">
+            <i class="bi bi-check-circle" aria-hidden="true"></i>
+            <div><strong>@M.Aviso</strong></div>
+        </div>
+    }
+
+    @if (!M.PuedeEditar)
+    {
+        @* ── Ficha de solo lectura ── *@
+        <section class="cal-tarjeta cal-ficha" aria-label="@e.Eve_Titulo">
+            <dl>
+                <dt>Tipo</dt>
+                <dd>
+                    <span class="cal-tipo @e.Tipo.Clase"><i class="bi @e.Tipo.Icono" aria-hidden="true"></i> @e.Tipo.Etiqueta</span>
+                    @if (e.Eve_CierraColegio)
+                    {
+                        <span class="cal-cierra ml-2"><i class="bi bi-lock-fill" aria-hidden="true"></i> @(e.EsParaTodos ? "El colegio cierra" : "Cierra para esas secciones")</span>
+                    }
+                </dd>
+                <dt>Cuándo</dt>
+                <dd>@cuando</dd>
+                @if (!string.IsNullOrWhiteSpace(e.Eve_Lugar))
+                {
+                    <dt>Dónde</dt>
+                    <dd>@e.Eve_Lugar</dd>
+                }
+                @if (!string.IsNullOrWhiteSpace(e.Eve_Descripcion))
+                {
+                    <dt>Qué es</dt>
+                    <dd class="cal-ficha-texto">@e.Eve_Descripcion</dd>
+                }
+                <dt>Para quién</dt>
+                <dd>@(e.EsParaTodos ? "Todo el colegio" : e.Audiencia)</dd>
+            </dl>
+        </section>
+    }
+    else
+    {
+        @if (!M.EsNuevo)
+        {
+            <div class="cal-estado" id="eve-estado">
+                <p>
+                    <strong id="eve-estado-texto">@(e.Eve_EsPublicado ? "En el calendario" : "Borrador")</strong>
+                    <span id="eve-estado-detalle">
+                        · @(e.Eve_EsPublicado ? "" : "al publicarlo, ")@(e.Eve_CierraColegio ? (e.EsParaTodos ? "el colegio cierra" : "cierra para esas secciones") : "el colegio da clases")
+                    </span>
+                </p>
+                <div class="cal-estado-acciones">
+                    <button type="button" class="cal-btn cal-btn--primario" id="eve-publicar" @(e.Eve_EsPublicado ? "hidden" : "")>
+                        <i class="bi bi-send"></i> Publicar
+                    </button>
+                    <div class="dropdown">
+                        <button type="button" class="cal-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Más opciones para @e.Eve_Titulo">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <button type="button" class="dropdown-item" id="eve-despublicar" @(e.Eve_EsPublicado ? "" : "hidden")>
+                                <i class="bi bi-eye-slash mr-2"></i>Volver a borrador
+                            </button>
+                            <button type="button" class="dropdown-item text-danger" id="eve-quitar">
+                                <i class="bi bi-trash mr-2"></i>Quitar del calendario
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <form class="cal-tarjeta" id="eve-form" novalidate aria-label="@(M.EsNuevo ? "Agregar un día" : "Cambiar " + e.Eve_Titulo)">
+            <input type="hidden" id="eve-id" value="@e.Eve_Id" />
+
+            <section class="cal-seccion" aria-label="Qué hay">
+                <div class="cal-campo">
+                    <label for="eve-titulo">Título</label>
+                    <input class="cal-input" id="eve-titulo" maxlength="150" required value="@e.Eve_Titulo"
+                           placeholder="Título, p. ej. Vacaciones de medio año" autocomplete="off" />
+                </div>
+
+                <div class="cal-fila">
+                    <div class="cal-campo">
+                        <label for="eve-tipo">Tipo de día</label>
+                        <select class="cal-select" id="eve-tipo">
+                            @foreach (var t in TipoDiaCalendario.Todos)
+                            {
+                                <option value="@t.Codigo" data-cierra="@(t.CierraColegio ? "1" : "0")" selected="@(e.Eve_Tipo == t.Codigo)">
+                                    @t.Etiqueta@(t.CierraColegio ? " — el colegio cierra" : "")
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="cal-campo">
+                        <label for="eve-lugar">Dónde (opcional)</label>
+                        <input class="cal-input" id="eve-lugar" maxlength="150" value="@e.Eve_Lugar" placeholder="Dónde (opcional)" autocomplete="off" />
+                    </div>
+                </div>
+
+                <p class="cal-nota-cierre" id="eve-nota-cierre" @(e.Tipo.CierraColegio ? "" : "hidden")>
+                    <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                    Una vez publicado, esos días no tienen pase de lista. Un feriado o cierre es de día completo.
+                </p>
+
+                <div class="cal-campo">
+                    <label class="cal-check" for="eve-todo-dia">
+                        <input type="checkbox" id="eve-todo-dia" checked="@(e.Eve_TodoElDia || e.Tipo.CierraColegio)" disabled="@e.Tipo.CierraColegio" />
+                        Todo el día
+                    </label>
+                </div>
+
+                <div class="cal-fila">
+                    <div class="cal-campo">
+                        <label for="eve-inicio">Empieza</label>
+                        <input class="cal-input" id="eve-inicio" type="@(e.Eve_TodoElDia ? "date" : "datetime-local")" required value="@e.Eve_Inicio.ToString(fmt)" />
+                    </div>
+                    <div class="cal-campo">
+                        <label for="eve-fin">Termina</label>
+                        <input class="cal-input" id="eve-fin" type="@(e.Eve_TodoElDia ? "date" : "datetime-local")" required value="@e.Eve_Fin.ToString(fmt)" />
+                    </div>
+                </div>
+
+                <div class="cal-campo">
+                    <label for="eve-descripcion">Qué es (opcional)</label>
+                    <textarea class="cal-textarea" id="eve-descripcion" rows="3" maxlength="2000" placeholder="Qué es (opcional)">@e.Eve_Descripcion</textarea>
+                </div>
+            </section>
+
+            <section class="cal-seccion" aria-labelledby="eve-para-quien">
+                <h2 id="eve-para-quien">Para quién</h2>
+                <p>Si no elige a nadie, es para todo el colegio.</p>
+
+                <div class="cal-campo">
+                    <label>Secciones del año <span id="eve-anio-secciones">@anioSecciones</span></label>
+                    <div id="eve-secciones">
+                        @if (M.Secciones.Count == 0)
+                        {
+                            <p class="cal-cargando">No hay secciones en este año lectivo.</p>
+                        }
+                        @foreach (var g in niveles)
+                        {
+                            <div class="cal-grupo-nivel">
+                                <div class="cal-grupo-nivel-cabeza">
+                                    <span>@g.Key</span>
+                                    <button type="button" class="cal-btn--link eve-todo-nivel">Todo el nivel</button>
+                                </div>
+                                <div class="cal-chips" role="group" aria-label="@g.Key">
+                                    @foreach (var s in g)
+                                    {
+                                        <label class="cal-opcion">
+                                            <input type="checkbox" name="eve-sec" value="@s.Sea_Id" checked="@secSel.Contains(s.Sea_Id)" />
+                                            @s.Sea_Nombre@(s.Ani_Anio != anioSecciones ? " (" + s.Ani_Anio + ")" : "")
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <p class="cal-cargando" id="eve-nota-dirigido" @(e.Tipo.CierraColegio ? "" : "hidden")>
+                    Un feriado o cierre es para todo el colegio o para algunas secciones: no se dirige a roles ni a personas.
+                </p>
+
+                <div class="cal-campo" id="eve-campo-roles" @(e.Tipo.CierraColegio ? "hidden" : "")>
+                    <label>Roles</label>
+                    <div class="cal-chips" role="group" aria-label="Roles">
+                        @foreach (var r in M.Roles)
+                        {
+                            <label class="cal-opcion">
+                                <input type="checkbox" name="eve-rol" value="@r.Rol_Id" checked="@rolSel.Contains(r.Rol_Id)" />
+                                @r.Rol_Etiqueta
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <div class="cal-campo" id="eve-campo-personas" @(e.Tipo.CierraColegio ? "hidden" : "")>
+                    <label for="eve-persona">Nombrar a una persona</label>
+                    <div class="cal-chips mb-2" id="eve-personas" aria-label="Personas nombradas">
+                        @foreach (var p in personas)
+                        {
+                            <span class="cal-persona" data-tipo="@p.Eva_Tipo" data-id="@p.Eva_RefId">
+                                @p.Eva_Nombre <small>@p.Eva_Detalle</small>
+                                <button type="button" class="eve-quitar-persona" aria-label="Quitar a @p.Eva_Nombre"><i class="bi bi-x"></i></button>
+                            </span>
+                        }
+                    </div>
+                    <input class="cal-input" id="eve-persona" type="search" autocomplete="off"
+                           placeholder="Escriba un nombre, p. ej. para una cita" />
+                    <ul class="cal-resultados" id="eve-resultados" hidden></ul>
+                </div>
+            </section>
+
+            <div class="cal-error" id="eve-error" role="alert" hidden></div>
+
+            <div class="cal-pie">
+                <a class="cal-btn" href="@Url.Action("Index", new { mes = mesVolver })">Cancelar</a>
+                <button type="submit" class="cal-btn @(M.EsNuevo || e.Eve_EsPublicado ? "cal-btn--primario" : "")" id="eve-guardar">
+                    @(M.EsNuevo ? "Guardar como borrador" : "Guardar")
+                </button>
+            </div>
+        </form>
+
+        @if (!M.EsNuevo)
+        {
+            <div class="modal fade" id="eve-modal-quitar" tabindex="-1" role="dialog" aria-labelledby="eve-quitar-titulo" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eve-quitar-titulo">¿Quitar «@e.Eve_Titulo» del calendario?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            @if (e.Eve_EsPublicado && e.Eve_CierraColegio)
+                            {
+                                <p class="mb-0">Es un día en que el colegio cierra: al quitarlo, ese día vuelve a tener pase de lista.</p>
+                            }
+                            else
+                            {
+                                <p class="mb-0">Deja de aparecer en el calendario y en los paneles de inicio.</p>
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="cal-btn" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="cal-btn cal-btn--peligro" id="eve-confirmar-quitar"><i class="bi bi-trash"></i> Quitar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/calendarioescolar.js" asp-append-version="true"></script>
+    <script>
+        CalendarioEscolar.initDia({
+            puedeEditar: @(M.PuedeEditar ? "true" : "false"),
+            esNuevo: @(M.EsNuevo ? "true" : "false"),
+            id: @e.Eve_Id,
+            titulo: @Json.Serialize(e.Eve_Titulo ?? ""),
+            publicado: @(e.Eve_EsPublicado ? "true" : "false"),
+            anioSecciones: @anioSecciones,
+            urlGuardar: "@Url.Action("GuardarAsync")",
+            urlPublicar: "@Url.Action("PublicarAsync")",
+            urlQuitar: "@Url.Action("EliminarAsync")",
+            urlSecciones: "@Url.Action("SeccionesAsync")",
+            urlPersonas: "@Url.Action("BuscarPersonasAsync")"
+        });
+    </script>
+}

@@ -203,7 +203,7 @@
             }
 
             <!-- ·· Académico ·· -->
-            @if (tiene("Listado de cursos") || tiene("Listado de alumnos") || tiene("Directorio de Alumnos") || tiene("Listado de horarios") || tiene("Cuaderno de notas") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
+            @if (tiene("Listado de cursos") || tiene("Listado de alumnos") || tiene("Directorio de Alumnos") || tiene("Listado de horarios") || tiene("Cuaderno de notas") || tiene("Pase de lista") || tiene("Calendario escolar") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
             {
                 <li class="menu menu-heading">
                     <div class="heading"><span>Académico</span></div>
@@ -298,7 +298,7 @@
                 </li>
             }
 
-            @if (tiene("Cuaderno de notas") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
+            @if (tiene("Cuaderno de notas") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Calendario escolar") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
             {
                 <li class="menu">
                     <a href="#Academico" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -314,6 +314,7 @@
                         @* Hubs consolidados (2026-07) — cada hub agrupa en tabs las pantallas que antes eran entradas separadas *@
                         @if (tiene("Cuaderno de notas") || tiene("Boletín de calificaciones")) { <li>@Html.ActionLink("Notas y boletín", "Index", "NotasAdm")</li> }
                         @if (tiene("Pase de lista") || tiene("Plan de clases") || tiene("Tareas y entregas")) { <li>@Html.ActionLink("Docencia diaria", "Index", "AsistenciaAdm")</li> }
+                        @if (tiene("Calendario escolar") || esAdmin) { <li>@Html.ActionLink("Calendario escolar", "Index", "CalendarioEscolar")</li> }
                         @if (tiene("KPIs Académicos") || tiene("Rendimiento por Sección")) { <li>@Html.ActionLink("Analítica académica", "Index", "KPIsAcademicos")</li> }
                         @if (tiene("Graduación de Alumnos") || esAdmin) { <li>@Html.ActionLink("Graduación", "Index", "GraduacionAlumnos")</li> }
                         @if (tiene("Centro de anuncios"))              { <li>@Html.ActionLink("Comunicados",   "Index", "CentroAnuncios")</li> }
