@@ -77,8 +77,8 @@ var Empleados = (function () {
                             var activo = esActivo(data);
                             if (type !== "display") return activo ? "Activo" : "Inactivo";
                             return activo
-                                ? '<span class="badge-estado activo"><span class="dot-estado"></span>Activo</span>'
-                                : '<span class="badge-estado inactivo"><span class="dot-estado"></span>Inactivo</span>';
+                                ? '<span class="badge badge-success">Activo</span>'
+                                : '<span class="badge badge-secondary">Inactivo</span>';
                         }
                     },
                     { targets: 4, data: "Tit_Descripcion", render: function (d) { return d || "—"; } },

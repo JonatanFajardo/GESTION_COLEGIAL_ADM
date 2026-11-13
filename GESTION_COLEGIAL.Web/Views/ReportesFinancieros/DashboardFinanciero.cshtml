@@ -13,61 +13,84 @@
     </nav>
 </div>
 
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Dashboard Financiero</h4>
+        <p class="text-muted mb-0">Resumen de ingresos, cobros pendientes y morosidad.</p>
+    </div>
+</div>
+
 <div class="fluid-container">
     <!-- Cards Resumen -->
     <div class="row">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Ingresos del Mes</h5>
-                    <h2 class="text-success" id="ingresos-mes">L 0.00</h2>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-success" id="ingresos-mes">L 0.00</h6>
+                            <p>Ingresos del Mes</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Pendiente de Cobro</h5>
-                    <h2 class="text-warning" id="pendiente-cobro">L 0.00</h2>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-warning" id="pendiente-cobro">L 0.00</h6>
+                            <p>Pendiente de Cobro</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Cuentas Vencidas</h5>
-                    <h2 class="text-danger" id="cuentas-vencidas">L 0.00</h2>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-danger" id="cuentas-vencidas">L 0.00</h6>
+                            <p>Cuentas Vencidas</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Morosos</h5>
-                    <h2 class="text-danger" id="total-morosos">0</h2>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-danger" id="total-morosos">0</h6>
+                            <p>Morosos</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Gráficos -->
-    <div class="row mt-4">
+    <div class="row">
         <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Ingresos Últimos 6 Meses</h4>
-                </div>
-                <div class="card-body">
+            <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Ingresos Últimos 6 Meses</h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
                     <canvas id="ingresos-chart"></canvas>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Proyección vs Realizado</h4>
-                </div>
-                <div class="card-body">
+            <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Proyección vs Realizado</h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
                     <canvas id="proyeccion-chart"></canvas>
                 </div>
             </div>
@@ -75,21 +98,19 @@
     </div>
 
     <!-- Tablas -->
-    <div class="row mt-4">
+    <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
                     <div class="row">
-                        <div class="col-md-9"><h4>Alumnos Morosos</h4></div>
-                        <div class="col-md-3">
-                            <a href="@Url.Action("Morosos")" class="btn btn-danger float-right">
-                                Ver Todos
-                            </a>
+                        <div class="col-12 d-flex align-items-center justify-content-between">
+                            <h4>Alumnos Morosos</h4>
+                            <a href="@Url.Action("Morosos")" class="btn btn-sm btn-outline-danger">Ver todos</a>
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped" id="morosos-table">
+                <div class="widget-content widget-content-area table-responsive">
+                    <table class="table table-hover" id="morosos-table">
                         <thead>
                             <tr>
                                 <th>Alumno</th>

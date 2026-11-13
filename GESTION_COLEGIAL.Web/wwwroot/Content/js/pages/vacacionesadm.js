@@ -26,11 +26,13 @@ var VacacionesAdm = (function () {
 
     function badgeTipo(code) {
         var c = (code || "").charAt(0).toUpperCase();
-        return '<span class="vac-badge vac-badge-' + c + '">' + (TIPO_LABEL[c] || code || "—") + '</span>';
+        var cls = { V: "outline-badge-info", P: "outline-badge-success", I: "outline-badge-danger" }[c] || "outline-badge-secondary";
+        return '<span class="badge ' + cls + '">' + (TIPO_LABEL[c] || code || "—") + '</span>';
     }
     function badgeEstado(code) {
         var c = (code || "").charAt(0).toUpperCase();
-        return '<span class="vac-badge vac-badge-est-' + c + '">' + (EST_LABEL[c] || code || "—") + '</span>';
+        var cls = { P: "badge-warning", A: "badge-success", R: "badge-danger" }[c] || "badge-secondary";
+        return '<span class="badge ' + cls + '">' + (EST_LABEL[c] || code || "—") + '</span>';
     }
 
     function showError(msg) {
@@ -81,7 +83,8 @@ var VacacionesAdm = (function () {
                     (d.Anos != null ? d.Anos + (d.Anos === 1 ? " año de servicio" : " años de servicio") : "") +
                     (d.DiasPendientes ? '<br>' + d.DiasPendientes + ' día(s) en solicitudes pendientes' : "")
                 );
-                $(".vac-saldo-item--dispo").toggleClass("agotado", (d.DiasDisponibles || 0) <= 0);
+                var agotado = (d.DiasDisponibles || 0) <= 0;
+                $("#vac-saldo-disponible").toggleClass("text-danger", agotado).toggleClass("text-success", !agotado);
             }
             aplicarTipo();
         });

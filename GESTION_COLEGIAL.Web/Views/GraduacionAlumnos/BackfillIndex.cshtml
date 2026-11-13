@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewBag.Title = "Backfill de graduados";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -12,23 +12,19 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-text-catalogo">
-                <h1>Backfill de graduados (histórico)</h1>
-                <p>Procesa graduaciones antiguas en lote. Por defecto se ejecuta en modo simulación.</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Backfill de graduados (histórico)</h4>
+        <p class="text-muted mb-0">Procesa graduaciones antiguas en lote. Por defecto se ejecuta en modo simulación.</p>
     </div>
 </div>
 
-<div class="fluid-container">
-    <div class="card-listado-catalogo">
-        <div class="card-header-listado-catalogo">
-            <h3>Parámetros</h3>
+<div>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Parámetros</h4></div></div>
         </div>
-        <div class="card-body">
+        <div class="widget-content widget-content-area">
             <form id="form-backfill" class="form-inline" onsubmit="return false;">
                 <div class="form-group mr-3">
                     <label for="bf-anio" class="mr-2">Año:</label>
@@ -38,25 +34,25 @@
                     <label for="bf-topn" class="mr-2">Top N:</label>
                     <input type="number" min="1" max="500" id="bf-topn" class="form-control" value="50" />
                 </div>
-                <div class="form-check mr-3">
-                    <input type="checkbox" class="form-check-input" id="bf-dryrun" checked />
-                    <label class="form-check-label" for="bf-dryrun">Dry-run (simular)</label>
+                <div class="custom-control custom-checkbox mr-3">
+                    <input type="checkbox" class="custom-control-input" id="bf-dryrun" checked />
+                    <label class="custom-control-label" for="bf-dryrun">Simular (sin guardar)</label>
                 </div>
                 <button type="button" id="btn-ejecutar-backfill" class="btn btn-primary">
-                    <i class="bi bi-play-fill"></i> Ejecutar
+                    <i class="bi bi-play-fill mr-1"></i> Ejecutar
                 </button>
             </form>
         </div>
     </div>
 
-    <div class="card-listado-catalogo mt-3">
-        <div class="card-header-listado-catalogo">
-            <h3>Resultado</h3>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Resultado</h4></div></div>
         </div>
-        <div class="card-body">
+        <div class="widget-content widget-content-area">
             <div id="bf-resumen" class="mb-3"></div>
             <div class="table-responsive">
-                <table id="tbl-backfill" class="table table-striped" style="width:100%">
+                <table id="tbl-backfill" class="table table-hover w-100">
                     <thead>
                         <tr>
                             <th>Alu_Id</th>

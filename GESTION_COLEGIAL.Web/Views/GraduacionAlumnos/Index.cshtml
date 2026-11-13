@@ -1,97 +1,10 @@
-@{
+﻿@{
     ViewBag.Title = "Graduación";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
-    <link rel="stylesheet" href="~/Content/css/listado-catalogos.css" />
     <link rel="stylesheet" href="~/Content/css/pages/graduados-directorio.css" />
-    <style>
-        /* ── Hub Graduación: tabs ─────────────────────────────────────── */
-        .grad-hub-tabs {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 8px;
-            margin-bottom: 1rem;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, .05);
-        }
-
-        .grad-hub-tab {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid transparent;
-            background: transparent;
-            color: #475569;
-            font-weight: 600;
-            font-size: .9rem;
-            padding: 9px 16px;
-            border-radius: 9px;
-            cursor: pointer;
-            transition: background .15s ease, color .15s ease;
-        }
-
-            .grad-hub-tab i { font-size: 1rem; color: #64748b; }
-
-            .grad-hub-tab:hover { background: #f1f5f9; color: #1e293b; }
-
-            .grad-hub-tab:hover i { color: #1e293b; }
-
-            .grad-hub-tab.active { background: #4f46e5; border-color: #4f46e5; color: #ffffff; }
-
-                .grad-hub-tab.active i { color: #ffffff; }
-
-        /* Tab de herramienta avanzada (backfill): estilo discreto */
-        .grad-hub-tab-tool {
-            margin-left: auto;
-            border: 1px dashed #cbd5e1;
-            color: #64748b;
-            font-weight: 500;
-            font-size: .85rem;
-        }
-
-            .grad-hub-tab-tool.active { background: #334155; border-color: #334155; color: #ffffff; }
-
-        .grad-hub-panel { display: none; }
-
-            .grad-hub-panel.active { display: block; }
-
-        /* Sub-breadcrumb interno del directorio (lo maneja alumnosgraduados.js) */
-        .grad-hub-subnav .breadcrumb {
-            background: transparent;
-            padding: 0 0 .5rem 0;
-            margin: 0;
-            font-size: .85rem;
-        }
-
-            .grad-hub-subnav .breadcrumb .breadcrumb-item,
-            .grad-hub-subnav .breadcrumb .breadcrumb-item.active { color: #64748b; }
-
-                .grad-hub-subnav .breadcrumb .breadcrumb-item a { color: #4f46e5; }
-
-        /* Aviso del backfill */
-        .grad-hub-aviso {
-            background: #fffbeb;
-            border: 1px solid #fcd34d;
-            border-left: 4px solid #f59e0b;
-            border-radius: 8px;
-            color: #78350f;
-            padding: 12px 16px;
-            margin-bottom: 1rem;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-
-            .grad-hub-aviso i { color: #b45309; font-size: 1.15rem; margin-top: 1px; }
-
-            .grad-hub-aviso strong { color: #78350f; }
-    </style>
 }
 
 <div class="breadcrumb-wrapper-content">
@@ -103,62 +16,51 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-text-catalogo">
-                <h1>Graduación</h1>
-                <p>Candidatos del ciclo actual, directorio de egresados y carga histórica.</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Graduación</h4>
+        <p class="text-muted mb-0">Candidatos del ciclo actual, directorio de egresados y carga histórica.</p>
     </div>
 </div>
 
-<div class="fluid-container">
+<div>
 
     <!-- ═══════════════ Tabs del hub ═══════════════ -->
-    <div class="grad-hub-tabs" role="tablist" id="grad-hub-tabs">
-        <button type="button" class="grad-hub-tab active" data-tab="candidatos" role="tab">
-            <i class="bi bi-person-check-fill"></i> Candidatos
-        </button>
-        <button type="button" class="grad-hub-tab" data-tab="directorio" role="tab">
-            <i class="bi bi-mortarboard-fill"></i> Directorio de graduados
-        </button>
-        <button type="button" class="grad-hub-tab grad-hub-tab-tool" data-tab="backfill" role="tab" title="Herramienta avanzada de carga histórica">
-            <i class="bi bi-tools"></i> Backfill histórico
-        </button>
-    </div>
+    <ul class="nav nav-tabs mb-4" role="tablist" id="grad-hub-tabs">
+        <li class="nav-item"><a href="#" class="nav-link grad-hub-tab active" data-tab="candidatos" role="tab"><i class="bi bi-person-check-fill mr-1"></i> Candidatos</a></li>
+        <li class="nav-item"><a href="#" class="nav-link grad-hub-tab" data-tab="directorio" role="tab"><i class="bi bi-mortarboard-fill mr-1"></i> Directorio de graduados</a></li>
+        <li class="nav-item ml-auto"><a href="#" class="nav-link grad-hub-tab text-muted" data-tab="backfill" role="tab" title="Herramienta avanzada de carga histórica"><i class="bi bi-tools mr-1"></i> Backfill histórico</a></li>
+    </ul>
 
     <!-- ═══════════════ TAB 1: CANDIDATOS ═══════════════ -->
     <div id="hub-panel-candidatos" class="grad-hub-panel active" role="tabpanel">
 
-        <div class="card-listado-catalogo" style="margin-bottom: 1rem;">
-            <div class="card-body" style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-                <label for="nota-minima-input" style="margin:0; font-weight:500;">
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="d-flex flex-wrap align-items-center">
+                <label for="nota-minima-input" class="mb-0 mr-2 font-weight-bold">
                     Nota mínima de aprobación:
                 </label>
-                <input type="number" id="nota-minima-input" class="form-control" min="0" max="100" step="1"
-                       style="width:90px;" value="70" />
-                <button id="btn-guardar-nota-minima" class="btn btn-outline-primary btn-sm" type="button">
-                    <i class="bi bi-save"></i> Guardar
+                <input type="number" id="nota-minima-input" class="form-control grad-nota-input mr-2" min="0" max="100" step="1" value="70" />
+                <button id="btn-guardar-nota-minima" class="btn btn-outline-primary btn-sm mr-2" type="button">
+                    <i class="bi bi-save mr-1"></i> Guardar
                 </button>
-                <small id="nota-minima-status" style="color:#6c757d;"></small>
-                <small style="color:#6c757d; margin-left:auto;">
+                <small id="nota-minima-status" class="text-muted mr-2"></small>
+                <small class="text-muted ml-auto">
                     Cambia el umbral usado para evaluar las notas finales de los candidatos.
                 </small>
             </div>
         </div>
 
-        <div class="card-listado-catalogo">
-            <div class="card-header-listado-catalogo" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-                <h3 style="margin:0;">Listado de candidatos</h3>
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-header d-flex flex-wrap align-items-center justify-content-between">
+                <h4>Listado de candidatos</h4>
                 <button id="btn-graduar-seleccionados" class="btn btn-primary" disabled>
-                    <i class="bi bi-mortarboard-fill"></i> Graduar seleccionados
+                    <i class="bi bi-mortarboard-fill mr-1"></i> Graduar seleccionados
                 </button>
             </div>
-            <div class="card-body">
+            <div class="widget-content widget-content-area">
                 <div class="table-responsive">
-                    <table id="tbl-candidatos" class="table table-striped table-hover" style="width:100%">
+                    <table id="tbl-candidatos" class="table table-hover w-100">
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="chk-all-candidatos" /></th>
@@ -183,7 +85,7 @@
     <div id="hub-panel-directorio" class="grad-hub-panel" role="tabpanel">
 
         <!-- Sub-breadcrumb interno (drill-down promociones → detalle) -->
-        <nav class="grad-hub-subnav" aria-label="Navegación del directorio">
+        <nav class="breadcrumb-style-one mb-3" aria-label="Navegación del directorio">
             <ol class="breadcrumb" id="grad-breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Inicio</a></li>
                 <li class="breadcrumb-item active" id="grad-breadcrumb-current">Directorio de graduados</li>
@@ -194,106 +96,126 @@
         <div id="grad-view-promociones">
 
             <!-- KPI cards -->
-            <div class="grad-kpis">
-                <div class="grad-kpi">
-                    <div class="grad-kpi-icon indigo"><i class="bi bi-mortarboard-fill"></i></div>
-                    <div class="grad-kpi-body">
-                        <div class="grad-kpi-label">Total graduados</div>
-                        <div class="grad-kpi-value" id="kpi-total">—</div>
+            <div class="row">
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="value" id="kpi-total">—</h6>
+                                    <p>Total graduados</p>
+                                </div>
+                                <div><div class="w-icon"><i class="bi bi-mortarboard-fill"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="grad-kpi">
-                    <div class="grad-kpi-icon emerald"><i class="bi bi-calendar2-check"></i></div>
-                    <div class="grad-kpi-body">
-                        <div class="grad-kpi-label">Promociones</div>
-                        <div class="grad-kpi-value" id="kpi-promociones">—</div>
-                        <div class="grad-kpi-hint" id="kpi-promociones-hint"></div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="value" id="kpi-promociones">—</h6>
+                                    <p>Promociones</p>
+                                </div>
+                                <div><div class="w-icon"><i class="bi bi-calendar2-check"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-2" id="kpi-promociones-hint"></p>
+                        </div>
                     </div>
                 </div>
-                <div class="grad-kpi">
-                    <div class="grad-kpi-icon amber"><i class="bi bi-star-fill"></i></div>
-                    <div class="grad-kpi-body">
-                        <div class="grad-kpi-label">Más reciente</div>
-                        <div class="grad-kpi-value" id="kpi-ultimo-anio">—</div>
-                        <div class="grad-kpi-hint" id="kpi-ultimo-count"></div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="value" id="kpi-ultimo-anio">—</h6>
+                                    <p>Más reciente</p>
+                                </div>
+                                <div><div class="w-icon"><i class="bi bi-star-fill"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-2" id="kpi-ultimo-count"></p>
+                        </div>
                     </div>
                 </div>
-                <div class="grad-kpi">
-                    <div class="grad-kpi-icon cyan"><i class="bi bi-bar-chart-line-fill"></i></div>
-                    <div class="grad-kpi-body">
-                        <div class="grad-kpi-label">Nivel dominante</div>
-                        <div class="grad-kpi-value" id="kpi-nivel-top">—</div>
-                        <div class="grad-kpi-hint" id="kpi-nivel-top-pct"></div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="value" id="kpi-nivel-top">—</h6>
+                                    <p>Nivel dominante</p>
+                                </div>
+                                <div><div class="w-icon"><i class="bi bi-bar-chart-line-fill"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-2" id="kpi-nivel-top-pct"></p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Toolbar: búsqueda de año + chips -->
-            <div class="grad-toolbar">
-                <div class="grad-search">
-                    <i class="bi bi-search"></i>
-                    <input type="text" id="grad-search-promo" placeholder="Buscar promoción por año..." autocomplete="off" />
-                </div>
-                <div class="grad-chips" id="grad-chips-niveles-promo">
-                    <!-- Chips generados dinámicamente -->
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="form-row align-items-center">
+                    <div class="col-md-4 mb-2">
+                        <input type="text" id="grad-search-promo" class="form-control" placeholder="Buscar promoción por año..." autocomplete="off" />
+                    </div>
+                    <div class="col-md-8 d-flex flex-wrap" id="grad-chips-niveles-promo">
+                        <!-- Atajos generados dinámicamente -->
+                    </div>
                 </div>
             </div>
 
             <!-- Grid de promociones -->
             <div id="grad-promos-container">
-                <div class="grad-empty">
-                    <i class="bi bi-hourglass-split"></i>
-                    <div>Cargando promociones...</div>
-                </div>
+                <div class="text-center text-muted py-5"><i class="bi bi-hourglass-split h2 d-block"></i>Cargando promociones...</div>
             </div>
         </div>
 
         <!-- VISTA 2: DETALLE DE PROMOCIÓN -->
         <div id="grad-view-detalle" style="display:none;">
-            <button type="button" class="grad-back-btn" id="btn-volver-promos">
-                <i class="bi bi-arrow-left"></i> Volver a promociones
+            <button type="button" class="btn btn-outline-secondary btn-sm mb-3" id="btn-volver-promos">
+                <i class="bi bi-arrow-left mr-1"></i> Volver a promociones
             </button>
 
-            <div class="grad-promo-hero">
-                <div class="grad-promo-hero-icon"><i class="bi bi-mortarboard-fill"></i></div>
-                <div>
-                    <h2 id="detalle-anio">Promoción 2025</h2>
-                    <div class="grad-promo-hero-sub" id="detalle-sub">— egresados</div>
+            <div class="mb-4">
+            <h4 class="mb-1"><i class="bi bi-mortarboard-fill text-primary mr-2"></i><span id="detalle-anio">Promoción 2025</span></h4>
+            <p class="text-muted mb-0" id="detalle-sub">— egresados</p>
+        </div>
+
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="form-row align-items-center">
+                <div class="col-md-4 mb-2">
+                    <input type="text" id="grad-search-detalle" class="form-control" placeholder="Buscar por nombre, identidad o título..." autocomplete="off" />
+                </div>
+                <div class="col-md-8 d-flex flex-wrap" id="grad-chips-niveles-detalle">
+                    <!-- Atajos generados dinámicamente -->
                 </div>
             </div>
+        </div>
 
-            <div class="grad-toolbar">
-                <div class="grad-search">
-                    <i class="bi bi-search"></i>
-                    <input type="text" id="grad-search-detalle" placeholder="Buscar por nombre, identidad o título..." autocomplete="off" />
-                </div>
-                <div class="grad-chips" id="grad-chips-niveles-detalle">
-                    <!-- Chips generados dinámicamente para esta promoción -->
-                </div>
-            </div>
-
-            <div id="grad-detalle-container" class="grad-grid"></div>
+            <div id="grad-detalle-container" class="row"></div>
         </div>
     </div>
 
     <!-- ═══════════════ TAB 3: BACKFILL HISTÓRICO ═══════════════ -->
     <div id="hub-panel-backfill" class="grad-hub-panel" role="tabpanel">
 
-        <div class="grad-hub-aviso" role="alert">
-            <i class="bi bi-exclamation-triangle-fill"></i>
+        <div class="alert alert-light-warning d-flex align-items-start mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill mr-2 mt-1"></i>
             <div>
-                <strong>Herramienta avanzada de carga histórica (one-off).</strong>
+                <strong>Herramienta avanzada de carga histórica (uso único).</strong>
                 Procesa graduaciones antiguas en lote para poblar el directorio. Se ejecuta en
-                <strong>modo simulación (dry-run)</strong> por defecto: revise el resultado antes de
+                <strong>modo simulación</strong> por defecto: revise el resultado antes de
                 desmarcar la casilla y ejecutar la carga real.
             </div>
         </div>
 
-        <div class="card-listado-catalogo">
-            <div class="card-header-listado-catalogo">
-                <h3>Parámetros</h3>
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4>Parámetros</h4></div></div>
             </div>
-            <div class="card-body">
+            <div class="widget-content widget-content-area">
                 <form id="form-backfill" class="form-inline" onsubmit="return false;">
                     <div class="form-group mr-3">
                         <label for="bf-anio" class="mr-2">Año:</label>
@@ -303,25 +225,25 @@
                         <label for="bf-topn" class="mr-2">Top N:</label>
                         <input type="number" min="1" max="500" id="bf-topn" class="form-control" value="50" />
                     </div>
-                    <div class="form-check mr-3">
-                        <input type="checkbox" class="form-check-input" id="bf-dryrun" checked />
-                        <label class="form-check-label" for="bf-dryrun">Dry-run (simular)</label>
+                    <div class="custom-control custom-checkbox mr-3">
+                        <input type="checkbox" class="custom-control-input" id="bf-dryrun" checked />
+                        <label class="custom-control-label" for="bf-dryrun">Simular (sin guardar)</label>
                     </div>
                     <button type="button" id="btn-ejecutar-backfill" class="btn btn-primary">
-                        <i class="bi bi-play-fill"></i> Ejecutar
+                        <i class="bi bi-play-fill mr-1"></i> Ejecutar
                     </button>
                 </form>
             </div>
         </div>
 
-        <div class="card-listado-catalogo mt-3">
-            <div class="card-header-listado-catalogo">
-                <h3>Resultado</h3>
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4>Resultado</h4></div></div>
             </div>
-            <div class="card-body">
+            <div class="widget-content widget-content-area">
                 <div id="bf-resumen" class="mb-3"></div>
                 <div class="table-responsive">
-                    <table id="tbl-backfill" class="table table-striped" style="width:100%">
+                    <table id="tbl-backfill" class="table table-hover w-100">
                         <thead>
                             <tr>
                                 <th>Alu_Id</th>
@@ -345,14 +267,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Ficha del graduado</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
             </div>
             <div class="modal-body" id="modal-graduado-body">Cargando...</div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btn-generar-constancia" disabled>
-                    <i class="bi bi-file-earmark-pdf"></i> Generar constancia
+                    <i class="bi bi-file-earmark-pdf mr-1"></i> Generar constancia
                 </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

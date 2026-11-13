@@ -3,10 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles{
-    <link href="~/Content/css/pages/catalogos-comunes.css" rel="stylesheet" />
-}
-
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -16,240 +12,218 @@
     </nav>
 </div>
 
-<!-- Hero -->
-<div class="cc-hero">
-    <div class="cc-hero-content">
-        <div class="cc-hero-left">
-            <div class="cc-hero-icon">
-                <i class="bi bi-collection"></i>
-            </div>
-            <div class="cc-hero-text">
-                <h1>Catálogos Comunes</h1>
-                <p>Catálogos globales usados a lo largo del sistema: estados, parentescos, títulos académicos y cargos.</p>
-            </div>
-        </div>
-        <div class="cc-hero-summary">
-            <div class="cc-hero-stat">
-                <strong id="cc-stat-total">—</strong>
-                <span>Total</span>
-            </div>
-            <div class="cc-hero-stat">
-                <strong>4</strong>
-                <span>Catálogos</span>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Catálogos comunes</h4>
+        <p class="text-muted mb-0">Catálogos globales usados a lo largo del sistema: estados, parentescos, títulos académicos y cargos.</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <div class="dropdown d-inline-block cc-new-wrap">
+            <button type="button" class="btn btn-primary dropdown-toggle" id="cc-new-btn" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-plus-lg mr-1"></i> Nuevo
+            </button>
+            <div class="dropdown-menu dropdown-menu-right cc-new-menu" id="cc-new-menu" aria-labelledby="cc-new-btn">
+                <button type="button" class="dropdown-item" data-new-type="estados"><i class="bi bi-check-circle mr-2"></i> Nuevo estado</button>
+                <button type="button" class="dropdown-item" data-new-type="parentescos"><i class="bi bi-diagram-3 mr-2"></i> Nuevo parentesco</button>
+                <button type="button" class="dropdown-item" data-new-type="titulos"><i class="bi bi-award mr-2"></i> Nuevo título</button>
+                <button type="button" class="dropdown-item" data-new-type="cargos"><i class="bi bi-person-badge mr-2"></i> Nuevo cargo</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="fluid-container">
-    <div class="cc-panel">
-
-        <!-- Chips filtro -->
-        <div class="cc-chips-row">
-            <span class="cc-chips-label">Filtrar:</span>
-            <button type="button" class="cc-chip active" data-type="todos">
-                <i class="bi bi-grid-fill"></i>
-                Todos
-                <span class="cc-chip-count" data-count="todos">—</span>
-            </button>
-            <button type="button" class="cc-chip" data-type="estados">
-                <i class="bi bi-check-circle"></i>
-                Estados
-                <span class="cc-chip-count" data-count="estados">—</span>
-            </button>
-            <button type="button" class="cc-chip" data-type="parentescos">
-                <i class="bi bi-diagram-3"></i>
-                Parentescos
-                <span class="cc-chip-count" data-count="parentescos">—</span>
-            </button>
-            <button type="button" class="cc-chip" data-type="titulos">
-                <i class="bi bi-award"></i>
-                Títulos
-                <span class="cc-chip-count" data-count="titulos">—</span>
-            </button>
-            <button type="button" class="cc-chip" data-type="cargos">
-                <i class="bi bi-person-badge"></i>
-                Cargos
-                <span class="cc-chip-count" data-count="cargos">—</span>
-            </button>
-        </div>
-
-        <!-- Toolbar -->
-        <div class="cc-toolbar">
-            <div class="cc-toolbar-left">
-                <div class="cc-search-wrap">
-                    <i class="bi bi-search"></i>
-                    <input type="text" id="cc-search" placeholder="Buscar en descripción, ID o tipo..." autocomplete="off" />
-                </div>
-            </div>
-            <div class="cc-toolbar-right">
-                <button type="button" class="cc-btn-ghost" id="cc-reload" title="Recargar">
-                    <i class="bi bi-arrow-clockwise"></i>
-                </button>
-                <div class="cc-new-wrap">
-                    <button type="button" class="cc-btn-primary" id="cc-new-btn">
-                        <i class="bi bi-plus-lg"></i>
-                        Nuevo <i class="bi bi-caret-down-fill" style="font-size:0.75rem;"></i>
-                    </button>
-                    <div class="cc-new-menu" id="cc-new-menu">
-                        <button type="button" data-new-type="estados"><span class="cc-dot" style="background:#1d4ed8;"></span> Nuevo Estado</button>
-                        <button type="button" data-new-type="parentescos"><span class="cc-dot" style="background:#047857;"></span> Nuevo Parentesco</button>
-                        <button type="button" data-new-type="titulos"><span class="cc-dot" style="background:#6d28d9;"></span> Nuevo Título</button>
-                        <button type="button" data-new-type="cargos"><span class="cc-dot" style="background:#b91c1c;"></span> Nuevo Cargo</button>
+<div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="cc-stat-total">—</h6>
+                        <p>Registros en total</p>
                     </div>
+                    <div><div class="w-icon"><i class="bi bi-list-ul"></i></div></div>
                 </div>
             </div>
         </div>
-
-        <!-- Info -->
-        <div class="cc-catalog-info">
-            <div class="cc-info-icon"><i class="bi bi-info-circle-fill"></i></div>
-            <div class="cc-info-text">
-                <strong>Vista unificada</strong>
-                <span>Estos catálogos son globales y raramente cambian. Se muestran juntos para facilitar el mantenimiento; usá los chips para filtrar por tipo.</span>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value">4</h6>
+                        <p>Catálogos</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-collection"></i></div></div>
+                </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="statbox widget box box-shadow mb-4">
+    <div class="widget-content widget-content-area">
+
+        <!-- Filtro por tipo -->
+        <div class="d-flex flex-wrap align-items-center mb-3">
+            <span class="text-muted small mr-2 mb-2">Filtrar:</span>
+            <button type="button" class="btn btn-sm btn-rounded btn-outline-primary cc-chip active mr-2 mb-2" data-type="todos">
+                <i class="bi bi-grid-fill mr-1"></i> Todos
+                <span class="badge badge-light ml-1" data-count="todos">—</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-rounded btn-outline-primary cc-chip mr-2 mb-2" data-type="estados">
+                <i class="bi bi-check-circle mr-1"></i> Estados
+                <span class="badge badge-light ml-1" data-count="estados">—</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-rounded btn-outline-primary cc-chip mr-2 mb-2" data-type="parentescos">
+                <i class="bi bi-diagram-3 mr-1"></i> Parentescos
+                <span class="badge badge-light ml-1" data-count="parentescos">—</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-rounded btn-outline-primary cc-chip mr-2 mb-2" data-type="titulos">
+                <i class="bi bi-award mr-1"></i> Títulos
+                <span class="badge badge-light ml-1" data-count="titulos">—</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-rounded btn-outline-primary cc-chip mr-2 mb-2" data-type="cargos">
+                <i class="bi bi-person-badge mr-1"></i> Cargos
+                <span class="badge badge-light ml-1" data-count="cargos">—</span>
+            </button>
+        </div>
+
+        <!-- Barra de herramientas -->
+        <div class="d-flex flex-wrap align-items-center mb-3">
+            <div class="input-group mb-2 mr-2 w-auto flex-grow-1">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="bi bi-search"></i></span></div>
+                <input type="text" id="cc-search" class="form-control" placeholder="Buscar en descripción, ID o tipo..." autocomplete="off" />
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary mb-2" id="cc-reload" title="Recargar">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
+
+        <div class="alert alert-light-info mb-4" role="alert">
+            <i class="bi bi-info-circle-fill mr-1"></i>
+            <strong>Vista unificada.</strong>
+            Estos catálogos son globales y raramente cambian. Se muestran juntos para facilitar el mantenimiento; usá los filtros para ver un tipo.
         </div>
 
         <!-- Tabla -->
         <div class="table-responsive">
-            <table class="cc-table" id="cc-table">
+            <table class="table table-hover cc-table" id="cc-table">
                 <thead>
                     <tr>
-                        <th style="width:130px;">Tipo</th>
-                        <th style="width:80px;">ID</th>
+                        <th>Tipo</th>
+                        <th>ID</th>
                         <th>Descripción</th>
-                        <th style="width:210px;">Registrado</th>
-                        <th style="width:130px; text-align:center;">Acciones</th>
+                        <th>Registrado</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="cc-table-body"></tbody>
             </table>
         </div>
 
-        <div class="cc-empty" id="cc-empty" hidden>
-            <div class="cc-empty-icon"><i class="bi bi-inbox"></i></div>
-            <h4>Sin registros</h4>
-            <p>No hay registros que coincidan con el filtro actual.</p>
+        <div class="text-center py-5" id="cc-empty" hidden>
+            <i class="bi bi-inbox h1 text-muted d-block mb-2"></i>
+            <h5>Sin registros</h5>
+            <p class="text-muted mb-0">No hay registros que coincidan con el filtro actual.</p>
         </div>
     </div>
+</div>
 
-    <!-- Modal Editar / Crear -->
-    <div class="modal fade" id="cc-edit-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content cc-modal-content">
-                <div class="cc-modal-header">
-                    <div class="cc-modal-header-icon"><i class="bi bi-pencil-square"></i></div>
-                    <div class="cc-modal-header-text">
-                        <h5 id="cc-edit-title">Nuevo registro</h5>
-                        <p id="cc-edit-subtitle">Complete los datos</p>
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+<!-- Modal crear / editar -->
+<div class="modal fade" id="cc-edit-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="cc-edit-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="cc-edit-title">Nuevo registro</h5>
+                    <p class="text-muted small mb-0" id="cc-edit-subtitle">Complete los datos</p>
                 </div>
-                <form id="cc-edit-form" onsubmit="return false;">
-                    <div class="cc-modal-body">
-                        <input type="hidden" id="cc-edit-id" value="0" />
-                        <input type="hidden" id="cc-edit-tipo" value="" />
-                        <div class="cc-form-group">
-                            <label for="cc-edit-descripcion">
-                                <i class="bi bi-card-text"></i>
-                                Descripción <span class="cc-required">*</span>
-                            </label>
-                            <input type="text" id="cc-edit-descripcion" class="form-control" maxlength="150" required autocomplete="off" />
-                            <small class="cc-form-hint" id="cc-edit-hint">Ingrese el nombre del registro.</small>
-                        </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <form id="cc-edit-form" onsubmit="return false;">
+                <div class="modal-body">
+                    <input type="hidden" id="cc-edit-id" value="0" />
+                    <input type="hidden" id="cc-edit-tipo" value="" />
+                    <div class="form-group mb-0">
+                        <label for="cc-edit-descripcion">Descripción <span class="text-danger">*</span></label>
+                        <input type="text" id="cc-edit-descripcion" class="form-control" maxlength="150" required autocomplete="off" />
+                        <small class="form-text text-muted" id="cc-edit-hint">Ingrese el nombre del registro.</small>
                     </div>
-                    <div class="cc-modal-footer">
-                        <button type="button" class="cc-btn-cancel" data-dismiss="modal"><i class="bi bi-x-lg"></i> Cancelar</button>
-                        <button type="submit" class="cc-btn-save" id="cc-edit-save"><i class="bi bi-check2"></i> Guardar</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="cc-edit-save"><i class="bi bi-check2 mr-1"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal detalle -->
+<div class="modal fade" id="cc-detail-modal" tabindex="-1" role="dialog" aria-labelledby="cc-detail-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="cc-detail-title">Detalle del registro</h5>
+                    <p class="text-muted small mb-0" id="cc-detail-catalog-name">Catálogo</p>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <p class="text-muted small mb-1">ID</p>
+                        <p class="font-weight-bold mb-0" id="cc-detail-id">—</p>
                     </div>
-                </form>
+                    <div class="col-md-8 mb-3">
+                        <p class="text-muted small mb-1">Descripción</p>
+                        <p class="font-weight-bold mb-0" id="cc-detail-descripcion">—</p>
+                    </div>
+                </div>
+                <h6 class="border-top pt-3 mb-3"><i class="bi bi-clock-history mr-1"></i> Auditoría</h6>
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <p class="text-muted small mb-1">Creado por</p>
+                        <p class="mb-0"><strong id="cc-detail-usuarioregistra">—</strong> <span class="text-muted small" id="cc-detail-fecharegistra">—</span></p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <p class="text-muted small mb-1">Modificado por</p>
+                        <p class="mb-0"><strong id="cc-detail-usuariomodifica">—</strong> <span class="text-muted small" id="cc-detail-fechamodifica">—</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal Detalle -->
-    <div class="modal fade" id="cc-detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content cc-modal-content">
-                <div class="cc-modal-header cc-modal-header-detail">
-                    <div class="cc-modal-header-icon"><i class="bi bi-file-earmark-text"></i></div>
-                    <div class="cc-modal-header-text">
-                        <h5>Detalle del registro</h5>
-                        <p id="cc-detail-catalog-name">Catálogo</p>
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+<!-- Modal eliminar -->
+<div class="modal fade" id="cc-delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="cc-delete-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cc-delete-title">Eliminar registro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="cc-delete-id" value="0" />
+                <input type="hidden" id="cc-delete-tipo" value="" />
+                <p class="mb-3">¿Está seguro de eliminar <strong id="cc-delete-name"></strong> del catálogo <strong id="cc-delete-catalog"></strong>?</p>
+                <div class="alert alert-light-danger mb-0" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill mr-1"></i>
+                    <strong>Esta acción no se puede deshacer.</strong> Si el registro está en uso, la eliminación fallará.
                 </div>
-                <div class="cc-modal-body">
-                    <div style="display:grid; grid-template-columns:100px 1fr; gap:0.8rem 1rem; padding:1rem; background:#f9fafb; border-radius:10px; margin-bottom:1rem;">
-                        <div>
-                            <span style="font-size:0.7rem; text-transform:uppercase; color:#64748b; font-weight:700;">ID</span>
-                            <div id="cc-detail-id" style="font-weight:700; color:#1e293b;">—</div>
-                        </div>
-                        <div>
-                            <span style="font-size:0.7rem; text-transform:uppercase; color:#64748b; font-weight:700;">Descripción</span>
-                            <div id="cc-detail-descripcion" style="font-weight:600; color:#1e293b;">—</div>
-                        </div>
-                    </div>
-                    <div style="border:1px solid #e5e7eb; border-radius:10px; padding:1rem;">
-                        <div style="font-weight:700; font-size:0.9rem; color:#1e293b; margin-bottom:0.75rem; padding-bottom:0.5rem; border-bottom:1px solid #f1f5f9;">
-                            <i class="bi bi-clock-history"></i> Auditoría
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:0.75rem; font-size:0.85rem;">
-                            <div>
-                                <span style="font-size:0.7rem; text-transform:uppercase; color:#64748b; font-weight:700;">Creado por</span>
-                                <div><strong id="cc-detail-usuarioregistra">—</strong> <span style="color:#64748b;" id="cc-detail-fecharegistra">—</span></div>
-                            </div>
-                            <div>
-                                <span style="font-size:0.7rem; text-transform:uppercase; color:#64748b; font-weight:700;">Modificado por</span>
-                                <div><strong id="cc-detail-usuariomodifica">—</strong> <span style="color:#64748b;" id="cc-detail-fechamodifica">—</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="cc-modal-footer">
-                    <button type="button" class="cc-btn-cancel" data-dismiss="modal"><i class="bi bi-x-lg"></i> Cerrar</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="cc-delete-confirm">Eliminar</button>
             </div>
         </div>
     </div>
-
-    <!-- Modal Eliminar -->
-    <div class="modal fade" id="cc-delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:440px;">
-            <div class="modal-content" style="border-radius:12px; border:none;">
-                <div class="modal-header" style="border-bottom:none; padding:20px 24px 0;">
-                    <button type="button" class="close" data-dismiss="modal" style="padding:0; margin:0; opacity:0.5;"><span aria-hidden="true" style="font-size:24px;">&times;</span></button>
-                </div>
-                <div class="modal-body text-center" style="padding:0 40px 32px;">
-                    <input type="hidden" id="cc-delete-id" value="0" />
-                    <input type="hidden" id="cc-delete-tipo" value="" />
-                    <div class="d-flex justify-content-center mb-3">
-                        <div style="width:80px; height:80px; background:linear-gradient(135deg, #fee2e2, #fecaca); border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                            <div style="width:56px; height:56px; background:#dc2626; border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                                <i class="bi bi-exclamation-triangle-fill" style="color:white; font-size:28px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <h5 class="mb-3" style="color:#1f2937; font-weight:600; font-size:20px;">Eliminar registro</h5>
-                    <p class="mb-4" style="color:#6b7280; font-size:14px; line-height:1.5;">
-                        ¿Está seguro de eliminar <span id="cc-delete-name" style="font-weight:600; color:#1f2937;"></span> del catálogo <span id="cc-delete-catalog" style="font-weight:600;"></span>?
-                    </p>
-                    <div class="alert d-flex align-items-start text-left" style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:16px; margin-bottom:0;">
-                        <div style="flex-shrink:0; margin-right:12px;"><i class="bi bi-exclamation-triangle-fill" style="color:#dc2626; font-size:18px;"></i></div>
-                        <div style="flex:1;">
-                            <p class="mb-1" style="color:#991b1b; font-weight:600; font-size:13px; margin:0;">Esta acción no se puede deshacer</p>
-                            <p class="mb-0" style="color:#991b1b; font-size:13px; margin:0;">Si el registro está en uso, la eliminación fallará.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer" style="border-top:none; padding:0 40px 32px; gap:12px;">
-                    <button type="button" class="btn" data-dismiss="modal" style="flex:1; padding:10px 24px; border-radius:8px; background:#f3f4f6; border:1px solid #d1d5db; color:#374151 !important; font-size:14px;">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="cc-delete-confirm" style="flex:1; padding:10px 24px; border-radius:8px; background:#dc2626; border:none; font-size:14px;">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 @section Scripts{

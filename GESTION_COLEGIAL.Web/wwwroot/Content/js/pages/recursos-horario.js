@@ -199,30 +199,34 @@
             var desc = r[cat.fieldDesc] || '(sin descripción)';
 
             var $card = $(
-                '<div class="rh-card" data-id="' + esc(id) + '" data-catalog="' + key + '">' +
-                    '<div class="rh-card-head">' +
-                        '<div class="rh-card-icon rh-icon-' + key + '"><i class="bi ' + cat.icon + '"></i></div>' +
-                        '<span class="rh-card-id">#' + esc(id) + '</span>' +
-                    '</div>' +
-                    '<div class="rh-card-body">' +
-                        '<h4>' + esc(desc) + '</h4>' +
-                    '</div>' +
-                    '<div class="rh-card-actions">' +
-                        '<button type="button" class="rh-card-action view"   title="Ver detalle"><i class="bi bi-eye"></i></button>' +
-                        '<button type="button" class="rh-card-action edit"   title="Editar"><i class="bi bi-pencil"></i></button>' +
-                        '<button type="button" class="rh-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                '<div class="col-xl-3 col-lg-4 col-sm-6 mb-3">' +
+                    '<div class="card h-100 rh-card" data-id="' + esc(id) + '" data-catalog="' + key + '">' +
+                        '<div class="card-body">' +
+                            '<div class="d-flex align-items-center justify-content-between mb-2">' +
+                                '<i class="bi ' + cat.icon + ' text-primary"></i>' +
+                                '<span class="badge outline-badge-secondary">#' + esc(id) + '</span>' +
+                            '</div>' +
+                            '<h6 class="font-weight-bold mb-0">' + esc(desc) + '</h6>' +
+                        '</div>' +
+                        '<div class="card-footer bg-transparent text-right">' +
+                            '<button type="button" class="btn btn-sm btn-outline-primary mr-1 rh-card-action view" title="Ver detalle"><i class="bi bi-eye"></i></button>' +
+                            '<button type="button" class="btn btn-sm btn-outline-primary mr-1 rh-card-action edit" title="Editar"><i class="bi bi-pencil"></i></button>' +
+                            '<button type="button" class="btn btn-sm btn-outline-danger rh-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                        '</div>' +
                     '</div>' +
                 '</div>'
             );
             $grid.append($card);
         });
 
-        // Card "Nueva" al final
+        // Tarjeta "Nueva" al final
         $grid.append(
-            '<div class="rh-card-new" data-new="' + key + '" role="button" tabindex="0">' +
-                '<i class="bi bi-plus-circle"></i>' +
-                '<span>Nuev' + (cat.genero === 'f' ? 'a' : 'o') + ' ' + cat.singular + '</span>' +
-                '<small>Agregar un recurso nuevo</small>' +
+            '<div class="col-xl-3 col-lg-4 col-sm-6 mb-3">' +
+                '<button type="button" class="btn btn-outline-primary btn-block h-100 py-4" data-new="' + key + '">' +
+                    '<i class="bi bi-plus-circle d-block mb-1"></i>' +
+                    'Nuev' + (cat.genero === 'f' ? 'a' : 'o') + ' ' + cat.singular +
+                    '<small class="d-block">Agregar un recurso nuevo</small>' +
+                '</button>' +
             '</div>'
         );
     }
@@ -324,7 +328,7 @@
         payload[cat.fieldId] = id;
         payload[cat.fieldDesc] = value;
 
-        var $btn = $('#rh-edit-save').prop('disabled', true).html('<i class="bi bi-hourglass-split"></i> Guardando...');
+        var $btn = $('#rh-edit-save').prop('disabled', true).html('<i class="bi bi-hourglass-split mr-1"></i> Guardando...');
 
         $.ajax({
             url: url(cat, 'CreateAsync'),
@@ -343,7 +347,7 @@
         }).fail(function () {
             notify('error', 'Error de conexión al guardar.');
         }).always(function () {
-            $btn.prop('disabled', false).html('<i class="bi bi-check2"></i> Guardar');
+            $btn.prop('disabled', false).html('<i class="bi bi-check2 mr-1"></i> Guardar');
         });
     }
 

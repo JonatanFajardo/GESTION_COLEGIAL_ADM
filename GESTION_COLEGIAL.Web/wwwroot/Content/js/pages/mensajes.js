@@ -36,14 +36,14 @@ var Mensajes = (function () {
                 {
                     data: null,
                     render: function (r) {
-                        return '<button class="btn btn-sm btn-info btn-ver" '
+                        return '<button class="btn btn-sm btn-outline-primary btn-ver" '
                              + 'data-asunto="' + (r.Msg_Asunto || '').replace(/"/g, '&quot;') + '" '
                              + 'data-alumno="' + (r.Alu_NombreCompleto || '').replace(/"/g, '&quot;') + '" '
                              + 'data-fecha="'  + (r.Msg_FechaEnvio || '') + '" '
                              + 'data-estado="' + (r.Msg_Estado || '') + '" '
                              + 'data-contenido="' + (r.Msg_Resumen || '').replace(/"/g, '&quot;') + '">'
                              + '<i class="fa fa-eye"></i> Ver</button> '
-                             + '<button class="btn btn-sm btn-danger btn-eliminar" data-id="' + r.Msg_Id + '">'
+                             + '<button class="btn btn-sm btn-outline-danger btn-eliminar" data-id="' + r.Msg_Id + '">'
                              + '<i class="fa fa-trash"></i> Eliminar</button>';
                     }
                 }

@@ -214,7 +214,7 @@ var DashboardRRHH = (function () {
     function renderCumpleanos(data) {
         var cont = document.getElementById('lista-cumpleanos');
         if (!cont) return;
-        if (!data || data.length === 0) { cont.innerHTML = '<p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin cumpleaños este mes.</p>'; return; }
+        if (!data || data.length === 0) { cont.innerHTML = '<p class="text-muted small mb-0">Sin cumpleaños este mes.</p>'; return; }
         var mesActual = new Date().getMonth() + 1;
         var html = '';
         for (var i = 0; i < data.length; i++) {
@@ -223,7 +223,7 @@ var DashboardRRHH = (function () {
                 ? '<img class="cumple-avatar" src="'+c.Per_Imagen+'" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';"><div class="cumple-avatar-ph" style="display:none;">'+ini+'</div>'
                 : '<div class="cumple-avatar-ph">'+ini+'</div>';
             var diaLabel = hoyFlag ? '&#x1F382; ¡Hoy!' : 'Día ' + c.Dia;
-            html += '<div class="cumple-card'+(hoyFlag?' es-hoy':'')+'">'+av+'<div class="cumple-nombre">'+(c.NombreCompleto||'—')+'</div><div class="cumple-cargo">'+(c.Cargo||'')+'</div><div class="cumple-dia">'+diaLabel+'</div></div>';
+            html += '<div class="cumple-card'+(hoyFlag?' es-hoy':'')+'">'+av+'<div class="font-weight-bold small text-truncate mt-2">'+(c.NombreCompleto||'—')+'</div><div class="small text-muted text-truncate">'+(c.Cargo||'')+'</div><span class="badge '+(hoyFlag?'badge-primary':'outline-badge-primary')+' mt-1">'+diaLabel+'</span></div>';
         }
         cont.innerHTML = html;
     }
@@ -233,17 +233,17 @@ var DashboardRRHH = (function () {
         var el    = document.getElementById('stat-total-sol');
         if (!tbody) return;
         if (el) el.textContent = data.length > 0 ? data.length + ' pendientes' : '';
-        if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px;">Sin solicitudes pendientes.</td></tr>'; return; }
-        var tipoMap = { 'Vacaciones':'V','Permiso':'P','Incapacidad':'I' };
+        if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted small py-4">Sin solicitudes pendientes.</td></tr>'; return; }
+        var tipoMap = { 'Vacaciones':'outline-badge-info','Permiso':'outline-badge-warning','Incapacidad':'outline-badge-danger' };
         var html = '';
         for (var i = 0; i < data.length; i++) {
-            var row = data[i], tipo = row.Tipo||'—', cls = 'tipo-'+(tipoMap[tipo]||'V');
+            var row = data[i], tipo = row.Tipo||'—', cls = tipoMap[tipo]||'outline-badge-info';
             html += '<tr>'
-                  + '<td style="font-weight:600;">'+(row.NombreEmpleado||'—')+'</td>'
-                  + '<td style="font-size:.75rem;color:#64748b;">'+(row.Cargo||'—')+'<br><span style="color:#94a3b8;">'+(row.Departamento||'')+'</span></td>'
-                  + '<td style="text-align:center;"><span class="tipo-badge '+cls+'">'+tipo+'</span></td>'
-                  + '<td style="font-size:.78rem;">'+fmtFecha(row.Vac_FechaInicio)+' – '+fmtFecha(row.Vac_FechaFin)+'</td>'
-                  + '<td style="text-align:center;font-weight:800;color:#0f172a;">'+(row.Vac_DiasTotal||0)+'</td>'
+                  + '<td class="font-weight-bold">'+(row.NombreEmpleado||'—')+'</td>'
+                  + '<td class="small text-muted">'+(row.Cargo||'—')+'<br><span>'+(row.Departamento||'')+'</span></td>'
+                  + '<td class="text-center"><span class="badge '+cls+'">'+tipo+'</span></td>'
+                  + '<td class="small">'+fmtFecha(row.Vac_FechaInicio)+' – '+fmtFecha(row.Vac_FechaFin)+'</td>'
+                  + '<td class="text-center font-weight-bold">'+(row.Vac_DiasTotal||0)+'</td>'
                   + '</tr>';
         }
         tbody.innerHTML = html;
@@ -252,7 +252,7 @@ var DashboardRRHH = (function () {
     function renderAntiguedad(data) {
         var cont = document.getElementById('lista-antiguedad');
         if (!cont) return;
-        if (!data || data.length === 0) { cont.innerHTML = '<p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin datos.</p>'; return; }
+        if (!data || data.length === 0) { cont.innerHTML = '<p class="text-muted small mb-0">Sin datos.</p>'; return; }
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var e = data[i], ini = (e.NombreEmpleado||'?').charAt(0).toUpperCase();
@@ -260,7 +260,7 @@ var DashboardRRHH = (function () {
                 ? '<img class="antig-avatar" src="'+e.Per_Imagen+'" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';"><div class="antig-avatar-ph" style="display:none;">'+ini+'</div>'
                 : '<div class="antig-avatar-ph">'+ini+'</div>';
             var anos = e.AnosServicio || 0;
-            html += '<div class="antig-item">'+av+'<div class="antig-info"><div class="antig-nombre">'+(e.NombreEmpleado||'—')+'</div><div class="antig-cargo">'+(e.Cargo||'')+' · '+(e.Departamento||'')+'</div></div><div class="antig-badge">'+anos+(anos===1?' año':' años')+'</div></div>';
+            html += '<div class="antig-item">'+av+'<div class="antig-info"><div class="font-weight-bold text-truncate">'+(e.NombreEmpleado||'—')+'</div><div class="small text-muted text-truncate">'+(e.Cargo||'')+' · '+(e.Departamento||'')+'</div></div><div class="badge outline-badge-primary">'+anos+(anos===1?' año':' años')+'</div></div>';
         }
         cont.innerHTML = html;
     }
@@ -268,14 +268,15 @@ var DashboardRRHH = (function () {
     function renderAlertas(data) {
         var cont = document.getElementById('lista-alertas');
         if (!cont) return;
-        if (!data || data.length === 0) { cont.innerHTML = '<p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin alertas activas.</p>'; return; }
+        if (!data || data.length === 0) { cont.innerHTML = '<p class="text-muted small mb-0">Sin alertas activas.</p>'; return; }
         var iconos = { 'solicitudes':'&#x1F4CB;','cumpleanos':'&#x1F382;','contacto':'&#x1F4DE;' };
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var a = data[i], urg = (a.Urgencia||'baja').toLowerCase(), tipo = (a.Tipo||'').toLowerCase();
             var icono = iconos[tipo] || '&#x2139;&#xFE0F;';
-            var bClass = urg==='alta'?'badge-alta':(urg==='media'?'badge-media':'badge-baja');
-            html += '<div class="alerta-item '+urg+'"><span class="alerta-icon">'+icono+'</span><div><div class="alerta-msg">'+(a.Mensaje||'')+'</div><span class="alerta-badge '+bClass+'">'+urg.charAt(0).toUpperCase()+urg.slice(1)+'</span></div></div>';
+            var bClass = urg==='alta'?'badge-danger':(urg==='media'?'badge-warning':'badge-info');
+            var aClass = urg==='alta'?'alert-light-danger':(urg==='media'?'alert-light-warning':'alert-light-info');
+            html += '<div class="alert '+aClass+' d-flex align-items-start mb-0"><span class="mr-2">'+icono+'</span><div><div class="font-weight-bold">'+(a.Mensaje||'')+'</div><span class="badge '+bClass+' mt-1">'+urg.charAt(0).toUpperCase()+urg.slice(1)+'</span></div></div>';
         }
         cont.innerHTML = html;
     }

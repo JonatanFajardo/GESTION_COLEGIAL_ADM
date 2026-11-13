@@ -27,15 +27,15 @@ var NotasAdm = (function () {
     }
 
     function claseNota(v) {
-        return (esNumero(v) && parseFloat(v) < notaMinima) ? ' class="text-center nb-nota-reprobada"' : ' class="text-center"';
+        return (esNumero(v) && parseFloat(v) < notaMinima) ? ' class="text-center text-danger font-weight-bold"' : ' class="text-center"';
     }
 
     // ---------- Tabs ----------
     function initTabs() {
-        $("#nb-tabs .nb-tab-item").on("click", function (e) {
+        $("#nb-tabs .nav-link").on("click", function (e) {
             e.preventDefault();
             var tab = $(this).data("tab");
-            $("#nb-tabs .nb-tab-item").removeClass("active");
+            $("#nb-tabs .nav-link").removeClass("active");
             $(this).addClass("active");
             $(".nb-tab-panel").attr("hidden", true);
             $("#nb-panel-" + tab).removeAttr("hidden");

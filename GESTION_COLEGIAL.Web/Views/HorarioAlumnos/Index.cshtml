@@ -13,13 +13,20 @@
     </nav>
 </div>
 
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Horarios de Alumnos</h4>
+        <p class="text-muted mb-0">Registre y consulte los bloques de horario por sección, materia y aula</p>
+    </div>
+</div>
+
 <div class="fluid-container">
     <!-- Formulario de Registro/Edición -->
-    <div class="card mb-4">
-        <div class="card-header" style="background-color:white;">
-            <h3 id="form-title">Registrar Nuevo Horario</h3>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4 id="form-title">Registrar Nuevo Horario</h4></div></div>
         </div>
-        <div class="card-body">
+        <div class="widget-content widget-content-area">
             @using (Ajax.BeginForm("CreateAsync", "HorarioAlumnos", new AjaxOptions
             {
                 HttpMethod = "Post",
@@ -33,7 +40,7 @@
                 <!-- Contexto Académico -->
                 <div class="border-bottom pb-3 mb-4">
                     <h5 class="mb-3">Contexto Académico</h5>
-                    <div class="row">
+                    <div class="form-row">
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="HoAl_Año">Año Académico <span class="text-danger">*</span></label>
@@ -48,7 +55,7 @@
                                 @Html.DropDownListFor(model => model.Sem_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Sem_Id", required = "required" })
+                                    new { @class = "custom-select", @id = "Sem_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Sem_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -58,7 +65,7 @@
                                 @Html.DropDownListFor(model => model.Mda_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Mda_Id" })
+                                    new { @class = "custom-select", @id = "Mda_Id" })
                                 @Html.ValidationMessageFor(model => model.Mda_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -68,19 +75,19 @@
                                 @Html.DropDownListFor(model => model.Sec_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Sec_Id", required = "required" })
+                                    new { @class = "custom-select", @id = "Sec_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Sec_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="form-row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="Cur_Id">Curso <span class="text-danger">*</span></label>
                                 @Html.DropDownListFor(model => model.Cur_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Cur_Id", required = "required" })
+                                    new { @class = "custom-select", @id = "Cur_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Cur_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -90,7 +97,7 @@
                                 @Html.DropDownListFor(model => model.Cun_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Cun_Id", required = "required" })
+                                    new { @class = "custom-select", @id = "Cun_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Cun_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -100,19 +107,19 @@
                                 @Html.DropDownListFor(model => model.Mat_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Mat_Id", required = "required" })
+                                    new { @class = "custom-select", @id = "Mat_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Mat_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="Emp_Id">Profesor <span class="text-danger">*</span></label>
                                 @Html.DropDownListFor(model => model.Emp_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Emp_Id", required = "required" })
+                                    new { @class = "custom-select", @id = "Emp_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Emp_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -122,7 +129,7 @@
                                 @Html.DropDownListFor(model => model.Aul_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Aul_Id", required = "required" })
+                                    new { @class = "custom-select", @id = "Aul_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Aul_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -132,14 +139,14 @@
                 <!-- Horario -->
                 <div class="mb-4">
                     <h5 class="mb-3">Horario</h5>
-                    <div class="row">
+                    <div class="form-row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="Dia_Id">Día <span class="text-danger">*</span></label>
                                 @Html.DropDownListFor(model => model.Dia_Id,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "Dia_Id", required = "required" })
+                                    new { @class = "custom-select", @id = "Dia_Id", required = "required" })
                                 @Html.ValidationMessageFor(model => model.Dia_Id, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -149,7 +156,7 @@
                                 @Html.DropDownListFor(model => model.HoAl_HoraInicio,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "HoAl_HoraInicio", required = "required" })
+                                    new { @class = "custom-select", @id = "HoAl_HoraInicio", required = "required" })
                                 @Html.ValidationMessageFor(model => model.HoAl_HoraInicio, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -159,7 +166,7 @@
                                 @Html.DropDownListFor(model => model.HoAl_HoraFinaliza,
                                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
                                     "Seleccione...",
-                                    new { @class = "form-control", @id = "HoAl_HoraFinaliza", required = "required" })
+                                    new { @class = "custom-select", @id = "HoAl_HoraFinaliza", required = "required" })
                                 @Html.ValidationMessageFor(model => model.HoAl_HoraFinaliza, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -167,12 +174,12 @@
                 </div>
 
                 <!-- Botones -->
-                <div class="d-flex gap-3">
-                    <button type="submit" class="btn btn-primary" id="submit-btn">
-                        <i class="mdi mdi-content-save"></i> Guardar
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-primary mr-2" id="submit-btn">
+                        <i class="bi bi-save mr-1"></i> Guardar
                     </button>
-                    <button type="button" class="btn btn-secondary" id="cancel-btn" style="display:none;">
-                        <i class="mdi mdi-close"></i> Cancelar
+                    <button type="button" class="btn" id="cancel-btn" style="display:none;">
+                        <i class="bi bi-x-lg mr-1"></i> Cancelar
                     </button>
                 </div>
             }
@@ -180,13 +187,13 @@
     </div>
 
     <!-- Listado de Horarios -->
-    <div class="card">
-        <div class="card-header" style="background-color:white;">
-            <h3>Horarios Registrados</h3>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Horarios Registrados</h4></div></div>
         </div>
-        <div class="card-body">
+        <div class="widget-content widget-content-area">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered wrap" id="datatable">
+                <table class="table table-hover wrap" id="datatable">
                     <thead>
                         <tr>
                             <th>Año</th>
@@ -225,12 +232,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirmar Eliminación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="form-row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 @Html.HiddenFor(model => model.HoAl_Id, new { @id = "delete-item-id" })
@@ -240,9 +245,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger">
-                        <i class="mdi mdi-delete"></i> Eliminar
+                        <i class="bi bi-trash mr-1"></i> Eliminar
                     </button>
                 </div>
             </div>

@@ -19,102 +19,98 @@
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item cal-miga">Académico</li>
+            <li class="breadcrumb-item">Académico</li>
             <li class="breadcrumb-item active" aria-current="page">Calendario escolar</li>
         </ol>
     </nav>
 </div>
 
-<div class="cal-page">
-    @Html.AntiForgeryToken()
-
-    <div class="cal-encabezado">
-        <div class="cal-encabezado-texto">
-            <div class="cal-encabezado-icono" aria-hidden="true"><i class="bi bi-calendar3"></i></div>
-            <div>
-                <h1>Calendario escolar</h1>
-                <p>Feriados, cierres, actos, reuniones y exámenes. Un feriado o cierre publicado cierra el colegio: ese día no hay pase de lista.</p>
-            </div>
-        </div>
-        @if (M.PuedeEditar)
-        {
-            <div class="cal-acciones">
-                <button type="button" class="cal-btn" id="cal-btn-feriados" data-anio="@M.Mes.Year">
-                    <i class="bi bi-flag"></i> Feriados de Honduras
-                </button>
-                <a class="cal-btn cal-btn--primario" href="@Url.Action("Nuevo")">
-                    <i class="bi bi-plus-lg"></i> Agregar un día
-                </a>
-            </div>
-        }
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Calendario escolar</h4>
+        <p class="text-muted mb-0">Feriados, cierres, actos, reuniones y exámenes. Un feriado o cierre publicado cierra el colegio: ese día no hay pase de lista.</p>
     </div>
+    @if (M.PuedeEditar)
+    {
+        <div class="mt-2 mt-md-0">
+            <button type="button" class="btn btn-outline-primary mr-1" id="cal-btn-feriados" data-anio="@M.Mes.Year">
+                <i class="bi bi-flag mr-1"></i> Feriados de Honduras
+            </button>
+            <a class="btn btn-primary" href="@Url.Action("Nuevo")">
+                <i class="bi bi-plus-lg mr-1"></i> Agregar un día
+            </a>
+        </div>
+    }
+</div>
+
+<div class="fluid-container cal-page">
+    @Html.AntiForgeryToken()
 
     @if (!string.IsNullOrEmpty(M.Aviso))
     {
-        <div class="cal-alerta cal-alerta--ok" role="status">
-            <i class="bi bi-check-circle" aria-hidden="true"></i>
-            <div><strong>@M.Aviso</strong></div>
+        <div class="alert alert-light-success mb-4" role="status">
+            <i class="bi bi-check-circle mr-1" aria-hidden="true"></i> <strong>@M.Aviso</strong>
         </div>
     }
 
     @if (M.PuedeEditar && M.Borradores > 0)
     {
-        <div class="cal-alerta" role="note">
-            <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
-            <div>
-                <strong>@M.Borradores @(M.Borradores == 1 ? "día sigue" : "días siguen") en borrador</strong>
-                <p>
-                    Un borrador no aparece en el calendario que lee el colegio, y un cierre en borrador no cierra el colegio.
-                </p>
-                <p>
-                    @* Un enlace por mes con borradores: el filtro "Solo borradores" es por mes. *@
-                    @for (int i = 0; i < M.BorradoresPorMes.Count; i++)
-                    {
-                        var b = M.BorradoresPorMes[i];
-                        DateTime mesB;
-                        bool okMes = DateTime.TryParseExact(b.Mes, "yyyy-MM", System.Globalization.CultureInfo.InvariantCulture,
-                                                            System.Globalization.DateTimeStyles.None, out mesB);
-                        string nombreB = okMes ? CalendarioMesViewModel.NombreMes(mesB) : b.Mes;
-                        bool esEste = b.Mes == CalendarioMesViewModel.Clave(M.Mes);
-                        if (i > 0) { @: ·
-                        }
-                        if (esEste && M.SoloBorradores)
-                        {
-                            <strong>@nombreB (@b.Borradores)</strong>
-                        }
-                        else
-                        {
-                            <a class="cal-btn--link" href="@Url.Action("Index", new { mes = b.Mes, borradores = "true" })">@nombreB (@b.Borradores)</a>
-                        }
+        <div class="alert alert-light-warning mb-4" role="note">
+            <strong><i class="bi bi-file-earmark-text mr-1" aria-hidden="true"></i> @M.Borradores @(M.Borradores == 1 ? "día sigue" : "días siguen") en borrador</strong>
+            <p class="mb-1">
+                Un borrador no aparece en el calendario que lee el colegio, y un cierre en borrador no cierra el colegio.
+            </p>
+            <p class="mb-0">
+                @* Un enlace por mes con borradores: el filtro "Solo borradores" es por mes. *@
+                @for (int i = 0; i < M.BorradoresPorMes.Count; i++)
+                {
+                    var b = M.BorradoresPorMes[i];
+                    DateTime mesB;
+                    bool okMes = DateTime.TryParseExact(b.Mes, "yyyy-MM", System.Globalization.CultureInfo.InvariantCulture,
+                                                        System.Globalization.DateTimeStyles.None, out mesB);
+                    string nombreB = okMes ? CalendarioMesViewModel.NombreMes(mesB) : b.Mes;
+                    bool esEste = b.Mes == CalendarioMesViewModel.Clave(M.Mes);
+                    if (i > 0) { @: ·
                     }
-                </p>
-            </div>
+                    if (esEste && M.SoloBorradores)
+                    {
+                        <strong>@nombreB (@b.Borradores)</strong>
+                    }
+                    else
+                    {
+                        <a class="alert-link" href="@Url.Action("Index", new { mes = b.Mes, borradores = "true" })">@nombreB (@b.Borradores)</a>
+                    }
+                }
+            </p>
         </div>
     }
 
     @* ── Mes ── *@
-    <section class="cal-tarjeta" aria-labelledby="cal-titulo-mes">
-        <h2 class="cal-tarjeta-titulo" id="cal-titulo-mes">@CalendarioMesViewModel.NombreMes(M.Mes)</h2>
-        <p class="cal-tarjeta-desc @(M.Cierres.Count > 0 ? "cal-tarjeta-desc--cierra" : "")">
-            @if (M.Cierres.Count > 0) { <i class="bi bi-lock-fill" aria-hidden="true"></i> }
+    <section class="statbox widget box box-shadow mb-4" aria-labelledby="cal-titulo-mes">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4 id="cal-titulo-mes">@CalendarioMesViewModel.NombreMes(M.Mes)</h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
+        <p class="@(M.Cierres.Count > 0 ? "text-danger font-weight-bold" : "text-muted")">
+            @if (M.Cierres.Count > 0) { <i class="bi bi-lock-fill mr-1" aria-hidden="true"></i> }
             @M.FraseCierres()
         </p>
 
-        <div class="cal-barra">
-            <div class="cal-nav">
-                <a class="cal-btn cal-btn--chico" href="@urlMes(M.MesAnterior)" aria-label="Mes anterior">
-                    <i class="bi bi-chevron-left"></i> @CalendarioMesViewModel.MesCorto(M.MesAnterior)
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+            <div class="btn-group mb-2" role="group" aria-label="Cambiar de mes">
+                <a class="btn btn-sm btn-outline-primary" href="@urlMes(M.MesAnterior)" aria-label="Mes anterior">
+                    <i class="bi bi-chevron-left mr-1"></i> @CalendarioMesViewModel.MesCorto(M.MesAnterior)
                 </a>
-                <a class="cal-btn cal-btn--chico" href="@urlMes(new DateTime(M.Hoy.Year, M.Hoy.Month, 1))">Hoy</a>
-                <a class="cal-btn cal-btn--chico" href="@urlMes(M.MesSiguiente)" aria-label="Mes siguiente">
-                    @CalendarioMesViewModel.MesCorto(M.MesSiguiente) <i class="bi bi-chevron-right"></i>
+                <a class="btn btn-sm btn-outline-primary" href="@urlMes(new DateTime(M.Hoy.Year, M.Hoy.Month, 1))">Hoy</a>
+                <a class="btn btn-sm btn-outline-primary" href="@urlMes(M.MesSiguiente)" aria-label="Mes siguiente">
+                    @CalendarioMesViewModel.MesCorto(M.MesSiguiente) <i class="bi bi-chevron-right ml-1"></i>
                 </a>
             </div>
 
-            <form class="cal-filtros" method="get" action="@Url.Action("Index")" id="cal-filtros">
+            <form class="form-inline mb-2" method="get" action="@Url.Action("Index")" id="cal-filtros">
                 <input type="hidden" name="mes" value="@CalendarioMesViewModel.Clave(M.Mes)" />
-                <label for="cal-filtro-tipo">Tipo de día</label>
-                <select class="cal-select" id="cal-filtro-tipo" name="tipo">
+                <label class="mr-2" for="cal-filtro-tipo">Tipo de día</label>
+                <select class="custom-select custom-select-sm mr-3" id="cal-filtro-tipo" name="tipo">
                     <option value="">Todos los tipos</option>
                     @foreach (var t in TipoDiaCalendario.Todos)
                     {
@@ -123,18 +119,18 @@
                 </select>
                 @if (M.PuedeEditar)
                 {
-                    <label class="cal-check">
-                        <input type="checkbox" name="borradores" value="true" checked="@M.SoloBorradores" id="cal-filtro-borradores" />
-                        Solo borradores
-                    </label>
+                    <div class="custom-control custom-checkbox mr-3">
+                        <input type="checkbox" class="custom-control-input" name="borradores" value="true" checked="@M.SoloBorradores" id="cal-filtro-borradores" />
+                        <label class="custom-control-label" for="cal-filtro-borradores">Solo borradores</label>
+                    </div>
                 }
                 @if (M.HayFiltro)
                 {
-                    <a class="cal-btn cal-btn--chico" href="@Url.Action("Index", new { mes = CalendarioMesViewModel.Clave(M.Mes) })">
-                        <i class="bi bi-x-lg"></i> Quitar filtros
+                    <a class="btn btn-sm btn-link" href="@Url.Action("Index", new { mes = CalendarioMesViewModel.Clave(M.Mes) })">
+                        <i class="bi bi-x-lg mr-1"></i> Quitar filtros
                     </a>
                 }
-                <noscript><button type="submit" class="cal-btn cal-btn--chico">Filtrar</button></noscript>
+                <noscript><button type="submit" class="btn btn-sm btn-primary">Filtrar</button></noscript>
             </form>
         </div>
 
@@ -181,34 +177,38 @@
                 </div>
             }
         </div>
+        </div>
     </section>
 
     @* ── Qué hay este mes ── *@
-    <section class="cal-tarjeta" aria-labelledby="cal-titulo-lista">
-        <h2 class="cal-tarjeta-titulo" id="cal-titulo-lista">Qué hay este mes</h2>
-        <p class="cal-tarjeta-desc">Un día sin secciones, roles ni personas es para todo el colegio.</p>
+    <section class="statbox widget box box-shadow mb-4" aria-labelledby="cal-titulo-lista">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4 id="cal-titulo-lista">Qué hay este mes</h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
+        <p class="text-muted">Un día sin secciones, roles ni personas es para todo el colegio.</p>
 
         @if (delMes.Count == 0)
         {
             if (M.HayFiltro)
             {
-                <div class="cal-vacio">
-                    <i class="bi bi-search" aria-hidden="true"></i>
-                    <h3>Nada coincide con el filtro</h3>
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-search fa-3x mb-3 d-block" aria-hidden="true"></i>
+                    <h5>Nada coincide con el filtro</h5>
                     <p>No hay días de ese tipo en este mes.</p>
-                    <a class="cal-btn" href="@Url.Action("Index", new { mes = CalendarioMesViewModel.Clave(M.Mes) })">Ver todos los días</a>
+                    <a class="btn btn-outline-primary" href="@Url.Action("Index", new { mes = CalendarioMesViewModel.Clave(M.Mes) })">Ver todos los días</a>
                 </div>
             }
             else
             {
-                <div class="cal-vacio">
-                    <i class="bi bi-calendar-x" aria-hidden="true"></i>
-                    <h3>No hay nada este mes</h3>
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-calendar-x fa-3x mb-3 d-block" aria-hidden="true"></i>
+                    <h5>No hay nada este mes</h5>
                     <p>Agregue feriados, cierres y actividades para que el colegio y las familias lean el mismo calendario.</p>
                     @if (M.PuedeEditar)
                     {
-                        <a class="cal-btn cal-btn--primario" href="@Url.Action("Nuevo", new { dia = M.Mes.ToString("yyyy-MM-dd") })">
-                            <i class="bi bi-plus-lg"></i> Agregar el primer día
+                        <a class="btn btn-primary" href="@Url.Action("Nuevo", new { dia = M.Mes.ToString("yyyy-MM-dd") })">
+                            <i class="bi bi-plus-lg mr-1"></i> Agregar el primer día
                         </a>
                     }
                 </div>
@@ -216,53 +216,51 @@
         }
         else
         {
-            <div class="table-responsive mt-3">
-                <table class="cal-tabla">
+            <div class="table-responsive">
+                <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" class="cal-col-dia">Día</th>
+                            <th scope="col">Día</th>
                             <th scope="col">Qué hay</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Para quién</th>
-                            <th scope="col" class="cal-col-acciones"><span class="sr-only">Acciones</span></th>
+                            <th scope="col" class="text-right"><span class="sr-only">Acciones</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var e in delMes)
                         {
                             <tr>
-                                <td class="cal-col-dia">
+                                <td class="text-nowrap">
                                     <strong>@CalendarioMesViewModel.Rango(e)</strong>
-                                    <span class="cal-sub">@CalendarioMesViewModel.Horario(e)</span>
+                                    <span class="d-block text-muted small">@CalendarioMesViewModel.Horario(e)</span>
                                 </td>
                                 <td>
                                     @e.Eve_Titulo
                                     @if (!string.IsNullOrWhiteSpace(e.Eve_Lugar))
                                     {
-                                        <span class="cal-sub"><i class="bi bi-geo-alt" aria-hidden="true"></i> @e.Eve_Lugar</span>
+                                        <span class="d-block text-muted small"><i class="bi bi-geo-alt mr-1" aria-hidden="true"></i>@e.Eve_Lugar</span>
                                     }
                                 </td>
                                 <td>
                                     <span class="cal-tipo @e.Tipo.Clase"><i class="bi @e.Tipo.Icono" aria-hidden="true"></i> @e.Tipo.Etiqueta</span>
                                     @if (e.Eve_CierraColegio)
                                     {
-                                        <span class="cal-cierra d-block mt-1">
-                                            <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                                        <span class="d-block mt-1 text-danger small font-weight-bold">
+                                            <i class="bi bi-lock-fill mr-1" aria-hidden="true"></i>
                                             @(e.EsParaTodos ? "El colegio cierra" : "Cierra para esas secciones")
                                         </span>
                                     }
                                 </td>
                                 <td>@(e.EsParaTodos ? "Todo el colegio" : e.Audiencia)</td>
-                                <td class="cal-col-acciones">
-                                    <span class="cal-tabla-acciones">
-                                        @if (!e.Eve_EsPublicado)
-                                        {
-                                            <span class="cal-badge-borrador"><i class="bi bi-pencil" aria-hidden="true"></i> Borrador</span>
-                                        }
-                                        <a class="cal-btn cal-btn--chico" href="@Url.Action("Dia", new { id = e.Eve_Id })" aria-label="Abrir @e.Eve_Titulo">
-                                            <i class="bi bi-eye" aria-hidden="true"></i> Abrir
-                                        </a>
-                                    </span>
+                                <td class="text-right text-nowrap">
+                                    @if (!e.Eve_EsPublicado)
+                                    {
+                                        <span class="badge outline-badge-warning mr-1"><i class="bi bi-pencil mr-1" aria-hidden="true"></i>Borrador</span>
+                                    }
+                                    <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Dia", new { id = e.Eve_Id })" aria-label="Abrir @e.Eve_Titulo">
+                                        <i class="bi bi-eye mr-1" aria-hidden="true"></i> Abrir
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -270,6 +268,7 @@
                 </table>
             </div>
         }
+        </div>
     </section>
 
     @if (M.PuedeEditar)
@@ -281,28 +280,28 @@
                     <div class="modal-header">
                         <div>
                             <h5 class="modal-title" id="cal-feriados-titulo">Feriados de Honduras <span id="cal-feriados-anio"></span></h5>
-                            <small class="cal-modal-sub">Marque los días que quiere agregar al calendario. Los que ya están no se repiten.</small>
+                            <small class="text-muted">Marque los días que quiere agregar al calendario. Los que ya están no se repiten.</small>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
                     </div>
                     <div class="modal-body">
                         <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="cal-nav">
-                                <button type="button" class="cal-btn cal-btn--chico" id="cal-feriados-prev" aria-label="Año anterior"><i class="bi bi-chevron-left"></i></button>
-                                <button type="button" class="cal-btn cal-btn--chico" id="cal-feriados-next" aria-label="Año siguiente"><i class="bi bi-chevron-right"></i></button>
+                            <div class="btn-group" role="group" aria-label="Cambiar de año">
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="cal-feriados-prev" aria-label="Año anterior"><i class="bi bi-chevron-left"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="cal-feriados-next" aria-label="Año siguiente"><i class="bi bi-chevron-right"></i></button>
                             </div>
-                            <button type="button" class="cal-btn--link" id="cal-feriados-todos">Marcar los sugeridos</button>
+                            <button type="button" class="btn btn-link" id="cal-feriados-todos">Marcar los sugeridos</button>
                         </div>
-                        <div id="cal-feriados-lista"><p class="cal-cargando">Cargando…</p></div>
+                        <div id="cal-feriados-lista"><p class="text-muted">Cargando…</p></div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <label class="cal-check">
-                            <input type="checkbox" id="cal-feriados-publicar" checked />
-                            Publicar al cargar <small class="cal-modal-sub">(los de fecha por confirmar quedan en borrador)</small>
-                        </label>
-                        <div class="d-flex" style="gap:.5rem">
-                            <button type="button" class="cal-btn" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="cal-btn cal-btn--primario" id="cal-feriados-cargar" disabled>Cargar</button>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="cal-feriados-publicar" checked />
+                            <label class="custom-control-label" for="cal-feriados-publicar">Publicar al cargar <small class="text-muted">(los de fecha por confirmar quedan en borrador)</small></label>
+                        </div>
+                        <div>
+                            <button type="button" class="btn mr-1" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="cal-feriados-cargar" disabled>Cargar</button>
                         </div>
                     </div>
                 </div>

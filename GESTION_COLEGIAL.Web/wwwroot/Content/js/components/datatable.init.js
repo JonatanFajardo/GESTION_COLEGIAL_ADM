@@ -15,7 +15,7 @@ var Modals = (function () {
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", deleteBtnText = "Aceptar";
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + deleteBtnText);
+            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='bi bi-trash mr-1'></i> " + deleteBtnText);
         });
         $deleteModal.on("hidden.bs.modal", function () { });
     }
@@ -254,8 +254,8 @@ var datatable = (function () {
                 head[i]['render'] = function (data) {
                     var isActive = data === true || data === 1 || data === 'true' || data === 'Activo';
                     return isActive
-                        ? '<span class="badge-estado activo"><span class="dot-estado"></span>Activo</span>'
-                        : '<span class="badge-estado inactivo"><span class="dot-estado"></span>Inactivo</span>';
+                        ? '<span class="badge outline-badge-success">Activo</span>'
+                        : '<span class="badge outline-badge-secondary">Inactivo</span>';
                 };
                 head[i]['className'] = 'text-center';
             }

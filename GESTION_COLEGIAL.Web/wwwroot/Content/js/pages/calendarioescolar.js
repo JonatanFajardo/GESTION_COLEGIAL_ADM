@@ -86,34 +86,34 @@ var CalendarioEscolar = (function () {
                 (marcado ? " checked" : "") + (f.YaCargado ? " disabled" : "") + ">" +
                 '<span class="cal-feriado-fecha">' + esc(rango(f.Inicio, f.Fin)) + "</span>" +
                 '<span class="cal-feriado-texto"><strong>' + esc(f.Titulo) + "</strong><small>" + esc(f.Descripcion || "") + "</small></span>" +
-                '<span class="d-flex flex-column align-items-end" style="gap:4px">' +
-                '<span class="cal-tipo ' + esc(t.Clase) + '"><i class="bi ' + esc(t.Icono) + '" aria-hidden="true"></i> ' + esc(t.Etiqueta) + "</span>" +
+                '<span class="d-flex flex-column align-items-end">' +
+                '<span class="cal-tipo mb-1 ' + esc(t.Clase) + '"><i class="bi ' + esc(t.Icono) + '" aria-hidden="true"></i> ' + esc(t.Etiqueta) + "</span>" +
                 (f.YaCargado
-                    ? '<span class="cal-badge-borrador">' + (f.Publicado ? "Ya está publicado" : "Ya está (borrador)") + "</span>"
-                    : (f.Verificar ? '<span class="cal-verificar"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> Confirmar fecha</span>' : "")) +
+                    ? '<span class="badge outline-badge-secondary">' + (f.Publicado ? "Ya está publicado" : "Ya está (borrador)") + "</span>"
+                    : (f.Verificar ? '<span class="badge outline-badge-warning"><i class="bi bi-exclamation-triangle mr-1" aria-hidden="true"></i>Confirmar fecha</span>' : "")) +
                 "</span></label>";
         }
 
         function pintar(datos) {
             if (!datos || datos.length === 0) {
-                $lista.html('<p class="cal-cargando">No hay feriados para este año.</p>');
+                $lista.html('<p class="text-muted">No hay feriados para este año.</p>');
                 actualizarBoton();
                 return;
             }
             var html = "", grupo = null;
-            $.each(datos, function (_, f) { if (f.Grupo === "Feriado nacional") { if (grupo !== 1) { html += '<p class="cal-feriados-grupo">Feriados nacionales</p>'; grupo = 1; } html += fila(f); } });
-            $.each(datos, function (_, f) { if (f.Grupo !== "Feriado nacional") { if (grupo !== 2) { html += '<p class="cal-feriados-grupo">Fechas escolares (opcionales)</p>'; grupo = 2; } html += fila(f); } });
+            $.each(datos, function (_, f) { if (f.Grupo === "Feriado nacional") { if (grupo !== 1) { html += '<h6 class="font-weight-bold mt-3">Feriados nacionales</h6>'; grupo = 1; } html += fila(f); } });
+            $.each(datos, function (_, f) { if (f.Grupo !== "Feriado nacional") { if (grupo !== 2) { html += '<h6 class="font-weight-bold mt-3">Fechas escolares (opcionales)</h6>'; grupo = 2; } html += fila(f); } });
             $lista.html(html);
             actualizarBoton();
         }
 
         function cargarAnio(a) {
             $("#cal-feriados-anio").text(a);
-            $lista.html('<p class="cal-cargando">Cargando…</p>');
+            $lista.html('<p class="text-muted">Cargando…</p>');
             $cargar.prop("disabled", true);
             $.getJSON(cfg.urlFeriados, { anio: a })
                 .done(pintar)
-                .fail(function () { $lista.html('<p class="cal-error">No se pudieron traer los feriados.</p>'); });
+                .fail(function () { $lista.html('<p class="text-danger">No se pudieron traer los feriados.</p>'); });
         }
 
         $("#cal-btn-feriados").on("click", function () {
@@ -217,11 +217,11 @@ var CalendarioEscolar = (function () {
         function recargarSecciones(fecha) {
             var marcadas = {};
             $("input[name=eve-sec]:checked").each(function () { marcadas[this.value] = true; });
-            $("#eve-secciones").html('<p class="cal-cargando">Cargando secciones…</p>');
+            $("#eve-secciones").html('<p class="text-muted">Cargando secciones…</p>');
             $.getJSON(cfg.urlSecciones, { fecha: fecha, eveId: cfg.id || null }).done(function (lista) {
                 lista = lista || [];
                 if (lista.length === 0) {
-                    $("#eve-secciones").html('<p class="cal-cargando">No hay secciones en este año lectivo.</p>');
+                    $("#eve-secciones").html('<p class="text-muted">No hay secciones en este año lectivo.</p>');
                     anioSecciones = parseInt(fecha.substr(0, 4), 10);
                     $("#eve-anio-secciones").text(anioSecciones);
                     return;
@@ -236,14 +236,14 @@ var CalendarioEscolar = (function () {
                     var n = s.Niv_Descripcion || "Sin nivel";
                     if (n !== nivel) {
                         if (nivel !== null) html += "</div></div>";
-                        html += '<div class="cal-grupo-nivel"><div class="cal-grupo-nivel-cabeza"><span>' + esc(n) +
-                            '</span><button type="button" class="cal-btn--link eve-todo-nivel">Todo el nivel</button></div>' +
-                            '<div class="cal-chips" role="group" aria-label="' + esc(n) + '">';
+                        html += '<div class="mb-3 eve-grupo-nivel"><div class="d-flex align-items-center justify-content-between mb-1"><span class="font-weight-bold small text-uppercase">' + esc(n) +
+                            '</span><button type="button" class="btn btn-sm btn-link eve-todo-nivel">Todo el nivel</button></div>' +
+                            '<div role="group" aria-label="' + esc(n) + '">';
                         nivel = n;
                     }
-                    html += '<label class="cal-opcion"><input type="checkbox" name="eve-sec" value="' + s.Sea_Id + '"' +
-                        (marcadas[s.Sea_Id] ? " checked" : "") + "> " + esc(s.Sea_Nombre) +
-                        (s.Ani_Anio !== anioSecciones ? " (" + s.Ani_Anio + ")" : "") + "</label>";
+                    html += '<div class="custom-control custom-checkbox custom-control-inline mb-1"><input type="checkbox" class="custom-control-input" id="eve-sec-' + s.Sea_Id + '" name="eve-sec" value="' + s.Sea_Id + '"' +
+                        (marcadas[s.Sea_Id] ? " checked" : "") + '><label class="custom-control-label" for="eve-sec-' + s.Sea_Id + '">' + esc(s.Sea_Nombre) +
+                        (s.Ani_Anio !== anioSecciones ? " (" + s.Ani_Anio + ")" : "") + "</label></div>";
                 });
                 html += "</div></div>";
                 $("#eve-secciones").html(html);
@@ -252,7 +252,7 @@ var CalendarioEscolar = (function () {
 
         /* "Todo el nivel": marca todas sus secciones (o las desmarca si ya estaban todas) */
         $("#eve-secciones").on("click", ".eve-todo-nivel", function () {
-            var $cajas = $(this).closest(".cal-grupo-nivel").find("input[name=eve-sec]");
+            var $cajas = $(this).closest(".eve-grupo-nivel").find("input[name=eve-sec]");
             var todas = $cajas.length === $cajas.filter(":checked").length;
             $cajas.prop("checked", !todas);
             limpiarError();
@@ -260,21 +260,21 @@ var CalendarioEscolar = (function () {
 
         /* Nombrar a una persona */
         function yaNombrada(tipo, id) {
-            return $('#eve-personas .cal-persona[data-tipo="' + tipo + '"][data-id="' + id + '"]').length > 0;
+            return $('#eve-personas .eve-persona-chip[data-tipo="' + tipo + '"][data-id="' + id + '"]').length > 0;
         }
 
         function pintarResultados(lista) {
             var $r = $("#eve-resultados");
             lista = $.grep(lista || [], function (p) { return !yaNombrada(p.Tipo, p.Id); });
             if (lista.length === 0) {
-                $r.html('<li><button type="button" disabled><small>Nadie en el colegio coincide</small></button></li>').prop("hidden", false);
+                $r.html('<li class="list-group-item text-muted small">Nadie en el colegio coincide</li>').prop("hidden", false);
                 return;
             }
             $r.html($.map(lista, function (p) {
-                return '<li><button type="button" class="eve-agregar-persona" data-tipo="' + esc(p.Tipo) + '" data-id="' + p.Id +
+                return '<li class="list-group-item p-0"><button type="button" class="btn btn-link btn-block text-left eve-agregar-persona" data-tipo="' + esc(p.Tipo) + '" data-id="' + p.Id +
                     '" data-nombre="' + esc(p.Nombre) + '" data-detalle="' + esc(p.Detalle) + '">' +
-                    '<i class="bi bi-plus-lg" aria-hidden="true"></i> ' + esc(p.Nombre) +
-                    ' <small>· ' + esc(p.Detalle) + (p.Tipo === "alumno" ? " (alumno)" : "") + "</small></button></li>";
+                    '<i class="bi bi-plus-lg mr-1" aria-hidden="true"></i>' + esc(p.Nombre) +
+                    ' <small class="text-muted">· ' + esc(p.Detalle) + (p.Tipo === "alumno" ? " (alumno)" : "") + "</small></button></li>";
             }).join("")).prop("hidden", false);
         }
 
@@ -295,9 +295,9 @@ var CalendarioEscolar = (function () {
             var d = $(this).data();
             if (!yaNombrada(d.tipo, d.id)) {
                 $("#eve-personas").append(
-                    '<span class="cal-persona" data-tipo="' + esc(d.tipo) + '" data-id="' + d.id + '">' + esc(d.nombre) +
+                    '<span class="badge outline-badge-primary mr-1 mb-1 eve-persona-chip" data-tipo="' + esc(d.tipo) + '" data-id="' + d.id + '">' + esc(d.nombre) +
                     " <small>" + esc(d.detalle) + "</small>" +
-                    '<button type="button" class="eve-quitar-persona" aria-label="Quitar a ' + esc(d.nombre) + '"><i class="bi bi-x"></i></button></span>');
+                    '<button type="button" class="btn btn-link btn-sm p-0 ml-1 eve-quitar-persona" aria-label="Quitar a ' + esc(d.nombre) + '"><i class="bi bi-x"></i></button></span>');
             }
             $("#eve-persona").val("").trigger("focus");
             $("#eve-resultados").prop("hidden", true).empty();
@@ -305,7 +305,7 @@ var CalendarioEscolar = (function () {
         });
 
         $("#eve-personas").on("click", ".eve-quitar-persona", function () {
-            $(this).closest(".cal-persona").remove();
+            $(this).closest(".eve-persona-chip").remove();
             limpiarError();
         });
 
@@ -327,8 +327,8 @@ var CalendarioEscolar = (function () {
                 Eve_Fin: $("#eve-fin").val(),
                 Secciones: ids("input[name=eve-sec]:checked"),
                 Roles: cierra ? [] : ids("input[name=eve-rol]:checked"),
-                Empleados: cierra ? [] : $('#eve-personas .cal-persona[data-tipo="empleado"]').map(function () { return +$(this).data("id"); }).get(),
-                Alumnos: cierra ? [] : $('#eve-personas .cal-persona[data-tipo="alumno"]').map(function () { return +$(this).data("id"); }).get()
+                Empleados: cierra ? [] : $('#eve-personas .eve-persona-chip[data-tipo="empleado"]').map(function () { return +$(this).data("id"); }).get(),
+                Alumnos: cierra ? [] : $('#eve-personas .eve-persona-chip[data-tipo="alumno"]').map(function () { return +$(this).data("id"); }).get()
             };
         }
 

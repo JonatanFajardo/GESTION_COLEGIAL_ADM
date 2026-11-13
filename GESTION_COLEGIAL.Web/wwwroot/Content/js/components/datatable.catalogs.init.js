@@ -167,8 +167,8 @@ var datatableCatalogs = (function () {
                 head[i]['render'] = function (data) {
                     var isActive = data === true || data === 1 || data === 'true' || data === 'Activo';
                     return isActive
-                        ? '<span class="badge-estado activo"><span class="dot-estado"></span>Activo</span>'
-                        : '<span class="badge-estado inactivo"><span class="dot-estado"></span>Inactivo</span>';
+                        ? '<span class="badge badge-success">Activo</span>'
+                        : '<span class="badge badge-secondary">Inactivo</span>';
                 };
                 head[i]['className'] = 'text-center';
             }
@@ -323,4 +323,4 @@ function fillDetailModalCatalog(data) {
 $(document).on('click', '.view-detail-btn', function () {
     var id = $(this).data('id');
     viewDetailCatalog(id);
-});
+});

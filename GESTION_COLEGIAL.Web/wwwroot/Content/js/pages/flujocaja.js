@@ -86,7 +86,7 @@ var FlujoCaja = (function () {
 
     function renderTable(data) {
         if (!data.length) {
-            $("#fc-table-container").html('<div class="fan-loading">Sin datos para el año seleccionado.</div>');
+            $("#fc-table-container").html('<div class="text-center text-muted py-5">Sin datos para el año seleccionado.</div>');
             return;
         }
 
@@ -98,34 +98,34 @@ var FlujoCaja = (function () {
             var total     = cobrado + pendiente;
             var pct       = total > 0 ? (cobrado / total * 100) : 0;
             var color     = pctColor(pct);
-            var netoClass = neto >= 0 ? "diff-pos" : "diff-neg";
+            var netoClass = neto >= 0 ? "text-success font-weight-bold" : "text-danger font-weight-bold";
 
             rows += '<tr>';
-            rows += '<td class="col-label">' + (r.NombreMes || "—") + '</td>';
+            rows += '<td class="font-weight-bold">' + (r.NombreMes || "—") + '</td>';
             rows += '<td>' + fmt(cobrado) + '</td>';
             rows += '<td>' + fmt(pendiente) + '</td>';
             rows += '<td>';
-            rows += '<div style="display:flex;align-items:center;gap:8px;">';
-            rows += '<div class="fan-progress" style="flex:1;"><div class="fan-progress-bar" style="width:' + pct.toFixed(1) + '%;background:' + color + ';"></div></div>';
-            rows += '<span style="font-size:.75rem;font-weight:700;color:' + color + ';min-width:38px;text-align:right;">' + pct.toFixed(0) + '%</span>';
+            rows += '<div class="d-flex align-items-center">';
+            rows += '<div class="progress flex-grow-1 mb-0"><div class="progress-bar" role="progressbar" style="width:' + pct.toFixed(1) + '%;background:' + color + ';"></div></div>';
+            rows += '<span class="small font-weight-bold text-right ml-2" style="min-width:38px;color:' + color + ';">' + pct.toFixed(0) + '%</span>';
             rows += '</div></td>';
             rows += '<td class="' + netoClass + '">' + fmt(neto) + '</td>';
             rows += '</tr>';
         });
 
-        var html = '<table class="fan-table">'
+        var html = '<div class="table-responsive"><table class="table table-hover mb-0">'
             + '<thead><tr>'
             + '<th>Mes</th><th>Cobrado</th><th>Pendiente</th>'
             + '<th style="width:160px;">Recuperación</th><th>Saldo Neto</th>'
             + '</tr></thead>'
             + '<tbody>' + rows + '</tbody>'
-            + '</table>';
+            + '</table></div>';
 
         $("#fc-table-container").html(html);
     }
 
     function cargar(anio) {
-        $("#fc-table-container").html('<div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>');
+        $("#fc-table-container").html('<div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>');
 
         $.ajax({
             url: urlBase + "?Anio=" + anio,
@@ -137,7 +137,7 @@ var FlujoCaja = (function () {
                 renderTable(data);
             },
             error: function () {
-                $("#fc-table-container").html('<div class="fan-loading text-danger">Error al cargar los datos.</div>');
+                $("#fc-table-container").html('<div class="text-center text-danger py-5">Error al cargar los datos.</div>');
             }
         });
     }

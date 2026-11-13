@@ -49,12 +49,12 @@
 
     @if (!string.IsNullOrEmpty(impersonandoRol))
     {
-        <div style="background:#f59e0b;color:#1a1a1a;padding:8px 14px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <i class="fa-solid fa-user-secret"></i>
+        <div class="alert alert-warning d-flex flex-wrap align-items-center mb-0 rounded-0 py-2 px-3 small font-weight-bold">
+            <i class="fas fa-user-secret mr-2"></i>
             <span>Vista: @impersonandoRol</span>
-            <span style="flex:1;"></span>
-            <form method="post" action="@Url.Action("RestaurarAsync","DevTools")" style="margin:0;">
-                <button type="submit" style="background:#1a1a1a;color:#fbbf24;border:none;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;">
+            <span class="flex-grow-1"></span>
+            <form method="post" action="@Url.Action("RestaurarAsync","DevTools")" class="m-0">
+                <button type="submit" class="btn btn-sm btn-dark">
                     ✕ Salir de vista
                 </button>
             </form>
@@ -86,19 +86,19 @@
                 <a href="#DevNuevas" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="h6">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather nav-icon"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-                        <span style="color:#fbbf24;font-weight:600;">Dev · Nuevas</span>
+                        <span class="text-warning font-weight-bold">Dev · Nuevas</span>
                     </div>
-                    <div class="d-flex align-items-center" style="gap:6px;">
+                    <div class="d-flex align-items-center">
                         <span class="sidebar-badge sidebar-badge-amber">DEV</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="DevNuevas" data-parent="#accordionExample">
-                    <li class="submenu-header" style="color:#fbbf24;">Configuración</li>
+                    <li class="submenu-header text-warning">Configuración</li>
                     @* Los 6 hubs de catálogos y parámetros se abren desde la puerta de entrada /configuracion. *@
                     <li>@Html.ActionLink("Panel de configuración",    "Index", "Configuracion")</li>
 
-                    <li class="submenu-header" style="color:#fbbf24;">Dashboards</li>
+                    <li class="submenu-header text-warning">Dashboards</li>
                     <li>@Html.ActionLink("Dashboard Admin",       "Index", "DashboardAdmin")</li>
                     <li>@Html.ActionLink("Dashboard Director",    "Index", "DashboardDirector")</li>
                     <li>@Html.ActionLink("Dashboard Docente",     "Index", "DashboardDocente")</li>
@@ -108,44 +108,44 @@
                     <li>@Html.ActionLink("Dashboard Financiero",  "Index", "DashboardFinanciero")</li>
                     <li>@Html.ActionLink("Dashboard Consulta",    "Index", "DashboardConsulta")</li>
 
-                    <li class="submenu-header" style="color:#fbbf24;">Alumnos</li>
+                    <li class="submenu-header text-warning">Alumnos</li>
                     <li>@Html.ActionLink("Directorio de Alumnos",   "Index", "AlumnosDirectorio")</li>
                     <li>@Html.ActionLink("Pirámide de Matrícula",   "Index", "PiramideMatricula")</li>
                     <li>@Html.ActionLink("Mensajes a Encargados",   "Index", "Mensajes")</li>
                     @* Búsqueda de Alumnos deshabilitada — test §7, ver TODO.md *@
 
-                    <li class="submenu-header" style="color:#fbbf24;">RRHH</li>
+                    <li class="submenu-header text-warning">RRHH</li>
                     <li>@Html.ActionLink("Organigrama",             "Index", "Organigrama")</li>
                     <li>@Html.ActionLink("Cumpleaños Empleados",    "Index", "EmpleadosCumpleanos")</li>
                     <li>@Html.ActionLink("Asistencia Empleados",    "Index", "AsistenciaEmpleados")</li>
                     <li>@Html.ActionLink("Cumplimiento Documentos", "Index", "CumplimientoDocumentos")</li>
                     <li>@Html.ActionLink("Ficha 360° Empleado",     "Index", "Ficha360EmpleadoAdm")</li>
 
-                    <li class="submenu-header" style="color:#fbbf24;">Académico</li>
+                    <li class="submenu-header text-warning">Académico</li>
                     <li>@Html.ActionLink("Centro de Anuncios",       "Index", "CentroAnuncios")</li>
                     <li>@Html.ActionLink("Analítica Académica",      "Index", "KPIsAcademicos")</li>
 
-                    <li class="submenu-header" style="color:#fbbf24;">Financiero · Operativo</li>
+                    <li class="submenu-header text-warning">Financiero · Operativo</li>
                     @* "Pagos del Día" (PagosDelDia/Index) eliminado — pantalla-dashboard duplicada/baja utilidad. El controlador queda solo como endpoint de datos. *@
                     <li>@Html.ActionLink("Pendientes por Cobrar",    "Index", "PendientesCobrar")</li>
                     <li>@Html.ActionLink("Historial Transacciones", "Index", "HistorialTransacciones")</li>
                     <li>@Html.ActionLink("Conciliación Rápida",      "Index", "Conciliacion")</li>
 
-                    <li class="submenu-header" style="color:#fbbf24;">Financiero · Análisis</li>
+                    <li class="submenu-header text-warning">Financiero · Análisis</li>
                     <li>@Html.ActionLink("Flujo de Caja",            "Index", "FlujoCaja")</li>
                     <li>@Html.ActionLink("Estado de Resultados",     "Index", "EstadoResultados")</li>
                     <li>@Html.ActionLink("Análisis Ingresos",        "Index", "AnalisisIngresos")</li>
                     <li>@Html.ActionLink("Comparativo de Años",      "Index", "ComparativoAnios")</li>
                     <li>@Html.ActionLink("KPIs Financieros",         "Index", "KPIsFinancieros")</li>
 
-                    <li class="submenu-header" style="color:#fbbf24;">Reportes</li>
+                    <li class="submenu-header text-warning">Reportes</li>
                     <li>@Html.ActionLink("Visor de Gráficos",        "Index", "VisorGraficos")</li>
                     <li>@Html.ActionLink("Reportes Pre-generados",   "Index", "ReportesPregenerados")</li>
 
-                    <li class="submenu-header" style="color:#fbbf24;">Dev</li>
+                    <li class="submenu-header text-warning">Dev</li>
                     <li>@Html.ActionLink("🛠 Dev Tools",              "Index", "DevTools")</li>
 
-                    <li class="submenu-header" style="color:#fbbf24;">Seguridad</li>
+                    <li class="submenu-header text-warning">Seguridad</li>
                     <li>@Html.ActionLink("Sesiones Activas",         "Index", "SesionesActivas")</li>
                     <li>@Html.ActionLink("Matriz Roles/Pantallas",   "Index", "MatrizRolPantallas")</li>
                     <li>@Html.ActionLink("Logs de Errores",          "Index", "LogsErrores")</li>
@@ -254,8 +254,8 @@
                         @if (tiene("Listado de alumnos"))        { <li>@Html.ActionLink("Alumnos",              "Index", "Alumnos")</li> }
                         @if (tiene("Matrícula nueva") || esAdmin)
                         {
-                            <li style="border-left:3px solid #4f46e5;padding-left:4px;">
-                                @Html.ActionLink("Matrícula", "Index", "Matricula", null, new { style = "font-weight:600;color:#4f46e5;" })
+                            <li>
+                                @Html.ActionLink("Matrícula", "Index", "Matricula", null)
                             </li>
                         }
                         @* Encargados + Directorio fusionados en "Directorio de Contacto" (tabs Por Alumno / Por Encargado) *@
@@ -381,27 +381,27 @@
                         @if (tieneConfiguracion)
                         {
                             @* Puerta de entrada: reúne en tarjetas los 6 hubs de catálogos y parámetros (patrón Skuul). *@
-                            <li style="border-left:3px solid #f97316;padding-left:4px;">
-                                @Html.ActionLink("Panel de configuración", "Index", "Configuracion", null, new { style = "font-weight:600;color:#f97316;" })
+                            <li>
+                                @Html.ActionLink("Panel de configuración", "Index", "Configuracion", null)
                             </li>
                         }
                         @if (esAdmin || tiene("Listado de años lectivos"))
                         {
-                            <li style="border-left:3px solid #4f46e5;padding-left:4px;">
-                                @Html.ActionLink("Años Lectivos", "Index", "AniosLectivos", null, new { style = "font-weight:600;color:#4f46e5;" })
+                            <li>
+                                @Html.ActionLink("Años Lectivos", "Index", "AniosLectivos", null)
                             </li>
                         }
                         @if (esAdmin || tiene("Promociones y expediente por año"))
                         {
-                            <li style="border-left:3px solid #4f46e5;padding-left:4px;">
-                                @Html.ActionLink("Inscripción y promociones", "Index", "MatriculaAnio", null, new { style = "font-weight:600;color:#4f46e5;" })
+                            <li>
+                                @Html.ActionLink("Inscripción y promociones", "Index", "MatriculaAnio", null)
                             </li>
                         }
                         @* Estructura académica, Programa académico, Recursos de horario, Configuración de cobranza,
                            Catálogos comunes y Configuración del sistema ahora se abren desde el Panel de configuración. *@
 
                         @* Legacy · pantallas sueltas → consolidadas en hub "Estructura Académica" (CatalogosInstitucion). Links deshabilitados (test §7, ver TODO.md). Controllers Modalidades/NivelesEducativos/Secciones/Semestres/Parciales siguen vivos: el hub reutiliza sus endpoints.
-                        <li class="submenu-header" style="color:#94a3b8;font-size:0.72rem;">Legacy · pantallas sueltas</li>
+                        <li class="submenu-header text-muted small">Legacy · pantallas sueltas</li>
                         @if (tiene("Listado de modalidades"))          { <li>@Html.ActionLink("Modalidades",       "Index", "Modalidades")</li> }
                         @if (tiene("Listado de niveles educativos"))   { <li>@Html.ActionLink("Niveles Educativos","Index", "NivelesEducativos")</li> }
                         @if (tiene("Listado de secciones"))            { <li>@Html.ActionLink("Secciones",         "Index", "Secciones")</li> }
@@ -448,8 +448,8 @@
                     <ul class="collapse submenu list-unstyled" id="Financiero" data-parent="#accordionExample">
                         @if (tiene("Cartera") || esAdmin)
                         {
-                            <li style="border-left:3px solid #4f46e5;padding-left:4px;">
-                                @Html.ActionLink("Cartera de cobros", "Index", "Cartera", null, new { style = "font-weight:600;color:#4f46e5;" })
+                            <li>
+                                @Html.ActionLink("Cartera de cobros", "Index", "Cartera", null)
                             </li>
                         }
                         @* EstadoCuentaAdm duplica CuentasCobrar/EstadoCuenta (ya con imprimir/PDF). Oculto solo para cajero (ver TODO.md). *@
@@ -457,8 +457,8 @@
                         @if (tiene("Arqueo de caja"))           { <li>@Html.ActionLink("Cierre de caja",    "Index", "ArqueosCajaAdm")</li> }
                         @if (tiene("Guia financiera"))
                         {
-                            <li style="border-left:3px solid #3b82f6;padding-left:4px;">
-                                @Html.ActionLink("Guía de inicio", "Index", "GuiaFinanciera", null, new { style = "font-weight:600;color:#3b82f6;" })
+                            <li>
+                                @Html.ActionLink("Guía de inicio", "Index", "GuiaFinanciera", null)
                             </li>
                         }
                         @if (tiene("Reportes financieros"))    { <li>@Html.ActionLink("Panel financiero", "DashboardFinanciero", "ReportesFinancieros")</li> }
@@ -566,7 +566,7 @@
             <div class="sidebar-user-role">
                 @if (!string.IsNullOrEmpty(impersonandoRol))
                 {
-                    <span style="color:#f59e0b;">@impersonandoRol</span>
+                    <span class="text-warning">@impersonandoRol</span>
                 }
                 else
                 {

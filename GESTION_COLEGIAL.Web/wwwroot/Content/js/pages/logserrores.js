@@ -17,9 +17,9 @@ var LogsErrores = (function () {
                     title: "Acción",
                     orderable: false,
                     render: function (data, type, row) {
-                        return '<button class="btn btn-sm btn-info btn-ver" ' +
+                        return '<button class="btn btn-sm btn-outline-primary btn-ver" ' +
                                'data-archivo="' + row.Archivo + '">' +
-                               '<i class="fa fa-eye"></i> Ver</button>';
+                               '<i class="fa fa-eye mr-1"></i> Ver</button>';
                     }
                 }
             ],

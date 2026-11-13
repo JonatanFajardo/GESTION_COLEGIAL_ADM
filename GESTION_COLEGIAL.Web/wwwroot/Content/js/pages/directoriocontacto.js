@@ -29,8 +29,8 @@ var DirectorioContacto = (function () {
         $("#dc-cards-alumno").hide();
         $("#dc-table-alumno").hide();
         $("#dc-empty-alumno")
-            .html('<i class="bi bi-search-heart"></i>' +
-                  '<h4>Busca o filtra para empezar</h4>' +
+            .html('<i class="bi bi-search-heart h2 d-block"></i>' +
+                  '<h5>Busca o filtra para empezar</h5>' +
                   '<p><strong>Escribe</strong> el nombre del alumno o encargado en el buscador, o elige un <strong>curso</strong> arriba. Evitamos cargar todo el directorio a la vez para no afectar el rendimiento.</p>')
             .show();
         if (!state.allAlumnosLoaded) {
@@ -45,7 +45,7 @@ var DirectorioContacto = (function () {
         $("#dc-cards-alumno").hide();
         $("#dc-table-alumno").hide();
         $("#dc-empty-alumno")
-            .html('<i class="bi bi-hourglass-split"></i><h4>' + esc(title) + '</h4><p>' + esc(subtitle) + '</p>')
+            .html('<i class="bi bi-hourglass-split h2 d-block"></i><h5>' + esc(title) + '</h5><p>' + esc(subtitle) + '</p>')
             .show();
     }
 
@@ -53,7 +53,7 @@ var DirectorioContacto = (function () {
         $("#dc-cards-alumno").hide();
         $("#dc-table-alumno").hide();
         $("#dc-empty-alumno")
-            .html('<i class="bi bi-inbox"></i><h4>Sin resultados</h4><p>No se encontraron alumnos con los filtros actuales.</p>')
+            .html('<i class="bi bi-inbox h2 d-block"></i><h5>Sin resultados</h5><p>No se encontraron alumnos con los filtros actuales.</p>')
             .show();
     }
 
@@ -65,6 +65,8 @@ var DirectorioContacto = (function () {
             if (state.tab === target) return;
             $("#dc-tabs .ci-tab-item").removeClass("active");
             $(this).addClass("active");
+            $("#dc-tabs .nav-link").removeClass("active");
+            $(this).find(".nav-link").addClass("active");
             state.tab = target;
             $("#dc-tab-alumno").toggle(target === "alumno");
             $("#dc-tab-encargado").toggle(target === "encargado");
@@ -168,12 +170,12 @@ var DirectorioContacto = (function () {
             var cursos = (resp && resp.data) ? resp.data : [];
             var $chips = $("#dc-chips-curso");
             $chips.empty();
-            $chips.append('<span class="grad-chip active" data-cur="">Todos los cursos</span>');
+            $chips.append('<span class="btn btn-sm btn-rounded btn-outline-primary mr-2 mb-2 grad-chip active" data-cur="">Todos los cursos</span>');
             cursos.forEach(function (c) {
                 var id = c.Cun_Id || c.Cur_Id || c.id || "";
                 var txt = c.Cun_Descripcion || c.Cur_Descripcion || c.Cur_Nombre || c.descripcion || "";
                 if (!id || !txt) return;
-                $chips.append('<span class="grad-chip" data-cur="' + id + '">' + esc(txt) + '</span>');
+                $chips.append('<span class="btn btn-sm btn-rounded btn-outline-primary mr-2 mb-2 grad-chip" data-cur="' + id + '">' + esc(txt) + '</span>');
             });
             $chips.find(".grad-chip").on("click", function () {
                 $chips.find(".grad-chip").removeClass("active");
@@ -189,7 +191,7 @@ var DirectorioContacto = (function () {
     function loadSeccionesFilter(curId) {
         var $chips = $("#dc-chips-seccion");
         $chips.empty();
-        $chips.append('<span class="grad-chip active" data-sec="">Todas las secciones</span>');
+        $chips.append('<span class="btn btn-sm btn-rounded btn-outline-primary mr-2 mb-2 grad-chip active" data-sec="">Todas las secciones</span>');
         if (!curId) {
             wireSeccionChips();
             return;
@@ -200,7 +202,7 @@ var DirectorioContacto = (function () {
                 var id = s.Sec_Id || s.id || "";
                 var txt = s.Sec_Descripcion || s.descripcion || "";
                 if (!id || !txt) return;
-                $chips.append('<span class="grad-chip" data-sec="' + id + '">' + esc(txt) + '</span>');
+                $chips.append('<span class="btn btn-sm btn-rounded btn-outline-primary mr-2 mb-2 grad-chip" data-sec="' + id + '">' + esc(txt) + '</span>');
             });
             wireSeccionChips();
         });
@@ -281,13 +283,13 @@ var DirectorioContacto = (function () {
     }
 
     function telLink(tel) {
-        if (!tel) return '<span class="dc-badge-warn"><i class="bi bi-exclamation-triangle"></i> Sin tel.</span>';
-        return '<a class="dc-contact-btn dc-contact-tel" href="tel:' + esc(tel) + '"><i class="bi bi-telephone-fill"></i> ' + esc(tel) + '</a>';
+        if (!tel) return '<span class="badge outline-badge-warning mr-1 mb-1"><i class="bi bi-exclamation-triangle mr-1"></i>Sin tel.</span>';
+        return '<a class="btn btn-sm btn-outline-primary mr-1 mb-1" href="tel:' + esc(tel) + '"><i class="bi bi-telephone-fill mr-1"></i>' + esc(tel) + '</a>';
     }
 
     function mailLink(mail) {
-        if (!mail) return '<span class="dc-badge-warn"><i class="bi bi-envelope-slash"></i> Sin correo</span>';
-        return '<a class="dc-contact-btn dc-contact-mail" href="mailto:' + esc(mail) + '"><i class="bi bi-envelope-fill"></i> ' + esc(mail) + '</a>';
+        if (!mail) return '<span class="badge outline-badge-warning mr-1 mb-1"><i class="bi bi-envelope-slash mr-1"></i>Sin correo</span>';
+        return '<a class="btn btn-sm btn-outline-primary mr-1 mb-1 text-truncate mw-100" href="mailto:' + esc(mail) + '"><i class="bi bi-envelope-fill mr-1"></i>' + esc(mail) + '</a>';
     }
 
     // -------- Alumno cards --------
@@ -295,22 +297,24 @@ var DirectorioContacto = (function () {
         var $grid = $("#dc-cards-grid-alumno").empty();
         list.forEach(function (a) {
             var card = '' +
-                '<div class="dc-card">' +
-                '  <div class="dc-card-header">' +
-                '    <div class="dc-avatar dc-avatar-indigo">' + esc(initials(a.Alu_NombreCompleto)) + '</div>' +
-                '    <div class="dc-card-title-wrap">' +
-                '      <div class="dc-card-title">' + esc(a.Alu_NombreCompleto) + '</div>' +
-                '      <div class="dc-card-sub"><i class="bi bi-mortarboard"></i> ' + esc(a.Cur_Nombre) + ' &middot; Sec. ' + esc(a.Sec_Descripcion) + '</div>' +
+                '<div class="col-xl-4 col-md-6 mb-4">' +
+                '<div class="border rounded p-3 h-100">' +
+                '  <div class="d-flex align-items-center mb-2">' +
+                '    <div class="dc-avatar rounded-circle bg-primary text-white font-weight-bold d-flex align-items-center justify-content-center mr-2">' + esc(initials(a.Alu_NombreCompleto)) + '</div>' +
+                '    <div class="text-truncate">' +
+                '      <div class="font-weight-bold text-truncate">' + esc(a.Alu_NombreCompleto) + '</div>' +
+                '      <div class="text-muted small"><i class="bi bi-mortarboard mr-1"></i>' + esc(a.Cur_Nombre) + ' &middot; Sec. ' + esc(a.Sec_Descripcion) + '</div>' +
                 '    </div>' +
                 '  </div>' +
-                '  <div class="dc-card-body">' +
-                '    <div class="dc-card-row"><i class="bi bi-card-text"></i> ' + esc(a.Alu_Identidad || "—") + '</div>' +
-                '    <div class="dc-card-row"><i class="bi bi-person-badge"></i> Encargado: <strong>' + esc(a.Enc_NombreCompleto || "—") + '</strong></div>' +
+                '  <div class="small mb-2">' +
+                '    <div class="mb-1"><i class="bi bi-card-text text-muted mr-1"></i>' + esc(a.Alu_Identidad || "—") + '</div>' +
+                '    <div><i class="bi bi-person-badge text-muted mr-1"></i>Encargado: <strong>' + esc(a.Enc_NombreCompleto || "—") + '</strong></div>' +
                 '  </div>' +
-                '  <div class="dc-card-actions">' +
+                '  <div class="d-flex flex-wrap">' +
                        telLink(a.Enc_Telefono) +
                        mailLink(a.Enc_Correo) +
                 '  </div>' +
+                '</div>' +
                 '</div>';
             $grid.append(card);
         });
@@ -346,8 +350,8 @@ var DirectorioContacto = (function () {
                     data: null, orderable: false,
                     render: function (row) {
                         var btns = "";
-                        if (row.Enc_Telefono) btns += '<a class="dc-action-btn" href="tel:' + esc(row.Enc_Telefono) + '" title="Llamar"><i class="bi bi-telephone"></i></a>';
-                        if (row.Enc_Correo) btns += '<a class="dc-action-btn" href="mailto:' + esc(row.Enc_Correo) + '" title="Enviar correo"><i class="bi bi-envelope"></i></a>';
+                        if (row.Enc_Telefono) btns += '<a class="btn btn-sm btn-outline-primary mr-1" href="tel:' + esc(row.Enc_Telefono) + '" title="Llamar"><i class="bi bi-telephone"></i></a>';
+                        if (row.Enc_Correo) btns += '<a class="btn btn-sm btn-outline-primary mr-1" href="mailto:' + esc(row.Enc_Correo) + '" title="Enviar correo"><i class="bi bi-envelope"></i></a>';
                         return btns || '<span class="text-muted">—</span>';
                     }
                 }
@@ -359,27 +363,29 @@ var DirectorioContacto = (function () {
     function renderEncargadoCards(list) {
         var $grid = $("#dc-cards-grid-encargado").empty();
         list.forEach(function (e) {
-            var estado = e.EsActivo ? '<span class="dc-badge-ok">Activo</span>' : '<span class="dc-badge-off">Inactivo</span>';
+            var estado = e.EsActivo ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-secondary">Inactivo</span>';
             var card = '' +
-                '<div class="dc-card">' +
-                '  <div class="dc-card-header">' +
-                '    <div class="dc-avatar dc-avatar-emerald">' + esc(initials(e.Enc_Nombre)) + '</div>' +
-                '    <div class="dc-card-title-wrap">' +
-                '      <div class="dc-card-title">' + esc(e.Enc_Nombre) + '</div>' +
-                '      <div class="dc-card-sub"><i class="bi bi-card-text"></i> ' + esc(e.Per_Identidad || "—") + ' &middot; ' + estado + '</div>' +
+                '<div class="col-xl-4 col-md-6 mb-4">' +
+                '<div class="border rounded p-3 h-100">' +
+                '  <div class="d-flex align-items-center mb-2">' +
+                '    <div class="dc-avatar rounded-circle bg-success text-white font-weight-bold d-flex align-items-center justify-content-center mr-2">' + esc(initials(e.Enc_Nombre)) + '</div>' +
+                '    <div class="text-truncate">' +
+                '      <div class="font-weight-bold text-truncate">' + esc(e.Enc_Nombre) + '</div>' +
+                '      <div class="text-muted small"><i class="bi bi-card-text mr-1"></i>' + esc(e.Per_Identidad || "—") + ' &middot; ' + estado + '</div>' +
                 '    </div>' +
                 '  </div>' +
-                '  <div class="dc-card-body">' +
-                '    <div class="dc-card-row"><i class="bi bi-briefcase"></i> ' + esc(e.Enc_Ocupacion || "Sin ocupación") + '</div>' +
+                '  <div class="small mb-2">' +
+                '    <div><i class="bi bi-briefcase text-muted mr-1"></i>' + esc(e.Enc_Ocupacion || "Sin ocupación") + '</div>' +
                 '  </div>' +
-                '  <div class="dc-card-actions">' +
+                '  <div class="d-flex flex-wrap mb-2">' +
                        telLink(e.Per_Telefono) +
                        mailLink(e.Per_CorreoElectronico) +
                 '  </div>' +
-                '  <div class="dc-card-footer">' +
-                '    <a class="dc-action-btn" href="' + cfg.urlEncDetalle + '/' + e.Enc_Id + '" title="Ver detalle"><i class="bi bi-eye"></i></a>' +
-                '    <a class="dc-action-btn" href="' + cfg.urlEncEditar + '/' + e.Enc_Id + '" title="Editar"><i class="bi bi-pencil"></i></a>' +
+                '  <div class="border-top pt-2 text-right">' +
+                '    <a class="btn btn-sm btn-outline-primary mr-1" href="' + cfg.urlEncDetalle + '/' + e.Enc_Id + '" title="Ver detalle"><i class="bi bi-eye"></i></a>' +
+                '    <a class="btn btn-sm btn-outline-primary mr-1" href="' + cfg.urlEncEditar + '/' + e.Enc_Id + '" title="Editar"><i class="bi bi-pencil"></i></a>' +
                 '  </div>' +
+                '</div>' +
                 '</div>';
             $grid.append(card);
         });
@@ -413,14 +419,14 @@ var DirectorioContacto = (function () {
                 { data: "Enc_Ocupacion", defaultContent: "—" },
                 {
                     data: "EsActivo",
-                    render: function (d) { return d ? '<span class="dc-badge-ok">Activo</span>' : '<span class="dc-badge-off">Inactivo</span>'; }
+                    render: function (d) { return d ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-secondary">Inactivo</span>'; }
                 },
                 {
                     data: null, orderable: false,
                     render: function (row) {
                         return '' +
-                            '<a class="dc-action-btn" href="' + cfg.urlEncDetalle + '/' + row.Enc_Id + '" title="Ver"><i class="bi bi-eye"></i></a>' +
-                            '<a class="dc-action-btn" href="' + cfg.urlEncEditar + '/' + row.Enc_Id + '" title="Editar"><i class="bi bi-pencil"></i></a>';
+                            '<a class="btn btn-sm btn-outline-primary mr-1" href="' + cfg.urlEncDetalle + '/' + row.Enc_Id + '" title="Ver"><i class="bi bi-eye"></i></a>' +
+                            '<a class="btn btn-sm btn-outline-primary mr-1" href="' + cfg.urlEncEditar + '/' + row.Enc_Id + '" title="Editar"><i class="bi bi-pencil"></i></a>';
                     }
                 }
             ]

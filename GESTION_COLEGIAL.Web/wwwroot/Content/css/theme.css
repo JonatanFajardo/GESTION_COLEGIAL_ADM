@@ -1616,3 +1616,111 @@ html.gc-dark .cons-header {
     background: linear-gradient(135deg, #0f172a, #1e293b) !important;
     box-shadow: 0 4px 16px rgba(0,0,0,.4) !important;
 }
+
+/* ============================================================
+   COMPONENTES CORK — color del colegio, tema azul y modo oscuro
+   (botones, insignias, widgets, tarjetas, tablas, modales, formularios)
+   ============================================================ */
+
+/* ── Tema por defecto: el ícono del KPI usa el color principal ── */
+.widget-card-four .w-icon {
+    color: #F7A400;
+    background: #fff3d6;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+}
+
+/* ── Tema azul ── */
+html.gc-theme-blue .btn-primary,
+html.gc-theme-blue .btn-primary:hover,
+html.gc-theme-blue .btn-primary:focus,
+html.gc-theme-blue .btn-primary:not(:disabled):not(.disabled):active,
+html.gc-theme-blue .btn-primary:not(:disabled):not(.disabled).active {
+    background-color: #0f4c81 !important;
+    border-color: #0f4c81 !important;
+    box-shadow: 0 10px 20px -10px #0f4c81;
+}
+html.gc-theme-blue .btn-outline-primary {
+    color: #0f4c81 !important;
+    border-color: #0f4c81 !important;
+}
+html.gc-theme-blue .btn-outline-primary:hover,
+html.gc-theme-blue .btn-outline-primary:not(:disabled):not(.disabled).active {
+    color: #fff !important;
+    background-color: #0f4c81 !important;
+}
+html.gc-theme-blue .badge-primary { background-color: #0f4c81; }
+html.gc-theme-blue .outline-badge-primary { color: #0f4c81; border-color: #0f4c81; }
+html.gc-theme-blue .text-primary { color: #0f4c81 !important; }
+html.gc-theme-blue .bg-gradient-primary { background-image: linear-gradient(to right, #0f4c81 0%, #3b82f6 100%); }
+html.gc-theme-blue .nav-tabs .nav-link.active { color: #0f4c81; border-bottom-color: #0f4c81; }
+html.gc-theme-blue .widget-card-four .w-icon { color: #0f4c81; background: #e0f2fe; }
+html.gc-theme-blue .form-control:focus,
+html.gc-theme-blue .custom-select:focus { border-color: #0f4c81; }
+
+/* ── Modo oscuro ── */
+html.gc-dark .widget,
+html.gc-dark .statbox,
+html.gc-dark .widget-content-area,
+html.gc-dark .widget.widget-card-four,
+html.gc-dark .modal-content {
+    background: #1e293b !important;
+    color: #cbd5e1;
+    border-color: #334155;
+    box-shadow: none;
+}
+html.gc-dark .widget-header {
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+}
+html.gc-dark .widget-header h4,
+html.gc-dark .widget-heading h5,
+html.gc-dark .widget-heading h6,
+html.gc-dark .widget-card-four .w-info h6,
+html.gc-dark .modal-title,
+html.gc-dark h4,
+html.gc-dark h5 {
+    color: #e2e8f0;
+}
+html.gc-dark .widget-card-four .w-info p,
+html.gc-dark .text-muted { color: #94a3b8 !important; }
+html.gc-dark .widget-card-four .w-icon { background: rgba(247, 164, 0, 0.16); color: #fbbf24; }
+html.gc-dark .modal-header,
+html.gc-dark .modal-footer { border-color: #334155; }
+html.gc-dark .modal-header .close { color: #e2e8f0; }
+html.gc-dark .table,
+html.gc-dark .table td,
+html.gc-dark .table th { color: #cbd5e1; border-color: #334155; }
+html.gc-dark .table-hover tbody tr:hover { background-color: #273449; }
+html.gc-dark .form-control,
+html.gc-dark .custom-select {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+html.gc-dark .form-control:disabled,
+html.gc-dark .custom-select:disabled { background-color: #1e293b; color: #64748b; }
+html.gc-dark label { color: #cbd5e1; }
+html.gc-dark .btn:not([class*="btn-"]) {
+    background: #334155;
+    color: #e2e8f0;
+    border-color: #334155;
+}
+html.gc-dark .btn-outline-secondary,
+html.gc-dark .btn-link { color: #cbd5e1; }
+html.gc-dark .nav-tabs { border-color: #334155; }
+html.gc-dark .nav-tabs .nav-link { color: #94a3b8; }
+html.gc-dark .nav-tabs .nav-link.active { background: transparent; color: #fbbf24; }
+html.gc-dark .progress { background-color: #334155; }
+html.gc-dark .list-group-item {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+html.gc-dark .table-success, html.gc-dark .table-success > td { background-color: rgba(16, 185, 129, 0.18); }
+html.gc-dark .table-warning, html.gc-dark .table-warning > td { background-color: rgba(245, 158, 11, 0.18); }
+html.gc-dark .table-danger,  html.gc-dark .table-danger > td  { background-color: rgba(239, 68, 68, 0.18); }
+html.gc-dark .bg-light { background-color: #273449 !important; }

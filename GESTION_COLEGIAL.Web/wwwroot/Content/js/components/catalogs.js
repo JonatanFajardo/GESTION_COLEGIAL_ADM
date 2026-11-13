@@ -195,7 +195,7 @@
             }
 
             $(params.editModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.editModalId + " .modal-footer .btn-primary").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
+            $(params.editModalId + " .modal-footer .btn-primary").html("<i class='bi bi-check2 mr-1'></i> " + saveBtnText);
 
             //le asigna el focus al primer input del primer formulario despues de pasados los 500s
             setTimeout(function () {
@@ -226,9 +226,9 @@
     function createDeleteModal(params) {
         $deleteModal = $(params.deleteModalId);
         $deleteModal.on("show.bs.modal", function () {
-            var modalTitle = "Eliminar ", saveBtnText = "Aceptar";
+            var modalTitle = "Eliminar ", saveBtnText = "Eliminar";
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + saveBtnText);
+            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='bi bi-trash mr-1'></i> " + saveBtnText);
         });
         $deleteModal.on("hidden.bs.modal", function () { });
     }
@@ -283,4 +283,4 @@
     };
 
     return obj;
-}());
+}());

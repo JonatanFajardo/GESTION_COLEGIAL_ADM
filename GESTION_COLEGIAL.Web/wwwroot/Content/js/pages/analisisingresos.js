@@ -24,7 +24,7 @@ var AnalisisIngresos = (function () {
 
     function renderBars(data) {
         if (!data.length) {
-            $("#ai-bars-container").html('<div class="fan-loading">Sin datos.</div>');
+            $("#ai-bars-container").html('<div class="text-center text-muted py-5">Sin datos.</div>');
             return;
         }
 
@@ -36,10 +36,12 @@ var AnalisisIngresos = (function () {
         sorted.forEach(function (r) {
             var pct   = parseFloat(r.PorcentajeCobrado || 0);
             var color = pctColor(pct);
-            html += '<div class="ai-bar-row">';
-            html += '<span class="ai-bar-label" title="' + (r.ConceptoPago || "—") + '">' + (r.ConceptoPago || "—") + '</span>';
-            html += '<div class="ai-bar-track"><div class="ai-bar-fill" style="width:' + pct.toFixed(1) + '%;background:' + color + ';"></div></div>';
-            html += '<span class="ai-bar-pct" style="color:' + color + ';">' + pct.toFixed(0) + '%</span>';
+            html += '<div class="mb-3">';
+            html += '<div class="d-flex justify-content-between small mb-1">';
+            html += '<span class="font-weight-bold text-truncate mr-2" title="' + (r.ConceptoPago || "—") + '">' + (r.ConceptoPago || "—") + '</span>';
+            html += '<span class="font-weight-bold" style="color:' + color + ';">' + pct.toFixed(0) + '%</span>';
+            html += '</div>';
+            html += '<div class="progress mb-0"><div class="progress-bar" role="progressbar" style="width:' + pct.toFixed(1) + '%;background:' + color + ';"></div></div>';
             html += '</div>';
         });
 
@@ -48,7 +50,7 @@ var AnalisisIngresos = (function () {
 
     function renderTable(data) {
         if (!data.length) {
-            $("#ai-table-container").html('<div class="fan-loading">Sin datos para el año seleccionado.</div>');
+            $("#ai-table-container").html('<div class="text-center text-muted py-5">Sin datos para el año seleccionado.</div>');
             return;
         }
 
@@ -58,29 +60,28 @@ var AnalisisIngresos = (function () {
             var pendiente = r.TotalPendiente || 0;
             var pct       = parseFloat(r.PorcentajeCobrado || 0);
             var color     = pctColor(pct);
-            var badge     = pct >= 80 ? "up" : (pct >= 50 ? "fan-badge" : "down");
 
             rows += '<tr>';
-            rows += '<td class="col-label">' + (r.ConceptoPago || "—") + '</td>';
-            rows += '<td style="text-align:right;">' + fmt(cobrado) + '</td>';
-            rows += '<td style="text-align:right;">' + fmt(pendiente) + '</td>';
+            rows += '<td class="font-weight-bold">' + (r.ConceptoPago || "—") + '</td>';
+            rows += '<td class="text-right">' + fmt(cobrado) + '</td>';
+            rows += '<td class="text-right">' + fmt(pendiente) + '</td>';
             rows += '<td>';
-            rows += '<div style="display:flex;align-items:center;gap:6px;">';
-            rows += '<div class="fan-progress" style="flex:1;"><div class="fan-progress-bar" style="width:' + pct.toFixed(1) + '%;background:' + color + ';"></div></div>';
-            rows += '<span style="font-size:.75rem;font-weight:700;color:' + color + ';min-width:38px;text-align:right;">' + pct.toFixed(1) + '%</span>';
+            rows += '<div class="d-flex align-items-center">';
+            rows += '<div class="progress flex-grow-1 mb-0"><div class="progress-bar" role="progressbar" style="width:' + pct.toFixed(1) + '%;background:' + color + ';"></div></div>';
+            rows += '<span class="small font-weight-bold text-right ml-2" style="min-width:38px;color:' + color + ';">' + pct.toFixed(1) + '%</span>';
             rows += '</div></td>';
             rows += '</tr>';
         });
 
-        var html = '<table class="fan-table">'
-            + '<thead><tr><th>Concepto</th><th style="text-align:right;">Cobrado</th><th style="text-align:right;">Pendiente</th><th style="width:160px;">% Cobrado</th></tr></thead>'
-            + '<tbody>' + rows + '</tbody></table>';
+        var html = '<div class="table-responsive"><table class="table table-hover mb-0">'
+            + '<thead><tr><th>Concepto</th><th class="text-right">Cobrado</th><th class="text-right">Pendiente</th><th style="width:160px;">% Cobrado</th></tr></thead>'
+            + '<tbody>' + rows + '</tbody></table></div>';
 
         $("#ai-table-container").html(html);
     }
 
     function cargar(anio) {
-        $("#ai-bars-container, #ai-table-container").html('<div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>');
+        $("#ai-bars-container, #ai-table-container").html('<div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>');
 
         $.ajax({
             url: urlBase + "?Anio=" + anio,
@@ -92,7 +93,7 @@ var AnalisisIngresos = (function () {
                 renderTable(data);
             },
             error: function () {
-                $("#ai-bars-container, #ai-table-container").html('<div class="fan-loading text-danger">Error al cargar los datos.</div>');
+                $("#ai-bars-container, #ai-table-container").html('<div class="text-center text-danger py-5">Error al cargar los datos.</div>');
             }
         });
     }

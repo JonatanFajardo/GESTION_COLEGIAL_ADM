@@ -15,19 +15,9 @@
     function actualizarEstado(activo) {
         estadoActivo = activo;
 
-        if (activo) {
-            statusBadge.classList.remove('inactive');
-            statusBadge.classList.add('active');
-            statusDot.classList.remove('inactive');
-            statusDot.classList.add('active');
-            statusText.textContent = 'Activo';
-        } else {
-            statusBadge.classList.remove('active');
-            statusBadge.classList.add('inactive');
-            statusDot.classList.remove('active');
-            statusDot.classList.add('inactive');
-            statusText.textContent = 'Inactivo';
-        }
+        statusBadge.classList.toggle('badge-success', activo);
+        statusBadge.classList.toggle('badge-secondary', !activo);
+        statusText.textContent = activo ? 'Activo' : 'Inactivo';
     }
 
     // Los checkboxes del sistema ya funcionan correctamente
@@ -73,14 +63,6 @@
             });
         }
 
-        // Animación de entrada para los acordeones
-        const accordionHeaders = document.querySelectorAll('.accordion-header-curso');
-        accordionHeaders.forEach(function(header) {
-            header.addEventListener('click', function() {
-                // Agregar clase para animación suave
-                this.classList.toggle('collapsed');
-            });
-        });
     });
 
     // Validación del formulario antes de enviar

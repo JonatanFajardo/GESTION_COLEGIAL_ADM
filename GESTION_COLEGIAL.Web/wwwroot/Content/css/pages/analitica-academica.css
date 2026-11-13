@@ -1,0 +1,18 @@
+/* Analítica Académica (Views/KPIsAcademicos): alto de los gráficos y de la tabla de riesgo */
+.aa-chart {
+    position: relative;
+    max-height: 280px;
+}
+
+.aa-chart canvas {
+    max-height: 280px;
+}
+
+.aa-scroll {
+    max-height: 290px;
+    overflow-y: auto;
+}
+
+.kpi-riesgo-row {
+    cursor: pointer;
+}

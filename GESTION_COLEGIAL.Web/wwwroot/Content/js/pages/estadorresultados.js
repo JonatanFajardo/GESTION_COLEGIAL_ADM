@@ -64,7 +64,7 @@ var EstadoResultados = (function () {
 
     function renderTable(data) {
         if (!data.length) {
-            $("#er-table-container").html('<div class="fan-loading">Sin datos para el período seleccionado.</div>');
+            $("#er-table-container").html('<div class="text-center text-muted py-5">Sin datos para el período seleccionado.</div>');
             return;
         }
 
@@ -74,30 +74,30 @@ var EstadoResultados = (function () {
         data.forEach(function (r, i) {
             var monto = parseFloat(r.Monto || 0);
             var color = PALETA[i % PALETA.length];
-            var montoClass = monto >= 0 ? "diff-pos" : "diff-neg";
+            var montoClass = monto >= 0 ? "text-success font-weight-bold" : "text-danger font-weight-bold";
 
             rows += '<tr>';
-            rows += '<td style="display:flex;align-items:center;gap:8px;">';
-            rows += '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0;"></span>';
-            rows += '<span class="col-label">' + (r.Concepto || "—") + '</span></td>';
-            rows += '<td class="' + montoClass + '" style="text-align:right;">' + fmt(monto) + '</td>';
+            rows += '<td>';
+            rows += '<i class="fas fa-circle small mr-2" style="color:' + color + ';"></i>';
+            rows += '<span class="font-weight-bold">' + (r.Concepto || "—") + '</span></td>';
+            rows += '<td class="text-right ' + montoClass + '">' + fmt(monto) + '</td>';
             rows += '</tr>';
         });
 
-        rows += '<tr class="fan-total-row">';
-        rows += '<td class="col-label">TOTAL</td>';
-        rows += '<td style="text-align:right;">' + fmt(total) + '</td>';
+        rows += '<tr class="table-success font-weight-bold">';
+        rows += '<td class="font-weight-bold">TOTAL</td>';
+        rows += '<td class="text-right">' + fmt(total) + '</td>';
         rows += '</tr>';
 
-        var html = '<table class="fan-table">'
-            + '<thead><tr><th>Concepto</th><th style="text-align:right;">Monto (L.)</th></tr></thead>'
-            + '<tbody>' + rows + '</tbody></table>';
+        var html = '<div class="table-responsive"><table class="table table-hover mb-0">'
+            + '<thead><tr><th>Concepto</th><th class="text-right">Monto (L.)</th></tr></thead>'
+            + '<tbody>' + rows + '</tbody></table></div>';
 
         $("#er-table-container").html(html);
     }
 
     function cargar(anio, mes) {
-        $("#er-table-container").html('<div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>');
+        $("#er-table-container").html('<div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>');
 
         $.ajax({
             url: urlBase + "?Anio=" + anio + "&Mes=" + mes,
@@ -109,7 +109,7 @@ var EstadoResultados = (function () {
                 renderTable(data);
             },
             error: function () {
-                $("#er-table-container").html('<div class="fan-loading text-danger">Error al cargar los datos.</div>');
+                $("#er-table-container").html('<div class="text-center text-danger py-5">Error al cargar los datos.</div>');
             }
         });
     }

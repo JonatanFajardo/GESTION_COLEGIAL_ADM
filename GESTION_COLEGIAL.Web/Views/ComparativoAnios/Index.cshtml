@@ -16,99 +16,100 @@
     </nav>
 </div>
 
-<div class="fan-wrapper">
-
-    <!-- HEADER -->
-    <div class="fan-header">
-        <div class="fan-header-left">
-            <div class="fan-header-icon"><i class="fa-solid fa-chart-column"></i></div>
-            <div>
-                <h2>Comparativo de Años</h2>
-                <div class="fan-header-sub">Comparación de matrícula entre dos periodos académicos</div>
-            </div>
-        </div>
-        <div class="fan-controls">
-            <label for="filtro-anio-base">Año Base</label>
-            <input type="number" id="filtro-anio-base" min="2000" max="2099" style="width:80px;" />
-            <label for="filtro-anio-comparacion">vs.</label>
-            <input type="number" id="filtro-anio-comparacion" min="2000" max="2099" style="width:80px;" />
-            <button class="btn-fan" id="btn-filtrar">
-                <i class="fa-solid fa-rotate"></i> Comparar
-            </button>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Comparativo de Años</h4>
+        <p class="text-muted mb-0">Comparación de matrícula entre dos periodos académicos</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <div class="d-flex flex-wrap align-items-center">
+                <label for="filtro-anio-base" class="mb-0 mr-2">Año Base</label>
+                <input type="number" class="form-control w-auto mr-3" id="filtro-anio-base" min="2000" max="2099" />
+                <label for="filtro-anio-comparacion" class="mb-0 mr-2">vs.</label>
+                <input type="number" class="form-control w-auto mr-3" id="filtro-anio-comparacion" min="2000" max="2099" />
+                <button type="button" class="btn btn-primary" id="btn-filtrar"><i class="fas fa-rotate mr-1"></i> Comparar</button>
         </div>
     </div>
+</div>
 
-    <!-- KPIs -->
-    <div class="row g-3">
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-blue fan-anim">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan blue"><i class="fa-solid fa-graduation-cap"></i></div>
+<div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="ca-kpi-base">—</h6>
+                        <p>Total Año Base</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-graduation-cap"></i></div></div>
                 </div>
-                <div class="kpi-value-fan" id="ca-kpi-base">—</div>
-                <div class="kpi-label-fan">Total Año Base</div>
-                <i class="fa-solid fa-calendar kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-teal fan-anim fan-anim-d1">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan teal"><i class="fa-solid fa-graduation-cap"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="ca-kpi-comp">—</div>
-                <div class="kpi-label-fan">Total Año Comparación</div>
-                <i class="fa-solid fa-calendar-check kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-green fan-anim fan-anim-d2">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan green"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="ca-kpi-dif">—</div>
-                <div class="kpi-label-fan">Diferencia Total</div>
-                <i class="fa-solid fa-arrows-left-right kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-indigo fan-anim fan-anim-d3">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan indigo"><i class="fa-solid fa-percent"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="ca-kpi-pct">—</div>
-                <div class="kpi-label-fan">% Cambio Global</div>
-                <i class="fa-solid fa-chart-line kpi-icon-bg-fan"></i>
             </div>
         </div>
     </div>
-
-    <!-- GRÁFICA -->
-    <div class="row g-3">
-        <div class="col-12">
-            <div class="fan-panel fan-anim fan-anim-d2">
-                <div class="fan-section">
-                    <div class="fan-section-accent" style="background:#0ea5e9;"></div>
-                    <span class="fan-section-label">Comparativo por Curso</span>
-                    <div class="fan-section-line"></div>
-                    <span id="ca-chart-subtitle" class="fan-section-label" style="color:#94a3b8;font-weight:500;"></span>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="ca-kpi-comp">—</h6>
+                        <p>Total Año Comparación</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-graduation-cap"></i></div></div>
                 </div>
-                <canvas id="ca-chart" style="max-height:240px;"></canvas>
             </div>
         </div>
     </div>
-
-    <!-- TABLA -->
-    <div class="fan-panel fan-anim fan-anim-d3">
-        <div class="fan-section">
-            <div class="fan-section-accent" style="background:#6366f1;"></div>
-            <span class="fan-section-label">Detalle por Curso</span>
-            <div class="fan-section-line"></div>
-        </div>
-        <div id="ca-table-container">
-            <div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="ca-kpi-dif">—</h6>
+                        <p>Diferencia Total</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-arrow-right-arrow-left"></i></div></div>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="ca-kpi-pct">—</h6>
+                        <p>% Cambio Global</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-percent"></i></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-12 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-header">
+                <div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between"><h4>Comparativo por Curso</h4><span id="ca-chart-subtitle" class="small text-muted"></span></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <canvas id="ca-chart" class="fin-chart-240"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-header">
+                <div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between"><h4>Detalle por Curso</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <div id="ca-table-container">
+                    <div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{

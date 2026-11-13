@@ -1,0 +1,28 @@
+/* Matrícula nueva — piezas sin equivalente en CORK:
+   indicador de pasos del asistente y comportamiento de paneles/validación. */
+
+.mat-steps { display: flex; list-style: none; padding: 0; margin: 0 0 1.75rem; }
+.mat-steps li { flex: 1; text-align: center; position: relative; color: #888ea8; font-size: .82rem; font-weight: 600; }
+.mat-steps li .mat-step-num {
+    width: 38px; height: 38px; line-height: 38px; border-radius: 50%;
+    background: #e0e6ed; color: #515365; display: inline-block; margin-bottom: .4rem;
+    font-weight: 700; position: relative; z-index: 2;
+}
+.mat-steps li::before {
+    content: ''; position: absolute; top: 19px; left: -50%; width: 100%; height: 3px;
+    background: #e0e6ed; z-index: 1;
+}
+.mat-steps li:first-child::before { display: none; }
+.mat-steps li.active, .mat-steps li.done { color: #1b2e4b; }
+.mat-steps li.active .mat-step-num { background: #F7A400; color: #1b2e4b; }
+.mat-steps li.done .mat-step-num { background: #1abc9c; color: #fff; }
+.mat-steps li.done::before, .mat-steps li.active::before { background: #F7A400; }
+
+.mat-panel { display: none; }
+.mat-panel.active { display: block; }
+
+.mat-field.has-error .form-control,
+.mat-field.has-error .custom-select { border-color: #e7515a; }
+.mat-field.has-error .invalid-feedback { display: block; }
+
+.mat-doc-item { padding-left: 2.5rem; }

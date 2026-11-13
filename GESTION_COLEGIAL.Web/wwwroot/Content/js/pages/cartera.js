@@ -51,8 +51,8 @@ var Cartera = (function () {
         return (urls.urlNuevoPago || "/Pagos/NuevoPago") + idParam(row);
     }
     function btnPago(row) {
-        return '<a class="cartera-btn-pago" href="' + linkPago(row) + '" title="Ir a registrar el pago de este alumno">' +
-               '<i class="fa-solid fa-cash-register"></i> Registrar pago</a>';
+        return '<a class="btn btn-sm btn-outline-success text-nowrap" href="' + linkPago(row) + '" title="Ir a registrar el pago de este alumno">' +
+               '<i class="fa-solid fa-cash-register mr-1"></i> Registrar pago</a>';
     }
 
     function initials(name) {
@@ -73,7 +73,7 @@ var Cartera = (function () {
     obj.init = function (config) {
         urls = config || {};
 
-        $("#cartera-tabs").on("click", ".aa-tab-item", function (e) {
+        $("#cartera-tabs").on("click", ".cartera-tab-item", function (e) {
             e.preventDefault();
             var tab = $(this).data("tab");
             if (!tab || tab === tabActiva) return;
@@ -177,12 +177,12 @@ var Cartera = (function () {
         setTimeout(function () {
             $("#sc-form").hide();
             $("#sc-result").show().html(
-                '<div class="sc-result">' +
-                    '<div class="sc-result-icon"><i class="fa-solid fa-circle-check"></i></div>' +
-                    '<h4 style="margin:10px 0 4px;font-weight:800;color:#0f172a;">Recordatorios enviados</h4>' +
-                    '<p style="color:#64748b;margin:0;">Se enviaron <strong>' + r.destinatarios + '</strong> recordatorio' + (r.destinatarios === 1 ? "" : "s") +
+                '<div class="text-center py-2">' +
+                    '<div class="display-4 text-success"><i class="fa-solid fa-circle-check"></i></div>' +
+                    '<h4 class="mt-2 mb-1 font-weight-bold text-dark">Recordatorios enviados</h4>' +
+                    '<p class="text-muted mb-0">Se enviaron <strong>' + r.destinatarios + '</strong> recordatorio' + (r.destinatarios === 1 ? "" : "s") +
                         ' de cobro por correo a los encargados, por un total de <strong>' + fmt(r.monto) + '</strong>.</p>' +
-                    '<p style="color:#92400e;font-size:.78rem;margin-top:10px;">(Simulación — no se envió ningún correo real.)</p>' +
+                    '<p class="small text-warning mt-2 mb-0">(Simulación — no se envió ningún correo real.)</p>' +
                 '</div>'
             );
             $btn.hide();
@@ -192,9 +192,9 @@ var Cartera = (function () {
 
     function activarTab(tab) {
         tabActiva = tab;
-        $("#cartera-tabs .aa-tab-item").removeClass("active");
-        $("#cartera-tabs .aa-tab-item[data-tab='" + tab + "']").addClass("active");
-        $(".aa-tab-panel").hide();
+        $("#cartera-tabs .cartera-tab-item, #cartera-tabs .nav-link").removeClass("active");
+        $("#cartera-tabs .cartera-tab-item[data-tab='" + tab + "']").addClass("active").find(".nav-link").addClass("active");
+        $(".cartera-tab-panel").hide();
         $("#tab-" + tab).show();
         cargarTabActiva();
     }
@@ -256,7 +256,7 @@ var Cartera = (function () {
 
         var wrap = $("#cartera-aging-row").empty();
         if (base.length === 0) {
-            wrap.html('<div class="fd-empty"><i class="fa-solid fa-inbox"></i><p>Sin saldos pendientes</p></div>');
+            wrap.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-inbox h2 d-block mb-2"></i><p class="mb-0">Sin saldos pendientes</p></div>');
         } else {
             PEND_BUCKETS.forEach(function (label, i) {
                 wrap.append(
@@ -330,10 +330,10 @@ var Cartera = (function () {
     }
 
     function drillBtnEC(row) {
-        return '<a class="cartera-btn-ec" href="' + (urls.urlEstadoCuenta || "#") + idParam(row) + '" title="Estado de cuenta"><i class="fa-solid fa-file-invoice"></i></a>';
+        return '<a class="btn btn-sm btn-outline-secondary" href="' + (urls.urlEstadoCuenta || "#") + idParam(row) + '" title="Estado de cuenta"><i class="fa-solid fa-file-invoice"></i></a>';
     }
     function drillBtnPago(row) {
-        return '<a class="cartera-btn-ec cartera-btn-pago-mini" href="' + linkPago(row) + '" title="Registrar pago"><i class="fa-solid fa-cash-register"></i></a>';
+        return '<a class="btn btn-sm btn-outline-success" href="' + linkPago(row) + '" title="Registrar pago"><i class="fa-solid fa-cash-register"></i></a>';
     }
 
     function renderDrill() {
@@ -341,7 +341,7 @@ var Cartera = (function () {
         var base = pendRows.filter(function (r) { return num(r.Cco_MontoPendiente) > 0; });
 
         if (base.length === 0) {
-            cont.html('<div class="fd-empty"><i class="fa-solid fa-circle-check"></i><p>Sin deuda pendiente</p></div>');
+            cont.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-circle-check h2 d-block mb-2"></i><p class="mb-0">Sin deuda pendiente</p></div>');
             $("#cartera-drill-chip").text("—");
             return;
         }
@@ -426,7 +426,7 @@ var Cartera = (function () {
         $("#cartera-top-chip").text(arr.length + (arr.length === 1 ? " alumno" : " alumnos"));
 
         if (arr.length === 0) {
-            rank.html('<div class="fd-empty"><i class="fa-solid fa-user-group"></i><p>Sin deudores registrados</p></div>');
+            rank.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-user-group h2 d-block mb-2"></i><p class="mb-0">Sin deudores registrados</p></div>');
             return;
         }
         arr.forEach(function (d, i) {
@@ -438,7 +438,7 @@ var Cartera = (function () {
                         '<p class="fd-rank-sub">' + d.cuotas + (d.cuotas === 1 ? ' cuota pendiente' : ' cuotas pendientes') + '</p>' +
                     '</div>' +
                     '<div class="fd-rank-amt">' + esc(fmt(d.deuda)) + '</div>' +
-                    '<div style="padding-left:12px;">' + btnPago(d.row) + '</div>' +
+                    '<div class="pl-2">' + btnPago(d.row) + '</div>' +
                 '</div>'
             );
         });
@@ -541,7 +541,7 @@ var Cartera = (function () {
         concArr = concArr.slice(0, 7);
         var bars = $("#cartera-pend-conceptos").empty();
         if (concArr.length === 0) {
-            bars.html('<div class="fd-empty"><i class="fa-solid fa-tags"></i><p>Sin conceptos pendientes</p></div>');
+            bars.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-tags h2 d-block mb-2"></i><p class="mb-0">Sin conceptos pendientes</p></div>');
         } else {
             concArr.forEach(function (it, idx) {
                 var pct = total > 0 ? (it.val / total * 100) : 0;
@@ -561,17 +561,17 @@ var Cartera = (function () {
         });
         var feed = $("#cartera-pend-feed").empty();
         if (sorted.length === 0) {
-            feed.html('<div class="fd-empty"><i class="fa-solid fa-circle-check"></i><p>No hay cuentas pendientes con los filtros actuales</p></div>');
+            feed.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-circle-check h2 d-block mb-2"></i><p class="mb-0">No hay cuentas pendientes con los filtros actuales</p></div>');
             return;
         }
         sorted.forEach(function (r, idx) {
             var dias = parseInt(r.DiasVencida, 10);
             var chip, chipCls;
-            if (isNaN(dias)) { chip = "Sin fecha"; chipCls = ""; }
-            else if (dias > 30) { chip = dias + " días vencido"; chipCls = "c-rose"; }
-            else if (dias > 0) { chip = dias + " días vencido"; chipCls = "c-amber"; }
-            else if (dias === 0) { chip = "Vence hoy"; chipCls = "c-amber"; }
-            else { chip = Math.abs(dias) + " días por vencer"; chipCls = "c-cyan"; }
+            if (isNaN(dias)) { chip = "Sin fecha"; chipCls = "outline-badge-secondary"; }
+            else if (dias > 30) { chip = dias + " días vencido"; chipCls = "outline-badge-danger"; }
+            else if (dias > 0) { chip = dias + " días vencido"; chipCls = "outline-badge-warning"; }
+            else if (dias === 0) { chip = "Vence hoy"; chipCls = "outline-badge-warning"; }
+            else { chip = Math.abs(dias) + " días por vencer"; chipCls = "outline-badge-info"; }
 
             var origv = num(r.Cco_MontoOriginal);
             var pagv = num(r.Cco_MontoTotal);
@@ -591,8 +591,8 @@ var Cartera = (function () {
                     '</div>' +
                     '<div class="fd-feed-right">' +
                         '<p class="fd-feed-amount amt-rose">' + esc(fmt(pendv)) + '</p>' +
-                        '<span class="fd-chip ' + chipCls + '">' + esc(chip) + '</span>' +
-                        '<div style="margin-top:6px;">' + btnPago(r) + '</div>' +
+                        '<span class="badge ' + chipCls + '">' + esc(chip) + '</span>' +
+                        '<div class="mt-2">' + btnPago(r) + '</div>' +
                     '</div>' +
                 '</div>'
             );

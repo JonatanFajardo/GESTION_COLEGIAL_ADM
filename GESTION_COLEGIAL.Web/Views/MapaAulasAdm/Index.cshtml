@@ -2,7 +2,6 @@
     ViewBag.Title = "Mapa de Aulas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Styles{ <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" /> }
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -11,19 +10,14 @@
         </ol>
     </nav>
 </div>
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo"><i class="fa-solid fa-map-location-dot" style="font-size:32px;"></i></div>
-            <div class="header-text-catalogo">
-                <h1>Mapa de Ocupación de Aulas</h1>
-                <p>Visualice la asignación de horarios por aula en el año actual</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Mapa de Ocupación de Aulas</h4>
+        <p class="text-muted mb-0">Visualice la asignación de horarios por aula en el año actual</p>
     </div>
 </div>
 <div class="fluid-container">
-    <div class="row g-3" id="panel-aulas">
+    <div class="row" id="panel-aulas">
         <div class="col-12 text-center py-5 text-muted" id="estado-carga">
             <i class="fa-solid fa-spinner fa-spin fa-2x mb-2"></i><p>Cargando...</p>
         </div>

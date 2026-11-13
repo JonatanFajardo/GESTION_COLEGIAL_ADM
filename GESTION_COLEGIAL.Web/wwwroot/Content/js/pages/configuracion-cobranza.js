@@ -284,8 +284,9 @@
     function usageBadgeHtml(cat, row) {
         if (!cat.usageBadge) return '';
         var b = cat.usageBadge(row) || {};
-        var tone = b.tone || 'indigo';
-        return '<span class="cc-usage-badge tone-' + tone + '">' + esc(b.label) + '</span>';
+        var tones = { indigo: 'primary', emerald: 'success', amber: 'warning', cyan: 'info', rose: 'danger' };
+        var tone = tones[b.tone] || 'primary';
+        return '<span class="badge outline-badge-' + tone + '">' + esc(b.label) + '</span>';
     }
 
     function renderCards() {
@@ -306,23 +307,25 @@
             var desc = r[cat.fieldDesc] || '(sin descripción)';
             var esActivo = cat.fieldEsActivo ? !!r[cat.fieldEsActivo] : null;
             var stateBadge = '';
-            if (esActivo === true)  stateBadge = '<span class="cc-card-badge active"><i class="bi bi-check-circle-fill"></i> Activo</span>';
-            if (esActivo === false) stateBadge = '<span class="cc-card-badge inactive"><i class="bi bi-slash-circle-fill"></i> Inactivo</span>';
+            if (esActivo === true)  stateBadge = '<span class="badge badge-success"><i class="bi bi-check-circle-fill mr-1"></i>Activo</span>';
+            if (esActivo === false) stateBadge = '<span class="badge badge-secondary"><i class="bi bi-slash-circle-fill mr-1"></i>Inactivo</span>';
 
             var $card = $(
-                '<div class="cc-card ' + (esActivo === false ? 'cc-card-inactive' : '') + '" data-id="' + esc(id) + '">' +
-                    '<div class="cc-card-head">' +
-                        '<div class="cc-card-icon"><i class="bi ' + cat.icon + '"></i></div>' +
-                        '<span class="cc-card-id">#' + esc(id) + '</span>' +
-                    '</div>' +
-                    '<div class="cc-card-body">' +
-                        '<h4>' + esc(desc) + '</h4>' +
-                        '<div class="cc-card-meta">' + stateBadge + ' ' + usageBadgeHtml(cat, r) + '</div>' +
-                    '</div>' +
-                    '<div class="cc-card-actions">' +
-                        '<button type="button" class="cc-card-action view"   title="Ver detalle"><i class="bi bi-eye"></i></button>' +
-                        '<button type="button" class="cc-card-action edit"   title="Editar"><i class="bi bi-pencil"></i></button>' +
-                        '<button type="button" class="cc-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                '<div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-4" data-id="' + esc(id) + '">' +
+                    '<div class="card h-100' + (esActivo === false ? ' text-muted' : '') + '">' +
+                        '<div class="card-body">' +
+                            '<div class="d-flex justify-content-between align-items-center mb-2">' +
+                                '<span class="h4 mb-0 text-primary"><i class="bi ' + cat.icon + '"></i></span>' +
+                                '<span class="badge badge-light">#' + esc(id) + '</span>' +
+                            '</div>' +
+                            '<h6 class="font-weight-bold text-dark mb-2">' + esc(desc) + '</h6>' +
+                            '<div>' + stateBadge + ' ' + usageBadgeHtml(cat, r) + '</div>' +
+                        '</div>' +
+                        '<div class="card-footer bg-transparent text-right">' +
+                            '<button type="button" class="btn btn-sm btn-outline-primary cc-card-action view mr-1" title="Ver detalle"><i class="bi bi-eye"></i></button>' +
+                            '<button type="button" class="btn btn-sm btn-outline-secondary cc-card-action edit mr-1" title="Editar"><i class="bi bi-pencil"></i></button>' +
+                            '<button type="button" class="btn btn-sm btn-outline-danger cc-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                        '</div>' +
                     '</div>' +
                 '</div>'
             );
@@ -330,10 +333,12 @@
         });
 
         $grid.append(
-            '<div class="cc-card-new" role="button" tabindex="0">' +
-                '<i class="bi bi-plus-circle"></i>' +
-                '<span>Nuev' + (cat.genero === 'f' ? 'a' : 'o') + ' ' + cat.singular + '</span>' +
-                '<small>Agregar un registro nuevo</small>' +
+            '<div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-4">' +
+                '<button type="button" class="btn btn-outline-primary btn-block h-100 py-4 cc-card-new">' +
+                    '<i class="bi bi-plus-circle h3 d-block mb-1"></i>' +
+                    '<span class="d-block font-weight-bold">Nuev' + (cat.genero === 'f' ? 'a' : 'o') + ' ' + cat.singular + '</span>' +
+                    '<small>Agregar un registro nuevo</small>' +
+                '</button>' +
             '</div>'
         );
     }
@@ -345,8 +350,8 @@
 
         if (rows.length === 0) {
             $body.append(
-                '<tr><td colspan="6" style="text-align:center; padding:2rem; color:#94a3b8;">' +
-                    '<i class="bi bi-inbox" style="font-size:1.5rem; display:block; margin-bottom:0.35rem;"></i>' +
+                '<tr><td colspan="6" class="text-center text-muted py-4">' +
+                    '<i class="bi bi-inbox h4 d-block mb-1"></i>' +
                     'Sin registros' +
                 '</td></tr>'
             );
@@ -358,28 +363,28 @@
             var desc = r[cat.fieldDesc] || '(sin descripción)';
             var esActivo = cat.fieldEsActivo ? !!r[cat.fieldEsActivo] : null;
             var estadoCell = esActivo === true
-                ? '<span class="cc-card-badge active"><i class="bi bi-check-circle-fill"></i> Activo</span>'
+                ? '<span class="badge badge-success"><i class="bi bi-check-circle-fill mr-1"></i>Activo</span>'
                 : esActivo === false
-                ? '<span class="cc-card-badge inactive"><i class="bi bi-slash-circle-fill"></i> Inactivo</span>'
-                : '<span style="color:#94a3b8;">—</span>';
+                ? '<span class="badge badge-secondary"><i class="bi bi-slash-circle-fill mr-1"></i>Inactivo</span>'
+                : '<span class="text-muted">—</span>';
             var fecha = fmtDate(r[cat.fieldFechaRegistra]);
             var usr = r[cat.fieldUsuarioRegistraNombre] || '';
-            var usoCell = usageBadgeHtml(cat, r) || '<span style="color:#94a3b8;">—</span>';
+            var usoCell = usageBadgeHtml(cat, r) || '<span class="text-muted">—</span>';
 
             var $tr = $(
                 '<tr data-id="' + esc(id) + '">' +
-                    '<td><span class="badge-id">#' + esc(id) + '</span></td>' +
+                    '<td><span class="badge badge-light">#' + esc(id) + '</span></td>' +
                     '<td><strong>' + esc(desc) + '</strong></td>' +
                     '<td>' + usoCell + '</td>' +
                     '<td>' + estadoCell + '</td>' +
                     '<td>' +
-                        '<div style="font-size:0.8rem; color:#64748b;">' + esc(fecha) + '</div>' +
-                        (usr ? '<div style="font-size:0.75rem; color:#94a3b8;">por ' + esc(usr) + '</div>' : '') +
+                        '<div class="small text-muted">' + esc(fecha) + '</div>' +
+                        (usr ? '<div class="small text-muted">por ' + esc(usr) + '</div>' : '') +
                     '</td>' +
-                    '<td class="actions-cell">' +
-                        '<button type="button" class="cc-card-action view"   title="Detalle"><i class="bi bi-eye"></i></button> ' +
-                        '<button type="button" class="cc-card-action edit"   title="Editar"><i class="bi bi-pencil"></i></button> ' +
-                        '<button type="button" class="cc-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                    '<td class="text-center text-nowrap">' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary cc-card-action view" title="Detalle"><i class="bi bi-eye"></i></button> ' +
+                        '<button type="button" class="btn btn-sm btn-outline-secondary cc-card-action edit" title="Editar"><i class="bi bi-pencil"></i></button> ' +
+                        '<button type="button" class="btn btn-sm btn-outline-danger cc-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
                     '</td>' +
                 '</tr>'
             );
@@ -661,8 +666,8 @@
             e.preventDefault();
             var key = $(this).data('catalog');
             if (!key || key === state.activeKey) return;
-            $('.cc-tab-item').removeClass('active');
-            $(this).addClass('active');
+            $('.cc-tab-item, .cc-tab-item .nav-link').removeClass('active');
+            $(this).addClass('active').find('.nav-link').addClass('active');
             state.activeKey = key;
             state.search = '';
             $('#cc-search').val('');
@@ -673,7 +678,7 @@
         $(document).on('click', '.cc-cascade-pill', function () {
             var key = $(this).data('jump');
             $('.cc-tab-item[data-catalog="' + key + '"]').trigger('click');
-            $('html, body').animate({ scrollTop: $('.cc-tabs-card').offset().top - 20 }, 300);
+            $('html, body').animate({ scrollTop: $('#cc-tabs').offset().top - 20 }, 300);
         });
 
         // Toggle vista

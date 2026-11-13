@@ -3,32 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
-    <style>
-        .tab-content { padding-top: 20px; }
-        .formato-info {
-            background: #f8f9fa;
-            border-left: 4px solid #007bff;
-            padding: 12px 16px;
-            border-radius: 4px;
-            margin-bottom: 16px;
-            font-size: 13px;
-        }
-        .formato-info code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; }
-        #preview-table { margin-top: 16px; }
-        .export-card {
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        .export-card i { font-size: 36px; color: #28a745; margin-bottom: 10px; }
-        .export-card p { color: #6c757d; font-size: 13px; }
-    </style>
-}
-
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -38,34 +12,27 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo">
-                <i class="fa-solid fa-file-import" style="font-size:32px;"></i>
-            </div>
-            <div class="header-text-catalogo">
-                <h1>Importador / Exportador</h1>
-                <p>Importación y exportación masiva de datos</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Importador / Exportador</h4>
+        <p class="text-muted mb-0">Importación y exportación masiva de datos</p>
     </div>
 </div>
 
-<div class="fluid-container">
-    <div class="card-listado-catalogo">
-        <div class="card-body-listado-catalogo">
+
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
 
             <!-- Tabs -->
-            <ul class="nav nav-tabs" id="importadorTabs" role="tablist">
+            <ul class="nav nav-tabs mb-4" id="importadorTabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="tab-importar" data-toggle="tab" href="#panel-importar" role="tab">
-                        <i class="fa fa-upload"></i> Importar
+                        <i class="fas fa-upload mr-1"></i> Importar
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="tab-exportar" data-toggle="tab" href="#panel-exportar" role="tab">
-                        <i class="fa fa-download"></i> Exportar
+                        <i class="fas fa-download mr-1"></i> Exportar
                     </a>
                 </li>
             </ul>
@@ -74,7 +41,7 @@
 
                 <!-- Panel Importar -->
                 <div class="tab-pane fade show active" id="panel-importar" role="tabpanel">
-                    <div class="formato-info">
+                    <div class="alert alert-light-primary mb-3">
                         <strong>Formato esperado del CSV — Alumnos:</strong><br />
                         Columnas requeridas:
                         <code>Nombre</code>,
@@ -96,24 +63,24 @@
                                 </div>
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button" id="btn-preview">
-                                        <i class="fa fa-eye"></i> Vista previa
+                                        <i class="fas fa-eye mr-1"></i> Vista previa
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </form>
 
-                    <div id="preview-table" style="display:none;">
+                    <div id="preview-table" class="mt-3" style="display:none;">
                         <hr />
                         <h6>Vista previa <small class="text-muted">(primeras 10 filas)</small></h6>
                         <div class="table-responsive">
-                            <table class="table table-sm table-bordered table-striped" id="tabla-preview">
+                            <table class="table table-sm table-hover" id="tabla-preview">
                                 <thead id="preview-thead"></thead>
                                 <tbody id="preview-tbody"></tbody>
                             </table>
                         </div>
                         <div class="alert alert-info mt-2">
-                            <i class="fa fa-info-circle"></i>
+                            <i class="fas fa-info-circle mr-1"></i>
                             La importación completa estará disponible en una próxima versión. Verifique que los datos sean correctos antes de proceder.
                         </div>
                     </div>
@@ -122,35 +89,35 @@
                 <!-- Panel Exportar -->
                 <div class="tab-pane fade" id="panel-exportar" role="tabpanel">
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="export-card">
-                                <i class="fa-solid fa-user-graduate"></i>
-                                <h6>Alumnos</h6>
-                                <p>Exportar listado completo de alumnos activos</p>
-                                <a href="@Url.Content("~/")api/v1/Alumno/ListAsync" target="_blank" class="btn btn-success btn-sm">
-                                    <i class="fa fa-download"></i> Exportar CSV
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 text-center"><div class="card-body">
+                                <div class="h2 text-success mb-2"><i class="fa-solid fa-user-graduate"></i></div>
+                                <h6 class="font-weight-bold text-dark">Alumnos</h6>
+                                <p class="small text-muted">Exportar listado completo de alumnos activos</p>
+                                <a href="@Url.Content("~/")api/v1/Alumno/ListAsync" target="_blank" class="btn btn-sm btn-outline-success">
+                                    <i class="fas fa-download mr-1"></i> Exportar CSV
                                 </a>
-                            </div>
+                            </div></div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="export-card">
-                                <i class="fa-solid fa-users"></i>
-                                <h6>Empleados</h6>
-                                <p>Exportar listado completo de empleados activos</p>
-                                <a href="@Url.Content("~/")api/v1/Empleado/ListAsync" target="_blank" class="btn btn-success btn-sm">
-                                    <i class="fa fa-download"></i> Exportar CSV
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 text-center"><div class="card-body">
+                                <div class="h2 text-success mb-2"><i class="fa-solid fa-users"></i></div>
+                                <h6 class="font-weight-bold text-dark">Empleados</h6>
+                                <p class="small text-muted">Exportar listado completo de empleados activos</p>
+                                <a href="@Url.Content("~/")api/v1/Empleado/ListAsync" target="_blank" class="btn btn-sm btn-outline-success">
+                                    <i class="fas fa-download mr-1"></i> Exportar CSV
                                 </a>
-                            </div>
+                            </div></div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="export-card">
-                                <i class="fa-solid fa-file-invoice-dollar"></i>
-                                <h6>Cuentas por Cobrar</h6>
-                                <p>Exportar cuentas pendientes de cobro</p>
-                                <a href="@Url.Content("~/")api/v1/CuentaCobrar/ListAsync" target="_blank" class="btn btn-success btn-sm">
-                                    <i class="fa fa-download"></i> Exportar CSV
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 text-center"><div class="card-body">
+                                <div class="h2 text-success mb-2"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                                <h6 class="font-weight-bold text-dark">Cuentas por Cobrar</h6>
+                                <p class="small text-muted">Exportar cuentas pendientes de cobro</p>
+                                <a href="@Url.Content("~/")api/v1/CuentaCobrar/ListAsync" target="_blank" class="btn btn-sm btn-outline-success">
+                                    <i class="fas fa-download mr-1"></i> Exportar CSV
                                 </a>
-                            </div>
+                            </div></div>
                         </div>
                     </div>
                 </div>
@@ -158,7 +125,7 @@
             </div>
         </div>
     </div>
-</div>
+
 
 @section Scripts{
     <script src="~/Content/js/pages/importador.js"></script>

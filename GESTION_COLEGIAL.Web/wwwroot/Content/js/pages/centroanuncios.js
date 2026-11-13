@@ -82,16 +82,15 @@ var CentroAnuncios = (function () {
         var html = "";
         lista.forEach(function (a) {
             var esVigente = a.EsVigente == 1;
-            var cls       = esVigente ? "vigente" : "expirado";
             var badge     = esVigente
-                ? '<span class="badge-vigente">Vigente</span>'
-                : '<span class="badge-expirado">Expirado</span>';
+                ? '<span class="badge badge-success">Vigente</span>'
+                : '<span class="badge badge-secondary">Expirado</span>';
 
             var diasHtml = "";
             if (esVigente && a.Anu_FechaExpiracion) {
                 var dias = Math.ceil((new Date(a.Anu_FechaExpiracion) - new Date()) / 86400000);
-                var clsDias = dias <= 7 ? "dias-urgente" : "dias-ok";
-                diasHtml = '<span class="dias-restantes ' + clsDias + '"><i class="fa-solid fa-clock fa-xs"></i> ' + dias + ' días restantes</span>';
+                var clsDias = dias <= 7 ? "outline-badge-danger" : "outline-badge-info";
+                diasHtml = '<div class="mt-1"><span class="badge ' + clsDias + '"><i class="fa-solid fa-clock fa-xs mr-1"></i>' + dias + ' días restantes</span></div>';
             }
 
             var fechaPub = a.Anu_FechaPublicacion
@@ -99,26 +98,25 @@ var CentroAnuncios = (function () {
                 : "";
 
             html += '<div class="col-lg-4 col-md-6 mb-4">'
-                +   '<div class="anuncio-card ' + cls + '">'
-                +     '<div class="anuncio-accent"></div>'
-                +     '<div class="anuncio-body">'
-                +       '<div class="anuncio-top-row">'
-                +         '<div class="anuncio-icon-wrap"><i class="fa-solid fa-bullhorn"></i></div>'
+                +   '<div class="card component-card_1 h-100' + (esVigente ? ' border-primary' : '') + '">'
+                +     '<div class="card-body d-flex flex-column">'
+                +       '<div class="d-flex justify-content-between align-items-center mb-3">'
+                +         '<i class="fa-solid fa-bullhorn ' + (esVigente ? 'text-primary' : 'text-muted') + ' h4 mb-0"></i>'
                 +         badge
                 +       '</div>'
-                +       '<div class="anuncio-titulo">' + escapeHtml(a.Anu_Titulo) + '</div>'
-                +       '<div class="anuncio-contenido">' + escapeHtml(a.Anu_Contenido) + '</div>'
-                +       '<hr class="anuncio-divider">'
-                +       '<div class="anuncio-meta">'
-                +         '<div><i class="fa-solid fa-calendar-days"></i>' + fechaPub + '</div>'
-                +         '<div><i class="fa-solid fa-user"></i>' + escapeHtml(a.PublicadoPor || '') + '</div>'
+                +       '<h5 class="card-title">' + escapeHtml(a.Anu_Titulo) + '</h5>'
+                +       '<p class="card-text text-muted flex-grow-1">' + escapeHtml(a.Anu_Contenido) + '</p>'
+                +       '<hr class="my-2">'
+                +       '<div class="small text-muted">'
+                +         '<div><i class="fa-solid fa-calendar-days mr-1"></i>' + fechaPub + '</div>'
+                +         '<div><i class="fa-solid fa-user mr-1"></i>' + escapeHtml(a.PublicadoPor || '') + '</div>'
                 +         diasHtml
                 +       '</div>'
-                +     '</div>'
-                +     '<div class="anuncio-footer">'
-                +       '<button class="btn-eliminar-anuncio" data-id="' + a.Anu_Id + '">'
-                +         '<i class="fa-solid fa-trash fa-xs"></i> Eliminar'
-                +       '</button>'
+                +       '<div class="text-right mt-3">'
+                +         '<button type="button" class="btn btn-sm btn-outline-danger btn-eliminar-anuncio" data-id="' + a.Anu_Id + '">'
+                +           '<i class="fa-solid fa-trash fa-xs mr-1"></i> Eliminar'
+                +         '</button>'
+                +       '</div>'
                 +     '</div>'
                 +   '</div>'
                 + '</div>';

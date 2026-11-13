@@ -55,10 +55,12 @@ var DashboardCajero = (function () {
     }
 
     function fpaClass(desc) {
-        if (!desc) return 'fpa-Otro';
-        var d = String(desc).trim();
-        if (d === 'Efectivo' || d === 'Tarjeta' || d === 'Transferencia' || d === 'Cheque') return 'fpa-' + d;
-        return 'fpa-Otro';
+        var d = desc ? String(desc).trim() : '';
+        if (d === 'Efectivo') return 'outline-badge-success';
+        if (d === 'Tarjeta') return 'outline-badge-info';
+        if (d === 'Transferencia') return 'outline-badge-primary';
+        if (d === 'Cheque') return 'outline-badge-warning';
+        return 'outline-badge-secondary';
     }
 
     function cargar() {
@@ -190,7 +192,7 @@ var DashboardCajero = (function () {
             ctx.style.display = 'none';
             if (!ctx.parentNode.querySelector('.empty-fpa')) {
                 var p = document.createElement('p');
-                p.className = 'empty-state empty-fpa';
+                p.className = 'text-center text-muted small py-4 mb-0 empty-fpa';
                 p.textContent = 'Sin cobros para mostrar.';
                 ctx.parentNode.appendChild(p);
             }
@@ -231,7 +233,7 @@ var DashboardCajero = (function () {
             ctx.style.display = 'none';
             if (!ctx.parentNode.querySelector('.empty-cpa')) {
                 var p = document.createElement('p');
-                p.className = 'empty-state empty-cpa';
+                p.className = 'text-center text-muted small py-4 mb-0 empty-cpa';
                 p.textContent = 'Sin cobros por concepto.';
                 ctx.parentNode.appendChild(p);
             }
@@ -302,18 +304,18 @@ var DashboardCajero = (function () {
         if (!tbody) return;
         if (stat) stat.textContent = data.length > 0 ? data.length + ' pagos' : '';
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Sin pagos registrados para esta fecha.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted small py-4">Sin pagos registrados para esta fecha.</td></tr>';
             return;
         }
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var r = data[i], fp = r.Fpa_Descripcion || '—';
             html += '<tr>'
-                  + '<td style="font-weight:700;color:#15803d;white-space:nowrap;">' + fmtHoraMin(r.Pag_FechaPago) + '</td>'
-                  + '<td style="font-weight:600;">' + (r.NombreAlumno || '—') + '</td>'
-                  + '<td style="text-align:center;"><span class="fpa-badge ' + fpaClass(fp) + '">' + fp + '</span></td>'
-                  + '<td style="font-size:.75rem;color:#64748b;">' + (r.Pag_NumeroReferencia || '—') + '</td>'
-                  + '<td style="text-align:right;font-weight:800;color:#0f172a;white-space:nowrap;">' + fmtMoney(r.Pag_MontoTotal) + '</td>'
+                  + '<td class="font-weight-bold text-success text-nowrap">' + fmtHoraMin(r.Pag_FechaPago) + '</td>'
+                  + '<td class="font-weight-bold">' + (r.NombreAlumno || '—') + '</td>'
+                  + '<td class="text-center"><span class="badge ' + fpaClass(fp) + '">' + fp + '</span></td>'
+                  + '<td class="small text-muted">' + (r.Pag_NumeroReferencia || '—') + '</td>'
+                  + '<td class="text-right font-weight-bold text-nowrap">' + fmtMoney(r.Pag_MontoTotal) + '</td>'
                   + '</tr>';
         }
         tbody.innerHTML = html;
@@ -322,7 +324,7 @@ var DashboardCajero = (function () {
     function renderTopAlumnos(data) {
         var cont = document.getElementById('lista-top-alumnos');
         if (!cont) return;
-        if (!data || data.length === 0) { cont.innerHTML = '<p class="empty-state">Sin alumnos atendidos hoy.</p>'; return; }
+        if (!data || data.length === 0) { cont.innerHTML = '<p class="text-center text-muted small py-4 mb-0">Sin alumnos atendidos hoy.</p>'; return; }
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var a = data[i], ini = (a.NombreAlumno || '?').charAt(0).toUpperCase();
@@ -331,10 +333,10 @@ var DashboardCajero = (function () {
                 : '<div class="topal-avatar-ph">' + ini + '</div>';
             html += '<div class="topal-item">' + av
                   + '<div class="topal-info">'
-                  +   '<div class="topal-nombre">' + (a.NombreAlumno || '—') + '</div>'
-                  +   '<div class="topal-meta">' + (a.CantidadPagos || 0) + ' ' + ((a.CantidadPagos || 0) === 1 ? 'pago' : 'pagos') + '</div>'
+                  +   '<div class="font-weight-bold text-truncate">' + (a.NombreAlumno || '—') + '</div>'
+                  +   '<div class="small text-muted">' + (a.CantidadPagos || 0) + ' ' + ((a.CantidadPagos || 0) === 1 ? 'pago' : 'pagos') + '</div>'
                   + '</div>'
-                  + '<div class="topal-badge">' + fmtMoney(a.MontoTotal) + '</div>'
+                  + '<div class="badge outline-badge-success">' + fmtMoney(a.MontoTotal) + '</div>'
                   + '</div>';
         }
         cont.innerHTML = html;
@@ -345,7 +347,7 @@ var DashboardCajero = (function () {
         var stat = document.getElementById('stat-vencidas');
         if (!cont) return;
         if (stat) stat.textContent = data.length > 0 ? data.length + ' cuentas' : '';
-        if (!data || data.length === 0) { cont.innerHTML = '<p class="empty-state">Sin cuentas vencidas.</p>'; return; }
+        if (!data || data.length === 0) { cont.innerHTML = '<p class="text-center text-muted small py-4 mb-0">Sin cuentas vencidas.</p>'; return; }
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var v = data[i], dias = v.DiasVencido || 0;
@@ -353,10 +355,10 @@ var DashboardCajero = (function () {
             html += '<div class="venc-item">'
                   + '<div class="venc-dias ' + diasClass + '">' + dias + '<span class="venc-dias-lbl">días</span></div>'
                   + '<div class="venc-info">'
-                  +   '<div class="venc-nombre">' + (v.NombreAlumno || '—') + '</div>'
-                  +   '<div class="venc-concepto">' + (v.Cpa_Descripcion || '') + ' · Venc. ' + fmtFechaCorta(v.Cco_FechaVencimiento) + '</div>'
+                  +   '<div class="font-weight-bold text-truncate">' + (v.NombreAlumno || '—') + '</div>'
+                  +   '<div class="small text-muted">' + (v.Cpa_Descripcion || '') + ' · Venc. ' + fmtFechaCorta(v.Cco_FechaVencimiento) + '</div>'
                   + '</div>'
-                  + '<div class="venc-monto">' + fmtMoney(v.Cco_MontoPendiente) + '</div>'
+                  + '<div class="font-weight-bold text-danger text-nowrap">' + fmtMoney(v.Cco_MontoPendiente) + '</div>'
                   + '</div>';
         }
         cont.innerHTML = html;
@@ -366,24 +368,24 @@ var DashboardCajero = (function () {
         var cont = document.getElementById('arqueo-info');
         if (!cont) return;
         if (!a || !a.Arq_Id) {
-            cont.innerHTML = '<div class="arqueo-empty"><i class="fa-solid fa-box-open" style="font-size:1.8rem;display:block;margin-bottom:8px;opacity:.6;"></i>Sin arqueo previo registrado.</div>';
+            cont.innerHTML = '<div class="text-center text-muted small py-4"><i class="fas fa-box-open fa-2x d-block mb-2"></i>Sin arqueo previo registrado.</div>';
             return;
         }
         cont.innerHTML = ''
-            + '<div class="arqueo-card">'
-            +   '<div class="arqueo-row"><span class="arqueo-lbl">Fecha</span><span class="arqueo-val">' + fmtFechaCorta(a.Arq_Fecha) + '</span></div>'
-            +   '<div class="arqueo-row"><span class="arqueo-lbl">Total</span><span class="arqueo-total">' + fmtMoney(a.Arq_TotalGeneral) + '</span></div>'
-            +   '<div class="arqueo-row" style="border-bottom:none;display:block;">'
-            +     '<div class="arqueo-lbl" style="margin-bottom:4px;">Observaciones</div>'
-            +     '<div style="font-size:.8rem;color:#334155;line-height:1.4;">' + (a.Arq_Observaciones || '—') + '</div>'
-            +   '</div>'
-            + '</div>';
+            + '<ul class="list-group">'
+            +   '<li class="list-group-item d-flex justify-content-between align-items-center"><span class="small text-muted text-uppercase font-weight-bold">Fecha</span><span class="font-weight-bold">' + fmtFechaCorta(a.Arq_Fecha) + '</span></li>'
+            +   '<li class="list-group-item d-flex justify-content-between align-items-center"><span class="small text-muted text-uppercase font-weight-bold">Total</span><span class="h5 font-weight-bold text-success mb-0">' + fmtMoney(a.Arq_TotalGeneral) + '</span></li>'
+            +   '<li class="list-group-item">'
+            +     '<div class="small text-muted text-uppercase font-weight-bold mb-1">Observaciones</div>'
+            +     '<div class="small">' + (a.Arq_Observaciones || '—') + '</div>'
+            +   '</li>'
+            + '</ul>';
     }
 
     function renderAlertas(data) {
         var cont = document.getElementById('lista-alertas');
         if (!cont) return;
-        if (!data || data.length === 0) { cont.innerHTML = '<p class="empty-state" style="grid-column:1/-1;">Sin alertas activas.</p>'; return; }
+        if (!data || data.length === 0) { cont.innerHTML = '<p class="text-center text-muted small py-4 mb-0 alertas-grid-full">Sin alertas activas.</p>'; return; }
         var iconos = {
             'vencidas':   '&#x23F1;&#xFE0F;',
             'mora':       '&#x1F525;',
@@ -395,12 +397,13 @@ var DashboardCajero = (function () {
         for (var i = 0; i < data.length; i++) {
             var a = data[i], urg = (a.Urgencia || 'baja').toLowerCase(), tipo = (a.Tipo || '').toLowerCase();
             var icono = iconos[tipo] || '&#x2139;&#xFE0F;';
-            var bClass = urg === 'alta' ? 'badge-alta' : (urg === 'media' ? 'badge-media' : 'badge-baja');
-            html += '<div class="alerta-item ' + urg + '">'
-                  + '<span class="alerta-icon">' + icono + '</span>'
+            var bClass = urg === 'alta' ? 'badge-danger' : (urg === 'media' ? 'badge-warning' : 'badge-success');
+            var aClass = urg === 'alta' ? 'alert-light-danger' : (urg === 'media' ? 'alert-light-warning' : 'alert-light-success');
+            html += '<div class="alert ' + aClass + ' d-flex align-items-start mb-0">'
+                  + '<span class="mr-2">' + icono + '</span>'
                   + '<div>'
-                  +   '<div class="alerta-msg">' + (a.Mensaje || '') + '</div>'
-                  +   '<span class="alerta-badge ' + bClass + '">' + urg.charAt(0).toUpperCase() + urg.slice(1) + '</span>'
+                  +   '<div class="font-weight-bold">' + (a.Mensaje || '') + '</div>'
+                  +   '<span class="badge ' + bClass + ' mt-1">' + urg.charAt(0).toUpperCase() + urg.slice(1) + '</span>'
                   + '</div>'
                   + '</div>';
         }

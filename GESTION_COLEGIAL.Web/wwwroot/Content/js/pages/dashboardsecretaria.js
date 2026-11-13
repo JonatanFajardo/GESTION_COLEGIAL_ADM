@@ -115,7 +115,7 @@ var DashboardSecretaria = (function () {
         if (!cont) return;
 
         if (!data || data.length === 0) {
-            cont.innerHTML = '<p class="dd-empty">No hay trámites pendientes hoy.</p>';
+            cont.innerHTML = '<p class="text-center text-muted small py-4 mb-0">No hay trámites pendientes hoy.</p>';
             return;
         }
 
@@ -139,20 +139,20 @@ var DashboardSecretaria = (function () {
             var urgencia = (t.Urgencia || 'baja').toLowerCase();
             var icono = iconos[tipo] || '&#x2139;&#xFE0F;';
 
-            var badgeClass = 'badge-baja';
-            if (urgencia === 'alta')  badgeClass = 'badge-alta';
-            if (urgencia === 'media') badgeClass = 'badge-media';
+            var badgeClass = 'badge-info', alertClass = 'alert-light-info';
+            if (urgencia === 'alta')  { badgeClass = 'badge-danger'; alertClass = 'alert-light-danger'; }
+            if (urgencia === 'media') { badgeClass = 'badge-warning'; alertClass = 'alert-light-warning'; }
 
             var urgLabel = urgencia.charAt(0).toUpperCase() + urgencia.slice(1);
             var alumno  = escapeHtml(cleanText(t.Alumno));
             var detalle = escapeHtml(cleanText(t.Detalle));
 
-            html += '<div class="tramite-item ' + urgencia + '">'
-                +   '<span class="tramite-icon">' + icono + '</span>'
-                +   '<div class="tramite-body">'
-                +     '<div class="tramite-alumno">' + (alumno || '—') + '</div>'
-                +     (detalle ? '<div class="tramite-detalle">' + detalle + '</div>' : '')
-                +     '<span class="tramite-badge ' + badgeClass + '">' + urgLabel + '</span>'
+            html += '<div class="alert ' + alertClass + ' d-flex align-items-start mb-2">'
+                +   '<span class="mr-2">' + icono + '</span>'
+                +   '<div class="flex-grow-1">'
+                +     '<div class="font-weight-bold">' + (alumno || '—') + '</div>'
+                +     (detalle ? '<div class="small">' + detalle + '</div>' : '')
+                +     '<span class="badge ' + badgeClass + ' mt-1">' + urgLabel + '</span>'
                 +   '</div>'
                 + '</div>';
         }
@@ -351,7 +351,7 @@ var DashboardSecretaria = (function () {
         if (!tbody) return;
 
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:16px;">Sin datos disponibles.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted small py-4">Sin datos disponibles.</td></tr>';
             return;
         }
 
@@ -368,11 +368,11 @@ var DashboardSecretaria = (function () {
             var pct = Math.round((pend / max) * 100);
             var tipo = escapeHtml(cleanText(row.TipoDocumento) || '—');
             html += '<tr>'
-                + '<td style="font-weight:600;">' + tipo + '</td>'
-                + '<td style="text-align:center;font-weight:800;color:#dc2626;">' + fmtNum(pend) + '</td>'
+                + '<td class="font-weight-bold">' + tipo + '</td>'
+                + '<td class="text-center font-weight-bold text-danger">' + fmtNum(pend) + '</td>'
                 + '<td>'
-                +   '<div class="dd-progress">'
-                +     '<div class="dd-progress-fill" style="width:' + pct + '%;background:#ef4444;"></div>'
+                +   '<div class="progress mb-0">'
+                +     '<div class="progress-bar bg-danger" role="progressbar" style="width:' + pct + '%;"></div>'
                 +   '</div>'
                 + '</td>'
                 + '</tr>';
@@ -387,22 +387,22 @@ var DashboardSecretaria = (function () {
         if (!tbody) return;
 
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:16px;">Sin datos disponibles.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted small py-4">Sin datos disponibles.</td></tr>';
             return;
         }
 
-        var rankClasses = ['rank-1', 'rank-2', 'rank-3'];
+        var rankClasses = ['badge-warning', 'badge-secondary', 'badge-info'];
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var row = data[i];
-            var rClass = i < 3 ? rankClasses[i] : 'rank-n';
+            var rClass = i < 3 ? rankClasses[i] : 'outline-badge-secondary';
             var alumno = escapeHtml(cleanText(row.Alumno) || '—');
             var curso  = escapeHtml(cleanText(row.Curso)  || '—');
             html += '<tr>'
-                + '<td><span class="rank-badge ' + rClass + '">' + (i + 1) + '</span></td>'
-                + '<td style="font-weight:600;">' + alumno + '</td>'
-                + '<td style="color:#64748b;">' + curso + '</td>'
-                + '<td style="text-align:center;font-weight:800;color:#dc2626;">' + fmtNum(row.DocsPendientes) + '</td>'
+                + '<td><span class="badge ' + rClass + '">' + (i + 1) + '</span></td>'
+                + '<td class="font-weight-bold">' + alumno + '</td>'
+                + '<td class="text-muted">' + curso + '</td>'
+                + '<td class="text-center font-weight-bold text-danger">' + fmtNum(row.DocsPendientes) + '</td>'
                 + '</tr>';
         }
         tbody.innerHTML = html;
@@ -415,7 +415,7 @@ var DashboardSecretaria = (function () {
         if (!tbody) return;
 
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:16px;">Sin datos disponibles.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted small py-4">Sin datos disponibles.</td></tr>';
             return;
         }
 
@@ -425,9 +425,9 @@ var DashboardSecretaria = (function () {
             var nombre   = escapeHtml(cleanText(row.Nombre) || '—');
             var faltante = escapeHtml(cleanText(row.Faltante) || '—');
             html += '<tr>'
-                + '<td style="font-weight:600;">' + nombre + '</td>'
-                + '<td><span class="faltante-badge">' + faltante + '</span></td>'
-                + '<td style="text-align:center;font-weight:700;color:#0f172a;">' + fmtNum(row.AlumnosACargo) + '</td>'
+                + '<td class="font-weight-bold">' + nombre + '</td>'
+                + '<td><span class="badge outline-badge-danger">' + faltante + '</span></td>'
+                + '<td class="text-center font-weight-bold">' + fmtNum(row.AlumnosACargo) + '</td>'
                 + '</tr>';
         }
         tbody.innerHTML = html;
@@ -440,7 +440,7 @@ var DashboardSecretaria = (function () {
         if (!cont) return;
 
         if (!data || data.length === 0) {
-            cont.innerHTML = '<p class="dd-empty">Sin cumpleaños esta semana.</p>';
+            cont.innerHTML = '<p class="text-center text-muted small py-4 mb-0">Sin cumpleaños esta semana.</p>';
             return;
         }
 
@@ -455,12 +455,12 @@ var DashboardSecretaria = (function () {
             html += '<div class="cumple-item">'
                 +   '<div class="cumple-avatar">' + escapeHtml(initial(nombre)) + '</div>'
                 +   '<div class="cumple-body">'
-                +     '<div class="cumple-nombre">' + escapeHtml(nombre) + '</div>'
-                +     '<div class="cumple-meta">' + curso + '</div>'
+                +     '<div class="font-weight-bold text-truncate">' + escapeHtml(nombre) + '</div>'
+                +     '<div class="small text-muted">' + curso + '</div>'
                 +   '</div>'
                 +   '<div class="cumple-right">'
-                +     '<div class="cumple-fecha">' + fecha + '</div>'
-                +     '<div class="cumple-edad">' + edad + '</div>'
+                +     '<div class="font-weight-bold">' + fecha + '</div>'
+                +     '<div class="small text-muted">' + edad + '</div>'
                 +   '</div>'
                 + '</div>';
         }

@@ -1,10 +1,11 @@
-@{
+﻿@{
     ViewBag.Title = "Directorio de graduados";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="stylesheet" href="~/Content/css/listado-catalogos.css" />
-<link rel="stylesheet" href="~/Content/css/pages/graduados-directorio.css" />
+@section Styles {
+    <link rel="stylesheet" href="~/Content/css/pages/graduados-directorio.css" />
+}
 
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
@@ -15,102 +16,118 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-text-catalogo">
-                <h1 id="grad-page-title">Directorio de graduados</h1>
-                <p id="grad-page-subtitle">Egresados del Instituto agrupados por promoción.</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1" id="grad-page-title">Directorio de graduados</h4>
+        <p class="text-muted mb-0" id="grad-page-subtitle">Egresados del Instituto agrupados por promoción.</p>
     </div>
 </div>
 
-<div class="fluid-container">
+<div>
 
     <!-- ═══════════════ VISTA 1: LANDING (promociones) ═══════════════ -->
     <div id="grad-view-promociones">
 
         <!-- KPI cards -->
-        <div class="grad-kpis">
-            <div class="grad-kpi">
-                <div class="grad-kpi-icon indigo"><i class="bi bi-mortarboard-fill"></i></div>
-                <div class="grad-kpi-body">
-                    <div class="grad-kpi-label">Total graduados</div>
-                    <div class="grad-kpi-value" id="kpi-total">—</div>
+        <div class="row">
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value" id="kpi-total">—</h6>
+                                <p>Total graduados</p>
+                            </div>
+                            <div><div class="w-icon"><i class="bi bi-mortarboard-fill"></i></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="grad-kpi">
-                <div class="grad-kpi-icon emerald"><i class="bi bi-calendar2-check"></i></div>
-                <div class="grad-kpi-body">
-                    <div class="grad-kpi-label">Promociones</div>
-                    <div class="grad-kpi-value" id="kpi-promociones">—</div>
-                    <div class="grad-kpi-hint" id="kpi-promociones-hint"></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value" id="kpi-promociones">—</h6>
+                                <p>Promociones</p>
+                            </div>
+                            <div><div class="w-icon"><i class="bi bi-calendar2-check"></i></div></div>
+                        </div>
+                        <p class="text-muted small mb-0 mt-2" id="kpi-promociones-hint"></p>
+                    </div>
                 </div>
             </div>
-            <div class="grad-kpi">
-                <div class="grad-kpi-icon amber"><i class="bi bi-star-fill"></i></div>
-                <div class="grad-kpi-body">
-                    <div class="grad-kpi-label">Más reciente</div>
-                    <div class="grad-kpi-value" id="kpi-ultimo-anio">—</div>
-                    <div class="grad-kpi-hint" id="kpi-ultimo-count"></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value" id="kpi-ultimo-anio">—</h6>
+                                <p>Más reciente</p>
+                            </div>
+                            <div><div class="w-icon"><i class="bi bi-star-fill"></i></div></div>
+                        </div>
+                        <p class="text-muted small mb-0 mt-2" id="kpi-ultimo-count"></p>
+                    </div>
                 </div>
             </div>
-            <div class="grad-kpi">
-                <div class="grad-kpi-icon cyan"><i class="bi bi-bar-chart-line-fill"></i></div>
-                <div class="grad-kpi-body">
-                    <div class="grad-kpi-label">Nivel dominante</div>
-                    <div class="grad-kpi-value" id="kpi-nivel-top">—</div>
-                    <div class="grad-kpi-hint" id="kpi-nivel-top-pct"></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value" id="kpi-nivel-top">—</h6>
+                                <p>Nivel dominante</p>
+                            </div>
+                            <div><div class="w-icon"><i class="bi bi-bar-chart-line-fill"></i></div></div>
+                        </div>
+                        <p class="text-muted small mb-0 mt-2" id="kpi-nivel-top-pct"></p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Toolbar: búsqueda de año + chips -->
-        <div class="grad-toolbar">
-            <div class="grad-search">
-                <i class="bi bi-search"></i>
-                <input type="text" id="grad-search-promo" placeholder="Buscar promoción por año..." autocomplete="off" />
-            </div>
-            <div class="grad-chips" id="grad-chips-niveles-promo">
-                <!-- Chips generados dinámicamente -->
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="form-row align-items-center">
+                <div class="col-md-4 mb-2">
+                    <input type="text" id="grad-search-promo" class="form-control" placeholder="Buscar promoción por año..." autocomplete="off" />
+                </div>
+                <div class="col-md-8 d-flex flex-wrap" id="grad-chips-niveles-promo">
+                    <!-- Atajos generados dinámicamente -->
+                </div>
             </div>
         </div>
 
         <!-- Grid de promociones -->
         <div id="grad-promos-container">
-            <div class="grad-empty">
-                <i class="bi bi-hourglass-split"></i>
-                <div>Cargando promociones...</div>
-            </div>
+            <div class="text-center text-muted py-5"><i class="bi bi-hourglass-split h2 d-block"></i>Cargando promociones...</div>
         </div>
     </div>
 
     <!-- ═══════════════ VISTA 2: DETALLE DE PROMOCIÓN ═══════════════ -->
     <div id="grad-view-detalle" style="display:none;">
-        <button type="button" class="grad-back-btn" id="btn-volver-promos">
-            <i class="bi bi-arrow-left"></i> Volver a promociones
+        <button type="button" class="btn btn-outline-secondary btn-sm mb-3" id="btn-volver-promos">
+            <i class="bi bi-arrow-left mr-1"></i> Volver a promociones
         </button>
 
-        <div class="grad-promo-hero">
-            <div class="grad-promo-hero-icon"><i class="bi bi-mortarboard-fill"></i></div>
-            <div>
-                <h2 id="detalle-anio">Promoción 2025</h2>
-                <div class="grad-promo-hero-sub" id="detalle-sub">— egresados</div>
+        <div class="mb-4">
+        <h4 class="mb-1"><i class="bi bi-mortarboard-fill text-primary mr-2"></i><span id="detalle-anio">Promoción 2025</span></h4>
+        <p class="text-muted mb-0" id="detalle-sub">— egresados</p>
+    </div>
+
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="form-row align-items-center">
+            <div class="col-md-4 mb-2">
+                <input type="text" id="grad-search-detalle" class="form-control" placeholder="Buscar por nombre, identidad o título..." autocomplete="off" />
+            </div>
+            <div class="col-md-8 d-flex flex-wrap" id="grad-chips-niveles-detalle">
+                <!-- Atajos generados dinámicamente -->
             </div>
         </div>
+    </div>
 
-        <div class="grad-toolbar">
-            <div class="grad-search">
-                <i class="bi bi-search"></i>
-                <input type="text" id="grad-search-detalle" placeholder="Buscar por nombre, identidad o título..." autocomplete="off" />
-            </div>
-            <div class="grad-chips" id="grad-chips-niveles-detalle">
-                <!-- Chips generados dinámicamente para esta promoción -->
-            </div>
-        </div>
-
-        <div id="grad-detalle-container" class="grad-grid"></div>
+        <div id="grad-detalle-container" class="row"></div>
     </div>
 </div>
 
@@ -120,14 +137,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Ficha del graduado</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
             </div>
             <div class="modal-body" id="modal-graduado-body">Cargando...</div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btn-generar-constancia" disabled>
-                    <i class="bi bi-file-earmark-pdf"></i> Generar constancia
+                    <i class="bi bi-file-earmark-pdf mr-1"></i> Generar constancia
                 </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

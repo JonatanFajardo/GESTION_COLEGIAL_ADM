@@ -136,7 +136,7 @@ var NuevoPago = (function () {
             data: { identidad: identidad },
             type: "GET",
             beforeSend: function() {
-                $("#btn-buscar-alumno").prop("disabled", true).html('<i class="mdi mdi-loading mdi-spin"></i> Buscando...');
+                $("#btn-buscar-alumno").prop("disabled", true).html('<span class="spinner-border spinner-border-sm mr-1"></span> Buscando...');
             },
             success: function(response) {
                 if (response && response.data && response.data.Alu_Id) {
@@ -159,7 +159,7 @@ var NuevoPago = (function () {
                 limpiarDatosAlumno();
             },
             complete: function() {
-                $("#btn-buscar-alumno").prop("disabled", false).html('<i class="mdi mdi-magnify"></i> Buscar');
+                $("#btn-buscar-alumno").prop("disabled", false).html('<i class="bi bi-search"></i> Buscar');
             }
         });
     }
@@ -221,7 +221,7 @@ var NuevoPago = (function () {
             data: { alumnoId: selectedAlumno.Alu_Id },
             type: "GET",
             beforeSend: function() {
-                $("#conceptos-tbody").html('<tr><td colspan="6" class="text-center"><i class="mdi mdi-loading mdi-spin"></i> Cargando conceptos...</td></tr>');
+                $("#conceptos-tbody").html('<tr><td colspan="6" class="text-center"><span class="spinner-border spinner-border-sm mr-1"></span> Cargando conceptos...</td></tr>');
             },
             success: function(response) {
                 console.log("Response conceptos:", response);
@@ -398,7 +398,7 @@ var NuevoPago = (function () {
         $(".payment-step").hide();
         $("#step" + step).show();
 
-        $(".nav-link").removeClass("active");
+        $("#payment-steps .nav-link").removeClass("active");
         $("#step" + step + "-tab").addClass("active");
 
         currentStep = step;

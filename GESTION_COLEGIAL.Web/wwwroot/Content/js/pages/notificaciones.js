@@ -4,10 +4,10 @@ var Notificaciones = (function () {
     var urlMarcar;
 
     var tipoClases = {
-        "I": { clase: "badge-tipo-I", label: "Info" },
-        "A": { clase: "badge-tipo-A", label: "Alerta" },
-        "E": { clase: "badge-tipo-E", label: "Error" },
-        "S": { clase: "badge-tipo-S", label: "Éxito" }
+        "I": { clase: "badge-info", label: "Info" },
+        "A": { clase: "badge-warning", label: "Alerta" },
+        "E": { clase: "badge-danger", label: "Error" },
+        "S": { clase: "badge-success", label: "Éxito" }
     };
 
     obj.init = function (urlListado, urlMarcarLeida) {
@@ -24,7 +24,7 @@ var Notificaciones = (function () {
     function _cargarNotificaciones() {
         var soloNoLeidas = $("#chk-solo-no-leidas").is(":checked");
         var tbody = $("#notificaciones-tbody");
-        tbody.html('<tr><td colspan="6" class="text-center"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</td></tr>');
+        tbody.html('<tr><td colspan="6" class="text-center"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Cargando...</td></tr>');
 
         $.ajax({
             url: urlList,
@@ -35,7 +35,7 @@ var Notificaciones = (function () {
                 _renderNotificaciones(items);
             },
             error: function () {
-                tbody.html('<tr><td colspan="6" class="text-center text-danger"><i class="fa-solid fa-circle-exclamation me-2"></i>Error al cargar las notificaciones.</td></tr>');
+                tbody.html('<tr><td colspan="6" class="text-center text-danger"><i class="fa-solid fa-circle-exclamation mr-2"></i>Error al cargar las notificaciones.</td></tr>');
                 toastr.error("No se pudo conectar con el servidor.", "Notificaciones");
             }
         });
@@ -45,24 +45,24 @@ var Notificaciones = (function () {
         var tbody = $("#notificaciones-tbody");
 
         if (!items || items.length === 0) {
-            tbody.html('<tr><td colspan="6" class="text-center text-muted"><i class="fa-solid fa-bell-slash me-2"></i>No hay notificaciones.</td></tr>');
+            tbody.html('<tr><td colspan="6" class="text-center text-muted"><i class="fa-solid fa-bell-slash mr-2"></i>No hay notificaciones.</td></tr>');
             return;
         }
 
         var html = "";
         $.each(items, function (i, item) {
-            var tipoInfo = tipoClases[item.Not_Tipo] || { clase: "badge bg-secondary", label: item.Not_Tipo };
-            var rowClass = item.Not_EsLeida ? "notif-leida" : "notif-no-leida";
+            var tipoInfo = tipoClases[item.Not_Tipo] || { clase: "badge-secondary", label: item.Not_Tipo };
+            var rowClass = item.Not_EsLeida ? "text-muted" : "font-weight-bold";
             var fecha    = _formatFecha(item.Not_FechaEnvio);
             var estadoBadge = item.Not_EsLeida
-                ? '<span class="badge bg-secondary">Leída</span>'
-                : '<span class="badge bg-primary">Nueva</span>';
+                ? '<span class="badge badge-secondary">Leída</span>'
+                : '<span class="badge badge-primary">Nueva</span>';
             var btnMarcar = !item.Not_EsLeida
                 ? '<button class="btn btn-sm btn-outline-success btn-marcar" data-id="' + item.Not_Id + '" title="Marcar como leída"><i class="fa-solid fa-check"></i></button>'
                 : '<span class="text-muted">—</span>';
 
             html += '<tr class="' + rowClass + '">';
-            html += '<td><span class="badge ' + tipoInfo.clase + ' text-white">' + _escapeHtml(tipoInfo.label) + '</span></td>';
+            html += '<td><span class="badge ' + tipoInfo.clase + '">' + _escapeHtml(tipoInfo.label) + '</span></td>';
             html += '<td>' + _escapeHtml(item.Not_Titulo) + '</td>';
             html += '<td>' + _escapeHtml(item.Not_Mensaje || "—") + '</td>';
             html += '<td>' + fecha + '</td>';

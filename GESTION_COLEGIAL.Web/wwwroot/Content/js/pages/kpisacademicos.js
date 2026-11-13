@@ -42,13 +42,13 @@ var KPIsAcademicos = (function () {
         return 'reprobado';
     }
 
-    // Mapea la clasificación a las clases CSS de badge (alto/medio/bajo/nodata)
+    // Mapea la clasificación al color contextual (badge-*, bg-*, text-*)
     function claseScore(prom) {
         switch (clasificar(prom)) {
-            case 'aprobado': return 'alto';
-            case 'riesgo':   return 'medio';
-            case 'nodata':   return 'nodata';
-            default:         return 'bajo';
+            case 'aprobado': return 'success';
+            case 'riesgo':   return 'warning';
+            case 'nodata':   return 'secondary';
+            default:         return 'danger';
         }
     }
 
@@ -98,7 +98,7 @@ var KPIsAcademicos = (function () {
             cargarTabActiva(true);
         });
 
-        $("#aa-tabs").on("click", ".aa-tab-item", function (e) {
+        $("#aa-tabs").on("click", ".nav-link", function (e) {
             e.preventDefault();
             var tab = $(this).data("tab");
             if (!tab || tab === tabActiva) return;
@@ -108,8 +108,8 @@ var KPIsAcademicos = (function () {
 
     function activarTab(tab) {
         tabActiva = tab;
-        $("#aa-tabs .aa-tab-item").removeClass("active");
-        $("#aa-tabs .aa-tab-item[data-tab='" + tab + "']").addClass("active");
+        $("#aa-tabs .nav-link").removeClass("active");
+        $("#aa-tabs .nav-link[data-tab='" + tab + "']").addClass("active");
         $(".aa-tab-panel").hide();
         $("#tab-" + tab).show();
         cargarTabActiva(false);
@@ -250,37 +250,30 @@ var KPIsAcademicos = (function () {
                 // Semáforo promedio — usa la clasificación compartida
                 var promVal = parseFloat(promedio);
                 var promTexto = promedio != null ? promVal.toFixed(2) : "—";
-                var promClase = "";
-                if (promedio != null) {
-                    switch (clasificar(promVal)) {
-                        case 'aprobado': promClase = "promedio-alto"; break;
-                        case 'riesgo':   promClase = "promedio-medio"; break;
-                        default:         promClase = "promedio-bajo"; break;
-                    }
-                }
+                var promClase = promedio != null ? "text-" + claseScore(promVal) : "";
                 $("#kpi-total-alumnos").text(totalAlumnos);
                 $("#kpi-total-docentes").text(totalDocentes);
-                $("#kpi-promedio-general").text(promTexto).removeClass("promedio-alto promedio-medio promedio-bajo").addClass(promClase);
+                $("#kpi-promedio-general").text(promTexto).removeClass("text-success text-warning text-danger text-secondary").addClass(promClase);
 
                 // Semáforo asistencia
                 var asistVal = parseFloat(asistencia);
                 var asistTexto = asistencia != null ? asistVal.toFixed(1) + "%" : "—";
-                var asistClase = asistencia == null ? "" : (asistVal >= 90 ? "asistencia-alta" : asistVal >= 75 ? "asistencia-media" : "asistencia-baja");
-                $("#kpi-porcentaje-asistencia").text(asistTexto).removeClass("asistencia-alta asistencia-media asistencia-baja").addClass(asistClase);
+                var asistClase = asistencia == null ? "" : (asistVal >= 90 ? "text-success" : asistVal >= 75 ? "text-warning" : "text-danger");
+                $("#kpi-porcentaje-asistencia").text(asistTexto).removeClass("text-success text-warning text-danger").addClass(asistClase);
 
                 // Barra de asistencia
                 if (asistencia != null) {
                     var pct = Math.min(Math.max(asistVal, 0), 100);
-                    var barraClase = pct >= 90 ? "" : pct >= 75 ? "bar-warning" : "bar-danger";
+                    var barraClase = pct >= 90 ? "bg-success" : pct >= 75 ? "bg-warning" : "bg-danger";
                     $("#barra-asistencia")
                         .css("width", pct + "%")
                         .attr("aria-valuenow", pct)
-                        .removeClass("bar-warning bar-danger")
+                        .removeClass("bg-success bg-warning bg-danger")
                         .addClass(barraClase);
                     $("#barra-asistencia-texto").text(pct.toFixed(1) + "%");
-                    $("#card-asistencia-barra").removeClass("kpi-barra-oculta");
+                    $("#card-asistencia-barra").removeClass("d-none");
                 } else {
-                    $("#card-asistencia-barra").addClass("kpi-barra-oculta");
+                    $("#card-asistencia-barra").addClass("d-none");
                 }
             },
             error: function () {
@@ -476,7 +469,7 @@ var KPIsAcademicos = (function () {
                     var nombre  = f.NombreAlumno != null ? f.NombreAlumno : f.Alu_NombreCompleto;
                     var promRaw = f.PromedioAnual != null ? f.PromedioAnual : f.Promedio;
                     var prom    = parseFloat(promRaw) || 0;
-                    var cls     = 'rend-' + claseScore(prom);
+                    var cls     = 'text-' + claseScore(prom) + ' font-weight-bold';
                     var aluId   = f.Alu_Id != null ? parseInt(f.Alu_Id, 10) : null;
 
                     var clickable = aluId && urls.urlDetalleAlumno;
@@ -588,12 +581,12 @@ var KPIsAcademicos = (function () {
 
     function cargarTabRendimiento(anio, parId) {
         var container = $("#rendimiento-container");
-        container.html('<div class="rps-loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Cargando datos...</p></div>');
+        container.html('<div class="text-center text-muted py-5"><i class="fa-solid fa-spinner fa-spin fa-2x mb-2"></i><p class="mb-0">Cargando datos...</p></div>');
         $("#rps-kpis").hide();
 
         getRendimiento(anio, parId, function (datos) {
             if (datos == null) {
-                container.html('<div class="rps-error"><i class="fa-solid fa-triangle-exclamation"></i><p>Error al cargar los datos. Verifique que la API esté en ejecución.</p></div>');
+                container.html('<div class="alert alert-light-danger" role="alert"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Error al cargar los datos. Verifique que la API esté en ejecución.</div>');
                 return;
             }
             renderSecciones(datos);
@@ -606,7 +599,7 @@ var KPIsAcademicos = (function () {
 
         if (!datos || datos.length === 0) {
             kpis.hide();
-            container.html('<div class="rps-empty-state"><i class="fa-solid fa-folder-open"></i><h3>Sin datos para los filtros seleccionados</h3><p>Probá con otro año o parcial.</p></div>');
+            container.html('<div class="statbox widget box box-shadow"><div class="widget-content widget-content-area text-center text-muted py-5"><i class="fa-solid fa-folder-open fa-3x mb-3"></i><h5>Sin datos para los filtros seleccionados</h5><p class="mb-0">Probá con otro año o parcial.</p></div></div>');
             return;
         }
 
@@ -633,7 +626,7 @@ var KPIsAcademicos = (function () {
         datos.forEach(function (d) { cursos[d.Cur_Descripcion] = true; });
 
         $("#kpi-promedio").html(promGeneral != null
-            ? '<span class="' + claseScore(promGeneral) + '">' + promGeneral.toFixed(2) + '</span>'
+            ? '<span class="text-' + claseScore(promGeneral) + '">' + promGeneral.toFixed(2) + '</span>'
             : '—');
         $("#kpi-alumnos").text(totAlumnos);
         $("#kpi-secciones").text(Object.keys(grupos).length);
@@ -641,7 +634,7 @@ var KPIsAcademicos = (function () {
         kpis.show();
 
         // Render cards
-        var html = '<div class="rps-secciones-grid">';
+        var html = '<div class="row">';
         Object.keys(grupos).sort().forEach(function (seccion) {
             var materias = grupos[seccion];
 
@@ -649,16 +642,18 @@ var KPIsAcademicos = (function () {
             var promSec  = promsSec.length > 0 ? (promsSec.reduce(function (a, b) { return a + b; }, 0) / promsSec.length) : null;
             var aluSec   = materias.reduce(function (max, m) { return Math.max(max, m.TotalAlumnos || 0); }, 0);
 
-            html += '<div class="rps-seccion">';
-            html +=   '<div class="rps-seccion-header">';
-            html +=     '<div class="rps-seccion-title"><i class="fa-solid fa-users"></i> Sección ' + escapeHtml(seccion) + '</div>';
-            html +=     '<div class="rps-seccion-summary">';
-            html +=       '<span class="rps-summary-pill"><i class="fa-solid fa-user-graduate"></i> ' + aluSec + ' alumnos</span>';
+            html += '<div class="col-xl-4 col-md-6 col-12 layout-spacing">';
+            html += '<div class="statbox widget box box-shadow h-100">';
+            html +=   '<div class="widget-header"><div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between">';
+            html +=     '<h4><i class="fa-solid fa-users mr-1"></i> Sección ' + escapeHtml(seccion) + '</h4>';
+            html +=     '<div>';
+            html +=       '<span class="badge outline-badge-primary mr-1"><i class="fa-solid fa-user-graduate mr-1"></i>' + aluSec + ' alumnos</span>';
             if (promSec != null) {
-                html +=   '<span class="rps-summary-pill"><i class="fa-solid fa-chart-line"></i> ' + promSec.toFixed(2) + '</span>';
+                html +=   '<span class="badge outline-badge-' + claseScore(promSec) + '"><i class="fa-solid fa-chart-line mr-1"></i>' + promSec.toFixed(2) + '</span>';
             }
             html +=     '</div>';
-            html +=   '</div>';
+            html +=   '</div></div></div>';
+            html +=   '<div class="widget-content widget-content-area">';
 
             materias.forEach(function (m) {
                 var prom    = m.PromedioGeneral != null ? parseFloat(m.PromedioGeneral) : null;
@@ -666,18 +661,20 @@ var KPIsAcademicos = (function () {
                 var width   = prom != null ? Math.max(0, Math.min(100, prom)) : 0;
                 var promTxt = prom != null ? prom.toFixed(2) : 'Sin notas';
 
-                html += '<div class="rps-materia">';
-                html +=   '<div class="rps-materia-nombre">' + escapeHtml(m.Cur_Descripcion) + '</div>';
-                html +=   '<div class="rps-materia-meta">';
-                html +=     '<span class="rps-promedio ' + cls + '">' + promTxt + '</span>';
-                html +=     '<span class="rps-alumnos"><i class="fa-solid fa-user-graduate"></i> ' + (m.TotalAlumnos || 0) + '</span>';
+                html += '<div class="mb-3">';
+                html +=   '<div class="d-flex justify-content-between align-items-center mb-1">';
+                html +=     '<span class="font-weight-bold">' + escapeHtml(m.Cur_Descripcion) + '</span>';
+                html +=     '<span><span class="badge badge-' + cls + ' mr-1">' + promTxt + '</span>';
+                html +=     '<span class="text-muted small"><i class="fa-solid fa-user-graduate mr-1"></i>' + (m.TotalAlumnos || 0) + '</span></span>';
                 html +=   '</div>';
-                html +=   '<div class="rps-progress-wrap">';
-                html +=     '<div class="rps-progress-bar ' + cls + '" style="width:' + width.toFixed(1) + '%"></div>';
+                html +=   '<div class="progress mb-0">';
+                html +=     '<div class="progress-bar bg-' + cls + '" role="progressbar" style="width:' + width.toFixed(1) + '%"></div>';
                 html +=   '</div>';
                 html += '</div>';
             });
 
+            html +=   '</div>';
+            html += '</div>';
             html += '</div>';
         });
         html += '</div>';

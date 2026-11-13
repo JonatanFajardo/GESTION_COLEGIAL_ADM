@@ -1,0 +1,14 @@
+/* Dashboard Consulta: alto de gráficos */
+
+.dash-chart-h230 {
+    max-height: 230px;
+}
+.dash-chart-h240 {
+    max-height: 240px;
+}
+.dash-chart-h300 {
+    max-height: 300px;
+}
+.dash-chart-h340 {
+    max-height: 340px;
+}

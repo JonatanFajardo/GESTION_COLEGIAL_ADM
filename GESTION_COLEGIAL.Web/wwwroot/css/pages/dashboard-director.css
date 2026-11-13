@@ -1,0 +1,13 @@
+/* Dashboard Director: rejilla de alertas y alto de gráficos */
+
+.alertas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+}
+.dash-chart-h150 {
+    max-height: 150px;
+}
+.dash-chart-h260 {
+    max-height: 260px;
+}

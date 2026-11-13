@@ -35,6 +35,8 @@
     <link href="~/Content/plugins/pricing-table/css/component.css" rel="stylesheet" />
 
     <!-- Componentes de la plantilla CORK (ver docs/guia-ui.md) -->
+    <link href="~/Content/plugins/table/datatable/datatables.css" rel="stylesheet" />
+    <link href="~/Content/plugins/table/datatable/dt-global_style.css" rel="stylesheet" />
     <link href="~/Content/css/widgets/modules-widgets.css" rel="stylesheet" />
     <link href="~/Content/css/components/cards/card.css" rel="stylesheet" />
     <link href="~/Content/css/components/custom-modal.css" rel="stylesheet" />
@@ -252,7 +254,7 @@
                 </div>
 
                 <!-- Dark mode toggle -->
-                <div class="ajustes-toggle-row" style="margin-top:0.75rem;">
+                <div class="ajustes-toggle-row mt-3">
                     <span class="ajustes-toggle-label">Modo oscuro</span>
                     <label class="ajustes-toggle-switch">
                         <input type="checkbox" id="toggle-dark-mode">
@@ -261,7 +263,7 @@
                 </div>
 
                 <!-- Interfaz -->
-                <div class="ajustes-section-label" style="margin-top:1rem;">Interfaz</div>
+                <div class="ajustes-section-label mt-3">Interfaz</div>
 
                 <!-- Sidebar compacto -->
                 <div class="ajustes-toggle-row">
@@ -273,8 +275,8 @@
                 </div>
 
                 <!-- Filas por página -->
-                <div class="ajustes-row-between" style="margin-bottom:0.75rem;">
-                    <span class="ajustes-item-label" style="margin-bottom:0;">Filas por página</span>
+                <div class="ajustes-row-between mb-3">
+                    <span class="ajustes-item-label mb-0">Filas por página</span>
                     <div class="ajustes-segmented">
                         <button class="ajustes-seg-btn" data-page-length="10">10</button>
                         <button class="ajustes-seg-btn" data-page-length="25">25</button>
@@ -284,7 +286,7 @@
 
                 <!-- Densidad -->
                 <div class="ajustes-row-between">
-                    <span class="ajustes-item-label" style="margin-bottom:0;">Densidad</span>
+                    <span class="ajustes-item-label mb-0">Densidad</span>
                     <div class="ajustes-segmented">
                         <button class="ajustes-seg-btn" data-density="">Normal</button>
                         <button class="ajustes-seg-btn" data-density="compact">Compacto</button>
@@ -292,31 +294,31 @@
                 </div>
 
                 <!-- Institución -->
-                <div class="ajustes-section-label" style="margin-top:1rem;">Institución</div>
+                <div class="ajustes-section-label mt-3">Institución</div>
                 <div id="ajustes-instituto-form">
                     @Html.AntiForgeryToken()
-                    <div class="ajustes-item-label" style="margin-bottom:0.35rem;">Nombre del instituto</div>
+                    <div class="ajustes-item-label mb-1">Nombre del instituto</div>
                     <input type="text" id="ajustes-instituto-nombre" class="form-control form-control-sm"
                            maxlength="120" autocomplete="off" placeholder="Instituto Nova Sula" />
-                    <div class="ajustes-item-label" style="margin-top:0.6rem; margin-bottom:0.35rem;">Dirección</div>
+                    <div class="ajustes-item-label mt-2 mb-1">Dirección</div>
                     <input type="text" id="ajustes-instituto-direccion" class="form-control form-control-sm"
                            maxlength="200" autocomplete="off" placeholder="San Pedro Sula, Cortés, Honduras" />
-                    <div id="ajustes-instituto-error" class="text-danger small" style="display:none; margin-top:0.4rem;"></div>
+                    <div id="ajustes-instituto-error" class="text-danger small mt-1" style="display:none;"></div>
 
                     <!-- Estado 1: botón Guardar -->
-                    <div id="ajustes-instituto-actions" style="margin-top:0.6rem; text-align:right;">
+                    <div id="ajustes-instituto-actions" class="mt-2 text-right">
                         <button type="button" id="btn-ajustes-instituto-guardar" class="btn btn-primary btn-sm" disabled>
                             <i class="bi bi-save"></i> Guardar cambios
                         </button>
                     </div>
 
                     <!-- Estado 2: confirmación -->
-                    <div id="ajustes-instituto-confirm" class="alert alert-warning small" style="display:none; margin-top:0.6rem; padding:0.5rem 0.7rem;">
-                        <div style="margin-bottom:0.4rem;">
+                    <div id="ajustes-instituto-confirm" class="alert alert-warning small mt-2 py-2 px-2" style="display:none;">
+                        <div class="mb-1">
                             <i class="bi bi-exclamation-triangle"></i>
                             ¿Confirmar cambio? Estos datos aparecerán en constancias, boletines y recibos.
                         </div>
-                        <div style="text-align:right;">
+                        <div class="text-right">
                             <button type="button" id="btn-ajustes-instituto-cancelar" class="btn btn-secondary btn-sm">Cancelar</button>
                             <button type="button" id="btn-ajustes-instituto-confirmar" class="btn btn-warning btn-sm">
                                 <i class="bi bi-check2"></i> Confirmar
@@ -324,15 +326,15 @@
                         </div>
                     </div>
 
-                    <div id="ajustes-instituto-ok" class="text-success small" style="display:none; margin-top:0.4rem;">
+                    <div id="ajustes-instituto-ok" class="text-success small mt-1" style="display:none;">
                         <i class="bi bi-check-circle"></i> Guardado correctamente.
                     </div>
                 </div>
 
                 <!-- Regional -->
-                <div class="ajustes-section-label" style="margin-top:1rem;">Regional</div>
+                <div class="ajustes-section-label mt-3">Regional</div>
                 <div class="ajustes-row-between">
-                    <span class="ajustes-item-label" style="margin-bottom:0;">Moneda</span>
+                    <span class="ajustes-item-label mb-0">Moneda</span>
                     <div class="ajustes-segmented">
                         <button class="ajustes-seg-btn" data-moneda="L" title="Lempira hondureño">L HNL</button>
                         <button class="ajustes-seg-btn" data-moneda="$" title="Dólar estadounidense">$ USD</button>

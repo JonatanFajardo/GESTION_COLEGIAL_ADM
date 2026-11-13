@@ -36,7 +36,7 @@ var GraduacionBackfill = (function () {
             }
             var modo = data.DryRun ? '<span class="badge badge-info">Simulación</span>' : '<span class="badge badge-danger">Real</span>';
             $('#bf-resumen').html(
-                '<div class="alert alert-secondary">' +
+                '<div class="alert alert-light-info">' +
                 modo + ' &nbsp; Año: <b>' + (data.Anio || 'todos') + '</b> · Top N: <b>' + data.TopN + '</b> · ' +
                 'Total: <b>' + data.Total + '</b> · ' +
                 'Exitosos: <b>' + data.Exitosos + '</b> · Fallidos: <b>' + data.Fallidos + '</b>' +
@@ -58,7 +58,7 @@ var GraduacionBackfill = (function () {
         }).fail(function () {
             $('#bf-resumen').html('<div class="alert alert-danger">Error al ejecutar el backfill.</div>');
         }).always(function () {
-            $('#btn-ejecutar-backfill').prop('disabled', false).html('<i class="bi bi-play-fill"></i> Ejecutar');
+            $('#btn-ejecutar-backfill').prop('disabled', false).html('<i class="bi bi-play-fill mr-1"></i> Ejecutar');
         });
     }
 

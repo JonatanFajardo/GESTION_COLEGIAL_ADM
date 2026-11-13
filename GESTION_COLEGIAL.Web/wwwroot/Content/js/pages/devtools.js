@@ -77,14 +77,14 @@ var DevTools = (function () {
                 $("#sync-anio-actual").text(anioActual != null ? anioActual : "—");
                 $("#sync-anio-objetivo").text(anioObjetivo != null ? anioObjetivo : "—");
                 $("#sync-delta").html(delta === 0
-                    ? '<span class="badge-sync">✓ sincronizado</span>'
+                    ? '<span class="badge badge-success">✓ sincronizado</span>'
                     : (delta != null
-                        ? '<span class="badge-delta">' + (delta > 0 ? "+" : "") + delta + ' año(s)</span>'
-                        : '<span class="badge-delta">undefined año(s)</span>'));
+                        ? '<span class="badge badge-warning">' + (delta > 0 ? "+" : "") + delta + ' año(s)</span>'
+                        : '<span class="badge badge-warning">undefined año(s)</span>'));
                 currentDelta = delta || 0;
                 $("#btn-sync-run").prop("disabled", !!sincronizado || currentDelta === 0);
                 $("#sync-status").html(sincronizado
-                    ? '<span class="badge-sync"><i class="fa-solid fa-check"></i> al día</span>'
+                    ? '<span class="badge badge-success"><i class="fa-solid fa-check"></i> al día</span>'
                     : "");
             })
             .fail(function (xhr) {
@@ -162,7 +162,7 @@ var DevTools = (function () {
 
     function finalize(totalRows, totalMs) {
         $("#sync-status").html(
-            '<span class="badge-sync"><i class="fa-solid fa-sparkles"></i> ' +
+            '<span class="badge badge-success"><i class="fa-solid fa-sparkles"></i> ' +
             totalRows.toLocaleString() + ' filas · ' + (totalMs / 1000).toFixed(2) + 's</span>'
         );
         $("#card-sync").addClass("pulse-success");

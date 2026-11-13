@@ -4,7 +4,6 @@
 }
 
 @section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
     <link href="~/Content/css/pages/finanzas-dashboard.css" rel="stylesheet" />
 }
 
@@ -17,121 +16,183 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo">
-                <i class="fa-solid fa-clock-rotate-left"></i>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Historial de Transacciones</h4>
+        <p class="text-muted mb-0">Registro completo de pagos realizados por rango de fechas</p>
+    </div>
+</div>
+
+
+    <div class="statbox widget box box-shadow mb-4">
+    <div class="widget-content widget-content-area">
+        <div class="form-row">
+                <div class="form-group col-md mb-md-0">
+            <label for="input-alumno">Alumno</label>
+            <input type="text" id="input-alumno" class="form-control" placeholder="Nombre del alumno..." />
+                </div>
+                <div class="form-group col-md mb-md-0">
+            <label for="input-fecha-desde">Desde</label>
+            <input type="date" id="input-fecha-desde" class="form-control" value="@ViewBag.FechaDesdeDefault" />
+                </div>
+                <div class="form-group col-md mb-md-0">
+            <label for="input-fecha-hasta">Hasta</label>
+            <input type="date" id="input-fecha-hasta" class="form-control" value="@ViewBag.FechaHastaDefault" />
+                </div>
+                <div class="form-group col-md-auto d-flex align-items-end mb-md-0">
+                    <button class="btn btn-primary btn-block" id="btn-buscar" type="button">
+            <i class="fa-solid fa-magnifying-glass"></i> Consultar
+        </button>
+                </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-primary" id="hero-total">L. 0.00</h6>
+                        <p>Total recaudado en el período</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-clock-rotate-left"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2"><span id="hero-rango">—</span></p>
             </div>
-            <div class="header-text-catalogo">
-                <h1>Historial de Transacciones</h1>
-                <p>Registro completo de pagos realizados por rango de fechas</p>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value " id="hero-trans">0</h6>
+                        <p>Transacciones</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-receipt"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2"><span id="hero-trans-sub">—</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value " id="hero-dia">—</h6>
+                        <p>Día más activo</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-calendar-event"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2"><span id="hero-dia-sub">—</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value " id="hero-prom-dia">L. 0.00</h6>
+                        <p>Promedio diario</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-bar-chart"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2"><span id="hero-prom-sub">—</span></p>
             </div>
         </div>
     </div>
 </div>
 
-<div class="fluid-container">
-
-    <div class="fd-filters">
-        <div>
-            <label for="input-alumno" class="form-label-catalogo">Alumno</label>
-            <input type="text" id="input-alumno" class="form-control" placeholder="Nombre del alumno..." />
-        </div>
-        <div>
-            <label for="input-fecha-desde" class="form-label-catalogo">Desde</label>
-            <input type="date" id="input-fecha-desde" class="form-control" value="@ViewBag.FechaDesdeDefault" />
-        </div>
-        <div>
-            <label for="input-fecha-hasta" class="form-label-catalogo">Hasta</label>
-            <input type="date" id="input-fecha-hasta" class="form-control" value="@ViewBag.FechaHastaDefault" />
-        </div>
-        <button class="btn-fd" id="btn-buscar" type="button">
-            <i class="fa-solid fa-magnifying-glass"></i> Consultar
-        </button>
-    </div>
-
-    <div class="fd-hero">
-        <div class="fd-hero-grid">
-            <div class="fd-hero-main">
-                <p class="fd-hero-label"><i class="fa-solid fa-clock-rotate-left"></i> Total recaudado en el período</p>
-                <p class="fd-hero-value" id="hero-total">L. 0.00</p>
-                <p class="fd-hero-sub" id="hero-rango">—</p>
-            </div>
-            <div class="fd-hero-stat">
-                <p class="fd-hero-stat-label">Transacciones</p>
-                <p class="fd-hero-stat-value" id="hero-trans">0</p>
-                <p class="fd-hero-stat-trend" id="hero-trans-sub">—</p>
-            </div>
-            <div class="fd-hero-stat">
-                <p class="fd-hero-stat-label">Día más activo</p>
-                <p class="fd-hero-stat-value" id="hero-dia">—</p>
-                <p class="fd-hero-stat-trend" id="hero-dia-sub">—</p>
-            </div>
-            <div class="fd-hero-stat">
-                <p class="fd-hero-stat-label">Promedio diario</p>
-                <p class="fd-hero-stat-value" id="hero-prom-dia">L. 0.00</p>
-                <p class="fd-hero-stat-trend" id="hero-prom-sub">—</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="fd-kpi-row">
-        <div class="fd-kpi kpi-emerald">
-            <div class="fd-kpi-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
-            <div class="fd-kpi-body">
-                <p class="fd-kpi-label">Mayor pago</p>
-                <p class="fd-kpi-value" id="kpi-mayor">L. 0.00</p>
-                <p class="fd-kpi-foot" id="kpi-mayor-sub">—</p>
-            </div>
-        </div>
-        <div class="fd-kpi kpi-indigo">
-            <div class="fd-kpi-icon"><i class="fa-solid fa-calculator"></i></div>
-            <div class="fd-kpi-body">
-                <p class="fd-kpi-label">Ticket promedio</p>
-                <p class="fd-kpi-value" id="kpi-prom">L. 0.00</p>
-                <p class="fd-kpi-foot">por transacción</p>
-            </div>
-        </div>
-        <div class="fd-kpi kpi-cyan">
-            <div class="fd-kpi-icon"><i class="fa-solid fa-user-group"></i></div>
-            <div class="fd-kpi-body">
-                <p class="fd-kpi-label">Alumnos distintos</p>
-                <p class="fd-kpi-value" id="kpi-alumnos">0</p>
-                <p class="fd-kpi-foot" id="kpi-alumnos-sub">—</p>
-            </div>
-        </div>
-        <div class="fd-kpi kpi-amber">
-            <div class="fd-kpi-icon"><i class="fa-solid fa-user-tie"></i></div>
-            <div class="fd-kpi-body">
-                <p class="fd-kpi-label">Cajeros activos</p>
-                <p class="fd-kpi-value" id="kpi-cajeros">0</p>
-                <p class="fd-kpi-foot" id="kpi-cajeros-sub">—</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="fd-grid-3">
-        <div class="fd-panel">
-            <div class="fd-panel-head">
-                <div>
-                    <p class="fd-panel-title"><i class="fa-solid fa-chart-column"></i> Tendencia diaria</p>
-                    <p class="fd-panel-sub">Monto recaudado por día</p>
+    <div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-success" id="kpi-mayor">L. 0.00</h6>
+                        <p>Mayor pago</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-arrow-trend-up"></i></div></div>
                 </div>
+                <p class="text-muted small mb-0 mt-2"><span id="kpi-mayor-sub">—</span></p>
             </div>
-            <div class="fd-panel-body">
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-primary" id="kpi-prom">L. 0.00</h6>
+                        <p>Ticket promedio</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-calculator"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2">Por transacción</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-info" id="kpi-alumnos">0</h6>
+                        <p>Alumnos distintos</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-user-group"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2"><span id="kpi-alumnos-sub">—</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-warning" id="kpi-cajeros">0</h6>
+                        <p>Cajeros activos</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-user-tie"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2"><span id="kpi-cajeros-sub">—</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+<div class="col-xl-4 col-lg-6 col-12 layout-spacing">
+<div class="statbox widget box box-shadow h-100">
+    <div class="widget-header">
+        <div class="row">
+            <div class="col-12">
+                <h4><i class="fa-solid fa-chart-column mr-1"></i> Tendencia diaria</h4>
+                <p class="text-muted small mb-0 px-3 pb-3 mt-n2">Monto recaudado por día</p>
+            </div>
+        </div>
+    </div>
+    <div class="widget-content widget-content-area">
                 <div class="fd-cols" id="cols-dia"></div>
             </div>
-        </div>
-
-        <div class="fd-panel">
-            <div class="fd-panel-head">
-                <div>
-                    <p class="fd-panel-title"><i class="fa-solid fa-credit-card"></i> Formas de pago</p>
-                    <p class="fd-panel-sub">Participación del período</p>
-                </div>
+</div>
+</div>
+<div class="col-xl-4 col-lg-6 col-12 layout-spacing">
+<div class="statbox widget box box-shadow h-100">
+    <div class="widget-header">
+        <div class="row">
+            <div class="col-12">
+                <h4><i class="fa-solid fa-credit-card mr-1"></i> Formas de pago</h4>
+                <p class="text-muted small mb-0 px-3 pb-3 mt-n2">Participación del período</p>
             </div>
-            <div class="fd-panel-body">
+        </div>
+    </div>
+    <div class="widget-content widget-content-area">
                 <div class="fd-donut-wrap">
                     <div class="fd-donut" id="donut-formas">
                         <div class="fd-donut-inner">
@@ -142,37 +203,41 @@
                     <div class="fd-donut-legend" id="donut-legend"></div>
                 </div>
             </div>
-        </div>
-
-        <div class="fd-panel">
-            <div class="fd-panel-head">
-                <div>
-                    <p class="fd-panel-title"><i class="fa-solid fa-user-tie"></i> Top cajeros</p>
-                    <p class="fd-panel-sub">Por monto procesado</p>
-                </div>
-            </div>
-            <div class="fd-panel-body fd-flush" id="rank-cajeros"></div>
-        </div>
-    </div>
-
-    <div class="fd-panel">
-        <div class="fd-panel-head">
-            <div>
-                <p class="fd-panel-title"><i class="fa-solid fa-list-check"></i> Movimientos del período</p>
-                <p class="fd-panel-sub">Detalle ordenado por fecha descendente</p>
-            </div>
-            <div style="display:flex; align-items:center; gap:0.6rem;">
-                <span class="fd-chip" id="chip-count">0 transacciones</span>
-                <button id="btn-exportar-csv" type="button"
-                        style="background:#4f46e5;color:#fff;border:none;border-radius:10px;padding:0.5rem 1rem;font-size:0.82rem;font-weight:600;white-space:nowrap;cursor:pointer;">
-                    <i class="fa-solid fa-file-csv"></i> Exportar CSV
-                </button>
-            </div>
-        </div>
-        <div class="fd-panel-body fd-flush fd-scroll" id="feed-trans"></div>
-    </div>
-
 </div>
+</div>
+<div class="col-xl-4 col-lg-6 col-12 layout-spacing">
+<div class="statbox widget box box-shadow h-100">
+    <div class="widget-header">
+        <div class="row">
+            <div class="col-12">
+                <h4><i class="fa-solid fa-user-tie mr-1"></i> Top cajeros</h4>
+                <p class="text-muted small mb-0 px-3 pb-3 mt-n2">Por monto procesado</p>
+            </div>
+        </div>
+    </div>
+    <div class="widget-content widget-content-area p-0" id="rank-cajeros"></div>
+</div>
+</div>
+</div>
+
+    <div class="statbox widget box box-shadow mb-4">
+    <div class="widget-header">
+        <div class="d-flex flex-wrap align-items-center justify-content-between pr-3">
+            <div>
+                <h4><i class="fa-solid fa-list-check mr-1"></i> Movimientos del período</h4>
+                <p class="text-muted small mb-0 px-3 pb-3 mt-n2">Detalle ordenado por fecha descendente</p>
+            </div>
+            <div class="mb-2"><div class="d-flex align-items-center">
+                <span class="badge outline-badge-primary" id="chip-count">0 transacciones</span>
+                <button id="btn-exportar-csv" type="button" class="btn btn-sm btn-outline-primary ml-2 text-nowrap">
+                    <i class="fa-solid fa-file-csv mr-1"></i> Exportar CSV
+                </button>
+            </div></div>
+        </div>
+    </div>
+    <div class="widget-content widget-content-area p-0 fd-scroll" id="feed-trans"></div>
+</div>
+
 
 @section Scripts{
     <script src="~/Content/js/pages/historialtransacciones.js"></script>

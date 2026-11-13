@@ -157,7 +157,7 @@ var Modals = (function () {
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", deleteBtnText = "Aceptar";
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + deleteBtnText);
+            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='bi bi-check-lg mr-1'></i> " + deleteBtnText);
         });
         $deleteModal.on("hidden.bs.modal", function () { });
     }
@@ -302,14 +302,14 @@ var datatableAlumnos = (function () {
                         {
                             extend: "pdfHtml5",
                             title: "Exportar a PDF",
-                            text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
+                            text: "<i class='bi bi-file-earmark-pdf mr-1'></i> PDF",
                             class: "btn btn-secondary",
                             exportOptions: exportOptions
                         },
                         {
                             extend: "excelHtml5",
                             title: "Exportar a EXCEL",
-                            text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
+                            text: "<i class='bi bi-file-earmark-excel mr-1'></i> Excel",
                             class: "btn btn-secondary",
                             exportOptions: exportOptions
                         }
@@ -324,7 +324,7 @@ var datatableAlumnos = (function () {
                                 'data-toggle': "modal",
                                 'data-target': "#edit-modal"
                             },
-                            text: '<span><i class="mdi mdi-plus-thick ladda-button"> Nuevo</i></span>'
+                            text: '<span class="ladda-button"><i class="bi bi-plus-lg mr-1"></i> Nuevo</span>'
                         });
                     }
                     return btns;

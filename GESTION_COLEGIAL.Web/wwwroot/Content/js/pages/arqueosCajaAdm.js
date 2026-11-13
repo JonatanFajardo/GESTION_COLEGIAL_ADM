@@ -42,7 +42,7 @@ var ArqueosCajaAdm = (function () {
 
     function kv(label, val) {
         return '<div class="row mb-2"><div class="col-5 text-muted small">' + label + '</div>' +
-               '<div class="col-7 fw-semibold">' + (val !== undefined && val !== null ? val : '—') + '</div></div>';
+               '<div class="col-7 font-weight-bold">' + (val !== undefined && val !== null ? val : '—') + '</div></div>';
     }
 
     // ── Panel: último arqueo registrado ──
@@ -54,12 +54,12 @@ var ArqueosCajaAdm = (function () {
                 : (Number(d.Arq_TotalEfectivo || 0) + Number(d.Arq_TotalTransferencia || 0) + Number(d.Arq_TotalTarjeta || 0));
             var html =
                 kv("Fecha", d.Arq_Fecha ? String(d.Arq_Fecha).substring(0, 10) : "—") +
-                '<div class="arq-last-grid">' +
-                    '<div class="arq-last-cell"><div class="lbl">Efectivo</div><div class="val">' + money(d.Arq_TotalEfectivo) + '</div></div>' +
-                    '<div class="arq-last-cell"><div class="lbl">Transferencia</div><div class="val">' + money(d.Arq_TotalTransferencia) + '</div></div>' +
-                    '<div class="arq-last-cell"><div class="lbl">Tarjeta</div><div class="val">' + money(d.Arq_TotalTarjeta) + '</div></div>' +
-                    '<div class="arq-last-cell"><div class="lbl">Observación</div><div class="val" style="font-size:.85rem;font-weight:600;color:#334155;">' + (d.Arq_Observaciones || "—") + '</div></div>' +
-                    '<div class="arq-last-cell arq-last-total"><div class="lbl">Total general</div><div class="val">' + money(total) + '</div></div>' +
+                '<div class="row">' +
+                    '<div class="col-6 mb-2"><div class="border rounded p-2 h-100"><div class="small text-muted text-uppercase font-weight-bold">Efectivo</div><div class="h6 mb-0 font-weight-bold text-dark">' + money(d.Arq_TotalEfectivo) + '</div></div></div>' +
+                    '<div class="col-6 mb-2"><div class="border rounded p-2 h-100"><div class="small text-muted text-uppercase font-weight-bold">Transferencia</div><div class="h6 mb-0 font-weight-bold text-dark">' + money(d.Arq_TotalTransferencia) + '</div></div></div>' +
+                    '<div class="col-6 mb-2"><div class="border rounded p-2 h-100"><div class="small text-muted text-uppercase font-weight-bold">Tarjeta</div><div class="h6 mb-0 font-weight-bold text-dark">' + money(d.Arq_TotalTarjeta) + '</div></div></div>' +
+                    '<div class="col-6 mb-2"><div class="border rounded p-2 h-100"><div class="small text-muted text-uppercase font-weight-bold">Observación</div><div class="small font-weight-bold text-dark">' + (d.Arq_Observaciones || "—") + '</div></div></div>' +
+                    '<div class="col-12"><div class="alert alert-light-primary mb-0"><div class="small text-uppercase font-weight-bold">Total general</div><div class="h5 mb-0 font-weight-bold text-primary">' + money(total) + '</div></div></div>' +
                 '</div>';
             $("#info-arqueo").html(html);
             $("#panel-ultimo").show();
@@ -121,10 +121,10 @@ var ArqueosCajaAdm = (function () {
     function setDif(id, dif) {
         var el = $("#" + id);
         el.text(moneySigned(dif));
-        el.removeClass("ok bad zero");
-        if (Math.abs(dif) < 0.005) el.addClass("zero");
-        else if (dif > 0) el.addClass("ok");   // sobrante
-        else el.addClass("bad");                // faltante
+        el.removeClass("text-success text-danger text-muted");
+        if (Math.abs(dif) < 0.005) el.addClass("text-muted");
+        else if (dif > 0) el.addClass("text-success");   // sobrante
+        else el.addClass("text-danger");                // faltante
     }
 
     // ── Recalcula diferencias contado - esperado ──
@@ -145,16 +145,16 @@ var ArqueosCajaAdm = (function () {
 
         var banner = $("#arq-banner");
         if (Math.abs(difTotal) < 0.005) {
-            banner.removeClass("bad").addClass("ok")
-                .html('<i class="bi bi-check-circle-fill"></i> La caja cuadra con el sistema.')
+            banner.removeClass("alert-light-danger").addClass("alert-light-success")
+                .html('<i class="bi bi-check-circle-fill mr-1"></i> La caja cuadra con el sistema.')
                 .show();
         } else if (difTotal > 0) {
-            banner.removeClass("ok").addClass("bad")
-                .html('<i class="bi bi-exclamation-octagon-fill"></i> Sobrante de ' + money(difTotal) + ' respecto al sistema.')
+            banner.removeClass("alert-light-success").addClass("alert-light-danger")
+                .html('<i class="bi bi-exclamation-octagon-fill mr-1"></i> Sobrante de ' + money(difTotal) + ' respecto al sistema.')
                 .show();
         } else {
-            banner.removeClass("ok").addClass("bad")
-                .html('<i class="bi bi-exclamation-octagon-fill"></i> Faltante de ' + money(Math.abs(difTotal)) + ' respecto al sistema.')
+            banner.removeClass("alert-light-success").addClass("alert-light-danger")
+                .html('<i class="bi bi-exclamation-octagon-fill mr-1"></i> Faltante de ' + money(Math.abs(difTotal)) + ' respecto al sistema.')
                 .show();
         }
     }

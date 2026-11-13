@@ -45,7 +45,7 @@ var BoletinAdm = (function () {
                         ? (vals.reduce(function (a, b) { return parseFloat(a) + parseFloat(b); }, 0) / vals.length).toFixed(2)
                         : "-";
 
-                    var cls = (!isNaN(parseFloat(prom)) && parseFloat(prom) < 60) ? 'text-danger fw-bold' : '';
+                    var cls = (!isNaN(parseFloat(prom)) && parseFloat(prom) < 60) ? 'text-danger font-weight-bold' : '';
 
                     tbody.append(
                         '<tr>' +

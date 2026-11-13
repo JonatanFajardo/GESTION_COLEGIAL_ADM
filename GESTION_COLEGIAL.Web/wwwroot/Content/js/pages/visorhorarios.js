@@ -295,22 +295,22 @@
 
     /* Render card */
     function renderCard(grupo) {
-        var $card = $('<div class="vh-card"></div>');
+        var $card = $('<div class="statbox widget box box-shadow vh-card"></div>');
         $card.attr("data-key", grupo.key);
 
         var firstMda = (grupo.items[0] && grupo.items[0].Mda_Descripcion)
             ? grupo.items[0].Mda_Descripcion : "";
 
         var $header = $(
-            '<div class="vh-card-header">' +
-            '  <div class="vh-card-icon">' + ICON_MAP[state.vista] + '</div>' +
-            '  <div class="vh-card-title-wrap">' +
-            '    <div class="vh-card-title">' + escapeHtml(grupo.titulo) + '</div>' +
-            '    <div class="vh-card-subtitle">' + escapeHtml(grupo.subtitulo) + '</div>' +
+            '<div class="d-flex align-items-center p-3 border-bottom">' +
+            '  <span class="text-primary mr-2">' + ICON_MAP[state.vista] + '</span>' +
+            '  <div class="flex-grow-1 text-truncate">' +
+            '    <h6 class="font-weight-bold mb-0 text-truncate">' + escapeHtml(grupo.titulo) + '</h6>' +
+            '    <div class="text-muted small">' + escapeHtml(grupo.subtitulo) + '</div>' +
             '  </div>' +
-            (firstMda ? '  <span class="vh-badge">' + escapeHtml(firstMda) + '</span>' : '') +
-            '  <div class="vh-card-expand" title="Ver horario completo"><i class="bi bi-arrows-fullscreen"></i></div>' +
-            '</div>'
+            (firstMda ? '  <span class="badge outline-badge-warning ml-2">' + escapeHtml(firstMda) + '</span>' : '') +
+            '  <span class="btn btn-sm btn-outline-primary ml-2 vh-card-expand" title="Ver horario completo"><i class="bi bi-arrows-fullscreen"></i></span>' +
+            '</div>''
         );
         $card.append($header);
 
@@ -426,7 +426,7 @@
         $tbl.append($tbody);
 
         if (grupo.items.length === 0) {
-            return $('<div class="vh-card-sin-data">Sin clases programadas</div>');
+            return $('<div class="text-center text-muted small p-4">Sin clases programadas</div>');
         }
         return $tbl;
     }
@@ -520,8 +520,8 @@
 
     function bindEventos() {
         $(".vh-toggle-btn").on("click", function () {
-            $(".vh-toggle-btn").removeClass("is-active");
-            $(this).addClass("is-active");
+            $(".vh-toggle-btn").removeClass("btn-primary").addClass("btn-outline-primary");
+            $(this).removeClass("btn-outline-primary").addClass("btn-primary");
             state.vista = $(this).data("vista");
             render();
         });

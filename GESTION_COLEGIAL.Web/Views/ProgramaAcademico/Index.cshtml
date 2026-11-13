@@ -3,155 +3,124 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles{
-    <link href="~/Content/css/pages/programa-academico.css" rel="stylesheet" />
-}
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Programa Académico</li>
+        </ol>
+    </nav>
+</div>
 
-<div class="pa-hub">
-
-    <div class="breadcrumb-wrapper-content">
-        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Programa Académico</li>
-            </ol>
-        </nav>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Programa Académico</h4>
+        <p class="text-muted mb-0">Configure los grados, cursos, materias y duraciones que componen la oferta educativa</p>
     </div>
-
-    <!-- Hero -->
-    <div class="ci-hero">
-        <div class="ci-hero-content">
-            <div class="ci-hero-left">
-                <div class="ci-hero-icon">
-                    <i class="bi bi-journal-bookmark-fill"></i>
-                </div>
-                <div class="ci-hero-text">
-                    <h1>Programa Académico</h1>
-                    <p>Configure los grados, cursos, materias y duraciones que componen la oferta educativa</p>
-                </div>
-            </div>
-            <div class="ci-hero-cascade">
-                <span class="ci-cascade-label">Orden en cascada</span>
-                <div class="ci-cascade-chain">
-                    <span class="ci-cascade-pill" data-jump="gradosacademicos">1 · Grado</span>
-                    <i class="bi bi-arrow-right"></i>
-                    <span class="ci-cascade-pill" data-jump="cursos">2 · Curso</span>
-                    <i class="bi bi-arrow-right"></i>
-                    <span class="ci-cascade-pill" data-jump="materias">3 · Materia</span>
-                    <i class="bi bi-arrow-right"></i>
-                    <span class="ci-cascade-pill" data-jump="duraciones">4 · Duración</span>
-                </div>
-            </div>
-        </div>
+    <div class="mt-2 mt-md-0">
+        <span class="text-muted small mr-1">Orden en cascada:</span>
+        <button type="button" class="btn btn-sm btn-rounded btn-outline-primary ci-cascade-pill" data-jump="gradosacademicos">1 · Grado</button>
+        <i class="bi bi-arrow-right text-muted"></i>
+        <button type="button" class="btn btn-sm btn-rounded btn-outline-primary ci-cascade-pill" data-jump="cursos">2 · Curso</button>
+        <i class="bi bi-arrow-right text-muted"></i>
+        <button type="button" class="btn btn-sm btn-rounded btn-outline-primary ci-cascade-pill" data-jump="materias">3 · Materia</button>
+        <i class="bi bi-arrow-right text-muted"></i>
+        <button type="button" class="btn btn-sm btn-rounded btn-outline-primary ci-cascade-pill" data-jump="duraciones">4 · Duración</button>
     </div>
+</div>
 
-    <div class="fluid-container">
+<div class="fluid-container">
 
-        <!-- Tabs -->
-        <div class="ci-tabs-card">
-            <ul class="nav ci-tabs" role="tablist" id="ci-tabs">
-                <li class="nav-item ci-tab-item active" data-catalog="gradosacademicos">
-                    <a href="#" class="ci-tab-link">
-                        <span class="ci-tab-num">1</span>
-                        <span class="ci-tab-icon"><i class="bi bi-mortarboard-fill"></i></span>
-                        <span class="ci-tab-label">Grados Académicos</span>
-                        <span class="ci-tab-count" data-count>—</span>
-                    </a>
-                </li>
-                <li class="nav-item ci-tab-item" data-catalog="cursos">
-                    <a href="#" class="ci-tab-link">
-                        <span class="ci-tab-num">2</span>
-                        <span class="ci-tab-icon"><i class="bi bi-journal-text"></i></span>
-                        <span class="ci-tab-label">Cursos</span>
-                        <span class="ci-tab-count" data-count>—</span>
-                    </a>
-                </li>
-                <li class="nav-item ci-tab-item" data-catalog="materias">
-                    <a href="#" class="ci-tab-link">
-                        <span class="ci-tab-num">3</span>
-                        <span class="ci-tab-icon"><i class="bi bi-book-half"></i></span>
-                        <span class="ci-tab-label">Materias</span>
-                        <span class="ci-tab-count" data-count>—</span>
-                    </a>
-                </li>
-                <li class="nav-item ci-tab-item" data-catalog="duraciones">
-                    <a href="#" class="ci-tab-link">
-                        <span class="ci-tab-num">4</span>
-                        <span class="ci-tab-icon"><i class="bi bi-hourglass-split"></i></span>
-                        <span class="ci-tab-label">Duraciones</span>
-                        <span class="ci-tab-count" data-count>—</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-4 ci-tabs-card" role="tablist" id="ci-tabs">
+        <li class="nav-item">
+            <a href="#" class="nav-link ci-tab-item active" data-catalog="gradosacademicos">
+                <i class="bi bi-mortarboard-fill mr-1"></i> 1 · Grados Académicos
+                <span class="badge outline-badge-primary ml-1" data-count>—</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link ci-tab-item" data-catalog="cursos">
+                <i class="bi bi-journal-text mr-1"></i> 2 · Cursos
+                <span class="badge outline-badge-primary ml-1" data-count>—</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link ci-tab-item" data-catalog="materias">
+                <i class="bi bi-book-half mr-1"></i> 3 · Materias
+                <span class="badge outline-badge-primary ml-1" data-count>—</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link ci-tab-item" data-catalog="duraciones">
+                <i class="bi bi-hourglass-split mr-1"></i> 4 · Duraciones
+                <span class="badge outline-badge-primary ml-1" data-count>—</span>
+            </a>
+        </li>
+    </ul>
 
-        <!-- Panel activo -->
-        <div class="ci-panel">
+    <!-- Panel activo -->
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
 
-            <!-- Toolbar -->
-            <div class="ci-toolbar">
-                <div class="ci-toolbar-left">
-                    <div class="ci-search-wrap">
-                        <i class="bi bi-search"></i>
-                        <input type="text" id="ci-search" placeholder="Buscar en el catálogo activo..." />
-                    </div>
+            <!-- Barra de herramientas -->
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+                <div class="input-group mb-2 mb-md-0">
+                    <div class="input-group-prepend"><span class="input-group-text"><i class="bi bi-search"></i></span></div>
+                    <input type="text" id="ci-search" class="form-control" placeholder="Buscar en el catálogo activo..." />
                 </div>
-                <div class="ci-toolbar-right">
-                    <div class="ci-view-toggle" role="group" aria-label="Vista">
-                        <button type="button" class="ci-view-btn active" data-view="cards" title="Vista de tarjetas">
-                            <i class="bi bi-grid-3x3-gap-fill"></i>
-                            <span>Cards</span>
+                <div class="d-flex align-items-center">
+                    <div class="btn-group mr-2" role="group" aria-label="Vista">
+                        <button type="button" class="btn btn-outline-primary ci-view-btn active" data-view="cards" title="Vista de tarjetas">
+                            <i class="bi bi-grid-3x3-gap-fill mr-1"></i> Tarjetas
                         </button>
-                        <button type="button" class="ci-view-btn" data-view="table" title="Vista de tabla">
-                            <i class="bi bi-table"></i>
-                            <span>Tabla</span>
+                        <button type="button" class="btn btn-outline-primary ci-view-btn" data-view="table" title="Vista de tabla">
+                            <i class="bi bi-table mr-1"></i> Tabla
                         </button>
                     </div>
-                    <button type="button" class="ci-btn-ghost" id="ci-reload" title="Recargar datos">
+                    <button type="button" class="btn btn-outline-primary mr-2" id="ci-reload" title="Recargar datos">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
-                    <button type="button" class="ci-btn-primary" id="ci-new-btn">
-                        <i class="bi bi-plus-lg"></i>
+                    <button type="button" class="btn btn-primary" id="ci-new-btn">
+                        <i class="bi bi-plus-lg mr-1"></i>
                         <span id="ci-new-label">Nuevo</span>
                     </button>
                 </div>
             </div>
 
             <!-- Info del catálogo activo -->
-            <div class="ci-catalog-info" id="ci-catalog-info">
-                <div class="ci-info-icon"><i class="bi bi-info-circle-fill"></i></div>
-                <div class="ci-info-text">
-                    <strong id="ci-info-title">Grados Académicos</strong>
-                    <span id="ci-info-desc">Grados que componen cada nivel educativo (1° a 6° de Primaria, 1° a 3° de Bachillerato).</span>
-                </div>
+            <div class="alert alert-light-info mb-3" id="ci-catalog-info" role="note">
+                <i class="bi bi-info-circle-fill mr-1"></i>
+                <strong id="ci-info-title">Grados Académicos</strong>.
+                <span id="ci-info-desc">Grados que componen cada nivel educativo (1° a 6° de Primaria, 1° a 3° de Bachillerato).</span>
             </div>
 
-            <!-- Vista Cards (default) -->
-            <div class="ci-cards-view" id="ci-cards-view">
-                <div class="ci-cards-grid" id="ci-cards-grid">
-                    <!-- Cards inyectadas por JS -->
+            <!-- Vista Tarjetas (por defecto) -->
+            <div id="ci-cards-view">
+                <div class="row" id="ci-cards-grid">
+                    <!-- Tarjetas inyectadas por JS -->
                 </div>
-                <div class="ci-empty" id="ci-empty" hidden>
-                    <div class="ci-empty-icon"><i class="bi bi-inbox"></i></div>
-                    <h4>Sin registros</h4>
+                <div class="text-center text-muted py-5" id="ci-empty" hidden>
+                    <i class="bi bi-inbox fa-3x mb-3 d-block"></i>
+                    <h5>Sin registros</h5>
                     <p>Todavía no hay elementos en este catálogo.</p>
-                    <button type="button" class="ci-btn-primary" onclick="document.getElementById('ci-new-btn').click()">
-                        <i class="bi bi-plus-lg"></i> Crear el primero
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('ci-new-btn').click()">
+                        <i class="bi bi-plus-lg mr-1"></i> Crear el primero
                     </button>
                 </div>
             </div>
 
             <!-- Vista Tabla -->
-            <div class="ci-table-view" id="ci-table-view" hidden>
+            <div id="ci-table-view" hidden>
                 <div class="table-responsive">
-                    <table class="table ci-table" id="ci-table">
+                    <table class="table table-hover" id="ci-table">
                         <thead>
                             <tr>
-                                <th style="width:80px;">ID</th>
+                                <th>ID</th>
                                 <th>Descripción</th>
-                                <th style="width:140px;">Estado</th>
-                                <th style="width:200px;">Registrado</th>
-                                <th style="width:160px;text-align:center;">Acciones</th>
+                                <th>Estado</th>
+                                <th>Registrado</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="ci-table-body">
@@ -162,190 +131,152 @@
             </div>
 
         </div>
+    </div>
 
-        <!-- ============================================ -->
-        <!-- Modal: Crear / Editar -->
-        <!-- ============================================ -->
-        <div class="modal fade" id="ci-edit-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content ci-modal-content">
-                    <div class="ci-modal-header">
-                        <div class="ci-modal-header-icon"><i class="bi bi-pencil-square"></i></div>
-                        <div class="ci-modal-header-text">
-                            <h5 id="ci-edit-title">Nuevo registro</h5>
-                            <p id="ci-edit-subtitle">Complete los datos del catálogo</p>
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+    <!-- ============================================ -->
+    <!-- Modal: Crear / Editar -->
+    <!-- ============================================ -->
+    <div class="modal fade" id="ci-edit-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title" id="ci-edit-title">Nuevo registro</h5>
+                        <p class="text-muted small mb-0" id="ci-edit-subtitle">Complete los datos del catálogo</p>
                     </div>
-                    <form id="ci-edit-form" onsubmit="return false;">
-                        <div class="ci-modal-body">
-                            <input type="hidden" id="ci-edit-id" value="0" />
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <form id="ci-edit-form" onsubmit="return false;">
+                    <div class="modal-body">
+                        <input type="hidden" id="ci-edit-id" value="0" />
 
-                            <!-- Aviso para catálogos con FKs / campos complejos -->
-                            <div class="pa-complex-form-notice" id="pa-complex-notice" hidden>
-                                <div class="pa-complex-icon"><i class="bi bi-diagram-3-fill"></i></div>
-                                <div class="pa-complex-text">
-                                    <strong id="pa-complex-title">Este catálogo requiere el formulario completo</strong>
-                                    <span id="pa-complex-desc">Tiene relaciones con otros catálogos que no caben en este modal. Abra el formulario completo para gestionar todos los campos.</span>
-                                </div>
-                            </div>
+                        <!-- Aviso para catálogos con relaciones / campos complejos -->
+                        <div class="alert alert-light-warning" id="pa-complex-notice" role="note" hidden>
+                            <strong id="pa-complex-title"><i class="bi bi-diagram-3-fill mr-1"></i>Este catálogo requiere el formulario completo</strong>
+                            <p class="mb-0" id="pa-complex-desc">Tiene relaciones con otros catálogos que no caben en este modal. Abra el formulario completo para gestionar todos los campos.</p>
+                        </div>
 
-                            <!-- Campo Descripción (siempre visible cuando no es complejo) -->
-                            <div class="ci-form-group" id="pa-desc-wrap">
-                                <label for="ci-edit-descripcion">
-                                    <i class="bi bi-card-text"></i>
-                                    <span id="pa-desc-label">Descripción</span> <span class="ci-required">*</span>
-                                </label>
-                                <input type="text" id="ci-edit-descripcion" class="form-control" maxlength="150" required autocomplete="off" placeholder="Ingrese la descripción..." />
-                                <small class="ci-form-hint" id="ci-edit-hint">Ingrese el nombre del registro.</small>
-                            </div>
+                        <!-- Campo Descripción (siempre visible cuando no es complejo) -->
+                        <div class="form-group" id="pa-desc-wrap">
+                            <label for="ci-edit-descripcion">
+                                <i class="bi bi-card-text mr-1"></i>
+                                <span id="pa-desc-label">Descripción</span> <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="ci-edit-descripcion" class="form-control" maxlength="150" required autocomplete="off" placeholder="Ingrese la descripción..." />
+                            <small class="form-text text-muted" id="ci-edit-hint">Ingrese el nombre del registro.</small>
+                        </div>
 
-                            <!-- Extra: dropdown de Nivel Educativo (solo para Grados Académicos) -->
-                            <div class="ci-form-group" id="pa-nivel-wrap" hidden>
-                                <label for="pa-nivel-select">
-                                    <i class="bi bi-diagram-2"></i>
-                                    Nivel Educativo <span class="ci-required">*</span>
-                                </label>
-                                <select id="pa-nivel-select" class="form-control">
-                                    <option value="">— Seleccione un nivel —</option>
-                                </select>
-                                <small class="ci-form-hint">A qué nivel educativo pertenece este grado.</small>
-                            </div>
+                        <!-- Extra: lista de Nivel Educativo (solo para Grados Académicos) -->
+                        <div class="form-group" id="pa-nivel-wrap" hidden>
+                            <label for="pa-nivel-select">
+                                <i class="bi bi-diagram-2 mr-1"></i>
+                                Nivel Educativo <span class="text-danger">*</span>
+                            </label>
+                            <select id="pa-nivel-select" class="custom-select">
+                                <option value="">— Seleccione un nivel —</option>
+                            </select>
+                            <small class="form-text text-muted">A qué nivel educativo pertenece este grado.</small>
+                        </div>
 
-                            <!-- Toggle Estado (solo para catálogos con EsActivo) -->
-                            <div class="ci-form-group" id="ci-edit-estado-wrap" hidden>
-                                <label>
-                                    <i class="bi bi-toggle-on"></i>
-                                    Estado
-                                </label>
-                                <div class="ci-switch">
+                        <!-- Interruptor Estado (solo para catálogos con EsActivo) -->
+                        <div class="form-group mb-0" id="ci-edit-estado-wrap" hidden>
+                            <label class="d-block">
+                                <i class="bi bi-toggle-on mr-1"></i>
+                                Estado
+                            </label>
+                            <div class="d-flex align-items-center">
+                                <label class="switch s-outline s-outline-primary mb-0 mr-2">
                                     <input type="checkbox" id="ci-edit-esactivo" checked />
-                                    <label for="ci-edit-esactivo"></label>
-                                    <span id="ci-edit-esactivo-label">Activo</span>
-                                </div>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span id="ci-edit-esactivo-label">Activo</span>
                             </div>
                         </div>
-                        <div class="ci-modal-footer">
-                            <button type="button" class="ci-btn-cancel" data-dismiss="modal">
-                                <i class="bi bi-x-lg"></i> Cancelar
-                            </button>
-                            <a href="#" class="pa-open-full-form" id="pa-open-full-form" hidden>
-                                <i class="bi bi-box-arrow-up-right"></i> Ver formulario completo
-                            </a>
-                            <button type="submit" class="ci-btn-save" id="ci-edit-save">
-                                <i class="bi bi-check2"></i> Guardar
-                            </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                        <a href="#" class="btn btn-outline-primary" id="pa-open-full-form" hidden>
+                            <i class="bi bi-box-arrow-up-right mr-1"></i> Ver formulario completo
+                        </a>
+                        <button type="submit" class="btn btn-primary" id="ci-edit-save">
+                            <i class="bi bi-check2 mr-1"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- Modal: Detalle -->
+    <!-- ============================================ -->
+    <div class="modal fade" id="ci-detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Detalle del registro</h5>
+                        <p class="text-muted small mb-0" id="ci-detail-catalog-name">Catálogo</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row mb-3">
+                        <dt class="col-sm-4 text-muted">ID</dt>
+                        <dd class="col-sm-8" id="ci-detail-id">—</dd>
+                        <dt class="col-sm-4 text-muted">Descripción</dt>
+                        <dd class="col-sm-8 mb-0 font-weight-bold" id="ci-detail-descripcion">—</dd>
+                    </dl>
+
+                    <h6 class="font-weight-bold"><i class="bi bi-clock-history mr-1"></i> Auditoría</h6>
+                    <div class="d-flex align-items-start mb-2">
+                        <span class="badge badge-success mr-2"><i class="bi bi-person-plus"></i></span>
+                        <div>
+                            <div class="text-muted small">Creado por</div>
+                            <div><strong id="ci-detail-usuarioregistra">—</strong> <span class="text-muted small" id="ci-detail-fecharegistra">—</span></div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="d-flex align-items-start">
+                        <span class="badge badge-info mr-2"><i class="bi bi-pencil-square"></i></span>
+                        <div>
+                            <div class="text-muted small">Última modificación</div>
+                            <div><strong id="ci-detail-usuariomodifica">—</strong> <span class="text-muted small" id="ci-detail-fechamodifica">—</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- ============================================ -->
-        <!-- Modal: Detalle -->
-        <!-- ============================================ -->
-        <div class="modal fade" id="ci-detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content ci-modal-content">
-                    <div class="ci-modal-header ci-modal-header-detail">
-                        <div class="ci-modal-header-icon"><i class="bi bi-file-earmark-text"></i></div>
-                        <div class="ci-modal-header-text">
-                            <h5>Detalle del registro</h5>
-                            <p id="ci-detail-catalog-name">Catálogo</p>
-                        </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+    <!-- ============================================ -->
+    <!-- Modal: Eliminar -->
+    <!-- ============================================ -->
+    <div class="modal fade" id="ci-delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar registro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="ci-delete-id" value="0" />
+                    <p>
+                        ¿Está seguro de que desea eliminar <strong id="ci-delete-name"></strong> del catálogo <strong id="ci-delete-catalog"></strong>?
+                    </p>
+                    <div class="alert alert-light-danger mb-0" role="alert">
+                        <strong><i class="bi bi-exclamation-triangle-fill mr-1"></i> Esta acción no se puede deshacer.</strong>
+                        Si el registro está en uso por otras entidades, la eliminación fallará.
                     </div>
-                    <div class="ci-modal-body">
-                        <div class="ci-detail-grid">
-                            <div class="ci-detail-item">
-                                <span class="ci-detail-label">ID</span>
-                                <span class="ci-detail-value" id="ci-detail-id">—</span>
-                            </div>
-                            <div class="ci-detail-item ci-detail-item-wide">
-                                <span class="ci-detail-label">Descripción</span>
-                                <span class="ci-detail-value" id="ci-detail-descripcion">—</span>
-                            </div>
-                        </div>
-
-                        <div class="ci-audit">
-                            <div class="ci-audit-title">
-                                <i class="bi bi-clock-history"></i> Auditoría
-                            </div>
-                            <div class="ci-audit-row">
-                                <div class="ci-audit-icon green"><i class="bi bi-person-plus"></i></div>
-                                <div class="ci-audit-body">
-                                    <span class="ci-audit-label">Creado por</span>
-                                    <div><strong id="ci-detail-usuarioregistra">—</strong> <span class="ci-audit-date" id="ci-detail-fecharegistra">—</span></div>
-                                </div>
-                            </div>
-                            <div class="ci-audit-row">
-                                <div class="ci-audit-icon blue"><i class="bi bi-pencil-square"></i></div>
-                                <div class="ci-audit-body">
-                                    <span class="ci-audit-label">Última modificación</span>
-                                    <div><strong id="ci-detail-usuariomodifica">—</strong> <span class="ci-audit-date" id="ci-detail-fechamodifica">—</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ci-modal-footer">
-                        <button type="button" class="ci-btn-cancel" data-dismiss="modal">
-                            <i class="bi bi-x-lg"></i> Cerrar
-                        </button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="ci-delete-confirm">Eliminar</button>
                 </div>
             </div>
         </div>
-
-        <!-- ============================================ -->
-        <!-- Modal: Eliminar -->
-        <!-- ============================================ -->
-        <div class="modal fade" id="ci-delete-modal" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 440px;">
-                <div class="modal-content" style="border-radius: 12px; border: none;">
-                    <div class="modal-header" style="border-bottom: none; padding: 20px 24px 0;">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding: 0; margin: 0; opacity: 0.5;">
-                            <span aria-hidden="true" style="font-size: 24px;">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body text-center" style="padding: 0 40px 32px;">
-                        <input type="hidden" id="ci-delete-id" value="0" />
-                        <div class="d-flex justify-content-center mb-3">
-                            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                <div style="width: 56px; height: 56px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                    <i class="bi bi-exclamation-triangle-fill" style="color: white; font-size: 28px;"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <h5 class="mb-3" style="color: #1f2937; font-weight: 600; font-size: 20px;">Eliminar registro</h5>
-                        <p class="mb-4" style="color: #6b7280; font-size: 14px; line-height: 1.5;">
-                            ¿Está seguro de que desea eliminar <span id="ci-delete-name" style="font-weight: 600; color:#1f2937;"></span> del catálogo <span id="ci-delete-catalog" style="font-weight:600;"></span>?
-                        </p>
-                        <div class="alert d-flex align-items-start text-left" style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-bottom: 0;">
-                            <div style="flex-shrink: 0; margin-right: 12px;">
-                                <i class="bi bi-exclamation-triangle-fill" style="color: #dc2626; font-size: 18px;"></i>
-                            </div>
-                            <div style="flex: 1;">
-                                <p class="mb-1" style="color: #991b1b; font-weight: 600; font-size: 13px; margin: 0;">Esta acción no se puede deshacer</p>
-                                <p class="mb-0" style="color: #991b1b; font-size: 13px; margin: 0;">Si el registro está en uso por otras entidades, la eliminación fallará.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="border-top: none; padding: 0 40px 32px; gap: 12px;">
-                        <button type="button" class="btn" data-dismiss="modal" style="flex: 1; padding: 10px 24px; border-radius: 8px; font-weight: 500; background-color: #f3f4f6; border: 1px solid #d1d5db; color: #374151 !important; font-size: 14px;">
-                            Cancelar
-                        </button>
-                        <button type="button" class="btn btn-danger" id="ci-delete-confirm" style="flex: 1; padding: 10px 24px; border-radius: 8px; font-weight: 500; background-color: #dc2626; border: none; font-size: 14px;">
-                            Eliminar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 </div>

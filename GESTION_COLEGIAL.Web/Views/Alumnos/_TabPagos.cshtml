@@ -1,4 +1,4 @@
-@using System.Globalization
+﻿@using System.Globalization
 @{
     Layout = null;
     dynamic m = Model;
@@ -41,8 +41,8 @@
 }
 @if (m == null)
 {
-    <div class="af-empty text-center p-4 text-muted">
-        <i class="bi bi-inbox" style="font-size:2rem;"></i>
+    <div class="text-center p-4 text-muted">
+        <i class="bi bi-inbox h2"></i>
         <div class="mt-2">No hay información de pagos disponible.</div>
     </div>
     return;
@@ -107,29 +107,29 @@
     }
 }
 
-<div class="af-tab-pagos">
+<div>
     <div class="row">
         <div class="col-md-6 mb-3">
-            <div class="af-section-card h-100">
-                <div class="af-section-header">
-                    <h5 class="mb-0"><i class="bi bi-wallet2 me-2"></i>Estado de cuenta</h5>
+            <div class="statbox widget box box-shadow h-100">
+                <div class="widget-header">
+                    <h5 class="mb-0"><i class="bi bi-wallet2 mr-2"></i>Estado de cuenta</h5>
                 </div>
                 <div class="p-3 text-center">
                     <div class="text-muted small">Saldo pendiente</div>
-                    <div style="font-size: 2.5rem; font-weight: 700; color: @(debe ? "#d97706" : "#059669"); line-height: 1;">
+                    <div class="display-4 font-weight-bold @(debe ? "text-warning" : "text-success")">
                         @FormatMoneda(saldoPendiente)
                     </div>
                     <div class="mt-3">
                         @if (debe)
                         {
-                            <span class="badge bg-warning" style="font-size: 0.95rem;">
-                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Debe
+                            <span class="badge badge-warning">
+                                <i class="bi bi-exclamation-triangle-fill mr-1"></i> Debe
                             </span>
                         }
                         else
                         {
-                            <span class="badge bg-success" style="font-size: 0.95rem;">
-                                <i class="bi bi-check-circle-fill me-1"></i> Al día
+                            <span class="badge badge-success">
+                                <i class="bi bi-check-circle-fill mr-1"></i> Al día
                             </span>
                         }
                     </div>
@@ -146,15 +146,15 @@
         </div>
 
         <div class="col-md-6 mb-3">
-            <div class="af-section-card h-100">
-                <div class="af-section-header">
-                    <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Próximo cargo</h5>
+            <div class="statbox widget box box-shadow h-100">
+                <div class="widget-header">
+                    <h5 class="mb-0"><i class="bi bi-calendar-event mr-2"></i>Próximo cargo</h5>
                 </div>
                 <div class="p-3">
                     @if (proximoCargo == null)
                     {
                         <div class="text-center text-muted py-4">
-                            <i class="bi bi-check2-circle" style="font-size:1.8rem;"></i>
+                            <i class="bi bi-check2-circle h3"></i>
                             <div class="mt-2">Sin cargos pendientes.</div>
                         </div>
                     }
@@ -181,10 +181,10 @@
 
                         <dl class="row mb-0">
                             <dt class="col-sm-5 text-muted">Concepto</dt>
-                            <dd class="col-sm-7 fw-semibold">@concepto</dd>
+                            <dd class="col-sm-7 font-weight-bold">@concepto</dd>
 
                             <dt class="col-sm-5 text-muted">Monto</dt>
-                            <dd class="col-sm-7 fw-bold">@FormatMoneda(montoProx)</dd>
+                            <dd class="col-sm-7 font-weight-bold">@FormatMoneda(montoProx)</dd>
 
                             <dt class="col-sm-5 text-muted">Vencimiento</dt>
                             <dd class="col-sm-7">@FormatFecha(fechaVence)</dd>
@@ -195,15 +195,15 @@
                                 {
                                     if (diasRestantes.Value < 0)
                                     {
-                                        <span class="badge bg-danger-subtle text-danger">Vencido hace @Math.Abs(diasRestantes.Value) días</span>
+                                        <span class="badge outline-badge-danger">Vencido hace @Math.Abs(diasRestantes.Value) días</span>
                                     }
                                     else if (diasRestantes.Value == 0)
                                     {
-                                        <span class="badge bg-warning-subtle text-warning">Vence hoy</span>
+                                        <span class="badge outline-badge-warning">Vence hoy</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-info-subtle text-info">@diasRestantes.Value días</span>
+                                        <span class="badge outline-badge-info">@diasRestantes.Value días</span>
                                     }
                                 }
                                 else
@@ -220,9 +220,9 @@
 
     <div class="row">
         <div class="col-12 mb-3">
-            <div class="af-section-card">
-                <div class="af-section-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Últimos pagos</h5>
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0"><i class="bi bi-receipt mr-2"></i>Últimos pagos</h5>
                     <small class="text-muted">Ordenados por fecha</small>
                 </div>
                 <div class="p-3">
@@ -232,7 +232,7 @@
                                 <tr>
                                     <th>Vencimiento</th>
                                     <th>Concepto</th>
-                                    <th class="text-end">Monto pagado</th>
+                                    <th class="text-right">Monto pagado</th>
                                     <th>Estado</th>
                                 </tr>
                             </thead>
@@ -241,7 +241,7 @@
                                 {
                                     <tr>
                                         <td colspan="4" class="text-center text-muted py-3">
-                                            <i class="bi bi-inbox me-1"></i> Sin pagos registrados este año.
+                                            <i class="bi bi-inbox mr-1"></i> Sin pagos registrados este año.
                                         </td>
                                     </tr>
                                 }
@@ -262,8 +262,8 @@
                                         <tr>
                                             <td>@FormatFecha(fecha)</td>
                                             <td>@desc</td>
-                                            <td class="text-end fw-semibold">@FormatMoneda(pagado)</td>
-                                            <td><span class="badge bg-light text-dark">@estado</span></td>
+                                            <td class="text-right font-weight-bold">@FormatMoneda(pagado)</td>
+                                            <td><span class="badge outline-badge-dark">@estado</span></td>
                                         </tr>
                                         mostrados++;
                                     }
@@ -274,7 +274,7 @@
                     @if (cuotasPendientes != null)
                     {
                         <div class="text-muted small mt-2">
-                            <i class="bi bi-info-circle me-1"></i>
+                            <i class="bi bi-info-circle mr-1"></i>
                             Cuotas pendientes en el año: <strong>@cuotasPendientes</strong>
                         </div>
                     }
@@ -285,18 +285,18 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="af-section-card">
-                <div class="af-section-header">
-                    <h5 class="mb-0"><i class="bi bi-arrow-right-circle me-2"></i>Acciones</h5>
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <h5 class="mb-0"><i class="bi bi-arrow-right-circle mr-2"></i>Acciones</h5>
                 </div>
-                <div class="p-3 d-flex flex-wrap gap-3">
-                    <a href="/EstadoCuentaAdm" class="af-btn-link">
-                        <i class="bi bi-file-earmark-ruled me-1"></i>
-                        Estado de cuenta completo <i class="bi bi-arrow-right ms-1"></i>
+                <div class="p-3 d-flex flex-wrap">
+                    <a href="/EstadoCuentaAdm" class="btn btn-sm btn-outline-primary mr-2 mb-2">
+                        <i class="bi bi-file-earmark-ruled mr-1"></i>
+                        Estado de cuenta completo <i class="bi bi-arrow-right ml-1"></i>
                     </a>
-                    <a href="/Pagos/NuevoPago" class="af-btn-link">
-                        <i class="bi bi-plus-circle me-1"></i>
-                        Registrar nuevo pago <i class="bi bi-arrow-right ms-1"></i>
+                    <a href="/Pagos/NuevoPago" class="btn btn-sm btn-outline-primary mr-2 mb-2">
+                        <i class="bi bi-plus-circle mr-1"></i>
+                        Registrar nuevo pago <i class="bi bi-arrow-right ml-1"></i>
                     </a>
                 </div>
             </div>

@@ -267,7 +267,7 @@ var Matricula = (function () {
     function val(id) { return ($("#" + id).val() || "").toString().trim() || "—"; }
 
     function fila(k, v) {
-        return '<div class="mat-row"><span>' + k + '</span><span>' + (v || "—") + '</span></div>';
+        return '<div class="d-flex justify-content-between border-bottom py-1 small"><span class="text-muted">' + k + '</span><span class="font-weight-bold text-right">' + (v || "—") + '</span></div>';
     }
 
     function construirResumen() {
@@ -281,7 +281,7 @@ var Matricula = (function () {
             fila("Sexo", $("#Per_Sexo option:selected").text()) +
             fila("Teléfono", val("Per_Telefono")) +
             fila("Correo", val("Per_CorreoElectronico"));
-        $("#sumAlumno").html('<h4><i class="fas fa-user"></i> Alumno</h4>' + htmlAlu);
+        $("#sumAlumno").html('<h6 class="text-primary font-weight-bold"><i class="fas fa-user mr-1"></i> Alumno</h6>' + htmlAlu);
 
         // Académico (cascada)
         var htmlAca = fila("Nivel", txtSel("#Niv_Id")) +
@@ -290,7 +290,7 @@ var Matricula = (function () {
             fila("Curso", txtSel("#Cur_Id")) +
             fila("Sección", txtSel("#Sec_Id")) +
             fila("Estado", txtSel("#Est_Id"));
-        $("#sumAcademico").html('<h4><i class="fas fa-layer-group"></i> Ubicación académica</h4>' + htmlAca);
+        $("#sumAcademico").html('<h6 class="text-primary font-weight-bold"><i class="fas fa-layer-group mr-1"></i> Ubicación académica</h6>' + htmlAca);
 
         // Encargado
         var htmlEnc;
@@ -306,15 +306,15 @@ var Matricula = (function () {
                 fila("Identidad", $("#enc_Per_Identidad").val() || "—") +
                 fila("Parentesco", txtSel("#parNuevoSel"));
         }
-        $("#sumEncargado").html('<h4><i class="fas fa-user-shield"></i> Encargado</h4>' + htmlEnc);
+        $("#sumEncargado").html('<h6 class="text-primary font-weight-bold"><i class="fas fa-user-shield mr-1"></i> Encargado</h6>' + htmlEnc);
 
         // Documentos marcados
         var docs = [];
         $(".mat-doc-check:checked").each(function () { docs.push($(this).data("doc")); });
         var htmlDoc = docs.length
             ? docs.map(function (d) { return fila(d, "✓"); }).join("")
-            : '<div class="mat-row"><span>Sin documentos marcados</span><span>—</span></div>';
-        $("#sumDocumentos").html('<h4><i class="fas fa-folder-open"></i> Documentos marcados</h4>' + htmlDoc);
+            : '<div class="d-flex justify-content-between border-bottom py-1 small"><span class="text-muted">Sin documentos marcados</span><span>—</span></div>';
+        $("#sumDocumentos").html('<h6 class="text-primary font-weight-bold"><i class="fas fa-folder-open mr-1"></i> Documentos marcados</h6>' + htmlDoc);
     }
 
     // -------------------------------------------------- Confirmar (guardar)
@@ -407,23 +407,23 @@ var Matricula = (function () {
     function finalizar(encOk, vinculoPendiente) {
         var notaEnc = "";
         if (encMode === "nuevo" && !encOk) {
-            notaEnc = '<p style="color:#b91c1c;"><i class="fas fa-triangle-exclamation"></i> El alumno se creó, pero el encargado no pudo registrarse. Regístrelo desde Encargados.</p>';
+            notaEnc = '<p class="text-danger"><i class="fas fa-triangle-exclamation mr-1"></i> El alumno se creó, pero el encargado no pudo registrarse. Regístrelo desde Encargados.</p>';
         } else if (encMode === "nuevo" && encOk) {
-            notaEnc = '<p style="color:#92400e;"><i class="fas fa-circle-info"></i> Encargado registrado. El vínculo alumno–encargado deberá confirmarse en la ficha del alumno (no soportado por el API en el alta).</p>';
+            notaEnc = '<p class="text-warning"><i class="fas fa-circle-info mr-1"></i> Encargado registrado. El vínculo alumno–encargado deberá confirmarse en la ficha del alumno (no soportado por el API en el alta).</p>';
         } else if (vinculoPendiente) {
-            notaEnc = '<p style="color:#92400e;"><i class="fas fa-circle-info"></i> El vínculo con el encargado existente deberá confirmarse en la ficha del alumno (no soportado por el API en el alta).</p>';
+            notaEnc = '<p class="text-warning"><i class="fas fa-circle-info mr-1"></i> El vínculo con el encargado existente deberá confirmarse en la ficha del alumno (no soportado por el API en el alta).</p>';
         }
 
         var linkDocs = alumnoCreadoId
-            ? '<a href="' + cfg.urlDocumentos + '" class="mat-btn mat-btn-next" style="text-decoration:none;"><i class="fas fa-folder-open"></i> Gestionar documentos</a>'
+            ? '<a href="' + cfg.urlDocumentos + '" class="btn btn-primary mr-2"><i class="fas fa-folder-open mr-1"></i> Gestionar documentos</a>'
             : "";
-        var linkAlu = '<a href="' + cfg.urlAlumnos + '" class="mat-btn mat-btn-prev" style="text-decoration:none;"><i class="fas fa-list"></i> Ir al listado</a>';
+        var linkAlu = '<a href="' + cfg.urlAlumnos + '" class="btn btn-outline-secondary"><i class="fas fa-list mr-1"></i> Ir al listado</a>';
 
         $("#matResultado").html(
-            '<div class="mat-success-box">' +
-            '<div class="mat-success-icon"><i class="fas fa-circle-check"></i></div>' +
+            '<div class="text-center py-4">' +
+            '<div class="display-4 text-success"><i class="fas fa-circle-check"></i></div>' +
             '<h3>Matrícula registrada</h3>' +
-            '<p class="mat-hint">El alumno fue creado correctamente.</p>' +
+            '<p class="text-muted">El alumno fue creado correctamente.</p>' +
             notaEnc +
             '<div style="display:flex;gap:.75rem;justify-content:center;margin-top:1rem;flex-wrap:wrap;">' +
             linkAlu + linkDocs +

@@ -16,16 +16,12 @@
         estadoActivo = activo;
 
         if (activo) {
-            statusBadge.classList.remove('inactive');
-            statusBadge.classList.add('active');
-            statusDot.classList.remove('inactive');
-            statusDot.classList.add('active');
+            statusBadge.classList.remove('badge-secondary');
+            statusBadge.classList.add('badge-success');
             statusText.textContent = 'Activo';
         } else {
-            statusBadge.classList.remove('active');
-            statusBadge.classList.add('inactive');
-            statusDot.classList.remove('active');
-            statusDot.classList.add('inactive');
+            statusBadge.classList.remove('badge-success');
+            statusBadge.classList.add('badge-secondary');
             statusText.textContent = 'Inactivo';
         }
     }

@@ -1,12 +1,9 @@
-@{
+﻿@{
     ViewBag.Title = "Directorio de Contacto";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles{
-    <link href="~/Content/css/pages/catalogos-institucion.css" rel="stylesheet" />
-    <link href="~/Content/css/pages/kpisacademicos.css" rel="stylesheet" />
-    <link href="~/Content/css/pages/graduados-directorio.css" rel="stylesheet" />
     <link href="~/Content/css/pages/directorio-contacto.css" rel="stylesheet" />
 }
 
@@ -19,145 +16,137 @@
     </nav>
 </div>
 
-<!-- Hero -->
-<div class="ci-hero">
-    <div class="ci-hero-content">
-        <div class="ci-hero-left">
-            <div class="ci-hero-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="ci-hero-text">
-                <h1>Directorio de Contacto</h1>
-                <p>Encuentre rápido el contacto de alumnos y encargados para llamadas y comunicaciones</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Directorio de contacto</h4>
+        <p class="text-muted mb-0">Encuentre rápido el contacto de alumnos y encargados para llamadas y comunicaciones.</p>
     </div>
 </div>
 
-<div class="fluid-container">
+<div>
 
     <!-- KPIs -->
-    <div class="row dc-kpis mb-3">
-        <div class="col-md-3 col-sm-6 mb-2">
-            <div class="kpi-stat-card kpi-stat-indigo">
-                <div class="kpi-stat-icon"><i class="bi bi-mortarboard-fill"></i></div>
-                <div class="kpi-stat-body">
-                    <div class="kpi-stat-valor" id="kpi-total-alumnos">—</div>
-                    <div class="kpi-stat-label">Alumnos filtrados</div>
+    <div class="row">
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-total-alumnos">—</h6>
+                            <p>Alumnos filtrados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-mortarboard-fill"></i></div></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 mb-2">
-            <div class="kpi-stat-card kpi-stat-emerald">
-                <div class="kpi-stat-icon"><i class="bi bi-people-fill"></i></div>
-                <div class="kpi-stat-body">
-                    <div class="kpi-stat-valor" id="kpi-total-encargados">—</div>
-                    <div class="kpi-stat-label">Encargados registrados</div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-total-encargados">—</h6>
+                            <p>Encargados registrados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-people-fill"></i></div></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 mb-2">
-            <div class="kpi-stat-card kpi-stat-amber">
-                <div class="kpi-stat-icon"><i class="bi bi-envelope-slash-fill"></i></div>
-                <div class="kpi-stat-body">
-                    <div class="kpi-stat-valor" id="kpi-sin-correo">—</div>
-                    <div class="kpi-stat-label">Encargados sin correo</div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-sin-correo">—</h6>
+                            <p>Encargados sin correo</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-envelope-slash-fill"></i></div></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 mb-2">
-            <div class="kpi-stat-card kpi-stat-cyan">
-                <div class="kpi-stat-icon"><i class="bi bi-telephone-x-fill"></i></div>
-                <div class="kpi-stat-body">
-                    <div class="kpi-stat-valor" id="kpi-sin-telefono">—</div>
-                    <div class="kpi-stat-label">Encargados sin teléfono</div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-sin-telefono">—</h6>
+                            <p>Encargados sin teléfono</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-telephone-x-fill"></i></div></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Tabs -->
-    <div class="ci-tabs-card">
-        <ul class="nav ci-tabs" role="tablist" id="dc-tabs">
-            <li class="nav-item ci-tab-item active" data-target="alumno">
-                <a href="#" class="ci-tab-link">
-                    <span class="ci-tab-num">1</span>
-                    <span class="ci-tab-icon"><i class="bi bi-person-vcard"></i></span>
-                    <span class="ci-tab-label">Por Alumno</span>
-                    <span class="ci-tab-count" id="tab-count-alumno">—</span>
-                </a>
-            </li>
-            <li class="nav-item ci-tab-item" data-target="encargado">
-                <a href="#" class="ci-tab-link">
-                    <span class="ci-tab-num">2</span>
-                    <span class="ci-tab-icon"><i class="bi bi-people"></i></span>
-                    <span class="ci-tab-label">Por Encargado</span>
-                    <span class="ci-tab-count" id="tab-count-encargado">—</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <ul class="nav nav-tabs mb-4" role="tablist" id="dc-tabs">
+        <li class="nav-item ci-tab-item active" data-target="alumno">
+            <a href="#" class="nav-link active"><i class="bi bi-person-vcard mr-1"></i> Por alumno <span class="badge badge-primary ml-1" id="tab-count-alumno">—</span></a>
+        </li>
+        <li class="nav-item ci-tab-item" data-target="encargado">
+            <a href="#" class="nav-link"><i class="bi bi-people mr-1"></i> Por encargado <span class="badge badge-primary ml-1" id="tab-count-encargado">—</span></a>
+        </li>
+    </ul>
 
     <!-- Panel activo -->
-    <div class="ci-panel">
+    <div class="statbox widget box box-shadow mb-4">
 
-        <!-- Toolbar -->
-        <div class="ci-toolbar">
-            <div class="ci-toolbar-left">
-                <div class="ci-search-wrap">
-                    <i class="bi bi-search"></i>
-                    <input type="text" id="dc-search" placeholder="Buscar en el directorio..." />
-                </div>
+        <!-- Barra de herramientas -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+            <div class="mb-2 mr-2">
+                <input type="text" id="dc-search" class="form-control" placeholder="Buscar en el directorio..." />
             </div>
-            <div class="ci-toolbar-right">
-                <div class="ci-view-toggle" role="group" aria-label="Vista">
-                    <button type="button" class="ci-view-btn active" data-view="cards" title="Vista de tarjetas">
-                        <i class="bi bi-grid-3x3-gap-fill"></i>
-                        <span>Cards</span>
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <div class="btn-group mr-2 ci-view-toggle" role="group" aria-label="Vista">
+                    <button type="button" class="btn btn-outline-primary btn-sm ci-view-btn active" data-view="cards" title="Vista de tarjetas">
+                        <i class="bi bi-grid-3x3-gap-fill mr-1"></i> Tarjetas
                     </button>
-                    <button type="button" class="ci-view-btn" data-view="table" title="Vista de tabla">
-                        <i class="bi bi-table"></i>
-                        <span>Tabla</span>
+                    <button type="button" class="btn btn-outline-primary btn-sm ci-view-btn" data-view="table" title="Vista de tabla">
+                        <i class="bi bi-table mr-1"></i> Tabla
                     </button>
                 </div>
-                <button type="button" class="ci-btn-ghost" id="dc-reload" title="Recargar">
+                <button type="button" class="btn btn-outline-secondary btn-sm mr-2" id="dc-reload" title="Recargar">
                     <i class="bi bi-arrow-clockwise"></i>
                 </button>
-                <a href="@Url.Action("CreateAsync", "Encargados")" class="ci-btn-primary" id="dc-new-encargado" style="display:none;">
-                    <i class="bi bi-plus-lg"></i>
-                    <span>Nuevo Encargado</span>
+                <a href="@Url.Action("CreateAsync", "Encargados")" class="btn btn-primary btn-sm" id="dc-new-encargado" style="display:none;">
+                    <i class="bi bi-plus-lg mr-1"></i> Nuevo encargado
                 </a>
             </div>
         </div>
 
         <!-- Filtros (solo pestaña alumno) -->
-        <div class="dc-filters" id="dc-filters">
-            <span class="grad-chips-label">Filtrar por:</span>
-            <div class="grad-chips" id="dc-chips-curso">
-                <span class="grad-chip active" data-cur="">Todos los cursos</span>
+        <div class="mb-3" id="dc-filters">
+            <small class="text-muted d-block mb-1">Filtrar por:</small>
+            <div class="d-flex flex-wrap" id="dc-chips-curso">
+                <span class="btn btn-sm btn-rounded btn-outline-primary mr-2 mb-2 grad-chip active" data-cur="">Todos los cursos</span>
             </div>
-            <div class="grad-chips" id="dc-chips-seccion">
-                <span class="grad-chip active" data-sec="">Todas las secciones</span>
+            <div class="d-flex flex-wrap" id="dc-chips-seccion">
+                <span class="btn btn-sm btn-rounded btn-outline-primary mr-2 mb-2 grad-chip active" data-sec="">Todas las secciones</span>
             </div>
         </div>
 
         <!-- Tab 1: Por Alumno -->
-        <div class="dc-tab-content" id="dc-tab-alumno">
+        <div id="dc-tab-alumno">
 
             <!-- Empty state (fuera de las vistas para que no sea afectado por su layout) -->
-            <div class="dc-empty" id="dc-empty-alumno">
-                <i class="bi bi-funnel"></i>
-                <h4>Selecciona un curso o sección</h4>
-                <p>Elige un chip de <strong>curso</strong> arriba para ver los contactos filtrados. Evitamos cargar todos los alumnos a la vez para no afectar el rendimiento.</p>
+            <div class="text-center text-muted py-5" id="dc-empty-alumno">
+                <i class="bi bi-funnel h2 d-block"></i>
+                <h5>Selecciona un curso o sección</h5>
+                <p>Elige un atajo de <strong>curso</strong> arriba para ver los contactos filtrados. Evitamos cargar todos los alumnos a la vez para no afectar el rendimiento.</p>
             </div>
 
             <!-- Cards view -->
-            <div class="ci-cards-view" id="dc-cards-alumno" style="display:none;">
-                <div class="ci-cards-grid" id="dc-cards-grid-alumno"></div>
+            <div id="dc-cards-alumno" style="display:none;">
+                <div class="row" id="dc-cards-grid-alumno"></div>
             </div>
 
             <!-- Table view -->
-            <div class="ci-table-view" id="dc-table-alumno" style="display:none;">
+            <div id="dc-table-alumno" style="display:none;">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="dc-datatable-alumno" style="width:100%;">
+                    <table class="table table-hover w-100" id="dc-datatable-alumno">
                         <thead>
                             <tr>
                                 <th>Identidad</th>
@@ -176,23 +165,23 @@
         </div>
 
         <!-- Tab 2: Por Encargado -->
-        <div class="dc-tab-content" id="dc-tab-encargado" style="display:none;">
+        <div id="dc-tab-encargado" style="display:none;">
 
-            <div class="dc-empty" id="dc-empty-encargado" style="display:none;">
-                <i class="bi bi-inbox"></i>
-                <h4>Sin encargados</h4>
+            <div class="text-center text-muted py-5" id="dc-empty-encargado" style="display:none;">
+                <i class="bi bi-inbox h2 d-block"></i>
+                <h5>Sin encargados</h5>
                 <p>No hay encargados registrados en el sistema.</p>
             </div>
 
             <!-- Cards view -->
-            <div class="ci-cards-view" id="dc-cards-encargado">
-                <div class="ci-cards-grid" id="dc-cards-grid-encargado"></div>
+            <div id="dc-cards-encargado">
+                <div class="row" id="dc-cards-grid-encargado"></div>
             </div>
 
             <!-- Table view -->
-            <div class="ci-table-view" id="dc-table-encargado" style="display:none;">
+            <div id="dc-table-encargado" style="display:none;">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="dc-datatable-encargado" style="width:100%;">
+                    <table class="table table-hover w-100" id="dc-datatable-encargado">
                         <thead>
                             <tr>
                                 <th>Id</th>

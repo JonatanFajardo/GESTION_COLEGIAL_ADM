@@ -238,24 +238,26 @@
             var desc = r[cat.fieldDesc] || '(sin descripción)';
             var esActivo = cat.fieldEsActivo ? !!r[cat.fieldEsActivo] : null;
             var badge = '';
-            if (esActivo === true)  badge = '<span class="ci-card-badge active"><i class="bi bi-check-circle-fill"></i> Activo</span>';
-            if (esActivo === false) badge = '<span class="ci-card-badge inactive"><i class="bi bi-slash-circle-fill"></i> Inactivo</span>';
+            if (esActivo === true)  badge = '<span class="badge badge-success"><i class="bi bi-check-circle-fill mr-1"></i>Activo</span>';
+            if (esActivo === false) badge = '<span class="badge badge-secondary"><i class="bi bi-slash-circle-fill mr-1"></i>Inactivo</span>';
 
             var $card = $(
-                '<div class="ci-card ' + (esActivo === false ? 'ci-card-inactive' : '') + '" data-id="' + esc(id) + '">' +
-                    '<div class="ci-card-head">' +
-                        '<div class="ci-card-icon"><i class="bi ' + cat.icon + '"></i></div>' +
-                        '<span class="ci-card-id">#' + esc(id) + '</span>' +
+                '<div class="col-xl-3 col-lg-4 col-md-6 mb-4">' +
+                '<div class="card h-100 ci-card' + (esActivo === false ? ' bg-light' : '') + '" data-id="' + esc(id) + '">' +
+                    '<div class="card-body">' +
+                        '<div class="d-flex align-items-center justify-content-between mb-3">' +
+                            '<i class="bi ' + cat.icon + ' h4 mb-0 text-primary"></i>' +
+                            '<span class="text-muted small">#' + esc(id) + '</span>' +
+                        '</div>' +
+                        '<h5 class="card-title mb-2">' + esc(desc) + '</h5>' +
+                        '<div>' + badge + '</div>' +
                     '</div>' +
-                    '<div class="ci-card-body">' +
-                        '<h4>' + esc(desc) + '</h4>' +
-                        '<div class="ci-card-meta">' + badge + '</div>' +
+                    '<div class="card-footer bg-transparent text-right">' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary ci-card-action view mr-1" title="Ver detalle"><i class="bi bi-eye"></i></button>' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary ci-card-action edit mr-1" title="Editar"><i class="bi bi-pencil"></i></button>' +
+                        '<button type="button" class="btn btn-sm btn-outline-danger ci-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
                     '</div>' +
-                    '<div class="ci-card-actions">' +
-                        '<button type="button" class="ci-card-action view"   title="Ver detalle"><i class="bi bi-eye"></i></button>' +
-                        '<button type="button" class="ci-card-action edit"   title="Editar"><i class="bi bi-pencil"></i></button>' +
-                        '<button type="button" class="ci-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
-                    '</div>' +
+                '</div>' +
                 '</div>'
             );
             $grid.append($card);
@@ -263,10 +265,14 @@
 
         // Card "Nueva" al final
         $grid.append(
-            '<div class="ci-card-new" role="button" tabindex="0">' +
-                '<i class="bi bi-plus-circle"></i>' +
-                '<span>Nuev' + (cat.genero === 'f' ? 'a' : 'o') + ' ' + cat.singular + '</span>' +
-                '<small>Agregar un registro nuevo</small>' +
+            '<div class="col-xl-3 col-lg-4 col-md-6 mb-4">' +
+                '<div class="card h-100 border-primary ci-card-new" role="button" tabindex="0">' +
+                    '<div class="card-body d-flex flex-column align-items-center justify-content-center text-center text-primary">' +
+                        '<i class="bi bi-plus-circle h3 mb-2"></i>' +
+                        '<span class="font-weight-bold">Nuev' + (cat.genero === 'f' ? 'a' : 'o') + ' ' + cat.singular + '</span>' +
+                        '<small class="text-muted">Agregar un registro nuevo</small>' +
+                    '</div>' +
+                '</div>' +
             '</div>'
         );
     }
@@ -278,8 +284,8 @@
 
         if (rows.length === 0) {
             $body.append(
-                '<tr><td colspan="5" style="text-align:center; padding:2rem; color:#94a3b8;">' +
-                    '<i class="bi bi-inbox" style="font-size:1.5rem; display:block; margin-bottom:0.35rem;"></i>' +
+                '<tr><td colspan="5" class="text-center text-muted py-4">' +
+                    '<i class="bi bi-inbox h4 d-block mb-1"></i>' +
                     'Sin registros' +
                 '</td></tr>'
             );
@@ -291,26 +297,26 @@
             var desc = r[cat.fieldDesc] || '(sin descripción)';
             var esActivo = cat.fieldEsActivo ? !!r[cat.fieldEsActivo] : null;
             var estadoCell = esActivo === true
-                ? '<span class="ci-card-badge active"><i class="bi bi-check-circle-fill"></i> Activo</span>'
+                ? '<span class="badge badge-success"><i class="bi bi-check-circle-fill mr-1"></i>Activo</span>'
                 : esActivo === false
-                ? '<span class="ci-card-badge inactive"><i class="bi bi-slash-circle-fill"></i> Inactivo</span>'
-                : '<span style="color:#94a3b8;">—</span>';
+                ? '<span class="badge badge-secondary"><i class="bi bi-slash-circle-fill mr-1"></i>Inactivo</span>'
+                : '<span class="text-muted">—</span>';
             var fecha = fmtDate(r[cat.fieldFechaRegistra]);
             var usr = r[cat.fieldUsuarioRegistraNombre] || '';
 
             var $tr = $(
                 '<tr data-id="' + esc(id) + '">' +
-                    '<td><span class="badge-id">#' + esc(id) + '</span></td>' +
+                    '<td><span class="text-muted">#' + esc(id) + '</span></td>' +
                     '<td><strong>' + esc(desc) + '</strong></td>' +
                     '<td>' + estadoCell + '</td>' +
                     '<td>' +
-                        '<div style="font-size:0.8rem; color:#64748b;">' + esc(fecha) + '</div>' +
-                        (usr ? '<div style="font-size:0.75rem; color:#94a3b8;">por ' + esc(usr) + '</div>' : '') +
+                        '<div class="small">' + esc(fecha) + '</div>' +
+                        (usr ? '<div class="small text-muted">por ' + esc(usr) + '</div>' : '') +
                     '</td>' +
-                    '<td class="actions-cell">' +
-                        '<button type="button" class="ci-card-action view"   title="Detalle"><i class="bi bi-eye"></i></button> ' +
-                        '<button type="button" class="ci-card-action edit"   title="Editar"><i class="bi bi-pencil"></i></button> ' +
-                        '<button type="button" class="ci-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                    '<td class="text-center text-nowrap">' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary ci-card-action view" title="Detalle"><i class="bi bi-eye"></i></button> ' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary ci-card-action edit" title="Editar"><i class="bi bi-pencil"></i></button> ' +
+                        '<button type="button" class="btn btn-sm btn-outline-danger ci-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
                     '</td>' +
                 '</tr>'
             );
@@ -500,8 +506,8 @@
             e.preventDefault();
             var key = $(this).data('catalog');
             if (!key || key === state.activeKey) return;
-            $('.ci-tab-item').removeClass('active');
-            $(this).addClass('active');
+            $('.ci-tab-item').removeClass('active').find('.nav-link').removeClass('active');
+            $(this).addClass('active').find('.nav-link').addClass('active');
             state.activeKey = key;
             state.search = '';
             $('#ci-search').val('');
@@ -538,7 +544,6 @@
 
         // Reload
         $('#ci-reload').on('click', function () {
-            $(this).find('i').addClass('bi-arrow-clockwise').css('animation', 'spin 0.6s linear');
             fetchCatalog(state.activeKey).done(function () {
                 render();
                 notify('success', 'Datos actualizados.');

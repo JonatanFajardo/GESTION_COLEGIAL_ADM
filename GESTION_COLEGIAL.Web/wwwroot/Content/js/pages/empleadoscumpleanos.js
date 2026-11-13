@@ -101,13 +101,13 @@ var EmpleadosCumpleanos = (function () {
         var hoyItems = data.filter(function (e) { return _diasRestantes(e.Per_FechaNacimiento) === 0; });
         var mesNombre = MESES[mes - 1];
 
-        var html = '<div class="bday-summary">';
+        var html = '<div class="alert alert-light-primary mb-0">';
         html += '<div class="d-flex align-items-center flex-wrap">';
 
         /* Contador */
         html += '<div class="mr-4 mb-2">';
-        html += '<div class="bday-summary-count">' + total + '</div>';
-        html += '<div class="bday-summary-label">';
+        html += '<h4 class="font-weight-bold mb-0">' + total + '</h4>';
+        html += '<div class="text-muted">';
         html += (total === 1 ? 'empleado cumple' : 'empleados cumplen');
         html += ' a&ntilde;os en <strong>' + mesNombre + '</strong>';
         html += '</div>';
@@ -116,7 +116,7 @@ var EmpleadosCumpleanos = (function () {
         /* Badge "Hoy" si aplica */
         if (hoyItems.length > 0) {
             html += '<div class="mb-2">';
-            html += '<span class="bday-today-alert">';
+            html += '<span class="badge badge-warning">';
             html += '&#127874; ';
             if (hoyItems.length === 1) {
                 var primerNombre = (hoyItems[0].NombreCompleto || '').split(' ')[0] || 'un empleado';
@@ -157,7 +157,7 @@ var EmpleadosCumpleanos = (function () {
         var color      = AVATAR_COLORS[colorIndex];
         var dias       = _diasRestantes(emp.Per_FechaNacimiento);
         var isHoy      = dias === 0;
-        var cardClass  = 'bday-card' + (isHoy ? ' bday-today' : '');
+        var cardClass  = 'card component-card_1 h-100' + (isHoy ? ' border-warning' : '');
 
         /* Avatar */
         var avatarHtml;
@@ -179,25 +179,24 @@ var EmpleadosCumpleanos = (function () {
         var fechaStr = _formatFecha(emp.Per_FechaNacimiento);
 
         var html = '<div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">';
-        html += '<div class="' + cardClass + '" '
-            + 'style="--bday-color:' + color + '">';
-        html += '<div class="bday-card-body">';
+        html += '<div class="' + cardClass + '">';
+        html += '<div class="card-body">';
 
         /* Cabecera: avatar + nombre */
         html += '<div class="d-flex align-items-center mb-3">';
         html += avatarHtml;
         html += '<div class="ml-3">';
-        html += '<p class="bday-card-name">' + _escapeHtml(emp.NombreCompleto) + '</p>';
+        html += '<h6 class="font-weight-bold mb-0">' + _escapeHtml(emp.NombreCompleto) + '</h6>';
         if (emp.NombreCargo) {
-            html += '<p class="bday-card-role">' + _escapeHtml(emp.NombreCargo) + '</p>';
+            html += '<p class="text-muted small mb-0">' + _escapeHtml(emp.NombreCargo) + '</p>';
         }
         html += '</div>';
         html += '</div>'; /* d-flex */
 
-        html += '<div class="bday-card-divider"></div>';
+        html += '<hr class="my-2">';
 
         /* Datos */
-        html += '<div class="bday-card-meta">';
+        html += '<div class="small text-muted">';
 
         html += '<div class="d-flex justify-content-between align-items-center mb-1">';
         html += '<span><i class="fa-solid fa-calendar-days mr-1"></i>' + fechaStr + '</span>';
@@ -230,26 +229,26 @@ var EmpleadosCumpleanos = (function () {
 
     function _buildBadge(diasRestantes) {
         if (diasRestantes === 0) {
-            return '<span class="bday-badge bday-badge-today">&#127874; &iexcl;Hoy!</span>';
+            return '<span class="badge badge-warning">&#127874; &iexcl;Hoy!</span>';
         }
         if (diasRestantes > 0 && diasRestantes <= 7) {
-            return '<span class="bday-badge bday-badge-soon">En ' + diasRestantes + ' d&iacute;a' + (diasRestantes === 1 ? '' : 's') + '</span>';
+            return '<span class="badge badge-info">En ' + diasRestantes + ' d&iacute;a' + (diasRestantes === 1 ? '' : 's') + '</span>';
         }
         if (diasRestantes > 7) {
-            return '<span class="bday-badge bday-badge-later">En ' + diasRestantes + ' d&iacute;as</span>';
+            return '<span class="badge outline-badge-secondary">En ' + diasRestantes + ' d&iacute;as</span>';
         }
         /* Negativo: ya pasó este mes */
         var abs = Math.abs(diasRestantes);
-        return '<span class="bday-badge bday-badge-later">Hace ' + abs + ' d&iacute;a' + (abs === 1 ? '' : 's') + '</span>';
+        return '<span class="badge outline-badge-secondary">Hace ' + abs + ' d&iacute;a' + (abs === 1 ? '' : 's') + '</span>';
     }
 
     /* ---------- Estado vacío ---------- */
 
     function _renderEmpty() {
         var html = '<div class="col-12">';
-        html += '<div class="bday-empty">';
-        html += '<span class="bday-empty-icon"><i class="fa-solid fa-cake-candles"></i></span>';
-        html += '<p class="bday-empty-text">No hay cumplea&ntilde;os en este mes.</p>';
+        html += '<div class="text-center text-muted py-5">';
+        html += '<i class="fa-solid fa-cake-candles h2 d-block mb-2"></i>';
+        html += '<p class="mb-0">No hay cumplea&ntilde;os en este mes.</p>';
         html += '</div>';
         html += '</div>';
         $('#bday-grid').html(html);
@@ -259,7 +258,7 @@ var EmpleadosCumpleanos = (function () {
 
     function _showLoading() {
         var html = '<div class="col-12">';
-        html += '<div class="bday-loading">';
+        html += '<div class="text-center text-muted py-5">';
         html += '<div class="spinner-border text-primary" role="status">';
         html += '<span class="sr-only">Cargando...</span>';
         html += '</div>';

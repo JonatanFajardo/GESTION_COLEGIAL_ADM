@@ -9,40 +9,8 @@
     string fFin = Model != null && Model.Ani_FechaFin.HasValue ? Model.Ani_FechaFin.Value.ToString("yyyy-MM-dd") : "";
 }
 
-@section Styles{
-    <style>
-        .wz-wrap { max-width: 920px; margin: 0 auto; padding: 24px 16px 48px; }
-        .wz-head { display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px; }
-        .wz-head h1 { font-size: 1.6rem; font-weight: 700; color:#1f2937; margin:0; }
-        .wz-steps { display:flex; align-items:flex-start; justify-content:space-between; margin: 28px 0 32px; position:relative; }
-        .wz-step { flex:1; text-align:center; position:relative; }
-        .wz-step .circle { width:36px; height:36px; border-radius:50%; background:#e5e7eb; color:#6b7280; display:flex; align-items:center; justify-content:center; font-weight:700; margin:0 auto 8px; border:2px solid #e5e7eb; z-index:2; position:relative; }
-        .wz-step.done .circle { background:#4f46e5; border-color:#4f46e5; color:#fff; }
-        .wz-step.active .circle { background:#fff; border-color:#4f46e5; color:#4f46e5; box-shadow:0 0 0 4px #eef2ff; }
-        .wz-step .lbl { font-size:.8rem; color:#6b7280; }
-        .wz-step.active .lbl, .wz-step.done .lbl { color:#1f2937; font-weight:600; }
-        .wz-step:not(:last-child):after { content:""; position:absolute; top:18px; left:50%; width:100%; height:2px; background:#e5e7eb; z-index:1; }
-        .wz-step.done:not(:last-child):after { background:#4f46e5; }
-        .wz-card { background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:28px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
-        .wz-card h2 { font-size:1.3rem; font-weight:700; color:#1f2937; margin:0 0 4px; }
-        .wz-card .sub { color:#6b7280; margin:0 0 22px; }
-        .wz-lbl { display:block; font-weight:600; color:#374151; margin-bottom:6px; font-size:.9rem; }
-        .wz-inp { width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:.95rem; }
-        .wz-req { color:#ef4444; }
-        .wz-foot { display:flex; align-items:center; justify-content:space-between; margin-top:26px; }
-        .wz-btn { border:none; border-radius:8px; padding:10px 18px; font-weight:600; cursor:pointer; font-size:.9rem; }
-        .wz-btn-primary { background:#4f46e5; color:#fff; }
-        .wz-btn-primary:hover { background:#4338ca; }
-        .wz-btn-ghost { background:transparent; color:#6b7280; text-decoration:none; }
-        .wz-opt { display:block; border:1px solid #e5e7eb; border-radius:10px; padding:14px 16px; margin-bottom:10px; cursor:pointer; }
-        .wz-opt:hover { border-color:#4f46e5; background:#fafaff; }
-        .wz-note { background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:8px; padding:10px 14px; font-size:.85rem; margin-top:16px; }
-        .wz-sum { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-        .wz-sum .k { color:#6b7280; font-size:.8rem; } .wz-sum .v { font-weight:600; color:#1f2937; }
-    </style>
-}
-
-<div class="wz-wrap">
+<div class="row">
+<div class="col-xl-10 mx-auto">
     <div class="breadcrumb-wrapper-content">
         <nav class="breadcrumb-style-one" aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -53,59 +21,63 @@
         </nav>
     </div>
 
-    <div class="wz-head">
-        <h1>Configurar un año lectivo</h1>
-        <span style="color:#6b7280;font-size:.85rem;">@DateTime.Now.ToString("ddd, dd MMM yyyy")</span>
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+        <div class="mr-3">
+            <h4 class="mb-1">Configurar un año lectivo</h4>
+            <p class="text-muted mb-0">Paso @step de 5 · @titulos[step - 1]</p>
+        </div>
+        <span class="text-muted small">@DateTime.Now.ToString("ddd, dd MMM yyyy")</span>
     </div>
 
     <!-- Stepper -->
-    <div class="wz-steps">
+    <div class="d-flex justify-content-between mb-4">
         @for (int i = 1; i <= 5; i++)
         {
-            string cls = i < step ? "wz-step done" : (i == step ? "wz-step active" : "wz-step");
-            <div class="@cls">
-                <div class="circle">@(i < step ? "✓" : i.ToString())</div>
-                <div class="lbl">@titulos[i - 1]</div>
+            string cls = i < step ? "badge-primary" : (i == step ? "outline-badge-primary" : "outline-badge-secondary");
+            <div class="flex-fill text-center px-1">
+                <span class="badge badge-pill @cls px-3 py-2 mb-2">@(i < step ? "✓" : i.ToString())</span>
+                <div class="small @(i <= step ? "font-weight-bold" : "text-muted")">@titulos[i - 1]</div>
             </div>
         }
     </div>
 
-    <div class="wz-card">
+    <div class="statbox widget box box-shadow mb-4">
+      <div class="widget-content widget-content-area">
         @switch (step)
         {
             case 1:
-                <h2>Fechas y períodos</h2>
-                <p class="sub">Define el rango del ciclo escolar y su estructura de reporte.</p>
+                <h4 class="mb-1">Fechas y períodos</h4>
+                <p class="text-muted mb-4">Define el rango del ciclo escolar y su estructura de reporte.</p>
                 using (Html.BeginForm("SetupStep1", "AniosLectivos", FormMethod.Post))
                 {
                     @Html.Hidden("Ani_Id", id)
                     @Html.Hidden("Ani_Estado", (int)(Model != null ? Model.Ani_Estado : (byte)1))
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label class="wz-lbl">Año <span class="wz-req">*</span></label>
-                            <input type="number" name="Ani_Anio" class="wz-inp" min="1900" max="2100" required
+                    <div class="form-row">
+                        <div class="col-md-4 form-group">
+                            <label for="Ani_Anio">Año <span class="text-danger">*</span></label>
+                            <input type="number" name="Ani_Anio" id="Ani_Anio" class="form-control" min="1900" max="2100" required
                                    value="@(Model != null && Model.Ani_Anio > 0 ? Model.Ani_Anio.ToString() : "")" placeholder="2027" />
                         </div>
-                        <div class="col-md-8">
-                            <label class="wz-lbl">Nombre <span class="wz-req">*</span></label>
-                            <input type="text" name="Ani_Nombre" class="wz-inp" maxlength="20" required
+                        <div class="col-md-8 form-group">
+                            <label for="Ani_Nombre">Nombre <span class="text-danger">*</span></label>
+                            <input type="text" name="Ani_Nombre" id="Ani_Nombre" class="form-control" maxlength="20" required
                                    value="@(Model != null ? Model.Ani_Nombre : "")" placeholder="Ej: 2027 o 2027-2028" />
                         </div>
                     </div>
-                    <div class="row" style="margin-top:14px;">
-                        <div class="col-md-6">
-                            <label class="wz-lbl">Fecha de inicio</label>
-                            <input type="date" name="Ani_FechaInicio" class="wz-inp" value="@fIni" />
+                    <div class="form-row">
+                        <div class="col-md-6 form-group">
+                            <label for="Ani_FechaInicio">Fecha de inicio</label>
+                            <input type="date" name="Ani_FechaInicio" id="Ani_FechaInicio" class="form-control" value="@fIni" />
                         </div>
-                        <div class="col-md-6">
-                            <label class="wz-lbl">Fecha de fin</label>
-                            <input type="date" name="Ani_FechaFin" class="wz-inp" value="@fFin" />
+                        <div class="col-md-6 form-group">
+                            <label for="Ani_FechaFin">Fecha de fin</label>
+                            <input type="date" name="Ani_FechaFin" id="Ani_FechaFin" class="form-control" value="@fFin" />
                         </div>
                     </div>
-                    <div class="row" style="margin-top:14px;">
-                        <div class="col-md-12">
-                            <label class="wz-lbl">Estructura de reporte</label>
-                            <select class="wz-inp" id="estructura" disabled>
+                    <div class="form-row">
+                        <div class="col-md-12 form-group">
+                            <label for="estructura">Estructura de reporte</label>
+                            <select class="custom-select" id="estructura" disabled>
                                 <option>2 semestres</option>
                                 <option selected>3 trimestres</option>
                                 <option>4 parciales</option>
@@ -113,29 +85,29 @@
                             </select>
                         </div>
                     </div>
-                    <div class="wz-note"><i class="fas fa-info-circle"></i> El detalle de los <strong>períodos de reporte</strong> (parciales/semestres con sus fechas) se configura en la siguiente fase. Por ahora el paso 1 guarda el año, nombre y fechas como <strong>borrador</strong>.</div>
-                    <div class="wz-foot">
-                        <a href="@Url.Action("Index")" class="wz-btn wz-btn-ghost">Cancelar</a>
-                        <button type="submit" class="wz-btn wz-btn-primary">
-                            @(id == 0 ? "Crear borrador y continuar" : "Guardar y continuar") →
+                    <div class="alert alert-light-warning mt-3" role="alert"><i class="fas fa-info-circle mr-1"></i> El detalle de los <strong>períodos de reporte</strong> (parciales/semestres con sus fechas) se configura en la siguiente fase. Por ahora el paso 1 guarda el año, nombre y fechas como <strong>borrador</strong>.</div>
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mt-4">
+                        <a href="@Url.Action("Index")" class="btn">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">
+                            @(id == 0 ? "Crear borrador y continuar" : "Guardar y continuar") <i class="bi bi-arrow-right ml-1"></i>
                         </button>
                     </div>
                 }
 
-                <div class="wz-card" style="margin-top:18px;">
-                    <h2 style="font-size:1.15rem;">Períodos de reporte</h2>
-                    <p class="sub">Parciales / semestres del año con sus fechas.</p>
+                <div class="border-top pt-4 mt-4">
+                    <h5 class="mb-1">Períodos de reporte</h5>
+                    <p class="text-muted mb-4">Parciales / semestres del año con sus fechas.</p>
                     @if (id == 0)
                     {
-                        <div class="wz-note"><i class="fas fa-info-circle"></i> Guarda el año (botón de arriba) para poder definir sus períodos.</div>
+                        <div class="alert alert-light-warning mt-3" role="alert"><i class="fas fa-info-circle mr-1"></i> Guarda el año (botón de arriba) para poder definir sus períodos.</div>
                     }
                     else
                     {
-                        <table class="table table-sm" id="tblPeriodos" style="width:100%">
-                            <thead><tr><th>Nombre</th><th>Tipo</th><th>Inicio</th><th>Fin</th><th style="width:90px;"></th></tr></thead>
+                        <table class="table table-sm table-hover" id="tblPeriodos">
+                            <thead><tr><th>Nombre</th><th>Tipo</th><th>Inicio</th><th>Fin</th><th></th></tr></thead>
                             <tbody></tbody>
                         </table>
-                        <button type="button" class="wz-btn wz-btn-ghost" id="btnAddPeriodo" style="border:1px dashed #c7d2fe;color:#4f46e5;">＋ Agregar período</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="btnAddPeriodo"><i class="bi bi-plus-lg mr-1"></i> Agregar período</button>
                         <script>
                         (function () {
                             var aniId = @id;
@@ -146,12 +118,12 @@
                             function rowHtml(p){ p=p||{};
                                 return '<tr data-id="'+(p.Pan_Id||0)+'">'
                                  +'<td><input class="form-control form-control-sm p-nom" maxlength="40" value="'+(p.Pan_Nombre||'')+'" placeholder="I Parcial"></td>'
-                                 +'<td><select class="form-control form-control-sm p-tipo">'
+                                 +'<td><select class="custom-select custom-select-sm p-tipo">'
                                    +['parcial','bimestre','trimestre','semestre','otro'].map(function(t){return '<option'+((p.Pan_Tipo===t)?' selected':'')+'>'+t+'</option>';}).join('')
                                  +'</select></td>'
                                  +'<td><input type="date" class="form-control form-control-sm p-ini" value="'+(p.Pan_FechaInicio?p.Pan_FechaInicio.substring(0,10):'')+'"></td>'
                                  +'<td><input type="date" class="form-control form-control-sm p-fin" value="'+(p.Pan_FechaFin?p.Pan_FechaFin.substring(0,10):'')+'"></td>'
-                                 +'<td style="white-space:nowrap;"><button type="button" class="btn btn-sm btn-success p-save" title="Guardar"><i class="fas fa-check"></i></button> '
+                                 +'<td class="text-nowrap"><button type="button" class="btn btn-sm btn-success p-save" title="Guardar"><i class="fas fa-check"></i></button> '
                                    +'<button type="button" class="btn btn-sm btn-danger p-del" title="Quitar"><i class="fas fa-trash"></i></button></td></tr>';
                             }
                             function load(){ $.getJSON(urlList,{anioId:aniId},function(res){ var d=(res&&res.data)?res.data:(res||[]); $b.empty(); d.forEach(function(p){$b.append(rowHtml(p));}); }); }
@@ -169,16 +141,16 @@
                 break;
 
             case 2:
-                <h2>Elige el enfoque de enseñanza</h2>
-                <p class="sub">Establece la agrupación predeterminada para los grupos de este año.</p>
-                <label class="wz-opt"><input type="radio" name="Enf_Modelo" value="grupo_fijo" checked /> <strong>Un mismo grupo todo el día</strong> — el alumno permanece con su sección (homeroom).</label>
-                <label class="wz-opt"><input type="radio" name="Enf_Modelo" value="hibrido" /> <strong>Un grupo, con excepciones</strong> — híbrido (base fija + bloques por materia).</label>
-                <label class="wz-opt"><input type="radio" name="Enf_Modelo" value="horario_materias" /> <strong>Horario de materias separadas</strong> — cada materia tiene su propio bloque.</label>
-                <label class="wz-lbl" style="margin-top:16px;">Razón (opcional)</label>
-                <textarea id="Enf_Razon" class="wz-inp" rows="3" maxlength="500" placeholder="¿Por qué este enfoque para el año?"></textarea>
-                <div class="wz-foot">
-                    <a href="@Url.Action("Setup", new { id = id, step = 1 })" class="wz-btn wz-btn-ghost">← Atrás</a>
-                    <button type="button" class="wz-btn wz-btn-primary" onclick="guardarEnfoque(@id)">Guardar y continuar →</button>
+                <h4 class="mb-1">Elige el enfoque de enseñanza</h4>
+                <p class="text-muted mb-4">Establece la agrupación predeterminada para los grupos de este año.</p>
+                <div class="custom-control custom-radio border rounded py-3 pr-3 pl-5 mb-2"><input type="radio" class="custom-control-input" id="enf-grupo_fijo" name="Enf_Modelo" value="grupo_fijo" checked /><label class="custom-control-label" for="enf-grupo_fijo"><strong>Un mismo grupo todo el día</strong> — el alumno permanece con su sección (homeroom).</label></div>
+                <div class="custom-control custom-radio border rounded py-3 pr-3 pl-5 mb-2"><input type="radio" class="custom-control-input" id="enf-hibrido" name="Enf_Modelo" value="hibrido" /><label class="custom-control-label" for="enf-hibrido"><strong>Un grupo, con excepciones</strong> — híbrido (base fija + bloques por materia).</label></div>
+                <div class="custom-control custom-radio border rounded py-3 pr-3 pl-5 mb-2"><input type="radio" class="custom-control-input" id="enf-horario_materias" name="Enf_Modelo" value="horario_materias" /><label class="custom-control-label" for="enf-horario_materias"><strong>Horario de materias separadas</strong> — cada materia tiene su propio bloque.</label></div>
+                <label for="Enf_Razon" class="mt-3">Razón (opcional)</label>
+                <textarea id="Enf_Razon" class="form-control" rows="3" maxlength="500" placeholder="¿Por qué este enfoque para el año?"></textarea>
+                <div class="d-flex flex-wrap align-items-center justify-content-between mt-4">
+                    <a href="@Url.Action("Setup", new { id = id, step = 1 })" class="btn"><i class="bi bi-arrow-left mr-1"></i> Atrás</a>
+                    <button type="button" class="btn btn-primary" onclick="guardarEnfoque(@id)">Guardar y continuar <i class="bi bi-arrow-right ml-1"></i></button>
                 </div>
                 <script>
                     function guardarEnfoque(aniId){
@@ -194,26 +166,26 @@
                 break;
 
             case 3:
-                <h2>Clases y profesores</h2>
-                <p class="sub">Crea las secciones del año y asigna el docente guía (homeroom).</p>
+                <h4 class="mb-1">Clases y profesores</h4>
+                <p class="text-muted mb-4">Crea las secciones del año y asigna el docente guía (homeroom).</p>
                 @if (id == 0)
                 {
-                    <div class="wz-note">Primero crea el borrador (paso 1) para agregar secciones.</div>
+                    <div class="alert alert-light-warning" role="alert">Primero crea el borrador (paso 1) para agregar secciones.</div>
                 }
                 else
                 {
-                    <div class="row">
-                        <div class="col-md-3"><label class="wz-lbl">Nivel</label><select id="f4Nivel" class="wz-inp"><option value="">Seleccione…</option></select></div>
-                        <div class="col-md-3"><label class="wz-lbl">Grado</label><select id="f4Grado" class="wz-inp" disabled><option value="">Seleccione…</option></select></div>
-                        <div class="col-md-2"><label class="wz-lbl">Sección</label><select id="f4Seccion" class="wz-inp" disabled><option value="">Seleccione…</option></select></div>
-                        <div class="col-md-2"><label class="wz-lbl">Modalidad</label><select id="f4Mod" class="wz-inp" disabled><option value="">—</option></select></div>
-                        <div class="col-md-2"><label class="wz-lbl">Cupo</label><input type="number" id="f4Cupo" class="wz-inp" min="1" /></div>
+                    <div class="form-row">
+                        <div class="col-md-3"><label for="f4Nivel">Nivel</label><select id="f4Nivel" class="custom-select"><option value="">Seleccione…</option></select></div>
+                        <div class="col-md-3"><label for="f4Grado">Grado</label><select id="f4Grado" class="custom-select" disabled><option value="">Seleccione…</option></select></div>
+                        <div class="col-md-2"><label for="f4Seccion">Sección</label><select id="f4Seccion" class="custom-select" disabled><option value="">Seleccione…</option></select></div>
+                        <div class="col-md-2"><label for="f4Mod">Modalidad</label><select id="f4Mod" class="custom-select" disabled><option value="">—</option></select></div>
+                        <div class="col-md-2"><label for="f4Cupo">Cupo</label><input type="number" id="f4Cupo" class="form-control" min="1" /></div>
                     </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-md-10"><label class="wz-lbl">Profesor guía (opcional)</label><select id="f4Profe" class="wz-inp" disabled><option value="">— Sin asignar —</option></select></div>
-                        <div class="col-md-2" style="display:flex;align-items:flex-end;"><button type="button" id="f4Add" class="wz-btn wz-btn-primary" disabled>＋ Agregar</button></div>
+                    <div class="form-row mt-2">
+                        <div class="col-md-10"><label for="f4Profe">Profesor guía (opcional)</label><select id="f4Profe" class="custom-select" disabled><option value="">— Sin asignar —</option></select></div>
+                        <div class="col-md-2 d-flex align-items-end"><button type="button" id="f4Add" class="btn btn-primary btn-block" disabled><i class="bi bi-plus-lg mr-1"></i> Agregar</button></div>
                     </div>
-                    <table class="table table-sm" style="width:100%;margin-top:16px;">
+                    <table class="table table-sm table-hover mt-3">
                         <thead><tr><th>Nivel</th><th>Grado</th><th>Sección</th><th>Modalidad</th><th>Profe guía</th><th>Cupo</th><th>Estado</th><th></th></tr></thead>
                         <tbody id="f4Body"><tr><td colspan="8" class="text-center text-muted">Cargando…</td></tr></tbody>
                     </table>
@@ -245,22 +217,22 @@
                 break;
 
             case 4:
-                <h2>Asignaturas para este año</h2>
-                <p class="sub">Define qué materias se dictan este año, en qué grado y con qué docente.</p>
+                <h4 class="mb-1">Asignaturas para este año</h4>
+                <p class="text-muted mb-4">Define qué materias se dictan este año, en qué grado y con qué docente.</p>
                 @if (id == 0)
                 {
-                    <div class="wz-note">Primero crea el borrador (paso 1) para agregar asignaturas.</div>
+                    <div class="alert alert-light-warning" role="alert">Primero crea el borrador (paso 1) para agregar asignaturas.</div>
                 }
                 else
                 {
-                    <div class="row">
-                        <div class="col-md-4"><label class="wz-lbl">Materia</label><select id="ofaMat" class="wz-inp"></select></div>
-                        <div class="col-md-3"><label class="wz-lbl">Grado</label><select id="ofaGra" class="wz-inp"><option value="">— Todos —</option></select></div>
-                        <div class="col-md-3"><label class="wz-lbl">Docente</label><select id="ofaDoc" class="wz-inp"><option value="">— Sin asignar —</option></select></div>
-                        <div class="col-md-1"><label class="wz-lbl">Hrs/sem</label><input type="number" id="ofaHrs" class="wz-inp" min="0" /></div>
-                        <div class="col-md-1" style="display:flex;align-items:flex-end;"><button type="button" id="ofaAdd" class="wz-btn wz-btn-primary">＋</button></div>
+                    <div class="form-row">
+                        <div class="col-md-4"><label for="ofaMat">Materia</label><select id="ofaMat" class="custom-select"></select></div>
+                        <div class="col-md-3"><label for="ofaGra">Grado</label><select id="ofaGra" class="custom-select"><option value="">— Todos —</option></select></div>
+                        <div class="col-md-3"><label for="ofaDoc">Docente</label><select id="ofaDoc" class="custom-select"><option value="">— Sin asignar —</option></select></div>
+                        <div class="col-md-1"><label for="ofaHrs">Hrs/sem</label><input type="number" id="ofaHrs" class="form-control" min="0" /></div>
+                        <div class="col-md-1 d-flex align-items-end"><button type="button" id="ofaAdd" class="btn btn-primary btn-block" title="Agregar"><i class="bi bi-plus-lg"></i></button></div>
                     </div>
-                    <table class="table table-sm" style="width:100%;margin-top:16px;">
+                    <table class="table table-sm table-hover mt-3">
                         <thead><tr><th>Materia</th><th>Grado</th><th>Docente</th><th>Hrs</th><th>Estado</th><th></th></tr></thead>
                         <tbody id="ofaBody"><tr><td colspan="6" class="text-center text-muted">Cargando…</td></tr></tbody>
                     </table>
@@ -289,49 +261,51 @@
                     int cPer = ViewBag.CountPeriodos != null ? (int)ViewBag.CountPeriodos : 0;
                     int cSec = ViewBag.CountSecciones != null ? (int)ViewBag.CountSecciones : 0;
                     bool okFechas = !string.IsNullOrEmpty(fIni) && !string.IsNullOrEmpty(fFin);
-                    <h2>Revisar y publicar</h2>
-                    <p class="sub">Revisa el resumen y publica el año lectivo.</p>
+                    <h4 class="mb-1">Revisar y publicar</h4>
+                    <p class="text-muted mb-4">Revisa el resumen y publica el año lectivo.</p>
                     @if (TempData["PublishError"] != null)
                     {
-                        <div class="wz-note" style="background:#fef2f2;border-color:#fecaca;color:#991b1b;"><i class="fas fa-exclamation-triangle"></i> @TempData["PublishError"]</div>
+                        <div class="alert alert-light-danger" role="alert"><i class="fas fa-exclamation-triangle mr-1"></i> @TempData["PublishError"]</div>
                     }
-                    <div class="wz-sum">
-                        <div><div class="k">Año</div><div class="v">@(Model != null ? Model.Ani_Anio.ToString() : "—")</div></div>
-                        <div><div class="k">Nombre</div><div class="v">@(Model != null ? Model.Ani_Nombre : "—")</div></div>
-                        <div><div class="k">Inicio</div><div class="v">@(string.IsNullOrEmpty(fIni) ? "—" : fIni)</div></div>
-                        <div><div class="k">Fin</div><div class="v">@(string.IsNullOrEmpty(fFin) ? "—" : fFin)</div></div>
+                    <div class="form-row">
+                        <div class="col-6 mb-3"><p class="text-muted small mb-1">Año</p><p class="font-weight-bold mb-0">@(Model != null ? Model.Ani_Anio.ToString() : "—")</p></div>
+                        <div class="col-6 mb-3"><p class="text-muted small mb-1">Nombre</p><p class="font-weight-bold mb-0">@(Model != null ? Model.Ani_Nombre : "—")</p></div>
+                        <div class="col-6 mb-3"><p class="text-muted small mb-1">Inicio</p><p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(fIni) ? "—" : fIni)</p></div>
+                        <div class="col-6 mb-3"><p class="text-muted small mb-1">Fin</p><p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(fFin) ? "—" : fFin)</p></div>
                     </div>
-                    <div style="margin-top:18px;">
-                        <div class="wz-lbl">Requisitos para publicar</div>
-                        <div style="padding:4px 0;">@(okFechas ? "✅" : "⬜") Fechas de inicio y fin</div>
-                        <div style="padding:4px 0;">@(cPer > 0 ? "✅" : "⬜") Al menos un período de reporte <span style="color:#6b7280;">(@cPer)</span></div>
-                        <div style="padding:4px 0;">@(cSec > 0 ? "✅" : "⬜") Al menos una sección <span style="color:#6b7280;">(@cSec)</span></div>
+                    <div class="mt-3">
+                        <h6 class="font-weight-bold">Requisitos para publicar</h6>
+                        <div class="py-1">@(okFechas ? "✅" : "⬜") Fechas de inicio y fin</div>
+                        <div class="py-1">@(cPer > 0 ? "✅" : "⬜") Al menos un período de reporte <span class="text-muted">(@cPer)</span></div>
+                        <div class="py-1">@(cSec > 0 ? "✅" : "⬜") Al menos una sección <span class="text-muted">(@cSec)</span></div>
                     </div>
-                    <div class="wz-note"><i class="fas fa-info-circle"></i> Al publicar, el estado del año pasa a <strong>Abierto</strong>. Si falta algún requisito, el botón te devolverá aquí con el detalle.</div>
+                    <div class="alert alert-light-warning mt-3" role="alert"><i class="fas fa-info-circle mr-1"></i> Al publicar, el estado del año pasa a <strong>Abierto</strong>. Si falta algún requisito, el botón te devolverá aquí con el detalle.</div>
                 }
                 break;
         }
 
         @if (step > 1 && step != 2)
         {
-            <div class="wz-foot">
-                <a href="@Url.Action("Setup", new { id = id, step = step - 1 })" class="wz-btn wz-btn-ghost">← Atrás</a>
+            <div class="d-flex flex-wrap align-items-center justify-content-between mt-4">
+                <a href="@Url.Action("Setup", new { id = id, step = step - 1 })" class="btn"><i class="bi bi-arrow-left mr-1"></i> Atrás</a>
                 @if (step < 5)
                 {
-                    <a href="@Url.Action("Setup", new { id = id, step = step + 1 })" class="wz-btn wz-btn-primary">Continuar →</a>
+                    <a href="@Url.Action("Setup", new { id = id, step = step + 1 })" class="btn btn-primary">Continuar <i class="bi bi-arrow-right ml-1"></i></a>
                 }
                 else
                 {
-                    using (Html.BeginForm("PublishAsync", "AniosLectivos", FormMethod.Post, new { style = "display:inline;" }))
+                    using (Html.BeginForm("PublishAsync", "AniosLectivos", FormMethod.Post, new { @class = "d-inline" }))
                     {
                         @Html.Hidden("id", id)
-                        <button type="submit" class="wz-btn wz-btn-primary"><i class="fas fa-check"></i> Publicar y finalizar</button>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-check mr-1"></i> Publicar y finalizar</button>
                     }
                 }
             </div>
-            <div style="text-align:right;margin-top:10px;">
-                <a href="@Url.Action("Index")" class="wz-btn wz-btn-ghost">Guardar y finalizar más tarde</a>
+            <div class="text-right mt-2">
+                <a href="@Url.Action("Index")" class="btn btn-link">Guardar y finalizar más tarde</a>
             </div>
         }
+      </div>
     </div>
+</div>
 </div>

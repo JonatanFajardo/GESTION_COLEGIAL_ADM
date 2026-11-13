@@ -15,50 +15,52 @@
 </div>
 
 <div class="dashboard-aulas">
-    <header class="da-header">
-        <div class="da-header-icon">
-            <i class="fa-solid fa-chalkboard-user"></i>
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+        <div class="mr-3">
+            <h4 class="mb-1">Dashboard de Aulas</h4>
+            <p class="text-muted mb-0">Vista general de rendimiento, asistencia y deudas por sección</p>
         </div>
-        <div>
-            <h1>Dashboard de Aulas</h1>
-            <p class="da-sub">Vista general de rendimiento, asistencia y deudas por sección</p>
-        </div>
-    </header>
-
-    <div class="filters" id="da-filters">
-        <button class="filter-btn active" data-filter="all" type="button">Todas</button>
-        <button class="filter-btn" data-filter="danger" type="button"><i class="fa-solid fa-triangle-exclamation"></i> Críticas</button>
     </div>
 
-    <div class="filters filters-jornada" id="da-filters-jornada">
-        <span class="filters-label">Jornada:</span>
-        <button class="filter-btn" data-jornada="all" type="button">Todas</button>
+    <div class="d-flex flex-wrap align-items-center mb-2" id="da-filters">
+        <button class="filter-btn btn btn-sm btn-rounded btn-primary active mr-1 mb-1" data-filter="all" type="button">Todas</button>
+        <button class="filter-btn btn btn-sm btn-rounded btn-outline-primary mr-1 mb-1" data-filter="danger" type="button"><i class="fas fa-triangle-exclamation mr-1"></i>Críticas</button>
     </div>
 
-    <div class="summary-strip" id="da-summary"></div>
+    <div class="d-flex flex-wrap align-items-center mb-4" id="da-filters-jornada">
+        <span class="small font-weight-bold text-muted text-uppercase mr-2 mb-1">Jornada:</span>
+        <button class="filter-btn btn btn-sm btn-rounded btn-outline-primary mr-1 mb-1" data-jornada="all" type="button">Todas</button>
+    </div>
 
-    <div class="section-title">Vista por aulas</div>
+    <div class="row" id="da-summary"></div>
+
+    <h6 class="text-muted text-uppercase small font-weight-bold mt-2 mb-3">Vista por aulas</h6>
     <div class="aulas-grid" id="da-grid">
-        <div class="da-empty" id="da-loading">Cargando datos…</div>
+        <div class="p-4 text-center text-muted small" id="da-loading">Cargando datos…</div>
     </div>
 
-    <div class="detail-panel" id="da-detail">
-        <span class="detail-close" id="da-detail-close" role="button" aria-label="Cerrar">✕</span>
+    <div class="detail-panel statbox widget box box-shadow mb-4" id="da-detail">
+        <button type="button" class="close" id="da-detail-close" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
         <div id="da-detail-content"></div>
     </div>
 
-    <div class="section-title">Comparativo general</div>
-    <div class="chart-legend">
-        <span><span class="leg-sq" style="background:#E8A445"></span>Alumnos</span>
-        <span><span class="leg-sq" style="background:#E74C3C"></span>Bajo rendimiento</span>
-        <span><span class="leg-sq" style="background:#2980B9"></span>Con deuda</span>
-        <span><span class="leg-sq" style="background:#27AE60"></span>Asistencia %</span>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Comparativo general</h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div class="chart-legend">
+                <span><span class="leg-sq fill-orange"></span>Alumnos</span>
+                <span><span class="leg-sq fill-red"></span>Bajo rendimiento</span>
+                <span><span class="leg-sq fill-blue"></span>Con deuda</span>
+                <span><span class="leg-sq fill-green"></span>Asistencia %</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="da-chart" role="img" aria-label="Gráfico de barras comparando alumnos, bajo rendimiento y deudas por aula"></canvas>
+            </div>
+            <p class="small text-muted mt-2 mb-0" id="da-note"></p>
+        </div>
     </div>
-    <div class="chart-wrap">
-        <canvas id="da-chart" role="img" aria-label="Gráfico de barras comparando alumnos, bajo rendimiento y deudas por aula"></canvas>
-    </div>
-
-    <p class="da-note" id="da-note"></p>
 </div>
 
 @section Scripts {

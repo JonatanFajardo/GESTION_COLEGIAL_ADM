@@ -1,36 +1,10 @@
 var Encargados = (function () {
     var obj = {};
 
-    var ID_COLORS = [
-        { bg: '#fff7ed', text: '#ea580c', border: '#fed7aa' },
-        { bg: '#f5f3ff', text: '#7c3aed', border: '#ddd6fe' },
-        { bg: '#eff6ff', text: '#2563eb', border: '#bfdbfe' },
-        { bg: '#f0fdf4', text: '#16a34a', border: '#bbf7d0' },
-        { bg: '#fdf4ff', text: '#9333ea', border: '#e9d5ff' },
-        { bg: '#fef2f2', text: '#dc2626', border: '#fecaca' },
-        { bg: '#ecfdf5', text: '#059669', border: '#a7f3d0' },
-        { bg: '#fefce8', text: '#ca8a04', border: '#fef08a' },
-        { bg: '#e0f2fe', text: '#0369a1', border: '#7dd3fc' },
-        { bg: '#fce7f3', text: '#be185d', border: '#f9a8d4' }
-    ];
-
-    var AVATAR_COLORS = [
-        { bg: '#e0f2fe', text: '#0369a1' },
-        { bg: '#d1fae5', text: '#047857' },
-        { bg: '#fef3c7', text: '#b45309' },
-        { bg: '#ede9fe', text: '#6d28d9' },
-        { bg: '#fce7f3', text: '#be185d' },
-        { bg: '#dbeafe', text: '#1d4ed8' },
-        { bg: '#d1fae5', text: '#065f46' },
-        { bg: '#fef9c3', text: '#a16207' },
-        { bg: '#fee2e2', text: '#b91c1c' },
-        { bg: '#e0e7ff', text: '#4338ca' }
-    ];
-
     obj.datatable = function (Direction) {
         $(function () {
             var tableInstance = $('#datatable').DataTable({
-                dom: "<'row'<'col-sm-12'tr>><'row dt-footer-enc'<'col-sm-5'i><'col-sm-7'p>>",
+                dom: "<'row'<'col-sm-12'tr>><'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
                 order: [],
                 paging: true,
                 processing: true,
@@ -92,8 +66,7 @@ var Encargados = (function () {
                         data: "Enc_Id",
                         render: function (data, type, row, meta) {
                             if (type !== "display") return data;
-                            var c = ID_COLORS[meta.row % ID_COLORS.length];
-                            return '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 8px;border-radius:50%;background:' + c.bg + ';color:' + c.text + ';border:1px solid ' + c.border + ';font-weight:700;font-size:0.875rem;">' + data + '</span>';
+                            return '<span class="badge outline-badge-primary">' + data + '</span>';
                         }
                     },
                     {
@@ -105,13 +78,7 @@ var Encargados = (function () {
                         data: "Enc_Nombre",
                         render: function (data, type, row, meta) {
                             if (type !== "display") return data;
-                            var name = data || '';
-                            var initial = name.charAt(0).toUpperCase();
-                            var av = AVATAR_COLORS[meta.row % AVATAR_COLORS.length];
-                            return '<div style="display:flex;align-items:center;gap:10px;">' +
-                                '<span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:' + av.bg + ';color:' + av.text + ';font-weight:700;font-size:0.875rem;flex-shrink:0;">' + initial + '</span>' +
-                                '<span style="font-weight:600;color:#1e293b;">' + name + '</span>' +
-                                '</div>';
+                            return '<span class="font-weight-bold">' + (data || '') + '</span>';
                         }
                     },
                     {
@@ -122,7 +89,7 @@ var Encargados = (function () {
                         targets: 4,
                         data: "Enc_Ocupacion",
                         render: function (data) {
-                            return '<span style="color:#94a3b8;">' + (data || '—') + '</span>';
+                            return '<span class="text-muted">' + (data || '—') + '</span>';
                         }
                     },
                     {
@@ -131,8 +98,8 @@ var Encargados = (function () {
                         render: function (data) {
                             var isActive = data === true || data === 1 || data === "true" || data === "Activo";
                             return isActive
-                                ? '<span class="badge-estado-enc activo-enc"><span class="dot-enc"></span>Activo</span>'
-                                : '<span class="badge-estado-enc inactivo-enc"><span class="dot-enc"></span>Inactivo</span>';
+                                ? '<span class="badge badge-success">Activo</span>'
+                                : '<span class="badge badge-secondary">Inactivo</span>';
                         }
                     },
                     {

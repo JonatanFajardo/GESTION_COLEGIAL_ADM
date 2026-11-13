@@ -18,11 +18,11 @@ var ConfiguracionSistema = (function () {
                     title: "Acción",
                     orderable: false,
                     render: function (data, type, row) {
-                        return '<button class="btn btn-sm btn-warning btn-editar" ' +
+                        return '<button class="btn btn-sm btn-outline-primary btn-editar" ' +
                                'data-id="' + row.Con_Id + '" ' +
                                'data-valor="' + (row.Con_Valor || "") + '" ' +
                                'data-clave="' + row.Con_Clave + '">' +
-                               '<i class="fa fa-edit"></i> Editar</button>';
+                               '<i class="fa fa-edit mr-1"></i> Editar</button>';
                     }
                 }
             ],

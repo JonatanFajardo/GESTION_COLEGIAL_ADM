@@ -1,0 +1,21 @@
+/* Roles: árbol de asignación de pantallas (componente sin equivalente en la plantilla) */
+.pantallas-tree .file-tree { padding-left: 10px; }
+.pantallas-tree .file-tree li { padding: 3px 0; }
+.pantallas-tree .file-tree ul { padding-left: 25px; }
+.pantallas-tree .custom-control { display: inline-flex; align-items: center; margin-left: 4px; }
+.pantallas-tree .custom-control-label { font-weight: 400; font-size: 13px; color: #3b3f5c; cursor: pointer; }
+.pantallas-tree .grupo-header { font-weight: 600; font-size: 14px; color: #0e1726; cursor: pointer; padding: 6px 0; }
+.pantallas-tree .grupo-header:hover { color: #2196F3; }
+.pantallas-tree .grupo-content { padding-left: 15px; }
+.pantallas-tree .grupo-check-all { margin-left: 8px; font-size: 11px; color: #888ea8; cursor: pointer; }
+.pantallas-tree .grupo-check-all:hover { color: #2196F3; }
+.pantallas-tree .grupo-icon { margin-right: 6px; vertical-align: middle; }
+.pantallas-tree .pantalla-item { padding: 2px 0; }
+.pantallas-tree .pantalla-subgrupo { padding-left: 10px; margin: 2px 0; }
+.pantallas-tree .pantalla-subgrupo-header { font-weight: 500; font-size: 13px; color: #1b2e4b; cursor: pointer; padding: 4px 0; }
+.pantallas-tree .pantalla-subgrupo-header:hover { color: #2196F3; }
+.pantallas-tree .pantalla-subgrupo-header .badge { font-size: 10px; }
+.pantallas-tree .pantalla-subgrupo-content { padding-left: 20px; }
+.pantallas-tree .pantalla-subgrupo-check-all { margin-left: 6px; font-size: 11px; color: #888ea8; cursor: pointer; }
+.pantallas-tree .pantalla-subgrupo-check-all:hover { color: #2196F3; }
+#pantallas-tree-container { max-height: 450px; overflow-y: auto; }

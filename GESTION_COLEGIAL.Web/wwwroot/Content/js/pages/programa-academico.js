@@ -265,42 +265,45 @@
             var desc = r[cat.fieldDesc] || '(sin descripción)';
             var esActivo = cat.fieldEsActivo ? !!r[cat.fieldEsActivo] : null;
             var badge = '';
-            if (esActivo === true)  badge = '<span class="ci-card-badge active"><i class="bi bi-check-circle-fill"></i> Activo</span>';
-            if (esActivo === false) badge = '<span class="ci-card-badge inactive"><i class="bi bi-slash-circle-fill"></i> Inactivo</span>';
+            if (esActivo === true)  badge = '<span class="badge badge-success"><i class="bi bi-check-circle-fill mr-1"></i>Activo</span>';
+            if (esActivo === false) badge = '<span class="badge badge-secondary"><i class="bi bi-slash-circle-fill mr-1"></i>Inactivo</span>';
 
             // Meta extra: nivel educativo del grado
             var extraMeta = '';
             if (cat.requiresNivel && r[cat.fieldNivelDesc]) {
-                extraMeta = '<span class="ci-card-badge" style="background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;">' +
-                            '<i class="bi bi-diagram-2"></i> ' + esc(r[cat.fieldNivelDesc]) + '</span>';
+                extraMeta = '<span class="badge outline-badge-primary mr-1"><i class="bi bi-diagram-2 mr-1"></i>' + esc(r[cat.fieldNivelDesc]) + '</span>';
             }
 
             var $card = $(
-                '<div class="ci-card ' + (esActivo === false ? 'ci-card-inactive' : '') + '" data-id="' + esc(id) + '">' +
-                    '<div class="ci-card-head">' +
-                        '<div class="ci-card-icon"><i class="bi ' + cat.icon + '"></i></div>' +
-                        '<span class="ci-card-id">#' + esc(id) + '</span>' +
-                    '</div>' +
-                    '<div class="ci-card-body">' +
-                        '<h4>' + esc(desc) + '</h4>' +
-                        '<div class="ci-card-meta">' + extraMeta + badge + '</div>' +
-                    '</div>' +
-                    '<div class="ci-card-actions">' +
-                        '<button type="button" class="ci-card-action view"   title="Ver detalle"><i class="bi bi-eye"></i></button>' +
-                        '<button type="button" class="ci-card-action edit"   title="Editar"><i class="bi bi-pencil"></i></button>' +
-                        '<button type="button" class="ci-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                '<div class="col-xl-3 col-lg-4 col-sm-6 mb-3">' +
+                    '<div class="card h-100' + (esActivo === false ? ' text-muted' : '') + '" data-id="' + esc(id) + '">' +
+                        '<div class="card-body">' +
+                            '<div class="d-flex align-items-center justify-content-between mb-2">' +
+                                '<i class="bi ' + cat.icon + ' text-primary"></i>' +
+                                '<span class="badge outline-badge-secondary">#' + esc(id) + '</span>' +
+                            '</div>' +
+                            '<h6 class="font-weight-bold">' + esc(desc) + '</h6>' +
+                            '<div>' + extraMeta + badge + '</div>' +
+                        '</div>' +
+                        '<div class="card-footer bg-transparent text-right">' +
+                            '<button type="button" class="btn btn-sm btn-outline-primary mr-1 ci-card-action view" title="Ver detalle"><i class="bi bi-eye"></i></button>' +
+                            '<button type="button" class="btn btn-sm btn-outline-primary mr-1 ci-card-action edit" title="Editar"><i class="bi bi-pencil"></i></button>' +
+                            '<button type="button" class="btn btn-sm btn-outline-danger ci-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                        '</div>' +
                     '</div>' +
                 '</div>'
             );
             $grid.append($card);
         });
 
-        // Card "Nuevo/a" al final
+        // Tarjeta "Nuevo/a" al final
         $grid.append(
-            '<div class="ci-card-new" role="button" tabindex="0">' +
-                '<i class="bi bi-plus-circle"></i>' +
-                '<span>Nuev' + (cat.genero === 'f' ? 'a' : 'o') + ' ' + cat.singular + '</span>' +
-                '<small>Agregar un registro nuevo</small>' +
+            '<div class="col-xl-3 col-lg-4 col-sm-6 mb-3">' +
+                '<button type="button" class="btn btn-outline-primary btn-block h-100 py-4 ci-card-new">' +
+                    '<i class="bi bi-plus-circle d-block mb-1"></i>' +
+                    'Nuev' + (cat.genero === 'f' ? 'a' : 'o') + ' ' + cat.singular +
+                    '<small class="d-block">Agregar un registro nuevo</small>' +
+                '</button>' +
             '</div>'
         );
     }
@@ -312,8 +315,8 @@
 
         if (rows.length === 0) {
             $body.append(
-                '<tr><td colspan="5" style="text-align:center; padding:2rem; color:#94a3b8;">' +
-                    '<i class="bi bi-inbox" style="font-size:1.5rem; display:block; margin-bottom:0.35rem;"></i>' +
+                '<tr><td colspan="5" class="text-center text-muted py-4">' +
+                    '<i class="bi bi-inbox d-block mb-1"></i>' +
                     'Sin registros' +
                 '</td></tr>'
             );
@@ -325,33 +328,32 @@
             var desc = r[cat.fieldDesc] || '(sin descripción)';
             var esActivo = cat.fieldEsActivo ? !!r[cat.fieldEsActivo] : null;
             var estadoCell = esActivo === true
-                ? '<span class="ci-card-badge active"><i class="bi bi-check-circle-fill"></i> Activo</span>'
+                ? '<span class="badge badge-success"><i class="bi bi-check-circle-fill mr-1"></i>Activo</span>'
                 : esActivo === false
-                ? '<span class="ci-card-badge inactive"><i class="bi bi-slash-circle-fill"></i> Inactivo</span>'
-                : '<span style="color:#94a3b8;">—</span>';
+                ? '<span class="badge badge-secondary"><i class="bi bi-slash-circle-fill mr-1"></i>Inactivo</span>'
+                : '<span class="text-muted">—</span>';
             var fecha = fmtDate(r[cat.fieldFechaRegistra]);
             var usr = r[cat.fieldUsuarioRegistraNombre] || '';
 
-            // Para Grados Académicos: mostrar el nivel como sufijo de la descripción
+            // Para Grados Académicos: mostrar el nivel debajo de la descripción
             var descCell = '<strong>' + esc(desc) + '</strong>';
             if (cat.requiresNivel && r[cat.fieldNivelDesc]) {
-                descCell += '<div style="font-size:0.75rem;color:#4338ca;margin-top:2px;">' +
-                            '<i class="bi bi-diagram-2"></i> ' + esc(r[cat.fieldNivelDesc]) + '</div>';
+                descCell += '<div class="small text-primary"><i class="bi bi-diagram-2 mr-1"></i>' + esc(r[cat.fieldNivelDesc]) + '</div>';
             }
 
             var $tr = $(
                 '<tr data-id="' + esc(id) + '">' +
-                    '<td><span class="badge-id">#' + esc(id) + '</span></td>' +
+                    '<td><span class="badge outline-badge-secondary">#' + esc(id) + '</span></td>' +
                     '<td>' + descCell + '</td>' +
                     '<td>' + estadoCell + '</td>' +
                     '<td>' +
-                        '<div style="font-size:0.8rem; color:#64748b;">' + esc(fecha) + '</div>' +
-                        (usr ? '<div style="font-size:0.75rem; color:#94a3b8;">por ' + esc(usr) + '</div>' : '') +
+                        '<div class="small text-muted">' + esc(fecha) + '</div>' +
+                        (usr ? '<div class="small text-muted">por ' + esc(usr) + '</div>' : '') +
                     '</td>' +
-                    '<td class="actions-cell">' +
-                        '<button type="button" class="ci-card-action view"   title="Detalle"><i class="bi bi-eye"></i></button> ' +
-                        '<button type="button" class="ci-card-action edit"   title="Editar"><i class="bi bi-pencil"></i></button> ' +
-                        '<button type="button" class="ci-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                    '<td class="text-center text-nowrap">' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary mr-1 ci-card-action view" title="Detalle"><i class="bi bi-eye"></i></button>' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary mr-1 ci-card-action edit" title="Editar"><i class="bi bi-pencil"></i></button>' +
+                        '<button type="button" class="btn btn-sm btn-outline-danger ci-card-action delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
                     '</td>' +
                 '</tr>'
             );
@@ -492,7 +494,7 @@
             payload[cat.fieldNivelId] = nivelId;
         }
 
-        var $btn = $('#ci-edit-save').prop('disabled', true).html('<i class="bi bi-hourglass-split"></i> Guardando...');
+        var $btn = $('#ci-edit-save').prop('disabled', true).html('<i class="bi bi-hourglass-split mr-1"></i> Guardando...');
 
         $.ajax({
             url: url(cat, 'CreateAsync'),
@@ -512,7 +514,7 @@
         }).fail(function () {
             notify('error', 'Error de conexión al guardar.');
         }).always(function () {
-            $btn.prop('disabled', false).html('<i class="bi bi-check2"></i> Guardar');
+            $btn.prop('disabled', false).html('<i class="bi bi-check2 mr-1"></i> Guardar');
         });
     }
 

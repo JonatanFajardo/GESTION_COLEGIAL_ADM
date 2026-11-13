@@ -16,96 +16,98 @@
     </nav>
 </div>
 
-<div class="fan-wrapper">
-
-    <!-- HEADER -->
-    <div class="fan-header">
-        <div class="fan-header-left">
-            <div class="fan-header-icon"><i class="fa-solid fa-water"></i></div>
-            <div>
-                <h2>Flujo de Caja Proyectado</h2>
-                <div class="fan-header-sub">Ingresos cobrados vs pendientes por mes</div>
-            </div>
-        </div>
-        <div class="fan-controls">
-            <label for="f-anio">Año</label>
-            <input type="number" id="f-anio" value="@ViewBag.AnioActual" min="2020" max="2030" />
-            <button class="btn-fan" id="btn-consultar">
-                <i class="fa-solid fa-rotate"></i> Actualizar
-            </button>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="mr-3">
+        <h4 class="mb-1">Flujo de Caja Proyectado</h4>
+        <p class="text-muted mb-0">Ingresos cobrados vs pendientes por mes</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <div class="d-flex flex-wrap align-items-center">
+                <label for="f-anio" class="mb-0 mr-2">Año</label>
+                <input type="number" class="form-control w-auto mr-3" id="f-anio" value="@ViewBag.AnioActual" min="2020" max="2030" />
+                <button type="button" class="btn btn-primary" id="btn-consultar"><i class="fas fa-rotate mr-1"></i> Actualizar</button>
         </div>
     </div>
+</div>
 
-    <!-- KPIs -->
-    <div class="row g-3">
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-teal fan-anim">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan teal"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+<div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="fc-kpi-cobrado">—</h6>
+                        <p>Total Cobrado</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-circle-dollar-to-slot"></i></div></div>
                 </div>
-                <div class="kpi-value-fan" id="fc-kpi-cobrado">—</div>
-                <div class="kpi-label-fan">Total Cobrado</div>
-                <i class="fa-solid fa-water kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-amber fan-anim fan-anim-d1">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan amber"><i class="fa-solid fa-hourglass-half"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="fc-kpi-pendiente">—</div>
-                <div class="kpi-label-fan">Total Pendiente</div>
-                <i class="fa-solid fa-clock kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-green fan-anim fan-anim-d2">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan green"><i class="fa-solid fa-scale-balanced"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="fc-kpi-neto">—</div>
-                <div class="kpi-label-fan">Saldo Neto</div>
-                <i class="fa-solid fa-balance-scale kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-indigo fan-anim fan-anim-d3">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan indigo"><i class="fa-solid fa-percent"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="fc-kpi-porcentaje">—</div>
-                <div class="kpi-label-fan">% Recuperación</div>
-                <i class="fa-solid fa-chart-pie kpi-icon-bg-fan"></i>
             </div>
         </div>
     </div>
-
-    <!-- GRÁFICA -->
-    <div class="row g-3">
-        <div class="col-12">
-            <div class="fan-panel fan-anim fan-anim-d2">
-                <div class="fan-section">
-                    <div class="fan-section-accent" style="background:#14b8a6;"></div>
-                    <span class="fan-section-label">Evolución Mensual</span>
-                    <div class="fan-section-line"></div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="fc-kpi-pendiente">—</h6>
+                        <p>Total Pendiente</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-hourglass-half"></i></div></div>
                 </div>
-                <canvas id="fc-chart" style="max-height:220px;"></canvas>
             </div>
         </div>
     </div>
-
-    <!-- TABLA DETALLE -->
-    <div class="fan-panel fan-anim fan-anim-d3">
-        <div class="fan-section">
-            <div class="fan-section-accent" style="background:#0ea5e9;"></div>
-            <span class="fan-section-label">Detalle por Mes</span>
-            <div class="fan-section-line"></div>
-        </div>
-        <div id="fc-table-container">
-            <div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="fc-kpi-neto">—</h6>
+                        <p>Saldo Neto</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-scale-balanced"></i></div></div>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="fc-kpi-porcentaje">—</h6>
+                        <p>% Recuperación</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-percent"></i></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-12 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-header">
+                <div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between"><h4>Evolución Mensual</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <canvas id="fc-chart" class="fin-chart-220"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-header">
+                <div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between"><h4>Detalle por Mes</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <div id="fc-table-container">
+                    <div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{

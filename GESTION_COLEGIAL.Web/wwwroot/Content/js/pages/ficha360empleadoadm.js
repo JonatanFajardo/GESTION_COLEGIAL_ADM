@@ -2,7 +2,7 @@ var Ficha360EmpleadoAdm = (function () {
     var obj = {};
 
     function kv(label, val) {
-        return '<div class="mb-2"><small class="text-muted">' + label + '</small><div class="fw-semibold">' + (val || '—') + '</div></div>';
+        return '<div class="mb-2"><small class="text-muted">' + label + '</small><div class="font-weight-bold">' + (val || '—') + '</div></div>';
     }
 
     obj.init = function (urlGet, urlDropdown) {

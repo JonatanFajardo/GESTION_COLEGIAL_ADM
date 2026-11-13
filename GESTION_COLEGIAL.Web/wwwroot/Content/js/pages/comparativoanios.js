@@ -68,7 +68,7 @@ var ComparativoAnios = (function () {
 
     function renderTable(data, anioBase, anioComp) {
         if (!data.length) {
-            $("#ca-table-container").html('<div class="fan-loading">Sin datos para los años seleccionados.</div>');
+            $("#ca-table-container").html('<div class="text-center text-muted py-5">Sin datos para los años seleccionados.</div>');
             return;
         }
 
@@ -80,38 +80,38 @@ var ComparativoAnios = (function () {
             var difClass = "";
             var difHtml  = "—";
             if (typeof dif === "number") {
-                difClass = dif > 0 ? "diff-pos" : (dif < 0 ? "diff-neg" : "diff-neu");
+                difClass = dif > 0 ? "text-success font-weight-bold" : (dif < 0 ? "text-danger font-weight-bold" : "text-muted");
                 var arrow = dif > 0
-                    ? '<i class="fa-solid fa-arrow-up me-1"></i>'
-                    : (dif < 0 ? '<i class="fa-solid fa-arrow-down me-1"></i>' : '');
+                    ? '<i class="fas fa-arrow-up mr-1"></i>'
+                    : (dif < 0 ? '<i class="fas fa-arrow-down mr-1"></i>' : '');
                 difHtml = '<span class="' + difClass + '">' + arrow + (dif > 0 ? "+" : "") + dif + '</span>';
             }
 
             var pctHtml = "—";
             if (pct !== null) {
-                var pctClass = pct > 0 ? "diff-pos" : (pct < 0 ? "diff-neg" : "diff-neu");
-                var badge    = pct > 0 ? "up" : (pct < 0 ? "down" : "flat");
-                pctHtml = '<span class="fan-badge ' + badge + '">' + (pct > 0 ? "+" : "") + parseFloat(pct).toFixed(1) + '%</span>';
+                var pctClass = pct > 0 ? "text-success font-weight-bold" : (pct < 0 ? "text-danger font-weight-bold" : "text-muted");
+                var badge    = pct > 0 ? "outline-badge-success" : (pct < 0 ? "outline-badge-danger" : "outline-badge-secondary");
+                pctHtml = '<span class="badge ' + badge + '">' + (pct > 0 ? "+" : "") + parseFloat(pct).toFixed(1) + '%</span>';
             }
 
             rows += '<tr>';
-            rows += '<td class="col-label">' + (r.Cur_Descripcion || "—") + '</td>';
-            rows += '<td style="text-align:center;">' + (r.TotalAnioBase        || 0) + '</td>';
-            rows += '<td style="text-align:center;">' + (r.TotalAnioComparacion || 0) + '</td>';
-            rows += '<td style="text-align:center;">' + difHtml  + '</td>';
-            rows += '<td style="text-align:center;">' + pctHtml  + '</td>';
+            rows += '<td class="font-weight-bold">' + (r.Cur_Descripcion || "—") + '</td>';
+            rows += '<td class="text-center">' + (r.TotalAnioBase        || 0) + '</td>';
+            rows += '<td class="text-center">' + (r.TotalAnioComparacion || 0) + '</td>';
+            rows += '<td class="text-center">' + difHtml  + '</td>';
+            rows += '<td class="text-center">' + pctHtml  + '</td>';
             rows += '</tr>';
         });
 
-        var html = '<table class="fan-table">'
+        var html = '<div class="table-responsive"><table class="table table-hover mb-0">'
             + '<thead><tr>'
             + '<th>Curso</th>'
-            + '<th style="text-align:center;" id="th-anio-base">' + anioBase + '</th>'
-            + '<th style="text-align:center;" id="th-anio-comp">' + anioComp + '</th>'
-            + '<th style="text-align:center;">Diferencia</th>'
-            + '<th style="text-align:center;">% Cambio</th>'
+            + '<th class="text-center" id="th-anio-base">' + anioBase + '</th>'
+            + '<th class="text-center" id="th-anio-comp">' + anioComp + '</th>'
+            + '<th class="text-center">Diferencia</th>'
+            + '<th class="text-center">% Cambio</th>'
             + '</tr></thead>'
-            + '<tbody>' + rows + '</tbody></table>';
+            + '<tbody>' + rows + '</tbody></table></div>';
 
         $("#ca-table-container").html(html);
     }
@@ -120,7 +120,7 @@ var ComparativoAnios = (function () {
         var anioBase = $("#filtro-anio-base").val();
         var anioComp = $("#filtro-anio-comparacion").val();
 
-        $("#ca-table-container").html('<div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>');
+        $("#ca-table-container").html('<div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>');
 
         $.ajax({
             url: urlBase,
@@ -133,7 +133,7 @@ var ComparativoAnios = (function () {
                 renderTable(data, anioBase, anioComp);
             },
             error: function () {
-                $("#ca-table-container").html('<div class="fan-loading text-danger">Error al cargar los datos.</div>');
+                $("#ca-table-container").html('<div class="text-center text-danger py-5">Error al cargar los datos.</div>');
             }
         });
     }
