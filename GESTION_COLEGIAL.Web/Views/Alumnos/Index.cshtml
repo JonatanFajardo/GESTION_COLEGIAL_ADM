@@ -32,21 +32,22 @@
         <div class="row"><div class="col-12"><h4>Listado de alumnos</h4></div></div>
     </div>
     <div class="widget-content widget-content-area">
-        <div class="table-responsive">
-            <table class="table table-hover wrap" id="datatable">
-                <thead>
-                    <tr>
-                        <th>Alumno</th>
-                        <th>Identidad</th>
-                        <th>Edad</th>
-                        <th>Grado</th>
-                        <th>Sección</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-            </table>
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+            <input type="search" id="alumnos-buscar" class="form-control w-auto mb-2 mr-2" placeholder="Buscar…" aria-label="Buscar alumno" />
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <label for="alumnos-densidad" class="mb-0 mr-2 text-muted small">Densidad</label>
+                <select id="alumnos-densidad" class="custom-select custom-select-sm w-auto mr-3">
+                    <option value="comoda">Cómoda</option>
+                    <option value="normal">Normal</option>
+                    <option value="compacta">Compacta</option>
+                </select>
+                <button type="button" id="alumnos-recargar" class="btn btn-outline-primary btn-sm mr-1" title="Recargar tabla"><i class="bi bi-arrow-clockwise"></i></button>
+                <button type="button" id="alumnos-pdf" class="btn btn-outline-primary btn-sm mr-1"><i class="bi bi-file-earmark-pdf mr-1"></i>PDF</button>
+                <button type="button" id="alumnos-excel" class="btn btn-outline-primary btn-sm mr-1"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Excel</button>
+                <button type="button" id="alumnos-restablecer" class="btn btn-link btn-sm" title="Volver al orden, ancho, columnas fijas y densidad originales">Restablecer</button>
+            </div>
         </div>
+        <div id="tabla-alumnos" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
     </div>
 </div>
 
@@ -91,8 +92,16 @@
     </div>
 </div>
 <!-- Fin Modal -->
+@section Styles{
+    <link href="~/Content/plugins/tabulator/tabulator_bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/alumnos-tabla.css" rel="stylesheet" asp-append-version="true" />
+}
 @section Scripts{
-    <script src="~/Content/js/pages/alumnos.js"></script>
+    <script src="~/Content/plugins/tabulator/tabulator.min.js"></script>
+    <script src="~/Content/plugins/tabulator/exportar/xlsx.full.min.js"></script>
+    <script src="~/Content/plugins/tabulator/exportar/jspdf.umd.min.js"></script>
+    <script src="~/Content/plugins/tabulator/exportar/jspdf.plugin.autotable.min.js"></script>
+    <script src="~/Content/js/pages/alumnos.js" asp-append-version="true"></script>
     <script>
     Alumnos.datatable({
         urlList: "@Url.Action("ListAsync")",

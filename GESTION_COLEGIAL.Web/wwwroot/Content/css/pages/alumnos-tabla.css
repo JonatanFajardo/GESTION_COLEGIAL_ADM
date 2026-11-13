@@ -1,0 +1,17 @@
+/* Listado de alumnos (Tabulator): densidad de filas y botón para fijar columnas.
+   El aspecto general viene del tema Bootstrap 4 de Tabulator, que combina con CORK. */
+
+/* Densidad: altura de las filas según el selector */
+#tabla-alumnos.tabla-densidad-comoda .tabulator-row .tabulator-cell { padding-top: 14px; padding-bottom: 14px; }
+#tabla-alumnos.tabla-densidad-normal .tabulator-row .tabulator-cell { padding-top: 8px; padding-bottom: 8px; }
+#tabla-alumnos.tabla-densidad-compacta .tabulator-row .tabulator-cell { padding-top: 2px; padding-bottom: 2px; }
+#tabla-alumnos.tabla-densidad-compacta .avatar-sm { width: 1.75rem; height: 1.75rem; font-size: .7rem; }
+
+/* Botón de fijar: discreto hasta pasar el mouse por el encabezado */
+#tabla-alumnos .tabla-pin { line-height: 1; opacity: .55; }
+#tabla-alumnos .tabulator-col:hover .tabla-pin,
+#tabla-alumnos .tabla-pin.text-primary { opacity: 1; }
+
+/* Columnas fijas: separador visible al desplazar horizontalmente */
+#tabla-alumnos .tabulator-frozen.tabulator-frozen-left { border-right: 2px solid #e0e6ed; }
+html.gc-dark #tabla-alumnos .tabulator-frozen.tabulator-frozen-left { border-right-color: #334155; }
