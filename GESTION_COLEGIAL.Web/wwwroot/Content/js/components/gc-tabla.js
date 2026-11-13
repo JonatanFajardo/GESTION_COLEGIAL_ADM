@@ -43,7 +43,7 @@ var GcTabla = (function () {
     function barraHtml(id, conBuscador) {
         return '' +
             '<div class="d-flex flex-wrap align-items-center justify-content-between mb-2 gc-tabla-barra">' +
-            (conBuscador ? '<input type="search" id="' + id + '-buscar" class="form-control w-auto mb-2 mr-2" placeholder="Buscar…" aria-label="Buscar en la tabla" />' : '<span></span>') +
+            (conBuscador ? '<input type="search" id="' + id + '-buscar" class="form-control form-control-sm w-auto mb-2 mr-2" placeholder="Buscar…" aria-label="Buscar en la tabla" />' : '<span></span>') +
             '  <div class="d-flex flex-wrap align-items-center mb-2">' +
             '    <label for="' + id + '-densidad" class="mb-0 mr-2 text-muted small">Densidad</label>' +
             '    <select id="' + id + '-densidad" class="custom-select custom-select-sm w-auto mr-3">' +
@@ -114,12 +114,24 @@ var GcTabla = (function () {
         }
 
         // Las columnas fijas van primero: Tabulator las ancla a la izquierda.
+        // La columna "Acciones" va siempre al final y fija a la derecha (siempre a mano).
         function columnas() {
-            var orden = estado.fijas.concat(estado.orden.filter(function (f) { return estado.fijas.indexOf(f) < 0; }));
+            var orden = estado.fijas.concat(estado.orden.filter(function (f) { return estado.fijas.indexOf(f) < 0 && f !== "Acciones"; }));
+            if (COLUMNAS.Acciones) orden.push("Acciones");
             return orden.map(function (campo) {
                 var def = $.extend({}, COLUMNAS[campo]);
-                def.titleFormatter = tituloConPin;
-                def.frozen = estado.fijas.indexOf(campo) >= 0;
+                // Que el título, el pin y la flecha de orden quepan sin cortarse.
+                var minimo = Math.round((def.title || "").length * 9 + (def.headerSort === false ? 50 : 86));
+                def.minWidth = Math.max(def.minWidth || 90, minimo);
+                if (def.width && def.width < def.minWidth) def.width = def.minWidth;
+                if (campo === "Acciones") {
+                    def.frozen = true;
+                    def.headerSort = false;
+                    def.movable = false;
+                } else {
+                    def.titleFormatter = tituloConPin;
+                    def.frozen = estado.fijas.indexOf(campo) >= 0;
+                }
                 if (estado.anchos[campo]) def.width = estado.anchos[campo];
                 return def;
             });

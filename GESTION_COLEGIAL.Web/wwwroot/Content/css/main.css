@@ -277,13 +277,14 @@ span.red {
 
 /*      Custom Select       */
 .custom-select {
-  height: auto;
-  border: 1px solid #fcead4;
+  height: calc(1.4em + 1.4rem + 2px);
+  border: 1px solid #bfc9d4;
   color: #3b3f5c;
   font-size: 15px;
-  padding: 8px 10px;
+  padding: 0.75rem 2rem 0.75rem 1.25rem;
   letter-spacing: 1px;
-  background-color: #fcead4;
+  border-radius: 6px;
+  background-color: #fff;
 }
 .custom-select.custom-select-lg {
   font-size: 18px;
@@ -291,7 +292,13 @@ span.red {
 }
 .custom-select.custom-select-sm {
   font-size: 13px;
-  padding: 7px 16px;
+  height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 1.75rem 0.25rem 0.75rem;
+}
+.form-control.form-control-sm {
+  font-size: 13px;
+  height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 0.75rem;
 }
 .custom-select:focus {
   box-shadow: none;

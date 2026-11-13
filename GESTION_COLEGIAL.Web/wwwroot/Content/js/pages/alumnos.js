@@ -252,7 +252,7 @@ var datatableAlumnos = (function () {
                 tituloPdf: "Listado de alumnos",
                 buscarEn: ["Alu_Nombre", "Per_Identidad", "Edad", "Cno_Descripcion", "Sec_Descripcion", "Est_Descripcion"],
                 columnas: [
-                    { title: "Alumno", field: "Alu_Nombre", minWidth: 200,
+                    { title: "Alumno", field: "Alu_Nombre", minWidth: 190,
                       formatter: function (c) { return GcTabla.avatar(c.getValue(), c.getData().Per_Imagen); } },
                     { title: "Identidad", field: "Per_Identidad", minWidth: 130 },
                     { title: "Edad", field: "Edad", hozAlign: "center", width: 110, sorter: "number",
