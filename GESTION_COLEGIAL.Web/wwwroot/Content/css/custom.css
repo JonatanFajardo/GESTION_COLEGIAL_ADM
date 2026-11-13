@@ -216,3 +216,17 @@
 .statbox.widget {
     padding: 0;
 }
+
+/* ── GcTabla (Tabulator): densidad, botón de fijar y columnas fijas ──
+   El aspecto base viene del tema Bootstrap 4 de Tabulator, que combina con CORK. */
+.gc-tabla.gc-densidad-comoda .tabulator-row .tabulator-cell { padding-top: 14px; padding-bottom: 14px; }
+.gc-tabla.gc-densidad-normal .tabulator-row .tabulator-cell { padding-top: 8px; padding-bottom: 8px; }
+.gc-tabla.gc-densidad-compacta .tabulator-row .tabulator-cell { padding-top: 2px; padding-bottom: 2px; }
+.gc-tabla.gc-densidad-compacta .avatar-sm { width: 1.75rem; height: 1.75rem; font-size: .7rem; }
+.gc-tabla .gc-tabla-pin { line-height: 1; opacity: .55; }
+.gc-tabla .tabulator-col:hover .gc-tabla-pin,
+.gc-tabla .gc-tabla-pin.text-primary { opacity: 1; }
+.gc-tabla .tabulator-frozen.tabulator-frozen-left { border-right: 2px solid #e0e6ed; }
+.gc-tabla .tabulator-row.tabulator-selected { background-color: #fff3d6; }
+.gc-tabla .tabulator-row.tabulator-selected:hover { background-color: #ffe8b2; }
+.gc-tabla input[type="checkbox"] { accent-color: #F7A400; }

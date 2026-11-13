@@ -69,7 +69,7 @@ var Modals = (function () {
         if (data.success) {
             //$editModal.modal("hide");
             $deleteModal.modal("hide");
-            table.DataTable().ajax.reload(null, false);
+            if (!(window.GcTabla && GcTabla.recargar())) table.DataTable().ajax.reload(null, false);
         }
         else {
             //$editModal.modal("hide");

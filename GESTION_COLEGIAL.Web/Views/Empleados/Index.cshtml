@@ -6,19 +6,6 @@
     bool puedeEditar = ViewBag.PuedeEditar == true;
     bool puedeEliminar = ViewBag.PuedeEliminar == true;
 
-    // Oculta por CSS las acciones de escritura del datatable cuando el rol no tiene permiso.
-    // El datatable de Empleados usa el helper genérico (Content/js/components/datatable.init.js),
-    // que no soporta un objeto "permisos" como el de Alumnos, así que se refuerza con CSS.
-    var reglasCssPermisos = new System.Text.StringBuilder();
-    if (!puedeCrear) { reglasCssPermisos.Append("#add-btn{display:none !important;}"); }
-    if (!puedeEditar) { reglasCssPermisos.Append("#datatable .edit-btn{display:none !important;}"); }
-    if (!puedeEliminar) { reglasCssPermisos.Append("#datatable .delete-btn{display:none !important;}"); }
-}
-@section Styles{
-    @if (reglasCssPermisos.Length > 0)
-    {
-        <style>@Html.Raw(reglasCssPermisos.ToString())</style>
-    }
 }
 
 <div class="breadcrumb-wrapper-content">
@@ -86,21 +73,7 @@
         </div>
 
         <div class="widget-content widget-content-area">
-            <div class="table-responsive">
-                <table class="table table-hover nowrap" id="datatable">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Estado</th>
-                            <th>Título</th>
-                            <th>Cargo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            <div id="tabla-empleados" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
         </div>
     </div>
 </div>
@@ -148,7 +121,8 @@
 }
 
 @section Scripts{
-    <script src="~/Content/js/pages/empleados.js"></script>
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/empleados.js" asp-append-version="true"></script>
     <script>
         Empleados.datatable({
             urlList: "@Url.Action("ListAsync")",

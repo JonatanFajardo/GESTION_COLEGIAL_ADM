@@ -145,3 +145,29 @@ tarjetas, insignias, encabezados ni formularios.
 ## Temas (amarillo / azul / oscuro)
 `theme.css` solo ajusta componentes de CORK (botones, insignias, widgets, tablas, ventanas
 emergentes) para el tema azul y el modo oscuro. No lleva reglas para pantallas concretas.
+
+## Tablas personalizables por usuario (GcTabla)
+Listados de entidades (hoy: Alumnos, Empleados, Encargados, Pagos) usan `GcTabla`, sobre Tabulator 6.4
+(`wwwroot/Content/plugins/tabulator/`). Cada usuario puede cambiar ancho y orden de columnas, fijarlas (📌),
+elegir densidad, seleccionar filas y exportarlas; se guarda en el navegador con la clave
+`gc-tabla-<nombre>-<usuario>`. "Restablecer" vuelve a lo original.
+
+1. En la vista: `<div id="tabla-x" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>`
+   dentro de la tarjeta `statbox`, y en `@section Scripts` agregar `<partial name="_GcTabla" />`.
+2. En el JS de la pantalla:
+```js
+GcTabla.crear({
+    elemento: "#tabla-x", nombre: "x", url: "/X/ListAsync",
+    archivo: "x", tituloPdf: "Listado de X",
+    buscarEn: ["Campo1", "Campo2"],
+    columnas: [
+        { title: "Nombre", field: "Nombre", formatter: c => GcTabla.avatar(c.getValue(), c.getData().Foto) },
+        { title: "Acciones", field: "Acciones", headerSort: false, download: false,
+          formatter: c => GcTabla.acciones(c.getData().Id, permisos) }
+    ]
+});
+```
+Opcionales: `buscador` (usar un buscador existente), `filtroExtra(fila)` (filtros propios),
+`alCargar(filas)` (contadores, llenar combos), `filasPorPagina`. La barra (densidad, recargar, PDF,
+Excel, restablecer y la de seleccionados) la arma GcTabla. Para valores calculados que se busquen
+o exporten (edad, estado en texto) usar `mutator` en la columna, no solo `formatter`.

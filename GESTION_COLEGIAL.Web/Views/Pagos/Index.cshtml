@@ -65,25 +65,11 @@
         </div>
     </div>
     <div class="widget-content widget-content-area">
-        <div class="table-responsive">
-            <table class="table table-hover nowrap" id="datatable">
-                <thead>
-                    <tr>
-                        <th>No. Recibo</th>
-                        <th>Fecha</th>
-                        <th>Alumno</th>
-                        <th>Encargado</th>
-                        <th>Forma Pago</th>
-                        <th>Monto Total</th>
-                        <th>Usuario</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+        <div id="tabla-pagos" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
     </div>
 </div>
 
 @section Scripts{
-    <script src="~/Content/js/pages/pagos.js?v=@DateTime.Now.Ticks"></script>
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/pagos.js" asp-append-version="true"></script>
 }

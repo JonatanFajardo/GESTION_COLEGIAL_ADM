@@ -30,32 +30,13 @@
             <div class="d-flex flex-wrap align-items-center justify-content-between">
                 <h4 class="mr-2">Listado de encargados <span class="badge badge-primary ml-1" id="total-count">0</span></h4>
                 <div class="d-flex flex-wrap align-items-center py-2">
-                    <input type="text" id="custom-table-search" class="form-control form-control-sm mr-2 mb-1 mb-md-0" placeholder="Buscar en la tabla..." />
-                    <button type="button" class="btn btn-sm btn-outline-primary mr-2" id="btn-export-pdf">
-                        <i class="bi bi-file-earmark-pdf mr-1"></i> PDF
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-primary" id="btn-export-excel">
-                        <i class="bi bi-file-earmark-excel mr-1"></i> Excel
-                    </button>
+                    <input type="text" id="custom-table-search" class="form-control form-control-sm mr-2 mb-1 mb-md-0" placeholder="Buscar…" />
+
                 </div>
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            <div class="table-responsive">
-                <table class="table table-hover nowrap" id="datatable">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Identidad</th>
-                            <th>Nombre</th>
-                            <th>Teléfono</th>
-                            <th>Ocupación</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            <div id="tabla-encargados" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
         </div>
     </div>
 
@@ -102,7 +83,8 @@
 </div>
 
 @section Scripts{
-    <script src="~/Content/js/pages/encargados.js"></script>
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/encargados.js" asp-append-version="true"></script>
     <script>
         Encargados.datatable({
             urlList: "@Url.Action("ListAsync")",
