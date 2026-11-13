@@ -1,4 +1,15 @@
-﻿//==================================================
+// Barra de las tablas con los botones de CORK: los secundarios van con borde y,
+// si el encabezado de la página ya tiene su botón principal, no se repite el "Nuevo".
+$(document).on('init.dt', function (e, settings) {
+    var $w = $(settings.nTableWrapper);
+    $w.find('.dt-buttons').removeClass('btn-group');
+    $w.find('.dt-buttons .btn').removeClass('btn-secondary').each(function () {
+        if (this.id !== 'add-btn') $(this).removeClass('btn-primary').addClass('btn-outline-primary');
+    });
+    if ($('.encabezado-pagina .btn').length) $w.find('#add-btn').addClass('d-none');
+});
+
+//==================================================
 //Recorre el arreglo de encabezados
 //==================================================
 
@@ -116,7 +127,7 @@ var datatable = (function () {
                     url: "",
                     infoThousands: ",",
                     loadingRecords: " ",
-                    searchPlaceholder: "Buscar en la tabla...",
+                    searchPlaceholder: "Buscar…",
                     paginate: {
                         first: "Primero",
                         last: "Último",

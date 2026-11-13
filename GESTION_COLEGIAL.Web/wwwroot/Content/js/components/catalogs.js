@@ -1,4 +1,4 @@
-﻿var Catalogs = (function () {
+var Catalogs = (function () {
     var obj = {},
         table,
         formId,
@@ -70,7 +70,7 @@
         });
 
         //Resetea los valores.
-        $("#add-btn").click(function () {
+        $("#add-btn, #add-btn-header").click(function () {
             $(formId).trigger("reset");
             $("#item-id").val("0");
             action = "edit";
@@ -283,4 +283,4 @@
     };
 
     return obj;
-}());
+}());

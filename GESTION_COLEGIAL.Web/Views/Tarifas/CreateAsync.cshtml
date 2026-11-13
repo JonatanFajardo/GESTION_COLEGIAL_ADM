@@ -19,7 +19,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
         <div class="mr-3">
             <h4 class="mb-1">@(Model.Tar_Id == 0 ? "Registro de tarifa" : "Edición de tarifa")</h4>
             <p class="text-muted mb-0">Complete la información de la tarifa por nivel/curso</p>

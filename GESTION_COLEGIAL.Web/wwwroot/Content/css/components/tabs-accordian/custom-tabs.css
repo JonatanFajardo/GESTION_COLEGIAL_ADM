@@ -80,7 +80,7 @@ h4 {
 }
 
 .simple-tab .nav-tabs .nav-item.show .nav-link, .simple-tab .nav-tabs .nav-link.active {
-    color: #4361ee;
+    color: #F7A400;
     font-weight: 600;
     background-color: #fff;
 }
@@ -101,7 +101,7 @@ h4 {
 }
 
 .simple-pills .nav-pills .nav-link.active, .simple-pills .nav-pills .show > .nav-link {
-    background-color: #4361ee;
+    background-color: #F7A400;
     border-color: transparent;
 }
 
@@ -235,7 +235,7 @@ h4 {
 }
 
 .justify-tab .nav-tabs .nav-item.show .nav-link, .justify-tab .nav-tabs .nav-link.active {
-    color: #4361ee;
+    color: #F7A400;
     background-color: #fff;
     border-color: #e0e6ed #e0e6ed #fff;
 }
@@ -300,7 +300,7 @@ h4 {
 }
 
 .tab-justify-right .nav-tabs .nav-item.show .nav-link, .tab-justify-right .nav-tabs .nav-link.active {
-    color: #4361ee;
+    color: #F7A400;
     background-color: #fff;
     border-color: #e0e6ed #e0e6ed #fff;
 }

@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles{
-    <link href="~/Content/css/elements/avatar.css" rel="stylesheet" />
 }
 @{
     var estadoColor = Model.EsActivo == "Activo" ? "badge-success" : "badge-danger";
@@ -29,7 +28,7 @@
 
 <div class="fluid-container">
 
-    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
         <div class="d-flex align-items-center mr-3">
             <div class="avatar avatar-xl mr-3">
                 <span class="avatar-title rounded-circle"><i class="bi bi-person-badge"></i></span>

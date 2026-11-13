@@ -102,7 +102,7 @@ var datatablePartials = (function () {
                 url: "",
                 infoThousands: ",",
                 loadingRecords: " ",
-                searchPlaceholder: "Buscar en la tabla...",
+                searchPlaceholder: "Buscar…",
                 paginate: {
                     first: "Primero",
                     last: "Último",

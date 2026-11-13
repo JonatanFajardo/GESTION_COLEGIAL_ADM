@@ -31,7 +31,7 @@
     margin-bottom: 0.3rem;
 }
 .fd-bar-top .fd-bar-name { font-weight: 600; }
-.fd-bar-top .fd-bar-val  { font-weight: 700; color: var(--fd-slate-900); }
+.fd-bar-top .fd-bar-val { font-weight: 700; color: var(--fd-slate-900); }
 .fd-bar-track {
     width: 100%; height: 9px;
     background: var(--fd-slate-100);
@@ -44,10 +44,10 @@
     transition: width 0.6s ease;
 }
 .fd-bar-fill.b-emerald { background: linear-gradient(90deg, #10b981, #34d399); }
-.fd-bar-fill.b-amber   { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
-.fd-bar-fill.b-rose    { background: linear-gradient(90deg, #f43f5e, #fb7185); }
-.fd-bar-fill.b-violet  { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
-.fd-bar-fill.b-cyan    { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+.fd-bar-fill.b-amber { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.fd-bar-fill.b-rose { background: linear-gradient(90deg, #f43f5e, #fb7185); }
+.fd-bar-fill.b-violet { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+.fd-bar-fill.b-cyan { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
 
 /* ----------- COLUMNAS DE BARRAS (hora/día) ----------- */
 .fd-cols {
@@ -89,11 +89,6 @@
     font-size: 0.68rem; color: var(--fd-slate-500);
     white-space: nowrap;
 }
-
-/* ----------- FEED DE TRANSACCIONES ----------- */
-.fd-feed {
-    display: flex; flex-direction: column;
-}
 .fd-feed-item {
     display: grid;
     grid-template-columns: 42px 1fr auto;
@@ -114,10 +109,10 @@
     font-size: 0.9rem;
     flex-shrink: 0;
 }
-.fd-feed-avatar.av-rose    { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+.fd-feed-avatar.av-rose { background: linear-gradient(135deg, #f43f5e, #fb7185); }
 .fd-feed-avatar.av-emerald { background: linear-gradient(135deg, #10b981, #34d399); }
-.fd-feed-avatar.av-amber   { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
-.fd-feed-avatar.av-violet  { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+.fd-feed-avatar.av-amber { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+.fd-feed-avatar.av-violet { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
 .fd-feed-body { min-width: 0; }
 .fd-feed-title {
     margin: 0;
@@ -143,8 +138,7 @@
     color: var(--fd-emerald);
     margin: 0;
 }
-.fd-feed-amount.amt-rose  { color: var(--fd-rose); }
-.fd-feed-amount.amt-indigo { color: var(--fd-indigo); }
+.fd-feed-amount.amt-rose { color: var(--fd-rose); }
 
 /* ----------- AGING BUCKETS ----------- */
 .fd-aging-row {
@@ -165,10 +159,10 @@
     position: absolute; left: 0; top: 0; bottom: 0;
     width: 4px; background: var(--fd-emerald);
 }
-.fd-aging.a-31  ::before, .fd-aging.a-31::before  { background: var(--fd-cyan); }
-.fd-aging.a-61  ::before, .fd-aging.a-61::before  { background: var(--fd-amber); }
-.fd-aging.a-91  ::before, .fd-aging.a-91::before  { background: #fb923c; }
-.fd-aging.a-120 ::before, .fd-aging.a-120::before { background: var(--fd-rose); }
+.fd-aging.a-31  ::before,.fd-aging.a-31::before { background: var(--fd-cyan); }
+.fd-aging.a-61  ::before,.fd-aging.a-61::before { background: var(--fd-amber); }
+.fd-aging.a-91  ::before,.fd-aging.a-91::before { background: #fb923c; }
+.fd-aging.a-120 ::before,.fd-aging.a-120::before { background: var(--fd-rose); }
 .fd-aging-label {
     font-size: 0.72rem;
     text-transform: uppercase;
@@ -188,9 +182,6 @@
     color: var(--fd-slate-500);
     margin: 0.15rem 0 0;
 }
-
-/* ----------- TOP DEUDORES (lista compacta con avatar) ----------- */
-.fd-rank { display: flex; flex-direction: column; }
 .fd-rank-item {
     display: grid;
     grid-template-columns: 26px 1fr auto;

@@ -132,8 +132,7 @@
     line-height: 1.2;
     font-size: 0.8rem;
 }
-.visor-horarios .vh-clase-sec,
-.visor-horarios .vh-clase-aula {
+.visor-horarios .vh-clase-sec,.visor-horarios .vh-clase-aula {
     color: var(--vh-text-muted);
     font-size: 0.72rem;
     line-height: 1.25;
@@ -145,8 +144,7 @@
 }
 
 /* Fila de RECESO entre bloques */
-.visor-horarios .vh-mini .vh-receso-row td,
-.vh-modal .vh-mini .vh-receso-row td {
+.visor-horarios .vh-mini .vh-receso-row td,.vh-modal .vh-mini .vh-receso-row td {
     padding: 0;
     height: 30px;
     min-height: 30px;
@@ -159,8 +157,7 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
 }
-.visor-horarios .vh-receso-row td i,
-.vh-modal .vh-receso-row td i {
+.visor-horarios .vh-receso-row td i,.vh-modal .vh-receso-row td i {
     margin-right: 6px;
     opacity: 0.7;
 }
@@ -174,17 +171,6 @@
     padding: 1px 5px;
     border-radius: 999px;
 }
-
-/* Colorear celdas por area */
-.visor-horarios .vh-area-MAT { border-left-color: var(--vh-MAT); background: rgba(79,70,229,0.06); }
-.visor-horarios .vh-area-LEN { border-left-color: var(--vh-LEN); background: rgba(236,72,153,0.06); }
-.visor-horarios .vh-area-CIE { border-left-color: var(--vh-CIE); background: rgba(5,150,105,0.06); }
-.visor-horarios .vh-area-ING { border-left-color: var(--vh-ING); background: rgba(14,165,233,0.06); }
-.visor-horarios .vh-area-SOC { border-left-color: var(--vh-SOC); background: rgba(217,119,6,0.06); }
-.visor-horarios .vh-area-CON { border-left-color: var(--vh-CON); background: rgba(124,58,237,0.06); }
-.visor-horarios .vh-area-TEC { border-left-color: var(--vh-TEC); background: rgba(8,145,178,0.06); }
-.visor-horarios .vh-area-ART { border-left-color: var(--vh-ART); background: rgba(219,39,119,0.06); }
-.visor-horarios .vh-area-OTR { border-left-color: var(--vh-OTR); background: rgba(107,114,128,0.06); }
 
 /* ---------- Modal grande de horario ---------- */
 .vh-modal .vh-modal-dialog {
@@ -266,8 +252,7 @@
 }
 
 /* Grid expandido dentro del modal */
-.visor-horarios .vh-mini--expanded,
-.vh-modal .vh-mini--expanded {
+.visor-horarios .vh-mini--expanded,.vh-modal .vh-mini--expanded {
     font-size: 0.82rem;
 }
 .vh-modal .vh-mini--expanded thead th {
@@ -283,8 +268,7 @@
 .vh-modal .vh-mini--expanded .vh-mini-hora-cel span { font-size: 0.9rem; }
 .vh-modal .vh-mini--expanded .vh-mini-hora-cel small { font-size: 0.74rem; }
 .vh-modal .vh-mini--expanded .vh-clase-mat { font-size: 0.85rem; margin-bottom: 4px; }
-.vh-modal .vh-mini--expanded .vh-clase-sec,
-.vh-modal .vh-mini--expanded .vh-clase-aula { font-size: 0.78rem; }
+.vh-modal .vh-mini--expanded .vh-clase-sec,.vh-modal .vh-mini--expanded .vh-clase-aula { font-size: 0.78rem; }
 
 /* Bloques de clase en panel lateral */
 .vh-modal .vh-modal-clase {

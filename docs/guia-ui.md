@@ -7,7 +7,7 @@ no tiene el componente, y va en `wwwroot/Content/css/custom.css` (no un archivo 
 - Demo de referencia (misma versión): https://designreset.com/cork-admin-v1/ltr/demo4/
 - Copia local de las páginas de ejemplo: `C:\gcref\cork\demo4\*.html`
 - Los estilos de CORK ya están cargados en `_Layout.cshtml` (`main.css`, `structure.css`,
-  `widgets/modules-widgets.css`, `components/cards/card.css`, `components/custom-modal.css`,
+  `widgets/modules-widgets.css`, ``components/custom-modal.css`,
   `components/tabs-accordian/custom-tabs.css`, `elements/alert.css`, `forms/*`).
 - Colores: los de la plantilla (`primary` = naranja del colegio, `secondary`, `success`, `info`,
   `warning`, `danger`, `dark`). Fuente de los colores: `wwwroot/Content/sass/base/_color_variables.scss`.
@@ -28,7 +28,8 @@ no tiene el componente, y va en `wwwroot/Content/css/custom.css` (no un archivo 
 ## Piezas y su equivalente CORK
 
 ### Encabezado de página
-Migas de pan (ya existe) + título con Bootstrap. Sin banner.
+Migas de pan (ya existe) + título dentro de un recuadro `widget` de CORK. Sin banner.
+`encabezado-pagina` no lleva estilo: es la marca que usan las tablas para no repetir el botón "Nuevo".
 
 ```html
 <div class="breadcrumb-wrapper-content">
@@ -41,7 +42,7 @@ Migas de pan (ya existe) + título con Bootstrap. Sin banner.
     </nav>
 </div>
 
-<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
     <div class="mr-3">
         <h4 class="mb-1">Asistencia de alumnos</h4>
         <p class="text-muted mb-0">Cómo va la asistencia de cada sección.</p>

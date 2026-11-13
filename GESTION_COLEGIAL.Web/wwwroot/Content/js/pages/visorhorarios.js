@@ -310,7 +310,7 @@
             '  </div>' +
             (firstMda ? '  <span class="badge outline-badge-warning ml-2">' + escapeHtml(firstMda) + '</span>' : '') +
             '  <span class="btn btn-sm btn-outline-primary ml-2 vh-card-expand" title="Ver horario completo"><i class="bi bi-arrows-fullscreen"></i></span>' +
-            '</div>''
+            '</div>'
         );
         $card.append($header);
 

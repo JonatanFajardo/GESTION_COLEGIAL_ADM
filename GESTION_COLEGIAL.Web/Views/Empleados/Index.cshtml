@@ -15,7 +15,6 @@
     if (!puedeEliminar) { reglasCssPermisos.Append("#datatable .delete-btn{display:none !important;}"); }
 }
 @section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
     @if (reglasCssPermisos.Length > 0)
     {
         <style>@Html.Raw(reglasCssPermisos.ToString())</style>
@@ -31,7 +30,7 @@
     </nav>
 </div>
 
-<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4">
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
     <div class="mr-3">
         <h4 class="mb-1">Gestión de Empleados</h4>
         <p class="text-muted mb-0">Administre el personal docente y administrativo del sistema</p>

@@ -1,4 +1,4 @@
-﻿//==================================================
+//==================================================
 //Recorre el arreglo de encabezados
 //==================================================
 
@@ -41,7 +41,7 @@ var datatableCatalogs = (function () {
                     url: "",
                     infoThousands: ",",
                     loadingRecords: " ",
-                    searchPlaceholder: "Buscar en la tabla...",
+                    searchPlaceholder: "Buscar…",
                     paginate: {
                         first: '<i class="fas fa-angle-double-left"></i>',
                         last: '<i class="fas fa-angle-double-right"></i>',
@@ -323,4 +323,4 @@ function fillDetailModalCatalog(data) {
 $(document).on('click', '.view-detail-btn', function () {
     var id = $(this).data('id');
     viewDetailCatalog(id);
-});
+});

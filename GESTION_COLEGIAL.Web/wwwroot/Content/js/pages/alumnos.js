@@ -1,3 +1,8 @@
+// Si la foto no carga, el avatar de CORK muestra las iniciales.
+window.gcAvatarSinFoto = function (img) {
+    img.outerHTML = '<span class="avatar-title rounded-circle">' + (img.getAttribute('data-ini') || '') + '</span>';
+};
+
 ﻿
 var Alumnos = (function () {
     var obj = {};
@@ -260,7 +265,7 @@ var datatableAlumnos = (function () {
                     url: "",
                     infoThousands: ",",
                     loadingRecords: " ",
-                    searchPlaceholder: "Buscar en la tabla...",
+                    searchPlaceholder: "Buscar…",
                     paginate: {
                         first: "Primero",
                         last: "Último",
@@ -279,7 +284,8 @@ var datatableAlumnos = (function () {
             function calcularEdad(fechaNac) {
                 if (!fechaNac) return "";
                 var fecha = new Date(fechaNac);
-                if (isNaN(fecha.getTime())) return "";
+                // La API manda 0001-01-01 cuando no trae la fecha: no inventar una edad.
+                if (isNaN(fecha.getTime()) || fecha.getFullYear() < 1900) return "—";
                 var hoy = new Date();
                 var edad = hoy.getFullYear() - fecha.getFullYear();
                 var m = hoy.getMonth() - fecha.getMonth();
@@ -350,11 +356,13 @@ var datatableAlumnos = (function () {
                         targets: 0,
                         render: function (data, type, row) {
                             if (type !== "display") return data || "";
-                            var imgSrc = row.Per_Imagen
-                                ? row.Per_Imagen.replace('~/', '/')
-                                : '/Content/js/pages/default-profile.jpeg';
+                            var nombre = data || "";
+                            var iniciales = nombre.split(" ").filter(Boolean).slice(0, 2).map(function (p) { return p.charAt(0); }).join("").toUpperCase();
+                            var avatar = row.Per_Imagen
+                                ? '<img class="rounded-circle" src="' + row.Per_Imagen.replace('~/', '/') + '" alt="" data-ini="' + iniciales + '" onerror="gcAvatarSinFoto(this)">'
+                                : '<span class="avatar-title rounded-circle">' + iniciales + '</span>';
                             return '<div class="d-flex align-items-center">' +
-                                '<img src="' + imgSrc + '" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;margin-right:10px;" onerror="this.onerror=null;this.src=\'/Content/js/pages/default-profile.jpeg\';">' +
+                                '<div class="avatar avatar-sm mr-2">' + avatar + '</div>' +
                                 '<span>' + (data || "") + '</span>' +
                                 '</div>';
                         }

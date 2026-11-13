@@ -6,7 +6,6 @@
 .pantallas-tree .custom-control-label { font-weight: 400; font-size: 13px; color: #3b3f5c; cursor: pointer; }
 .pantallas-tree .grupo-header { font-weight: 600; font-size: 14px; color: #0e1726; cursor: pointer; padding: 6px 0; }
 .pantallas-tree .grupo-header:hover { color: #2196F3; }
-.pantallas-tree .grupo-content { padding-left: 15px; }
 .pantallas-tree .grupo-check-all { margin-left: 8px; font-size: 11px; color: #888ea8; cursor: pointer; }
 .pantallas-tree .grupo-check-all:hover { color: #2196F3; }
 .pantallas-tree .grupo-icon { margin-right: 6px; vertical-align: middle; }
