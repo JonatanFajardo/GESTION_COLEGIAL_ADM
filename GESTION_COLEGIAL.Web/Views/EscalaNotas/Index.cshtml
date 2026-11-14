@@ -1,0 +1,186 @@
+@{
+    ViewBag.Title = "Escala de notas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool puedeEditar = ViewBag.PuedeEditar == true;
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Escala de notas</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Escala de notas</h4>
+        <p class="text-muted mb-0">Defina cómo se traduce el promedio numérico a un concepto en el boletín y los umbrales del cuadro de honor.</p>
+    </div>
+    @if (puedeEditar)
+    {
+        <div class="mt-2 mt-md-0">
+            <button type="button" class="btn btn-primary" id="btn-nuevo-rango">
+                <i class="bi bi-plus-lg mr-1"></i> Nuevo rango
+            </button>
+        </div>
+    }
+</div>
+
+<div class="alert alert-light-info mb-4" role="alert">
+    <i class="bi bi-info-circle-fill mr-1"></i>
+    <strong>Cómo funciona.</strong> Cada fila es un rango de promedio (de–a, ambos incluidos) con el concepto que se muestra en el boletín.
+    Los rangos no pueden solaparse y deberían cubrir de 0 a 100. Los boletines ya emitidos no cambian.
+</div>
+
+<div class="row">
+    <!-- Escala -->
+    <div class="col-lg-8">
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4>Rangos de la escala</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width:48px">#</th>
+                                <th>Concepto</th>
+                                <th class="text-center" style="width:70px">Abrev.</th>
+                                <th class="text-center" style="width:150px">Rango (promedio)</th>
+                                <th class="text-center" style="width:110px">¿Aprueba?</th>
+                                @if (puedeEditar)
+                                {
+                                    <th class="text-center" style="width:120px">Acciones</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-escala">
+                            <tr><td colspan="6" class="text-center text-muted py-4">Cargando…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="aviso-cobertura" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cuadro de honor -->
+    <div class="col-lg-4">
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4><i class="bi bi-award mr-1"></i> Cuadro de honor</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <p class="text-muted small">Promedio mínimo para que un alumno entre al cuadro de honor.</p>
+                <div class="form-group">
+                    <label for="chc-honor">Cuadro de Honor (≥)</label>
+                    <input type="number" step="0.01" min="0" max="100" class="form-control" id="chc-honor" @(puedeEditar ? "" : "disabled") />
+                </div>
+                <div class="form-group">
+                    <label for="chc-honor-sup">Cuadro de Honor Superior (≥)</label>
+                    <input type="number" step="0.01" min="0" max="100" class="form-control" id="chc-honor-sup" @(puedeEditar ? "" : "disabled") />
+                </div>
+                @if (puedeEditar)
+                {
+                    <button type="button" class="btn btn-primary btn-block" id="btn-guardar-config">
+                        <i class="bi bi-check2 mr-1"></i> Guardar umbrales
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (puedeEditar)
+{
+    <!-- Modal crear / editar rango -->
+    <div class="modal fade" id="modal-rango" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-rango-title">Nuevo rango</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="r-id" value="0" />
+                    <div class="form-group">
+                        <label for="r-concepto">Concepto <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="r-concepto" maxlength="40" placeholder="Ej: Excelente, Muy Bueno…" />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="r-abrev">Abreviatura</label>
+                            <input type="text" class="form-control" id="r-abrev" maxlength="5" placeholder="Ej: A" />
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="r-orden">Orden</label>
+                            <input type="number" class="form-control" id="r-orden" min="0" value="0" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="r-desde">Nota desde <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" min="0" max="100" class="form-control" id="r-desde" />
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="r-hasta">Nota hasta <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" min="0" max="100" class="form-control" id="r-hasta" />
+                        </div>
+                    </div>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="r-aprueba" checked />
+                        <label class="custom-control-label" for="r-aprueba">Este rango aprueba la materia</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btn-guardar-rango"><i class="bi bi-check2 mr-1"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal eliminar -->
+    <div class="modal fade" id="modal-eliminar" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar rango</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="del-id" value="0" />
+                    <p class="mb-3">¿Eliminar el rango <strong id="del-nombre"></strong>?</p>
+                    <div class="alert alert-light-warning mb-0" role="alert">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        Los boletines quedarán sin este concepto para ese rango de promedio hasta que lo vuelva a definir.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="btn-confirmar-eliminar"><i class="bi bi-trash mr-1"></i> Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/Content/js/pages/escalanotas.js"></script>
+    <script>
+        EscalaNotas.init({
+            puedeEditar: @(puedeEditar ? "true" : "false"),
+            urls: {
+                list: "@Url.Action("ListAsync")",
+                find: "@Url.Action("FindAsync")",
+                guardar: "@Url.Action("GuardarAsync")",
+                eliminar: "@Url.Action("EliminarAsync")",
+                config: "@Url.Action("ConfigAsync")",
+                guardarConfig: "@Url.Action("GuardarConfigAsync")"
+            }
+        });
+    </script>
+}
