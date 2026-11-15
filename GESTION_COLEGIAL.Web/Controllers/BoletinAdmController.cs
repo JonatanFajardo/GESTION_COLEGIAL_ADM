@@ -10,8 +10,16 @@ namespace GESTION_COLEGIAL.UI.Controllers
     {
         private readonly BoletinAdmService _service = new BoletinAdmService();
         private readonly AlumnosService    _alumnos = new AlumnosService();
+        private readonly EscalaNotasService _escala = new EscalaNotasService();
 
         public ActionResult Index() => View();
+
+        // GET: BoletinAdm/EscalaAsync -> rangos de la escala para traducir el promedio a concepto.
+        public async Task<ActionResult> EscalaAsync()
+        {
+            var result = await _escala.ListAsync();
+            return AjaxResult(result);
+        }
 
         public async Task<ActionResult> DropdownsAsync()
         {

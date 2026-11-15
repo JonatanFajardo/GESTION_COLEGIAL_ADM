@@ -8,6 +8,20 @@ var NotasAdm = (function () {
     var urls = {};
     var contexto = {};
     var parciales = [];        // catálogo real de parciales [{id, texto}]
+    var escala = [];           // rangos de la escala de notas [{Esc_Concepto, Esc_Abreviatura, Esc_NotaDesde, ...}]
+
+    // Traduce un promedio al concepto de la escala (misma lógica que FN_EscalaConcepto:
+    // el rango con la mayor nota mínima que no supera el promedio).
+    function conceptoDe(prom) {
+        if (prom === null || isNaN(parseFloat(prom))) return "";
+        var v = parseFloat(prom), mejor = null;
+        $.each(escala, function (_, e) {
+            var d = parseFloat(e.Esc_NotaDesde);
+            if (v >= d && (mejor === null || d > parseFloat(mejor.Esc_NotaDesde))) mejor = e;
+        });
+        if (!mejor) return "";
+        return mejor.Esc_Concepto + (mejor.Esc_Abreviatura ? " (" + mejor.Esc_Abreviatura + ")" : "");
+    }
     var notaMinima = 70;       // fallback si el GET de configuración falla
 
     // ---------- Utilidades ----------
@@ -148,6 +162,7 @@ var NotasAdm = (function () {
             tr.append('<th class="text-center">' + p.texto + '</th>');
         });
         tr.append('<th class="text-center">Promedio</th>');
+        tr.append('<th class="text-center">Concepto</th>');
     }
 
     // Busca la nota de un parcial del catálogo dentro del mapa de notas de una materia.
@@ -170,7 +185,7 @@ var NotasAdm = (function () {
                 // La API puede devolver directo el array o envuelto en .data
                 var data = (res && res.data) ? res.data : (res || []);
                 var tbody = $("#tbody-boletin").empty();
-                var totalCols = parciales.length + 2; // Materia + parciales + Promedio
+                var totalCols = parciales.length + 3; // Materia + parciales + Promedio + Concepto
 
                 renderCabeceraBoletin();
 
@@ -205,6 +220,7 @@ var NotasAdm = (function () {
                         ? vals.reduce(function (a, b) { return a + b; }, 0) / vals.length
                         : null;
                     celdas += '<td' + claseNota(prom) + '><strong>' + fmtNota(prom) + '</strong></td>';
+                    celdas += '<td class="text-center text-muted">' + conceptoDe(prom) + '</td>';
 
                     tbody.append('<tr>' + celdas + '</tr>');
                 });
@@ -222,12 +238,20 @@ var NotasAdm = (function () {
             dropdowns:    config.urlDropdowns,
             boletinGet:   config.urlBoletinGet,
             boletinDrops: config.urlBoletinDrops,
+            boletinEscala:config.urlBoletinEscala,
             notaMinima:   config.urlNotaMinima
         };
 
         initTabs();
         initCuaderno();
         initBoletin();
+
+        // Escala de notas para traducir el promedio a concepto en el boletín (opcional).
+        if (urls.boletinEscala) {
+            $.getJSON(urls.boletinEscala, function (res) {
+                escala = (res && res.data) ? res.data : (res || []);
+            });
+        }
 
         // Dropdowns del cuaderno + catálogo real de parciales (compartido con el boletín)
         $.getJSON(urls.dropdowns, function (data) {
