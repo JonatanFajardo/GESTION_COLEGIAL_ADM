@@ -248,3 +248,4 @@ html.gc-dark .statbox .widget-header h4 { color: #e2e8f0; }
 @media (max-width: 575px) {
     .statbox .widget-content-area { padding: 12px; }
 }
+.gc-tabla-columnas { min-width: 200px; max-height: 320px; overflow-y: auto; }

@@ -2,7 +2,7 @@
  * GcTabla — tabla personalizable por usuario sobre Tabulator.
  *
  * Cada usuario puede cambiar el ancho y el orden de las columnas, fijar columnas (pin),
- * elegir la densidad y seleccionar filas para exportarlas. Todo se guarda en el navegador
+ * mostrar u ocultar columnas, elegir la densidad y seleccionar filas para exportarlas. Todo se guarda en el navegador
  * con una clave por tabla y por usuario: "gc-tabla-<nombre>-<usuario>".
  *
  * Uso:
@@ -49,10 +49,14 @@ var GcTabla = (function () {
             '    <select id="' + id + '-densidad" class="custom-select custom-select-sm w-auto mr-3">' +
             '      <option value="comoda">Cómoda</option><option value="normal">Normal</option><option value="compacta">Compacta</option>' +
             '    </select>' +
+            '    <div class="dropdown mr-1">' +
+            '      <button type="button" id="' + id + '-columnas" class="btn btn-outline-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-layout-three-columns mr-1"></i>Columnas</button>' +
+            '      <div id="' + id + '-menu-columnas" class="dropdown-menu dropdown-menu-right p-2 gc-tabla-columnas" aria-labelledby="' + id + '-columnas"></div>' +
+            '    </div>' +
             '    <button type="button" id="' + id + '-recargar" class="btn btn-outline-primary btn-sm mr-1" title="Recargar tabla" aria-label="Recargar tabla"><i class="bi bi-arrow-clockwise"></i></button>' +
             '    <button type="button" id="' + id + '-pdf" class="btn btn-outline-primary btn-sm mr-1"><i class="bi bi-file-earmark-pdf mr-1"></i>PDF</button>' +
             '    <button type="button" id="' + id + '-excel" class="btn btn-outline-primary btn-sm mr-1"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Excel</button>' +
-            '    <button type="button" id="' + id + '-restablecer" class="btn btn-outline-secondary btn-sm" title="Volver al orden, ancho, columnas fijas y densidad originales">Restablecer</button>' +
+            '    <button type="button" id="' + id + '-restablecer" class="btn btn-outline-secondary btn-sm" title="Volver al orden, ancho, columnas visibles y fijas, y densidad originales">Restablecer</button>' +
             '  </div>' +
             '</div>' +
             '<div id="' + id + '-seleccion" class="alert alert-light-primary d-none align-items-center flex-wrap py-2 mb-2 gc-tabla-seleccion" role="status">' +
@@ -76,7 +80,7 @@ var GcTabla = (function () {
         var $densidad = $("#" + id + "-densidad");
 
         // ── Estado guardado ──
-        function porDefecto() { return { orden: ORDEN_DEFECTO.slice(), anchos: {}, fijas: [], densidad: "normal" }; }
+        function porDefecto() { return { orden: ORDEN_DEFECTO.slice(), anchos: {}, fijas: [], ocultas: [], densidad: "normal" }; }
         function leer() {
             try {
                 var e = JSON.parse(localStorage.getItem(clave) || "null");
@@ -85,10 +89,14 @@ var GcTabla = (function () {
                 ORDEN_DEFECTO.forEach(function (f) { if (e.orden.indexOf(f) < 0) e.orden.push(f); });
                 e.fijas = (e.fijas || []).filter(function (f) { return COLUMNAS[f]; });
                 e.anchos = e.anchos || {};
+                e.ocultas = (e.ocultas || []).filter(function (f) { return COLUMNAS[f] && f !== "Acciones"; });
+                if (ocultables().every(function (f) { return e.ocultas.indexOf(f) >= 0; })) e.ocultas = [];
                 if (DENSIDADES.indexOf(e.densidad) < 0) e.densidad = "normal";
                 return e;
             } catch (x) { return porDefecto(); }
         }
+        // Columnas que el usuario puede ocultar (todas menos "Acciones").
+        function ocultables() { return ORDEN_DEFECTO.filter(function (f) { return f !== "Acciones"; }); }
         function guardar() { try { localStorage.setItem(clave, JSON.stringify(estado)); } catch (x) { } }
         var estado = leer();
 
@@ -133,6 +141,7 @@ var GcTabla = (function () {
                     def.frozen = estado.fijas.indexOf(campo) >= 0;
                 }
                 if (estado.anchos[campo]) def.width = estado.anchos[campo];
+                def.visible = estado.ocultas.indexOf(campo) < 0;
                 return def;
             });
         }
@@ -197,6 +206,33 @@ var GcTabla = (function () {
         });
         tabla.on("dataLoaded", function (filas) { if (op.alCargar) op.alCargar(filas); });
 
+        // ── Menú "Columnas": mostrar u ocultar, guardado por usuario ──
+        var $menu = $("#" + id + "-menu-columnas");
+        function pintarMenu() {
+            var visibles = ocultables().filter(function (f) { return estado.ocultas.indexOf(f) < 0; });
+            var html = '<h6 class="dropdown-header px-1">Columnas visibles</h6>';
+            ocultables().forEach(function (f) {
+                var marcada = estado.ocultas.indexOf(f) < 0;
+                var unica = marcada && visibles.length === 1; // siempre queda al menos una
+                html += '<div class="custom-control custom-checkbox py-1 px-4">' +
+                    '<input type="checkbox" class="custom-control-input" id="' + id + '-col-' + f + '" data-campo="' + f + '"' +
+                    (marcada ? ' checked' : '') + (unica ? ' disabled title="Debe quedar al menos una columna"' : '') + '>' +
+                    '<label class="custom-control-label text-nowrap" for="' + id + '-col-' + f + '">' + COLUMNAS[f].title + '</label></div>';
+            });
+            $menu.html(html);
+        }
+        $menu.on("click", function (e) { e.stopPropagation(); });  // que el menú no se cierre al marcar
+        $menu.on("change", "input[data-campo]", function () {
+            var f = $(this).data("campo");
+            var i = estado.ocultas.indexOf(f);
+            if (this.checked) { if (i >= 0) estado.ocultas.splice(i, 1); tabla.showColumn(f); }
+            else { if (i < 0) estado.ocultas.push(f); tabla.hideColumn(f); }
+            guardar();
+            pintarMenu();
+            tabla.redraw();
+        });
+        pintarMenu();
+
         // ── Buscador + filtros de la pantalla ──
         function filtrar() {
             var q = ($buscar.val() || "").toString().trim().toLowerCase();
@@ -235,6 +271,7 @@ var GcTabla = (function () {
             estado = porDefecto();
             aplicarDensidad(estado.densidad);
             tabla.setColumns(columnas());
+            pintarMenu();
             tabla.redraw(true);
         });
 
