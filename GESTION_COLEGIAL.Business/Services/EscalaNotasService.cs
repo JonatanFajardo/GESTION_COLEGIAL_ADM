@@ -49,6 +49,15 @@ namespace GESTION_COLEGIAL.Business.Services
             return await ApiRequests.GetSingleAsync<EscalaNotaViewModel>(url);
         }
 
+        /// <summary>Ranking de alumnos que llegan al umbral de honor para un año (filtros opcionales).</summary>
+        public async Task<IEnumerable<CuadroHonorAlumnoViewModel>> CuadroHonor(int anio, int? nivId, int? secId)
+        {
+            string url = $"EscalaNotas/CuadroHonorAsync?anio={anio}";
+            if (nivId.HasValue && nivId.Value > 0) url += $"&nivId={nivId.Value}";
+            if (secId.HasValue && secId.Value > 0) url += $"&secId={secId.Value}";
+            return await ApiRequests.ListAsync<CuadroHonorAlumnoViewModel>(url);
+        }
+
         public async Task<CuadroHonorConfigViewModel> ConfigGet()
         {
             return await ApiRequests.GetSingleAsync<CuadroHonorConfigViewModel>("EscalaNotas/ConfigAsync");
