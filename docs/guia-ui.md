@@ -167,7 +167,7 @@ GcTabla.crear({
     ]
 });
 ```
-Opcionales: `buscador` (usar un buscador existente), `filtroExtra(fila)` (filtros propios),
+Opcionales: `agrupar` (opciones de "Agrupar por": `[{ campos: ["Grado", "Seccion"], texto: "Grado → Sección" }]`, usa el `groupBy` de Tabulator), `buscador` (usar un buscador existente), `filtroExtra(fila)` (filtros propios),
 `alCargar(filas)` (contadores, llenar combos), `filasPorPagina`. La barra (densidad, recargar, PDF,
 Excel, restablecer y la de seleccionados) la arma GcTabla. Para valores calculados que se busquen
 o exporten (edad, estado en texto) usar `mutator` en la columna, no solo `formatter`.

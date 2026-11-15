@@ -11,6 +11,11 @@ $(function () {
         url: "/Pagos/ListAsync",
         archivo: "pagos",
         tituloPdf: "Pagos del mes",
+        agrupar: [
+            { campos: ["FormaPago"], texto: "Forma de pago" },
+            { campos: ["Usuario"], texto: "Usuario que cobró" },
+            { campos: ["Fecha"], texto: "Fecha" }
+        ],
         buscarEn: ["Fila", "Fecha", "Alumno", "Encargado", "FormaPago", "MontoTotal", "Usuario"],
         columnas: [
             { title: "No. Recibo", field: "Fila", width: 120 },

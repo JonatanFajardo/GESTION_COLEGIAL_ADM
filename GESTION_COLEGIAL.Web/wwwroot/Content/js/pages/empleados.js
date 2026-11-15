@@ -18,6 +18,11 @@ var Empleados = (function () {
                 url: Direction.urlList,
                 archivo: "empleados",
                 tituloPdf: "Listado de empleados",
+                agrupar: [
+                    { campos: ["Car_Descripcion"], texto: "Cargo" },
+                    { campos: ["Tit_Descripcion"], texto: "Título" },
+                    { campos: ["Estado"], texto: "Estado" }
+                ],
                 filasPorPagina: 25,
                 buscador: "#custom-table-search",
                 buscarEn: ["Emp_Codigo", "Emp_Nombre", "Estado", "Tit_Descripcion", "Car_Descripcion"],

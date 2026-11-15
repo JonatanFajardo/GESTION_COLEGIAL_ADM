@@ -17,6 +17,10 @@ var Encargados = (function () {
                 url: Direction.urlList,
                 archivo: "encargados",
                 tituloPdf: "Listado de encargados",
+                agrupar: [
+                    { campos: ["Estado"], texto: "Estado" },
+                    { campos: ["Enc_Ocupacion"], texto: "Ocupación" }
+                ],
                 filasPorPagina: 25,
                 buscador: "#custom-table-search",
                 buscarEn: ["Enc_Id", "Per_Identidad", "Enc_Nombre", "Per_Telefono", "Enc_Ocupacion", "Estado"],

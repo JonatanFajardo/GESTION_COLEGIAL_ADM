@@ -941,3 +941,10 @@ html.gc-dark .alert-light-success { background-color: rgba(26, 188, 156, 0.12); 
 html.gc-dark .gc-tabla-columnas { background-color: #1e293b; border-color: #334155; }
 html.gc-dark .gc-tabla-columnas .dropdown-header,
 html.gc-dark .gc-tabla-columnas .custom-control-label { color: #cbd5e1; }
+html.gc-dark .tabulator-row.tabulator-group { background-color: #0f172a; color: #e2e8f0; border-color: #334155; }
+html.gc-dark .tabulator-row.tabulator-group:hover { background-color: #1e293b; }
+html.gc-dark .tabulator-row.tabulator-group span { color: #94a3b8; }
+html.gc-dark .tabulator-row.tabulator-group .tabulator-arrow { border-left-color: #cbd5e1; }
+html.gc-dark .tabulator-row.tabulator-group.tabulator-group-visible .tabulator-arrow { border-top-color: #cbd5e1; border-left-color: transparent; }
+html.gc-dark .tabulator .tabulator-header .tabulator-col.tabulator-sortable.tabulator-col-sorter-element:hover,
+html.gc-dark .tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover { background-color: #273449; color: #e2e8f0; }

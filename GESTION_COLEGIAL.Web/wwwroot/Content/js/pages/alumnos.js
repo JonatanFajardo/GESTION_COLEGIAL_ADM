@@ -250,6 +250,11 @@ var datatableAlumnos = (function () {
                 url: DirectionUrls.urlList,
                 archivo: "alumnos",
                 tituloPdf: "Listado de alumnos",
+                agrupar: [
+                    { campos: ["Cno_Descripcion"], texto: "Grado" },
+                    { campos: ["Cno_Descripcion", "Sec_Descripcion"], texto: "Grado → Sección" },
+                    { campos: ["Est_Descripcion"], texto: "Estado" }
+                ],
                 buscarEn: ["Alu_Nombre", "Per_Identidad", "Edad", "Cno_Descripcion", "Sec_Descripcion", "Est_Descripcion"],
                 columnas: [
                     { title: "Alumno", field: "Alu_Nombre", minWidth: 190,

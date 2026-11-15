@@ -16,7 +16,8 @@
  *       tituloPdf: "Listado de empleados",
  *       buscador: "#mi-input",               // opcional: usar un buscador que ya existe
  *       filtroExtra: function (fila) {},     // opcional: filtros propios de la pantalla
- *       alCargar: function (filas) {}        // opcional: después de cada carga de datos
+ *       alCargar: function (filas) {},       // opcional: después de cada carga de datos
+ *       agrupar: [{ campos: ["Grado"], texto: "Grado" }] // opcional: opciones de "Agrupar por"
  *   });
  *   t.filtrar();   // vuelve a aplicar buscador + filtroExtra
  *   t.recargar();  // pide los datos otra vez
@@ -31,6 +32,7 @@ var GcTabla = (function () {
     var IDIOMA = {
         es: {
             data: { loading: "Cargando…", error: "No se pudo cargar la información" },
+            groups: { item: "registro", items: "registros" },
             pagination: {
                 page_size: "Filas", page_title: "Mostrar página", first: "Primero", first_title: "Primera página",
                 last: "Último", last_title: "Última página", prev: "Anterior", prev_title: "Página anterior",
@@ -40,7 +42,7 @@ var GcTabla = (function () {
         }
     };
 
-    function barraHtml(id, conBuscador) {
+    function barraHtml(id, conBuscador, agrupar) {
         return '' +
             '<div class="d-flex flex-wrap align-items-center justify-content-between mb-2 gc-tabla-barra">' +
             (conBuscador ? '<input type="search" id="' + id + '-buscar" class="form-control form-control-sm w-auto mb-2 mr-2" placeholder="Buscar…" aria-label="Buscar en la tabla" />' : '<span></span>') +
@@ -49,6 +51,12 @@ var GcTabla = (function () {
             '    <select id="' + id + '-densidad" class="custom-select custom-select-sm w-auto mr-3">' +
             '      <option value="comoda">Cómoda</option><option value="normal">Normal</option><option value="compacta">Compacta</option>' +
             '    </select>' +
+            (agrupar && agrupar.length ?
+            '    <label for="' + id + '-agrupar" class="mb-0 mr-2 text-muted small">Agrupar por</label>' +
+            '    <select id="' + id + '-agrupar" class="custom-select custom-select-sm w-auto mr-3">' +
+            '      <option value="">Sin agrupar</option>' +
+            agrupar.map(function (a) { return '<option value="' + a.campos.join(">") + '">' + a.texto + '</option>'; }).join("") +
+            '    </select>' : '') +
             '    <div class="dropdown mr-1">' +
             '      <button type="button" id="' + id + '-columnas" class="btn btn-outline-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-layout-three-columns mr-1"></i>Columnas</button>' +
             '      <div id="' + id + '-menu-columnas" class="dropdown-menu dropdown-menu-right p-2 gc-tabla-columnas" aria-labelledby="' + id + '-columnas"></div>' +
@@ -75,12 +83,14 @@ var GcTabla = (function () {
         op.columnas.forEach(function (c) { COLUMNAS[c.field] = c; ORDEN_DEFECTO.push(c.field); });
         var camposBusqueda = op.buscarEn || ORDEN_DEFECTO;
 
-        $tabla.addClass("gc-tabla").before(barraHtml(id, !op.buscador));
+        // Opciones de agrupación: [{ campos: ["Campo"] o ["Campo1","Campo2"], texto: "…" }]
+        var AGRUPAR = (op.agrupar || []).map(function (a) { return { campos: [].concat(a.campos || a.campo), texto: a.texto }; });
+        $tabla.addClass("gc-tabla").before(barraHtml(id, !op.buscador, AGRUPAR));
         var $buscar = $(op.buscador || ("#" + id + "-buscar"));
         var $densidad = $("#" + id + "-densidad");
 
         // ── Estado guardado ──
-        function porDefecto() { return { orden: ORDEN_DEFECTO.slice(), anchos: {}, fijas: [], ocultas: [], densidad: "normal" }; }
+        function porDefecto() { return { orden: ORDEN_DEFECTO.slice(), anchos: {}, fijas: [], ocultas: [], agrupar: "", densidad: "normal" }; }
         function leer() {
             try {
                 var e = JSON.parse(localStorage.getItem(clave) || "null");
@@ -92,9 +102,18 @@ var GcTabla = (function () {
                 e.ocultas = (e.ocultas || []).filter(function (f) { return COLUMNAS[f] && f !== "Acciones"; });
                 if (ocultables().every(function (f) { return e.ocultas.indexOf(f) >= 0; })) e.ocultas = [];
                 if (DENSIDADES.indexOf(e.densidad) < 0) e.densidad = "normal";
+                if (!camposAgrupar(e.agrupar)) e.agrupar = "";
                 return e;
             } catch (x) { return porDefecto(); }
         }
+        // Agrupación elegida → campos para groupBy de Tabulator (o false si no hay).
+        function camposAgrupar(valor) {
+            var a = AGRUPAR.filter(function (x) { return x.campos.join(">") === valor; })[0];
+            return a ? a.campos : false;
+        }
+        // Al agrupar se muestran todas las filas en una página, para que los grupos no se partan.
+        function tamPagina() { return camposAgrupar(estado.agrupar) ? true : (op.filasPorPagina || 20); }
+
         // Columnas que el usuario puede ocultar (todas menos "Acciones").
         function ocultables() { return ORDEN_DEFECTO.filter(function (f) { return f !== "Acciones"; }); }
         function guardar() { try { localStorage.setItem(clave, JSON.stringify(estado)); } catch (x) { } }
@@ -180,8 +199,11 @@ var GcTabla = (function () {
                 width: 44, minWidth: 44, download: false
             },
             columns: columnas(),
+            groupBy: camposAgrupar(estado.agrupar),
+            groupStartOpen: true,
+            groupToggleElement: "header",
             pagination: true,
-            paginationSize: op.filasPorPagina || 20,
+            paginationSize: tamPagina(),
             paginationSizeSelector: [10, 20, 50, 100, true],
             paginationCounter: "rows",
             placeholder: op.vacio || "Ningún dato disponible en esta tabla",
@@ -254,6 +276,14 @@ var GcTabla = (function () {
             if (tipo === "xlsx") tabla.download("xlsx", archivo + ".xlsx", { sheetName: op.tituloPdf || op.nombre }, rango);
             else tabla.download("pdf", archivo + ".pdf", { orientation: "landscape", title: op.tituloPdf || "" }, rango);
         }
+        var $agrupar = $("#" + id + "-agrupar");
+        $agrupar.val(estado.agrupar);
+        $agrupar.on("change", function () {
+            estado.agrupar = $(this).val();
+            guardar();
+            tabla.setGroupBy(camposAgrupar(estado.agrupar));
+            tabla.setPageSize(tamPagina());
+        });
         $densidad.on("change", function () {
             estado.densidad = $(this).val();
             aplicarDensidad(estado.densidad);
@@ -271,6 +301,9 @@ var GcTabla = (function () {
             estado = porDefecto();
             aplicarDensidad(estado.densidad);
             tabla.setColumns(columnas());
+            $agrupar.val("");
+            tabla.setGroupBy(false);
+            tabla.setPageSize(tamPagina());
             pintarMenu();
             tabla.redraw(true);
         });
