@@ -49,7 +49,7 @@ var CuadroHonor = (function () {
             '<td class="no-print"><input type="checkbox" class="chk-alu" value="' + a.Alu_Id + '"></td>' +
             '<td class="ch-pos">' + medalla + pos + '</td>' +
             '<td><strong>' + esc(a.Alu_NombreCompleto) + '</strong></td>' +
-            '<td class="text-center"><span class="badge badge-primary" style="font-size:.85rem">' + prom(a.Promedio) + '</span></td>' +
+            '<td class="text-center"><span class="badge badge-primary ch-prom">' + prom(a.Promedio) + '</span></td>' +
             '<td>' + esc(a.Concepto || "") + '</td>' +
             '<td class="text-muted">' + ubic(a) + '</td>' +
             '</tr>';

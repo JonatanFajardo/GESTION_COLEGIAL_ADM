@@ -7,10 +7,7 @@
 }
 
 @section Styles{
-    <style>
-        .ch-pos { font-weight:700; color:#64748b; width:46px; }
-        .ch-medal { font-size:1.1rem; }
-    </style>
+    <link href="~/Content/css/pages/cuadro-honor.css" rel="stylesheet" />
 }
 
 <div class="breadcrumb-wrapper-content">
@@ -64,14 +61,14 @@
         </div>
         <div class="widget-content widget-content-area">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover mb-0 ch-tabla">
                     <thead>
                         <tr>
-                            <th class="no-print" style="width:40px"><input type="checkbox" class="chk-all" data-tier="superior" /></th>
-                            <th style="width:46px">#</th>
+                            <th class="no-print ch-col-chk"><input type="checkbox" class="chk-all" data-tier="superior" /></th>
+                            <th class="ch-col-pos">#</th>
                             <th>Alumno</th>
-                            <th class="text-center" style="width:100px">Promedio</th>
-                            <th style="width:120px">Concepto</th>
+                            <th class="text-center ch-col-prom">Promedio</th>
+                            <th class="ch-col-concepto">Concepto</th>
                             <th>Nivel · Curso · Sección</th>
                         </tr>
                     </thead>
@@ -88,14 +85,14 @@
         </div>
         <div class="widget-content widget-content-area">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover mb-0 ch-tabla">
                     <thead>
                         <tr>
-                            <th class="no-print" style="width:40px"><input type="checkbox" class="chk-all" data-tier="honor" /></th>
-                            <th style="width:46px">#</th>
+                            <th class="no-print ch-col-chk"><input type="checkbox" class="chk-all" data-tier="honor" /></th>
+                            <th class="ch-col-pos">#</th>
                             <th>Alumno</th>
-                            <th class="text-center" style="width:100px">Promedio</th>
-                            <th style="width:120px">Concepto</th>
+                            <th class="text-center ch-col-prom">Promedio</th>
+                            <th class="ch-col-concepto">Concepto</th>
                             <th>Nivel · Curso · Sección</th>
                         </tr>
                     </thead>
@@ -107,7 +104,7 @@
 
     <div id="estado-vacio" class="statbox widget box box-shadow mb-4" hidden>
         <div class="widget-content widget-content-area text-center text-muted py-5">
-            <i class="bi bi-award" style="font-size:2rem;"></i>
+            <i class="bi bi-award ch-vacio-icon"></i>
             <p class="mt-2 mb-0">Ningún alumno llega al umbral de honor con estos filtros.</p>
         </div>
     </div>
