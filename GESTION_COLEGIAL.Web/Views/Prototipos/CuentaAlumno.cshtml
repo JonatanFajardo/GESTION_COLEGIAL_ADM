@@ -1,0 +1,154 @@
+@{
+    ViewBag.Title = "Cuenta del alumno (prototipo)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Reemplaza"] = "mejora el Estado de cuenta actual (mismos datos + acciones nuevas).";
+    ViewData["Falta"] = "API y tablas para anular pagos, devoluciones, perdón de cargos y saldo a favor, cada una con motivo y registro de quién lo hizo.";
+}
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Caja</li>
+            <li class="breadcrumb-item"><a href="@Url.Action("CuentasPorCobrar")">Cuentas por cobrar</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cuenta del alumno</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Cuenta del alumno</h4>
+        <p class="text-muted mb-0">Todo lo que se le cargó, lo que pagó y las correcciones, en un solo lugar.</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <button type="button" class="btn btn-outline-primary mr-2" data-accion="devolver"><i class="bi bi-arrow-counterclockwise mr-1"></i> Devolver dinero</button>
+        <button type="button" class="btn btn-outline-primary mr-2" data-accion="saldo"><i class="bi bi-piggy-bank mr-1"></i> Usar saldo a favor</button>
+        <a href="#" id="btn-cobrar" class="btn btn-primary"><i class="bi bi-cash-coin mr-1"></i> Cobrar</a>
+    </div>
+</div>
+
+<partial name="_Aviso" />
+
+<div class="statbox widget box box-shadow mb-4">
+    <div class="widget-content widget-content-area">
+        <div class="form-row align-items-end">
+            <div class="col-md-6 mb-2">
+                <label for="f-alumno">Alumno (nombre o identidad)</label>
+                <input type="text" id="f-alumno" class="form-control" list="lista-alumnos" placeholder="Escribí para buscar…" autocomplete="off" />
+                <datalist id="lista-alumnos"></datalist>
+            </div>
+            <div class="col-md-6 mb-2">
+                <div id="info-alumno" class="text-muted">Cargando…</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four"><div class="widget-content"><div class="w-content">
+            <div class="w-info"><h6 class="value" id="k-cargado">—</h6><p>Total cargado</p></div>
+            <div><div class="w-icon"><i class="bi bi-receipt"></i></div></div>
+        </div></div></div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four"><div class="widget-content"><div class="w-content">
+            <div class="w-info"><h6 class="value text-success" id="k-pagado">—</h6><p>Pagado</p></div>
+            <div><div class="w-icon"><i class="bi bi-cash-stack"></i></div></div>
+        </div></div></div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four"><div class="widget-content"><div class="w-content">
+            <div class="w-info"><h6 class="value text-danger" id="k-pendiente">—</h6><p>Pendiente</p></div>
+            <div><div class="w-icon"><i class="bi bi-hourglass-split"></i></div></div>
+        </div></div></div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four"><div class="widget-content"><div class="w-content">
+            <div class="w-info"><h6 class="value text-info" id="k-favor">L 0.00</h6><p>Saldo a favor <span class="badge badge-warning ml-1">nuevo</span></p></div>
+            <div><div class="w-icon"><i class="bi bi-piggy-bank"></i></div></div>
+        </div></div></div>
+    </div>
+</div>
+
+<div class="statbox widget box box-shadow mb-4">
+    <div class="widget-content widget-content-area">
+        <ul class="nav nav-tabs mb-3" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-cargos" role="tab">Cargos pendientes <span class="badge badge-primary ml-1" id="n-cargos">0</span></a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-pagos" role="tab">Pagos <span class="badge badge-primary ml-1" id="n-pagos">0</span></a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-correcciones" role="tab">Correcciones <span class="badge badge-warning ml-1">nuevo</span></a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tab-cargos" role="tabpanel">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead><tr><th>Concepto</th><th>Vence</th><th class="text-right">Original</th><th class="text-right">Descuento</th><th class="text-right">Mora</th><th class="text-right">Total</th><th>Estado</th><th class="text-center">Acciones</th></tr></thead>
+                        <tbody id="tb-cargos"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-pagos" role="tabpanel">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead><tr><th>Fecha</th><th>Referencia</th><th>Forma de pago</th><th>Nota</th><th>Cajero</th><th class="text-right">Monto</th><th class="text-center">Acciones</th></tr></thead>
+                        <tbody id="tb-pagos"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-correcciones" role="tabpanel">
+                <p class="text-muted mb-2">Aquí quedará el registro de cada corrección: qué se hizo, por cuánto, el motivo, quién y cuándo. Nada se borra: un pago anulado queda visible y tachado.</p>
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Motivo</th><th>Usuario</th><th class="text-right">Monto</th></tr></thead>
+                        <tbody>
+                            <tr class="text-muted"><td>—</td><td><span class="badge badge-danger">Pago anulado</span></td><td>Ejemplo: recibo REF-0001</td><td>Se registró dos veces</td><td>cajero</td><td class="text-right">L 850.00</td></tr>
+                            <tr class="text-muted"><td>—</td><td><span class="badge badge-info">Cargo perdonado</span></td><td>Ejemplo: mora de marzo</td><td>Beca parcial aprobada</td><td>director</td><td class="text-right">L 150.00</td></tr>
+                            <tr class="text-muted"><td>—</td><td><span class="badge badge-warning">Devolución</span></td><td>Ejemplo: efectivo</td><td>Pagó de más</td><td>cajero</td><td class="text-right">L 200.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Ventana única para las acciones nuevas; el contenido cambia según la acción. *@
+<div class="modal fade" id="modal-accion" tabindex="-1" role="dialog" aria-labelledby="modal-accion-titulo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-accion-titulo">Acción</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-accion-texto" class="text-muted"></p>
+                <div id="campo-monto" class="form-group">
+                    <label for="m-monto">Monto (L)</label>
+                    <input type="number" step="0.01" min="0" id="m-monto" class="form-control" />
+                </div>
+                <div id="campo-metodo" class="form-group">
+                    <label for="m-metodo">Cómo se devuelve</label>
+                    <select id="m-metodo" class="custom-select"><option>Efectivo</option><option>Transferencia</option><option>Cheque</option></select>
+                </div>
+                <div id="campo-tipo" class="form-group">
+                    <label for="m-tipo">Tipo</label>
+                    <select id="m-tipo" class="custom-select"><option>Exoneración</option><option>Beca</option><option>Ajuste</option></select>
+                </div>
+                <div class="form-group mb-0">
+                    <label for="m-motivo">Motivo <span class="text-danger">*</span></label>
+                    <textarea id="m-motivo" class="form-control" rows="2" placeholder="Obligatorio: queda en el registro de correcciones"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="m-guardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>window.PROTO_ALUMNO_ID = @((int)ViewBag.AlumnoId);</script>
+    <script src="~/Content/js/pages/prototipo-comun.js" asp-append-version="true"></script>
+    <script src="~/Content/js/pages/prototipo-cuenta-alumno.js" asp-append-version="true"></script>
+}

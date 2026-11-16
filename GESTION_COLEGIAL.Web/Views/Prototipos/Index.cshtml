@@ -1,0 +1,53 @@
+@{
+    ViewBag.Title = "Prototipos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Prototipos</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Prototipos</h4>
+        <p class="text-muted mb-0">Pantallas de muestra para revisar antes de construirlas. No guardan nada.</p>
+    </div>
+</div>
+
+<h5 class="mb-3">Caja: de 7 pantallas a 3</h5>
+<div class="row">
+    <div class="col-lg-4 col-md-6 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-content widget-content-area h-100 d-flex flex-column">
+                <h5><i class="bi bi-wallet2 text-primary mr-2"></i>Cuentas por cobrar</h5>
+                <p class="text-muted">Una sola lista con filtro Pendientes / Vencidas / Pagadas / Todas, antigüedad de la deuda y clic para abrir la cuenta del alumno.</p>
+                <p class="small mb-3"><strong>Reemplaza:</strong> Cuentas por cobrar, Deudores, Morosos, Cargos pendientes y Moratorias.</p>
+                <a href="@Url.Action("CuentasPorCobrar")" class="btn btn-primary mt-auto">Ver prototipo</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-content widget-content-area h-100 d-flex flex-column">
+                <h5><i class="bi bi-cash-stack text-primary mr-2"></i>Movimientos de caja</h5>
+                <p class="text-muted">Los cobros de un día o de un rango de fechas, con totales por forma de pago y cajero.</p>
+                <p class="small mb-3"><strong>Reemplaza:</strong> Lista del día e Histórico de pagos.</p>
+                <a href="@Url.Action("MovimientosCaja")" class="btn btn-primary mt-auto">Ver prototipo</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-content widget-content-area h-100 d-flex flex-column">
+                <h5><i class="bi bi-person-vcard text-primary mr-2"></i>Cuenta del alumno</h5>
+                <p class="text-muted">Estado de cuenta con acciones nuevas: anular un pago, devolver dinero, perdonar parte de un cargo y saldo a favor.</p>
+                <p class="small mb-3"><strong>Mejora:</strong> Estado de cuenta.</p>
+                <a href="@Url.Action("CuentaAlumno")" class="btn btn-primary mt-auto">Ver prototipo</a>
+            </div>
+        </div>
+    </div>
+</div>
