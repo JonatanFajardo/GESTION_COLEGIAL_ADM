@@ -337,6 +337,7 @@ var NuevoPago = (function () {
             numeroReferencia: $("#numero-referencia").val(),
             observaciones: $("#observaciones").val(),
             conceptos: selectedConceptos,
+            cuentasCobrarIds: selectedConceptos.map(function (c) { return c.CuentaCobrarId; }).filter(Boolean),
             descuentoId: $("#descuento-select").val(),
             justificacionDescuento: $("#descuento-justificacion").val()
         };

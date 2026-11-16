@@ -1,75 +1,94 @@
 @{
-    ViewBag.Title = "Registro de Pagos";
+    ViewBag.Title = "Movimientos de caja";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string periodo = ViewBag.Periodo as string ?? "hoy";
+    Func<string, string> clasePeriodo = p => p == periodo ? "btn btn-primary" : "btn btn-outline-primary";
 }
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="#">Financiero</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Pagos</li>
+            <li class="breadcrumb-item">Caja</li>
+            <li class="breadcrumb-item active" aria-current="page">Movimientos de caja</li>
         </ol>
     </nav>
 </div>
 
 <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
     <div class="mr-3">
-        <h4 class="mb-1">Registro de pagos</h4>
-        <p class="text-muted mb-0">Pagos registrados durante el mes actual (@ViewBag.MesActual)</p>
+        <h4 class="mb-1">Movimientos de caja</h4>
+        <p class="text-muted mb-0">Los cobros de hoy o de cualquier rango de fechas, con totales por forma de pago y por cajero.</p>
     </div>
-    <div class="mt-2 mt-md-0">
-        <a href="@Url.Action("HistoricoPagos", "CuentasCobrar")" class="btn btn-outline-primary mr-2"><i class="bi bi-clock-history mr-1"></i> Ver histórico completo</a>
-        @if (ViewBag.PuedeCrear == true)
-        {
-            <a href="@Url.Action("NuevoPago", "Pagos")" class="btn btn-success"><i class="bi bi-cash-coin mr-1"></i> Nuevo pago</a>
-        }
+    @if (ViewBag.PuedeCrear == true)
+    {
+        <div class="mt-2 mt-md-0">
+            <a href="@Url.Action("NuevoPago", "Pagos")" class="btn btn-primary"><i class="bi bi-cash-coin mr-1"></i> Nuevo pago</a>
+        </div>
+    }
+</div>
+
+<div class="statbox widget box box-shadow mb-4">
+    <div class="widget-content widget-content-area">
+        <div class="form-row align-items-end">
+            <div class="col-auto mb-2">
+                <div class="btn-group flex-wrap" role="group" aria-label="Período" id="f-rapido" data-periodo="@periodo">
+                    <button type="button" class="@clasePeriodo("hoy")" data-r="hoy">Hoy</button>
+                    <button type="button" class="@clasePeriodo("semana")" data-r="semana">Esta semana</button>
+                    <button type="button" class="@clasePeriodo("mes")" data-r="mes">Este mes</button>
+                    <button type="button" class="@clasePeriodo("anio")" data-r="anio">Este año</button>
+                </div>
+            </div>
+            <div class="col-md-2 col-6 mb-2">
+                <label for="f-desde">Desde</label>
+                <input type="date" id="f-desde" class="form-control" />
+            </div>
+            <div class="col-md-2 col-6 mb-2">
+                <label for="f-hasta">Hasta</label>
+                <input type="date" id="f-hasta" class="form-control" />
+            </div>
+            <div class="col-md-2 mb-2">
+                <button type="button" class="btn btn-outline-primary w-100" id="btn-ver"><i class="bi bi-search mr-1"></i> Ver rango</button>
+            </div>
+        </div>
     </div>
 </div>
 
-@* TODO: poblar "Ingresos del Día" y "Pagos Registrados Hoy" desde un endpoint de resumen diario (ningún JS las llena hoy) *@
 <div class="row">
-    <div class="col-md-6 col-12 layout-spacing">
-        <div class="widget widget-card-four">
-            <div class="widget-content">
-                <div class="w-content">
-                    <div class="w-info">
-                        <h6 class="value text-success" id="ingresos-dia">L 0.00</h6>
-                        <p>Ingresos del día</p>
-                    </div>
-                    <div><div class="w-icon"><i class="bi bi-cash-stack"></i></div></div>
-                </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four h-100"><div class="widget-content">
+            <div class="w-content">
+                <div class="w-info"><h6 class="value text-success" id="k-total">—</h6><p>Total cobrado</p></div>
+                <div><div class="w-icon"><i class="bi bi-cash-stack"></i></div></div>
             </div>
-        </div>
+            <p class="text-muted small mb-0 mt-2" id="k-total-nota">Sin contar pagos anulados</p>
+        </div></div>
     </div>
-    <div class="col-md-6 col-12 layout-spacing">
-        <div class="widget widget-card-four">
-            <div class="widget-content">
-                <div class="w-content">
-                    <div class="w-info">
-                        <h6 class="value text-info" id="pagos-hoy">0</h6>
-                        <p>Pagos registrados hoy</p>
-                    </div>
-                    <div><div class="w-icon"><i class="bi bi-receipt"></i></div></div>
-                </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four h-100"><div class="widget-content">
+            <div class="w-content">
+                <div class="w-info"><h6 class="value" id="k-recibos">—</h6><p>Recibos</p></div>
+                <div><div class="w-icon"><i class="bi bi-receipt"></i></div></div>
             </div>
-        </div>
+            <p class="text-muted small mb-0 mt-2" id="k-anulados">Ninguno anulado</p>
+        </div></div>
+    </div>
+    <div class="col-xl-6 col-12 layout-spacing">
+        <div class="widget widget-card-four h-100"><div class="widget-content">
+            <p class="mb-2 font-weight-bold">Por forma de pago</p>
+            <div id="k-formas" class="d-flex flex-wrap"><span class="text-muted small">—</span></div>
+        </div></div>
     </div>
 </div>
 
 <div class="statbox widget box box-shadow mb-4">
-    <div class="widget-header">
-        <div class="row">
-            <div class="col-12">
-                <h4>Pagos de @ViewBag.MesActual</h4>
-            </div>
-        </div>
-    </div>
+    <div class="widget-header"><div class="row"><div class="col-12"><h4 id="titulo-rango">Cobros</h4></div></div></div>
     <div class="widget-content widget-content-area">
-        <div id="tabla-pagos" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
+        <div id="tabla-mov" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
     </div>
 </div>
 
 @section Scripts{
     <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/caja-comun.js" asp-append-version="true"></script>
     <script src="~/Content/js/pages/pagos.js" asp-append-version="true"></script>
 }

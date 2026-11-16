@@ -107,6 +107,14 @@ Dos "Estado de cuenta" del alumno hacían lo mismo. Se dejó **`CuentasCobrar/Es
 - [ ] Luego: comentar globalmente el `<li>` de `EstadoCuentaAdm` y retirar `estadocuentaadm.js` / vista.
 - [ ] Opcional: cargar nombre real del instituto en el membrete de impresión (hoy es texto fijo "Instituto San Francisco"; `EstadoCuentaAdm` lo traía de `InstitutoConfig/GetAsync`).
 
+### Caja: de 7 pantallas a 3 (2026-11-15)
+**Cuentas por cobrar** (`CuentasCobrar/Index`, filtro Pendientes/Vencidas/Pagadas/Todas + antigüedad + mora), **Movimientos de caja** (`Pagos/Index`, hoy/semana/mes/año o rango; anulados tachados y fuera de los totales) y **Cuenta del alumno** (`CuentasCobrar/EstadoCuenta`, con anular pago, perdonar cargo, devolver dinero y usar saldo a favor; permiso "Corregir cuentas").
+Retiradas (la ruta vieja redirige): Deudores, Cargos pendientes, Intereses por mora y Morosos → Cuentas por cobrar (`?estado=`); Historial de pagos y Pagos del día → Movimientos de caja. "Aplicar descuento" del estado de cuenta lo reemplaza "Perdonar".
+- [ ] Director (1002) tiene "Corregir cuentas" pero no "Listado de cuentas por cobrar": no puede abrir la Cuenta del alumno. Decidir si se le concede.
+- [ ] La API fecha los pagos y correcciones con el reloj del contenedor (UTC): un cobro de la noche cae en el día siguiente y no aparece en "Hoy".
+- [ ] `ObtenerResumenFinancieroAsync` devuelve `totalPendiente = 0` con cargos vencidos; la pantalla calcula el pendiente con la lista de cargos.
+- [ ] Hub `Cartera` y `EstadoCuentaAdm` siguen duplicando parte de Cuentas por cobrar / Cuenta del alumno: decidir si se retiran.
+
 ### Vistas de deuda → consolidadas en hub `Cartera` (2026-09-19)
 El hub `Cartera` (`/Cartera`, permiso "Cartera", Pan 9068) reemplaza las vistas de deuda dispersas con pestañas: **Por Nivel** (drill Curso→Sección→Alumno), **Antigüedad de saldos**, **Top Deudores** y **Pendientes**. Todas se calculan en cliente desde `Cartera/PendientesAsync` (endpoint propio, no depende de permisos de las pantallas viejas). Botones por alumno: 📄 Estado de cuenta y 💵 Registrar pago (precarga por identidad). Además "Solicitar cobro" = correo simulado a encargados (no hay SMTP; ver [[feedback]]).
 

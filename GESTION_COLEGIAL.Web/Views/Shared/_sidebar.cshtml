@@ -94,9 +94,6 @@
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="DevNuevas" data-parent="#accordionExample">
-                    <li class="submenu-header text-warning">Prototipos</li>
-                    <li>@Html.ActionLink("Prototipos (mockups)", "Index", "Prototipos")</li>
-
                     <li class="submenu-header text-warning">Configuración</li>
                     @* Los 6 hubs de catálogos y parámetros se abren desde la puerta de entrada /configuracion. *@
                     <li>@Html.ActionLink("Panel de configuración",    "Index", "Configuracion")</li>
@@ -479,32 +476,23 @@
                         @if (tiene("Listado de estados de pago"))    { <li>@Html.ActionLink("Estados de Pago",   "Index", "EstadosPago")</li> }
                         @if (tiene("Listado de tarifas"))             { <li>@Html.ActionLink("Tarifas",           "Index", "Tarifas")</li> } *@
 
-                        @if (tiene("Listado de pagos"))
+                        @* Caja: 3 pantallas (Cuentas por cobrar, Movimientos de caja, Cuenta del alumno) + Nuevo pago y Cargos masivos.
+                           Deudores, Cargos pendientes, Intereses por mora, Morosos, Historial de pagos y Pagos del día
+                           se retiraron: sus rutas redirigen a Cuentas por cobrar o a Movimientos de caja. *@
+                        @if (tiene("Listado de pagos") || tiene("Listado de cuentas por cobrar"))
                         {
-                            <li class="submenu-header">Pagos</li>
-                            <li>@Html.ActionLink("Pagos",  "Index",     "Pagos")</li>
-                            <li>@Html.ActionLink("Registrar cobro",        "NuevoPago", "Pagos")</li>
-                            @* "Pagos del Dia" (Pagos/ListaDia) deshabilitado — duplicado de la pantalla "Pagos del Día" (PagosDelDia), superior. Ver auditoría §B9. Controller vivo por si se reactiva.
-                            <li>@Html.ActionLink("Pagos del Dia",     "ListaDia",  "Pagos")</li> *@
+                            <li class="submenu-header">Caja</li>
                         }
-                        @if (tiene("Listado de cuentas por cobrar"))
-                        {
-                            <li class="submenu-header">Cuentas por Cobrar</li>
-                            <li>@Html.ActionLink("Cuentas por cobrar",    "Index",            "CuentasCobrar")</li>
-                            <li>@Html.ActionLink("Estado de cuenta",      "EstadoCuenta",     "CuentasCobrar")</li>
-                            @* Cargos pendientes y Deudores: para el cajero se usan desde el hub de Cartera → se ocultan solo para ese rol (ver TODO.md) *@
-                            if (!esCajero) { <li>@Html.ActionLink("Cargos pendientes",     "CargosPendientes", "CuentasCobrar")</li> }
-                            <li>@Html.ActionLink("Generar mensualidades", "CargosMasivos",    "CuentasCobrar")</li>
-                            if (!esCajero) { <li>@Html.ActionLink("Deudores",             "Deudores",          "CuentasCobrar")</li> }
-                            <li>@Html.ActionLink("Intereses por mora",           "Moratorias",        "CuentasCobrar")</li>
-                            <li>@Html.ActionLink("Historial de pagos",   "HistoricoPagos",    "CuentasCobrar")</li>
-                        }
+                        @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cuentas por cobrar",  "Index",         "CuentasCobrar")</li> }
+                        @if (tiene("Listado de pagos"))              { <li>@Html.ActionLink("Movimientos de caja", "Index",         "Pagos")</li> }
+                        @if (tiene("Listado de pagos"))              { <li>@Html.ActionLink("Nuevo pago",          "NuevoPago",     "Pagos")</li> }
+                        @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cuenta del alumno",   "EstadoCuenta",  "CuentasCobrar")</li> }
+                        @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cargos masivos",      "CargosMasivos", "CuentasCobrar")</li> }
                         @if (tiene("Reportes financieros"))
                         {
                             <li class="submenu-header">Reportes</li>
                             <li>@Html.ActionLink("Ingresos del mes",     "IngresosMes",      "ReportesFinancieros")</li>
                             <li>@Html.ActionLink("Comparativa anual",    "ComparativaAnual", "ReportesFinancieros")</li>
-                            <li>@Html.ActionLink("Morosos",              "Morosos",          "ReportesFinancieros")</li>
                             <li>@Html.ActionLink("Proyección de cobros", "ProyeccionCobros", "ReportesFinancieros")</li>
                         }
                         @if (tiene("Pagos del Día") || tiene("Pendientes por Cobrar") || tiene("Historial de Transacciones") || tiene("Conciliación Rápida"))

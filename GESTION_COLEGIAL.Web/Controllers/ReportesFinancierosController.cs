@@ -23,12 +23,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
-        /// Acción para mostrar el reporte de morosos.
+        /// Antes: reporte de morosos. Ahora es el filtro "Vencidas" de Cuentas por cobrar.
         /// </summary>
-        public ActionResult Morosos()
-        {
-            return View();
-        }
+        public ActionResult Morosos() => RedirectToAction("Index", "CuentasCobrar", new { estado = "vencida" });
 
         /// <summary>
         /// Acción para mostrar el reporte de ingresos por mes.
