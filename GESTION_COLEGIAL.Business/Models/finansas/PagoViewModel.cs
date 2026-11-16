@@ -16,5 +16,7 @@ namespace GESTION_COLEGIAL.Business.Models
         public string NumeroReferencia { get; set; } = string.Empty;
         public string Observaciones { get; set; } = string.Empty;
         public int UsuarioId { get; set; }
+        /// <summary>Cargos que se están pagando: quedan pagados y el excedente pasa a saldo a favor.</summary>
+        public System.Collections.Generic.List<int> CuentasCobrarIds { get; set; } = new System.Collections.Generic.List<int>();
     }
 }

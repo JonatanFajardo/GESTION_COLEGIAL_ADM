@@ -140,18 +140,12 @@ namespace GESTION_COLEGIAL.Business.Services.ModuloFinanzas
         }
 
         /// <summary>
-        /// Aplica un descuento a una cuenta por cobrar.
+        /// Perdona (rebaja sin cobrar) parte o todo un cargo: exoneración, beca o ajuste.
+        /// Reemplaza al antiguo "aplicar descuento" desde el estado de cuenta.
         /// </summary>
-        /// <param name="cuentaCobrarId">El identificador de la cuenta por cobrar.</param>
-        /// <param name="descuentoId">El identificador del descuento a aplicar.</param>
-        /// <param name="monto">El monto del descuento.</param>
-        /// <param name="justificacion">La justificación del descuento.</param>
-        /// <returns>True si hubo error, False si fue exitoso.</returns>
-        public async Task<Boolean> AplicarDescuento(int cuentaCobrarId, int descuentoId, decimal monto, string justificacion)
+        public async Task<RespuestaApi> Perdonar(PerdonarCargoViewModel model)
         {
-            string url = "CuentasCobrar/AplicarDescuentoAsync";
-            var model = new { cuentaCobrarId, descuentoId, monto, justificacion };
-            return await ApiRequests.CreateAsync(url, model);
+            return await ApiRequests.PostConMensajeAsync("CuentasCobrar/PerdonarAsync", model);
         }
 
         /// <summary>

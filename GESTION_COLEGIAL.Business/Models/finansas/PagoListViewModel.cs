@@ -20,5 +20,8 @@ namespace GESTION_COLEGIAL.Business.Models
         public string Alumno { get; set; } = string.Empty;
         public string Encargado { get; set; } = string.Empty;
         public string Usuario { get; set; } = string.Empty;
+        public string NumeroRecibo { get; set; } = string.Empty;
+        public bool EsAnulado { get; set; }
+        public string MotivoAnulacion { get; set; } = string.Empty;
     }
 }

@@ -11,5 +11,9 @@ namespace GESTION_COLEGIAL.Business.Models
         public string EstadoPagoDescripcion { get; set; } = string.Empty;
         public int Mes { get; set; }
         public int Anio { get; set; }
+        public decimal MontoTotal { get; set; }
+        public decimal TotalPagado { get; set; }
+        public System.DateTime? FechaVencimiento { get; set; }
+        public string Observaciones { get; set; } = string.Empty;
     }
 }

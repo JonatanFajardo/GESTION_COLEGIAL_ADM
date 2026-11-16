@@ -48,6 +48,23 @@ namespace GESTION_COLEGIAL.Business.Services.ModuloFinanzas
         }
 
         /// <summary>
+        /// Pagos registrados entre dos fechas (ambas incluidas), anulados incluidos.
+        /// </summary>
+        public async Task<IEnumerable<PagoListViewModel>> ListByRangoFechasAsync(DateTime fechaInicio, DateTime fechaFin)
+        {
+            string url = $"Pagos/ListByRangoFechasAsync?fechaInicio={fechaInicio:yyyy-MM-dd}&fechaFin={fechaFin:yyyy-MM-dd}";
+            return await ApiRequests.ListAsync<PagoListViewModel>(url);
+        }
+
+        /// <summary>
+        /// Anula un pago: queda visible pero sin efecto, y lo que cubría vuelve a quedar pendiente.
+        /// </summary>
+        public async Task<RespuestaApi> Anular(AnularPagoViewModel model)
+        {
+            return await ApiRequests.PostConMensajeAsync("Pagos/AnularAsync", model);
+        }
+
+        /// <summary>
         /// Busca un pago por su identificador de forma asíncrona.
         /// </summary>
         /// <param name="id">El identificador del pago.</param>
