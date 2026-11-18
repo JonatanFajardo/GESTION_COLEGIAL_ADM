@@ -62,18 +62,20 @@ var Matricula = (function () {
         if (a.identidad) $("#Per_Identidad").val(a.identidad).trigger("blur");
         $("#Est_Id option").filter(function () { return $.trim($(this).text()).toLowerCase() === "activo"; }).prop("selected", true);
 
-        // Cascada Nivel -> Grado -> Modalidad -> Curso -> Sección, en orden
-        if (a.niv) {
-            $("#Niv_Id").val(String(a.niv));
+        // Cascada Nivel -> Grado -> Modalidad -> Curso -> Sección, en orden. Solo baja al hijo
+        // si el valor guardado sigue entre las opciones (si no, el combo queda para elegir a mano).
+        function elegir(sel, valor) {
+            if (!valor) return false;
+            $(sel).val(String(valor));
+            return $(sel).val() === String(valor);
+        }
+        if (elegir("#Niv_Id", a.niv)) {
             cargarHijo(cfg.urlGrados, a.niv, "#Cun_Id").then(function () {
-                if (!a.cun) return;
-                $("#Cun_Id").val(String(a.cun));
+                if (!elegir("#Cun_Id", a.cun)) return;
                 return cargarHijo(cfg.urlModalidades, a.cun, "#Mda_Id").then(function () {
-                    if (!a.mda) return;
-                    $("#Mda_Id").val(String(a.mda));
+                    if (!elegir("#Mda_Id", a.mda)) return;
                     return cargarHijo(cfg.urlCursos, a.mda, "#Cur_Id").then(function () {
-                        if (!a.cur) return;
-                        $("#Cur_Id").val(String(a.cur));
+                        if (!elegir("#Cur_Id", a.cur)) return;
                         return cargarHijo(cfg.urlSecciones, a.cur, "#Sec_Id");
                     });
                 });
@@ -247,7 +249,7 @@ var Matricula = (function () {
                 var $sel = $("#encExistenteSel");
                 $.each(lista, function (_, it) {
                     var extra = it.Identidad ? " (" + it.Identidad + ")" : "";
-                    $sel.append($('<option value="' + it.Value + '">' + it.Text + extra + '</option>').attr("data-identidad", it.Identidad || ""));
+                    $sel.append($("<option>").val(it.Value).text((it.Text || "") + extra).attr("data-identidad", it.Identidad || ""));
                 });
             });
     }

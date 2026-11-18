@@ -27,10 +27,13 @@ html.gc-dark .lde-kpi-cian .w-icon { color: #67e8f9; background: rgba(6, 182, 21
 /* ── Pares etiqueta / valor ── */
 .lde-datos {
     display: grid;
-    grid-template-columns: minmax(7.5rem, max-content) 1fr;
+    /* La etiqueta larga ("Escuela de procedencia") se parte en dos líneas; el valor conserva el ancho. */
+    grid-template-columns: minmax(5rem, 6.5rem) minmax(0, 1fr);
     gap: 0.35rem 1rem;
     font-size: 0.875rem;
 }
+/* En la tarjeta de cupo las etiquetas son cortas y la columna es angosta: que no se partan. */
+section[aria-labelledby="lde-cupo-titulo"] .lde-datos { grid-template-columns: max-content minmax(0, 1fr); }
 .lde-datos dt { font-weight: normal; color: #6b7280; }
 .lde-datos dd { margin: 0; color: #1f2937; overflow-wrap: anywhere; }
 html.gc-dark .lde-datos dt { color: #94a3b8; }

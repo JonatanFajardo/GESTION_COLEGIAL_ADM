@@ -16,7 +16,11 @@
         2: { texto: "Alta", insignia: "outline-badge-danger" }
     };
 
-    function esc(t) { return $("<div>").text(t == null ? "" : String(t)).html(); }
+    // Escapa también las comillas: el texto va dentro de atributos (title, value) además de en el contenido.
+    function esc(t) {
+        return (t == null ? "" : String(t)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
 
     function token() {
         return $('input[name="__RequestVerificationToken"]').first().val();
@@ -397,8 +401,8 @@
             var e = edad($("#nacimiento").val());
             var $t = $("#nacimiento-edad").removeClass("text-danger").addClass("text-muted");
             if (e === null || isNaN(e) || e < 0) { $t.text(""); return; }
-            $t.text("· " + e + (e === 1 ? " año" : " años"));
-            if (e < 4 || e > 22) $t.removeClass("text-muted").addClass("text-danger").text("· " + e + " años: revise la fecha");
+            $t.text(e + (e === 1 ? " año" : " años"));
+            if (e < 4 || e > 22) $t.removeClass("text-muted").addClass("text-danger").text(e + " años: revise la fecha");
         }
         $("#nacimiento").on("change input", mostrarEdad);
         mostrarEdad();

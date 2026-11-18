@@ -218,6 +218,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
 				return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
 			}
 
+			// Desde la lista de espera se revisa ANTES de crear al alumno: si el aspirante ya no tiene la oferta
+			// (otra pestaña lo matriculó, lo rechazaron) o la identidad ya es de un alumno, no se crea nada.
+			if (desdeLista)
+			{
+				AspiranteViewModel asp = await listaEsperaService.FindAsync(aspiranteId.Value);
+				if (asp == null || asp.Asp_Id == 0)
+					return Json(new { success = false, message = "El aspirante ya no existe en la lista de espera." });
+				if (asp.Asp_Estado != "OF")
+					return Json(new { success = false, message = $"{asp.Aspirante} está «{CatalogoAspirantes.Estado(asp.Asp_Estado)}»: solo se matricula un aspirante con cupo ofrecido." });
+				if (!asp.EsAnioActivo)
+					return Json(new { success = false, message = $"{asp.Aspirante} aspira al año {asp.Ani_Nombre}, que no es el año activo." });
+				var existente = string.IsNullOrWhiteSpace(model.Per_Identidad) ? null : await alumnosService.FindByIdentidad(model.Per_Identidad);
+				if (existente != null && existente.Alu_Id > 0)
+					return Json(new { success = false, message = "Ya existe un alumno con esa identidad. Revise la identidad del aspirante." });
+			}
+
 			bool huboError = await alumnosService.Create(model);
 			if (huboError)
 			{
