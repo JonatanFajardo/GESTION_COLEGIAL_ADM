@@ -131,9 +131,11 @@
                   accessorDownload: function (v, d) { return d.Identidad ? v + " (" + d.Identidad + ")" : v; },
                   formatter: function (c) {
                       var d = c.getData();
-                      var nombre = '<a class="fsa-enlace" href="' + urlFicha + "/" + d.Alu_Id + '">' + esc(d.Alumno) + '</a>';
-                      return GcTabla.avatar(nombre, d.Foto).replace("<span>" + nombre + "</span>",
-                          '<span class="fsa-nombre">' + nombre + '<span class="fsa-sub">' + esc(d.Identidad || "") + '</span></span>');
+                      // El avatar saca las iniciales del texto que recibe: se le da el nombre (escapado), no el enlace.
+                      var nombre = esc(d.Alumno);
+                      var enlace = '<a class="fsa-enlace" href="' + urlFicha + "/" + d.Alu_Id + '">' + nombre + '</a>';
+                      return GcTabla.avatar(nombre, d.Foto ? esc(d.Foto) : null).replace("<span>" + nombre + "</span>",
+                          '<span class="fsa-nombre">' + enlace + '<span class="fsa-sub">' + esc(d.Identidad || "") + '</span></span>');
                   } },
                 { title: "Grado", field: "Ubicacion",
                   mutator: function (v, d) { return [d.Grado, d.Seccion].filter(Boolean).join(" · ") || "—"; } },

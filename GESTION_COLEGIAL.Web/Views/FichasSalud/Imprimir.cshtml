@@ -8,12 +8,13 @@
     DateTime impreso = (ViewBag.Impreso as DateTime?) ?? DateTime.Now;
     var conTelefono = Model.Contactos.Where(c => !string.IsNullOrWhiteSpace(c.Telefono)).ToList();
     string contactoTel = FormatoSalud.Telefono(F.Fsa_ContactoEmergenciaTelefono);
+    string medicoTel = FormatoSalud.Telefono(F.Fsa_MedicoTelefono);
     Func<string, string> v = s => FormatoSalud.Texto(s) ?? "—";
     string ubicacion = string.Join(" · ", new[] { F.Ubicacion, F.Nivel }.Where(x => !string.IsNullOrWhiteSpace(x)));
 }
 
 @section Styles{
-    <link href="~/css/pages/fichas-salud.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/pages/fichas-salud-imprimir.css" rel="stylesheet" asp-append-version="true" />
 }
 
 <div class="breadcrumb-wrapper-content fsa-no-imprimir">
@@ -99,7 +100,7 @@
                 </ul>
                 <h2>Atención médica</h2>
                 <dl>
-                    <dt>Médico</dt><dd>@v(F.Fsa_MedicoNombre)@(FormatoSalud.Telefono(F.Fsa_MedicoTelefono) == null ? "" : " · " + FormatoSalud.Telefono(F.Fsa_MedicoTelefono))</dd>
+                    <dt>Médico</dt><dd>@(medicoTel == null ? v(F.Fsa_MedicoNombre) : (FormatoSalud.Texto(F.Fsa_MedicoNombre) ?? "Sin nombre") + " · " + medicoTel)</dd>
                     <dt>Hospital o clínica</dt><dd>@v(F.Fsa_Hospital)</dd>
                     <dt>Seguro</dt><dd>@v(F.Fsa_Seguro)@(FormatoSalud.Texto(F.Fsa_SeguroPoliza) == null ? "" : " · Póliza " + F.Fsa_SeguroPoliza.Trim())</dd>
                 </dl>

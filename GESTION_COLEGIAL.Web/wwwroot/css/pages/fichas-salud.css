@@ -1,19 +1,21 @@
 /* Fichas de salud — solo lo que CORK no trae: color de los íconos de los indicadores (paleta
-   aprobada), avatar con iniciales, títulos de sección del formulario, textos largos y la hoja
-   tamaño carta para imprimir. El resto usa componentes de CORK. */
+   aprobada), avatar con iniciales, títulos de sección del formulario y textos largos.
+   La hoja tamaño carta para imprimir vive en fichas-salud-imprimir.css (solo la carga esa vista,
+   para que sus reglas de impresión no afecten a las demás pantallas). El resto usa componentes de CORK. */
 
 /* ── Indicadores: paleta indigo / esmeralda / ámbar / cian ── */
 .fsa-kpi-indigo .w-icon    { color: #4f46e5; background: #eef2ff; }
 .fsa-kpi-esmeralda .w-icon { color: #059669; background: #d1fae5; }
 .fsa-kpi-ambar .w-icon     { color: #b45309; background: #fef3c7; }
 .fsa-kpi-cian .w-icon      { color: #0e7490; background: #cffafe; }
-.fsa-barra-esmeralda       { background-color: #10b981; }
-.widget-card-four .w-icon i { margin: 0 auto; }
+/* position: relative para que el punto blanco de la barra de CORK quede dentro de la barra. */
+.fsa-barra-esmeralda       { position: relative; background-color: #10b981; }
+#fsa-kpis .widget-card-four .w-icon i { margin: 0 auto; }
 
 /* ── Directorio ── */
 .fsa-tabla .tabulator-row { cursor: pointer; }
 .fsa-tabla .fsa-badge-alerta { white-space: normal; line-height: 1.35; text-align: left; font-size: .78rem; }
-.fsa-tabla.tabulator .tabulator-row .tabulator-cell { white-space: normal; }
+.fsa-tabla.tabulator .tabulator-row .tabulator-cell { white-space: normal; overflow-wrap: anywhere; }
 .fsa-tabla .fsa-sub { display: block; color: #6b7280; font-size: .8rem; }
 .fsa-tabla .fsa-nombre { min-width: 0; }
 .fsa-tabla .avatar { flex: 0 0 auto; }
@@ -81,121 +83,16 @@
 #fsa-ficha .table td.fsa-campos { white-space: normal; min-width: 280px; }
 .statbox .widget-header .fsa-subtitulo { padding: 0 12px 12px; margin-top: -8px; }
 
+html.gc-dark .fsa-tabla .fsa-enlace { color: #e2e8f0; }
+html.gc-dark .fsa-tabla .fsa-enlace:hover, html.gc-dark .fsa-tabla .fsa-enlace:focus { color: #93c5fd; }
+html.gc-dark .fsa-tabla .fsa-sub { color: #94a3b8; }
 html.gc-dark .fsa-emergencia dd { color: #e2e8f0; }
+html.gc-dark .fsa-emergencia dd.text-muted { color: #94a3b8; }
 html.gc-dark .fsa-seccion { color: #e2e8f0; border-bottom-color: #334155; }
 html.gc-dark .fsa-bloque-titulo { color: #94a3b8; }
 html.gc-dark .fsa-contacto { border-bottom-color: #334155; }
+html.gc-dark .fsa-telefono { color: #93c5fd; }
+/* En modo oscuro el tema fuerza el fondo de .form-control con !important: el bloqueado debe ganarle. */
 html.gc-dark #fsa-form .form-control:disabled,
-html.gc-dark #fsa-form .custom-select:disabled { background-color: #1e293b; color: #cbd5e1; }
-
-/* ════════════════ Hoja para imprimir (tamaño carta) ════════════════
-   Siempre papel blanco con texto oscuro, en cualquier tema. */
-.fsa-papel { overflow-x: auto; margin-bottom: 1.5rem; }
-
-.fsa-hoja {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 8.5in;
-    min-height: 11in;
-    margin: 0 auto;
-    padding: 0.7in 0.75in 0.6in;
-    background: #ffffff;
-    color: #111827;
-    border: 1px solid #d1d5db;
-    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10.5pt;
-    line-height: 1.45;
-    display: flex;
-    flex-direction: column;
-}
-.fsa-hoja * { color: inherit; }
-.fsa-hoja h2 {
-    font-size: 10pt;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    color: #374151;
-    border-bottom: 1px solid #d1d5db;
-    padding-bottom: 3pt;
-    margin: 14pt 0 6pt;
-}
-.fsa-hoja dl { margin: 0; }
-.fsa-hoja dt { font-size: 8.5pt; color: #6b7280; font-weight: 400; margin-top: 5pt; }
-.fsa-hoja dd { margin: 0; white-space: pre-line; }
-.fsa-hoja-membrete {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    padding-bottom: 8pt;
-    border-bottom: 2px solid #111827;
-}
-.fsa-hoja-institucion { font-size: 13pt; font-weight: 700; }
-.fsa-hoja-titulo { font-size: 13pt; font-weight: 700; text-align: right; letter-spacing: .05em; }
-.fsa-hoja-titulo span { display: block; font-size: 8pt; font-weight: 400; letter-spacing: 0; color: #6b7280; }
-.fsa-hoja-pequeno { font-size: 8.5pt; color: #4b5563; }
-.fsa-hoja-alumno { margin: 12pt 0 8pt; }
-.fsa-hoja-nombre { font-size: 15pt; font-weight: 700; }
-.fsa-hoja-alerta {
-    border: 2px solid #b91c1c;
-    color: #b91c1c;
-    background: #fef2f2;
-    padding: 7pt 9pt;
-    border-radius: 4px;
-    font-size: 11.5pt;
-    margin-bottom: 4pt;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-}
-.fsa-hoja-alerta strong { color: #b91c1c; }
-.fsa-hoja-aviso { border: 1px dashed #9ca3af; padding: 6pt 9pt; border-radius: 4px; color: #374151; }
-.fsa-hoja-dos { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24pt; }
-.fsa-hoja-fuerte { font-size: 13pt; font-weight: 700; }
-.fsa-hoja-contactos { list-style: none; padding: 0; margin: 0; }
-.fsa-hoja-contactos li { padding: 3pt 0; border-bottom: 1px dotted #d1d5db; }
-.fsa-hoja-texto { white-space: pre-line; margin: 0; }
-.fsa-hoja-pie { margin-top: auto; padding-top: 10pt; border-top: 1px solid #d1d5db; font-size: 8pt; color: #6b7280; }
-
-@media (max-width: 640px) {
-    .fsa-hoja { padding: 1.25rem 1rem; min-height: 0; }
-    .fsa-hoja-dos { grid-template-columns: 1fr; }
-    .fsa-hoja-membrete { flex-wrap: wrap; }
-    .fsa-hoja-titulo { text-align: left; }
-}
-
-@page { size: letter; margin: 0; }
-
-@media print {
-    html body .header-container,
-    html body .main-container .sidebar-wrapper,
-    html body .main-container .sidebar-wrapper.sidebar-theme,
-    .overlay,
-    .search-overlay,
-    .footer-wrapper,
-    #load_screen,
-    .cmdk-welcome,
-    .cmdk-backdrop,
-    .fsa-no-imprimir,
-    .breadcrumb-wrapper-content {
-        display: none !important;
-    }
-    html, body { background: #ffffff !important; }
-    #container, #content, .main-content, .layout-px-spacing, .layout-top-spacing, .fsa-papel {
-        margin: 0 !important;
-        padding: 0 !important;
-        width: auto !important;
-        max-width: none !important;
-        min-height: 0 !important;
-        background: #ffffff !important;
-        overflow: visible !important;
-    }
-    .fsa-hoja {
-        border: 0;
-        box-shadow: none;
-        max-width: none;
-        width: 8.5in;
-        min-height: 11in;
-        padding: 0.6in 0.7in 0.5in;
-    }
-}
+html.gc-dark #fsa-form .custom-select:disabled { background-color: #1e293b !important; color: #cbd5e1 !important; }
+html.gc-dark #fsa-form .custom-control-input:disabled ~ .custom-control-label { color: #cbd5e1; }
