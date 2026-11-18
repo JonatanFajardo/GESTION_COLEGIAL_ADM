@@ -20,20 +20,89 @@ var Matricula = (function () {
     var TOTAL = 4;
     var encMode = "existente"; // "existente" | "nuevo"
     var alumnoCreadoId = 0;
+    var resultadoAspirante = null; // solo desde la lista de espera (cfg.aspirante)
 
     // -------------------------------------------------- init
     obj.init = function (config) {
         cfg = config || {};
 
-        cargarParentescos();
-        cargarEncargados();
+        var pParentescos = cargarParentescos();
+        var pEncargados = cargarEncargados();
         wireCascada();
         wireNav();
         wireEncModo();
         wireIdentidad();
 
         irAPaso(1);
+
+        // Desde la lista de espera: precarga lo que ya se anotó del aspirante.
+        if (cfg.aspirante) precargarAspirante(cfg.aspirante, pParentescos, pEncargados);
     };
+
+    // -------------------------------------------------- Precarga desde la lista de espera
+    function partirNombre(texto) {
+        var p = (texto || "").trim().split(/\s+/).filter(Boolean);
+        if (p.length >= 4) return [p[0], p.slice(1, p.length - 2).join(" "), p[p.length - 2], p[p.length - 1]];
+        if (p.length === 3) return [p[0], "", p[1], p[2]];
+        return [p[0] || "", "", p[1] || "", ""];
+    }
+
+    function precargarAspirante(a, pParentescos, pEncargados) {
+        // Paso 1: el niño (nombres y apellidos tal como se anotaron)
+        var nom = (a.nombres || "").trim().split(/\s+/).filter(Boolean);
+        var ape = (a.apellidos || "").trim().split(/\s+/).filter(Boolean);
+        $("#Per_PrimerNombre").val(nom[0] || "");
+        $("#Per_SegundoNombre").val(nom.slice(1).join(" "));
+        $("#Per_ApellidoPaterno").val(ape[0] || "");
+        $("#Per_ApellidoMaterno").val(ape.slice(1).join(" "));
+        $("#Per_FechaNacimiento").val(a.nacimiento || "");
+        $("#Per_Sexo").val(a.sexo || "");
+        if (a.telefono) $("#Per_Telefono").val(String(a.telefono).replace(/\D/g, "").slice(0, 11)); // el alta solo acepta números
+        if (a.correo) $("#Per_CorreoElectronico").val(a.correo);
+        if (a.identidad) $("#Per_Identidad").val(a.identidad).trigger("blur");
+        $("#Est_Id option").filter(function () { return $.trim($(this).text()).toLowerCase() === "activo"; }).prop("selected", true);
+
+        // Cascada Nivel -> Grado -> Modalidad -> Curso -> Sección, en orden
+        if (a.niv) {
+            $("#Niv_Id").val(String(a.niv));
+            cargarHijo(cfg.urlGrados, a.niv, "#Cun_Id").then(function () {
+                if (!a.cun) return;
+                $("#Cun_Id").val(String(a.cun));
+                return cargarHijo(cfg.urlModalidades, a.cun, "#Mda_Id").then(function () {
+                    if (!a.mda) return;
+                    $("#Mda_Id").val(String(a.mda));
+                    return cargarHijo(cfg.urlCursos, a.mda, "#Cur_Id").then(function () {
+                        if (!a.cur) return;
+                        $("#Cur_Id").val(String(a.cur));
+                        return cargarHijo(cfg.urlSecciones, a.cur, "#Sec_Id");
+                    });
+                });
+            });
+        }
+
+        // Paso 2: el encargado. Si su identidad ya está registrada, se vincula; si no, se llena el alta.
+        $.when(pParentescos, pEncargados).always(function () {
+            var $opt = a.encargadoIdentidad
+                ? $("#encExistenteSel option").filter(function () { return $(this).attr("data-identidad") === a.encargadoIdentidad; })
+                : $();
+            if ($opt.length) {
+                $('.mat-toggle-btn[data-enc-mode="existente"]').trigger("click");
+                $("#encExistenteSel").val($opt.first().val());
+                if (a.parId) $("#parExistenteSel").val(String(a.parId));
+                return;
+            }
+            $('.mat-toggle-btn[data-enc-mode="nuevo"]').trigger("click");
+            var n = partirNombre(a.encargadoNombre);
+            $("#enc_Per_PrimerNombre").val(n[0]);
+            $("#enc_Per_SegundoNombre").val(n[1]);
+            $("#enc_Per_ApellidoPaterno").val(n[2]);
+            $("#enc_Per_ApellidoMaterno").val(n[3]);
+            if (a.encargadoIdentidad) $("#enc_Per_Identidad").val(a.encargadoIdentidad);
+            if (a.telefono) $("#enc_Per_Telefono").val(String(a.telefono).replace(/\D/g, "").slice(0, 11));
+            if (a.correo) $("#enc_Per_CorreoElectronico").val(a.correo);
+            if (a.parId) $("#parNuevoSel").val(String(a.parId));
+        });
+    }
 
     // -------------------------------------------------- Navegación de pasos
     function wireNav() {
@@ -114,7 +183,7 @@ var Matricula = (function () {
     }
 
     function cargarHijo(url, parentId, sel) {
-        $.ajax({
+        return $.ajax({
             type: "GET",
             url: url,
             data: { id: parentId },
@@ -172,19 +241,19 @@ var Matricula = (function () {
     }
 
     function cargarEncargados() {
-        $.ajax({ type: "GET", url: cfg.urlEncargados, dataType: "json" })
+        return $.ajax({ type: "GET", url: cfg.urlEncargados, dataType: "json" })
             .done(function (res) {
                 var lista = (res && res.data) ? res.data : [];
                 var $sel = $("#encExistenteSel");
                 $.each(lista, function (_, it) {
                     var extra = it.Identidad ? " (" + it.Identidad + ")" : "";
-                    $sel.append('<option value="' + it.Value + '">' + it.Text + extra + '</option>');
+                    $sel.append($('<option value="' + it.Value + '">' + it.Text + extra + '</option>').attr("data-identidad", it.Identidad || ""));
                 });
             });
     }
 
     function cargarParentescos() {
-        $.ajax({ type: "GET", url: cfg.urlParentescos, dataType: "json" })
+        return $.ajax({ type: "GET", url: cfg.urlParentescos, dataType: "json" })
             .done(function (res) {
                 var lista = (res && res.data) ? res.data : [];
                 $(".mat-par").each(function () {
@@ -319,7 +388,7 @@ var Matricula = (function () {
 
     // -------------------------------------------------- Confirmar (guardar)
     function payloadAlumno() {
-        return {
+        var p = {
             Alu_Id: 0,
             Per_Id: 0,
             Per_EsActivo: true,
@@ -340,6 +409,8 @@ var Matricula = (function () {
             Sec_Id: $("#Sec_Id").val(),
             Est_Id: $("#Est_Id").val()
         };
+        if (cfg.aspirante) p.aspiranteId = cfg.aspirante.id;
+        return p;
     }
 
     function payloadEncargadoNuevo() {
@@ -377,11 +448,12 @@ var Matricula = (function () {
             dataType: "json"
         }).done(function (res) {
             if (!res || !res.success) {
-                alertar("No se pudo crear el alumno. Verifique los datos e intente de nuevo.", "error");
+                alertar((res && res.message) || "No se pudo crear el alumno. Verifique los datos e intente de nuevo.", "error");
                 restaurarBoton($btn);
                 return;
             }
             alumnoCreadoId = (res.item && res.item.alu_Id) ? res.item.alu_Id : 0;
+            resultadoAspirante = (res.item && res.item.aspirante) ? res.item.aspirante : null;
 
             // 2) Crear encargado nuevo si aplica (vínculo alumno-encargado: hueco de API)
             if (encMode === "nuevo") {
@@ -418,6 +490,15 @@ var Matricula = (function () {
             ? '<a href="' + cfg.urlDocumentos + '" class="btn btn-primary mr-2"><i class="fas fa-folder-open mr-1"></i> Gestionar documentos</a>'
             : "";
         var linkAlu = '<a href="' + cfg.urlAlumnos + '" class="btn btn-outline-secondary"><i class="fas fa-list mr-1"></i> Ir al listado</a>';
+
+        // Desde la lista de espera: cómo quedó el aspirante y enlace de vuelta.
+        if (resultadoAspirante) {
+            notaEnc += '<p class="' + (resultadoAspirante.ok ? "text-success" : "text-danger") + '"><i class="fas ' +
+                (resultadoAspirante.ok ? "fa-circle-check" : "fa-triangle-exclamation") + ' mr-1"></i> ' +
+                $("<div>").text(resultadoAspirante.mensaje).html() + '</p>';
+            linkAlu = '<a href="' + resultadoAspirante.urlLista + '" class="btn btn-outline-secondary"><i class="fas fa-list-ol mr-1"></i> Volver a la lista de espera</a>' +
+                '<a href="' + resultadoAspirante.urlAspirante + '" class="btn btn-outline-primary"><i class="fas fa-user mr-1"></i> Ver aspirante</a>';
+        }
 
         $("#matResultado").html(
             '<div class="text-center py-4">' +

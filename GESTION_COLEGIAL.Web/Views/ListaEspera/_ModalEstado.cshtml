@@ -1,0 +1,27 @@
+@* Ventana para mover de estado a un aspirante (ofrecer, rechazar, desistió, reactivar).
+   La usan la lista y el detalle; el JS pone el título, el texto y si el motivo es obligatorio. *@
+<div class="modal fade" id="lde-modal-estado" tabindex="-1" role="dialog" aria-labelledby="lde-modal-titulo" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lde-modal-titulo">Cambiar estado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="lde-modal-id" value="0" />
+                <input type="hidden" id="lde-modal-accion" value="" />
+                <p class="mb-3" id="lde-modal-texto"></p>
+                <div class="alert alert-light-warning mb-3" id="lde-modal-advertencia" role="alert" hidden></div>
+                <div class="form-group mb-0" id="lde-modal-motivo-grupo">
+                    <label for="lde-modal-motivo" id="lde-modal-motivo-etiqueta">Motivo</label>
+                    <textarea id="lde-modal-motivo" class="form-control" rows="3" maxlength="500" placeholder="Por qué"></textarea>
+                    <p class="text-danger small mb-0 mt-1" id="lde-modal-error"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="lde-modal-confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,282 @@
+@model GESTION_COLEGIAL.UI.Models.AspiranteRegistroPaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    var M = Model;
+    var A = M.Aspirante;
+    ViewBag.Title = M.EsNuevo ? "Registro de aspirante" : "Editar aspirante";
+    string fecha(DateTime? d) => d.HasValue ? d.Value.ToString("yyyy-MM-dd") : "";
+    bool bloqueado = M.TieneOferta;   // con oferta abierta no cambia de año ni de grado
+}
+
+@section Styles{
+    <link href="~/css/pages/lista-espera.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", new { anio = M.AniId })">Lista de espera</a></li>
+            @if (!M.EsNuevo)
+            {
+                <li class="breadcrumb-item"><a href="@Url.Action("Aspirante", new { id = A.Asp_Id })">@A.Aspirante</a></li>
+            }
+            <li class="breadcrumb-item active" aria-current="page">@(M.EsNuevo ? "Registro de aspirante" : "Editar")</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">@(M.EsNuevo ? "Registro de aspirante" : "Editar aspirante")</h4>
+        <p class="text-muted mb-0">
+            @(M.EsNuevo
+                ? "Anote al niño, a su encargado y el grado al que aspira. Al guardar verá su lugar en la cola."
+                : "Corrija los datos mientras el aspirante siga en la lista. Si cambia de grado, pasa al final de la nueva cola.")
+        </p>
+    </div>
+</div>
+
+<div class="fluid-container">
+    <div class="alert alert-light-danger mb-4" id="lde-error-general" role="alert" hidden></div>
+
+    @* ── Resultado al registrar ── *@
+    <div class="statbox widget box box-shadow mb-4" id="lde-resultado" hidden>
+        <div class="widget-content widget-content-area text-center py-5">
+            <div class="lde-resultado-icono mb-3" aria-hidden="true"><i class="bi bi-check-circle-fill"></i></div>
+            <h5 class="mb-1" id="lde-resultado-titulo">Aspirante registrado</h5>
+            <p class="text-muted mb-3" id="lde-resultado-texto"></p>
+            <div id="lde-resultado-aviso-caja" hidden>
+                <div class="alert alert-light-warning d-inline-block text-left mb-3" id="lde-resultado-aviso" role="alert"></div>
+            </div>
+            <div class="d-flex flex-wrap justify-content-center">
+                <a class="btn btn-primary m-1" id="lde-resultado-ver" href="#"><i class="bi bi-person-lines-fill mr-1" aria-hidden="true"></i> Ver aspirante</a>
+                <a class="btn btn-outline-primary m-1" href="@Url.Action("Registrar", new { anio = M.AniId })"><i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Registrar otro</a>
+                <a class="btn btn-outline-secondary m-1" href="@Url.Action("Index", new { anio = M.AniId })"><i class="bi bi-list-ol mr-1" aria-hidden="true"></i> Ir a la lista</a>
+            </div>
+        </div>
+    </div>
+
+    <form id="lde-form" aria-label="@(M.EsNuevo ? "Registro de aspirante" : "Editar aspirante")" novalidate
+          data-url="@Url.Action("GuardarAsync")" data-url-duplicado="@Url.Action("DuplicadoAsync")"
+          data-url-grados="@Url.Action("GradosAsync")" data-url-modalidades="@Url.Action("ModalidadesAsync")"
+          data-url-cursos="@Url.Action("CursosAsync")" data-url-aspirante="@Url.Action("Aspirante")" data-id="@(A?.Asp_Id ?? 0)" data-nuevo="@(M.EsNuevo ? "1" : "0")"
+          data-grado="@(A?.Cun_Id)" data-modalidad="@(A?.Mda_Id)" data-curso="@(A?.Cur_Id)" data-bloqueado="@(bloqueado ? "1" : "0")">
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-xl-9">
+
+                @* ── 1 · Aspirante ── *@
+                <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-aspirante">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12"><h4 id="b-aspirante">1 · Aspirante</h4></div></div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <div class="alert alert-light-warning mb-3" id="lde-duplicado" role="alert" hidden></div>
+                        <div class="form-row">
+                            <div class="col-md-6 form-group">
+                                <label for="nombres">Nombres <span class="text-danger">*</span></label>
+                                <input id="nombres" class="form-control" maxlength="100" autocomplete="off" value="@A?.Asp_Nombres" placeholder="Ej. Ana Sofía" />
+                                <p class="text-danger small mb-0" data-error="nombres"></p>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="apellidos">Apellidos <span class="text-danger">*</span></label>
+                                <input id="apellidos" class="form-control" maxlength="100" autocomplete="off" value="@A?.Asp_Apellidos" placeholder="Ej. Mejía Rodríguez" />
+                                <p class="text-danger small mb-0" data-error="apellidos"></p>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="identidad">Identidad</label>
+                                <input id="identidad" class="form-control" maxlength="13" inputmode="numeric" autocomplete="off" value="@A?.Asp_Identidad" placeholder="13 números (opcional)" />
+                                <p class="text-danger small mb-0" data-error="identidad"></p>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="nacimiento">Fecha de nacimiento <span class="text-danger">*</span> <span class="small text-muted ml-1" id="nacimiento-edad"></span></label>
+                                <input type="date" id="nacimiento" class="form-control" max="@M.Hoy" value="@fecha(A?.Asp_FechaNacimiento)" />
+                                <p class="text-danger small mb-0" data-error="nacimiento"></p>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="sexo">Sexo <span class="text-danger">*</span></label>
+                                <select id="sexo" class="custom-select">
+                                    <option value="">Elija</option>
+                                    <option value="F" selected="@(A?.Asp_Sexo == "F")">Femenino</option>
+                                    <option value="M" selected="@(A?.Asp_Sexo == "M")">Masculino</option>
+                                </select>
+                                <p class="text-danger small mb-0" data-error="sexo"></p>
+                            </div>
+                            <div class="col-12 form-group mb-0">
+                                <label for="escuela">Escuela de procedencia</label>
+                                <input id="escuela" class="form-control" maxlength="150" autocomplete="off" value="@A?.Asp_EscuelaProcedencia" placeholder="Opcional" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                @* ── 2 · Encargado ── *@
+                <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-encargado">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12"><h4 id="b-encargado">2 · Encargado</h4></div></div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <div class="form-row">
+                            <div class="col-md-6 form-group">
+                                <label for="encargado">Nombre completo <span class="text-danger">*</span></label>
+                                <input id="encargado" class="form-control" maxlength="150" autocomplete="off" value="@A?.Asp_EncargadoNombre" placeholder="Nombres y apellidos" />
+                                <p class="text-danger small mb-0" data-error="encargado"></p>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="parentesco">Parentesco <span class="text-danger">*</span></label>
+                                <select id="parentesco" class="custom-select">
+                                    <option value="">Elija</option>
+                                    @foreach (var p in M.Parentescos)
+                                    {
+                                        <option value="@p.Par_Id" selected="@(A?.Par_Id == p.Par_Id)">@p.Par_Descripcion</option>
+                                    }
+                                </select>
+                                <p class="text-danger small mb-0" data-error="parentesco"></p>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="encidentidad">Identidad</label>
+                                <input id="encidentidad" class="form-control" maxlength="13" inputmode="numeric" autocomplete="off" value="@A?.Asp_EncargadoIdentidad" placeholder="Opcional" />
+                                <p class="text-danger small mb-0" data-error="encidentidad"></p>
+                            </div>
+                            <div class="col-md-6 form-group mb-md-0">
+                                <label for="telefono">Teléfono <span class="text-danger">*</span></label>
+                                <input id="telefono" class="form-control" maxlength="20" inputmode="tel" autocomplete="off" value="@A?.Asp_EncargadoTelefono" placeholder="Ej. 9876-5432" />
+                                <small class="form-text text-muted">Al número que se llama cuando se libera un cupo.</small>
+                                <p class="text-danger small mb-0" data-error="telefono"></p>
+                            </div>
+                            <div class="col-md-6 form-group mb-0">
+                                <label for="correo">Correo</label>
+                                <input type="email" id="correo" class="form-control" maxlength="150" autocomplete="off" value="@A?.Asp_EncargadoCorreo" placeholder="Opcional" />
+                                <p class="text-danger small mb-0" data-error="correo"></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                @* ── 3 · Aspira a (cascada) ── *@
+                <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-aspira">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12"><h4 id="b-aspira">3 · Aspira a</h4></div></div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        @if (bloqueado)
+                        {
+                            <div class="alert alert-light-info mb-3" role="status">
+                                <i class="bi bi-lock mr-1" aria-hidden="true"></i> Tiene una oferta abierta en @A.Cun_Descripcion: el año y el grado no se pueden cambiar.
+                            </div>
+                        }
+                        <div class="form-row">
+                            <div class="col-md-4 form-group">
+                                <label for="anio">Año lectivo <span class="text-danger">*</span></label>
+                                <select id="anio" class="custom-select" disabled="@bloqueado">
+                                    @foreach (var a in M.Anios)
+                                    {
+                                        <option value="@a.Ani_Id" selected="@(a.Ani_Id == M.AniId)">@a.Ani_Nombre@(a.EsActivo ? " (activo)" : "")</option>
+                                    }
+                                </select>
+                                <p class="text-danger small mb-0" data-error="anio"></p>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="nivel">1 · Nivel <span class="text-danger">*</span></label>
+                                <select id="nivel" class="custom-select" disabled="@bloqueado">
+                                    <option value="">Elija el nivel</option>
+                                    @foreach (var n in M.Niveles)
+                                    {
+                                        <option value="@n.Value" selected="@(A != null && n.Value == A.Niv_Id.ToString())">@n.Text</option>
+                                    }
+                                </select>
+                                <p class="text-danger small mb-0" data-error="nivel"></p>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="grado">2 · Grado <span class="text-danger">*</span></label>
+                                <select id="grado" class="custom-select" disabled>
+                                    <option value="">Elija el nivel primero</option>
+                                </select>
+                                <p class="text-danger small mb-0" data-error="grado"></p>
+                            </div>
+                            <div class="col-md-4 form-group mb-md-0">
+                                <label for="modalidad">3 · Modalidad</label>
+                                <select id="modalidad" class="custom-select" disabled>
+                                    <option value="">Elija el grado primero</option>
+                                </select>
+                                <small class="form-text text-muted">Opcional: si la familia pide una jornada.</small>
+                            </div>
+                            <div class="col-md-8 form-group mb-0">
+                                <label for="curso">4 · Curso</label>
+                                <select id="curso" class="custom-select" disabled>
+                                    <option value="">Elija la modalidad primero</option>
+                                </select>
+                                <small class="form-text text-muted">Opcional: el plan o bachillerato (en media).</small>
+                                <p class="text-danger small mb-0" data-error="curso"></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                @* ── 4 · Prioridad y notas ── *@
+                <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-prioridad">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12"><h4 id="b-prioridad">4 · Prioridad y notas</h4></div></div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <div class="form-row">
+                            <div class="col-md-4 form-group">
+                                <label for="prioridad">Prioridad</label>
+                                <select id="prioridad" class="custom-select">
+                                    @foreach (var p in CatalogoAspirantes.Prioridades)
+                                    {
+                                        <option value="@p.Codigo" selected="@((A?.Asp_Prioridad ?? 0).ToString() == p.Codigo)">@p.Etiqueta</option>
+                                    }
+                                </select>
+                                <small class="form-text text-muted">Alta y media pasan antes en la cola.</small>
+                            </div>
+                            <div class="col-md-8 form-group" id="grupo-motivo-prioridad">
+                                <label for="motivoprioridad">Por qué tiene prioridad <span class="text-danger">*</span></label>
+                                <input id="motivoprioridad" class="form-control" maxlength="200" autocomplete="off" value="@A?.Asp_MotivoPrioridad" placeholder="Ej. hermano en el colegio, hijo de empleado" />
+                                <p class="text-danger small mb-0" data-error="motivoprioridad"></p>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="solicitud">Fecha de solicitud</label>
+                                <input type="date" id="solicitud" class="form-control" max="@M.Hoy" value="@(A != null ? fecha(A.Asp_FechaSolicitud) : M.Hoy)" />
+                                <p class="text-danger small mb-0" data-error="solicitud"></p>
+                            </div>
+                            <div class="col-md-8 form-group mb-0">
+                                <label for="notas">Notas</label>
+                                <textarea id="notas" class="form-control" rows="3" maxlength="1000" placeholder="Opcional: lo que conviene saber al llamar a la familia">@A?.Asp_Notas</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="d-flex justify-content-end mb-4">
+                    <a class="btn mr-2" href="@(M.EsNuevo ? Url.Action("Index", new { anio = M.AniId }) : Url.Action("Aspirante", new { id = A.Asp_Id }))">Cancelar</a>
+                    <button type="submit" class="btn btn-primary" id="lde-guardar">
+                        <i class="bi bi-check2 mr-1" aria-hidden="true"></i> @(M.EsNuevo ? "Registrar aspirante" : "Guardar cambios")
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-xl-3">
+                <aside class="statbox widget box box-shadow mb-4" aria-labelledby="b-ayuda">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12"><h4 id="b-ayuda">Cómo se ordena la cola</h4></div></div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <ol class="pl-3 mb-0 small text-muted">
+                            <li class="mb-2">Cada grado del año tiene su propia cola.</li>
+                            <li class="mb-2">Pasan primero los de prioridad alta, luego media y luego normal.</li>
+                            <li class="mb-2">Con la misma prioridad, por orden de llegada.</li>
+                            <li>Cuando se libera un cupo se ofrece al primero; al aceptar, se matricula con el wizard sin volver a escribir los datos.</li>
+                        </ol>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/lista-espera.js" asp-append-version="true"></script>
+}

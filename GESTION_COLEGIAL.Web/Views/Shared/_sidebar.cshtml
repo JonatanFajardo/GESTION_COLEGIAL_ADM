@@ -238,7 +238,7 @@
             }
             *@
 
-            @if (tiene("Listado de alumnos") || tiene("Directorio de Alumnos") || tiene("Pirámide de Matrícula") || tiene("Mensajes a Encargados") || tiene("Documentos alumno") || tiene("Matrícula nueva"))
+            @if (tiene("Listado de alumnos") || tiene("Directorio de Alumnos") || tiene("Pirámide de Matrícula") || tiene("Mensajes a Encargados") || tiene("Documentos alumno") || tiene("Matrícula nueva") || tiene("Lista de espera"))
             {
                 <li class="menu">
                     <a href="#Alumnos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -258,6 +258,7 @@
                                 @Html.ActionLink("Matrícula", "Index", "Matricula", null)
                             </li>
                         }
+                        @if (tiene("Lista de espera") || esAdmin) { <li>@Html.ActionLink("Lista de espera",      "Index", "ListaEspera")</li> }
                         @* Encargados + Directorio fusionados en "Directorio de Contacto" (tabs Por Alumno / Por Encargado) *@
                         @if (tiene("Directorio de Contacto") || tiene("Listado de encargados") || tiene("Directorio de Alumnos") || esAdmin)
                                                                  { <li>@Html.ActionLink("Directorio de contacto","Index", "DirectorioContacto")</li> }

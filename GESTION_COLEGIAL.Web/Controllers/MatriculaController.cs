@@ -1,7 +1,10 @@
 using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Compat;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Filters;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,16 +44,66 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		private readonly ParentescosService parentescosService = new ParentescosService();
 		private readonly MatriculaAnioService matriculaAnioService = new MatriculaAnioService();
 		private readonly DocumentosAlumnoAdmService documentosService = new DocumentosAlumnoAdmService();
+		private readonly ListaEsperaService listaEsperaService = new ListaEsperaService();
+
+		/// <summary>Matricular desde la lista de espera pide además "Gestionar lista de espera".</summary>
+		private bool PuedeDesdeListaEspera() =>
+			(Session[SesionUsuario.RoleName] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase)
+			|| TienePantalla(ListaEsperaController.PantallaGestionar);
 
 		/// <summary>
 		/// Vista principal del wizard. Precarga Niveles Educativos y Estados
 		/// (mismo Dropdown que usa Alumnos/Nuevo) para el Paso 1.
 		/// </summary>
-		public async Task<ActionResult> Index()
+		public async Task<ActionResult> Index(int? aspiranteId)
 		{
 			var model = new AlumnoViewModel();
 			model = await alumnosService.Dropdown(model);
+			if (aspiranteId.HasValue && aspiranteId.Value > 0)
+				await PrepararAspiranteAsync(aspiranteId.Value);
 			return View(model);
+		}
+
+		/// <summary>
+		/// Desde la lista de espera (?aspiranteId=): precarga lo que el wizard ya captura (niño, encargado,
+		/// nivel/grado/modalidad/curso). Solo un aspirante con cupo ofrecido en el año activo; si no, un aviso.
+		/// </summary>
+		private async Task PrepararAspiranteAsync(int aspiranteId)
+		{
+			if (!PuedeDesdeListaEspera())
+			{
+				ViewBag.AspiranteAviso = "No tiene permiso para matricular desde la lista de espera. Puede registrar la matrícula normal.";
+				return;
+			}
+			AspiranteViewModel a = await listaEsperaService.FindAsync(aspiranteId);
+			if (a == null || a.Asp_Id == 0)
+				ViewBag.AspiranteAviso = "El aspirante ya no existe en la lista de espera.";
+			else if (a.Asp_Estado != "OF")
+				ViewBag.AspiranteAviso = $"{a.Aspirante} está «{CatalogoAspirantes.Estado(a.Asp_Estado)}»: solo se matricula un aspirante con cupo ofrecido.";
+			else if (!a.EsAnioActivo)
+				ViewBag.AspiranteAviso = $"{a.Aspirante} aspira al año {a.Ani_Nombre}, que no es el año activo: la matrícula inscribe en el año activo.";
+			else
+			{
+				ViewBag.Aspirante = a;
+				ViewBag.AspiranteJson = JsonConvert.SerializeObject(new
+				{
+					id = a.Asp_Id,
+					nombres = a.Asp_Nombres,
+					apellidos = a.Asp_Apellidos,
+					identidad = a.Asp_Identidad,
+					nacimiento = a.Asp_FechaNacimiento.ToString("yyyy-MM-dd"),
+					sexo = a.Asp_Sexo,
+					niv = a.Niv_Id,
+					cun = a.Cun_Id,
+					mda = a.Mda_Id,
+					cur = a.Cur_Id,
+					encargadoNombre = a.Asp_EncargadoNombre,
+					encargadoIdentidad = a.Asp_EncargadoIdentidad,
+					parId = a.Par_Id,
+					telefono = a.Asp_EncargadoTelefono,
+					correo = a.Asp_EncargadoCorreo
+				}, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml });
+			}
 		}
 
 		// ============================================================
@@ -152,8 +205,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		// ============================================================
 
 		[HttpPost]
-		public async Task<ActionResult> GuardarAlumnoAsync(AlumnoViewModel model)
+		public async Task<ActionResult> GuardarAlumnoAsync(AlumnoViewModel model, int? aspiranteId)
 		{
+			bool desdeLista = aspiranteId.HasValue && aspiranteId.Value > 0;
+			if (desdeLista && !PuedeDesdeListaEspera())
+			{
+				return Json(new { success = false, message = "No tiene permiso para matricular desde la lista de espera." });
+			}
+
 			if (!ModelState.IsValid)
 			{
 				return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
@@ -176,7 +235,25 @@ namespace GESTION_COLEGIAL.UI.Controllers
 				var inscripcion = await matriculaAnioService.InscribirDesdeUbicacionAsync(null, creado.Alu_Id, true, true, GetUsuarioId());
 				inscritoEnAnio = inscripcion != null && (inscripcion.Inscritos + inscripcion.Reactivados + inscripcion.YaInscritos) > 0;
 			}
-			return AjaxResult(new { alu_Id = creado?.Alu_Id ?? 0, alu_Nombre = creado?.Alu_Nombre, inscrito_anio = inscritoEnAnio }, true);
+			if (!desdeLista)
+			{
+				return AjaxResult(new { alu_Id = creado?.Alu_Id ?? 0, alu_Nombre = creado?.Alu_Nombre, inscrito_anio = inscritoEnAnio }, true);
+			}
+
+			// Desde la lista de espera: el aspirante (con cupo ofrecido) pasa a Matriculado con su Alu_Id.
+			AspiranteResultadoViewModel marca = creado != null && creado.Alu_Id > 0
+				? await listaEsperaService.MatricularAsync(aspiranteId.Value, creado.Alu_Id, GetUsuarioId())
+				: null;
+			var aspirante = new
+			{
+				ok = marca?.Ok == true,
+				mensaje = marca?.Ok == true
+					? "El aspirante quedó como matriculado en la lista de espera."
+					: "El alumno se creó, pero el aspirante no se pudo marcar como matriculado: " + (marca?.Mensaje ?? "no se encontró el alumno recién creado."),
+				urlAspirante = Url.Action("Aspirante", "ListaEspera", new { id = aspiranteId.Value, aviso = marca?.Ok == true ? "matriculado" : null }),
+				urlLista = Url.Action("Index", "ListaEspera")
+			};
+			return AjaxResult(new { alu_Id = creado?.Alu_Id ?? 0, alu_Nombre = creado?.Alu_Nombre, inscrito_anio = inscritoEnAnio, aspirante }, true);
 		}
 	}
 }

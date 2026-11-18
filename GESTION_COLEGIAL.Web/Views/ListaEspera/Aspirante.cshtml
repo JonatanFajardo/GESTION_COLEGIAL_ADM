@@ -1,0 +1,322 @@
+@model GESTION_COLEGIAL.UI.Models.AspirantePaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@using GESTION_COLEGIAL.UI.Models
+@{
+    var M = Model;
+    var A = M.Aspirante;
+    ViewBag.Title = A.Aspirante;
+    bool gestionar = M.PuedeGestionar;
+    bool abierto = A.EstaAbierto;
+    string aspiraA = string.Join(" · ", new[] { A.Cun_Descripcion, A.Mda_Descripcion, A.Cur_Nombre, "Año " + A.Ani_Nombre }.Where(x => !string.IsNullOrWhiteSpace(x)));
+    int ocupados = A.Matriculados + A.Ofertas;
+    int pct = A.Cupo.HasValue && A.Cupo.Value > 0 ? Math.Min(100, (int)Math.Round(ocupados * 100.0 / A.Cupo.Value)) : 0;
+    string estadoTexto(string e) => e == null ? "Registrado" : CatalogoAspirantes.Estado(e);
+}
+
+@section Styles{
+    <link href="~/css/pages/lista-espera.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", new { anio = A.Ani_Id })">Lista de espera</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@A.Aspirante</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container" id="lde-aspirante" data-id="@A.Asp_Id" data-url-estado="@Url.Action("CambiarEstadoAsync")"
+     data-cupo-definido="@(A.CupoDefinido ? "1" : "0")" data-grado="@A.Cun_Descripcion" data-nombre="@A.Aspirante">
+    @Html.AntiForgeryToken()
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+        <div class="mr-3">
+            <h4 class="mb-1">@A.Aspirante</h4>
+            <p class="text-muted mb-0">Aspira a @aspiraA</p>
+        </div>
+        <div class="d-flex flex-wrap mt-2 mt-md-0">
+            @if (gestionar && abierto)
+            {
+                <a class="btn btn-outline-primary mr-2" href="@Url.Action("Registrar", new { id = A.Asp_Id })">
+                    <i class="bi bi-pencil mr-1" aria-hidden="true"></i> Editar
+                </a>
+            }
+            <a class="btn btn-outline-secondary" href="@Url.Action("Index", new { anio = A.Ani_Id })">
+                <i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Lista de espera
+            </a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(M.Aviso))
+    {
+        <div class="alert alert-light-success mb-4" role="status"><i class="bi bi-check-circle mr-1" aria-hidden="true"></i> <strong>@M.Aviso</strong></div>
+    }
+    <div class="alert alert-light-danger mb-4" id="lde-error-general" role="alert" hidden></div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            @* ── Estado, lugar en la cola y acciones ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-label="Estado del aspirante">
+                <div class="widget-content widget-content-area">
+                    <dl class="row mb-0">
+                        <div class="col-sm-6 col-xl-3 mb-3">
+                            <dt class="text-muted small font-weight-normal">Estado</dt>
+                            <dd class="mb-0"><span class="badge @CatalogoAspirantes.InsigniaEstado(A.Asp_Estado)">@CatalogoAspirantes.Estado(A.Asp_Estado)</span></dd>
+                        </div>
+                        <div class="col-sm-6 col-xl-3 mb-3">
+                            <dt class="text-muted small font-weight-normal">Lugar en la cola</dt>
+                            <dd class="mb-0 font-weight-bold">
+                                @if (A.Asp_Estado == "EE" && A.PosicionCola.HasValue)
+                                {
+                                    @: @A.PosicionCola de @A.EnCola
+                                }
+                                else if (A.Asp_Estado == "OF")
+                                {
+                                    @:Con cupo ofrecido
+                                }
+                                else
+                                {
+                                    <span class="text-muted font-weight-normal">Fuera de la cola</span>
+                                }
+                            </dd>
+                        </div>
+                        <div class="col-sm-6 col-xl-3 mb-3">
+                            <dt class="text-muted small font-weight-normal">Prioridad</dt>
+                            <dd class="mb-0">
+                                <span class="badge @CatalogoAspirantes.InsigniaPrioridad(A.Asp_Prioridad)">@CatalogoAspirantes.Prioridad(A.Asp_Prioridad)</span>
+                                @if (!string.IsNullOrWhiteSpace(A.Asp_MotivoPrioridad))
+                                {
+                                    <span class="d-block small text-muted mt-1">@A.Asp_MotivoPrioridad</span>
+                                }
+                            </dd>
+                        </div>
+                        <div class="col-sm-6 col-xl-3 mb-3">
+                            <dt class="text-muted small font-weight-normal">Solicitud</dt>
+                            <dd class="mb-0 font-weight-bold">@FormatoCaso.Dia(A.Asp_FechaSolicitud)</dd>
+                        </div>
+                    </dl>
+
+                    @if (A.Asp_Estado == "OF" && A.Asp_FechaOferta.HasValue)
+                    {
+                        <p class="text-muted small mb-0">Cupo ofrecido el @FormatoCaso.DiaHora(A.Asp_FechaOferta.Value)@(string.IsNullOrWhiteSpace(A.UsuarioOferta) ? "" : " por " + A.UsuarioOferta).</p>
+                    }
+                    @if ((A.Asp_Estado == "RE" || A.Asp_Estado == "DE") && !string.IsNullOrWhiteSpace(A.Asp_MotivoDecision))
+                    {
+                        <p class="text-muted small mb-0">
+                            Motivo: <span class="text-body">@A.Asp_MotivoDecision</span>
+                            @if (A.Asp_FechaDecision.HasValue)
+                            {
+                                @: · @FormatoCaso.Dia(A.Asp_FechaDecision.Value)@(string.IsNullOrWhiteSpace(A.UsuarioDecision) ? "" : ", " + A.UsuarioDecision)
+                            }
+                        </p>
+                    }
+                    @if (A.Asp_Estado == "MA")
+                    {
+                        <p class="text-muted small mb-0">
+                            Matriculado@(A.Asp_FechaDecision.HasValue ? " el " + FormatoCaso.Dia(A.Asp_FechaDecision.Value) : "")@(string.IsNullOrWhiteSpace(A.UsuarioDecision) ? "" : " por " + A.UsuarioDecision).
+                            @if (A.Alu_Id.HasValue)
+                            {
+                                <a href="@Url.Action("Detalle", "Alumnos", new { id = A.Alu_Id })">Ver la ficha del alumno</a>
+                            }
+                        </p>
+                    }
+
+                    @if (gestionar && A.Asp_Estado != "MA")
+                    {
+                        <div class="d-flex flex-wrap align-items-center border-top pt-3 mt-3">
+                            @if (A.Asp_Estado == "EE")
+                            {
+                                if (A.PuedeOfrecer)
+                                {
+                                    <button type="button" class="btn btn-primary mr-2 mb-2" data-accion="ofrecer">
+                                        <i class="bi bi-envelope-paper mr-1" aria-hidden="true"></i> Ofrecer cupo
+                                    </button>
+                                }
+                                <button type="button" class="btn btn-outline-danger mr-2 mb-2" data-accion="rechazar"><i class="bi bi-x-circle mr-1" aria-hidden="true"></i> Rechazar</button>
+                                <button type="button" class="btn btn-outline-secondary mr-2 mb-2" data-accion="desistio"><i class="bi bi-box-arrow-left mr-1" aria-hidden="true"></i> Desistió</button>
+                                if (!A.PuedeOfrecer)
+                                {
+                                    <p class="text-muted small mb-2 w-100">
+                                        <i class="bi bi-info-circle mr-1" aria-hidden="true"></i>
+                                        @if (A.PosicionCola != 1)
+                                        {
+                                            @:El cupo se ofrece al primero de la cola@(string.IsNullOrWhiteSpace(A.SiguienteNombre) ? "" : ": " + A.SiguienteNombre).
+                                        }
+                                        else
+                                        {
+                                            @:No hay cupo libre en @A.Cun_Descripcion@(A.Mda_Id.HasValue && A.CupoModalidadDefinido == true && A.LibresModalidad <= 0 ? " (" + A.Mda_Descripcion + ")" : ""). Cuando se libere un asiento se le podrá ofrecer.
+                                        }
+                                    </p>
+                                }
+                            }
+                            else if (A.Asp_Estado == "OF")
+                            {
+                                if (M.PuedeMatricular && A.EsAnioActivo)
+                                {
+                                    <a class="btn btn-success mr-2 mb-2" href="@Url.Action("Index", "Matricula", new { aspiranteId = A.Asp_Id })">
+                                        <i class="bi bi-person-check mr-1" aria-hidden="true"></i> Matricular
+                                    </a>
+                                }
+                                <button type="button" class="btn btn-outline-danger mr-2 mb-2" data-accion="rechazar"><i class="bi bi-x-circle mr-1" aria-hidden="true"></i> Rechazar</button>
+                                <button type="button" class="btn btn-outline-secondary mr-2 mb-2" data-accion="desistio"><i class="bi bi-box-arrow-left mr-1" aria-hidden="true"></i> Desistió</button>
+                                if (M.PuedeMatricular && !A.EsAnioActivo)
+                                {
+                                    <p class="text-muted small mb-2 w-100"><i class="bi bi-info-circle mr-1" aria-hidden="true"></i> Se podrá matricular cuando @A.Ani_Nombre sea el año activo.</p>
+                                }
+                                else if (!M.PuedeMatricular)
+                                {
+                                    <p class="text-muted small mb-2 w-100"><i class="bi bi-info-circle mr-1" aria-hidden="true"></i> Para matricular hace falta además el permiso "Matrícula nueva".</p>
+                                }
+                            }
+                            else if (A.Asp_Estado == "RE" || A.Asp_Estado == "DE")
+                            {
+                                <button type="button" class="btn btn-outline-primary mr-2 mb-2" data-accion="reactivar"><i class="bi bi-arrow-counterclockwise mr-1" aria-hidden="true"></i> Reactivar</button>
+                                <p class="text-muted small mb-2">Vuelve a la lista en espera, al final de la cola de @A.Cun_Descripcion.</p>
+                            }
+                        </div>
+                    }
+                </div>
+            </section>
+
+            @* ── Datos ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="lde-datos-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="lde-datos-titulo">Datos</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h6 class="font-weight-bold mb-2">Aspirante</h6>
+                            <dl class="lde-datos mb-0">
+                                <dt>Identidad</dt><dd>@(string.IsNullOrWhiteSpace(A.Asp_Identidad) ? "—" : A.Asp_Identidad)</dd>
+                                <dt>Nacimiento</dt><dd>@FormatoCaso.Dia(A.Asp_FechaNacimiento)@(A.Edad.HasValue ? " (" + A.Edad + " años)" : "")</dd>
+                                <dt>Sexo</dt><dd>@CatalogoAspirantes.Sexo(A.Asp_Sexo)</dd>
+                                <dt>Escuela de procedencia</dt><dd>@(string.IsNullOrWhiteSpace(A.Asp_EscuelaProcedencia) ? "—" : A.Asp_EscuelaProcedencia)</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="font-weight-bold mb-2">Encargado</h6>
+                            <dl class="lde-datos mb-0">
+                                <dt>Nombre</dt><dd>@A.Asp_EncargadoNombre@(string.IsNullOrWhiteSpace(A.Par_Descripcion) ? "" : " · " + A.Par_Descripcion)</dd>
+                                <dt>Teléfono</dt><dd><a href="tel:@A.Asp_EncargadoTelefono">@A.Asp_EncargadoTelefono</a></dd>
+                                <dt>Correo</dt>
+                                <dd>
+                                    @if (string.IsNullOrWhiteSpace(A.Asp_EncargadoCorreo))
+                                    {
+                                        <span>—</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="mailto:@A.Asp_EncargadoCorreo">@A.Asp_EncargadoCorreo</a>
+                                    }
+                                </dd>
+                                <dt>Identidad</dt><dd>@(string.IsNullOrWhiteSpace(A.Asp_EncargadoIdentidad) ? "—" : A.Asp_EncargadoIdentidad)</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <hr />
+                    <h6 class="font-weight-bold mb-2">Aspira a</h6>
+                    <dl class="lde-datos mb-0">
+                        <dt>Año lectivo</dt><dd>@A.Ani_Nombre@(A.EsAnioActivo ? " (activo)" : "")</dd>
+                        <dt>Nivel</dt><dd>@A.Niv_Descripcion</dd>
+                        <dt>Grado</dt><dd>@A.Cun_Descripcion</dd>
+                        <dt>Modalidad</dt><dd>@(string.IsNullOrWhiteSpace(A.Mda_Descripcion) ? "Cualquiera" : A.Mda_Descripcion)</dd>
+                        <dt>Curso</dt><dd>@(string.IsNullOrWhiteSpace(A.Cur_Nombre) ? "—" : A.Cur_Nombre)</dd>
+                    </dl>
+                    @if (!string.IsNullOrWhiteSpace(A.Asp_Notas))
+                    {
+                        <hr />
+                        <h6 class="font-weight-bold mb-2">Notas</h6>
+                        <p class="lde-texto-largo mb-0">@A.Asp_Notas</p>
+                    }
+                </div>
+            </section>
+        </div>
+
+        <div class="col-lg-4">
+            @* ── Cupo del grado ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="lde-cupo-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="lde-cupo-titulo">Cupo de @A.Cun_Descripcion</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    @if (A.CupoDefinido)
+                    {
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span class="text-muted">Ocupados</span>
+                            <strong>@ocupados de @A.Cupo</strong>
+                        </div>
+                        <div class="progress mb-3" role="progressbar" aria-valuenow="@pct" aria-valuemin="0" aria-valuemax="100" aria-label="Asientos ocupados">
+                            <div class="progress-bar @(A.Libres > 0 ? "bg-gradient-primary" : "bg-danger")" style="width:@(pct)%"></div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="mb-3"><span class="badge outline-badge-warning">Cupo sin definir</span></p>
+                        <p class="text-muted small">@A.SeccionesConCupo de @A.Secciones secciones del año tienen cupo. Se puede ofrecer, pero sin control de asientos.</p>
+                    }
+                    <dl class="lde-datos mb-0">
+                        <dt>Matriculados</dt><dd>@A.Matriculados</dd>
+                        <dt>Ofertas abiertas</dt><dd>@A.Ofertas</dd>
+                        <dt>En espera</dt><dd>@A.EnCola</dd>
+                        <dt>Libres</dt><dd class="font-weight-bold">@(A.Libres.HasValue ? A.Libres.ToString() : "—")</dd>
+                    </dl>
+                </div>
+            </section>
+
+            @* ── Línea de tiempo ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="lde-historial-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="lde-historial-titulo">Historial</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    @if (M.Historial.Count == 0)
+                    {
+                        <p class="text-muted mb-0">Sin movimientos.</p>
+                    }
+                    else
+                    {
+                        <div class="widget-activity-five lde-linea">
+                            <div class="timeline-line">
+                                @foreach (var h in M.Historial)
+                                {
+                                    bool mismo = h.Ash_EstadoAnterior != null && h.Ash_EstadoAnterior == h.Ash_EstadoNuevo;
+                                    string punto = h.Ash_EstadoAnterior == null ? "t-primary"
+                                                 : mismo ? "t-secondary"
+                                                 : h.Ash_EstadoNuevo switch { "OF" => "t-warning", "MA" => "t-success", "RE" => "t-danger", "DE" => "t-dark", _ => "t-primary" };
+                                    string icono = h.Ash_EstadoAnterior == null ? "bi-plus-lg"
+                                                 : mismo ? "bi-pencil"
+                                                 : h.Ash_EstadoNuevo switch { "OF" => "bi-envelope-paper", "MA" => "bi-person-check", "RE" => "bi-x-lg", "DE" => "bi-box-arrow-left", _ => "bi-arrow-counterclockwise" };
+                                    string titulo = h.Ash_EstadoAnterior == null ? "Registrado en la lista"
+                                                  : mismo ? "Datos actualizados"
+                                                  : estadoTexto(h.Ash_EstadoAnterior) + " → " + estadoTexto(h.Ash_EstadoNuevo);
+                                    <div class="item-timeline">
+                                        <div class="t-dot"><div class="@punto"><i class="bi @icono" aria-hidden="true"></i></div></div>
+                                        <div class="t-content">
+                                            <div class="t-uppercontent">
+                                                <h5>@titulo</h5>
+                                            </div>
+                                            <p>@FormatoCaso.DiaHora(h.Ash_Fecha)@(string.IsNullOrWhiteSpace(h.Usuario) ? "" : " · " + h.Usuario)</p>
+                                            @if (!string.IsNullOrWhiteSpace(h.Ash_Motivo))
+                                            {
+                                                <p class="lde-linea-motivo">@h.Ash_Motivo</p>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<partial name="_ModalEstado" />
+
+@section Scripts{
+    <script src="~/Content/js/pages/lista-espera.js" asp-append-version="true"></script>
+}
