@@ -23,13 +23,14 @@ window.AlumnoFicha = (function () {
         asistencia:  '/Alumnos/GetAsistenciaAsync',
         pagos:       '/Alumnos/GetPagosAsync',
         familia:     '/Alumnos/GetFamiliaAsync',
+        salud:       '/FichasSalud/TabAsync',   // solo existe si el usuario tiene "Fichas de salud"
         documentos:  '/Alumnos/GetDocumentosAsync',
         historial:   '/Alumnos/GetHistorialAsync'
     };
 
     // Tabs que se cargan de forma perezosa (excepto 'datos' que ya está
     // en el HTML server-side, y 'resumen' que se carga como default).
-    var LAZY_TABS = ['resumen', 'academico', 'asistencia', 'pagos', 'familia', 'documentos', 'historial'];
+    var LAZY_TABS = ['resumen', 'academico', 'asistencia', 'pagos', 'familia', 'salud', 'documentos', 'historial'];
 
     // --------------------------------------------------
     // Estado del módulo

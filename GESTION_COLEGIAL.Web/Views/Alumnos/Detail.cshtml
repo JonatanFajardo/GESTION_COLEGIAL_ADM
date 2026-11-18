@@ -5,6 +5,7 @@
 }
 @section Styles{
     <link href="~/Content/css/pages/alumno-ficha.css" rel="stylesheet" />
+    <link href="~/css/pages/fichas-salud.css" rel="stylesheet" asp-append-version="true" />
 }
 @{
     var estadoColor = Model.Est_Descripcion == "Activo" ? "badge-success" :
@@ -21,6 +22,10 @@
     var gradoDescripcion = !string.IsNullOrEmpty(Model.Cun_Descripcion) ? Model.Cun_Descripcion
                          : !string.IsNullOrEmpty(Model.Cno_Descripcion) ? Model.Cno_Descripcion
                          : null;
+
+    // Pestaña "Salud": solo con el permiso "Fichas de salud" (el endpoint también lo exige).
+    bool verSalud = (Session["RoleName"] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase)
+                    || GESTION_COLEGIAL.UI.Filters.SessionManager.TienePantalla(Session["pantallas"] as string, "Fichas de salud");
 }
 
 <div class="breadcrumb-wrapper-content">
@@ -169,6 +174,10 @@
             <li class="nav-item"><a href="#" class="nav-link af-tab" data-tab="asistencia" role="tab" aria-selected="false"><i class="bi bi-calendar-check mr-1"></i>Asistencia</a></li>
             <li class="nav-item"><a href="#" class="nav-link af-tab" data-tab="pagos" role="tab" aria-selected="false"><i class="bi bi-cash-stack mr-1"></i>Pagos</a></li>
             <li class="nav-item"><a href="#" class="nav-link af-tab" data-tab="familia" role="tab" aria-selected="false"><i class="bi bi-people mr-1"></i>Familia</a></li>
+            @if (verSalud)
+            {
+                <li class="nav-item"><a href="#" class="nav-link af-tab" data-tab="salud" role="tab" aria-selected="false"><i class="bi bi-heart-pulse mr-1"></i>Salud</a></li>
+            }
             <li class="nav-item"><a href="#" class="nav-link af-tab" data-tab="documentos" role="tab" aria-selected="false"><i class="bi bi-file-earmark-text mr-1"></i>Documentos</a></li>
             <li class="nav-item"><a href="#" class="nav-link af-tab" data-tab="historial" role="tab" aria-selected="false"><i class="bi bi-clock-history mr-1"></i>Historial</a></li>
         </ul>
@@ -363,6 +372,10 @@
     <div class="af-tab-panel" id="af-tab-content-asistencia" role="tabpanel" hidden></div>
     <div class="af-tab-panel" id="af-tab-content-pagos"      role="tabpanel" hidden></div>
     <div class="af-tab-panel" id="af-tab-content-familia"    role="tabpanel" hidden></div>
+    @if (verSalud)
+    {
+        <div class="af-tab-panel" id="af-tab-content-salud"  role="tabpanel" hidden></div>
+    }
     <div class="af-tab-panel" id="af-tab-content-documentos" role="tabpanel" hidden></div>
     <div class="af-tab-panel" id="af-tab-content-historial"  role="tabpanel" hidden></div>
 
