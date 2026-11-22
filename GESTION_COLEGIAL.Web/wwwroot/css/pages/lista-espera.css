@@ -1,0 +1,72 @@
+/* Lista de espera de admisión: color de cada indicador (paleta aprobada), datos en pares,
+   línea de tiempo (sobre la de CORK widget-activity-five) y el resultado del registro.
+   Colores explícitos en cada capa para el contraste en tema claro, azul y oscuro. */
+
+/* ── Indicadores: indigo / ámbar / esmeralda / cian ── */
+.lde-kpi-indigo .w-icon { color: #4f46e5; background: #eef2ff; }
+.lde-kpi-ambar .w-icon { color: #b45309; background: #fef3c7; }
+.lde-kpi-esmeralda .w-icon { color: #047857; background: #d1fae5; }
+.lde-kpi-cian .w-icon { color: #0e7490; background: #cffafe; }
+.lde-kpi { height: 100%; }
+.lde-kpi .w-icon { justify-content: center; }
+
+html.gc-theme-blue .lde-kpi-indigo .w-icon { color: #4f46e5; background: #eef2ff; }
+html.gc-theme-blue .lde-kpi-ambar .w-icon { color: #b45309; background: #fef3c7; }
+html.gc-theme-blue .lde-kpi-esmeralda .w-icon { color: #047857; background: #d1fae5; }
+html.gc-theme-blue .lde-kpi-cian .w-icon { color: #0e7490; background: #cffafe; }
+
+html.gc-dark .lde-kpi-indigo .w-icon { color: #a5b4fc; background: rgba(79, 70, 229, 0.22); }
+html.gc-dark .lde-kpi-ambar .w-icon { color: #fcd34d; background: rgba(245, 158, 11, 0.22); }
+html.gc-dark .lde-kpi-esmeralda .w-icon { color: #6ee7b7; background: rgba(16, 185, 129, 0.22); }
+html.gc-dark .lde-kpi-cian .w-icon { color: #67e8f9; background: rgba(6, 182, 212, 0.22); }
+
+/* ── Resumen por grado ── */
+.lde-resumen td, .lde-resumen th { vertical-align: middle; white-space: nowrap; }
+.lde-resumen td:last-child { white-space: normal; }
+
+/* ── Pares etiqueta / valor ── */
+.lde-datos {
+    display: grid;
+    /* La etiqueta larga ("Escuela de procedencia") se parte en dos líneas; el valor conserva el ancho. */
+    grid-template-columns: minmax(5rem, 6.5rem) minmax(0, 1fr);
+    gap: 0.35rem 1rem;
+    font-size: 0.875rem;
+}
+/* En la tarjeta de cupo las etiquetas son cortas y la columna es angosta: que no se partan. */
+section[aria-labelledby="lde-cupo-titulo"] .lde-datos { grid-template-columns: max-content minmax(0, 1fr); }
+.lde-datos dt { font-weight: normal; color: #6b7280; }
+.lde-datos dd { margin: 0; color: #1f2937; overflow-wrap: anywhere; }
+html.gc-dark .lde-datos dt { color: #94a3b8; }
+html.gc-dark .lde-datos dd { color: #e2e8f0; }
+
+.lde-texto-largo { white-space: pre-line; }
+
+/* ── Línea de tiempo (CORK widget-activity-five, sin su alto fijo) ── */
+.lde-linea .timeline-line .item-timeline { margin-bottom: 1.25rem; }
+.lde-linea .timeline-line .item-timeline:last-child { margin-bottom: 0; }
+.lde-linea .timeline-line .item-timeline .t-dot div i { color: #ffffff; font-size: 0.85rem; line-height: 1; align-self: center; }
+.lde-linea .timeline-line .item-timeline .t-dot:after { top: 38px; bottom: -18px; left: 16px; }
+.lde-linea .timeline-line .item-timeline .t-content .t-uppercontent h5 { color: #1f2937; font-size: 0.875rem; }
+.lde-linea .timeline-line .item-timeline .t-content p { color: #6b7280; font-weight: 500; }
+.lde-linea .timeline-line .item-timeline .t-content p.lde-linea-motivo { color: #374151; font-weight: normal; margin-top: 0.15rem; white-space: pre-line; }
+html.gc-dark .lde-linea .timeline-line .item-timeline .t-content .t-uppercontent h5 { color: #e2e8f0; }
+html.gc-dark .lde-linea .timeline-line .item-timeline .t-content p { color: #94a3b8; }
+html.gc-dark .lde-linea .timeline-line .item-timeline .t-content p.lde-linea-motivo { color: #cbd5e1; }
+
+/* ── Resultado del registro ── */
+.lde-resultado-icono { font-size: 3rem; line-height: 1; color: #047857; }
+.lde-resultado-posicion { font-size: 2.25rem; font-weight: 700; color: #4f46e5; line-height: 1.1; }
+html.gc-dark .lde-resultado-icono { color: #6ee7b7; }
+html.gc-dark .lde-resultado-posicion { color: #a5b4fc; }
+
+/* ── Acciones de la tabla ── */
+.lde-acciones .btn { padding: 0.15rem 0.45rem; }
+.lde-acciones .btn + .btn { margin-left: 0.25rem; }
+
+/* Celdas de dos líneas en la tabla (Tabulator las alinea en fila: se envuelven en un bloque). */
+.lde-celda { min-width: 0; width: 100%; overflow: hidden; }
+#tabla-espera .tabulator-row .tabulator-cell { font-size: 0.875rem; }
+.lde-celda .lde-nombre { font-weight: 600; }
+.lde-celda > a, .lde-celda > span { display: block; }
+.lde-celda > a, .lde-celda > span:first-child { white-space: normal; overflow-wrap: anywhere; line-height: 1.3; }
+.lde-celda > span.small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

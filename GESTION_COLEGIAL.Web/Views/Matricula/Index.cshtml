@@ -26,6 +26,24 @@
         </div>
     </div>
 
+    @* Desde la lista de espera (?aspiranteId=): aviso y datos precargados. Sin ese parámetro no aparece nada. *@
+    @if (ViewBag.Aspirante is GESTION_COLEGIAL.Business.Models.AspiranteViewModel asp)
+    {
+        <div class="alert alert-light-info mb-4" role="status">
+            <i class="bi bi-list-ol mr-1" aria-hidden="true"></i>
+            <strong>Matrícula desde la lista de espera: @asp.Aspirante</strong> (cupo ofrecido en @asp.Cun_Descripcion).
+            Los datos que ya se anotaron vienen cargados; complete lo que falta. Al confirmar, el aspirante quedará como matriculado.
+            <a href="@Url.Action("Aspirante", "ListaEspera", new { id = asp.Asp_Id })" class="ml-1">Volver al aspirante</a>
+        </div>
+    }
+    else if (ViewBag.AspiranteAviso is string avisoAsp)
+    {
+        <div class="alert alert-light-warning mb-4" role="alert">
+            <i class="fas fa-exclamation-triangle mr-1" aria-hidden="true"></i> @avisoAsp
+            <a href="@Url.Action("Index", "ListaEspera")" class="ml-1">Ir a la lista de espera</a>
+        </div>
+    }
+
     <ul class="mat-steps" id="matSteps">
         <li data-step="1" class="active"><span class="mat-step-num">1</span><br>Datos del alumno</li>
         <li data-step="2"><span class="mat-step-num">2</span><br>Encargado</li>
@@ -364,7 +382,8 @@
             urlGuardarEnc:   "@Url.Action("GuardarEncargadoAsync", "Matricula")",
             urlGuardarAlu:   "@Url.Action("GuardarAlumnoAsync", "Matricula")",
             urlDocumentos:   "@Url.Action("Index", "DocumentosAlumnoAdm")",
-            urlAlumnos:      "@Url.Action("Index", "Alumnos")"
+            urlAlumnos:      "@Url.Action("Index", "Alumnos")",
+            aspirante:       @Html.Raw(ViewBag.AspiranteJson ?? "null")
         });
     </script>
 }
