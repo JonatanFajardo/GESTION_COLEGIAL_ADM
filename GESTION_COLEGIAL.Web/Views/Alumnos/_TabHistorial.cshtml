@@ -1,4 +1,4 @@
-@using System.Collections.Generic
+﻿@using System.Collections.Generic
 @using System.Globalization
 @model List<dynamic>
 @{
@@ -6,13 +6,13 @@
 
     string ColorPorTabla(string tabla)
     {
-        if (string.IsNullOrEmpty(tabla)) return "#6b7280";
+        if (string.IsNullOrEmpty(tabla)) return "badge-secondary";
         switch (tabla.ToLowerInvariant())
         {
-            case "alumnos": return "#4f46e5";              // indigo
-            case "matriculas": return "#22c55e";           // verde
-            case "encargados_alumnos": return "#06b6d4";   // cyan
-            default: return "#6b7280";                     // gris
+            case "alumnos": return "badge-primary";
+            case "matriculas": return "badge-success";
+            case "encargados_alumnos": return "badge-info";
+            default: return "badge-secondary";
         }
     }
 
@@ -31,15 +31,15 @@
     int total = Model != null ? Model.Count : 0;
 }
 
-<div class="af-section-card">
-    <div class="af-section-header">
-        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Historial administrativo</h5>
+<div class="statbox widget box box-shadow">
+    <div class="widget-header d-flex flex-wrap align-items-center justify-content-between mb-3">
+        <h5 class="mb-0"><i class="bi bi-clock-history mr-2"></i>Historial administrativo</h5>
         <span class="text-muted small">@total evento@(total == 1 ? "" : "s") registrado@(total == 1 ? "" : "s")</span>
     </div>
 
     @if (Model == null || total == 0)
     {
-        <div class="af-empty">
+        <div class="text-center py-4">
             <i class="bi bi-inbox display-4 text-muted"></i>
             <p class="text-muted mt-2">No hay eventos registrados aún.</p>
         </div>
@@ -64,17 +64,17 @@
                 catch { }
 
                 <li class="af-timeline-item">
-                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-1">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-1">
                         <div>
-                            <span class="badge me-2" style="background-color:@color;color:#fff;">@etiqueta</span>
+                            <span class="badge @color mr-2">@etiqueta</span>
                             @if (!string.IsNullOrEmpty(accion))
                             {
-                                <span class="badge bg-light text-dark border me-2">@accion</span>
+                                <span class="badge outline-badge-dark mr-2">@accion</span>
                             }
-                            <span class="text-muted small"><i class="bi bi-calendar3 me-1"></i>@fechaStr</span>
+                            <span class="text-muted small"><i class="bi bi-calendar3 mr-1"></i>@fechaStr</span>
                         </div>
                         <span class="text-muted small">
-                            <i class="bi bi-person-circle me-1"></i>@usuario
+                            <i class="bi bi-person-circle mr-1"></i>@usuario
                         </span>
                     </div>
                     @if (!string.IsNullOrEmpty(descripcion))
@@ -86,8 +86,8 @@
         </ul>
     }
 
-    <div class="text-end mt-3">
-        <a href="/Bitacora" class="af-btn-link">
+    <div class="text-right mt-3">
+        <a href="/Bitacora" class="btn btn-sm btn-outline-primary mr-2 mb-2">
             Ver bitácora completa <i class="bi bi-arrow-right"></i>
         </a>
     </div>

@@ -1,4 +1,4 @@
-@using Newtonsoft.Json.Linq
+﻿@using Newtonsoft.Json.Linq
 @{
     Layout = null;
     var encargados = Model as System.Collections.Generic.List<dynamic>;
@@ -54,24 +54,24 @@
 
 @if (encargados == null || !encargados.Any())
 {
-    <div class="af-empty">
-        <i class="bi bi-inbox"></i>
-        <h4>Sin encargados vinculados</h4>
-        <p>Este alumno no tiene encargados registrados en el sistema.</p>
-        <a href="/Encargados/Index" class="af-btn-link">
+    <div class="statbox widget box box-shadow text-center py-5">
+        <i class="bi bi-inbox h1 text-muted d-block"></i>
+        <h5>Sin encargados vinculados</h5>
+        <p class="text-muted">Este alumno no tiene encargados registrados en el sistema.</p>
+        <a href="/Encargados/Index" class="btn btn-sm btn-outline-primary mr-2 mb-2">
             Gestionar encargados <i class="bi bi-arrow-right"></i>
         </a>
     </div>
     return;
 }
 
-<div class="af-section-card">
-    <div class="af-section-header">
-        <h5 class="mb-0"><i class="bi bi-people-fill me-2"></i>Encargados del alumno</h5>
+<div class="statbox widget box box-shadow">
+    <div class="widget-header d-flex flex-wrap align-items-center justify-content-between mb-3">
+        <h5 class="mb-0"><i class="bi bi-people-fill mr-2"></i>Encargados del alumno</h5>
         <span class="text-muted small">@encargados.Count registrado@(encargados.Count == 1 ? "" : "s")</span>
     </div>
 
-    <div class="af-family-grid">
+    <div class="row">
         @{ var idx = 0; }
         @foreach (var enc in encargados)
         {
@@ -89,61 +89,60 @@
             var color = colores[idx % colores.Length];
             idx++;
 
-            <div class="af-family-card">
-                <div class="d-flex align-items-start gap-3">
-                    <div class="af-avatar-circle d-flex align-items-center justify-content-center"
-                         style="width:52px;height:52px;border-radius:50%;font-weight:700;flex-shrink:0;background:@color;color:#fff;">
+            <div class="col-md-6 mb-3"><div class="border rounded p-3 h-100">
+                <div class="d-flex align-items-start">
+                    <div class="af-avatar-circle rounded-circle d-flex align-items-center justify-content-center font-weight-bold text-white mr-3" style="background:@color;">
                         @iniciales(nombre)
                     </div>
                     <div class="flex-grow-1">
-                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <strong>@(string.IsNullOrWhiteSpace(nombre) ? "(Sin nombre)" : nombre)</strong>
+                        <div class="d-flex align-items-center flex-wrap mb-1">
+                            <strong class="mr-2">@(string.IsNullOrWhiteSpace(nombre) ? "(Sin nombre)" : nombre)</strong>
                             @if (esPrincipal)
                             {
-                                <span class="badge" style="background-color:#f97316;color:#fff;">
+                                <span class="badge badge-primary">
                                     <i class="bi bi-star-fill"></i> Encargado principal
                                 </span>
                             }
                         </div>
                         <div class="mb-2">
-                            <span class="badge bg-light text-dark border">@parentesco</span>
+                            <span class="badge outline-badge-dark">@parentesco</span>
                             @if (!string.IsNullOrWhiteSpace(ocupacion))
                             {
-                                <span class="badge bg-light text-muted border ms-1">@ocupacion</span>
+                                <span class="badge outline-badge-secondary ml-1">@ocupacion</span>
                             }
                         </div>
                         @if (!string.IsNullOrWhiteSpace(telefono))
                         {
                             <div class="small text-muted mb-1">
-                                <i class="bi bi-telephone me-1"></i>@telefono
+                                <i class="bi bi-telephone mr-1"></i>@telefono
                             </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(email))
                         {
                             <div class="small text-muted mb-1">
-                                <i class="bi bi-envelope me-1"></i>@email
+                                <i class="bi bi-envelope mr-1"></i>@email
                             </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(direccion))
                         {
                             <div class="small text-muted mb-2">
-                                <i class="bi bi-geo-alt me-1"></i>@direccion
+                                <i class="bi bi-geo-alt mr-1"></i>@direccion
                             </div>
                         }
                         @if (encId != null)
                         {
-                            <a href="/Encargados/Detalle/@encId" class="af-btn-link">
+                            <a href="/Encargados/Detalle/@encId" class="btn btn-sm btn-outline-primary mr-2 mb-2">
                                 Ver ficha del encargado <i class="bi bi-arrow-right"></i>
                             </a>
                         }
                     </div>
                 </div>
-            </div>
+            </div></div>
         }
     </div>
 
-    <div class="text-end mt-3">
-        <a href="/Encargados/Index" class="af-btn-link">
+    <div class="text-right mt-3">
+        <a href="/Encargados/Index" class="btn btn-sm btn-outline-primary mr-2 mb-2">
             Ver todos los encargados <i class="bi bi-arrow-right"></i>
         </a>
     </div>

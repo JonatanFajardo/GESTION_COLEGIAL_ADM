@@ -14,10 +14,17 @@
     </nav>
 </div>
 
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Reporte de Morosos</h4>
+        <p class="text-muted mb-0">Alumnos con pagos vencidos y su deuda acumulada.</p>
+    </div>
+</div>
+
 <div class="fluid-container">
     <!-- Filtros -->
-    <div class="card mb-3">
-        <div class="card-body">
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
             <div class="row">
                 <div class="col-md-10">
                     <label>Filtrar por días de atraso:</label>
@@ -30,8 +37,8 @@
                 </div>
                 <div class="col-md-2">
                     <label>&nbsp;</label>
-                    <button type="button" class="btn btn-success btn-block" id="btn-exportar">
-                        <i class="mdi mdi-file-excel"></i> Exportar
+                    <button type="button" class="btn btn-outline-primary btn-block" id="btn-exportar">
+                        <i class="bi bi-file-earmark-excel mr-1"></i> Exportar
                     </button>
                 </div>
             </div>
@@ -39,48 +46,65 @@
     </div>
 
     <!-- Resumen -->
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Total Morosos</h5>
-                    <h3 class="text-danger" id="total-morosos">0</h3>
+    <div class="row">
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-danger" id="total-morosos">0</h6>
+                            <p>Total Morosos</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Deuda Total</h5>
-                    <h3 class="text-warning" id="deuda-total">L. 0.00</h3>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-warning" id="deuda-total">L. 0.00</h6>
+                            <p>Deuda Total</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Mora Acumulada</h5>
-                    <h3 class="text-danger" id="mora-acumulada">L. 0.00</h3>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-danger" id="mora-acumulada">L. 0.00</h6>
+                            <p>Mora Acumulada</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Promedio Deuda</h5>
-                    <h3 class="text-info" id="promedio-deuda">L. 0.00</h3>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-info" id="promedio-deuda">L. 0.00</h6>
+                            <p>Promedio Deuda</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Listado -->
-    <div class="card">
-        <div class="card-header" style="background-color:white;">
-            <h4>Lista de Alumnos Morosos</h4>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Lista de Alumnos Morosos</h4></div></div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered nowrap" id="datatable">
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive">
+            <table class="table table-hover nowrap" id="datatable">
                 <thead>
                     <tr>
                         <th>Alumno</th>
@@ -95,6 +119,7 @@
                     </tr>
                 </thead>
             </table>
+            </div>
         </div>
     </div>
 </div>

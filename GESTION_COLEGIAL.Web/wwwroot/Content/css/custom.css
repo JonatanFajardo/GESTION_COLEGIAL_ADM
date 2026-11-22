@@ -1,487 +1,5 @@
-﻿#datatable_filter label {
-  width: 100%;
-}
+/* CSS propio compartido: solo piezas que la plantilla CORK no trae (ver docs/guia-ui.md). */
 
-.breadcrumb {
-  background-color: #fcead4;
-}
-
-.breadcrumb-item.active {
-  color: #655b51;
-}
-
-/*#card-home {
-    background-color: $primary;
-
-}*/
-#card-home h1, h6, p {
-  color: white;
-}
-
-.card-header {
-  background-color: white;
-}
-
-#datatable_filter label {
-  width: 100%;
-}
-
-.breadcrumb {
-  background-color: #fcead4;
-}
-
-.breadcrumb-item.active {
-  color: #655b51;
-}
-
-.card-home {
-  background-color: #F7A400;
-}
-
-/* ==================================
-   Estilos Modernos para Alumnos
-   ================================== */
-/* Breadcrumb Mejorado */
-.breadcrumb-wrapper-content {
-  margin-bottom: 20px;
-}
-
-.breadcrumb-style-one {
-  background: transparent;
-  padding: 0;
-}
-
-.breadcrumb-style-one .breadcrumb {
-  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-  padding: 12px 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  margin-bottom: 0;
-}
-
-.breadcrumb-style-one .breadcrumb-item a {
-  color: #F7A400;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.breadcrumb-style-one .breadcrumb-item a:hover {
-  color: #d89000;
-  text-decoration: none;
-}
-
-/* Card Principal de Alumnos */
-.fluid-container > .card {
-  border: none;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.fluid-container > .card:hover {
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
-  transform: translateY(-2px);
-}
-
-/* Header de la Card */
-.fluid-container > .card .card-header {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
-  border-bottom: 2px solid #f0f0f0;
-  padding: 24px 28px !important;
-}
-
-.fluid-container > .card .card-header h3 {
-  color: #2c3e50;
-  font-weight: 700;
-  font-size: 26px;
-  margin: 0;
-  letter-spacing: -0.5px;
-}
-
-/* Tabla de Alumnos */
-#datatable {
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-#datatable thead {
-  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
-}
-
-#datatable thead th {
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 13px;
-  letter-spacing: 0.8px;
-  padding: 18px 16px !important;
-  border: none !important;
-  vertical-align: middle;
-}
-
-#datatable thead th:first-child {
-  border-top-left-radius: 12px;
-}
-
-#datatable thead th:last-child {
-  border-top-right-radius: 12px;
-}
-
-#datatable tbody tr {
-  background: #ffffff;
-  transition: all 0.3s ease;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-#datatable tbody tr:hover {
-  background: linear-gradient(135deg, #fff8e6 0%, #fffaf0 100%);
-  transform: scale(1.01);
-  box-shadow: 0 4px 12px rgba(247, 164, 0, 0.15);
-}
-
-#datatable tbody td {
-  padding: 16px !important;
-  vertical-align: middle;
-  color: #495057;
-  font-size: 14px;
-  font-weight: 500;
-  border: none !important;
-}
-
-/* Imagenes de Perfil Mejoradas */
-#datatable tbody td img {
-  width: 48px !important;
-  height: 48px !important;
-  border-radius: 12px !important;
-  object-fit: cover;
-  border: 3px solid #F7A400 !important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-}
-
-#datatable tbody tr:hover td img {
-  transform: scale(1.15) rotate(3deg);
-  box-shadow: 0 6px 16px rgba(247, 164, 0, 0.4);
-}
-
-/* Badges de Estado Modernos */
-.badge {
-  padding: 8px 16px !important;
-  border-radius: 20px !important;
-  font-weight: 600 !important;
-  font-size: 12px !important;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-/* 
-.badge-success {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-  color: #ffffff !important;
-  border: none !important;
-}
-
-.badge-warning {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
-  color: #ffffff !important;
-  border: none !important;
-}
-
-.badge-primary {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
-  color: #ffffff !important;
-  border: none !important;
-} */
-.badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Botones de Accion */
-#datatable .edit-btn svg,
-#datatable .delete-btn svg {
-  transition: all 0.3s ease;
-}
-
-#datatable .edit-btn:hover svg {
-  color: #F7A400 !important;
-  transform: scale(1.2) rotate(10deg);
-  filter: drop-shadow(0 2px 4px rgba(247, 164, 0, 0.4));
-}
-
-#datatable .delete-btn:hover svg {
-  color: #dc3545 !important;
-  transform: scale(1.2) rotate(-10deg);
-  filter: drop-shadow(0 2px 4px rgba(220, 53, 69, 0.4));
-}
-
-/* Contenedor de la Tabla */
-.table-responsive {
-  border-radius: 0 0 16px 16px;
-  overflow: hidden;
-  padding: 20px;
-}
-
-/* Paginacion Mejorada */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-  border-radius: 8px !important;
-  margin: 0 4px;
-  transition: all 0.3s ease;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%) !important;
-  color: #ffffff !important;
-  border-color: #F7A400 !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%) !important;
-  color: #ffffff !important;
-  border-color: #F7A400 !important;
-}
-
-/* Buscador Mejorado */
-#datatable_filter input {
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 10px 16px;
-  transition: all 0.3s ease;
-  font-size: 14px;
-}
-
-#datatable_filter input:focus {
-  border-color: #F7A400;
-  box-shadow: 0 0 0 3px rgba(247, 164, 0, 0.1);
-  outline: none;
-}
-
-/* Botones de Exportacion */
-.dt-buttons .btn {
-  border-radius: 10px !important;
-  padding: 10px 18px !important;
-  font-weight: 600 !important;
-  margin: 0 6px !important;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.dt-buttons .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.dt-buttons .btn-primary {
-  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%) !important;
-  border: none !important;
-}
-
-.dt-buttons .btn-secondary {
-  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%) !important;
-  border: none !important;
-}
-
-/* Informacion de Registros */
-.dataTables_info {
-  color: #6c757d;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-/* Animacion de Carga */
-.dataTables_processing {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* DataTables Wrapper - Ajustes generales */
-.dataTables_wrapper {
-  padding: 0 !important;
-}
-
-.dataTables_wrapper .row {
-  margin: 0 !important;
-}
-
-/* Area de busqueda y botones superiores */
-.dataTables_wrapper .custom-buttons {
-  gap: 8px;
-}
-
-.dataTables_wrapper .custom-buttons .btn {
-  white-space: nowrap;
-}
-
-/* Mejora del icono de ordenamiento */
-#datatable thead th.sorting,
-#datatable thead th.sorting_asc,
-#datatable thead th.sorting_desc {
-  position: relative;
-  cursor: pointer;
-}
-
-#datatable thead th.sorting:after,
-#datatable thead th.sorting_asc:after,
-#datatable thead th.sorting_desc:after {
-  opacity: 0.6;
-  font-size: 0.9em;
-  margin-left: 6px;
-}
-
-#datatable thead th.sorting:hover,
-#datatable thead th.sorting_asc:hover,
-#datatable thead th.sorting_desc:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* Select de registros por pagina */
-.dataTables_length select {
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 6px 12px;
-  margin: 0 8px;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  color: #495057;
-}
-
-.dataTables_length select:focus {
-  border-color: #F7A400;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(247, 164, 0, 0.1);
-}
-
-/* Tooltips mejorados */
-.bs-tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-/* Animacion de entrada de filas */
-#datatable tbody tr {
-  animation: fadeInRow 0.4s ease-in-out;
-}
-
-@keyframes fadeInRow {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-/* Mejora del mensaje de "sin datos" */
-.dataTables_empty {
-  padding: 40px 20px !important;
-  text-align: center;
-  color: #6c757d;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-/* Loader personalizado */
-.dataTables_processing {
-  padding: 20px !important;
-}
-
-/* Estilos para el modal de eliminar */
-#delete-modal-secondary .modal-content {
-  border-radius: 16px;
-  border: none;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-
-#delete-modal-secondary .modal-header {
-  background: linear-gradient(135deg, #F7A400 0%, #fdb52e 100%);
-  border-radius: 16px 16px 0 0;
-  color: white;
-  border-bottom: none;
-  padding: 20px 24px;
-}
-
-#delete-modal-secondary .modal-body {
-  padding: 30px 24px;
-}
-
-#delete-modal-secondary .modal-footer {
-  border-top: 1px solid #e0e0e0;
-  padding: 16px 24px;
-}
-
-#delete-modal-secondary .btn-danger {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-  border: none;
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-#delete-modal-secondary .btn-danger:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
-}
-
-#delete-modal-secondary .btn-secondary {
-  border-radius: 8px;
-  padding: 10px 24px;
-  font-weight: 600;
-}
-
-/* Mejora de la experiencia tactil en moviles */
-@media (hover: none) and (pointer: coarse) {
-  #datatable tbody tr:hover {
-    transform: none;
-  }
-  #datatable tbody tr:active {
-    background: linear-gradient(135deg, #fff8e6 0%, #fffaf0 100%);
-  }
-}
-/* Responsive */
-@media (max-width: 768px) {
-  .fluid-container > .card .card-header h3 {
-    font-size: 20px;
-  }
-  #datatable thead th {
-    font-size: 11px;
-    padding: 14px 10px !important;
-  }
-  #datatable tbody td {
-    padding: 12px 8px !important;
-    font-size: 13px;
-  }
-  #datatable tbody td img {
-    width: 40px !important;
-    height: 40px !important;
-  }
-  .dt-buttons .btn {
-    padding: 8px 12px !important;
-    font-size: 12px;
-  }
-  .dataTables_wrapper .custom-buttons {
-    flex-wrap: wrap;
-  }
-}
-@media (max-width: 576px) {
-  .fluid-container > .card .card-header {
-    padding: 18px 20px !important;
-  }
-  .fluid-container > .card .card-header h3 {
-    font-size: 18px;
-  }
-  .table-responsive {
-    padding: 12px;
-  }
-  .badge {
-    padding: 6px 12px !important;
-    font-size: 10px !important;
-  }
-}
 /* ==================================
    Estilos para Sidebar
    ================================== */
@@ -537,3 +55,197 @@
   color: #374151 !important;
   font-size: 14px;
 }
+
+/* ── Paleta de comandos (Ctrl+K) — componente sin equivalente en CORK ── */
+:root {
+        --cmdk-bg: #ffffff;
+        --cmdk-ink: #1a1c2e;
+        --cmdk-muted: #6b6f89;
+        --cmdk-line: #e9eaf3;
+        --cmdk-hover: #f4f5fb;
+        --cmdk-accent: #4f46e5;
+        --cmdk-accent-soft: #eef0fe;
+        --cmdk-shadow: 0 20px 60px rgba(20, 22, 45, .28);
+    }
+    .gc-dark {
+        --cmdk-bg: #191b27;
+        --cmdk-ink: #eceef7;
+        --cmdk-muted: #9a9fbf;
+        --cmdk-line: #2a2d3d;
+        --cmdk-hover: #232532;
+        --cmdk-accent: #8b85f5;
+        --cmdk-accent-soft: #262747;
+        --cmdk-shadow: 0 20px 60px rgba(0, 0, 0, .55);
+    }
+
+    .cmdk-backdrop {
+        position: fixed; inset: 0; z-index: 1080;
+        background: rgba(20, 22, 45, .45);
+        backdrop-filter: blur(2px);
+        opacity: 0; visibility: hidden; transition: opacity .16s ease, visibility .16s;
+    }
+    .cmdk-backdrop.is-open { opacity: 1; visibility: visible; }
+
+    .cmdk-panel {
+        position: fixed; z-index: 1090;
+        top: 12vh; left: 50%; transform: translateX(-50%) scale(.97);
+        width: min(640px, calc(100vw - 32px));
+        max-height: 72vh; display: flex; flex-direction: column;
+        background: var(--cmdk-bg); color: var(--cmdk-ink);
+        border: 1px solid var(--cmdk-line); border-radius: 16px;
+        box-shadow: var(--cmdk-shadow); overflow: hidden;
+        font-family: 'Quicksand', system-ui, sans-serif;
+        opacity: 0; visibility: hidden; transition: opacity .16s ease, transform .16s ease, visibility .16s;
+    }
+    .cmdk-panel.is-open { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
+
+    .cmdk-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--cmdk-line); }
+    .cmdk-head-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .cmdk-title { font-size: 15px; font-weight: 700; color: var(--cmdk-ink); }
+    .cmdk-role {
+        font-size: 11px; font-weight: 700; letter-spacing: .02em; text-transform: capitalize;
+        color: var(--cmdk-accent); background: var(--cmdk-accent-soft);
+        padding: 3px 10px; border-radius: 999px;
+    }
+    .cmdk-search { position: relative; display: flex; align-items: center; }
+    .cmdk-search-ic { position: absolute; left: 12px; color: var(--cmdk-muted); pointer-events: none; }
+    #cmdk-input {
+        width: 100%; padding: 11px 44px 11px 38px;
+        border: 1.5px solid var(--cmdk-line); border-radius: 11px;
+        background: var(--cmdk-hover); color: var(--cmdk-ink);
+        font-size: 15px; font-family: inherit; outline: none;
+    }
+    #cmdk-input:focus { border-color: var(--cmdk-accent); background: var(--cmdk-bg); box-shadow: 0 0 0 3px var(--cmdk-accent-soft); }
+    .cmdk-esc {
+        position: absolute; right: 10px; font-size: 10px; font-weight: 700;
+        color: var(--cmdk-muted); background: var(--cmdk-bg);
+        border: 1px solid var(--cmdk-line); border-radius: 5px; padding: 2px 6px;
+    }
+
+    .cmdk-results { overflow-y: auto; padding: 8px; flex: 1; }
+    .cmdk-group-label {
+        font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+        color: var(--cmdk-muted); padding: 12px 10px 6px;
+    }
+    .cmdk-item {
+        display: flex; align-items: center; gap: 12px;
+        padding: 9px 10px; border-radius: 10px; cursor: pointer;
+        text-decoration: none; color: var(--cmdk-ink);
+    }
+    .cmdk-item:hover,.cmdk-item.is-active { background: var(--cmdk-hover); }
+    .cmdk-item.is-active { box-shadow: inset 0 0 0 1.5px var(--cmdk-accent-soft); }
+    .cmdk-item-ic {
+        flex: 0 0 30px; height: 30px; width: 30px; border-radius: 8px;
+        display: grid; place-items: center; color: var(--cmdk-accent);
+        background: var(--cmdk-accent-soft);
+    }
+    .cmdk-item-body { min-width: 0; flex: 1; }
+    .cmdk-item-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cmdk-item-path { font-size: 11.5px; color: var(--cmdk-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cmdk-item-title mark { background: transparent; color: var(--cmdk-accent); font-weight: 700; padding: 0; }
+    .cmdk-item-go { flex: 0 0 auto; color: var(--cmdk-muted); opacity: 0; }
+    .cmdk-item.is-active .cmdk-item-go { opacity: 1; }
+    .cmdk-empty { text-align: center; color: var(--cmdk-muted); padding: 40px 20px; font-size: 14px; }
+
+    .cmdk-foot {
+        display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+        padding: 9px 16px; border-top: 1px solid var(--cmdk-line);
+        font-size: 11px; color: var(--cmdk-muted);
+    }
+    .cmdk-foot-spacer { flex: 1; }
+    .cmdk-foot kbd,.cmdk-welcome kbd {
+        font-family: inherit; font-size: 10px; font-weight: 700;
+        background: var(--cmdk-hover); border: 1px solid var(--cmdk-line);
+        border-radius: 4px; padding: 1px 5px; margin: 0 1px; color: var(--cmdk-muted);
+    }
+
+    /* ── Botón que vive en el sidebar ── */
+    .cmdk-trigger {
+        display: flex; align-items: center; gap: 8px; width: 100%;
+        margin: 0; padding: 9px 12px; cursor: pointer;
+        background: rgba(255,255,255,.08); color: #fff;
+        border: 1px solid rgba(255,255,255,.14); border-radius: 10px;
+        font-family: inherit; font-size: 13px; font-weight: 600; text-align: left;
+        transition: background .15s;
+    }
+    .cmdk-trigger:hover { background: rgba(255,255,255,.16); }
+    .cmdk-trigger .cmdk-trigger-label { flex: 1; opacity: .92; }
+    .cmdk-trigger kbd {
+        font-family: inherit; font-size: 10px; font-weight: 700;
+        background: rgba(255,255,255,.14); border: none; border-radius: 4px;
+        padding: 2px 6px; color: #fff;
+    }
+
+    /* ── Bienvenida ── */
+    .cmdk-welcome {
+        position: fixed; z-index: 1095; top: 50%; left: 50%;
+        transform: translate(-50%, -46%); width: min(440px, calc(100vw - 32px));
+        background: var(--cmdk-bg); color: var(--cmdk-ink);
+        border: 1px solid var(--cmdk-line); border-radius: 18px;
+        box-shadow: var(--cmdk-shadow); padding: 28px 26px 22px; text-align: center;
+        font-family: 'Quicksand', system-ui, sans-serif;
+        opacity: 0; visibility: hidden; transition: opacity .18s ease, transform .18s ease, visibility .18s;
+    }
+    .cmdk-welcome.is-open { opacity: 1; visibility: visible; transform: translate(-50%, -50%); }
+    .cmdk-welcome-ic {
+        width: 54px; height: 54px; margin: 0 auto 14px; border-radius: 14px;
+        display: grid; place-items: center; color: #fff;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+    }
+    .cmdk-welcome h3 { margin: 0 0 8px; font-size: 20px; font-weight: 700; color: var(--cmdk-ink); }
+    .cmdk-welcome p { margin: 0 0 16px; font-size: 14px; line-height: 1.55; color: var(--cmdk-muted); }
+    .cmdk-welcome p strong { color: var(--cmdk-ink); }
+    .cmdk-welcome-hint {
+        font-size: 12.5px; color: var(--cmdk-muted); background: var(--cmdk-hover);
+        border: 1px solid var(--cmdk-line); border-radius: 10px; padding: 10px 12px; margin-bottom: 18px;
+    }
+    .cmdk-welcome-chip { font-weight: 700; color: var(--cmdk-accent); }
+    .cmdk-welcome-actions { display: flex; gap: 10px; justify-content: center; }
+    .cmdk-btn { font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; border-radius: 10px; padding: 10px 18px; border: 1px solid transparent; }
+    .cmdk-btn-ghost { background: transparent; color: var(--cmdk-muted); border-color: var(--cmdk-line); }
+    .cmdk-btn-ghost:hover { background: var(--cmdk-hover); }
+    .cmdk-btn-primary { background: var(--cmdk-accent); color: #fff; }
+    .cmdk-btn-primary:hover { filter: brightness(1.06); }
+
+    @media (prefers-reduced-motion: reduce) {
+        .cmdk-panel,.cmdk-backdrop,.cmdk-welcome { transition: none; }
+    }
+
+/* modules-widgets.css (widgets de dashboard) da 20px de relleno a todo .widget;
+   en la demo de CORK las tarjetas .statbox no cargan ese archivo y no llevan relleno. */
+.statbox.widget {
+    padding: 0;
+}
+
+/* ── GcTabla (Tabulator): densidad, botón de fijar y columnas fijas ──
+   El aspecto base viene del tema Bootstrap 4 de Tabulator, que combina con CORK. */
+.gc-tabla.gc-densidad-comoda .tabulator-row .tabulator-cell { padding-top: 14px; padding-bottom: 14px; }
+.gc-tabla.gc-densidad-normal .tabulator-row .tabulator-cell { padding-top: 8px; padding-bottom: 8px; }
+.gc-tabla.gc-densidad-compacta .tabulator-row .tabulator-cell { padding-top: 2px; padding-bottom: 2px; }
+.gc-tabla.gc-densidad-compacta .avatar-sm { width: 1.75rem; height: 1.75rem; font-size: .7rem; }
+.gc-tabla .gc-tabla-pin { line-height: 1; opacity: .55; }
+.gc-tabla .tabulator-col:hover .gc-tabla-pin,
+.gc-tabla .gc-tabla-pin.text-primary { opacity: 1; }
+.gc-tabla .tabulator-frozen.tabulator-frozen-left { border-right: 2px solid #e0e6ed; }
+.gc-tabla .tabulator-row.tabulator-selected { background-color: #fff3d6; }
+.gc-tabla .tabulator-row.tabulator-selected:hover { background-color: #ffe8b2; }
+.gc-tabla input[type="checkbox"] { accent-color: #F7A400; }
+
+/* ── Tarjetas statbox de CORK ──
+   dt-global_style.css (estilo de tablas de CORK, cargado en todas las pantallas) deja
+   .widget-content-area sin relleno; en la demo solo se usa en páginas de tabla.
+   Se devuelve el relleno de structure.css a las tarjetas, y el título conserva el suyo
+   aunque la tarjeta no esté dentro de una columna de grilla. */
+.statbox .widget-content-area { padding: 20px; }
+.statbox .widget-header h4 {
+    color: #3b3f5c;
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+    padding: 16px 12px;
+}
+html.gc-dark .statbox .widget-header h4 { color: #e2e8f0; }
+@media (max-width: 575px) {
+    .statbox .widget-content-area { padding: 12px; }
+}
+.gc-tabla-columnas { min-width: 200px; max-height: 320px; overflow-y: auto; }

@@ -159,6 +159,9 @@
         return rows;
     }
 
+    // Insignia por tipo de catálogo
+    var TIPO_BADGE = { estados: 'outline-badge-info', parentescos: 'outline-badge-success', titulos: 'outline-badge-secondary', cargos: 'outline-badge-warning' };
+
     function render() {
         var rows = filteredRows();
         var $body = $('#cc-table-body').empty();
@@ -175,17 +178,17 @@
             var cat = CATALOGS[r._tipo];
             var $tr = $(
                 '<tr data-id="' + esc(r.id) + '" data-tipo="' + esc(r._tipo) + '">' +
-                    '<td><span class="cc-badge-tipo" data-type="' + esc(r._tipo) + '">' + esc(cat.plural) + '</span></td>' +
-                    '<td><span class="cc-badge-id">#' + esc(r.id) + '</span></td>' +
-                    '<td class="cc-desc-cell"><strong>' + esc(r.descripcion || '(sin descripción)') + '</strong></td>' +
+                    '<td><span class="badge ' + (TIPO_BADGE[r._tipo] || 'outline-badge-primary') + '" data-type="' + esc(r._tipo) + '">' + esc(cat.plural) + '</span></td>' +
+                    '<td><span class="text-muted">#' + esc(r.id) + '</span></td>' +
+                    '<td><strong>' + esc(r.descripcion || '(sin descripción)') + '</strong></td>' +
                     '<td>' +
-                        '<div class="cc-meta-line">' + esc(fmtDate(r.fecha)) + '</div>' +
-                        (r.usuario ? '<div class="cc-meta-line"><small>por ' + esc(r.usuario) + '</small></div>' : '') +
+                        '<div class="small">' + esc(fmtDate(r.fecha)) + '</div>' +
+                        (r.usuario ? '<div class="small text-muted">por ' + esc(r.usuario) + '</div>' : '') +
                     '</td>' +
-                    '<td class="cc-actions-cell">' +
-                        '<button type="button" class="cc-action-btn view"   title="Detalle"><i class="bi bi-eye"></i></button>' +
-                        '<button type="button" class="cc-action-btn edit"   title="Editar"><i class="bi bi-pencil"></i></button>' +
-                        '<button type="button" class="cc-action-btn delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
+                    '<td class="text-center text-nowrap">' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary cc-action-btn view mr-1" title="Detalle"><i class="bi bi-eye"></i></button>' +
+                        '<button type="button" class="btn btn-sm btn-outline-primary cc-action-btn edit mr-1" title="Editar"><i class="bi bi-pencil"></i></button>' +
+                        '<button type="button" class="btn btn-sm btn-outline-danger cc-action-btn delete" title="Eliminar"><i class="bi bi-trash"></i></button>' +
                     '</td>' +
                 '</tr>'
             );

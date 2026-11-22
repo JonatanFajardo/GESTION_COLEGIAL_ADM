@@ -16,22 +16,17 @@
     </nav>
 </div>
 
-<div class="fan-wrapper">
-
-    <!-- HEADER -->
-    <div class="fan-header">
-        <div class="fan-header-left">
-            <div class="fan-header-icon"><i class="fa-solid fa-chart-line"></i></div>
-            <div>
-                <h2>Estado de Resultados</h2>
-                <div class="fan-header-sub">Resumen de ingresos y egresos por período</div>
-            </div>
-        </div>
-        <div class="fan-controls">
-            <label for="f-anio">Año</label>
-            <input type="number" id="f-anio" value="@ViewBag.AnioActual" min="2020" max="2030" />
-            <label for="f-mes">Mes</label>
-            <select id="f-mes">
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Estado de Resultados</h4>
+        <p class="text-muted mb-0">Resumen de ingresos y egresos por período</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <div class="d-flex flex-wrap align-items-center">
+                <label for="f-anio" class="mb-0 mr-2">Año</label>
+                <input type="number" class="form-control w-auto mr-3" id="f-anio" value="@ViewBag.AnioActual" min="2020" max="2030" />
+                <label for="f-mes" class="mb-0 mr-2">Mes</label>
+                <select id="f-mes" class="custom-select w-auto mr-3">
                 <!option value="1"  @(ViewBag.MesActual == 1  ? "selected" : "")>Enero</!option>
                 <!option value="2"  @(ViewBag.MesActual == 2  ? "selected" : "")>Febrero</!option>
                 <!option value="3"  @(ViewBag.MesActual == 3  ? "selected" : "")>Marzo</!option>
@@ -44,85 +39,92 @@
                 <!option value="10" @(ViewBag.MesActual == 10 ? "selected" : "")>Octubre</!option>
                 <!option value="11" @(ViewBag.MesActual == 11 ? "selected" : "")>Noviembre</!option>
                 <!option value="12" @(ViewBag.MesActual == 12 ? "selected" : "")>Diciembre</!option>
-            </select>
-            <button class="btn-fan" id="btn-consultar">
-                <i class="fa-solid fa-rotate"></i> Actualizar
-            </button>
+                </select>
+                <button type="button" class="btn btn-primary" id="btn-consultar"><i class="fas fa-rotate mr-1"></i> Actualizar</button>
         </div>
     </div>
+</div>
 
-    <!-- KPIs -->
-    <div class="row g-3">
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-green fan-anim">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan green"><i class="fa-solid fa-arrow-trend-up"></i></div>
+<div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="er-kpi-ingresos">—</h6>
+                        <p>Total Ingresos</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-arrow-trend-up"></i></div></div>
                 </div>
-                <div class="kpi-value-fan" id="er-kpi-ingresos">—</div>
-                <div class="kpi-label-fan">Total Ingresos</div>
-                <i class="fa-solid fa-chart-line kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-red fan-anim fan-anim-d1">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan red"><i class="fa-solid fa-arrow-trend-down"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="er-kpi-egresos">—</div>
-                <div class="kpi-label-fan">Total Egresos</div>
-                <i class="fa-solid fa-receipt kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-teal fan-anim fan-anim-d2">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan teal"><i class="fa-solid fa-scale-balanced"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="er-kpi-resultado">—</div>
-                <div class="kpi-label-fan">Resultado Neto</div>
-                <i class="fa-solid fa-balance-scale kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-indigo fan-anim fan-anim-d3">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan indigo"><i class="fa-solid fa-list-ol"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="er-kpi-conceptos">—</div>
-                <div class="kpi-label-fan">Conceptos</div>
-                <i class="fa-solid fa-tags kpi-icon-bg-fan"></i>
             </div>
         </div>
     </div>
-
-    <!-- GRÁFICA + TABLA -->
-    <div class="row g-3">
-        <div class="col-12 col-lg-5">
-            <div class="fan-panel fan-anim fan-anim-d2" style="height:100%;">
-                <div class="fan-section">
-                    <div class="fan-section-accent" style="background:#14b8a6;"></div>
-                    <span class="fan-section-label">Distribución</span>
-                    <div class="fan-section-line"></div>
-                </div>
-                <div style="display:flex;justify-content:center;align-items:center;min-height:200px;">
-                    <canvas id="er-chart" style="max-height:240px;max-width:240px;"></canvas>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="er-kpi-egresos">—</h6>
+                        <p>Total Egresos</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-arrow-trend-down"></i></div></div>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-7">
-            <div class="fan-panel fan-anim fan-anim-d3">
-                <div class="fan-section">
-                    <div class="fan-section-accent" style="background:#6366f1;"></div>
-                    <span class="fan-section-label">Detalle por Concepto</span>
-                    <div class="fan-section-line"></div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="er-kpi-resultado">—</h6>
+                        <p>Resultado Neto</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-scale-balanced"></i></div></div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="er-kpi-conceptos">—</h6>
+                        <p>Conceptos</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-list-ol"></i></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-5 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-header">
+                <div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between"><h4>Distribución</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <div class="d-flex justify-content-center align-items-center er-chart-box">
+                    <canvas id="er-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-7 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-header">
+                <div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between"><h4>Detalle por Concepto</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
                 <div id="er-table-container">
-                    <div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>
+                    <div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 @section Scripts{

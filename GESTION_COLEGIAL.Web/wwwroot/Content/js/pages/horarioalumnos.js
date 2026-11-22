@@ -273,18 +273,18 @@ var HorarioAlumnos = (function () {
                     orderable: false,
                     render: function (data, type, row) {
                         return '<div class="btn-group" role="group">' +
-                            '<button type="button" class="btn btn-sm btn-primary edit-btn" data-id="' + row.hoAl_Id + '" title="Editar">' +
-                            '<i class="mdi mdi-pencil"></i>' +
+                            '<button type="button" class="btn btn-sm btn-outline-primary edit-btn" data-id="' + row.hoAl_Id + '" title="Editar">' +
+                            '<i class="bi bi-pencil"></i>' +
                             '</button>' +
-                            '<button type="button" class="btn btn-sm btn-danger delete-btn" data-id="' + row.hoAl_Id + '" title="Eliminar">' +
-                            '<i class="mdi mdi-delete"></i>' +
+                            '<button type="button" class="btn btn-sm btn-outline-danger delete-btn" data-id="' + row.hoAl_Id + '" title="Eliminar">' +
+                            '<i class="bi bi-trash"></i>' +
                             '</button>' +
                             '</div>';
                     }
                 }
             ],
             language: {
-                processing: '<div class="d-flex justify-content-center py-3"><i class="fa-solid fa-spinner fa-spin-pulse fa-3x" style="color: #F7A400;"></i></div>',
+                processing: '<div class="d-flex justify-content-center py-3"><i class="fa-solid fa-spinner fa-spin-pulse fa-3x text-primary"></i></div>',
                 lengthMenu: "Mostrar _MENU_ registros por página",
                 zeroRecords: "No se encontraron horarios registrados",
                 emptyTable: "No hay horarios disponibles",
@@ -304,7 +304,7 @@ var HorarioAlumnos = (function () {
             dom: 'Bfrtip',
             buttons: [
                 {
-                    text: '<i class="mdi mdi-refresh"></i>',
+                    text: '<i class="fas fa-sync-alt"></i>',
                     titleAttr: 'Recargar',
                     className: 'btn btn-secondary',
                     action: function (e, dt, node, config) {
@@ -371,7 +371,7 @@ var HorarioAlumnos = (function () {
 
                     // Mostrar botón cancelar y cambiar texto del botón submit
                     $('#cancel-btn').show();
-                    $('#submit-btn').html('<i class="mdi mdi-content-save"></i> Actualizar');
+                    $('#submit-btn').html('<i class="bi bi-save mr-1"></i> Actualizar');
 
                     // Scroll al formulario
                     $('html, body').animate({
@@ -398,7 +398,7 @@ var HorarioAlumnos = (function () {
         $('#form-title').text('Registrar Nuevo Horario');
         $('#horario-form').attr('action', '/HorarioAlumnos/CreateAsync');
         $('#cancel-btn').hide();
-        $('#submit-btn').html('<i class="mdi mdi-content-save"></i> Guardar');
+        $('#submit-btn').html('<i class="bi bi-save mr-1"></i> Guardar');
     }
 
     function confirmarEliminar(id) {

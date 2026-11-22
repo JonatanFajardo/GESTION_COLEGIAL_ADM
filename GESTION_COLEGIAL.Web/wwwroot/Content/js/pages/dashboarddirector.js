@@ -352,7 +352,7 @@ var DashboardDirector = (function () {
         if (!tbody) return;
 
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:16px;">Sin datos disponibles.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted small py-4">Sin datos disponibles.</td></tr>';
             return;
         }
 
@@ -362,20 +362,20 @@ var DashboardDirector = (function () {
             var prom = parseFloat(row.Promedio) || 0;
             var pct  = Math.min(Math.max(prom, 0), 100).toFixed(0);
             var enRiesgo = row.EnRiesgo || 0;
-            var rowClass = prom >= 70 ? 'rend-ok' : (prom >= 60 ? 'rend-med' : 'rend-bad');
-            var barColor = prom >= 70 ? '#22c55e' : (prom >= 60 ? '#f59e0b' : '#ef4444');
-            var riesgoColor = enRiesgo > 0 ? '#dc2626' : '#16a34a';
+            var rowClass = prom >= 70 ? 'table-success' : (prom >= 60 ? 'table-warning' : 'table-danger');
+            var barClass = prom >= 70 ? 'bg-success' : (prom >= 60 ? 'bg-warning' : 'bg-danger');
+            var riesgoClass = enRiesgo > 0 ? 'text-danger' : 'text-success';
 
             html += '<tr class="' + rowClass + '">'
-                + '<td style="font-weight:600;">' + (row.Cur_Nombre || '—') + '</td>'
-                + '<td style="text-align:center;font-weight:800;font-size:.95rem;">' + prom.toFixed(1) + '</td>'
-                + '<td style="text-align:center;font-weight:700;color:' + riesgoColor + ';">'
-                +   (enRiesgo > 0 ? '<i class="fa-solid fa-circle-exclamation" style="margin-right:3px;font-size:.75rem;"></i>' : '')
+                + '<td class="font-weight-bold">' + (row.Cur_Nombre || '—') + '</td>'
+                + '<td class="text-center font-weight-bold">' + prom.toFixed(1) + '</td>'
+                + '<td class="text-center font-weight-bold ' + riesgoClass + '">'
+                +   (enRiesgo > 0 ? '<i class="fas fa-circle-exclamation small mr-1"></i>' : '')
                 +   enRiesgo
                 + '</td>'
                 + '<td>'
-                +   '<div class="dd-progress">'
-                +     '<div class="dd-progress-fill" style="width:' + pct + '%;background:' + barColor + ';"></div>'
+                +   '<div class="progress mb-0">'
+                +     '<div class="progress-bar ' + barClass + '" role="progressbar" style="width:' + pct + '%;"></div>'
                 +   '</div>'
                 + '</td>'
                 + '</tr>';
@@ -390,20 +390,20 @@ var DashboardDirector = (function () {
         if (!tbody) return;
 
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:16px;">Sin datos disponibles.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted small py-4">Sin datos disponibles.</td></tr>';
             return;
         }
 
-        var rankClasses = ['rank-1', 'rank-2', 'rank-3'];
+        var rankClasses = ['badge-warning', 'badge-secondary', 'badge-info'];
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var row = data[i];
-            var rClass = i < 3 ? rankClasses[i] : 'rank-n';
+            var rClass = i < 3 ? rankClasses[i] : 'outline-badge-secondary';
             html += '<tr>'
-                + '<td><span class="rank-badge ' + rClass + '">' + (i + 1) + '</span></td>'
-                + '<td style="font-weight:600;">' + (row.Cur_Nombre || '—') + '</td>'
-                + '<td style="text-align:center;font-weight:700;color:#dc2626;">' + (row.AlumnosConDeuda || 0) + '</td>'
-                + '<td style="text-align:right;font-weight:700;color:#0f172a;">' + fmtMoney(row.MontoTotal) + '</td>'
+                + '<td><span class="badge ' + rClass + '">' + (i + 1) + '</span></td>'
+                + '<td class="font-weight-bold">' + (row.Cur_Nombre || '—') + '</td>'
+                + '<td class="text-center font-weight-bold text-danger">' + (row.AlumnosConDeuda || 0) + '</td>'
+                + '<td class="text-right font-weight-bold">' + fmtMoney(row.MontoTotal) + '</td>'
                 + '</tr>';
         }
         tbody.innerHTML = html;
@@ -416,7 +416,7 @@ var DashboardDirector = (function () {
         if (!cont) return;
 
         if (!data || data.length === 0) {
-            cont.innerHTML = '<p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin alertas activas.</p>';
+            cont.innerHTML = '<p class="text-muted small mb-0">Sin alertas activas.</p>';
             return;
         }
 
@@ -433,16 +433,16 @@ var DashboardDirector = (function () {
             var tipo     = (a.Tipo    || '').toLowerCase();
             var icono    = iconos[tipo] || '&#x2139;&#xFE0F;';
 
-            var badgeClass = 'badge-baja';
-            if (urgencia === 'alta')  badgeClass = 'badge-alta';
-            if (urgencia === 'media') badgeClass = 'badge-media';
+            var badgeClass = 'badge-info', alertClass = 'alert-light-info';
+            if (urgencia === 'alta')  { badgeClass = 'badge-danger'; alertClass = 'alert-light-danger'; }
+            if (urgencia === 'media') { badgeClass = 'badge-warning'; alertClass = 'alert-light-warning'; }
 
             var urgLabel = urgencia.charAt(0).toUpperCase() + urgencia.slice(1);
-            html += '<div class="alerta-item ' + urgencia + '">'
-                +   '<span class="alerta-icon">' + icono + '</span>'
-                +   '<div class="alerta-body">'
-                +     '<div class="alerta-msg">' + (a.Mensaje || '') + '</div>'
-                +     '<span class="alerta-badge ' + badgeClass + '">' + urgLabel + '</span>'
+            html += '<div class="alert ' + alertClass + ' d-flex align-items-start mb-0">'
+                +   '<span class="mr-2">' + icono + '</span>'
+                +   '<div class="flex-grow-1">'
+                +     '<div class="font-weight-bold">' + (a.Mensaje || '') + '</div>'
+                +     '<span class="badge ' + badgeClass + ' mt-1">' + urgLabel + '</span>'
                 +   '</div>'
                 + '</div>';
         }

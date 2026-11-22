@@ -1,19 +1,21 @@
 @model GESTION_COLEGIAL.UI.Models.TarjetaConfiguracion
 @* Tarjeta-enlace: toda la tarjeta abre el Index del hub. *@
-<a class="cfg-tarjeta" href="@Url.Action("Index", Model.Controller)">
-    <span class="cfg-tarjeta-icono" aria-hidden="true"><i class="bi @Model.Icono"></i></span>
-    <span class="cfg-tarjeta-cuerpo">
-        <span class="cfg-tarjeta-titulo">@Model.Titulo</span>
-        <span class="cfg-tarjeta-desc">@Model.Descripcion</span>
-        @if (Model.Contenido.Length > 0)
-        {
-            <span class="cfg-tarjeta-contenido">
-                @foreach (var item in Model.Contenido)
-                {
-                    <span class="cfg-chip">@item</span>
-                }
-            </span>
-        }
-    </span>
-    <i class="bi bi-chevron-right cfg-tarjeta-flecha" aria-hidden="true"></i>
+<a class="card component-card_1 h-100 text-decoration-none" href="@Url.Action("Index", Model.Controller)">
+    <div class="card-body d-flex align-items-start">
+        <span class="text-primary h3 mb-0 mr-3" aria-hidden="true"><i class="bi @Model.Icono"></i></span>
+        <div class="flex-grow-1">
+            <h5 class="card-title mb-1">@Model.Titulo</h5>
+            <p class="card-text text-muted mb-2">@Model.Descripcion</p>
+            @if (Model.Contenido.Length > 0)
+            {
+                <div class="d-flex flex-wrap">
+                    @foreach (var item in Model.Contenido)
+                    {
+                        <span class="badge outline-badge-secondary mr-1 mb-1">@item</span>
+                    }
+                </div>
+            }
+        </div>
+        <i class="bi bi-chevron-right text-muted ml-2" aria-hidden="true"></i>
+    </div>
 </a>

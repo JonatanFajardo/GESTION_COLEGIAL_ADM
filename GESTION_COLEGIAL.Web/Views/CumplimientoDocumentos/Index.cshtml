@@ -3,40 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
-    <link href="~/Content/css/pages/cumplimientodocumentos.css" rel="stylesheet" />
-    <style>
-        .cdoc-stat-card-icon.icon-vencimientos { background: #fef2f2; color: #ef4444; }
-        .cdoc-venc-badge { display:inline-block; padding:1px 8px; border-radius:20px; font-size:.66rem; font-weight:700; margin-left:4px; }
-        .cdoc-venc-vencido    { background:#fee2e2; color:#b91c1c; }
-        .cdoc-venc-por-vencer { background:#fef3c7; color:#92400e; }
-        .cdoc-venc-vigente    { background:#dcfce7; color:#166534; }
-        .cdoc-doc-item { cursor: pointer; }
-        .cdoc-doc-item:hover { background: #f8fafc; }
-
-        /* Tabs Incompletos / Completos */
-        .cdoc-tabs { border-bottom: 2px solid #e5e7eb; margin-bottom: 1.25rem; padding-left: 0; list-style: none; display: flex; gap: .25rem; }
-        .cdoc-tab-item { margin-bottom: -2px; }
-        .cdoc-tab-link {
-            display: inline-flex; align-items: center; gap: .5rem;
-            padding: .6rem 1.1rem; border: none; background: transparent;
-            color: #64748b; font-weight: 600; font-size: .9rem;
-            border-bottom: 2px solid transparent; cursor: pointer;
-        }
-        .cdoc-tab-link:hover { color: #4f46e5; }
-        .cdoc-tab-item.active .cdoc-tab-link { color: #4f46e5; border-bottom-color: #4f46e5; }
-        .cdoc-tab-count {
-            display: inline-block; min-width: 22px; text-align: center;
-            padding: 1px 8px; border-radius: 20px; font-size: .72rem; font-weight: 700;
-            background: #e5e7eb; color: #334155;
-        }
-        .cdoc-tab-item.active .cdoc-tab-link .cdoc-tab-count { background: #4f46e5; color: #fff; }
-        .cdoc-tab-item[data-tab="completos"].active .cdoc-tab-link { color: #166534; border-bottom-color: #166534; }
-        .cdoc-tab-item[data-tab="completos"].active .cdoc-tab-link .cdoc-tab-count { background: #166534; color: #fff; }
-    </style>
-}
-
 @* BREADCRUMB *@
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
@@ -48,123 +14,111 @@
 </div>
 
 @* PAGE HEADER *@
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo">
-                <i class="fa-solid fa-folder-open fa-2x"></i>
-            </div>
-            <div class="header-text-catalogo">
-                <h1>Cumplimiento de Documentos</h1>
-                <p>Estado de entrega de documentos requeridos por empleado</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Cumplimiento de Documentos</h4>
+        <p class="text-muted mb-0">Estado de entrega de documentos requeridos por empleado</p>
     </div>
 </div>
 
 <div class="fluid-container">
 
     @* SECCIÓN 1 — STATS GLOBALES *@
-    <div id="cdoc-stats" class="row mb-4">
-
-        @* Tarjeta: % Cumplimiento Global *@
-        <div class="col-md-3 mb-3">
-            <div class="cdoc-stat-card stat-global">
-                <div class="cdoc-stat-card-header">
-                    <p class="cdoc-stat-card-title">Cumplimiento Global</p>
-                    <div class="cdoc-stat-card-icon icon-global">
-                        <i class="fa-solid fa-chart-pie"></i>
+    <div id="cdoc-stats" class="row">
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="cdoc-stat-pct">—</h6>
+                            <p>Cumplimiento Global</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-chart-pie"></i></div></div>
                     </div>
-                </div>
-                <p class="cdoc-stat-pct" id="cdoc-stat-pct">—</p>
-                <p class="cdoc-stat-sub" id="cdoc-stat-sub-global">documentos entregados sobre el total</p>
-                <div class="progress cdoc-stat-progress-bar">
-                    <div id="cdoc-stat-progress"
-                         class="progress-bar bg-primary"
-                         role="progressbar"
-                         aria-valuenow="0"
-                         aria-valuemin="0"
-                         aria-valuemax="100">
+                    <div class="progress mt-2 mb-0">
+                        <div id="cdoc-stat-progress" class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
+                    <p class="text-muted small mb-0 mt-2"><span id="cdoc-stat-sub-global">documentos entregados sobre el total</span></p>
                 </div>
             </div>
         </div>
-
-        @* Tarjeta: Documentos Entregados *@
-        <div class="col-md-3 mb-3">
-            <div class="cdoc-stat-card stat-entregados">
-                <div class="cdoc-stat-card-header">
-                    <p class="cdoc-stat-card-title">Documentos Entregados</p>
-                    <div class="cdoc-stat-card-icon icon-entregados">
-                        <i class="fa-solid fa-circle-check"></i>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="cdoc-stat-entregados">—</h6>
+                            <p>Documentos Entregados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-circle-check"></i></div></div>
                     </div>
+                    <p class="text-muted small mb-0 mt-2">con confirmación de recepción</p>
                 </div>
-                <p class="cdoc-stat-value" id="cdoc-stat-entregados">—</p>
-                <p class="cdoc-stat-sub">con confirmación de recepción</p>
             </div>
         </div>
-
-        @* Tarjeta: Documentos Pendientes *@
-        <div class="col-md-3 mb-3">
-            <div class="cdoc-stat-card stat-pendientes">
-                <div class="cdoc-stat-card-header">
-                    <p class="cdoc-stat-card-title">Documentos Pendientes</p>
-                    <div class="cdoc-stat-card-icon icon-pendientes">
-                        <i class="fa-solid fa-circle-xmark"></i>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="cdoc-stat-pendientes">—</h6>
+                            <p>Documentos Pendientes</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-circle-xmark"></i></div></div>
                     </div>
+                    <p class="text-muted small mb-0 mt-2">aún sin registrar entrega</p>
                 </div>
-                <p class="cdoc-stat-value" id="cdoc-stat-pendientes">—</p>
-                <p class="cdoc-stat-sub">aún sin registrar entrega</p>
             </div>
         </div>
-
-        @* Tarjeta: Vencimientos (accionable) *@
-        <div class="col-md-3 mb-3">
-            <div class="cdoc-stat-card stat-vencimientos">
-                <div class="cdoc-stat-card-header">
-                    <p class="cdoc-stat-card-title">Vencimientos</p>
-                    <div class="cdoc-stat-card-icon icon-vencimientos">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="cdoc-stat-vencidos">—</h6>
+                            <p>Vencimientos</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-triangle-exclamation"></i></div></div>
                     </div>
+                    <p class="text-muted small mb-0 mt-2"><span id="cdoc-stat-porvencer">—</span> por vencer (≤30 días)</p>
                 </div>
-                <p class="cdoc-stat-value" id="cdoc-stat-vencidos">—</p>
-                <p class="cdoc-stat-sub"><span id="cdoc-stat-porvencer">—</span> por vencer (≤30 días)</p>
             </div>
         </div>
-
     </div>
 
     @* SECCIÓN 2 — FILTRO *@
-    <div class="cdoc-filter-panel mb-4">
-        <div class="row align-items-center">
-            <div class="col-md-5 col-sm-8 mb-2 mb-sm-0">
-                <select id="filter-empleado" class="form-control">
-                    <option value="">-- Todos los empleados --</option>
-                </select>
-            </div>
-            <div class="col-md-2 col-sm-4">
-                <button class="btn btn-primary btn-sm w-100" id="btn-filtrar">
-                    <i class="fa-solid fa-filter"></i> Filtrar
-                </button>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
+            <div class="form-row align-items-center">
+                <div class="col-md-5 col-sm-8 mb-2 mb-sm-0">
+                    <select id="filter-empleado" class="custom-select">
+                        <option value="">-- Todos los empleados --</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <button class="btn btn-primary w-100" id="btn-filtrar">
+                        <i class="fa-solid fa-filter mr-1"></i> Filtrar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     @* SECCIÓN 3 — TABS: INCOMPLETOS / COMPLETOS *@
-    <ul class="cdoc-tabs" id="cdoc-tabs" role="tablist">
-        <li class="cdoc-tab-item active" data-tab="incompletos" role="presentation">
-            <button type="button" class="cdoc-tab-link" role="tab">
-                <i class="fa-solid fa-hourglass-half"></i>
+    <ul class="nav nav-tabs mb-4" id="cdoc-tabs" role="tablist">
+        <li class="nav-item cdoc-tab-item active" data-tab="incompletos" role="presentation">
+            <a href="javascript:void(0);" class="nav-link active" role="tab">
+                <i class="fa-solid fa-hourglass-half mr-1"></i>
                 <span>Incompletos</span>
-                <span class="cdoc-tab-count" id="cdoc-count-incompletos">0</span>
-            </button>
+                <span class="badge badge-primary ml-1" id="cdoc-count-incompletos">0</span>
+            </a>
         </li>
-        <li class="cdoc-tab-item" data-tab="completos" role="presentation">
-            <button type="button" class="cdoc-tab-link" role="tab">
-                <i class="fa-solid fa-circle-check"></i>
+        <li class="nav-item cdoc-tab-item" data-tab="completos" role="presentation">
+            <a href="javascript:void(0);" class="nav-link" role="tab">
+                <i class="fa-solid fa-circle-check mr-1"></i>
                 <span>Completos</span>
-                <span class="cdoc-tab-count" id="cdoc-count-completos">0</span>
-            </button>
+                <span class="badge badge-success ml-1" id="cdoc-count-completos">0</span>
+            </a>
         </li>
     </ul>
 
@@ -180,7 +134,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="cdoc-modal-title">Documento</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
             </div>
             <form id="cdoc-form">
                 <div class="modal-body">
@@ -203,7 +157,7 @@
                     <div id="cdoc-form-error" class="text-danger small font-weight-bold" style="display:none;"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>

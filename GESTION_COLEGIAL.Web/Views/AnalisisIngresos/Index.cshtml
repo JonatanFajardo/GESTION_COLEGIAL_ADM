@@ -3,18 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles{
-    <link href="~/Content/css/financiero-analisis.css" rel="stylesheet" />
-    <style>
-        .ai-bar-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f1f5f9; }
-        .ai-bar-row:last-child { border-bottom: none; }
-        .ai-bar-label { font-size: .8rem; font-weight: 600; color: #1e293b; min-width: 140px; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .ai-bar-track { flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
-        .ai-bar-fill  { height: 100%; border-radius: 4px; transition: width .7s ease; }
-        .ai-bar-pct   { font-size: .75rem; font-weight: 800; min-width: 40px; text-align: right; }
-    </style>
-}
-
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -24,98 +12,100 @@
     </nav>
 </div>
 
-<div class="fan-wrapper">
-
-    <!-- HEADER -->
-    <div class="fan-header">
-        <div class="fan-header-left">
-            <div class="fan-header-icon"><i class="fa-solid fa-scale-balanced"></i></div>
-            <div>
-                <h2>Análisis Ingresos vs Egresos</h2>
-                <div class="fan-header-sub">Recuperación por concepto de pago durante el año</div>
-            </div>
-        </div>
-        <div class="fan-controls">
-            <label for="f-anio">Año</label>
-            <input type="number" id="f-anio" value="@ViewBag.AnioActual" min="2020" max="2030" />
-            <button class="btn-fan" id="btn-consultar">
-                <i class="fa-solid fa-rotate"></i> Actualizar
-            </button>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Análisis Ingresos vs Egresos</h4>
+        <p class="text-muted mb-0">Recuperación por concepto de pago durante el año</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <div class="d-flex flex-wrap align-items-center">
+                <label for="f-anio" class="mb-0 mr-2">Año</label>
+                <input type="number" class="form-control w-auto mr-3" id="f-anio" value="@ViewBag.AnioActual" min="2020" max="2030" />
+                <button type="button" class="btn btn-primary" id="btn-consultar"><i class="fas fa-rotate mr-1"></i> Actualizar</button>
         </div>
     </div>
+</div>
 
-    <!-- KPIs -->
-    <div class="row g-3">
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-teal fan-anim">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan teal"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+<div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="ai-kpi-cobrado">—</h6>
+                        <p>Total Cobrado</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-circle-dollar-to-slot"></i></div></div>
                 </div>
-                <div class="kpi-value-fan" id="ai-kpi-cobrado">—</div>
-                <div class="kpi-label-fan">Total Cobrado</div>
-                <i class="fa-solid fa-coins kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-amber fan-anim fan-anim-d1">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan amber"><i class="fa-solid fa-hourglass-half"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="ai-kpi-pendiente">—</div>
-                <div class="kpi-label-fan">Total Pendiente</div>
-                <i class="fa-solid fa-clock kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-green fan-anim fan-anim-d2">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan green"><i class="fa-solid fa-percent"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="ai-kpi-pct">—</div>
-                <div class="kpi-label-fan">% Recuperación Global</div>
-                <i class="fa-solid fa-chart-pie kpi-icon-bg-fan"></i>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="kpi-card-fan c-indigo fan-anim fan-anim-d3">
-                <div class="kpi-top-fan">
-                    <div class="kpi-icon-fan indigo"><i class="fa-solid fa-tags"></i></div>
-                </div>
-                <div class="kpi-value-fan" id="ai-kpi-conceptos">—</div>
-                <div class="kpi-label-fan">Conceptos</div>
-                <i class="fa-solid fa-list kpi-icon-bg-fan"></i>
             </div>
         </div>
     </div>
-
-    <!-- GRÁFICA DE BARRAS HORIZONTALES + TABLA -->
-    <div class="row g-3">
-        <div class="col-12 col-lg-5">
-            <div class="fan-panel fan-anim fan-anim-d2" style="height:100%;">
-                <div class="fan-section">
-                    <div class="fan-section-accent" style="background:#14b8a6;"></div>
-                    <span class="fan-section-label">Recuperación por Concepto</span>
-                    <div class="fan-section-line"></div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="ai-kpi-pendiente">—</h6>
+                        <p>Total Pendiente</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-hourglass-half"></i></div></div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="ai-kpi-pct">—</h6>
+                        <p>% Recuperación Global</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-percent"></i></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="ai-kpi-conceptos">—</h6>
+                        <p>Conceptos</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fas fa-tags"></i></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-5 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-header">
+                <div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between"><h4>Recuperación por Concepto</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
                 <div id="ai-bars-container">
-                    <div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-7">
-            <div class="fan-panel fan-anim fan-anim-d3">
-                <div class="fan-section">
-                    <div class="fan-section-accent" style="background:#6366f1;"></div>
-                    <span class="fan-section-label">Detalle por Concepto</span>
-                    <div class="fan-section-line"></div>
-                </div>
-                <div id="ai-table-container">
-                    <div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>
+                    <div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>
                 </div>
             </div>
         </div>
     </div>
-
+    <div class="col-12 col-lg-7 layout-spacing">
+        <div class="statbox widget box box-shadow h-100">
+            <div class="widget-header">
+                <div class="row"><div class="col-12 d-flex flex-wrap align-items-center justify-content-between"><h4>Detalle por Concepto</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <div id="ai-table-container">
+                    <div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{

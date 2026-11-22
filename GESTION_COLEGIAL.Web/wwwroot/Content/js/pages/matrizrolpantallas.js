@@ -87,7 +87,7 @@ var MatrizRolPantallas = (function () {
             // Fila de grupo (cabecera de sección)
             var colspanTotal = _roles.length + 1;
             filas += '<tr class="grupo-header"><td colspan="' + colspanTotal + '">' +
-                '<i class="fa-solid fa-folder-open me-1"></i> ' + _esc(grp) + '</td></tr>';
+                '<i class="fa-solid fa-folder-open mr-1"></i> ' + _esc(grp) + '</td></tr>';
 
             pantallasFiltradas.forEach(function (pan) {
                 var celdas = _roles.map(function (rol) {

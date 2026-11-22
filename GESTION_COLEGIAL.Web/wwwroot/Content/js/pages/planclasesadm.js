@@ -35,8 +35,8 @@ var PlanClasesAdm = (function () {
                     '<td>' + (r.Pla_Recursos||'—') + '</td>' +
                     '<td>' + estadoBadge(r.Pla_Estado) + '</td>' +
                     '<td>' +
-                        '<button class="btn btn-xs btn-primary btn-editar me-1" data-row='' + JSON.stringify(r) + ''>Editar</button>' +
-                        '<button class="btn btn-xs btn-danger btn-eliminar">Eliminar</button>' +
+                        '<button class="btn btn-sm btn-outline-primary btn-editar mr-1" data-row=\'' + JSON.stringify(r).replace(/'/g, '&#39;') + '\'>Editar</button>' +
+                        '<button class="btn btn-sm btn-outline-danger btn-eliminar">Eliminar</button>' +
                     '</td></tr>'
                 );
             });

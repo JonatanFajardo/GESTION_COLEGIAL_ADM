@@ -1,0 +1,102 @@
+/* Dashboard RRHH: tarjetas de cumpleaños, lista de antigüedad, alertas y alto de gráficos */
+
+.cumple-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+.cumple-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 10px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #faf5ff, #eff6ff);
+    border: 1px solid #e9d5ff;
+    text-align: center;
+    transition: transform .15s, box-shadow .15s;
+}
+.cumple-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(168,85,247,.15);
+}
+.cumple-card.es-hoy {
+    border-color: #f59e0b;
+    background: linear-gradient(135deg, #fffbeb, #fef9c3);
+}
+.cumple-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    margin-bottom: 8px;
+}
+.cumple-avatar-ph {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a855f7, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+.antig-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+.antig-item:last-child {
+    border-bottom: none;
+}
+.antig-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid #e2e8f0;
+}
+.antig-avatar-ph {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.antig-info {
+    flex: 1;
+    min-width: 0;
+}
+.alertas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+}
+.dash-chart-h130 {
+    max-height: 130px;
+}
+.dash-chart-h200 {
+    max-height: 200px;
+}
+.dash-chart-h210 {
+    max-height: 210px;
+}
+.dash-chart-h240 {
+    max-height: 240px;
+}

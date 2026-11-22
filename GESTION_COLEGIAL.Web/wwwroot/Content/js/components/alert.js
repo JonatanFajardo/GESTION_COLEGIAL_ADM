@@ -26,19 +26,19 @@
                 default:
                 case "Info":
                 case 0:
-                    toastr.info('<i class="mdi mdi-information-outline"> </i><span>' + message + '</span>')
+                    toastr.info('<i class="bi bi-info-circle mr-1"> </i><span>' + message + '</span>')
                     break;
                 case "Warning":
                 case 1:
-                    toastr.warning('<i class="mdi mdi-alert-outline"> </i><span>' + message + '</span>')
+                    toastr.warning('<i class="bi bi-exclamation-triangle mr-1"> </i><span>' + message + '</span>')
                     break;
                 case "Success":
                 case 2:
-                    toastr.success('<i class="mdi mdi-checkbox-marked-circle-outline"> </i><span>' + message + '</span>')
+                    toastr.success('<i class="bi bi-check-circle mr-1"> </i><span>' + message + '</span>')
                     break;
                 case "Error":
                 case 3:
-                    toastr.error('<i class="mdi mdi-close-circle-outline"> </i><span>' + message + '</span>')
+                    toastr.error('<i class="bi bi-x-circle mr-1"> </i><span>' + message + '</span>')
                     break;
             }
         });

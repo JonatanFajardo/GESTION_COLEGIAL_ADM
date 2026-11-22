@@ -43,9 +43,9 @@ var DocumentosAlumnoAdm = (function () {
                 }).join("");
                 tbody.append('<tr data-id="' + r.Doc_Id + '">' +
                     '<td>' + r.Doc_Nombre + '</td>' +
-                    '<td><select class="form-control sel-estado">' + estados + '</select></td>' +
+                    '<td><select class="custom-select sel-estado">' + estados + '</select></td>' +
                     '<td><input class="form-control txt-obs" value="' + (r.Doc_Observacion || '') + '"></td>' +
-                    '<td><button class="btn btn-sm btn-warning btn-actualizar">Guardar</button></td></tr>');
+                    '<td><button type="button" class="btn btn-sm btn-primary btn-actualizar">Guardar</button></td></tr>');
             });
         });
     }

@@ -4,7 +4,6 @@
 }
 
 @section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
     <link href="~/Content/css/pages/finanzas-dashboard.css" rel="stylesheet" />
 }
 
@@ -17,118 +16,150 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo">
-                <i class="fa-solid fa-scale-balanced"></i>
-            </div>
-            <div class="header-text-catalogo">
-                <h1>Conciliación Rápida</h1>
-                <p>Comparativa entre pagos del día y cuentas pendientes</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Conciliación Rápida</h4>
+        <p class="text-muted mb-0">Comparativa entre pagos del día y cuentas pendientes</p>
     </div>
 </div>
 
-<div class="fluid-container">
 
-    <div class="fd-filters">
-        <div>
-            <label for="f-fecha" class="form-label-catalogo">Fecha de cobros</label>
+    <div class="statbox widget box box-shadow mb-4">
+    <div class="widget-content widget-content-area">
+        <div class="form-row">
+                <div class="form-group col-md mb-md-0">
+            <label for="f-fecha">Fecha de cobros</label>
             <input type="date" id="f-fecha" class="form-control" value="@ViewBag.FechaDefault" />
-        </div>
-        <div>
-            <label for="f-buscar" class="form-label-catalogo">Filtrar alumno</label>
+                </div>
+                <div class="form-group col-md mb-md-0">
+            <label for="f-buscar">Filtrar alumno</label>
             <input type="text" id="f-buscar" class="form-control" placeholder="Buscar por nombre..." />
-        </div>
-        <button class="btn-fd" id="btn-buscar" type="button">
+                </div>
+                <div class="form-group col-md-auto d-flex align-items-end mb-md-0">
+                    <button class="btn btn-primary btn-block" id="btn-buscar" type="button">
             <i class="fa-solid fa-magnifying-glass"></i> Consultar
         </button>
-    </div>
-
-    <div class="fd-balance">
-        <div class="fd-balance-side left">
-            <p class="fd-balance-label"><i class="fa-solid fa-circle-check"></i> Cobrado del día</p>
-            <p class="fd-balance-value" id="lbl-cobrado">L. 0.00</p>
-            <p class="fd-kpi-foot" id="lbl-cobrado-sub">0 operaciones</p>
-        </div>
-        <div class="fd-balance-mid">
-            <small>Balance</small>
-            <strong id="lbl-balance">L. 0.00</strong>
-            <small id="lbl-balance-state">—</small>
-        </div>
-        <div class="fd-balance-side right">
-            <p class="fd-balance-label"><i class="fa-solid fa-hourglass-half"></i> Pendiente por cobrar</p>
-            <p class="fd-balance-value" id="lbl-pendiente">L. 0.00</p>
-            <p class="fd-kpi-foot" id="lbl-pendiente-sub">0 cuentas</p>
-        </div>
-        <div class="fd-balance-bar" id="bb-bar">
-            <div class="bb-cobrado"   id="bb-cobrado"   style="width:0%"></div>
-            <div class="bb-pendiente" id="bb-pendiente" style="width:0%"></div>
-        </div>
-    </div>
-
-    <div class="fd-kpi-row">
-        <div class="fd-kpi kpi-emerald">
-            <div class="fd-kpi-icon"><i class="fa-solid fa-receipt"></i></div>
-            <div class="fd-kpi-body">
-                <p class="fd-kpi-label">Tasa de cobro</p>
-                <p class="fd-kpi-value" id="kpi-tasa">0%</p>
-                <p class="fd-kpi-foot">cobrado / (cobrado + pendiente)</p>
-            </div>
-        </div>
-        <div class="fd-kpi kpi-indigo">
-            <div class="fd-kpi-icon"><i class="fa-solid fa-coins"></i></div>
-            <div class="fd-kpi-body">
-                <p class="fd-kpi-label">Ticket promedio</p>
-                <p class="fd-kpi-value" id="kpi-prom">L. 0.00</p>
-                <p class="fd-kpi-foot">por cobro registrado</p>
-            </div>
-        </div>
-        <div class="fd-kpi kpi-rose">
-            <div class="fd-kpi-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="fd-kpi-body">
-                <p class="fd-kpi-label">Cuentas vencidas</p>
-                <p class="fd-kpi-value" id="kpi-vencidas">0</p>
-                <p class="fd-kpi-foot" id="kpi-vencidas-sub">—</p>
-            </div>
-        </div>
-        <div class="fd-kpi kpi-cyan">
-            <div class="fd-kpi-icon"><i class="fa-solid fa-user-group"></i></div>
-            <div class="fd-kpi-body">
-                <p class="fd-kpi-label">Alumnos involucrados</p>
-                <p class="fd-kpi-value" id="kpi-alumnos">0</p>
-                <p class="fd-kpi-foot" id="kpi-alumnos-sub">en cobros y pendientes</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="fd-grid-2">
-        <div class="fd-panel">
-            <div class="fd-panel-head">
-                <div>
-                    <p class="fd-panel-title" style="color:#047857"><i class="fa-solid fa-circle-check" style="color:#10b981"></i> Cobros del día</p>
-                    <p class="fd-panel-sub">Pagos efectivamente recibidos</p>
                 </div>
-                <span class="fd-chip c-emerald" id="chip-cobros">0</span>
-            </div>
-            <div class="fd-panel-body fd-flush fd-scroll" id="feed-cobros"></div>
-        </div>
-
-        <div class="fd-panel">
-            <div class="fd-panel-head">
-                <div>
-                    <p class="fd-panel-title" style="color:#be123c"><i class="fa-solid fa-clock" style="color:#f43f5e"></i> Pendientes por cobrar</p>
-                    <p class="fd-panel-sub">Cuentas con saldo abierto</p>
-                </div>
-                <span class="fd-chip c-rose" id="chip-pendientes">0</span>
-            </div>
-            <div class="fd-panel-body fd-flush fd-scroll" id="feed-pendientes"></div>
         </div>
     </div>
-
 </div>
+
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
+            <div class="row align-items-center">
+                <div class="col-md-5 col-12 mb-3 mb-md-0">
+                    <p class="small text-muted text-uppercase font-weight-bold mb-1"><i class="fa-solid fa-circle-check mr-1"></i> Cobrado del día</p>
+                    <h3 class="font-weight-bold text-success mb-1" id="lbl-cobrado">L. 0.00</h3>
+                    <p class="small text-muted mb-0" id="lbl-cobrado-sub">0 operaciones</p>
+                </div>
+                <div class="col-md-2 col-12 text-center mb-3 mb-md-0">
+                    <small class="d-block text-muted text-uppercase font-weight-bold">Balance</small>
+                    <h5 class="font-weight-bold text-primary mb-0" id="lbl-balance">L. 0.00</h5>
+                    <small class="d-block text-muted" id="lbl-balance-state">—</small>
+                </div>
+                <div class="col-md-5 col-12 text-md-right">
+                    <p class="small text-muted text-uppercase font-weight-bold mb-1"><i class="fa-solid fa-hourglass-half mr-1"></i> Pendiente por cobrar</p>
+                    <h3 class="font-weight-bold text-danger mb-1" id="lbl-pendiente">L. 0.00</h3>
+                    <p class="small text-muted mb-0" id="lbl-pendiente-sub">0 cuentas</p>
+                </div>
+            </div>
+            <div class="progress mt-3 mb-0" id="bb-bar">
+                <div class="progress-bar bg-success" role="progressbar" id="bb-cobrado" style="width:0%"></div>
+                <div class="progress-bar bg-danger" role="progressbar" id="bb-pendiente" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-success" id="kpi-tasa">0%</h6>
+                        <p>Tasa de cobro</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-receipt"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2">Cobrado / (cobrado + pendiente)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-primary" id="kpi-prom">L. 0.00</h6>
+                        <p>Ticket promedio</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-coins"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2">Por cobro registrado</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-danger" id="kpi-vencidas">0</h6>
+                        <p>Cuentas vencidas</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-triangle-exclamation"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2"><span id="kpi-vencidas-sub">—</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value text-info" id="kpi-alumnos">0</h6>
+                        <p>Alumnos involucrados</p>
+                    </div>
+                    <div><div class="w-icon"><i class="fa-solid fa-user-group"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-2"><span id="kpi-alumnos-sub">en cobros y pendientes</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row">
+<div class="col-lg-6 col-12 layout-spacing">
+<div class="statbox widget box box-shadow h-100">
+    <div class="widget-header">
+        <div class="d-flex flex-wrap align-items-center justify-content-between pr-3">
+            <div>
+                <h4><i class="fa-solid fa-circle-check mr-1"></i> Cobros del día</h4>
+                <p class="text-muted small mb-0 px-3 pb-3 mt-n2">Pagos efectivamente recibidos</p>
+            </div>
+            <div class="mb-2"><span class="badge outline-badge-success" id="chip-cobros">0</span></div>
+        </div>
+    </div>
+    <div class="widget-content widget-content-area p-0 fd-scroll" id="feed-cobros"></div>
+</div>
+</div>
+<div class="col-lg-6 col-12 layout-spacing">
+<div class="statbox widget box box-shadow h-100">
+    <div class="widget-header">
+        <div class="d-flex flex-wrap align-items-center justify-content-between pr-3">
+            <div>
+                <h4><i class="fa-solid fa-clock mr-1"></i> Pendientes por cobrar</h4>
+                <p class="text-muted small mb-0 px-3 pb-3 mt-n2">Cuentas con saldo abierto</p>
+            </div>
+            <div class="mb-2"><span class="badge outline-badge-danger" id="chip-pendientes">0</span></div>
+        </div>
+    </div>
+    <div class="widget-content widget-content-area p-0 fd-scroll" id="feed-pendientes"></div>
+</div>
+</div>
+</div>
+
 
 @section Scripts{
     <script src="~/Content/js/pages/conciliacion.js"></script>

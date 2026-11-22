@@ -1,0 +1,15 @@
+/* Dev Tools: bitácora de pasos del sincronizador (componente propio) */
+.step-row { padding: 8px 12px; border-radius: 6px; display: flex; align-items: center; transition: background .2s; }
+.step-row + .step-row { margin-top: 2px; }
+.step-row:hover { background: rgba(0, 0, 0, .03); }
+.step-row .icon { width: 22px; text-align: center; font-size: 14px; margin-right: 10px; }
+.step-row .name { flex: 1; font-family: monospace; font-size: 12.5px; }
+.step-row .meta { font-size: 11px; color: #6b7280; font-variant-numeric: tabular-nums; }
+.step-row.pending .icon,
+.step-row.pending .name { color: #9ca3af; }
+.step-row.running .icon { color: #3b82f6; }
+.step-row.running .name { font-weight: 600; }
+.step-row.completed .icon { color: #10b981; }
+.step-row.error .icon { color: #ef4444; }
+.pulse-success { animation: pulse-ok .9s ease; }
+@keyframes pulse-ok { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }

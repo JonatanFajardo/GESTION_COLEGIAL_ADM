@@ -21,10 +21,10 @@ var MapaAulasAdm = (function () {
             $.each(rows, function (_, a) {
                 var nivel = nivelOcupacion(a.HorariosActuales);
                 panel.append(
-                    '<div class="col-6 col-md-4 col-lg-3">' +
+                    '<div class="col-6 col-md-4 col-lg-3 layout-spacing">' +
                         '<div class="card p-3 h-100 border-' + nivel.cls + '">' +
                             '<div class="d-flex justify-content-between align-items-start mb-2">' +
-                                '<h6 class="fw-bold mb-0">' + a.Aul_Descripcion + '</h6>' +
+                                '<h6 class="font-weight-bold mb-0">' + a.Aul_Descripcion + '</h6>' +
                                 '<span class="badge badge-' + nivel.cls + '">' + nivel.label + '</span>' +
                             '</div>' +
                             '<div class="text-muted small">Horarios año actual: <strong>' + a.HorariosActuales + '</strong></div>' +

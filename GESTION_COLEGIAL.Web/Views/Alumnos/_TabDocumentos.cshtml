@@ -1,4 +1,4 @@
-@using Newtonsoft.Json.Linq
+﻿@using Newtonsoft.Json.Linq
 @{
     Layout = null;
     var docs = Model as System.Collections.Generic.List<dynamic>;
@@ -41,11 +41,11 @@
 
 @if (docs == null || !docs.Any())
 {
-    <div class="af-section-card text-center py-5">
-        <div class="af-empty">
-            <i class="bi bi-inbox" style="font-size:42px;color:#94a3b8;"></i>
+    <div class="statbox widget box box-shadow text-center py-5">
+        <div>
+            <i class="bi bi-inbox h1 text-muted"></i>
             <p class="text-muted mt-2 mb-3">Sin documentos registrados para este alumno.</p>
-            <a href="/DocumentosAlumnoAdm" class="af-btn-link">
+            <a href="/DocumentosAlumnoAdm" class="btn btn-sm btn-outline-primary mr-2 mb-2">
                 Gestionar documentos <i class="bi bi-arrow-right"></i>
             </a>
         </div>
@@ -64,21 +64,21 @@
     int porcentaje = total > 0 ? (int)Math.Round((subidos / (double)total) * 100) : 0;
 }
 
-<div class="af-section-card">
-    <div class="af-section-header">
-        <h5 class="mb-0"><i class="bi bi-file-earmark-check me-2"></i>Documentos requeridos</h5>
+<div class="statbox widget box box-shadow">
+    <div class="widget-header d-flex flex-wrap align-items-center justify-content-between mb-3">
+        <h5 class="mb-0"><i class="bi bi-file-earmark-check mr-2"></i>Documentos requeridos</h5>
         <span class="text-muted small">@subidos de @total completos</span>
     </div>
 
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
+            <thead class="thead-light">
                 <tr>
-                    <th style="width:60px;">Estado</th>
+                    <th>Estado</th>
                     <th>Documento</th>
-                    <th style="width:140px;">Fecha subida</th>
-                    <th style="width:200px;">Observación</th>
-                    <th style="width:140px;" class="text-end">Acciones</th>
+                    <th>Fecha subida</th>
+                    <th>Observación</th>
+                    <th class="text-right">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -97,19 +97,19 @@
                         <td>
                             @if (esEntregado)
                             {
-                                <span class="badge" style="background-color:#10b981;color:#fff;" title="@(estadoRaw ?? "Entregado")">
+                                <span class="badge badge-success" title="@(estadoRaw ?? "Entregado")">
                                     <i class="bi bi-check-lg"></i>
                                 </span>
                             }
                             else if (esRechazado)
                             {
-                                <span class="badge" style="background-color:#ef4444;color:#fff;" title="Rechazado">
+                                <span class="badge badge-danger" title="Rechazado">
                                     <i class="bi bi-x-lg"></i>
                                 </span>
                             }
                             else
                             {
-                                <span class="badge" style="background-color:#f59e0b;color:#fff;" title="Pendiente">
+                                <span class="badge badge-warning" title="Pendiente">
                                     <i class="bi bi-exclamation-triangle"></i>
                                 </span>
                             }
@@ -117,10 +117,10 @@
                         <td>@nombre</td>
                         <td class="text-muted small">@(fecha ?? "—")</td>
                         <td class="text-muted small">@(string.IsNullOrWhiteSpace(obs) ? "—" : obs)</td>
-                        <td class="text-end">
+                        <td class="text-right">
                             @if (esEntregado)
                             {
-                                <button type="button" class="btn btn-sm btn-outline-primary me-1" title="Descargar">
+                                <button type="button" class="btn btn-sm btn-outline-primary mr-1" title="Descargar">
                                     <i class="bi bi-download"></i>
                                 </button>
                                 <button type="button" class="btn btn-sm btn-outline-danger" title="Eliminar">
@@ -139,18 +139,18 @@
     </div>
 </div>
 
-<div class="af-section-card mt-3">
+<div class="statbox widget box box-shadow mt-3">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <strong>@subidos de @total documentos completos</strong>
         <span class="text-muted">@porcentaje%</span>
     </div>
-    <div class="progress" style="height:10px;">
+    <div class="progress">
         <div class="progress-bar" role="progressbar"
-             style="width:@(porcentaje)%;background-color:#4f46e5;"
+             style="width:@(porcentaje)%"
              aria-valuenow="@porcentaje" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
-    <div class="text-end mt-3">
-        <a href="/DocumentosAlumnoAdm" class="af-btn-link">
+    <div class="text-right mt-3">
+        <a href="/DocumentosAlumnoAdm" class="btn btn-sm btn-outline-primary mr-2 mb-2">
             Gestionar documentos <i class="bi bi-arrow-right"></i>
         </a>
     </div>

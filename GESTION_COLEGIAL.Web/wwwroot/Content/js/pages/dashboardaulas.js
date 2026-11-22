@@ -44,9 +44,9 @@ var DashboardAulas = (function () {
     function getBadge(a) {
         if (!bajoDisponible) return '';
         var p = pct(a.Bajo, a.Alumnos);
-        if (p >= 25) return '<span class="badge badge-danger">' + p + '% bajo rendimiento</span>';
-        if (p >= 15) return '<span class="badge badge-warning">' + p + '% bajo rendimiento</span>';
-        return '<span class="badge badge-good">' + p + '% rendimiento OK</span>';
+        if (p >= 25) return '<span class="badge outline-badge-danger">' + p + '% bajo rendimiento</span>';
+        if (p >= 15) return '<span class="badge outline-badge-warning">' + p + '% bajo rendimiento</span>';
+        return '<span class="badge outline-badge-success">' + p + '% rendimiento OK</span>';
     }
 
     function buildDots(a) {
@@ -78,7 +78,7 @@ var DashboardAulas = (function () {
             for (var i = 0; i < niveles.length; i++) {
                 var n = niveles[i];
                 var btn = document.createElement('button');
-                btn.className = 'filter-btn';
+                btn.className = 'filter-btn btn btn-sm btn-rounded btn-outline-primary mr-1 mb-1';
                 btn.setAttribute('data-filter', n);
                 btn.type = 'button';
                 btn.textContent = n;
@@ -90,11 +90,12 @@ var DashboardAulas = (function () {
         var jornadaContainer = document.getElementById('da-filters-jornada');
         if (jornadaContainer) {
             if (!jornadas.length) {
+                jornadaContainer.classList.remove('d-flex');
                 jornadaContainer.style.display = 'none';
             } else {
                 for (var k = 0; k < jornadas.length; k++) {
                     var jBtn = document.createElement('button');
-                    jBtn.className = 'filter-btn';
+                    jBtn.className = 'filter-btn btn btn-sm btn-rounded btn-outline-primary mr-1 mb-1';
                     jBtn.setAttribute('data-jornada', jornadas[k]);
                     jBtn.type = 'button';
                     jBtn.textContent = jornadas[k];
@@ -119,31 +120,36 @@ var DashboardAulas = (function () {
         }
 
         function card(color, icon, label, value, pctText) {
-            var pctHtml = pctText ? ' <span class="stat-pct">(' + pctText + ')</span>' : '';
-            return '<div class="stat-card ' + color + '">'
-                +    '<div class="stat-icon"><i class="fa-solid ' + icon + '"></i></div>'
-                +    '<div class="stat-body">'
-                +      '<div class="stat-label">' + label + '</div>'
-                +      '<div class="stat-value">' + value + pctHtml + '</div>'
+            var pctHtml = pctText ? ' <small class="text-muted">(' + pctText + ')</small>' : '';
+            return '<div class="col-xl col-md-4 col-sm-6 col-12 layout-spacing">'
+                +  '<div class="widget widget-card-four">'
+                +    '<div class="widget-content">'
+                +      '<div class="w-content">'
+                +        '<div class="w-info">'
+                +          '<h6 class="value">' + value + pctHtml + '</h6>'
+                +          '<p>' + label + '</p>'
+                +        '</div>'
+                +        '<div><div class="w-icon text-' + color + '"><i class="fas ' + icon + '"></i></div></div>'
+                +      '</div>'
                 +    '</div>'
-                +    '<div class="stat-bg-icon"><i class="fa-solid ' + icon + '"></i></div>'
-                +  '</div>';
+                +  '</div>'
+                + '</div>';
         }
 
-        var html = card('indigo', 'fa-user-graduate', 'Total alumnos', totalAlumnos, '');
+        var html = card('primary', 'fa-user-graduate', 'Total alumnos', totalAlumnos, '');
 
         if (bajoDisponible) {
-            html += card('red', 'fa-chart-line-down', 'Bajo rendimiento', totalBajo, pct(totalBajo, totalAlumnos) + '%');
+            html += card('danger', 'fa-chart-line-down', 'Bajo rendimiento', totalBajo, pct(totalBajo, totalAlumnos) + '%');
         }
 
-        html += card('cyan', 'fa-money-bill-wave', 'Con deuda', totalDeuda, pct(totalDeuda, totalAlumnos) + '%');
+        html += card('info', 'fa-money-bill-wave', 'Con deuda', totalDeuda, pct(totalDeuda, totalAlumnos) + '%');
 
         if (asistenciaDisponible) {
-            html += card('emerald', 'fa-calendar-check', 'Asistencia promedio', avgAsis + '%', '');
+            html += card('success', 'fa-calendar-check', 'Asistencia promedio', avgAsis + '%', '');
         }
 
         if (bajoDisponible) {
-            html += card(criticas > 0 ? 'amber' : 'emerald', 'fa-triangle-exclamation', 'Aulas críticas', criticas, '');
+            html += card(criticas > 0 ? 'warning' : 'success', 'fa-triangle-exclamation', 'Aulas críticas', criticas, '');
         }
 
         var el = document.getElementById('da-summary');
@@ -154,7 +160,7 @@ var DashboardAulas = (function () {
         var grid = document.getElementById('da-grid');
         if (!grid) return;
         if (!list.length) {
-            grid.innerHTML = '<div style="padding:1rem;color:var(--color-text-secondary);font-size:13px">No hay aulas para mostrar.</div>';
+            grid.innerHTML = '<div class="p-3 text-muted small">No hay aulas para mostrar.</div>';
             return;
         }
         var out = '';
@@ -197,7 +203,7 @@ var DashboardAulas = (function () {
                 +     '<div class="bar-track"><div class="bar-fill fill-blue" style="width:' + deudaPct + '%"></div></div>'
                 +   '</div>'
                 + '<div class="alumnos-dots">' + buildDots(a) + '</div>'
-                + '<div class="dot-legend" style="margin-top:5px">'
+                + '<div class="dot-legend">'
                 +   '<span class="dot-leg-item"><span class="dot ok" style="width:9px;height:9px"></span>Normal</span>';
             if (bajoDisponible) {
                 card += '<span class="dot-leg-item"><span class="dot low" style="width:9px;height:9px"></span>Bajo rend.</span>';
@@ -277,8 +283,8 @@ var DashboardAulas = (function () {
         var asisClass = a.Asistencia >= 90 ? 'green' : (a.Asistencia >= 80 ? 'amber' : 'red');
         var asisCell = asistenciaDisponible ? (a.Asistencia + '%') : '&mdash;';
 
-        var html = '<div style="font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">' + escapeHtml(a.Nombre) + ' &mdash; Detalle completo</div>'
-            + '<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px">' + escapeHtml(a.Nivel) + ' &middot; ' + escapeHtml(a.Modalidad) + ' &middot; Capacidad: ' + a.Capacidad + '</div>'
+        var html = '<h5 class="mb-1">' + escapeHtml(a.Nombre) + ' &mdash; Detalle completo</h5>'
+            + '<p class="text-muted small mb-3">' + escapeHtml(a.Nivel) + ' &middot; ' + escapeHtml(a.Modalidad) + ' &middot; Capacidad: ' + a.Capacidad + '</p>'
             + '<div class="detail-grid">'
             +   '<div class="mini-stat"><div class="mini-stat-label">Alumnos inscritos</div><div class="mini-stat-val">' + a.Alumnos + '</div></div>'
             +   '<div class="mini-stat"><div class="mini-stat-label">Cupos disponibles</div><div class="mini-stat-val">' + (a.Capacidad - a.Alumnos) + '</div></div>'
@@ -287,10 +293,10 @@ var DashboardAulas = (function () {
             +   '<div class="mini-stat"><div class="mini-stat-label">Asistencia</div><div class="mini-stat-val ' + (asistenciaDisponible ? asisClass : '') + '">' + asisCell + '</div></div>'
             +   '<div class="mini-stat"><div class="mini-stat-label">Alumnos con deuda</div><div class="mini-stat-val amber">' + a.Deuda + ' (' + pct(a.Deuda, a.Alumnos) + '%)</div></div>'
             + '</div>'
-            + '<div style="margin-top:12px">'
-            +   '<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">Representacion visual de alumnos</div>'
+            + '<div class="mt-3">'
+            +   '<p class="text-muted small mb-1">Representación visual de alumnos</p>'
             +   '<div class="alumnos-dots">' + buildDots(a) + '</div>'
-            +   '<div class="dot-legend" style="margin-top:6px">'
+            +   '<div class="dot-legend">'
             +     '<span class="dot-leg-item"><span class="dot ok" style="width:10px;height:10px"></span>Buen rendimiento</span>';
         if (bajoDisponible) {
             html += '<span class="dot-leg-item"><span class="dot low" style="width:10px;height:10px"></span>Bajo rendimiento</span>'
@@ -314,16 +320,20 @@ var DashboardAulas = (function () {
         if (panel) panel.classList.remove('visible');
     }
 
+    function setActivo(btn, activo) {
+        btn.classList.toggle('active', activo);
+        btn.classList.toggle('btn-primary', activo);
+        btn.classList.toggle('btn-outline-primary', !activo);
+    }
+
     function render() {
         var btns = document.querySelectorAll('#da-filters .filter-btn');
         for (var i = 0; i < btns.length; i++) {
-            if (btns[i].getAttribute('data-filter') === currentFilter) btns[i].classList.add('active');
-            else btns[i].classList.remove('active');
+            setActivo(btns[i], btns[i].getAttribute('data-filter') === currentFilter);
         }
         var jBtns = document.querySelectorAll('#da-filters-jornada .filter-btn');
         for (var b = 0; b < jBtns.length; b++) {
-            if (jBtns[b].getAttribute('data-jornada') === currentJornada) jBtns[b].classList.add('active');
-            else jBtns[b].classList.remove('active');
+            setActivo(jBtns[b], jBtns[b].getAttribute('data-jornada') === currentJornada);
         }
         closeDetail();
 
@@ -446,7 +456,7 @@ var DashboardAulas = (function () {
                 console.warn('DashboardAulas: error al cargar', status, err);
                 var grid = document.getElementById('da-grid');
                 if (grid) {
-                    grid.innerHTML = '<div style="padding:1rem;color:var(--color-text-secondary);font-size:13px">No se pudo cargar la informacion.</div>';
+                    grid.innerHTML = '<div class="p-3 text-muted small">No se pudo cargar la informacion.</div>';
                 }
             });
     }

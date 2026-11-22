@@ -14,10 +14,17 @@
     </nav>
 </div>
 
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Comparativa Anual</h4>
+        <p class="text-muted mb-0">Comparación de ingresos entre años.</p>
+    </div>
+</div>
+
 <div class="fluid-container">
     <!-- Filtros -->
-    <div class="card mb-3">
-        <div class="card-body">
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -34,7 +41,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="concepto-filtro">Filtrar por Concepto</label>
-                        <select class="form-control" id="concepto-filtro">
+                        <select class="custom-select" id="concepto-filtro">
                             <option value="">-- Todos --</option>
                         </select>
                     </div>
@@ -43,7 +50,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <button type="button" class="btn btn-primary" id="btn-generar">
-                        <i class="mdi mdi-file-chart"></i> Generar Comparativa
+                        <i class="bi bi-bar-chart-line mr-1"></i> Generar Comparativa
                     </button>
                 </div>
             </div>
@@ -51,22 +58,23 @@
     </div>
 
     <!-- Gráfico Comparativo -->
-    <div class="card mb-3">
-        <div class="card-header" style="background-color:white;">
-            <h4>Comparativa Mensual</h4>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Comparativa Mensual</h4></div></div>
         </div>
-        <div class="card-body">
+        <div class="widget-content widget-content-area">
             <canvas id="chart-comparativa" height="80"></canvas>
         </div>
     </div>
 
     <!-- Tabla Comparativa -->
-    <div class="card mb-3">
-        <div class="card-header" style="background-color:white;">
-            <h4>Resumen Comparativo</h4>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Resumen Comparativo</h4></div></div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-striped">
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Año</th>
@@ -88,32 +96,45 @@
                 <tbody id="tbody-comparativa">
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
     <!-- Indicadores -->
     <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Crecimiento</h5>
-                    <h3 id="crecimiento">0%</h3>
+        <div class="col-xl-4 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="crecimiento">0%</h6>
+                            <p>Crecimiento</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Mejor Mes</h5>
-                    <h3 id="mejor-mes">-</h3>
+        <div class="col-xl-4 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="mejor-mes">-</h6>
+                            <p>Mejor Mes</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5>Peor Mes</h5>
-                    <h3 id="peor-mes">-</h3>
+        <div class="col-xl-4 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="peor-mes">-</h6>
+                            <p>Peor Mes</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

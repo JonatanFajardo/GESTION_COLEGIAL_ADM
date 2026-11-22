@@ -38,7 +38,7 @@ var Buscador = (function () {
         }
 
         var tbody = $("#buscador-tbody");
-        tbody.html('<tr><td colspan="4" class="text-center"><i class="fa-solid fa-spinner fa-spin me-2"></i>Buscando...</td></tr>');
+        tbody.html('<tr><td colspan="4" class="text-center"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Buscando...</td></tr>');
 
         $.ajax({
             url: urlSearch,
@@ -49,7 +49,7 @@ var Buscador = (function () {
                 _renderResultados(items);
             },
             error: function () {
-                tbody.html('<tr><td colspan="4" class="text-center text-danger"><i class="fa-solid fa-circle-exclamation me-2"></i>Error al realizar la búsqueda.</td></tr>');
+                tbody.html('<tr><td colspan="4" class="text-center text-danger"><i class="fa-solid fa-circle-exclamation mr-2"></i>Error al realizar la búsqueda.</td></tr>');
                 toastr.error("No se pudo conectar con el servidor.", "Buscador");
             }
         });
@@ -59,7 +59,7 @@ var Buscador = (function () {
         var tbody = $("#buscador-tbody");
 
         if (!items || items.length === 0) {
-            tbody.html('<tr><td colspan="4" class="text-center text-muted"><i class="fa-solid fa-face-meh me-2"></i>Sin resultados para la búsqueda.</td></tr>');
+            tbody.html('<tr><td colspan="4" class="text-center text-muted"><i class="fa-solid fa-face-meh mr-2"></i>Sin resultados para la búsqueda.</td></tr>');
             return;
         }
 
@@ -69,7 +69,7 @@ var Buscador = (function () {
             var detalle = item.Detalle ? '<span class="text-muted small">' + _escapeHtml(item.Detalle) + '</span>' : "—";
 
             html += '<tr>';
-            html += '<td><span style="color:' + info.color + ';"><i class="fa-solid ' + info.icon + ' me-1"></i>' + _escapeHtml(item.Tipo) + '</span></td>';
+            html += '<td><span style="color:' + info.color + ';"><i class="fa-solid ' + info.icon + ' mr-1"></i>' + _escapeHtml(item.Tipo) + '</span></td>';
             html += '<td>' + _escapeHtml(item.Nombre) + '</td>';
             html += '<td>' + _escapeHtml(item.Identificador || "—") + '</td>';
             html += '<td>' + detalle + '</td>';

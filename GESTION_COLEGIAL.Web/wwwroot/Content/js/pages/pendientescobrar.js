@@ -109,7 +109,7 @@ var PendientesCobrar = (function () {
         arr = arr.slice(0, 8);
         var rank = $("#rank-deudores").empty();
         if (arr.length === 0) {
-            rank.html('<div class="fd-empty"><i class="fa-solid fa-user-group"></i><p>Sin deudores registrados</p></div>');
+            rank.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-user-group h2 d-block mb-2"></i><p class="mb-0">Sin deudores registrados</p></div>');
         } else {
             arr.forEach(function (d, i) {
                 rank.append(
@@ -133,7 +133,7 @@ var PendientesCobrar = (function () {
         concArr = concArr.slice(0, 7);
         var bars = $("#bars-conceptos").empty();
         if (concArr.length === 0) {
-            bars.html('<div class="fd-empty"><i class="fa-solid fa-tags"></i><p>Sin conceptos pendientes</p></div>');
+            bars.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-tags h2 d-block mb-2"></i><p class="mb-0">Sin conceptos pendientes</p></div>');
         } else {
             concArr.forEach(function (it, idx) {
                 var pct = total > 0 ? (it.val / total * 100) : 0;
@@ -153,16 +153,16 @@ var PendientesCobrar = (function () {
         });
         var feed = $("#feed-cuentas").empty();
         if (sorted.length === 0) {
-            feed.html('<div class="fd-empty"><i class="fa-solid fa-circle-check"></i><p>No hay cuentas pendientes con los filtros actuales</p></div>');
+            feed.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-circle-check h2 d-block mb-2"></i><p class="mb-0">No hay cuentas pendientes con los filtros actuales</p></div>');
         } else {
             sorted.forEach(function (r, idx) {
                 var dias = parseInt(r.DiasVencida);
                 var chip, chipCls;
-                if (isNaN(dias))      { chip = "Sin fecha";   chipCls = ""; }
-                else if (dias > 30)   { chip = dias + " días vencido"; chipCls = "c-rose"; }
-                else if (dias > 0)    { chip = dias + " días vencido"; chipCls = "c-amber"; }
-                else if (dias === 0)  { chip = "Vence hoy";   chipCls = "c-amber"; }
-                else                  { chip = Math.abs(dias) + " días por vencer"; chipCls = "c-cyan"; }
+                if (isNaN(dias))      { chip = "Sin fecha";   chipCls = "outline-badge-secondary"; }
+                else if (dias > 30)   { chip = dias + " días vencido"; chipCls = "outline-badge-danger"; }
+                else if (dias > 0)    { chip = dias + " días vencido"; chipCls = "outline-badge-warning"; }
+                else if (dias === 0)  { chip = "Vence hoy";   chipCls = "outline-badge-warning"; }
+                else                  { chip = Math.abs(dias) + " días por vencer"; chipCls = "outline-badge-info"; }
 
                 var orig = parseFloat(r.Cco_MontoOriginal) || 0;
                 var pag  = parseFloat(r.Cco_MontoTotal)    || 0;
@@ -182,7 +182,7 @@ var PendientesCobrar = (function () {
                         '</div>' +
                         '<div class="fd-feed-right">' +
                             '<p class="fd-feed-amount amt-rose">' + esc(fmt(pend)) + '</p>' +
-                            '<span class="fd-chip ' + chipCls + '">' + esc(chip) + '</span>' +
+                            '<span class="badge ' + chipCls + '">' + esc(chip) + '</span>' +
                         '</div>' +
                     '</div>'
                 );

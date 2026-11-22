@@ -1,0 +1,10 @@
+/* Cuadro de honor: anchos fijos de columnas y posición en el ranking */
+.ch-col-chk { width: 40px; }
+.ch-col-pos, .ch-pos { width: 46px; }
+.ch-col-prom { width: 100px; }
+.ch-col-concepto { width: 120px; }
+.ch-pos { font-weight: 700; color: #64748b; }
+.ch-medal { font-size: 1.1rem; }
+.ch-vacio-icon { font-size: 2rem; }
+.ch-prom { font-size: .85rem; }
+.ch-tabla { table-layout: fixed; min-width: 760px; }

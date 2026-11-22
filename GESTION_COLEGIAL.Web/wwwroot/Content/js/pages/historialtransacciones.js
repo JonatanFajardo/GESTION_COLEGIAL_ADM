@@ -108,7 +108,7 @@ var HistorialTransacciones = (function () {
         var maxDia = 0;
         diasKeys.forEach(function (k) { if (dias[k].v > maxDia) maxDia = dias[k].v; });
         if (diasKeys.length === 0) {
-            colsWrap.html('<div class="fd-empty"><i class="fa-regular fa-calendar"></i><p>Sin movimientos en el rango</p></div>');
+            colsWrap.html('<div class="text-center text-muted py-4"><i class="fa-regular fa-calendar h2 d-block mb-2"></i><p class="mb-0">Sin movimientos en el rango</p></div>');
         } else {
             var maxCols = 30;
             var visibles = diasKeys.length > maxCols ? diasKeys.slice(-maxCols) : diasKeys;
@@ -132,7 +132,7 @@ var HistorialTransacciones = (function () {
         var donut = $("#donut-formas");
         if (count === 0 || formasArr.length === 0) {
             donut.css("background", "conic-gradient(#e2e8f0 0% 100%)");
-            $("#donut-legend").html('<div class="fd-empty" style="padding:1rem 0;"><i class="fa-solid fa-credit-card"></i><p>Sin datos</p></div>');
+            $("#donut-legend").html('<div class="text-center text-muted py-4"><i class="fa-solid fa-credit-card h2 d-block mb-2"></i><p class="mb-0">Sin datos</p></div>');
         } else {
             var acc = 0;
             var stops = formasArr.map(function (it, i) {
@@ -149,7 +149,7 @@ var HistorialTransacciones = (function () {
                 legend.append(
                     '<div class="fd-legend-item">' +
                         '<span class="fd-legend-dot" style="background:' + COLORS[i % COLORS.length] + '"></span>' +
-                        '<span>' + esc(it.name) + ' <small style="color:#94a3b8">(' + it.c + ')</small></span>' +
+                        '<span>' + esc(it.name) + ' <small class="text-muted">(' + it.c + ')</small></span>' +
                         '<span class="fd-legend-val">' + pct + '%</span>' +
                     '</div>'
                 );
@@ -162,7 +162,7 @@ var HistorialTransacciones = (function () {
         cajArr = cajArr.slice(0, 6);
         var rank = $("#rank-cajeros").empty();
         if (cajArr.length === 0) {
-            rank.html('<div class="fd-empty"><i class="fa-solid fa-user-tie"></i><p>Sin actividad</p></div>');
+            rank.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-user-tie h2 d-block mb-2"></i><p class="mb-0">Sin actividad</p></div>');
         } else {
             cajArr.forEach(function (c, i) {
                 rank.append(
@@ -172,7 +172,7 @@ var HistorialTransacciones = (function () {
                             '<p class="fd-rank-name">' + esc(c.name) + '</p>' +
                             '<p class="fd-rank-sub">' + c.c + (c.c === 1 ? ' operación' : ' operaciones') + '</p>' +
                         '</div>' +
-                        '<div class="fd-rank-amt" style="color:#10b981">' + esc(fmtShort(c.v)) + '</div>' +
+                        '<div class="fd-rank-amt text-success">' + esc(fmtShort(c.v)) + '</div>' +
                     '</div>'
                 );
             });
@@ -185,7 +185,7 @@ var HistorialTransacciones = (function () {
         });
         var feed = $("#feed-trans").empty();
         if (sorted.length === 0) {
-            feed.html('<div class="fd-empty"><i class="fa-solid fa-inbox"></i><p>Sin transacciones para los filtros aplicados</p></div>');
+            feed.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-inbox h2 d-block mb-2"></i><p class="mb-0">Sin transacciones para los filtros aplicados</p></div>');
         } else {
             sorted.forEach(function (r, idx) {
                 var d = parseDate(r.Pag_FechaPago);
@@ -206,7 +206,7 @@ var HistorialTransacciones = (function () {
                         '</div>' +
                         '<div class="fd-feed-right">' +
                             '<p class="fd-feed-amount">' + esc(fmt(r.Pag_MontoTotal)) + '</p>' +
-                            '<span class="fd-chip c-indigo">Transacción</span>' +
+                            '<span class="badge outline-badge-primary">Transacción</span>' +
                         '</div>' +
                     '</div>'
                 );

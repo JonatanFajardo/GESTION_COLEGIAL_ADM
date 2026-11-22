@@ -12,108 +12,138 @@
 <div class="visor-horarios">
 
     <!-- Encabezado -->
-    <div class="vh-header">
-        <div class="vh-header-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-        </div>
-        <div class="vh-header-text">
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+        <div class="mr-3">
             @if (esDocente)
             {
-                <h2>Mi Horario Semanal</h2>
-                <p>Consulta las clases que tienes programadas durante la semana.</p>
+                <h4 class="mb-1">Mi Horario Semanal</h4>
+                <p class="text-muted mb-0">Consulta las clases que tienes programadas durante la semana.</p>
             }
             else
             {
-                <h2>Visor de Horarios Académicos</h2>
-                <p>Explora el horario semanal por sección, profesor o aula.</p>
+                <h4 class="mb-1">Visor de Horarios Académicos</h4>
+                <p class="text-muted mb-0">Explora el horario semanal por sección, profesor o aula.</p>
             }
         </div>
     </div>
 
-    <!-- KPI cards -->
-    <div class="vh-kpis">
-        <div class="vh-kpi vh-kpi--indigo">
-            <div class="vh-kpi-label">Clases programadas</div>
-            <div class="vh-kpi-value" id="kpiClases">0</div>
+    <!-- KPI -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpiClases">0</h6>
+                            <p>Clases programadas</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-calendar3"></i></div></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="vh-kpi vh-kpi--emerald">
-            <div class="vh-kpi-label">Secciones</div>
-            <div class="vh-kpi-value" id="kpiSecciones">0</div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpiSecciones">0</h6>
+                            <p>Secciones</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-people-fill"></i></div></div>
+                    </div>
+                </div>
+            </div>
         </div>
         @if (!esDocente)
         {
-            <div class="vh-kpi vh-kpi--amber">
-                <div class="vh-kpi-label">Profesores activos</div>
-                <div class="vh-kpi-value" id="kpiProfesores">0</div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpiProfesores">0</h6>
+                            <p>Profesores activos</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-person-badge"></i></div></div>
+                    </div>
+                </div>
             </div>
+        </div>
         }
-        <div class="vh-kpi vh-kpi--cyan">
-            <div class="vh-kpi-label">Aulas en uso</div>
-            <div class="vh-kpi-value" id="kpiAulas">0</div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpiAulas">0</h6>
+                            <p>Aulas en uso</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-door-open"></i></div></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Filtros -->
-    <div class="vh-filtros">
-        @if (!esDocente)
-        {
-            <div class="vh-filtros-grupo-vista">
-                <span class="vh-filtros-label">Agrupar por</span>
-                <div class="vh-toggle">
-                    <button type="button" class="vh-toggle-btn is-active" data-vista="seccion">
-                        <i class="bi bi-people-fill"></i> Sección
-                    </button>
-                    <button type="button" class="vh-toggle-btn" data-vista="profesor">
-                        <i class="bi bi-person-badge"></i> Profesor
-                    </button>
-                    <button type="button" class="vh-toggle-btn" data-vista="aula">
-                        <i class="bi bi-door-open"></i> Aula
-                    </button>
-                </div>
-            </div>
-        }
-
-        <div class="vh-filtros-row">
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
             @if (!esDocente)
             {
-                <div class="vh-filtro">
-                    <label for="filtroAnio">Año</label>
-                    <select id="filtroAnio" class="form-control"></select>
-                </div>
-                <div class="vh-filtro">
-                    <label for="filtroSemestre">Semestre</label>
-                    <select id="filtroSemestre" class="form-control"></select>
-                </div>
-                <div class="vh-filtro">
-                    <label for="filtroModalidad">Modalidad</label>
-                    <select id="filtroModalidad" class="form-control">
-                        <option value="">Todas</option>
-                    </select>
+                <div class="d-flex flex-wrap align-items-center mb-3">
+                    <span class="text-muted small font-weight-bold mr-2">Agrupar por</span>
+                    <div class="btn-group" role="group" aria-label="Agrupar por">
+                        <button type="button" class="btn btn-sm btn-primary vh-toggle-btn" data-vista="seccion">
+                            <i class="bi bi-people-fill mr-1"></i> Sección
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary vh-toggle-btn" data-vista="profesor">
+                            <i class="bi bi-person-badge mr-1"></i> Profesor
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary vh-toggle-btn" data-vista="aula">
+                            <i class="bi bi-door-open mr-1"></i> Aula
+                        </button>
+                    </div>
                 </div>
             }
-            <div class="vh-filtro vh-filtro-search">
-                <label for="filtroBusqueda">Buscar</label>
-                <div class="vh-search-wrap">
-                    <i class="bi bi-search vh-search-icon"></i>
-                    <input id="filtroBusqueda" type="text" class="form-control" placeholder="Sección, profesor, materia, aula..." />
+
+            <div class="form-row align-items-end">
+                @if (!esDocente)
+                {
+                    <div class="col-md-2 form-group mb-md-0">
+                        <label for="filtroAnio">Año</label>
+                        <select id="filtroAnio" class="custom-select"></select>
+                    </div>
+                    <div class="col-md-2 form-group mb-md-0">
+                        <label for="filtroSemestre">Semestre</label>
+                        <select id="filtroSemestre" class="custom-select"></select>
+                    </div>
+                    <div class="col-md-2 form-group mb-md-0">
+                        <label for="filtroModalidad">Modalidad</label>
+                        <select id="filtroModalidad" class="custom-select">
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+                }
+                <div class="col form-group mb-md-0">
+                    <label for="filtroBusqueda">Buscar</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text"><i class="bi bi-search"></i></span></div>
+                        <input id="filtroBusqueda" type="text" class="form-control" placeholder="Sección, profesor, materia, aula..." />
+                    </div>
                 </div>
-            </div>
-            <div class="vh-filtro vh-filtro-acciones">
-                <button type="button" id="btnLimpiar" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-counterclockwise"></i> Limpiar
-                </button>
+                <div class="col-auto">
+                    <button type="button" id="btnLimpiar" class="btn btn-link">
+                        <i class="bi bi-arrow-counterclockwise mr-1"></i> Limpiar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Leyenda de áreas -->
-    <div class="vh-leyenda">
-        <span class="vh-leyenda-label">Áreas:</span>
+    <div class="vh-leyenda d-flex flex-wrap align-items-center mb-3">
+        <span class="text-muted small font-weight-bold mr-2">Áreas:</span>
         <span class="vh-pill vh-pill--MAT">Matemáticas</span>
         <span class="vh-pill vh-pill--LEN">Lenguaje</span>
         <span class="vh-pill vh-pill--CIE">Ciencias</span>
@@ -126,23 +156,23 @@
     </div>
 
     <!-- Contador de resultados -->
-    <div class="vh-resultado-info">
+    <p class="text-muted small mb-3">
         <span id="vhContador">0 resultados</span>
-    </div>
+    </p>
 
     <!-- Grid de cards -->
     <div id="vhCards" class="vh-cards-grid"></div>
 
     <!-- Estado vacío -->
-    <div id="vhVacio" class="vh-vacio" style="display:none;">
-        <i class="bi bi-calendar2-x"></i>
-        <p>No se encontraron horarios con los filtros aplicados.</p>
+    <div id="vhVacio" class="flex-column align-items-center text-center text-muted py-5" style="display:none;">
+        <i class="bi bi-calendar2-x fa-3x mb-3"></i>
+        <p class="mb-0">No se encontraron horarios con los filtros aplicados.</p>
     </div>
 
     <!-- Loader -->
-    <div id="vhLoader" class="vh-loader" style="display:none;">
-        <div class="vh-spinner"></div>
-        <p>Cargando horarios...</p>
+    <div id="vhLoader" class="flex-column align-items-center text-center text-muted py-5" style="display:none;">
+        <i class="fa-solid fa-spinner fa-spin fa-2x mb-2"></i>
+        <p class="mb-0">Cargando horarios...</p>
     </div>
 
 </div>
@@ -151,17 +181,15 @@
 <div class="modal fade vh-modal" id="vhModalDetalle" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog vh-modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
-            <div class="modal-header vh-modal-header">
-                <div class="vh-modal-title-wrap">
-                    <div class="vh-modal-icon" id="vhModalIcon"><i class="bi bi-calendar3"></i></div>
+            <div class="modal-header">
+                <div class="d-flex align-items-center">
+                    <span class="text-primary mr-2" id="vhModalIcon"><i class="bi bi-calendar3"></i></span>
                     <div>
                         <h5 class="modal-title" id="vhModalTitulo">Horario</h5>
-                        <div class="vh-modal-subtitle" id="vhModalSubtitulo"></div>
+                        <div class="text-muted small" id="vhModalSubtitulo"></div>
                     </div>
                 </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
             </div>
             <div class="modal-body" id="vhModalBody"></div>
         </div>

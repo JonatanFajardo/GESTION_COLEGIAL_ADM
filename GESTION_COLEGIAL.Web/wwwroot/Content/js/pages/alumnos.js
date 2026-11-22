@@ -1,3 +1,5 @@
+
+
 ﻿
 var Alumnos = (function () {
     var obj = {};
@@ -157,7 +159,7 @@ var Modals = (function () {
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", deleteBtnText = "Aceptar";
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + deleteBtnText);
+            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='bi bi-check-lg mr-1'></i> " + deleteBtnText);
         });
         $deleteModal.on("hidden.bs.modal", function () { });
     }
@@ -200,7 +202,7 @@ var Modals = (function () {
         if (data.success) {
             //$editModal.modal("hide");
             $deleteModal.modal("hide");
-            table.DataTable().ajax.reload(null, false);
+            GcTabla.recargar();
         }
         else {
             //$editModal.modal("hide");
@@ -220,249 +222,65 @@ var Modals = (function () {
     return obj;
 }());
 
+/** Listado de alumnos: tabla personalizable por usuario (ver components/gc-tabla.js). */
 var datatableAlumnos = (function () {
     var obj = {};
 
-    /**
-     * Inicializa y configura el DataTable
-     * @param {Object} DirectionUrls Direccion al que se enviaran los datos
-     * @param {Array} header Listado de nombres y configuraciones en las columnas.
-     */
+    function calcularEdad(fechaNac) {
+        if (!fechaNac) return "";
+        var fecha = new Date(fechaNac);
+        // La API manda 0001-01-01 cuando no trae la fecha: no inventar una edad.
+        if (isNaN(fecha.getTime()) || fecha.getFullYear() < 1900) return "—";
+        var hoy = new Date();
+        var edad = hoy.getFullYear() - fecha.getFullYear();
+        var m = hoy.getMonth() - fecha.getMonth();
+        if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
+        return edad >= 0 ? edad : "";
+    }
+
+    var BADGE_ESTADO = { "Activo": "badge-success", "Suspendido": "badge-warning", "Graduado": "badge-primary" };
+
     obj.init = function (DirectionUrls) {
         $(function () {
             var permisos = DirectionUrls.permisos || { crear: true, editar: true, eliminar: true };
-            //configuraciones
-            $.extend(true, $.fn.dataTable.defaults, {
-                dom: "<'row m-2 my-3'<'col-md-7'f> <'col-md-5 d-flex justify-content-end custom-buttons'B>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
-                order: [],
-                scrollCollapse: true,
-                paging: true,
-                stateSave: true,
-                //bLengthChange: false,
-                //bInfo: false,
-                processing: true,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
-                pageLenght: 20,
-                displayLength: 20,
-                language: {
-                    processing: '<div class="d-flex justify-content-center py-3"><i class="fa-solid fa-spinner fa-spin-pulse fa-3x" style="color: #F7A400;"></i></div>',
-                    lengthMenu: " _MENU_ ",
-                    zeroRecords: "No se encontraron resultados",
-                    emptyTable: "Ningún dato disponible en esta tabla",
-                    info: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    infoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    infoFiltered: "(filtrado de un total de _MAX_ registros)",
-                    infoPostFix: "",
-                    search: "",
-                    url: "",
-                    infoThousands: ",",
-                    loadingRecords: " ",
-                    searchPlaceholder: "Buscar en la tabla...",
-                    paginate: {
-                        first: "Primero",
-                        last: "Último",
-                        next: "Siguiente",
-                        previous: "Anterior"
-                    },
-                    aria: {
-                        sortAscending: ": Activar para ordenar la columna de manera ascendente",
-                        sortDescending: ": Activar para ordenar la columna de manera descendente"
-                    }
-                }
-            });
-
-            var exportOptions = { columns: [0, 1, 2, 3, 4, 5], orthogonal: "export" };
-
-            function calcularEdad(fechaNac) {
-                if (!fechaNac) return "";
-                var fecha = new Date(fechaNac);
-                if (isNaN(fecha.getTime())) return "";
-                var hoy = new Date();
-                var edad = hoy.getFullYear() - fecha.getFullYear();
-                var m = hoy.getMonth() - fecha.getMonth();
-                if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
-                return edad >= 0 ? edad : "";
-            }
-            var table = $('#datatable').DataTable({
-                responsive: false,
-                deferRender: true,
-                //serverSide: true,
-                buttons: (function () {
-                    var btns = [
-                        {
-                            text: '<i class="fa-solid fa-rotate-right"></i>',
-                            titleAttr: 'Recargar tabla',
-                            action: function (e, dt, config) {
-                                dt.ajax.reload();
-                            }
-                        },
-                        {
-                            extend: "pdfHtml5",
-                            title: "Exportar a PDF",
-                            text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
-                            class: "btn btn-secondary",
-                            exportOptions: exportOptions
-                        },
-                        {
-                            extend: "excelHtml5",
-                            title: "Exportar a EXCEL",
-                            text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
-                            class: "btn btn-secondary",
-                            exportOptions: exportOptions
-                        }
-                    ];
-                    if (permisos.crear) {
-                        btns.push({
-                            attr: {
-                                title: "Añadir nuevo elemento",
-                                id: "add-btn",
-                                class: "btn btn-primary",
-                                'data-style': "zoom-in",
-                                'data-toggle': "modal",
-                                'data-target': "#edit-modal"
-                            },
-                            text: '<span><i class="mdi mdi-plus-thick ladda-button"> Nuevo</i></span>'
-                        });
-                    }
-                    return btns;
-                })(),
-                ajax: function (data, callback, settings) {
-                    $.ajax({
-                        url: DirectionUrls.urlList,
-                        type: "GET",
-                        dataType: "json",
-                        success: function (response) {
-                            console.log(response);
-                            callback(response);
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.log('Error: ' + textStatus + ' - ' + errorThrown);
-                            console.log('Detalles: ', jqXHR.responseText);
-                        }
-                    });
-                },
-                columns: [
-                    {
-                        data: "Alu_Nombre",
-                        targets: 0,
-                        render: function (data, type, row) {
-                            if (type !== "display") return data || "";
-                            var imgSrc = row.Per_Imagen
-                                ? row.Per_Imagen.replace('~/', '/')
-                                : '/Content/js/pages/default-profile.jpeg';
-                            return '<div class="d-flex align-items-center">' +
-                                '<img src="' + imgSrc + '" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;margin-right:10px;" onerror="this.onerror=null;this.src=\'/Content/js/pages/default-profile.jpeg\';">' +
-                                '<span>' + (data || "") + '</span>' +
-                                '</div>';
-                        }
-                    },
-                    {
-                        data: "Per_Identidad",
-                        targets: 1,
-                    },
-                    {
-                        data: "Per_FechaNacimiento",
-                        targets: 2,
-                        render: function (data, type, row) {
-                            return calcularEdad(data);
-                        }
-                    },
-                    {
-                        data: "Cno_Descripcion",
-                        targets: 3,
-                    },
-                    {
-                        data: "Sec_Descripcion",
-                        targets: 4,
-                    },
-                    {
-                        data: "Est_Descripcion",
-                        targets: 5,
-                        render: function (data, type, row) {
-                            if (type !== "display") return data || "";
-                            let colorClass = '';
-                            switch (data) {
-                                case 'Activo':
-                                    colorClass = 'shadow-none badge badge-success';
-                                    break;
-                                case 'Suspendido':
-                                    colorClass = 'shadow-none badge badge-warning';
-                                    break;
-                                case 'Graduado':
-                                    colorClass = 'shadow-none badge badge-primary';
-                                    break;
-                            }
-                            return `<span class="${colorClass}">${data}</span>`;
-                        }
-                    },
-                    {
-                        data: null,
-                        defaultContent: "",
-                        orderable: false,
-                        className: "text-center",
-                        width: 120,
-                        targets: 6,
-                        render: function (data, type, row) {
-                            var botones = "";
-                            if (type == "display") {
-                                botones += '<div class="d-flex justify-content-center align-items-center" style="white-space:nowrap;">';
-                                // Boton Ver Detalles (siempre visible si tiene acceso al listado)
-                                botones += '<a href="javascript:void(0);" data-id="' + row["Alu_Id"] + '" class="bs-tooltip detail-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="Ver detalles"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye p-1 br-6 mb-1"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>';
-                                // Boton Editar (solo si tiene permiso)
-                                if (permisos.editar) {
-                                    botones += '<a href="javascript:void(0);" data-id="' + row["Alu_Id"] + '" class="bs-tooltip edit-btn text-muted pr-2" data-toggle="tooltip" data-placement="top" title="Editar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 p-1 br-6 mb-1"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg></a>';
-                                }
-                                // Boton Eliminar (solo si tiene permiso)
-                                if (permisos.eliminar) {
-                                    botones += '<span class="border-left mx-1" style="height:20px;"></span>';
-                                    botones += '<a href="javascript:void(0);" data-toggle="modal" data-target="#delete-modal" data-id="' + row["Alu_Id"] + '" class="bs-tooltip delete-btn text-muted pl-2" data-toggle="tooltip" data-placement="top" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash p-1 br-6 mb-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></a>';
-                                }
-                                botones += '</div>';
-                            }
-                            return botones;
-                        }
-                    }
-
+            GcTabla.crear({
+                elemento: "#tabla-alumnos",
+                nombre: "alumnos",
+                url: DirectionUrls.urlList,
+                archivo: "alumnos",
+                tituloPdf: "Listado de alumnos",
+                agrupar: [
+                    { campos: ["Cno_Descripcion"], texto: "Grado" },
+                    { campos: ["Cno_Descripcion", "Sec_Descripcion"], texto: "Grado → Sección" },
+                    { campos: ["Est_Descripcion"], texto: "Estado" }
+                ],
+                buscarEn: ["Alu_Nombre", "Per_Identidad", "Edad", "Cno_Descripcion", "Sec_Descripcion", "Est_Descripcion"],
+                columnas: [
+                    { title: "Alumno", field: "Alu_Nombre", minWidth: 190,
+                      formatter: function (c) { return GcTabla.avatar(c.getValue(), c.getData().Per_Imagen); } },
+                    { title: "Identidad", field: "Per_Identidad", minWidth: 130 },
+                    { title: "Edad", field: "Edad", hozAlign: "center", width: 110, sorter: "number",
+                      mutator: function (v, d) { return calcularEdad(d.Per_FechaNacimiento); } },
+                    { title: "Grado", field: "Cno_Descripcion", minWidth: 120 },
+                    { title: "Sección", field: "Sec_Descripcion", width: 125 },
+                    { title: "Estado", field: "Est_Descripcion", width: 135, hozAlign: "center",
+                      formatter: function (c) {
+                          return '<span class="shadow-none badge ' + (BADGE_ESTADO[c.getValue()] || "badge-secondary") + '">' + (c.getValue() || "") + '</span>';
+                      } },
+                    { title: "Acciones", field: "Acciones", headerSort: false, hozAlign: "center", width: 140, download: false,
+                      formatter: function (c) { return GcTabla.acciones(c.getData().Alu_Id, permisos, 'data-toggle="modal" data-target="#delete-modal"'); } }
                 ]
             });
 
-            // Evento click para ver detalles
-            table.on("click", ".detail-btn", function (e) {
-                var getIdDetail = $(this).data("id");
-                window.location = `${DirectionUrls.urlDetail}/${getIdDetail}`;
+            // Acciones por fila (mismo comportamiento que antes)
+            var $t = $("#tabla-alumnos");
+            $t.on("click", ".detail-btn", function () { window.location = DirectionUrls.urlDetail + "/" + $(this).data("id"); });
+            $t.on("click", ".edit-btn", function () { window.location = DirectionUrls.urlUpdate + "/" + $(this).data("id"); });
+            $t.on("click", ".delete-btn-btn", function () {
+                $("#delete-item-id").val($(this).data("id"));
+                Modals.configure({ displayName: "empleado", type: "delete" });
             });
-
-            // Evento click que Redirecciona.
-            // Obtiene el id seleccionado en el boton, Redirecciona a la vista de editar.
-            table.on("click", ".edit-btn", function (e) {
-                var getIdEdit = $(this).data("id");
-                window.location = `${DirectionUrls.urlUpdate}/${getIdEdit}`;
-            });
-
-            table.on("click", ".delete-btn-btn", function (e) {
-                var getIdDelete = $(this).data("id");
-                console.log(`getIdDelete: ${getIdDelete}`);
-                $("#delete-item-id").val(getIdDelete);
-                Modals.configure({
-                    displayName: "empleado",
-                    type: "delete"
-                });
-            });
-
-            // Evento click de clase .add-btn.
-            // Redirecciona a la vista de crear.
-            var addBtn = $('#add-btn');
-            addBtn.click(function () {
-                window.location = `${DirectionUrls.urlInsert}`;
-            });
-        });
-
-        //Eliminamos la agrupaciond de los botones.
-        $(function () {
-            $(".dt-buttons").removeClass("btn-group");
         });
     };
 

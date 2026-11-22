@@ -21,13 +21,13 @@ var MisAlumnosAdm = (function () {
                 $.each(rows, function (_, a) {
                     var img = a.Per_Imagen
                         ? '<img src="' + a.Per_Imagen + '" class="rounded-circle mb-2" width="64" height="64" style="object-fit:cover;">'
-                        : '<div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-2" style="width:64px;height:64px;font-size:24px;color:#fff;margin:0 auto;"><i class="fa-solid fa-user"></i></div>';
+                        : '<div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-2" style="width:64px;height:64px;font-size:24px;"><i class="fa-solid fa-user"></i></div>';
                     panel.append(
-                        '<div class="col-6 col-md-3 col-lg-2">' +
+                        '<div class="col-6 col-md-3 col-lg-2 layout-spacing">' +
                             '<div class="card text-center p-3 h-100">' +
                                 img +
-                                '<div class="fw-semibold small">' + a.NombreCompleto + '</div>' +
-                                '<div class="text-muted" style="font-size:11px;">' + (a.Sec_Descripcion||'') + '</div>' +
+                                '<div class="font-weight-bold small">' + a.NombreCompleto + '</div>' +
+                                '<div class="text-muted small">' + (a.Sec_Descripcion||'') + '</div>' +
                             '</div>' +
                         '</div>'
                     );

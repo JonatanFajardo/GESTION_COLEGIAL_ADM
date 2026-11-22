@@ -1,4 +1,15 @@
-﻿//==================================================
+// Barra de las tablas con los botones de CORK: los secundarios van con borde y,
+// si el encabezado de la página ya tiene su botón principal, no se repite el "Nuevo".
+$(document).on('init.dt', function (e, settings) {
+    var $w = $(settings.nTableWrapper);
+    $w.find('.dt-buttons').removeClass('btn-group');
+    $w.find('.dt-buttons .btn').removeClass('btn-secondary').each(function () {
+        if (this.id !== 'add-btn') $(this).removeClass('btn-primary').addClass('btn-outline-primary');
+    });
+    if ($('.encabezado-pagina .btn').length) $w.find('#add-btn').addClass('d-none');
+});
+
+//==================================================
 //Recorre el arreglo de encabezados
 //==================================================
 
@@ -15,7 +26,7 @@ var Modals = (function () {
         $deleteModal.on("show.bs.modal", function () {
             var modalTitle = "Eliminar ", deleteBtnText = "Aceptar";
             $(params.deleteModalId + " .modal-title").html(modalTitle + params.displayName);
-            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='mdi mdi-content-save'></i> " + deleteBtnText);
+            $(params.deleteModalId + " .modal-footer .btn-danger").html("<i class='bi bi-trash mr-1'></i> " + deleteBtnText);
         });
         $deleteModal.on("hidden.bs.modal", function () { });
     }
@@ -58,7 +69,7 @@ var Modals = (function () {
         if (data.success) {
             //$editModal.modal("hide");
             $deleteModal.modal("hide");
-            table.DataTable().ajax.reload(null, false);
+            if (!(window.GcTabla && GcTabla.recargar())) table.DataTable().ajax.reload(null, false);
         }
         else {
             //$editModal.modal("hide");
@@ -116,7 +127,7 @@ var datatable = (function () {
                     url: "",
                     infoThousands: ",",
                     loadingRecords: " ",
-                    searchPlaceholder: "Buscar en la tabla...",
+                    searchPlaceholder: "Buscar…",
                     paginate: {
                         first: "Primero",
                         last: "Último",
@@ -254,8 +265,8 @@ var datatable = (function () {
                 head[i]['render'] = function (data) {
                     var isActive = data === true || data === 1 || data === 'true' || data === 'Activo';
                     return isActive
-                        ? '<span class="badge-estado activo"><span class="dot-estado"></span>Activo</span>'
-                        : '<span class="badge-estado inactivo"><span class="dot-estado"></span>Inactivo</span>';
+                        ? '<span class="badge outline-badge-success">Activo</span>'
+                        : '<span class="badge outline-badge-secondary">Inactivo</span>';
                 };
                 head[i]['className'] = 'text-center';
             }

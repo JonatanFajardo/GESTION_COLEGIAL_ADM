@@ -191,22 +191,22 @@ var Organigrama = (function () {
         var colorIdx = buildDepColorIndex(employees);
 
         /* Department filter pills */
-        var $pills = $('<div class="org-dept-pills" id="org-dept-pills"></div>');
-        $('<button class="dept-pill active" data-dept="all">' +
-            'Todos <span class="pill-count">' + employees.length + '</span>' +
+        var $pills = $('<div class="d-flex flex-wrap mb-2" id="org-dept-pills"></div>');
+        $('<button type="button" class="btn btn-sm btn-rounded btn-primary dept-pill active mr-1 mb-2" data-dept="all">' +
+            'Todos <span class="badge badge-light ml-1">' + employees.length + '</span>' +
         '</button>').appendTo($pills);
         grouped.order.forEach(function (depName, idx) {
             var color = PALETTE[idx % PALETTE.length];
-            $('<button class="dept-pill" data-dept="' + esc(depName) + '">' +
-                esc(depName) + ' <span class="pill-count">' + grouped.map[depName].length + '</span>' +
-            '</button>').css('--pill-color', color).appendTo($pills);
+            $('<button type="button" class="btn btn-sm btn-rounded btn-outline-primary dept-pill mr-1 mb-2" data-dept="' + esc(depName) + '">' +
+                esc(depName) + ' <span class="badge badge-light ml-1">' + grouped.map[depName].length + '</span>' +
+            '</button>').appendTo($pills);
         });
 
         /* Sort bar */
         var $sortBar = $(
-            '<div class="org-dir-sortbar">' +
-                '<span class="sortbar-label"><i class="fa-solid fa-arrow-up-a-z"></i> Ordenar:</span>' +
-                '<select id="org-sort-select" class="dir-sort-select">' +
+            '<div class="d-flex align-items-center mb-3">' +
+                '<span class="text-muted small font-weight-bold mr-2"><i class="fa-solid fa-arrow-up-a-z mr-1"></i> Ordenar:</span>' +
+                '<select id="org-sort-select" class="custom-select custom-select-sm w-auto">' +
                     '<option value="name">Nombre A → Z</option>' +
                     '<option value="name-desc">Nombre Z → A</option>' +
                     '<option value="dept">Departamento</option>' +
@@ -225,8 +225,8 @@ var Organigrama = (function () {
         renderDirCards(employees, 'all', 'name', colorIdx);
 
         $pills.on('click', '.dept-pill', function () {
-            $pills.find('.dept-pill').removeClass('active');
-            $(this).addClass('active');
+            $pills.find('.dept-pill').removeClass('active btn-primary').addClass('btn-outline-primary');
+            $(this).addClass('active btn-primary').removeClass('btn-outline-primary');
             _activeDept = $(this).data('dept');
             $('#org-search-input').val('');
             renderDirCards(employees, _activeDept, _sortBy, colorIdx);

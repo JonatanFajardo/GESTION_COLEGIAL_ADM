@@ -88,12 +88,12 @@ window.AlumnoFicha = (function () {
         if (trend === null || trend === undefined || trend === '' || isNaN(trend)) return '';
         var n = Number(trend);
         if (n > 0) {
-            return '<span class="af-kpi-trend up"><i class="bi bi-arrow-up-short"></i> ' + n + '</span>';
+            return '<span class="badge outline-badge-success"><i class="bi bi-arrow-up-short"></i> ' + n + '</span>';
         }
         if (n < 0) {
-            return '<span class="af-kpi-trend down"><i class="bi bi-arrow-down-short"></i> ' + Math.abs(n) + '</span>';
+            return '<span class="badge outline-badge-danger"><i class="bi bi-arrow-down-short"></i> ' + Math.abs(n) + '</span>';
         }
-        return '<span class="af-kpi-trend flat"><i class="bi bi-dash"></i> 0</span>';
+        return '<span class="badge outline-badge-secondary"><i class="bi bi-dash"></i> 0</span>';
     }
 
     // Notificación con fallback a console
@@ -136,7 +136,7 @@ window.AlumnoFicha = (function () {
         var estado = data.cuentaEstado || '—';
         $('#af-kpi-cuenta').html(esc(estado));
         var prox = data.proximoCargo ? ('Próx: ' + fmtDate(data.proximoCargo)) : '';
-        $('#af-kpi-cuenta-trend').html(prox ? '<span class="af-kpi-sub">' + esc(prox) + '</span>' : '');
+        $('#af-kpi-cuenta-trend').html(prox ? '<span class="text-muted">' + esc(prox) + '</span>' : '');
 
         // Tareas entregadas / total
         var entregadas = data.tareasEntregadas;
@@ -145,14 +145,14 @@ window.AlumnoFicha = (function () {
             $('#af-kpi-tareas').html('—');
             $('#af-kpi-tareas-trend').html('');
         } else {
-            $('#af-kpi-tareas').html(esc(entregadas) + '<span class="af-kpi-sub">/' + esc(total) + '</span>');
+            $('#af-kpi-tareas').html(esc(entregadas) + '<span class="text-muted small">/' + esc(total) + '</span>');
             var pct = total > 0 ? Math.round((entregadas / total) * 100) : 0;
-            $('#af-kpi-tareas-trend').html('<span class="af-kpi-sub">' + pct + '% completado</span>');
+            $('#af-kpi-tareas-trend').html('<span class="text-muted">' + pct + '% completado</span>');
         }
     }
 
     function fetchKPIs() {
-        $('.af-kpi-value').html('<span class="af-loading-dot"></span>');
+        $('.af-kpi-value').html('<span class="spinner-border spinner-border-sm text-primary" role="status"></span>');
         $.ajax({
             url: ENDPOINTS.kpis,
             type: 'GET',
@@ -188,9 +188,9 @@ window.AlumnoFicha = (function () {
     // Renderiza el spinner de carga dentro del panel del tab
     function renderLoading($panel) {
         $panel.html(
-            '<div class="af-loading" role="status" aria-live="polite">' +
-                '<div class="af-loading-spinner"><i class="bi bi-arrow-repeat"></i></div>' +
-                '<div class="af-loading-text">Cargando…</div>' +
+            '<div class="text-center text-muted py-5" role="status" aria-live="polite">' +
+                '<div class="spinner-border text-primary mb-2"></div>' +
+                '<div>Cargando…</div>' +
             '</div>'
         );
     }
@@ -198,12 +198,12 @@ window.AlumnoFicha = (function () {
     // Renderiza un mensaje de error con botón de reintento
     function renderError($panel, tabName) {
         $panel.html(
-            '<div class="af-tab-error">' +
-                '<i class="bi bi-exclamation-triangle"></i>' +
-                '<h4>No se pudo cargar esta sección</h4>' +
-                '<p>Revisá tu conexión y volvé a intentar.</p>' +
-                '<button type="button" class="af-tab-reload" data-tab="' + esc(tabName) + '">' +
-                    '<i class="bi bi-arrow-clockwise"></i> Reintentar' +
+            '<div class="alert alert-light-danger text-center py-4">' +
+                '<i class="bi bi-exclamation-triangle h3 d-block"></i>' +
+                '<h5>No se pudo cargar esta sección</h5>' +
+                '<p class="mb-3">Revisá tu conexión y volvé a intentar.</p>' +
+                '<button type="button" class="btn btn-sm btn-outline-primary af-tab-reload" data-tab="' + esc(tabName) + '">' +
+                    '<i class="bi bi-arrow-clockwise mr-1"></i> Reintentar' +
                 '</button>' +
             '</div>'
         );

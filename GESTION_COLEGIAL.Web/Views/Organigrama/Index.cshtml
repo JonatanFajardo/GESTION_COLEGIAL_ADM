@@ -4,7 +4,6 @@
 }
 
 @section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
     <link href="~/Content/css/pages/organigrama.css" rel="stylesheet" />
 }
 
@@ -17,77 +16,87 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo">
-                <i class="fa-solid fa-sitemap"></i>
-            </div>
-            <div class="header-text-catalogo">
-                <h1>Organigrama Institucional</h1>
-                <p>Estructura jer&aacute;rquica del personal por departamento</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Organigrama Institucional</h4>
+        <p class="text-muted mb-0">Estructura jer&aacute;rquica del personal por departamento</p>
     </div>
 </div>
 
 <div class="fluid-container">
 
-    <div class="org-stats">
-        <div class="org-stat">
-            <div class="stat-icon">
-                <i class="fa-solid fa-users"></i>
-            </div>
-            <div>
-                <div class="stat-value" id="stat-empleados">&mdash;</div>
-                <div class="stat-label">Total Empleados</div>
-            </div>
-        </div>
-        <div class="org-stat">
-            <div class="stat-icon">
-                <i class="fa-solid fa-layer-group"></i>
-            </div>
-            <div>
-                <div class="stat-value" id="stat-departamentos">&mdash;</div>
-                <div class="stat-label">Departamentos</div>
+    <div class="row">
+        <div class="col-md-4 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="stat-empleados">&mdash;</h6>
+                            <p>Total Empleados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-users"></i></div></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="org-stat">
-            <div class="stat-icon">
-                <i class="fa-solid fa-id-badge"></i>
+        <div class="col-md-4 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="stat-departamentos">&mdash;</h6>
+                            <p>Departamentos</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-layer-group"></i></div></div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <div class="stat-value" id="stat-cargos">&mdash;</div>
-                <div class="stat-label">Cargos Distintos</div>
+        </div>
+        <div class="col-md-4 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="stat-cargos">&mdash;</h6>
+                            <p>Cargos Distintos</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-id-badge"></i></div></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="org-toolbar">
-        <div class="org-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text"
-                   id="org-search-input"
-                   placeholder="Buscar empleado o cargo..."
-                   autocomplete="off" />
-        </div>
-        <div class="org-tree-controls hidden" id="org-tree-controls">
-            <button type="button" class="btn-org" id="btn-expand-all">
-                <i class="fa-solid fa-maximize"></i>
-                Expandir todo
-            </button>
-            <button type="button" class="btn-org" id="btn-collapse-all">
-                <i class="fa-solid fa-minimize"></i>
-                Colapsar todo
-            </button>
-        </div>
-        <div class="org-view-toggle">
-            <button type="button" class="btn-view-mode" id="btn-mode-tree" title="Vista &aacute;rbol jer&aacute;rquico">
-                <i class="fa-solid fa-sitemap"></i>
-            </button>
-            <button type="button" class="btn-view-mode" id="btn-mode-grid" title="Vista directorio">
-                <i class="fa-solid fa-grip"></i>
-            </button>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
+            <div class="d-flex flex-wrap align-items-center">
+                <div class="input-group flex-grow-1 mr-md-3 mb-2 mb-md-0">
+                    <div class="input-group-prepend"><span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span></div>
+                    <input type="text"
+                           id="org-search-input"
+                           class="form-control"
+                           placeholder="Buscar empleado o cargo..."
+                           autocomplete="off" />
+                </div>
+                <div class="hidden mr-3 mb-2 mb-md-0" id="org-tree-controls">
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="btn-expand-all">
+                        <i class="fa-solid fa-maximize mr-1"></i>
+                        Expandir todo
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="btn-collapse-all">
+                        <i class="fa-solid fa-minimize mr-1"></i>
+                        Colapsar todo
+                    </button>
+                </div>
+                <div class="btn-group mb-2 mb-md-0" role="group">
+                    <button type="button" class="btn btn-outline-primary" id="btn-mode-tree" title="Vista &aacute;rbol jer&aacute;rquico">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" id="btn-mode-grid" title="Vista directorio">
+                        <i class="fa-solid fa-grip"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 

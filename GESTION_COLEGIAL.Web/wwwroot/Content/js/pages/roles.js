@@ -95,7 +95,7 @@ var Roles = (function () {
                     url: "",
                     infoThousands: ",",
                     loadingRecords: " ",
-                    searchPlaceholder: "Buscar en la tabla...",
+                    searchPlaceholder: "Buscar…",
                     paginate: { first: "Primero", last: "Ultimo", next: "Siguiente", previous: "Anterior" },
                     aria: {
                         sortAscending: ": Activar para ordenar la columna de manera ascendente",

@@ -80,7 +80,7 @@ var Conciliacion = (function () {
         // Feed cobros
         var feedC = $("#feed-cobros").empty();
         if (cobros.length === 0) {
-            feedC.html('<div class="fd-empty"><i class="fa-solid fa-inbox"></i><p>Sin cobros para mostrar</p></div>');
+            feedC.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-inbox h2 d-block mb-2"></i><p class="mb-0">Sin cobros para mostrar</p></div>');
         } else {
             var sortedC = cobros.slice().sort(function (a, b) {
                 var da = parseHora(a.Pag_FechaPago), db = parseHora(b.Pag_FechaPago);
@@ -102,7 +102,7 @@ var Conciliacion = (function () {
                         '</div>' +
                         '<div class="fd-feed-right">' +
                             '<p class="fd-feed-amount">' + esc(fmt(r.Pag_MontoTotal)) + '</p>' +
-                            '<span class="fd-chip c-emerald">Cobrado</span>' +
+                            '<span class="badge outline-badge-success">Cobrado</span>' +
                         '</div>' +
                     '</div>'
                 );
@@ -112,7 +112,7 @@ var Conciliacion = (function () {
         // Feed pendientes
         var feedP = $("#feed-pendientes").empty();
         if (pendientes.length === 0) {
-            feedP.html('<div class="fd-empty"><i class="fa-solid fa-circle-check"></i><p>Sin pendientes — todo cobrado</p></div>');
+            feedP.html('<div class="text-center text-muted py-4"><i class="fa-solid fa-circle-check h2 d-block mb-2"></i><p class="mb-0">Sin pendientes — todo cobrado</p></div>');
         } else {
             var sortedP = pendientes.slice().sort(function (a, b) {
                 return (parseInt(b.DiasVencida) || 0) - (parseInt(a.DiasVencida) || 0);
@@ -120,11 +120,11 @@ var Conciliacion = (function () {
             sortedP.forEach(function (r) {
                 var dias = parseInt(r.DiasVencida);
                 var chip, chipCls;
-                if (isNaN(dias))     { chip = "Sin fecha";   chipCls = ""; }
-                else if (dias > 30)  { chip = dias + " d vencido"; chipCls = "c-rose"; }
-                else if (dias > 0)   { chip = dias + " d vencido"; chipCls = "c-amber"; }
-                else if (dias === 0) { chip = "Vence hoy";   chipCls = "c-amber"; }
-                else                 { chip = Math.abs(dias) + " d por vencer"; chipCls = "c-cyan"; }
+                if (isNaN(dias))     { chip = "Sin fecha";   chipCls = "outline-badge-secondary"; }
+                else if (dias > 30)  { chip = dias + " d vencido"; chipCls = "outline-badge-danger"; }
+                else if (dias > 0)   { chip = dias + " d vencido"; chipCls = "outline-badge-warning"; }
+                else if (dias === 0) { chip = "Vence hoy";   chipCls = "outline-badge-warning"; }
+                else                 { chip = Math.abs(dias) + " d por vencer"; chipCls = "outline-badge-info"; }
 
                 feedP.append(
                     '<div class="fd-feed-item">' +
@@ -138,7 +138,7 @@ var Conciliacion = (function () {
                         '</div>' +
                         '<div class="fd-feed-right">' +
                             '<p class="fd-feed-amount amt-rose">' + esc(fmt(r.Cco_MontoPendiente)) + '</p>' +
-                            '<span class="fd-chip ' + chipCls + '">' + esc(chip) + '</span>' +
+                            '<span class="badge ' + chipCls + '">' + esc(chip) + '</span>' +
                         '</div>' +
                     '</div>'
                 );

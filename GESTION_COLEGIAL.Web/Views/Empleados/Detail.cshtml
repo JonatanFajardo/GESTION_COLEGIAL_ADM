@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles{
-    <link href="~/Content/css/detalle.css" rel="stylesheet" />
 }
 @{
     var estadoColor = Model.EsActivo == "Activo" ? "badge-success" : "badge-danger";
@@ -29,194 +28,140 @@
 
 <div class="fluid-container">
 
-    <!-- Hero -->
-    <div class="detail-hero">
-        <div class="detail-hero-inner">
-            <div class="detail-hero-avatar">
-                <div class="detail-avatar-placeholder">
-                    <i class="bi bi-person-badge"></i>
-                </div>
-                <div class="detail-id-badge">#@Model.Emp_Id.ToString().PadLeft(4, '0')</div>
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+        <div class="d-flex align-items-center mr-3">
+            <div class="avatar avatar-xl mr-3">
+                <span class="avatar-title rounded-circle"><i class="bi bi-person-badge"></i></span>
             </div>
-
-            <div class="detail-hero-info">
-                <h2 class="detail-name">@nombreCompleto</h2>
-                <p class="detail-subtitle">
-                    <i class="bi bi-briefcase"></i> @Model.Car_Descripcion
+            <div>
+                <h4 class="mb-1">@nombreCompleto <small class="text-muted">#@Model.Emp_Id.ToString().PadLeft(4, '0')</small></h4>
+                <p class="text-muted mb-1">
+                    <i class="bi bi-briefcase mr-1"></i>@Model.Car_Descripcion
                     @if (!string.IsNullOrEmpty(Model.Tit_Descripcion))
                     {
                         <span> &mdash; @Model.Tit_Descripcion</span>
                     }
                 </p>
-                <div class="detail-meta">
+                <div class="d-flex flex-wrap align-items-center text-muted small">
                     @if (!string.IsNullOrEmpty(Model.Per_Identidad))
                     {
-                        <span><i class="bi bi-card-text"></i> @Model.Per_Identidad</span>
+                        <span class="mr-3"><i class="bi bi-card-text mr-1"></i>@Model.Per_Identidad</span>
                     }
                     @if (!string.IsNullOrEmpty(Model.Emp_Codigo))
                     {
-                        <span><i class="bi bi-hash"></i> Código @Model.Emp_Codigo</span>
+                        <span class="mr-3"><i class="bi bi-hash mr-1"></i>Código @Model.Emp_Codigo</span>
                     }
                     <span class="badge @estadoColor">@Model.EsActivo</span>
                 </div>
             </div>
-
-            <div class="detail-hero-actions">
-                <a href="@Url.Action("Index", "Ficha360EmpleadoAdm")" class="btn-detail-edit" style="background:rgba(255,255,255,0.95);color:#4f46e5;" title="Vista completa del empleado con todos los datos consolidados">
-                    <i class="bi bi-person-vcard"></i> Ficha 360°
-                </a>
-                <a href="@Url.Action("FindAsync", new { id = Model.Emp_Id })" class="btn-detail-edit">
-                    <i class="bi bi-pencil"></i> Editar
-                </a>
-                <a href="@Url.Action("Index")" class="btn-detail-back">
-                    <i class="bi bi-arrow-left"></i> Volver
-                </a>
-            </div>
+        </div>
+        <div class="mt-2 mt-md-0">
+            <a href="@Url.Action("Index", "Ficha360EmpleadoAdm")" class="btn btn-outline-primary" title="Vista completa del empleado con todos los datos consolidados">
+                <i class="bi bi-person-vcard mr-1"></i> Ficha 360°
+            </a>
+            <a href="@Url.Action("FindAsync", new { id = Model.Emp_Id })" class="btn btn-primary">
+                <i class="bi bi-pencil mr-1"></i> Editar
+            </a>
+            <a href="@Url.Action("Index")" class="btn">
+                <i class="bi bi-arrow-left mr-1"></i> Volver
+            </a>
         </div>
     </div>
 
     <div class="row">
         <!-- Columna izquierda -->
-        <div class="col-md-6 detail-col-stretch">
+        <div class="col-md-6 layout-spacing">
             <!-- Nombres -->
-            <div class="detail-info-card">
-                <div class="detail-info-card-header">
-                    <i class="bi bi-person"></i>
-                    <h6>Nombres</h6>
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4><i class="bi bi-person mr-1"></i> Nombres</h4></div></div>
                 </div>
-                <div class="detail-info-card-body">
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person"></i></div>
-                        <div>
-                            <span class="detail-field-label">Primer Nombre</span>
-                            <span class="detail-field-value">@Model.Per_PrimerNombre</span>
-                        </div>
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-person text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Primer Nombre</p><p class="font-weight-bold mb-0">@Model.Per_PrimerNombre</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person"></i></div>
-                        <div>
-                            <span class="detail-field-label">Segundo Nombre</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_SegundoNombre) ? "—" : Model.Per_SegundoNombre)</span>
-                        </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-person text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Segundo Nombre</p><p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(Model.Per_SegundoNombre) ? "—" : Model.Per_SegundoNombre)</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person-badge"></i></div>
-                        <div>
-                            <span class="detail-field-label">Apellido Paterno</span>
-                            <span class="detail-field-value">@Model.Per_ApellidoPaterno</span>
-                        </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-person-badge text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Apellido Paterno</p><p class="font-weight-bold mb-0">@Model.Per_ApellidoPaterno</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person-badge"></i></div>
-                        <div>
-                            <span class="detail-field-label">Apellido Materno</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_ApellidoMaterno) ? "—" : Model.Per_ApellidoMaterno)</span>
-                        </div>
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-person-badge text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Apellido Materno</p><p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(Model.Per_ApellidoMaterno) ? "—" : Model.Per_ApellidoMaterno)</p></div>
                     </div>
                 </div>
             </div>
 
             <!-- Datos Personales -->
-            <div class="detail-info-card">
-                <div class="detail-info-card-header">
-                    <i class="bi bi-card-text"></i>
-                    <h6>Datos Personales</h6>
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4><i class="bi bi-card-text mr-1"></i> Datos Personales</h4></div></div>
                 </div>
-                <div class="detail-info-card-body">
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-card-text"></i></div>
-                        <div>
-                            <span class="detail-field-label">Identidad</span>
-                            <span class="detail-field-value">@Model.Per_Identidad</span>
-                        </div>
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-card-text text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Identidad</p><p class="font-weight-bold mb-0">@Model.Per_Identidad</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-calendar2-heart"></i></div>
-                        <div>
-                            <span class="detail-field-label">Fecha de Nacimiento</span>
-                            <span class="detail-field-value">@Model.Per_FechaNacimiento.ToString("dd/MM/yyyy")</span>
-                        </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-calendar2-heart text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Fecha de Nacimiento</p><p class="font-weight-bold mb-0">@Model.Per_FechaNacimiento.ToString("dd/MM/yyyy")</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi @sexoIcono"></i></div>
-                        <div>
-                            <span class="detail-field-label">Sexo</span>
-                            <span class="detail-field-value">@sexoTexto</span>
-                        </div>
+                    <div class="d-flex align-items-start">
+                        <i class="bi @sexoIcono text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Sexo</p><p class="font-weight-bold mb-0">@sexoTexto</p></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Columna derecha -->
-        <div class="col-md-6 detail-col-stretch">
+        <div class="col-md-6 layout-spacing">
             <!-- Contacto -->
-            <div class="detail-info-card">
-                <div class="detail-info-card-header">
-                    <i class="bi bi-telephone"></i>
-                    <h6>Información de Contacto</h6>
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4><i class="bi bi-telephone mr-1"></i> Información de Contacto</h4></div></div>
                 </div>
-                <div class="detail-info-card-body">
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-telephone"></i></div>
-                        <div>
-                            <span class="detail-field-label">Teléfono</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_Telefono) ? "—" : Model.Per_Telefono)</span>
-                        </div>
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-telephone text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Teléfono</p><p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(Model.Per_Telefono) ? "—" : Model.Per_Telefono)</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-envelope"></i></div>
-                        <div>
-                            <span class="detail-field-label">Correo Electrónico</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_CorreoElectronico) ? "—" : Model.Per_CorreoElectronico)</span>
-                        </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-envelope text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Correo Electrónico</p><p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(Model.Per_CorreoElectronico) ? "—" : Model.Per_CorreoElectronico)</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-geo-alt"></i></div>
-                        <div>
-                            <span class="detail-field-label">Dirección</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Per_Direccion) ? "—" : Model.Per_Direccion)</span>
-                        </div>
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-geo-alt text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Dirección</p><p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(Model.Per_Direccion) ? "—" : Model.Per_Direccion)</p></div>
                     </div>
                 </div>
             </div>
 
             <!-- Laboral -->
-            <div class="detail-info-card">
-                <div class="detail-info-card-header">
-                    <i class="bi bi-briefcase"></i>
-                    <h6>Información Laboral</h6>
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4><i class="bi bi-briefcase mr-1"></i> Información Laboral</h4></div></div>
                 </div>
-                <div class="detail-info-card-body">
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-hash"></i></div>
-                        <div>
-                            <span class="detail-field-label">Código del Empleado</span>
-                            <span class="detail-field-value">@Model.Emp_Codigo</span>
-                        </div>
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-hash text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Código del Empleado</p><p class="font-weight-bold mb-0">@Model.Emp_Codigo</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-mortarboard"></i></div>
-                        <div>
-                            <span class="detail-field-label">Título</span>
-                            <span class="detail-field-value">@(string.IsNullOrEmpty(Model.Tit_Descripcion) ? "—" : Model.Tit_Descripcion)</span>
-                        </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-mortarboard text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Título</p><p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(Model.Tit_Descripcion) ? "—" : Model.Tit_Descripcion)</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-person-workspace"></i></div>
-                        <div>
-                            <span class="detail-field-label">Cargo</span>
-                            <span class="detail-field-value">@Model.Car_Descripcion</span>
-                        </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-person-workspace text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Cargo</p><p class="font-weight-bold mb-0">@Model.Car_Descripcion</p></div>
                     </div>
-                    <div class="detail-field">
-                        <div class="detail-field-icon"><i class="bi bi-toggle-on"></i></div>
-                        <div>
-                            <span class="detail-field-label">Estado</span>
-                            <span class="detail-field-value">
-                                <span class="badge @estadoColor">@Model.EsActivo</span>
-                            </span>
-                        </div>
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-toggle-on text-primary mr-3 mt-1"></i>
+                        <div><p class="text-muted small mb-0">Estado</p><p class="mb-0"><span class="badge @estadoColor">@Model.EsActivo</span></p></div>
                     </div>
                 </div>
             </div>
@@ -224,39 +169,32 @@
     </div>
 
     <!-- Auditoría -->
-    <div class="detail-info-card">
-        <div class="detail-info-card-header">
-            <i class="bi bi-clock-history"></i>
-            <h6>Información de Registro</h6>
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4><i class="bi bi-clock-history mr-1"></i> Información de Registro</h4></div></div>
         </div>
-        <div class="detail-info-card-body">
-            <div class="detail-audit-entry">
-                <div class="detail-audit-icon created">
-                    <i class="bi bi-plus-circle"></i>
-                </div>
-                <div>
-                    <div class="detail-audit-label">Registrado por</div>
-                    <div class="detail-audit-who">@(string.IsNullOrEmpty(Model.Per_UsuarioRegistraNombre) ? "—" : Model.Per_UsuarioRegistraNombre)</div>
-                    <div class="detail-audit-date">
-                        <i class="bi bi-clock"></i> @Model.Per_FechaRegistra.ToString("dd/MM/yyyy HH:mm")
-                    </div>
-                </div>
-            </div>
-            @if (Model.Per_FechaModifica.HasValue)
-            {
-                <div class="detail-audit-entry">
-                    <div class="detail-audit-icon modified">
-                        <i class="bi bi-pencil"></i>
-                    </div>
+        <div class="widget-content widget-content-area">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-start mb-3 mb-md-0">
+                    <i class="bi bi-plus-circle text-success mr-3 mt-1"></i>
                     <div>
-                        <div class="detail-audit-label">Modificado por</div>
-                        <div class="detail-audit-who">@(string.IsNullOrEmpty(Model.Per_UsuarioModificaNombre) ? "—" : Model.Per_UsuarioModificaNombre)</div>
-                        <div class="detail-audit-date">
-                            <i class="bi bi-clock"></i> @Model.Per_FechaModifica.Value.ToString("dd/MM/yyyy HH:mm")
+                        <p class="text-muted small mb-0">Registrado por</p>
+                        <p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(Model.Per_UsuarioRegistraNombre) ? "—" : Model.Per_UsuarioRegistraNombre)</p>
+                        <p class="text-muted small mb-0"><i class="bi bi-clock mr-1"></i>@Model.Per_FechaRegistra.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                </div>
+                @if (Model.Per_FechaModifica.HasValue)
+                {
+                    <div class="col-md-6 d-flex align-items-start">
+                        <i class="bi bi-pencil text-warning mr-3 mt-1"></i>
+                        <div>
+                            <p class="text-muted small mb-0">Modificado por</p>
+                            <p class="font-weight-bold mb-0">@(string.IsNullOrEmpty(Model.Per_UsuarioModificaNombre) ? "—" : Model.Per_UsuarioModificaNombre)</p>
+                            <p class="text-muted small mb-0"><i class="bi bi-clock mr-1"></i>@Model.Per_FechaModifica.Value.ToString("dd/MM/yyyy HH:mm")</p>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 

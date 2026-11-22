@@ -8,14 +8,6 @@
                                   .ToList();
     Func<string, bool> tiene = (nombre) => listaPantallas.Contains(nombre, StringComparer.OrdinalIgnoreCase);
 }
-@section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
-    <style>
-        .reporte-card { border-radius: 10px; transition: box-shadow .2s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
-        .reporte-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.15); text-decoration: none; color: inherit; }
-        .reporte-card .icon-wrap { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-    </style>
-}
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -24,61 +16,84 @@
         </ol>
     </nav>
 </div>
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo"><i class="fa-solid fa-file-chart-column" style="font-size:32px;"></i></div>
-            <div class="header-text-catalogo">
-                <h1>Reportes Pre-generados</h1>
-                <p>Acceso rápido a todos los módulos de reporte y análisis</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Reportes Pre-generados</h4>
+        <p class="text-muted mb-0">Acceso rápido a todos los módulos de reporte y análisis</p>
     </div>
 </div>
 <div class="fluid-container">
 
-    <h5 class="mb-3 text-muted">Financiero</h5>
-    <div class="row g-3 mb-4">
+    <h5 class="mb-3 text-muted font-weight-bold">Financiero</h5>
+    <div class="row mb-2">
         @if (tiene("Aging de Cuentas por Cobrar"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","AgingCuentas")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-warning text-white"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                        <div><strong>Aging de Cuentas</strong><br/><small class="text-muted">Antigüedad de saldos</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","AgingCuentas")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Aging de Cuentas</h6>
+                                    <p class="text-muted mb-0">Antigüedad de saldos</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-clock-rotate-left"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Top Alumnos con Deuda"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","TopDeudores")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-danger text-white"><i class="fa-solid fa-ranking-star"></i></div>
-                        <div><strong>Top Deudores</strong><br/><small class="text-muted">Mayores saldos pendientes</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","TopDeudores")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Top Deudores</h6>
+                                    <p class="text-muted mb-0">Mayores saldos pendientes</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-ranking-star"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Morosidad por Nivel"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","MorosidadPorNivel")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-orange text-white" style="background:#fd7e14!important;"><i class="fa-solid fa-chart-bar"></i></div>
-                        <div><strong>Morosidad por Nivel</strong><br/><small class="text-muted">Saldos por nivel educativo</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","MorosidadPorNivel")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Morosidad por Nivel</h6>
+                                    <p class="text-muted mb-0">Saldos por nivel educativo</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-chart-bar"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Estado de cuenta alumno"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","EstadoCuentaAdm")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                        <div><strong>Estado de Cuenta</strong><br/><small class="text-muted">Por alumno</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","EstadoCuentaAdm")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Estado de Cuenta</h6>
+                                    <p class="text-muted mb-0">Por alumno</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-file-invoice-dollar"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -86,146 +101,230 @@
         @* Tarjeta "Pagos del Día" eliminada — la pantalla-dashboard PagosDelDia/Index fue removida. *@
         @if (tiene("Pendientes por Cobrar"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","PendientesCobrar")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-danger text-white"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                        <div><strong>Pendientes por Cobrar</strong><br/><small class="text-muted">Cuentas vencidas</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","PendientesCobrar")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Pendientes por Cobrar</h6>
+                                    <p class="text-muted mb-0">Cuentas vencidas</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-triangle-exclamation"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Historial de Transacciones"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","HistorialTransacciones")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-info text-white"><i class="fa-solid fa-receipt"></i></div>
-                        <div><strong>Historial Transacciones</strong><br/><small class="text-muted">Por período y alumno</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","HistorialTransacciones")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Historial Transacciones</h6>
+                                    <p class="text-muted mb-0">Por período y alumno</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-receipt"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("KPIs Financieros"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","KPIsFinancieros")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-gauge-high"></i></div>
-                        <div><strong>KPIs Financieros</strong><br/><small class="text-muted">Indicadores clave</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","KPIsFinancieros")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">KPIs Financieros</h6>
+                                    <p class="text-muted mb-0">Indicadores clave</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-gauge-high"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Comparativo de Años"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","ComparativoAnios")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-purple text-white" style="background:#6f42c1!important;"><i class="fa-solid fa-arrows-left-right"></i></div>
-                        <div><strong>Comparativo Años</strong><br/><small class="text-muted">Comparativo financiero interanual</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","ComparativoAnios")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Comparativo Años</h6>
+                                    <p class="text-muted mb-0">Comparativo financiero interanual</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-arrows-left-right"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
     </div>
 
-    <h5 class="mb-3 text-muted">Académico</h5>
-    <div class="row g-3 mb-4">
+    <h5 class="mb-3 text-muted font-weight-bold">Académico</h5>
+    <div class="row mb-2">
         @* Alumnos en Riesgo, Rendimiento por Sección y Búsqueda de Alumnos: deshabilitadas por test §7
            (ver TODO.md / docs/auditoria-pantallas/INDEX.md) — ya no existen en el sidebar, se quitan las tarjetas. *@
         @if (tiene("Pirámide de Matrícula"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","PiramideMatricula")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-info text-white"><i class="fa-solid fa-layer-group"></i></div>
-                        <div><strong>Pirámide de Matrícula</strong><br/><small class="text-muted">Alumnos por nivel</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","PiramideMatricula")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Pirámide de Matrícula</h6>
+                                    <p class="text-muted mb-0">Alumnos por nivel</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-layer-group"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("KPIs Académicos"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","KPIsAcademicos")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-gauge-high"></i></div>
-                        <div><strong>KPIs Académicos</strong><br/><small class="text-muted">Indicadores educativos</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","KPIsAcademicos")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">KPIs Académicos</h6>
+                                    <p class="text-muted mb-0">Indicadores educativos</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-gauge-high"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
     </div>
 
-    <h5 class="mb-3 text-muted">Recursos Humanos</h5>
-    <div class="row g-3 mb-4">
+    <h5 class="mb-3 text-muted font-weight-bold">Recursos Humanos</h5>
+    <div class="row mb-2">
         @if (tiene("Reporte de Antigüedad"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","EmpleadosAntiguedad")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-warning text-white"><i class="fa-solid fa-award"></i></div>
-                        <div><strong>Reporte de Antigüedad</strong><br/><small class="text-muted">Años de servicio</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","EmpleadosAntiguedad")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Reporte de Antigüedad</h6>
+                                    <p class="text-muted mb-0">Años de servicio</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-award"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Cumpleaños Empleados"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","EmpleadosCumpleanos")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-pink text-white" style="background:#e83e8c!important;"><i class="fa-solid fa-birthday-cake"></i></div>
-                        <div><strong>Cumpleaños</strong><br/><small class="text-muted">Empleados del mes</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","EmpleadosCumpleanos")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Cumpleaños</h6>
+                                    <p class="text-muted mb-0">Empleados del mes</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-birthday-cake"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Cumplimiento de Documentos"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","CumplimientoDocumentos")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-folder-open"></i></div>
-                        <div><strong>Cumplimiento Docs.</strong><br/><small class="text-muted">Expediente empleados</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","CumplimientoDocumentos")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Cumplimiento Docs.</h6>
+                                    <p class="text-muted mb-0">Expediente empleados</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-folder-open"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
     </div>
 
-    <h5 class="mb-3 text-muted">Seguridad</h5>
-    <div class="row g-3 mb-4">
+    <h5 class="mb-3 text-muted font-weight-bold">Seguridad</h5>
+    <div class="row mb-2">
         @if (tiene("Bitácora de actividad"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","Bitacora")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-dark text-white"><i class="fa-solid fa-scroll"></i></div>
-                        <div><strong>Bitácora de Actividad</strong><br/><small class="text-muted">Registro de acciones</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","Bitacora")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Bitácora de Actividad</h6>
+                                    <p class="text-muted mb-0">Registro de acciones</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-scroll"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Sesiones Activas"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","SesionesActivas")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-success text-white"><i class="fa-solid fa-user-check"></i></div>
-                        <div><strong>Sesiones Activas</strong><br/><small class="text-muted">Usuarios conectados</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","SesionesActivas")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Sesiones Activas</h6>
+                                    <p class="text-muted mb-0">Usuarios conectados</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-user-check"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>
         }
         @if (tiene("Matriz Rol Pantallas"))
         {
-            <div class="col-md-3">
-                <a href="@Url.Action("Index","MatrizRolPantallas")" class="card reporte-card p-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="icon-wrap bg-primary text-white"><i class="fa-solid fa-table-columns"></i></div>
-                        <div><strong>Matriz Rol × Pantallas</strong><br/><small class="text-muted">Permisos por rol</small></div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <a href="@Url.Action("Index","MatrizRolPantallas")" class="d-block h-100 text-decoration-none">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="font-weight-bold mb-1">Matriz Rol × Pantallas</h6>
+                                    <p class="text-muted mb-0">Permisos por rol</p>
+                                </div>
+                                <div><div class="w-icon"><i class="fas fa-table-columns"></i></div></div>
+                            </div>
+                        </div>
                     </div>
                 </a>
             </div>

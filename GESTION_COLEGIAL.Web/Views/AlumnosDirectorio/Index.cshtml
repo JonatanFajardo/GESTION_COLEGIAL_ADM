@@ -1,10 +1,6 @@
-@{
+﻿@{
     ViewBag.Title = "Directorio de Alumnos";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
 }
 
 <div class="breadcrumb-wrapper-content">
@@ -16,42 +12,38 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo">
-                <i class="fa-solid fa-address-book" style="font-size:32px;"></i>
-            </div>
-            <div class="header-text-catalogo">
-                <h1>Directorio de Alumnos</h1>
-                <p>Datos de contacto de alumnos y encargados</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Directorio de alumnos</h4>
+        <p class="text-muted mb-0">Datos de contacto de alumnos y encargados.</p>
     </div>
 </div>
 
-<div class="fluid-container">
-    <div class="row mb-3">
+<div>
+    <div class="statbox widget box box-shadow mb-4">
+    <div class="form-row align-items-end">
         <div class="col-md-3">
-            <select id="filter-Cur_Id" class="form-control">
+            <select id="filter-Cur_Id" class="custom-select">
                 <option value="">-- Todos los cursos --</option>
             </select>
         </div>
         <div class="col-md-3">
-            <select id="filter-Sec_Id" class="form-control">
+            <select id="filter-Sec_Id" class="custom-select">
                 <option value="">-- Todas las secciones --</option>
             </select>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-primary btn-sm w-100" id="btn-filtrar">
-                <i class="fa-solid fa-filter"></i> Filtrar
+            <button type="button" class="btn btn-primary w-100" id="btn-filtrar">
+                <i class="fa-solid fa-filter mr-1"></i> Filtrar
             </button>
         </div>
     </div>
-    <div class="card-listado-catalogo">
-        <div class="card-body-listado-catalogo">
+    </div>
+
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered nowrap" id="datatable-alumnosdirectorio">
+                <table class="table table-hover nowrap" id="datatable-alumnosdirectorio">
                     <thead>
                         <tr>
                             <th>Identidad</th>

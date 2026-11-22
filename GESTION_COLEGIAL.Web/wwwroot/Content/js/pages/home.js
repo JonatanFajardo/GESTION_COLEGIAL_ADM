@@ -235,15 +235,15 @@ $(document).ready(function () {
             container.empty();
 
             $.each(response.data, function (index, course) {
-                const changeClass = course.PorcentajeDiferencia < 0 ? 'negative' : 'positive';
+                const changeClass = course.PorcentajeDiferencia < 0 ? 'text-danger' : 'text-success';
                 const icon = course.PorcentajeDiferencia < 0 ?
                     '<i class="bi bi-graph-down-arrow"></i>' :
                     '<i class="bi bi-graph-up-arrow"></i>';
 
                 const item = $(`
-                    <div class="enrollment-item-modern">
-                        <div class="enrollment-name-modern">${course.NombreCurso}</div>
-                        <div class="enrollment-change-modern ${changeClass}">
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <div>${course.NombreCurso}</div>
+                        <div class="font-weight-bold ${changeClass}">
                             ${icon}
                             <span>${course.PorcentajeDiferencia}%</span>
                         </div>
@@ -373,7 +373,7 @@ $(document).ready(function () {
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'text-center text-muted p-4';
                     errorDiv.innerHTML = `
-                        <i class="bi bi-exclamation-triangle fs-1"></i><br>
+                        <i class="bi bi-exclamation-triangle h2"></i><br>
                         <small>Grafico no disponible</small>
                     `;
                     container.appendChild(errorDiv);
@@ -565,7 +565,7 @@ $(document).ready(function () {
                             const errorDiv = document.createElement('div');
                             errorDiv.className = 'text-center text-muted p-4';
                             errorDiv.innerHTML = `
-                                <i class="bi bi-exclamation-triangle fs-1"></i><br>
+                                <i class="bi bi-exclamation-triangle h2"></i><br>
                                 <small>Grafico no disponible</small>
                             `;
                             container.appendChild(errorDiv);

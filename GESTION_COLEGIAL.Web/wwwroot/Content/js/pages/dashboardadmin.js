@@ -47,9 +47,8 @@ var DashboardAdmin = (function () {
     // ── Usuarios por Rol ────────────────────────────────────────────────────
     function renderUsuariosPorRol(data) {
         if (!data || data.length === 0) {
-            return '<div class="card mb-3"><div class="card-body">'
-                + '<h5 class="card-title">Usuarios por Rol</h5>'
-                + '<p style="color:#94a3b8;margin:0;">Sin datos disponibles.</p>'
+            return '<div class="statbox widget box box-shadow mb-4"><div class="widget-header"><div class="row"><div class="col-12"><h4>Usuarios por Rol</h4></div></div></div><div class="widget-content widget-content-area">'
+                + '<p class="text-muted mb-0">Sin datos disponibles.</p>'
                 + '</div></div>';
         }
 
@@ -58,14 +57,13 @@ var DashboardAdmin = (function () {
             var r = data[i];
             rows += '<tr>'
                 + '<td>' + escapeHtml(r.Rol_Descripcion) + '</td>'
-                + '<td style="text-align:right;font-weight:700;">' + fmtNum(r.Total) + '</td>'
+                + '<td class="text-right font-weight-bold">' + fmtNum(r.Total) + '</td>'
                 + '</tr>';
         }
 
-        return '<div class="card mb-3"><div class="card-body">'
-            + '<h5 class="card-title">Usuarios por Rol</h5>'
-            + '<table class="table table-sm table-striped mb-0">'
-            +   '<thead><tr><th>Rol</th><th style="text-align:right;">Total</th></tr></thead>'
+        return '<div class="statbox widget box box-shadow mb-4"><div class="widget-header"><div class="row"><div class="col-12"><h4>Usuarios por Rol</h4></div></div></div><div class="widget-content widget-content-area">'
+            + '<table class="table table-hover table-sm mb-0">'
+            +   '<thead><tr><th>Rol</th><th class="text-right">Total</th></tr></thead>'
             +   '<tbody>' + rows + '</tbody>'
             + '</table>'
             + '</div></div>';
@@ -74,9 +72,8 @@ var DashboardAdmin = (function () {
     // ── Bitácora ────────────────────────────────────────────────────────────
     function renderBitacora(data) {
         if (!data || data.length === 0) {
-            return '<div class="card mb-3"><div class="card-body">'
-                + '<h5 class="card-title">Bitácora reciente</h5>'
-                + '<p style="color:#94a3b8;margin:0;">Sin datos disponibles.</p>'
+            return '<div class="statbox widget box box-shadow mb-4"><div class="widget-header"><div class="row"><div class="col-12"><h4>Bitácora reciente</h4></div></div></div><div class="widget-content widget-content-area">'
+                + '<p class="text-muted mb-0">Sin datos disponibles.</p>'
                 + '</div></div>';
         }
 
@@ -93,10 +90,9 @@ var DashboardAdmin = (function () {
                 + '</tr>';
         }
 
-        return '<div class="card mb-3"><div class="card-body">'
-            + '<h5 class="card-title">Bitácora reciente</h5>'
+        return '<div class="statbox widget box box-shadow mb-4"><div class="widget-header"><div class="row"><div class="col-12"><h4>Bitácora reciente</h4></div></div></div><div class="widget-content widget-content-area">'
             + '<div class="table-responsive">'
-            +   '<table class="table table-sm table-striped mb-0">'
+            +   '<table class="table table-hover table-sm mb-0">'
             +     '<thead><tr>'
             +       '<th>Fecha</th><th>Usuario</th><th>Acción</th>'
             +       '<th>Tabla</th><th>Descripción</th><th>IP</th>'

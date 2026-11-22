@@ -25,14 +25,14 @@ var datatablePartials = (function () {
                 {
                     extend: "pdfHtml5",
                     title: "Exportar a PDF",
-                    text: "<i class='mdi mdi-file-pdf-outline'></i> PDF",
+                    text: "<i class='bi bi-file-earmark-pdf'></i> PDF",
                     class: "btn btn-secondary",
                     exportOptions: exportOptions
                 },
                 {
                     extend: "excelHtml5",
                     title: "Exportar a EXCEL",
-                    text: "<i class='mdi mdi-file-excel-outline'></i> Excel",
+                    text: "<i class='bi bi-file-earmark-spreadsheet'></i> Excel",
                     class: "btn btn-secondary",
                     exportOptions: exportOptions
                 },
@@ -45,7 +45,7 @@ var datatablePartials = (function () {
                         'data-toggle': "modal",
                         'data-target': "#edit-modal"
                     },
-                    text: '<i class="mdi mdi-plus-thick ladda-button"> Nuevo</i>'
+                    text: '<i class="bi bi-plus-lg mr-1"></i>Nuevo'
                 }
             ],
             ajax: function (data, callback, settings) {
@@ -102,7 +102,7 @@ var datatablePartials = (function () {
                 url: "",
                 infoThousands: ",",
                 loadingRecords: " ",
-                searchPlaceholder: "Buscar en la tabla...",
+                searchPlaceholder: "Buscar…",
                 paginate: {
                     first: "Primero",
                     last: "Último",

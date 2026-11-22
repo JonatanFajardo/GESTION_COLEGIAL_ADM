@@ -155,8 +155,8 @@ var AsistenciaEmpleados = (function () {
             allData = [];
             $('#asi-kpis').html('');
             $('#asi-empleados-list').html(
-                '<div class="asi-empty-state">' +
-                '  <div class="asi-empty-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>' +
+                '<div class="text-center text-muted p-5">' +
+                '  <i class=\"fa-solid fa-triangle-exclamation h2 d-block mb-2\"></i>' +
                 '  <p>Error al obtener los datos. Intente nuevamente.</p>' +
                 '</div>'
             );
@@ -198,7 +198,7 @@ var AsistenciaEmpleados = (function () {
     function mostrarLoading() {
         $('#asi-kpis').html('');
         $('#asi-empleados-list').html(
-            '<div class="asi-loading">' +
+            '<div class="text-center text-muted p-4">' +
             '  <i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Cargando...' +
             '</div>'
         );
@@ -225,12 +225,16 @@ var AsistenciaEmpleados = (function () {
         var html = '';
         $.each(kpis, function (_, k) {
             html +=
-                '<div class="col-xl-3 col-md-6">' +
-                '  <div class="asi-kpi-card ' + k.clase + '">' +
-                '    <div class="asi-kpi-icon"><i class="fa-solid ' + k.icono + '"></i></div>' +
-                '    <div class="asi-kpi-body">' +
-                '      <p class="asi-kpi-value">' + k.valor + '</p>' +
-                '      <p class="asi-kpi-label">' + k.label + '</p>' +
+                '<div class="col-xl-3 col-md-6 col-12 layout-spacing">' +
+                '  <div class="widget widget-card-four ' + k.clase + '">' +
+                '    <div class="widget-content">' +
+                '      <div class="w-content">' +
+                '        <div class="w-info">' +
+                '          <h6 class="value">' + k.valor + '</h6>' +
+                '          <p>' + k.label + '</p>' +
+                '        </div>' +
+                '        <div><div class="w-icon"><i class="fa-solid ' + k.icono + '"></i></div></div>' +
+                '      </div>' +
                 '    </div>' +
                 '  </div>' +
                 '</div>';
@@ -287,8 +291,8 @@ var AsistenciaEmpleados = (function () {
 
         if (lista.length === 0) {
             $('#asi-empleados-list').html(
-                '<div class="asi-empty-state asi-empty-inline">' +
-                '  <div class="asi-empty-icon"><i class="fa-solid fa-user-slash"></i></div>' +
+                '<div class="text-center text-muted p-4">' +
+                '  <i class=\"fa-solid fa-user-slash h2 d-block mb-2\"></i>' +
                 '  <p>No hay empleados para mostrar.</p>' +
                 '</div>'
             );
@@ -316,15 +320,15 @@ var AsistenciaEmpleados = (function () {
                 '  <div class="asi-emp-body">' +
                 '    <div class="asi-emp-nombre">' + escHtml(g.nombre) + '</div>' +
                 '    <div class="asi-emp-meta">' +
-                '      <span class="asi-mini-badge mini-presente" title="Presentes"><i class="fa-solid fa-circle-check"></i> ' + conteos.Presente + '</span>' +
-                '      <span class="asi-mini-badge mini-ausente"  title="Ausentes"><i class="fa-solid fa-circle-xmark"></i> ' + conteos.Ausente + '</span>' +
-                '      <span class="asi-mini-badge mini-tardanza" title="Tardanzas"><i class="fa-solid fa-clock"></i> ' + conteos.Tardanza + '</span>' +
-                '      <span class="asi-mini-badge mini-permiso"  title="Permisos"><i class="fa-solid fa-file-circle-check"></i> ' + conteos.Permiso + '</span>' +
+                '      <span class="badge outline-badge-success mr-1" title="Presentes"><i class="fa-solid fa-circle-check"></i> ' + conteos.Presente + '</span>' +
+                '      <span class="badge outline-badge-danger mr-1"  title="Ausentes"><i class="fa-solid fa-circle-xmark"></i> ' + conteos.Ausente + '</span>' +
+                '      <span class="badge outline-badge-warning mr-1" title="Tardanzas"><i class="fa-solid fa-clock"></i> ' + conteos.Tardanza + '</span>' +
+                '      <span class="badge outline-badge-info mr-1"  title="Permisos"><i class="fa-solid fa-file-circle-check"></i> ' + conteos.Permiso + '</span>' +
                 '    </div>' +
                 '  </div>' +
                 '  <div class="asi-emp-estado">' +
                 (pctPres === null
-                    ? '<span class="asi-emp-sinreg">Sin registros</span>'
+                    ? '<span class="badge badge-secondary">Sin registros</span>'
                     : '<span class="asi-emp-pct ' + estado.claseDot + '">' + pctPres + '%</span>') +
                 '  </div>' +
                 '</div>';
@@ -383,8 +387,8 @@ var AsistenciaEmpleados = (function () {
     /* ------------------------------------------------------------------ */
     function renderCalendarEmpty() {
         $('#asi-calendar-panel').html(
-            '<div class="asi-empty-state">' +
-            '  <div class="asi-empty-icon"><i class="fa-regular fa-calendar"></i></div>' +
+            '<div class="text-center text-muted p-5">' +
+            '  <i class=\"fa-regular fa-calendar h2 d-block mb-2\"></i>' +
             '  <p>Selecciona un empleado de la lista para ver su calendario de asistencia.</p>' +
             '</div>'
         );
@@ -444,16 +448,16 @@ var AsistenciaEmpleados = (function () {
             '    </div>' +
             '  </div>' +
             '  <div class="asi-cal-nav">' +
-            '    <button type="button" class="asi-cal-btn asi-cal-prev" title="Mes anterior"><i class="fa-solid fa-chevron-left"></i></button>' +
+            '    <button type="button" class="btn btn-sm btn-outline-primary asi-cal-prev" title="Mes anterior"><i class="fa-solid fa-chevron-left"></i></button>' +
             '    <div class="asi-cal-mes">' + mesLabel + '</div>' +
-            '    <button type="button" class="asi-cal-btn asi-cal-next" title="Mes siguiente"><i class="fa-solid fa-chevron-right"></i></button>' +
+            '    <button type="button" class="btn btn-sm btn-outline-primary asi-cal-next" title="Mes siguiente"><i class="fa-solid fa-chevron-right"></i></button>' +
             '  </div>' +
             '</div>' +
             '<div class="asi-cal-sub">' +
-            '  <span class="asi-mini-badge mini-presente"><i class="fa-solid fa-circle-check"></i> ' + totalMes.Presente + ' presentes</span>' +
-            '  <span class="asi-mini-badge mini-ausente"><i class="fa-solid fa-circle-xmark"></i> ' + totalMes.Ausente + ' ausentes</span>' +
-            '  <span class="asi-mini-badge mini-tardanza"><i class="fa-solid fa-clock"></i> ' + totalMes.Tardanza + ' tardanzas</span>' +
-            '  <span class="asi-mini-badge mini-permiso"><i class="fa-solid fa-file-circle-check"></i> ' + totalMes.Permiso + ' permisos</span>' +
+            '  <span class="badge outline-badge-success mr-1"><i class="fa-solid fa-circle-check"></i> ' + totalMes.Presente + ' presentes</span>' +
+            '  <span class="badge outline-badge-danger mr-1"><i class="fa-solid fa-circle-xmark"></i> ' + totalMes.Ausente + ' ausentes</span>' +
+            '  <span class="badge outline-badge-warning mr-1"><i class="fa-solid fa-clock"></i> ' + totalMes.Tardanza + ' tardanzas</span>' +
+            '  <span class="badge outline-badge-info mr-1"><i class="fa-solid fa-file-circle-check"></i> ' + totalMes.Permiso + ' permisos</span>' +
             '</div>' +
             '<div class="asi-cal-grid">';
 

@@ -6,102 +6,122 @@
     ViewBag.Title = "Home Page";
 }
 
-<link rel="stylesheet" href="~/Content/css/pages/home-modern.css">
-
-<div class="home-content-wrapper">
-    <!-- Welcome Card -->
-    <div class="welcome-card-modern">
-        <div class="welcome-content-modern">
-            <h1>Bienvenido</h1>
-            <p class="welcome-text-modern">
-                Disfruta de la gestión online, mantén todo organizado y al día
-            </p>
-
-            <div class="weather-info-modern">
-                <div class="weather-item-modern">
-                    <i class="bi bi-thermometer-half weather-icon-modern"></i>
-                    <span><span id="temp-c">25</span>°C Temperatura exterior</span>
-                </div>
-                <div class="weather-item-modern">
-                    <i class="bi bi-droplet weather-icon-modern"></i>
-                    <span><span id="humidity">68</span>% Humedad</span>
+<div class="layout-top-spacing">
+    <!-- Bienvenida -->
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area d-flex flex-wrap align-items-center justify-content-between">
+            <div class="mr-3">
+                <h4 class="mb-1">Bienvenido</h4>
+                <p class="text-muted mb-3">
+                    Disfruta de la gestión online, mantén todo organizado y al día
+                </p>
+                <div class="d-flex flex-wrap text-muted">
+                    <span class="mr-4"><i class="bi bi-thermometer-half text-primary mr-1"></i><span id="temp-c">25</span>°C Temperatura exterior</span>
+                    <span><i class="bi bi-droplet text-info mr-1"></i><span id="humidity">68</span>% Humedad</span>
                 </div>
             </div>
-        </div>
-
-        <div class="welcome-decoration-modern">
-            <i class="bi bi-cloud-fill cloud-icon-modern"></i>
+            <i class="bi bi-cloud-fill text-primary display-4 d-none d-md-block" aria-hidden="true"></i>
         </div>
     </div>
 
-    <!-- Stats Grid -->
-    <div class="stats-grid-modern">
-        <div class="stat-card-modern">
-            <div class="stat-header-modern">
-                <div class="stat-icon-modern orange">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-            </div>
-            <div class="stat-label-modern">Total de Graduados</div>
-            <div class="stat-value-modern" id="graduados">3,092</div>
-        </div>
-
-        <div class="stat-card-modern">
-            <div class="stat-header-modern">
-                <div class="stat-icon-modern green">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <div class="stat-change-modern positive" id="diferenciaPromedioAnualBadge">+0.5%</div>
-            </div>
-            <div class="stat-label-modern">Diferencia Promedio Anual</div>
-            <div class="stat-value-modern" id="diferenciaPromedioAnual">3%</div>
-        </div>
-
-        <div class="stat-card-modern">
-            <div class="stat-header-modern">
-                <div class="stat-icon-modern blue">
-                    <i class="fa-solid fa-chart-pie"></i>
-                </div>
-                <div class="stat-change-modern positive" id="actualPromedioAnualBadge">+3</div>
-            </div>
-            <div class="stat-label-modern">Promedio Anual Actual</div>
-            <div class="stat-value-modern" id="actualPromedioAnual">85</div>
-        </div>
-
-        <div class="stat-card-modern">
-            <div class="stat-header-modern">
-                <div class="stat-icon-modern purple">
-                    <i class="fa-solid fa-user-plus"></i>
-                </div>
-                <div class="stat-change-modern negative" id="diferenciaNuevoIngresoBadge">-5%</div>
-            </div>
-            <div class="stat-label-modern">Diferencia Nuevo Ingreso</div>
-            <div class="stat-value-modern" id="diferenciaNuevoIngreso">-18%</div>
-        </div>
-    </div>
-
-    <!-- Charts Section -->
-    <div class="charts-grid-modern">
-        <div class="chart-card-modern pie-chart-container-modern">
-            <h3>Cantidad de Alumnos por Curso</h3>
-            <canvas id="obtenerCantidadAlumnosPorCurso" width="400" height="400"></canvas>
-        </div>
-
-        <div class="charts-column-modern">
-            <div class="chart-card-modern">
-                <div class="chart-header-modern">
-                    <h3>Promedio Anual</h3>
-                    <div class="chart-legend-inline-modern">
-                        <div class="legend-dot-modern"></div>
-                        <span>Promedio Anual</span>
+    <!-- Indicadores -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="graduados">3,092</h6>
+                            <p>Total de Graduados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-graduation-cap"></i></div></div>
                     </div>
                 </div>
-                <canvas id="ObtenerPromedioCursoUltimosAnios" width="600" height="280"></canvas>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="diferenciaPromedioAnual">3%</h6>
+                            <p>Diferencia Promedio Anual</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-chart-line"></i></div></div>
+                    </div>
+                    <p class="mb-0 mt-2"><span class="badge outline-badge-success" id="diferenciaPromedioAnualBadge">+0.5%</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="actualPromedioAnual">85</h6>
+                            <p>Promedio Anual Actual</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-chart-pie"></i></div></div>
+                    </div>
+                    <p class="mb-0 mt-2"><span class="badge outline-badge-success" id="actualPromedioAnualBadge">+3</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="diferenciaNuevoIngreso">-18%</h6>
+                            <p>Diferencia Nuevo Ingreso</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-user-plus"></i></div></div>
+                    </div>
+                    <p class="mb-0 mt-2"><span class="badge outline-badge-danger" id="diferenciaNuevoIngresoBadge">-5%</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row">
+        <div class="col-lg-5 col-12 layout-spacing">
+            <div class="statbox widget box box-shadow h-100">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4>Cantidad de Alumnos por Curso</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <canvas id="obtenerCantidadAlumnosPorCurso" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 col-12">
+            <div class="layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-header">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-center justify-content-between">
+                                <h4>Promedio Anual</h4>
+                                <span class="text-muted small mr-3 mt-3"><i class="bi bi-circle-fill text-primary mr-1"></i>Promedio Anual</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <canvas id="ObtenerPromedioCursoUltimosAnios" width="600" height="280"></canvas>
+                    </div>
+                </div>
             </div>
 
-            <div class="chart-card-modern">
-                <h3>Matrícula: Variación Anual por Curso</h3>
-                <div class="enrollment-list-modern" id="HomeAndCharts"></div>
+            <div class="layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12"><h4>Matrícula: Variación Anual por Curso</h4></div></div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <div id="HomeAndCharts"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -244,7 +244,7 @@ var DashboardFinanciero = (function () {
         var el   = document.getElementById('stat-morosos');
         if (!cont) return;
         if (el) el.textContent = data.length > 0 ? data.length + ' alumnos' : '';
-        if (!data || data.length === 0) { cont.innerHTML = '<p style="color:#94a3b8;font-size:.82rem;margin:0;padding:14px 0;">Sin alumnos morosos.</p>'; return; }
+        if (!data || data.length === 0) { cont.innerHTML = '<p class="text-muted small mb-0 py-3">Sin alumnos morosos.</p>'; return; }
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var m = data[i];
@@ -255,12 +255,12 @@ var DashboardFinanciero = (function () {
             html += '<div class="moroso-item">'
                   + av
                   + '<div class="moroso-info">'
-                  +   '<div class="moroso-nombre">' + (m.NombreAlumno || '—') + '</div>'
-                  +   '<div class="moroso-curso">' + (m.Curso || '—') + ' · ' + (m.CuentasVencidas || 0) + ' cuenta(s)</div>'
+                  +   '<div class="font-weight-bold text-truncate">' + (m.NombreAlumno || '—') + '</div>'
+                  +   '<div class="small text-muted">' + (m.Curso || '—') + ' · ' + (m.CuentasVencidas || 0) + ' cuenta(s)</div>'
                   + '</div>'
-                  + '<div>'
-                  +   '<div class="moroso-monto">' + fmtMoney(m.MontoMoroso) + '</div>'
-                  +   '<div class="moroso-dias">' + (m.DiasVencido || 0) + ' días vencido</div>'
+                  + '<div class="text-right">'
+                  +   '<div class="font-weight-bold text-danger text-nowrap">' + fmtMoney(m.MontoMoroso) + '</div>'
+                  +   '<div class="small text-muted">' + (m.DiasVencido || 0) + ' días vencido</div>'
                   + '</div>'
                   + '</div>';
         }
@@ -301,18 +301,18 @@ var DashboardFinanciero = (function () {
         var el    = document.getElementById('stat-vencer');
         if (!tbody) return;
         if (el) el.textContent = data.length > 0 ? data.length + ' cuentas' : '';
-        if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px;">Sin cuentas por vencer en los próximos 7 días.</td></tr>'; return; }
+        if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted small py-4">Sin cuentas por vencer en los próximos 7 días.</td></tr>'; return; }
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var c = data[i];
             var dias = Number(c.DiasParaVencer) || 0;
-            var cls = dias <= 2 ? 'urgente' : (dias <= 5 ? 'proximo' : 'normal');
+            var cls = dias <= 2 ? 'badge-danger' : (dias <= 5 ? 'badge-warning' : 'badge-success');
             html += '<tr>'
-                  + '<td style="font-weight:600;">' + (c.NombreAlumno || '—') + '</td>'
-                  + '<td style="font-size:.78rem;color:#64748b;">' + (c.Cpa_Descripcion || '—') + '</td>'
-                  + '<td style="font-size:.78rem;">' + fmtFecha(c.Cco_FechaVencimiento) + '</td>'
-                  + '<td style="text-align:right;font-weight:700;color:#0f172a;">' + fmtMoney(c.Cco_MontoPendiente) + '</td>'
-                  + '<td style="text-align:center;"><span class="dias-badge ' + cls + '">' + dias + ' d</span></td>'
+                  + '<td class="font-weight-bold">' + (c.NombreAlumno || '—') + '</td>'
+                  + '<td class="small text-muted">' + (c.Cpa_Descripcion || '—') + '</td>'
+                  + '<td class="small">' + fmtFecha(c.Cco_FechaVencimiento) + '</td>'
+                  + '<td class="text-right font-weight-bold">' + fmtMoney(c.Cco_MontoPendiente) + '</td>'
+                  + '<td class="text-center"><span class="badge ' + cls + '">' + dias + ' d</span></td>'
                   + '</tr>';
         }
         tbody.innerHTML = html;
@@ -321,7 +321,7 @@ var DashboardFinanciero = (function () {
     function renderAlertas(data) {
         var cont = document.getElementById('lista-alertas-fin');
         if (!cont) return;
-        if (!data || data.length === 0) { cont.innerHTML = '<p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin alertas activas.</p>'; return; }
+        if (!data || data.length === 0) { cont.innerHTML = '<p class="text-muted small mb-0">Sin alertas activas.</p>'; return; }
         var iconos = { 'mora':'&#x26A0;&#xFE0F;', 'cobranza':'&#x1F4B0;', 'morosos':'&#x1F465;', 'vencer':'&#x23F0;', 'pago':'&#x1F4B5;' };
         var html = '';
         for (var i = 0; i < data.length; i++) {
@@ -329,12 +329,13 @@ var DashboardFinanciero = (function () {
             var urg = (a.Urgencia || 'baja').toLowerCase();
             var tipo = (a.Tipo || '').toLowerCase();
             var icono = iconos[tipo] || '&#x2139;&#xFE0F;';
-            var bClass = urg === 'alta' ? 'badge-alta-fin' : (urg === 'media' ? 'badge-media-fin' : 'badge-baja-fin');
-            html += '<div class="alerta-item-fin ' + urg + '">'
-                  +   '<span class="alerta-icon-fin">' + icono + '</span>'
+            var bClass = urg === 'alta' ? 'badge-danger' : (urg === 'media' ? 'badge-warning' : 'badge-info');
+            var aClass = urg === 'alta' ? 'alert-light-danger' : (urg === 'media' ? 'alert-light-warning' : 'alert-light-info');
+            html += '<div class="alert ' + aClass + ' d-flex align-items-start mb-0">'
+                  +   '<span class="mr-2">' + icono + '</span>'
                   +   '<div>'
-                  +     '<div class="alerta-msg-fin">' + (a.Mensaje || '') + '</div>'
-                  +     '<span class="alerta-badge-fin ' + bClass + '">' + urg.charAt(0).toUpperCase() + urg.slice(1) + '</span>'
+                  +     '<div class="font-weight-bold">' + (a.Mensaje || '') + '</div>'
+                  +     '<span class="badge ' + bClass + ' mt-1">' + urg.charAt(0).toUpperCase() + urg.slice(1) + '</span>'
                   +   '</div>'
                   + '</div>';
         }

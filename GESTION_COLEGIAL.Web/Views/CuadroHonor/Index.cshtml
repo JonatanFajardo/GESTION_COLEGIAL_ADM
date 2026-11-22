@@ -1,0 +1,125 @@
+@{
+    ViewBag.Title = "Cuadro de honor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int anioActual = (int)(ViewBag.AnioActual ?? System.DateTime.Now.Year);
+    var umbralHonor = ViewBag.UmbralHonor ?? 90;
+    var umbralSuperior = ViewBag.UmbralSuperior ?? 95;
+}
+
+@section Styles{
+    <link href="~/Content/css/pages/cuadro-honor.css" rel="stylesheet" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cuadro de honor</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina no-print">
+    <div class="mr-3">
+        <h4 class="mb-1">Cuadro de honor</h4>
+        <p class="text-muted mb-0">Los mejores alumnos del año por promedio. Honor desde <strong>@umbralHonor</strong> · Superior desde <strong>@umbralSuperior</strong> (se ajusta en Escala de notas).</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <button type="button" class="btn btn-outline-secondary" id="btn-imprimir-lista"><i class="bi bi-printer mr-1"></i> Imprimir lista</button>
+        <button type="button" class="btn btn-primary" id="btn-imprimir-diplomas"><i class="bi bi-award mr-1"></i> Imprimir diplomas</button>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="statbox widget box box-shadow mb-4 no-print" id="filtros">
+    <div class="widget-content widget-content-area">
+        <div class="form-row align-items-end">
+            <div class="col-md-2">
+                <label for="f-anio">Año</label>
+                <input type="number" class="form-control" id="f-anio" value="@anioActual" min="2000" max="2100" />
+            </div>
+            <div class="col-md-3">
+                <label for="f-niv">Nivel</label>
+                <select id="f-niv" class="custom-select"><option value="">Todos</option></select>
+            </div>
+            <div class="col-md-3">
+                <label for="f-sec">Sección</label>
+                <select id="f-sec" class="custom-select"><option value="">Todas</option></select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" id="btn-ver"><i class="fa-solid fa-magnifying-glass mr-1"></i> Ver</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="area-lista">
+    <!-- Honor Superior -->
+    <div class="statbox widget box box-shadow mb-4" id="sec-superior" hidden>
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4 class="mb-0"><span class="ch-medal">🥇</span> Cuadro de Honor Superior <small class="text-muted">(≥ @umbralSuperior)</small></h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 ch-tabla">
+                    <thead>
+                        <tr>
+                            <th class="no-print ch-col-chk"><input type="checkbox" class="chk-all" data-tier="superior" /></th>
+                            <th class="ch-col-pos">#</th>
+                            <th>Alumno</th>
+                            <th class="text-center ch-col-prom">Promedio</th>
+                            <th class="ch-col-concepto">Concepto</th>
+                            <th>Nivel · Curso · Sección</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-superior"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Honor -->
+    <div class="statbox widget box box-shadow mb-4" id="sec-honor" hidden>
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4 class="mb-0"><span class="ch-medal">🏅</span> Cuadro de Honor <small class="text-muted">(≥ @umbralHonor)</small></h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 ch-tabla">
+                    <thead>
+                        <tr>
+                            <th class="no-print ch-col-chk"><input type="checkbox" class="chk-all" data-tier="honor" /></th>
+                            <th class="ch-col-pos">#</th>
+                            <th>Alumno</th>
+                            <th class="text-center ch-col-prom">Promedio</th>
+                            <th class="ch-col-concepto">Concepto</th>
+                            <th>Nivel · Curso · Sección</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-honor"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="estado-vacio" class="statbox widget box box-shadow mb-4" hidden>
+        <div class="widget-content widget-content-area text-center text-muted py-5">
+            <i class="bi bi-award ch-vacio-icon"></i>
+            <p class="mt-2 mb-0">Ningún alumno llega al umbral de honor con estos filtros.</p>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/cuadrohonor.js"></script>
+    <script>
+        CuadroHonor.init({
+            anio: @anioActual,
+            umbralSuperior: @umbralSuperior,
+            urls: {
+                dropdowns: "@Url.Action("DropdownsAsync")",
+                listado: "@Url.Action("ListadoAsync")"
+            }
+        });
+    </script>
+}

@@ -165,7 +165,7 @@ var EstadoCuenta = (function () {
             data: { identidad: identidad },
             type: "GET",
             beforeSend: function() {
-                $("#btn-buscar-alumno").prop("disabled", true).html('<i class="mdi mdi-loading mdi-spin"></i> Buscando...');
+                $("#btn-buscar-alumno").prop("disabled", true).html('<span class="spinner-border spinner-border-sm mr-1"></span> Buscando...');
             },
             success: function(response) {
                 console.log("Response completo:", response);
@@ -207,7 +207,7 @@ var EstadoCuenta = (function () {
                 toastr.error(errorMsg);
             },
             complete: function() {
-                $("#btn-buscar-alumno").prop("disabled", false).html('<i class="mdi mdi-magnify"></i> Buscar');
+                $("#btn-buscar-alumno").prop("disabled", false).html('<i class="bi bi-search"></i> Buscar');
             }
         });
     }
@@ -321,7 +321,7 @@ var EstadoCuenta = (function () {
                     var nombreAlumno = $("#alumno-nombre").text() || "el alumno actual";
                     $("#tbody-cargos-pendientes").html(
                         "<tr><td colspan='8' class='text-center py-4'>" +
-                        "<i class='mdi mdi-check-circle text-success' style='font-size: 48px;'></i>" +
+                        "<i class='bi bi-check-circle text-success h1'></i>" +
                         "<p class='mt-3 mb-0'><strong>¡Excelente!</strong></p>" +
                         "<p class='text-muted'>No hay cargos pendientes para " + nombreAlumno + "</p>" +
                         "</td></tr>"
@@ -349,7 +349,7 @@ var EstadoCuenta = (function () {
                     var nombreAlumno = $("#alumno-nombre").text() || "el alumno actual";
                     $("#tbody-historico-pagos").html(
                         "<tr><td colspan='6' class='text-center py-4'>" +
-                        "<i class='mdi mdi-information-outline text-info' style='font-size: 48px;'></i>" +
+                        "<i class='bi bi-info-circle text-info h1'></i>" +
                         "<p class='mt-3 mb-0'><strong>Sin registros</strong></p>" +
                         "<p class='text-muted'>No hay pagos registrados para " + nombreAlumno + "</p>" +
                         "</td></tr>"
@@ -370,7 +370,7 @@ var EstadoCuenta = (function () {
             var nombreAlumno = $("#alumno-nombre").text() || "el alumno actual";
             $("#tbody-cargos-pendientes").html(
                 "<tr><td colspan='8' class='text-center py-4'>" +
-                "<i class='mdi mdi-check-circle text-success' style='font-size: 48px;'></i>" +
+                "<i class='bi bi-check-circle text-success h1'></i>" +
                 "<p class='mt-3 mb-0'><strong>¡Excelente!</strong></p>" +
                 "<p class='text-muted'>No hay cargos pendientes para " + nombreAlumno + "</p>" +
                 "</td></tr>"
@@ -389,9 +389,9 @@ var EstadoCuenta = (function () {
             html += "<td>" + formatDate(cargo.fechaVencimiento) + "</td>";
             html += "<td><span class='badge badge-" + getEstadoClass(cargo.estadoPago) + "'>" + cargo.estadoPago + "</span></td>";
             html += "<td>";
-            html += "<button class='btn btn-sm btn-primary btn-ver-cargo' data-index='" + index + "' title='Ver detalles'><i class='mdi mdi-eye'></i></button> ";
-            html += "<button class='btn btn-sm btn-warning btn-aplicar-descuento' data-id='" + cargo.cuentaCobrarId + "' title='Aplicar descuento'><i class='mdi mdi-tag-outline'></i></button> ";
-            html += "<button class='btn btn-sm btn-info btn-calcular-mora' data-id='" + cargo.cuentaCobrarId + "' title='Calcular mora'><i class='mdi mdi-calculator'></i></button>";
+            html += "<button class='btn btn-sm btn-outline-primary btn-ver-cargo' data-index='" + index + "' title='Ver detalles'><i class='bi bi-eye'></i></button> ";
+            html += "<button class='btn btn-sm btn-outline-warning btn-aplicar-descuento' data-id='" + cargo.cuentaCobrarId + "' title='Aplicar descuento'><i class='bi bi-tag'></i></button> ";
+            html += "<button class='btn btn-sm btn-outline-info btn-calcular-mora' data-id='" + cargo.cuentaCobrarId + "' title='Calcular mora'><i class='bi bi-calculator'></i></button>";
             html += "</td>";
             html += "</tr>";
         });
@@ -405,7 +405,7 @@ var EstadoCuenta = (function () {
             var nombreAlumno = $("#alumno-nombre").text() || "el alumno actual";
             $("#tbody-historico-pagos").html(
                 "<tr><td colspan='6' class='text-center py-4'>" +
-                "<i class='mdi mdi-information-outline text-info' style='font-size: 48px;'></i>" +
+                "<i class='bi bi-info-circle text-info h1'></i>" +
                 "<p class='mt-3 mb-0'><strong>Sin registros</strong></p>" +
                 "<p class='text-muted'>No hay pagos registrados para " + nombreAlumno + "</p>" +
                 "</td></tr>"
@@ -422,8 +422,8 @@ var EstadoCuenta = (function () {
             html += "<td>" + (pago.numeroReferencia || "N/A") + "</td>";
             html += "<td>" + pago.usuario + "</td>";
             html += "<td>";
-            html += "<button class='btn btn-sm btn-primary btn-ver-pago' data-index='" + index + "' title='Ver detalles'><i class='mdi mdi-eye'></i></button> ";
-            html += "<button class='btn btn-sm btn-secondary btn-ver-recibo' data-id='" + pago.pagoId + "' title='Ver recibo'><i class='mdi mdi-receipt'></i></button>";
+            html += "<button class='btn btn-sm btn-outline-primary btn-ver-pago' data-index='" + index + "' title='Ver detalles'><i class='bi bi-eye'></i></button> ";
+            html += "<button class='btn btn-sm btn-outline-secondary btn-ver-recibo' data-id='" + pago.pagoId + "' title='Ver recibo'><i class='bi bi-receipt'></i></button>";
             html += "</td>";
             html += "</tr>";
         });

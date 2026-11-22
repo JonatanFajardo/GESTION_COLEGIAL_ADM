@@ -21,7 +21,8 @@ var GraduacionAlumnos = (function () {
     // ═══════════ Orquestación de tabs del hub ═══════════
     function initHub() {
         $(document).ready(function () {
-            $('#grad-hub-tabs').on('click', '.grad-hub-tab', function () {
+            $('#grad-hub-tabs').on('click', '.grad-hub-tab', function (e) {
+                e.preventDefault();
                 activarTab($(this).data('tab'));
             });
             // Tab inicial por querystring: /GraduacionAlumnos?tab=directorio|backfill
@@ -139,7 +140,7 @@ var GraduacionAlumnos = (function () {
     function updateBoton() {
         var n = $('.chk-candidato:checked').length;
         $('#btn-graduar-seleccionados').prop('disabled', n === 0)
-            .html('<i class="bi bi-mortarboard-fill"></i> Graduar seleccionados (' + n + ')');
+            .html('<i class="bi bi-mortarboard-fill mr-1"></i> Graduar seleccionados (' + n + ')');
     }
 
     function graduarSeleccionados() {

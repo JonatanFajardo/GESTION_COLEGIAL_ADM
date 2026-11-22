@@ -4,9 +4,7 @@
 }
 
 @section Styles{
-    <link href="~/Content/css/listado-catalogos.css" rel="stylesheet" />
-    <link href="~/Content/css/pages/kpisacademicos.css" rel="stylesheet" />
-    <link href="~/Content/css/pages/rendimientoporseccion.css" rel="stylesheet" />
+    <link href="~/Content/css/pages/analitica-academica.css" rel="stylesheet" />
 }
 
 <div class="breadcrumb-wrapper-content">
@@ -18,235 +16,246 @@
     </nav>
 </div>
 
-<div class="page-header-catalogo">
-    <div class="header-content-wrapper-catalogo">
-        <div class="header-left-catalogo">
-            <div class="header-icon-catalogo">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-            <div class="header-text-catalogo">
-                <h1>Analítica Académica</h1>
-                <p>Indicadores institucionales y rendimiento por sección</p>
-            </div>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Analítica Académica</h4>
+        <p class="text-muted mb-0">Indicadores institucionales y rendimiento por sección</p>
     </div>
 </div>
 
 <div class="fluid-container">
 
     <!-- Filtros compartidos -->
-    <div id="card-filtros" class="kpi-filtros-card mb-3">
-        <div class="row align-items-end">
-            <div class="col-auto">
-                <label for="filtro-anio" class="kpi-filtro-label">Año</label>
-                <input type="number" id="filtro-anio" class="form-control kpi-anio-input" min="2000" max="2099" />
-            </div>
-            <div class="col-auto">
-                <label for="filtro-parcial" class="kpi-filtro-label">Parcial</label>
-                <select id="filtro-parcial" class="form-control kpi-parcial-input"></select>
-            </div>
-            <div class="col-auto">
-                <button id="btn-filtrar" class="kpi-btn-filtrar">
-                    <i class="fa-solid fa-magnifying-glass"></i> Consultar
-                </button>
+    <div id="card-filtros" class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
+            <div class="form-row align-items-end">
+                <div class="col-auto form-group mb-0">
+                    <label for="filtro-anio">Año</label>
+                    <input type="number" id="filtro-anio" class="form-control" min="2000" max="2099" />
+                </div>
+                <div class="col-auto form-group mb-0">
+                    <label for="filtro-parcial">Parcial</label>
+                    <select id="filtro-parcial" class="custom-select"></select>
+                </div>
+                <div class="col-auto">
+                    <button id="btn-filtrar" class="btn btn-primary">
+                        <i class="fa-solid fa-magnifying-glass mr-1"></i> Consultar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Tabs del hub -->
-    <div class="aa-tabs-card mb-4">
-        <ul class="nav aa-tabs" id="aa-tabs" role="tablist">
-            <li class="aa-tab-item active" data-tab="resumen">
-                <a href="#" class="aa-tab-link">
-                    <span class="aa-tab-icon"><i class="fa-solid fa-gauge-high"></i></span>
-                    <span class="aa-tab-label">Resumen institucional</span>
-                </a>
-            </li>
-            <li class="aa-tab-item" data-tab="rendimiento">
-                <a href="#" class="aa-tab-link">
-                    <span class="aa-tab-icon"><i class="fa-solid fa-chart-column"></i></span>
-                    <span class="aa-tab-label">Rendimiento por sección</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <ul class="nav nav-tabs mb-4" id="aa-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#" class="nav-link active" data-tab="resumen"><i class="fa-solid fa-gauge-high mr-1"></i> Resumen institucional</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link" data-tab="rendimiento"><i class="fa-solid fa-chart-column mr-1"></i> Rendimiento por sección</a>
+        </li>
+    </ul>
 
     <!-- ══════════ TAB 1: Resumen institucional ══════════ -->
     <div id="tab-resumen" class="aa-tab-panel">
 
-        <!-- Fila 1: KPI Cards principales -->
-        <div class="row kpi-row mb-2">
-            <div class="col-12 col-sm-6 col-xl-3 mb-3">
-                <div class="kpi-stat-card kpi-stat-indigo">
-                    <div class="kpi-stat-icon">
-                        <i class="fa-solid fa-user-graduate"></i>
+        <!-- Fila 1: KPI principales -->
+        <div class="row">
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-total-alumnos">—</h6>
+                            <p>Total Alumnos</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-user-graduate"></i></div></div>
                     </div>
-                    <div class="kpi-stat-body">
-                        <div class="kpi-stat-label">Total Alumnos</div>
-                        <div class="kpi-stat-valor" id="kpi-total-alumnos">—</div>
-                    </div>
-                    <div class="kpi-stat-bg-icon"><i class="fa-solid fa-user-graduate"></i></div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-xl-3 mb-3">
-                <div class="kpi-stat-card kpi-stat-emerald">
-                    <div class="kpi-stat-icon">
-                        <i class="fa-solid fa-chalkboard-teacher"></i>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-total-docentes">—</h6>
+                            <p>Total Docentes</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-chalkboard-teacher"></i></div></div>
                     </div>
-                    <div class="kpi-stat-body">
-                        <div class="kpi-stat-label">Total Docentes</div>
-                        <div class="kpi-stat-valor" id="kpi-total-docentes">—</div>
-                    </div>
-                    <div class="kpi-stat-bg-icon"><i class="fa-solid fa-chalkboard-teacher"></i></div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-xl-3 mb-3">
-                <div class="kpi-stat-card kpi-stat-amber">
-                    <div class="kpi-stat-icon">
-                        <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-promedio-general">—</h6>
+                            <p>Promedio General</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-chart-line"></i></div></div>
                     </div>
-                    <div class="kpi-stat-body">
-                        <div class="kpi-stat-label">Promedio General</div>
-                        <div class="kpi-stat-valor" id="kpi-promedio-general">—</div>
-                    </div>
-                    <div class="kpi-stat-bg-icon"><i class="fa-solid fa-chart-line"></i></div>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-xl-3 mb-3">
-                <div class="kpi-stat-card kpi-stat-cyan">
-                    <div class="kpi-stat-icon">
-                        <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-porcentaje-asistencia">—</h6>
+                            <p>% Asistencia</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-calendar-check"></i></div></div>
                     </div>
-                    <div class="kpi-stat-body">
-                        <div class="kpi-stat-label">% Asistencia</div>
-                        <div class="kpi-stat-valor" id="kpi-porcentaje-asistencia">—</div>
-                    </div>
-                    <div class="kpi-stat-bg-icon"><i class="fa-solid fa-calendar-check"></i></div>
                 </div>
             </div>
+        </div>
         </div>
 
         <!-- Barra de asistencia -->
-        <div class="kpi-barra-oculta mb-4" id="card-asistencia-barra">
-            <div class="kpi-barra-card">
+        <div class="statbox widget box box-shadow mb-4 d-none" id="card-asistencia-barra">
+            <div class="widget-content widget-content-area">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="kpi-barra-label"><i class="fa-solid fa-calendar-check mr-1"></i> Asistencia Institucional</span>
-                    <span class="kpi-barra-pct" id="barra-asistencia-texto">0%</span>
+                    <span class="font-weight-bold"><i class="fa-solid fa-calendar-check mr-1"></i> Asistencia Institucional</span>
+                    <span class="font-weight-bold" id="barra-asistencia-texto">0%</span>
                 </div>
-                <div class="kpi-progress">
-                    <div class="kpi-progress-bar" id="barra-asistencia" role="progressbar"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Fila 2: KPI mini cards de distribución -->
-        <div class="row mb-2">
-            <div class="col-12 col-sm-6 col-xl-3 mb-3">
-                <div class="kpi-dist-card kpi-dist-green">
-                    <div class="kpi-dist-top">
-                        <span class="kpi-dist-label">Aprobados</span>
-                        <span class="kpi-dist-icon"><i class="fa-solid fa-circle-check"></i></span>
-                    </div>
-                    <div class="kpi-dist-valor" id="kpi-aprobados">—</div>
-                    <div class="kpi-dist-sub" id="kpi-aprobados-pct">&nbsp;</div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xl-3 mb-3">
-                <div class="kpi-dist-card kpi-dist-orange">
-                    <div class="kpi-dist-top">
-                        <span class="kpi-dist-label">En Riesgo</span>
-                        <span class="kpi-dist-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
-                    </div>
-                    <div class="kpi-dist-valor" id="kpi-en-riesgo">—</div>
-                    <div class="kpi-dist-sub" id="kpi-en-riesgo-pct">&nbsp;</div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xl-3 mb-3">
-                <div class="kpi-dist-card kpi-dist-red">
-                    <div class="kpi-dist-top">
-                        <span class="kpi-dist-label">Reprobados</span>
-                        <span class="kpi-dist-icon"><i class="fa-solid fa-circle-xmark"></i></span>
-                    </div>
-                    <div class="kpi-dist-valor" id="kpi-reprobados">—</div>
-                    <div class="kpi-dist-sub" id="kpi-reprobados-pct">&nbsp;</div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xl-3 mb-3">
-                <div class="kpi-dist-card kpi-dist-blue">
-                    <div class="kpi-dist-top">
-                        <span class="kpi-dist-label">Materias evaluadas</span>
-                        <span class="kpi-dist-icon"><i class="fa-solid fa-book-open"></i></span>
-                    </div>
-                    <div class="kpi-dist-valor" id="kpi-materias">—</div>
-                    <div class="kpi-dist-sub" id="kpi-secciones-sub">&nbsp;</div>
+                <div class="progress mb-0">
+                    <div class="progress-bar bg-success" id="barra-asistencia" role="progressbar"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Fila 3: Charts -->
-        <div class="row mb-2">
-            <div class="col-12 col-lg-5 mb-3">
-                <div class="kpi-chart-card h-100">
-                    <div class="kpi-chart-header">
-                        <div>
-                            <div class="kpi-chart-title">Distribución de Promedios</div>
-                            <div class="kpi-chart-sub">Materias por rango de calificación</div>
+        <!-- Fila 2: distribución -->
+        <div class="row">
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-success" id="kpi-aprobados">—</h6>
+                            <p>Aprobados</p>
                         </div>
-                        <span class="kpi-chart-badge"><i class="fa-solid fa-chart-pie"></i></span>
+                        <div><div class="w-icon"><i class="fa-solid fa-circle-check"></i></div></div>
                     </div>
-                    <div class="kpi-chart-body"><canvas id="chart-distribucion"></canvas></div>
+                <p class="text-muted small mb-0 mt-2" id="kpi-aprobados-pct">&nbsp;</p>
                 </div>
             </div>
-            <div class="col-12 col-lg-7 mb-3">
-                <div class="kpi-chart-card h-100">
-                    <div class="kpi-chart-header">
-                        <div>
-                            <div class="kpi-chart-title">Top 10 Materias por Promedio</div>
-                            <div class="kpi-chart-sub">Mejores promedios del parcial seleccionado</div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-warning" id="kpi-en-riesgo">—</h6>
+                            <p>En Riesgo</p>
                         </div>
-                        <span class="kpi-chart-badge"><i class="fa-solid fa-ranking-star"></i></span>
+                        <div><div class="w-icon"><i class="fa-solid fa-triangle-exclamation"></i></div></div>
                     </div>
-                    <div class="kpi-chart-body"><canvas id="chart-top-materias"></canvas></div>
+                <p class="text-muted small mb-0 mt-2" id="kpi-en-riesgo-pct">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value text-danger" id="kpi-reprobados">—</h6>
+                            <p>Reprobados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-circle-xmark"></i></div></div>
+                    </div>
+                <p class="text-muted small mb-0 mt-2" id="kpi-reprobados-pct">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-materias">—</h6>
+                            <p>Materias evaluadas</p>
+                        </div>
+                        <div><div class="w-icon"><i class="fa-solid fa-book-open"></i></div></div>
+                    </div>
+                <p class="text-muted small mb-0 mt-2" id="kpi-secciones-sub">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Fila 3: Gráficos -->
+        <div class="row">
+            <div class="col-12 col-lg-5 layout-spacing">
+                <div class="statbox widget box box-shadow h-100">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12">
+                            <h4 class="pb-0">Distribución de Promedios</h4>
+                            <p class="text-muted small px-3 mb-0">Materias por rango de calificación</p>
+                        </div></div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <div class="aa-chart"><canvas id="chart-distribucion"></canvas></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-7 layout-spacing">
+                <div class="statbox widget box box-shadow h-100">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12">
+                            <h4 class="pb-0">Top 10 Materias por Promedio</h4>
+                            <p class="text-muted small px-3 mb-0">Mejores promedios del parcial seleccionado</p>
+                        </div></div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <div class="aa-chart"><canvas id="chart-top-materias"></canvas></div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Fila 4: Matrícula + Riesgo -->
         <div class="row">
-            <div class="col-12 col-lg-7 mb-3">
-                <div class="kpi-chart-card h-100">
-                    <div class="kpi-chart-header">
-                        <div>
-                            <div class="kpi-chart-title">Matrícula por Grado Académico</div>
-                            <div class="kpi-chart-sub">Distribución por género</div>
-                        </div>
-                        <span class="kpi-chart-badge"><i class="fa-solid fa-users"></i></span>
+            <div class="col-12 col-lg-7 layout-spacing">
+                <div class="statbox widget box box-shadow h-100">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12">
+                            <h4 class="pb-0">Matrícula por Grado Académico</h4>
+                            <p class="text-muted small px-3 mb-0">Distribución por género</p>
+                        </div></div>
                     </div>
-                    <div class="kpi-chart-body"><canvas id="chart-piramide"></canvas></div>
+                    <div class="widget-content widget-content-area">
+                        <div class="aa-chart"><canvas id="chart-piramide"></canvas></div>
+                    </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-5 mb-3">
-                <div class="kpi-chart-card h-100">
-                    <div class="kpi-chart-header">
-                        <div>
-                            <div class="kpi-chart-title">Alumnos en Riesgo</div>
-                            <div class="kpi-chart-sub" id="sub-en-riesgo">Promedio menor a 70 — Top 15</div>
-                        </div>
-                        <span class="kpi-chart-badge kpi-badge-red"><i class="fa-solid fa-user-clock"></i></span>
+            <div class="col-12 col-lg-5 layout-spacing">
+                <div class="statbox widget box box-shadow h-100">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12">
+                            <h4 class="pb-0">Alumnos en Riesgo</h4>
+                            <p class="text-muted small px-3 mb-0" id="sub-en-riesgo">Promedio menor a 70 — Top 15</p>
+                        </div></div>
                     </div>
-                    <div class="kpi-tabla-wrap">
-                        <table class="table table-sm kpi-tabla mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Alumno</th>
-                                    <th>Sección</th>
-                                    <th class="text-right">Prom.</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla-en-riesgo">
-                                <tr><td colspan="3" class="text-center text-muted py-3">Sin datos.</td></tr>
-                            </tbody>
-                        </table>
+                    <div class="widget-content widget-content-area">
+                        <div class="table-responsive aa-scroll">
+                            <table class="table table-hover table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Alumno</th>
+                                        <th>Sección</th>
+                                        <th class="text-right">Prom.</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-en-riesgo">
+                                    <tr><td colspan="3" class="text-center text-muted py-3">Sin datos.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -258,43 +267,69 @@
     <div id="tab-rendimiento" class="aa-tab-panel" style="display:none">
 
         <!-- KPIs del tab -->
-        <div id="rps-kpis" class="rps-kpis" style="display:none">
-            <div class="rps-kpi">
-                <div class="rps-kpi-icon rps-kpi-icon-amber"><i class="fa-solid fa-chart-line"></i></div>
-                <div class="rps-kpi-body">
-                    <div class="rps-kpi-label">Promedio General</div>
-                    <div class="rps-kpi-value" id="kpi-promedio">—</div>
+        <div id="rps-kpis" class="row" style="display:none">
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value" id="kpi-promedio">—</h6>
+                                <p>Promedio General</p>
+                            </div>
+                            <div><div class="w-icon"><i class="fa-solid fa-chart-line"></i></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="rps-kpi">
-                <div class="rps-kpi-icon rps-kpi-icon-blue"><i class="fa-solid fa-user-graduate"></i></div>
-                <div class="rps-kpi-body">
-                    <div class="rps-kpi-label">Total Alumnos</div>
-                    <div class="rps-kpi-value" id="kpi-alumnos">—</div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value" id="kpi-alumnos">—</h6>
+                                <p>Total Alumnos</p>
+                            </div>
+                            <div><div class="w-icon"><i class="fa-solid fa-user-graduate"></i></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="rps-kpi">
-                <div class="rps-kpi-icon rps-kpi-icon-violet"><i class="fa-solid fa-layer-group"></i></div>
-                <div class="rps-kpi-body">
-                    <div class="rps-kpi-label">Secciones</div>
-                    <div class="rps-kpi-value" id="kpi-secciones">—</div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value" id="kpi-secciones">—</h6>
+                                <p>Secciones</p>
+                            </div>
+                            <div><div class="w-icon"><i class="fa-solid fa-layer-group"></i></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="rps-kpi">
-                <div class="rps-kpi-icon rps-kpi-icon-green"><i class="fa-solid fa-book"></i></div>
-                <div class="rps-kpi-body">
-                    <div class="rps-kpi-label">Cursos evaluados</div>
-                    <div class="rps-kpi-value" id="kpi-cursos">—</div>
+            <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value" id="kpi-cursos">—</h6>
+                                <p>Cursos evaluados</p>
+                            </div>
+                            <div><div class="w-icon"><i class="fa-solid fa-book"></i></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Container de secciones -->
         <div id="rendimiento-container">
-            <div class="rps-empty-state">
-                <i class="fa-solid fa-chart-column"></i>
-                <h3>Sin consulta activa</h3>
-                <p>Selecciona el año y parcial para ver el rendimiento de cada sección.</p>
+            <div class="statbox widget box box-shadow">
+                <div class="widget-content widget-content-area text-center text-muted py-5">
+                    <i class="fa-solid fa-chart-column fa-3x mb-3"></i>
+                    <h5>Sin consulta activa</h5>
+                    <p class="mb-0">Selecciona el año y parcial para ver el rendimiento de cada sección.</p>
+                </div>
             </div>
         </div>
 

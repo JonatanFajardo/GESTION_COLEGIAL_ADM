@@ -103,7 +103,7 @@ var AsistenciaAdm = (function () {
                 tbody.append(
                     "<tr data-asi='" + (row.Asi_Id || 0) + "' data-alu='" + row.Alu_Id + "'>" +
                     "<td>" + esc(row.NombreAlumno || row.Alu_NombreCompleto) + "</td>" +
-                    "<td><select class='form-control est-select' aria-label='Estado'>" + estados + "</select></td>" +
+                    "<td><select class='custom-select est-select' aria-label='Estado'>" + estados + "</select></td>" +
                     "<td><input class='form-control obs-input' maxlength='200' aria-label='Observación' value=\"" + esc(row.Asi_Observacion) + "\"></td>" +
                     "<td><button class='btn btn-sm btn-primary btn-marcar'>Guardar</button></td></tr>"
                 );
@@ -182,8 +182,8 @@ var AsistenciaAdm = (function () {
                     '<td>' + (esc(r.Pla_Recursos) || '—') + '</td>' +
                     '<td>' + estadoBadgePlan(r.Pla_Estado) + '</td>' +
                     '<td>' +
-                        '<button class="btn btn-xs btn-primary plan-editar me-1">Editar</button>' +
-                        '<button class="btn btn-xs btn-danger plan-eliminar">Eliminar</button>' +
+                        '<button class="btn btn-sm btn-outline-primary plan-editar mr-1">Editar</button>' +
+                        '<button class="btn btn-sm btn-outline-danger plan-eliminar">Eliminar</button>' +
                     '</td></tr>'
                 );
             });
@@ -219,8 +219,8 @@ var AsistenciaAdm = (function () {
                     '<td>' + r.Tar_Punteo + '</td>' +
                     '<td>' + estadoBadgeTarea(r.Tar_Estado) + '</td>' +
                     '<td>' +
-                        '<button class="btn btn-xs btn-primary tarea-editar me-1">Editar</button>' +
-                        '<button class="btn btn-xs btn-danger tarea-eliminar">Eliminar</button>' +
+                        '<button class="btn btn-sm btn-outline-primary tarea-editar mr-1">Editar</button>' +
+                        '<button class="btn btn-sm btn-outline-danger tarea-eliminar">Eliminar</button>' +
                     '</td></tr>'
                 );
             });

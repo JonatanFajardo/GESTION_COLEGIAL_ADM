@@ -276,7 +276,7 @@ var DashboardConsulta = (function () {
         var cont = document.getElementById('lista-indicadores');
         if (!cont) return;
         if (!data || data.length === 0) {
-            cont.innerHTML = '<p style="color:#94a3b8;font-size:.82rem;margin:0;">Sin indicadores disponibles.</p>';
+            cont.innerHTML = '<div class="col-12"><p class="text-muted small mb-0">Sin indicadores disponibles.</p></div>';
             return;
         }
         var html = '';
@@ -284,12 +284,20 @@ var DashboardConsulta = (function () {
             var ind = data[i];
             var tipo = (ind.Tipo || 'neutral').toLowerCase();
             var icono = ind.Icono || 'fa-chart-simple';
-            html += '<div class="ind-card ' + tipo + '">'
-                  + '<div class="ind-icon"><i class="fa-solid ' + icono + '"></i></div>'
-                  + '<div class="ind-info">'
-                  + '<div class="ind-label">' + (ind.Indicador || '') + '</div>'
-                  + '<div class="ind-value">' + (ind.Valor || '—') + '</div>'
-                  + '</div></div>';
+            var color = tipo === 'positive' ? 'text-success' : (tipo === 'negative' ? 'text-danger' : 'text-primary');
+            html += '<div class="col-xl-3 col-md-4 col-sm-6 col-12 layout-spacing">'
+                  + '<div class="widget widget-card-four h-100">'
+                  +   '<div class="widget-content">'
+                  +     '<div class="w-content">'
+                  +       '<div class="w-info">'
+                  +         '<h6 class="value">' + (ind.Valor || '—') + '</h6>'
+                  +         '<p>' + (ind.Indicador || '') + '</p>'
+                  +       '</div>'
+                  +       '<div><div class="w-icon ' + color + '"><i class="fas ' + icono + '"></i></div></div>'
+                  +     '</div>'
+                  +   '</div>'
+                  + '</div>'
+                  + '</div>';
         }
         cont.innerHTML = html;
     }

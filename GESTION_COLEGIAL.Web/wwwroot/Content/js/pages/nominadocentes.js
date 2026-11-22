@@ -18,6 +18,15 @@
         ART: "Arte/EF", OTR: "Otros"
     };
 
+    var AREA_BADGE = {
+        MAT: "primary", LEN: "info", CIE: "success", ING: "secondary",
+        SOC: "warning", CON: "dark", TEC: "info", ART: "danger", OTR: "secondary"
+    };
+
+    function badgeArea(area) {
+        return '<span class="badge outline-badge-' + (AREA_BADGE[area] || "secondary") + '">' + escapeHtml(AREA_LABEL[area] || area) + '</span>';
+    }
+
     var state = { all: [], filtered: [] };
 
     function fmtL(n) {
@@ -38,12 +47,12 @@
     }
 
     function setLoading(show) {
-        document.getElementById("ndLoader").style.display = show ? "flex" : "none";
-        document.getElementById("ndCards").style.display = show ? "none" : "grid";
+        document.getElementById("ndLoader").style.display = show ? "" : "none";
+        document.getElementById("ndCards").style.display = show ? "none" : "";
     }
 
     function setVacio(show) {
-        document.getElementById("ndVacio").style.display = show ? "flex" : "none";
+        document.getElementById("ndVacio").style.display = show ? "" : "none";
     }
 
     function inicialesDe(nombre) {
@@ -141,50 +150,46 @@
     function renderCard(n) {
         var area = n.AreaPrincipal || "OTR";
         var iniciales = inicialesDe(n.NombreCompleto);
-        var mda = n.ModalidadPrincipal ? '<span class="nd-badge nd-badge--mda">' + escapeHtml(n.ModalidadPrincipal) + '</span>' : '';
-        var areaLabel = AREA_LABEL[area] || area;
+        var mda = n.ModalidadPrincipal ? '<span class="badge outline-badge-info ml-1">' + escapeHtml(n.ModalidadPrincipal) + '</span>' : '';
 
         var horasExtra = n.PeriodosExtraMensuales > 0
-            ? '<div class="nd-mini-pill nd-mini-pill--extra"><i class="bi bi-lightning-fill"></i> ' + n.PeriodosExtraMensuales + ' extra</div>'
+            ? '<div class="mb-3"><span class="badge badge-warning"><i class="bi bi-lightning-fill mr-1"></i>' + n.PeriodosExtraMensuales + ' extra</span></div>'
             : '';
 
         var html =
-            '<div class="nd-card" data-emp="' + n.Emp_Id + '">' +
-              '<div class="nd-card-header nd-area-' + area + '">' +
-                '<div class="nd-avatar">' + iniciales + '</div>' +
-                '<div class="nd-card-titles">' +
-                  '<div class="nd-card-name">' + escapeHtml(n.NombreCompleto) + '</div>' +
-                  '<div class="nd-card-sub">' +
-                    '<span class="nd-pill nd-pill--' + area + '">' + escapeHtml(areaLabel) + '</span> ' +
-                    mda +
+            '<div class="col-xl-4 col-md-6 col-12 layout-spacing">' +
+            '<div class="statbox widget box box-shadow h-100" role="button" data-emp="' + n.Emp_Id + '">' +
+              '<div class="widget-content widget-content-area h-100 d-flex flex-column">' +
+                '<div class="d-flex align-items-center mb-3">' +
+                  '<span class="badge badge-primary mr-3">' + iniciales + '</span>' +
+                  '<div>' +
+                    '<h6 class="font-weight-bold mb-1">' + escapeHtml(n.NombreCompleto) + '</h6>' +
+                    '<div>' + badgeArea(area) + mda + '</div>' +
                   '</div>' +
                 '</div>' +
-              '</div>' +
 
-              '<div class="nd-card-body">' +
-                '<div class="nd-neto-wrap">' +
-                  '<div class="nd-neto-label">Neto a pagar</div>' +
-                  '<div class="nd-neto-value">' + fmtL(n.NetoAPagar) + '</div>' +
-                '</div>' +
+                '<p class="text-muted small mb-0">Neto a pagar</p>' +
+                '<h4 class="font-weight-bold text-success mb-3">' + fmtL(n.NetoAPagar) + '</h4>' +
 
-                '<div class="nd-mini-stats">' +
-                  '<div class="nd-mini-stat"><div class="nd-mini-num">' + n.PeriodosMensuales + '</div><div class="nd-mini-cap">períodos/mes</div></div>' +
-                  '<div class="nd-mini-stat"><div class="nd-mini-num">' + n.MateriasDistintas + '</div><div class="nd-mini-cap">materias</div></div>' +
-                  '<div class="nd-mini-stat"><div class="nd-mini-num">' + n.SeccionesAtendidas + '</div><div class="nd-mini-cap">secciones</div></div>' +
+                '<div class="row text-center mb-3">' +
+                  '<div class="col-4"><h6 class="font-weight-bold mb-0">' + n.PeriodosMensuales + '</h6><small class="text-muted">períodos/mes</small></div>' +
+                  '<div class="col-4"><h6 class="font-weight-bold mb-0">' + n.MateriasDistintas + '</h6><small class="text-muted">materias</small></div>' +
+                  '<div class="col-4"><h6 class="font-weight-bold mb-0">' + n.SeccionesAtendidas + '</h6><small class="text-muted">secciones</small></div>' +
                 '</div>' +
 
                 horasExtra +
 
-                '<div class="nd-desglose-mini">' +
-                  '<div class="nd-desglose-row"><span>Sueldo bruto</span><b>' + fmtL(n.SueldoBruto) + '</b></div>' +
-                  (n.HorasExtraMonto > 0 ? '<div class="nd-desglose-row"><span>+ Horas extra</span><b class="nd-positive">' + fmtL(n.HorasExtraMonto) + '</b></div>' : '') +
-                  '<div class="nd-desglose-row"><span>− Deducciones</span><b class="nd-negative">' + fmtL(n.TotalDeducciones) + '</b></div>' +
+                '<div class="small mb-3">' +
+                  '<div class="d-flex justify-content-between"><span class="text-muted">Sueldo bruto</span><b>' + fmtL(n.SueldoBruto) + '</b></div>' +
+                  (n.HorasExtraMonto > 0 ? '<div class="d-flex justify-content-between"><span class="text-muted">+ Horas extra</span><b class="text-success">' + fmtL(n.HorasExtraMonto) + '</b></div>' : '') +
+                  '<div class="d-flex justify-content-between"><span class="text-muted">− Deducciones</span><b class="text-danger">' + fmtL(n.TotalDeducciones) + '</b></div>' +
                 '</div>' +
 
-                '<button type="button" class="nd-btn-detalle">' +
-                  '<i class="bi bi-arrows-fullscreen"></i> Ver desglose completo' +
+                '<button type="button" class="btn btn-sm btn-outline-primary btn-block mt-auto">' +
+                  '<i class="bi bi-arrows-fullscreen mr-1"></i> Ver desglose completo' +
                 '</button>' +
               '</div>' +
+            '</div>' +
             '</div>';
 
         var $c = $(html);
@@ -196,7 +201,7 @@
     /* Modal detalle                                                 */
     /* ------------------------------------------------------------ */
     function abrirDetalle(empId) {
-        $("#ndModalBody").html('<div class="nd-modal-loading"><div class="nd-spinner"></div></div>');
+        $("#ndModalBody").html('<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>');
         $("#ndModal").modal("show");
 
         var anio = $("#filtroAnio").val();
@@ -227,61 +232,59 @@
         // Tabla de líneas
         var rowsLineas = (d.Lineas || []).map(function (l) {
             return '<tr>' +
-                '<td><span class="nd-pill nd-pill--' + l.Area + '">' + escapeHtml(AREA_LABEL[l.Area] || l.Area) + '</span></td>' +
+                '<td>' + badgeArea(l.Area) + '</td>' +
                 '<td>' + escapeHtml(l.Mat_Nombre) + '</td>' +
                 '<td>' + escapeHtml(l.Mda_Descripcion || "—") + '</td>' +
-                '<td class="nd-num">' + l.PeriodosSemanales + '</td>' +
-                '<td class="nd-num">' + l.PeriodosMensuales + '</td>' +
-                '<td class="nd-num">' + fmtL(l.TarifaPeriodo) + '</td>' +
-                '<td class="nd-num"><b>' + fmtL(l.Subtotal) + '</b></td>' +
+                '<td class="text-right">' + l.PeriodosSemanales + '</td>' +
+                '<td class="text-right">' + l.PeriodosMensuales + '</td>' +
+                '<td class="text-right">' + fmtL(l.TarifaPeriodo) + '</td>' +
+                '<td class="text-right"><b>' + fmtL(l.Subtotal) + '</b></td>' +
             '</tr>';
         }).join("");
 
         // Tabla de carga por día
         var rowsDias = (d.CargaPorDia || []).map(function (c) {
             var alerta = c.PeriodosExtra > 0
-                ? '<span class="nd-badge nd-badge--alerta">+' + c.PeriodosExtra + ' extra</span>'
+                ? '<span class="badge badge-warning">+' + c.PeriodosExtra + ' extra</span>'
                 : '';
             return '<tr>' +
                 '<td>' + escapeHtml(DIAS_LABEL[c.Dia_Id] || c.Dia_Descripcion) + '</td>' +
-                '<td class="nd-num">' + c.Periodos + '</td>' +
+                '<td class="text-right">' + c.Periodos + '</td>' +
                 '<td>' + alerta + '</td>' +
             '</tr>';
         }).join("");
 
         var html =
-            '<div class="nd-modal-layout">' +
+            '<div class="row">' +
 
-              '<div class="nd-modal-left">' +
-                '<div class="nd-section-title"><i class="bi bi-list-ul"></i> Materias asignadas</div>' +
-                '<table class="nd-tabla">' +
-                  '<thead><tr><th>Área</th><th>Materia</th><th>Modalidad</th><th class="nd-num">Sem</th><th class="nd-num">Mes</th><th class="nd-num">Tarifa</th><th class="nd-num">Subtotal</th></tr></thead>' +
+              '<div class="col-lg-8 mb-3 mb-lg-0">' +
+                '<h6 class="font-weight-bold mb-2"><i class="bi bi-list-ul mr-1"></i> Materias asignadas</h6>' +
+                '<div class="table-responsive"><table class="table table-sm table-hover">' +
+                  '<thead><tr><th>Área</th><th>Materia</th><th>Modalidad</th><th class="text-right">Sem</th><th class="text-right">Mes</th><th class="text-right">Tarifa</th><th class="text-right">Subtotal</th></tr></thead>' +
                   '<tbody>' + rowsLineas + '</tbody>' +
-                '</table>' +
+                '</table></div>' +
 
-                '<div class="nd-section-title nd-mt"><i class="bi bi-calendar3"></i> Carga por día (semanal)</div>' +
-                '<table class="nd-tabla nd-tabla--dias">' +
-                  '<thead><tr><th>Día</th><th class="nd-num">Períodos</th><th>Estado</th></tr></thead>' +
+                '<h6 class="font-weight-bold mt-4 mb-2"><i class="bi bi-calendar3 mr-1"></i> Carga por día (semanal)</h6>' +
+                '<div class="table-responsive"><table class="table table-sm table-hover">' +
+                  '<thead><tr><th>Día</th><th class="text-right">Períodos</th><th>Estado</th></tr></thead>' +
                   '<tbody>' + rowsDias + '</tbody>' +
-                '</table>' +
+                '</table></div>' +
               '</div>' +
 
-              '<div class="nd-modal-right">' +
-                '<div class="nd-resumen-card">' +
-                  '<div class="nd-resumen-row"><span>Sueldo bruto regular</span><b>' + fmtL(r.SueldoBruto) + '</b></div>' +
-                  (r.HorasExtraMonto > 0 ? '<div class="nd-resumen-row"><span>Horas extra (' + r.PeriodosExtraMensuales + ' p)</span><b class="nd-positive">+ ' + fmtL(r.HorasExtraMonto) + '</b></div>' : '') +
-                  '<div class="nd-resumen-divider"></div>' +
-                  '<div class="nd-resumen-row nd-resumen-row--total"><span>Total bruto</span><b>' + fmtL(r.TotalBruto) + '</b></div>' +
-                  '<div class="nd-resumen-row"><span>IHSS (5%)</span><b class="nd-negative">− ' + fmtL(r.DeduccionIHSS) + '</b></div>' +
-                  '<div class="nd-resumen-row"><span>ISR escalonado</span><b class="nd-negative">− ' + fmtL(r.DeduccionISR) + '</b></div>' +
-                  '<div class="nd-resumen-row"><span>Colegio profesional</span><b class="nd-negative">− ' + fmtL(r.DeduccionColegio) + '</b></div>' +
-                  '<div class="nd-resumen-row"><span>Total deducciones</span><b class="nd-negative">− ' + fmtL(r.TotalDeducciones) + '</b></div>' +
-                  '<div class="nd-resumen-divider"></div>' +
-                  '<div class="nd-resumen-neto">' +
-                    '<div class="nd-resumen-neto-label">NETO A PAGAR</div>' +
-                    '<div class="nd-resumen-neto-value">' + fmtL(r.NetoAPagar) + '</div>' +
-                  '</div>' +
-                '</div>' +
+              '<div class="col-lg-4">' +
+                '<div class="card component-card_1"><div class="card-body">' +
+                  '<div class="d-flex justify-content-between py-1"><span class="text-muted">Sueldo bruto regular</span><b>' + fmtL(r.SueldoBruto) + '</b></div>' +
+                  (r.HorasExtraMonto > 0 ? '<div class="d-flex justify-content-between py-1"><span class="text-muted">Horas extra (' + r.PeriodosExtraMensuales + ' p)</span><b class="text-success">+ ' + fmtL(r.HorasExtraMonto) + '</b></div>' : '') +
+                  '<hr class="my-2">' +
+                  '<div class="d-flex justify-content-between py-1 font-weight-bold"><span>Total bruto</span><b>' + fmtL(r.TotalBruto) + '</b></div>' +
+                  '<div class="d-flex justify-content-between py-1"><span class="text-muted">IHSS (5%)</span><b class="text-danger">− ' + fmtL(r.DeduccionIHSS) + '</b></div>' +
+                  '<div class="d-flex justify-content-between py-1"><span class="text-muted">ISR escalonado</span><b class="text-danger">− ' + fmtL(r.DeduccionISR) + '</b></div>' +
+                  '<div class="d-flex justify-content-between py-1"><span class="text-muted">Colegio profesional</span><b class="text-danger">− ' + fmtL(r.DeduccionColegio) + '</b></div>' +
+                  '<div class="d-flex justify-content-between py-1"><span class="text-muted">Total deducciones</span><b class="text-danger">− ' + fmtL(r.TotalDeducciones) + '</b></div>' +
+                  '<hr class="my-2">' +
+                  '<p class="text-muted small text-uppercase mb-0">Neto a pagar</p>' +
+                  '<h4 class="font-weight-bold text-success mb-0">' + fmtL(r.NetoAPagar) + '</h4>' +
+                '</div></div>' +
               '</div>' +
 
             '</div>';

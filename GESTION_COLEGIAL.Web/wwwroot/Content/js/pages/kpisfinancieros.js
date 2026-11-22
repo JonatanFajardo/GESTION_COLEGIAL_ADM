@@ -53,19 +53,19 @@ var KPIsFinancieros = (function () {
 
         var rows = [
             {
-                icon: "fa-circle-dollar-to-slot", iconClass: "teal",
+                icon: "fa-circle-dollar-to-slot", iconClass: "text-success",
                 label: "Total Cobrado",
                 val: cobrado !== null ? fmt(cobrado) : "—",
                 sub: "Ingresos confirmados"
             },
             {
-                icon: "fa-hourglass-half", iconClass: "amber",
+                icon: "fa-hourglass-half", iconClass: "text-warning",
                 label: "Total Pendiente",
                 val: pendiente !== null ? fmt(pendiente) : "—",
                 sub: "Por recuperar"
             },
             {
-                icon: "fa-user-slash", iconClass: "red",
+                icon: "fa-user-slash", iconClass: "text-danger",
                 label: "Alumnos Morosos",
                 val: morosos !== null ? morosos : "—",
                 sub: "Con pagos vencidos"
@@ -74,24 +74,24 @@ var KPIsFinancieros = (function () {
 
         var html = "";
         rows.forEach(function (r) {
-            html += '<div class="kpi-detail-row">';
-            html += '<div class="kpi-detail-icon kpi-icon-fan ' + r.iconClass + '"><i class="fa-solid ' + r.icon + '"></i></div>';
-            html += '<div class="kpi-detail-info">';
-            html += '<div class="kpi-detail-label">' + r.label + '</div>';
-            html += '<div class="kpi-detail-val">'   + r.val   + '</div>';
-            html += '<div class="kpi-detail-sub">'   + r.sub   + '</div>';
+            html += '<div class="d-flex align-items-center py-3 border-bottom">';
+            html += '<div class="mr-3 h4 mb-0 ' + r.iconClass + '"><i class="fas fa-fw ' + r.icon + '"></i></div>';
+            html += '<div class="flex-grow-1">';
+            html += '<p class="small text-muted text-uppercase font-weight-bold mb-0">' + r.label + '</p>';
+            html += '<h5 class="font-weight-bold mb-0">' + r.val + '</h5>';
+            html += '<p class="small text-muted mb-0">' + r.sub + '</p>';
             html += '</div></div>';
         });
 
-        html += '<div style="padding:14px 18px;">';
-        html += '<div style="display:flex;justify-content:space-between;margin-bottom:4px;">';
-        html += '<span style="font-size:.72rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Progreso de Recuperación</span>';
-        html += '<span style="font-size:.8rem;font-weight:800;color:' + color + ';">' + pctVal.toFixed(1) + '%</span>';
+        html += '<div class="pt-3">';
+        html += '<div class="d-flex justify-content-between mb-1">';
+        html += '<span class="small text-muted text-uppercase font-weight-bold">Progreso de Recuperación</span>';
+        html += '<span class="small font-weight-bold" style="color:' + color + ';">' + pctVal.toFixed(1) + '%</span>';
         html += '</div>';
-        html += '<div class="rec-track"><div class="rec-fill" style="width:' + pctVal.toFixed(1) + '%;background:' + color + ';"></div></div>';
-        html += '<div style="display:flex;justify-content:space-between;margin-top:4px;">';
-        html += '<span style="font-size:.68rem;color:#94a3b8;">0%</span>';
-        html += '<span style="font-size:.68rem;color:#94a3b8;">100%</span>';
+        html += '<div class="progress mb-0"><div class="progress-bar" role="progressbar" style="width:' + pctVal.toFixed(1) + '%;background:' + color + ';"></div></div>';
+        html += '<div class="d-flex justify-content-between small text-muted mt-1">';
+        html += '<span>0%</span>';
+        html += '<span>100%</span>';
         html += '</div></div>';
 
         $("#kpi-detail-container").html(html);
@@ -100,7 +100,7 @@ var KPIsFinancieros = (function () {
     function resetAll() {
         $("#kpi-total-cobrado, #kpi-total-pendiente, #kpi-total-morosos, #kpi-porcentaje-recuperacion").text("—");
         $("#kpi-gauge-label").text("—").css("color", "#94a3b8");
-        $("#kpi-detail-container").html('<div class="fan-loading">Sin datos.</div>');
+        $("#kpi-detail-container").html('<div class="text-center text-muted py-5">Sin datos.</div>');
         if (gaugeChart) { gaugeChart.destroy(); gaugeChart = null; }
     }
 
@@ -111,7 +111,7 @@ var KPIsFinancieros = (function () {
         var data = { Anio: anio };
         if (mes && mes !== "") data.Mes = mes;
 
-        $("#kpi-detail-container").html('<div class="fan-loading"><i class="fa-solid fa-spinner fa-spin me-2"></i>Cargando...</div>');
+        $("#kpi-detail-container").html('<div class="text-center text-muted py-5"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</div>');
 
         $.ajax({
             url: urlFind,

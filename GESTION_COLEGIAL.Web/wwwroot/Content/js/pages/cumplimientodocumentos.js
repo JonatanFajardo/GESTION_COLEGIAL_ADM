@@ -79,8 +79,8 @@ var CumplimientoDocumentos = (function () {
         _activarTab('incompletos');
         $('#cdoc-grid-completos').empty();
         $('#cdoc-grid-incompletos').html(
-            '<div class="cdoc-loading col-12">' +
-                '<span class="spinner-border spinner-border-sm text-secondary"></span>' +
+            '<div class="col-12 text-center text-muted py-5">' +
+                '<span class="spinner-border spinner-border-sm text-primary mr-2"></span>' +
                 '<span>Cargando datos...</span>' +
             '</div>'
         );
@@ -114,8 +114,8 @@ var CumplimientoDocumentos = (function () {
             },
             error: function () {
                 $('#cdoc-grid-incompletos').html(
-                    '<div class="cdoc-empty-state col-12">' +
-                        '<i class="fa-solid fa-circle-exclamation"></i>' +
+                    '<div class="col-12 text-center text-muted py-5">' +
+                        '<i class="fa-solid fa-circle-exclamation h2 d-block mb-2"></i>' +
                         '<p>Error al cargar los datos. Intente nuevamente.</p>' +
                     '</div>'
                 );
@@ -223,7 +223,7 @@ var CumplimientoDocumentos = (function () {
         if (empleadosArr && empleadosArr.length) {
             $.each(empleadosArr, function (_, emp) {
                 var completo = _empCompleto(emp);
-                var $col = $('<div>').addClass('col-xl-4 col-lg-6 col-md-12 mb-4');
+                var $col = $('<div>').addClass('col-xl-4 col-lg-6 col-md-12 layout-spacing');
                 $col.html(_buildCard(emp));
                 if (completo) { $com.append($col); nCom++; }
                 else          { $inc.append($col); nInc++; }
@@ -233,16 +233,16 @@ var CumplimientoDocumentos = (function () {
         // Estados vacíos por pestaña
         if (nInc === 0) {
             $inc.html(
-                '<div class="cdoc-empty-state col-12">' +
-                    '<i class="fa-solid fa-circle-check"></i>' +
+                '<div class="col-12 text-center text-muted py-5">' +
+                    '<i class="fa-solid fa-circle-check h2 d-block mb-2"></i>' +
                     '<p>No hay empleados con documentación pendiente.</p>' +
                 '</div>'
             );
         }
         if (nCom === 0) {
             $com.html(
-                '<div class="cdoc-empty-state col-12">' +
-                    '<i class="fa-solid fa-folder-open"></i>' +
+                '<div class="col-12 text-center text-muted py-5">' +
+                    '<i class="fa-solid fa-folder-open h2 d-block mb-2"></i>' +
                     '<p>Aún no hay empleados con documentación completa.</p>' +
                 '</div>'
             );
@@ -267,6 +267,8 @@ var CumplimientoDocumentos = (function () {
         var esCompletos = (tab === 'completos');
         $('#cdoc-tabs .cdoc-tab-item').removeClass('active')
             .filter('[data-tab="' + tab + '"]').addClass('active');
+        $('#cdoc-tabs .cdoc-tab-item .nav-link').removeClass('active');
+        $('#cdoc-tabs .cdoc-tab-item[data-tab="' + tab + '"] .nav-link').addClass('active');
         $('#cdoc-grid-incompletos').prop('hidden', esCompletos);
         $('#cdoc-grid-completos').prop('hidden', !esCompletos);
     }
@@ -286,37 +288,35 @@ var CumplimientoDocumentos = (function () {
         });
 
         var pct              = total > 0 ? Math.round((entregados / total) * 100) : 0;
-        var statusClass      = pct >= 100 ? 'status-full' : (pct > 50 ? 'status-partial' : 'status-low');
         var progressBarClass = pct >= 100 ? 'bg-success'  : (pct > 50 ? 'bg-warning'      : 'bg-danger');
-        var avatarClass      = 'avatar-' + (emp.Emp_Id % 7);
         var initials         = _initiales(emp.NombreCompleto);
 
         /* Lista de documentos */
         var docItems = '';
         $.each(docs, function (_, d) {
             var esEntregado = _esEntregado(d);
-            var iconClass   = esEntregado ? 'fa-circle-check icon-ok' : 'fa-circle-xmark icon-pending';
+            var iconClass   = esEntregado ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger';
             var badgeHtml   = '';
 
             if (d.EsObligatorio === true || d.EsObligatorio === 1) {
-                var badgeType = esEntregado ? 'oblig-entregado' : 'oblig-pendiente';
-                badgeHtml = '<span class="cdoc-badge-oblig ' + badgeType + '">Obligatorio</span>';
+                var badgeType = esEntregado ? 'outline-badge-success' : 'outline-badge-danger';
+                badgeHtml = '<span class="badge ' + badgeType + ' mr-1">Obligatorio</span>';
             }
 
             var fechaHtml = '';
             if (d.FechaEntrega) {
-                fechaHtml = '<span class="cdoc-doc-fecha">' + _escHtml(_formatFecha(d.FechaEntrega)) + '</span>';
+                fechaHtml = '<span class="text-muted small mr-1">' + _escHtml(_formatFecha(d.FechaEntrega)) + '</span>';
             }
 
             // Badge de vencimiento
             var vencHtml = '';
             if (d.EstadoVencimiento === 'vencido') {
-                vencHtml = '<span class="cdoc-venc-badge cdoc-venc-vencido">Vencido</span>';
+                vencHtml = '<span class="badge badge-danger">Vencido</span>';
             } else if (d.EstadoVencimiento === 'por-vencer') {
-                vencHtml = '<span class="cdoc-venc-badge cdoc-venc-por-vencer">Por vencer' +
+                vencHtml = '<span class="badge badge-warning">Por vencer' +
                            (d.Doc_FechaVencimiento ? ' · ' + _escHtml(_formatFecha(d.Doc_FechaVencimiento)) : '') + '</span>';
             } else if (d.EstadoVencimiento === 'vigente' && d.Doc_FechaVencimiento) {
-                vencHtml = '<span class="cdoc-venc-badge cdoc-venc-vigente">Vence ' + _escHtml(_formatFecha(d.Doc_FechaVencimiento)) + '</span>';
+                vencHtml = '<span class="badge badge-success">Vence ' + _escHtml(_formatFecha(d.Doc_FechaVencimiento)) + '</span>';
             }
 
             var titleAttr = d.Observacion
@@ -326,42 +326,40 @@ var CumplimientoDocumentos = (function () {
             var key = d.Emp_Id + '||' + (d.Documento || '');
 
             docItems +=
-                '<div class="cdoc-doc-item" data-key="' + _escHtml(key) + '"' + titleAttr + '>' +
-                    '<span class="cdoc-doc-icon fa-solid ' + iconClass + '"></span>' +
-                    '<div class="cdoc-doc-body">' +
-                        '<p class="cdoc-doc-name">' + _escHtml(d.Documento || 'Sin nombre') + '</p>' +
-                        '<div class="cdoc-doc-meta">' + badgeHtml + fechaHtml + vencHtml + '</div>' +
+                '<a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex align-items-start cdoc-doc-item" data-key="' + _escHtml(key) + '"' + titleAttr + '>' +
+                    '<span class="fa-solid ' + iconClass + ' mr-2 mt-1"></span>' +
+                    '<div>' +
+                        '<p class="mb-1 font-weight-bold">' + _escHtml(d.Documento || 'Sin nombre') + '</p>' +
+                        '<div>' + badgeHtml + fechaHtml + vencHtml + '</div>' +
                     '</div>' +
-                '</div>';
+                '</a>';
         });
 
         return (
-            '<div class="cdoc-emp-card ' + statusClass + '">' +
-                '<div class="cdoc-emp-card-header">' +
-                    '<div class="cdoc-emp-card-top">' +
-                        '<div class="cdoc-avatar ' + avatarClass + '">' + _escHtml(initials) + '</div>' +
-                        '<div class="cdoc-emp-info">' +
-                            '<p class="cdoc-emp-name">' + _escHtml(emp.NombreCompleto) + '</p>' +
-                            '<p class="cdoc-emp-code">' +
+            '<div class="statbox widget box box-shadow h-100">' +
+                '<div class="widget-content widget-content-area">' +
+                    '<div class="d-flex align-items-center mb-3">' +
+                        '<span class="badge badge-primary mr-3">' + _escHtml(initials) + '</span>' +
+                        '<div>' +
+                            '<h6 class="font-weight-bold mb-0">' + _escHtml(emp.NombreCompleto) + '</h6>' +
+                            '<p class="text-muted small mb-0">' +
                                 _escHtml(emp.Emp_Codigo) +
                                 (emp.Per_Identidad ? ' &nbsp;·&nbsp; ' + _escHtml(emp.Per_Identidad) : '') +
                             '</p>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="cdoc-progress-bar-wrap">' +
-                        '<div class="cdoc-progress-label">' +
-                            '<span>' + entregados + ' de ' + total + ' entregados</span>' +
-                            '<span class="pct-text">' + pct + '%</span>' +
-                        '</div>' +
-                        '<div class="progress" style="height:7px;">' +
-                            '<div class="progress-bar ' + progressBarClass + '" role="progressbar" ' +
-                                'aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100" ' +
-                                'style="width:' + pct + '%;">' +
-                            '</div>' +
+                    '<div class="d-flex justify-content-between small mb-1">' +
+                        '<span class="text-muted">' + entregados + ' de ' + total + ' entregados</span>' +
+                        '<span class="font-weight-bold">' + pct + '%</span>' +
+                    '</div>' +
+                    '<div class="progress mb-3">' +
+                        '<div class="progress-bar ' + progressBarClass + '" role="progressbar" ' +
+                            'aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100" ' +
+                            'style="width:' + pct + '%;">' +
                         '</div>' +
                     '</div>' +
+                    '<div class="list-group">' + docItems + '</div>' +
                 '</div>' +
-                '<div class="cdoc-doc-list">' + docItems + '</div>' +
             '</div>'
         );
     }
