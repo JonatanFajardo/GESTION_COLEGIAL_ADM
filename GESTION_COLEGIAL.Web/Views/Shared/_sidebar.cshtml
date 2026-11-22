@@ -238,7 +238,7 @@
             }
             *@
 
-            @if (tiene("Listado de alumnos") || tiene("Directorio de Alumnos") || tiene("Pirámide de Matrícula") || tiene("Mensajes a Encargados") || tiene("Documentos alumno") || tiene("Matrícula nueva") || tiene("Lista de espera"))
+            @if (tiene("Listado de alumnos") || tiene("Directorio de Alumnos") || tiene("Pirámide de Matrícula") || tiene("Mensajes a Encargados") || tiene("Documentos alumno") || tiene("Matrícula nueva") || tiene("Fichas de salud") || tiene("Lista de espera"))
             {
                 <li class="menu">
                     <a href="#Alumnos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -263,6 +263,7 @@
                         @if (tiene("Directorio de Contacto") || tiene("Listado de encargados") || tiene("Directorio de Alumnos") || esAdmin)
                                                                  { <li>@Html.ActionLink("Directorio de contacto","Index", "DirectorioContacto")</li> }
                         @if (tiene("Documentos alumno"))         { <li>@Html.ActionLink("Documentos del alumno",           "Index", "DocumentosAlumnoAdm")</li> }
+                        @if (tiene("Fichas de salud") || esAdmin) { <li>@Html.ActionLink("Fichas de salud",                 "Index", "FichasSalud")</li> }
                         @* Parentescos → consolidado en hub "Catálogos Comunes" (CatalogosComunes). Link suelto deshabilitado (test §7, ver TODO.md). Controller Parentescos sigue vivo: el hub lo reutiliza.
                         @if (tiene("Listado de parentescos"))    { <li>@Html.ActionLink("Parentescos",          "Index", "Parentescos")</li> } *@
                         @if (tiene("Pirámide de Matrícula"))     { <li>@Html.ActionLink("Pirámide de matrícula","Index", "PiramideMatricula")</li> }

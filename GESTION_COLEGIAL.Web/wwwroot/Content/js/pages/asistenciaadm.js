@@ -108,6 +108,23 @@ var AsistenciaAdm = (function () {
                     "<td><button class='btn btn-sm btn-primary btn-marcar'>Guardar</button></td></tr>"
                 );
             });
+            marcarAlertasSalud(n, h, f);
+        });
+    }
+
+    /* Ícono rojo junto al nombre de quien tiene una alerta crítica de salud (solo el texto corto). */
+    function marcarAlertasSalud(n, h, f) {
+        if (!urls.asisAlertas) return;
+        $.getJSON(urls.asisAlertas, { Hor_Id: h, Fecha: f }, function (alertas) {
+            if (n !== consulta || !$.isArray(alertas)) return;
+            $.each(alertas, function (_, a) {
+                var td = $("#tbody-asistencia tr[data-alu='" + a.Alu_Id + "'] td:first");
+                if (!td.length || td.find(".asis-alerta-salud").length) return;
+                var icono = $("<i class='bi bi-heart-pulse-fill text-danger ml-2 asis-alerta-salud' tabindex='0' role='img' data-toggle='tooltip' data-placement='right'></i>")
+                    .attr("title", a.Fsa_Alerta).attr("aria-label", "Alerta de salud: " + a.Fsa_Alerta);
+                td.append(icono);
+                if ($.fn.tooltip) icono.tooltip();
+            });
         });
     }
 

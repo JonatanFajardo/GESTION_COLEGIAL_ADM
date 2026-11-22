@@ -1,0 +1,98 @@
+/* Fichas de salud — solo lo que CORK no trae: color de los íconos de los indicadores (paleta
+   aprobada), avatar con iniciales, títulos de sección del formulario y textos largos.
+   La hoja tamaño carta para imprimir vive en fichas-salud-imprimir.css (solo la carga esa vista,
+   para que sus reglas de impresión no afecten a las demás pantallas). El resto usa componentes de CORK. */
+
+/* ── Indicadores: paleta indigo / esmeralda / ámbar / cian ── */
+.fsa-kpi-indigo .w-icon    { color: #4f46e5; background: #eef2ff; }
+.fsa-kpi-esmeralda .w-icon { color: #059669; background: #d1fae5; }
+.fsa-kpi-ambar .w-icon     { color: #b45309; background: #fef3c7; }
+.fsa-kpi-cian .w-icon      { color: #0e7490; background: #cffafe; }
+/* position: relative para que el punto blanco de la barra de CORK quede dentro de la barra. */
+.fsa-barra-esmeralda       { position: relative; background-color: #10b981; }
+#fsa-kpis .widget-card-four .w-icon i { margin: 0 auto; }
+
+/* ── Directorio ── */
+.fsa-tabla .tabulator-row { cursor: pointer; }
+.fsa-tabla .fsa-badge-alerta { white-space: normal; line-height: 1.35; text-align: left; font-size: .78rem; }
+.fsa-tabla.tabulator .tabulator-row .tabulator-cell { white-space: normal; overflow-wrap: anywhere; }
+.fsa-tabla .fsa-sub { display: block; color: #6b7280; font-size: .8rem; }
+.fsa-tabla .fsa-nombre { min-width: 0; }
+.fsa-tabla .avatar { flex: 0 0 auto; }
+.fsa-tabla .fsa-enlace { color: #0e1726; font-weight: 500; }
+.fsa-tabla .fsa-enlace:hover, .fsa-tabla .fsa-enlace:focus { color: #1b55e2; text-decoration: underline; }
+
+/* ── Ficha ── */
+.fsa-avatar {
+    width: 56px;
+    height: 56px;
+    flex: 0 0 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff3d6;
+    color: #8a5a00;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: .02em;
+}
+
+.fsa-bloque-titulo {
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #515365;
+    margin-bottom: .75rem;
+}
+
+.fsa-emergencia dd { margin-bottom: .6rem; color: #0e1726; }
+.fsa-emergencia dd.text-muted { color: #6b7280; }
+.fsa-sangre { font-size: 1.35rem; font-weight: 700; color: #b91c1c !important; }
+.fsa-texto { white-space: pre-line; }
+.fsa-alerta { font-size: .95rem; }
+.fsa-contacto { padding: .5rem 0; border-bottom: 1px solid #ebedf2; }
+.fsa-contacto:first-child { padding-top: 0; }
+.fsa-contacto:last-child { border-bottom: 0; }
+.fsa-telefono { display: inline-block; margin-top: .15rem; font-weight: 600; color: #1b55e2; }
+
+.fsa-seccion {
+    font-size: .95rem;
+    font-weight: 700;
+    color: #0e1726;
+    padding-bottom: .4rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ebedf2;
+}
+
+.fsa-icono-vacio { font-size: 2.75rem; color: #bfc9d4; }
+.fsa-col-fecha { width: 170px; }
+.fsa-col-quien { width: 200px; }
+
+/* Campos bloqueados en modo lectura: gris, con el texto legible. */
+#fsa-form .form-control:disabled,
+#fsa-form .custom-select:disabled {
+    background-color: #f1f2f3;
+    color: #3b3f5c;
+    opacity: 1;
+}
+#fsa-form textarea { resize: vertical; }
+#fsa-form .custom-control-input:disabled ~ .custom-control-label { color: #3b3f5c; }
+#fsa-form .custom-control-input:disabled:checked ~ .custom-control-label::before { opacity: .85; }
+#fsa-ficha .table td.fsa-campos { white-space: normal; min-width: 280px; }
+.statbox .widget-header .fsa-subtitulo { padding: 0 12px 12px; margin-top: -8px; }
+
+html.gc-dark .fsa-tabla .fsa-enlace { color: #e2e8f0; }
+html.gc-dark .fsa-tabla .fsa-enlace:hover, html.gc-dark .fsa-tabla .fsa-enlace:focus { color: #93c5fd; }
+html.gc-dark .fsa-tabla .fsa-sub { color: #94a3b8; }
+html.gc-dark .fsa-emergencia dd { color: #e2e8f0; }
+html.gc-dark .fsa-emergencia dd.text-muted { color: #94a3b8; }
+html.gc-dark .fsa-seccion { color: #e2e8f0; border-bottom-color: #334155; }
+html.gc-dark .fsa-bloque-titulo { color: #94a3b8; }
+html.gc-dark .fsa-contacto { border-bottom-color: #334155; }
+html.gc-dark .fsa-telefono { color: #93c5fd; }
+/* En modo oscuro el tema fuerza el fondo de .form-control con !important: el bloqueado debe ganarle. */
+html.gc-dark #fsa-form .form-control:disabled,
+html.gc-dark #fsa-form .custom-select:disabled { background-color: #1e293b !important; color: #cbd5e1 !important; }
+html.gc-dark #fsa-form .custom-control-input:disabled ~ .custom-control-label { color: #cbd5e1; }

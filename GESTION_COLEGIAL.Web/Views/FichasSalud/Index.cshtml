@@ -1,0 +1,154 @@
+@{
+    ViewBag.Title = "Fichas de salud";
+}
+
+@section Styles{
+    <link href="~/css/pages/fichas-salud.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Alumnos</li>
+            <li class="breadcrumb-item active" aria-current="page">Fichas de salud</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Fichas de salud</h4>
+        <p class="text-muted mb-0">Alergias, alertas y a quién llamar de cada alumno. Haga clic en un alumno para abrir su ficha.</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <button type="button" class="btn btn-primary" id="fsa-exportar">
+            <i class="bi bi-file-earmark-spreadsheet mr-1" aria-hidden="true"></i> Exportar a Excel
+        </button>
+    </div>
+</div>
+
+@* ── Indicadores (se calculan con el nivel, grado y sección elegidos) ── *@
+<div class="row" id="fsa-kpis">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four fsa-kpi-esmeralda h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="kpi-con">—</h6>
+                        <p>Con ficha</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-clipboard2-check" aria-hidden="true"></i></div></div>
+                </div>
+                <div class="progress mt-3 mb-2" aria-hidden="true"><div class="progress-bar fsa-barra-esmeralda" id="kpi-con-barra" style="width:0%"></div></div>
+                <p class="text-muted small mb-0" id="kpi-con-texto">&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four fsa-kpi-ambar h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="kpi-sin">—</h6>
+                        <p>Sin ficha</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-clipboard2-x" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">Alumnos a los que falta registrar su ficha.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four fsa-kpi-indigo h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="kpi-alerta">—</h6>
+                        <p>Con alerta crítica</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-heart-pulse" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">El docente ve la alerta en el pase de lista.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four fsa-kpi-cian h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="kpi-tel">—</h6>
+                        <p>Sin teléfono de emergencia</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-telephone-x" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">Ni encargado con teléfono ni contacto adicional.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ── Filtros ── *@
+<section class="statbox widget box box-shadow mb-4" aria-labelledby="fsa-filtros-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="fsa-filtros-titulo">Buscar alumnos</h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div class="form-row align-items-end">
+            <div class="col-md-4 col-xl-3 form-group">
+                <label for="fsa-nivel">Nivel</label>
+                <select id="fsa-nivel" class="custom-select" disabled>
+                    <option value="">Todos los niveles</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-xl-3 form-group">
+                <label for="fsa-grado">Grado</label>
+                <select id="fsa-grado" class="custom-select" disabled>
+                    <option value="">Elija un nivel primero</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-xl-3 form-group">
+                <label for="fsa-seccion">Sección</label>
+                <select id="fsa-seccion" class="custom-select" disabled>
+                    <option value="">Elija un grado primero</option>
+                </select>
+            </div>
+            <div class="col-md-12 col-xl-3 form-group">
+                <label for="fsa-buscar">Nombre o identidad</label>
+                <input type="search" id="fsa-buscar" class="form-control" placeholder="Ej. Audely o 0309" autocomplete="off" />
+            </div>
+        </div>
+        <div class="d-flex flex-wrap align-items-center">
+            <div class="custom-control custom-switch mr-4 mb-2">
+                <input type="checkbox" class="custom-control-input" id="fsa-solo-sin" />
+                <label class="custom-control-label" for="fsa-solo-sin">Solo sin ficha</label>
+            </div>
+            <div class="custom-control custom-switch mr-4 mb-2">
+                <input type="checkbox" class="custom-control-input" id="fsa-solo-alerta" />
+                <label class="custom-control-label" for="fsa-solo-alerta">Solo con alerta crítica</label>
+            </div>
+            <div class="custom-control custom-switch mr-4 mb-2">
+                <input type="checkbox" class="custom-control-input" id="fsa-solo-sin-tel" />
+                <label class="custom-control-label" for="fsa-solo-sin-tel">Solo sin teléfono de emergencia</label>
+            </div>
+            <button type="button" class="btn btn-link p-0 mb-2" id="fsa-limpiar" hidden><i class="bi bi-x-lg mr-1" aria-hidden="true"></i> Quitar filtros</button>
+        </div>
+    </div>
+</section>
+
+@* ── Listado ── *@
+<section class="statbox widget box box-shadow mb-4" aria-labelledby="fsa-tabla-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="fsa-tabla-titulo">Alumnos <span class="badge outline-badge-primary ml-1" id="fsa-total">0</span></h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div id="tabla-fichas-salud" class="gc-tabla fsa-tabla" data-usuario="@(Session["Username"] as string ?? "anonimo")"
+             data-url="@Url.Action("DirectorioAsync")" data-url-ficha="@Url.Action("Ficha")"></div>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/fichas-salud.js" asp-append-version="true"></script>
+}

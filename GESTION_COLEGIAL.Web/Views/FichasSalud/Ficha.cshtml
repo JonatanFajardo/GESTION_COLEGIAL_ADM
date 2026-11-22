@@ -1,0 +1,311 @@
+@model GESTION_COLEGIAL.UI.Models.FichaSaludPaginaViewModel
+@using GESTION_COLEGIAL.UI.Models
+@{
+    var M = Model;
+    var F = M.Ficha;
+    ViewBag.Title = "Ficha de salud · " + F.Alumno;
+    bool tieneFicha = F.TieneFicha;
+    string ubicacion = string.Join(" · ", new[] { F.Ubicacion, F.Nivel }.Where(x => !string.IsNullOrWhiteSpace(x)));
+    // Campos bloqueados en modo lectura (se habilitan al editar).
+    string bloqueado = "disabled";
+}
+
+@section Styles{
+    <link href="~/css/pages/fichas-salud.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Alumnos</li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Fichas de salud</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@F.Alumno</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container" id="fsa-ficha" data-alumno="@F.Alu_Id" data-version="@(F.Fsa_Version?.ToString() ?? "")"
+     data-tiene-ficha="@(tieneFicha ? "true" : "false")" data-url-guardar="@Url.Action("GuardarAsync")">
+    @Html.AntiForgeryToken()
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+        <div class="d-flex align-items-center mr-3">
+            <div class="fsa-avatar mr-3" aria-hidden="true">@F.Iniciales</div>
+            <div>
+                <h4 class="mb-1">@F.Alumno</h4>
+                <p class="text-muted mb-0">
+                    @(ubicacion.Length > 0 ? ubicacion : "Sin grado asignado")
+                    @if (!string.IsNullOrWhiteSpace(F.Identidad)) { <span> · Identidad @F.Identidad</span> }
+                    @if (!string.IsNullOrWhiteSpace(F.Estado) && F.Estado != "Activo") { <span class="badge badge-secondary ml-1">@F.Estado</span> }
+                </p>
+            </div>
+        </div>
+        <div class="mt-2 mt-md-0">
+            <a class="btn btn-outline-primary mb-1" href="@Url.Action("Imprimir", new { id = F.Alu_Id })" target="_blank" rel="noopener">
+                <i class="bi bi-printer mr-1" aria-hidden="true"></i> Imprimir
+            </a>
+            <a class="btn btn-outline-secondary mb-1" href="@Url.Action("Index")">
+                <i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Fichas de salud
+            </a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(M.Aviso))
+    {
+        <div class="alert alert-light-success mb-4" role="status"><i class="bi bi-check-circle mr-1" aria-hidden="true"></i> <strong>@M.Aviso</strong></div>
+    }
+    <div class="alert alert-light-danger mb-4" id="fsa-error-general" role="alert" hidden></div>
+
+    <partial name="_Emergencia" model="M.Emergencia" />
+
+    @if (!tieneFicha)
+    {
+        <section class="statbox widget box box-shadow mb-4" id="fsa-invitacion">
+            <div class="widget-content widget-content-area text-center py-5">
+                <i class="bi bi-clipboard2-pulse fsa-icono-vacio d-block mb-3" aria-hidden="true"></i>
+                <h5 class="mb-2">@F.PrimerNombre todavía no tiene ficha de salud</h5>
+                @if (M.PuedeEditar)
+                {
+                    <p class="text-muted mb-4">Registre sus alergias, condiciones, medicamentos y a quién llamar. Solo toma un par de minutos.</p>
+                    <button type="button" class="btn btn-primary" id="fsa-crear"><i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Crear ficha</button>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Pida a secretaría que la registre.</p>
+                }
+            </div>
+        </section>
+    }
+
+    @if (tieneFicha || M.PuedeEditar)
+    {
+        <form id="fsa-form" class="statbox widget box box-shadow mb-4" novalidate autocomplete="off" hidden="@(!tieneFicha)" aria-labelledby="fsa-form-titulo">
+            <div class="widget-header">
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="mr-3">
+                        <h4 id="fsa-form-titulo">Ficha de salud</h4>
+                        @if (tieneFicha)
+                        {
+                            <p class="text-muted small mb-0 fsa-subtitulo">
+                                Actualizada el @FormatoSalud.Dia(F.Actualizada)@(string.IsNullOrWhiteSpace(F.ActualizadaPor) ? "" : " por " + F.ActualizadaPor)
+                            </p>
+                        }
+                    </div>
+                    @if (M.PuedeEditar)
+                    {
+                        <div class="mb-2 pr-2">
+                            <button type="button" class="btn btn-primary" id="fsa-editar" hidden="@(!tieneFicha)"><i class="bi bi-pencil mr-1" aria-hidden="true"></i> Editar</button>
+                            <button type="button" class="btn mr-1" id="fsa-cancelar" hidden>Cancelar</button>
+                            <button type="submit" class="btn btn-primary" id="fsa-guardar" hidden><i class="bi bi-check2 mr-1" aria-hidden="true"></i> Guardar</button>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <p class="text-muted small mb-4" id="fsa-ayuda-edicion" hidden>
+                    Todos los campos son opcionales, salvo el texto de la alerta cuando marca que hay una alerta crítica.
+                </p>
+
+                <div class="row">
+                    @* ── 1. Alerta ── *@
+                    <fieldset class="col-lg-6 mb-4">
+                        <legend class="fsa-seccion">Alerta</legend>
+                        <div class="form-group mb-2">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="Fsa_TieneAlerta" name="Fsa_TieneAlerta" @(F.Fsa_TieneAlerta ? "checked" : "") @bloqueado />
+                                <label class="custom-control-label" for="Fsa_TieneAlerta">Tiene una alerta crítica</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Fsa_Alerta">Texto que verá el docente <span class="text-danger" id="fsa-alerta-req" hidden>*</span></label>
+                            <input type="text" class="form-control" id="Fsa_Alerta" name="Fsa_Alerta" maxlength="150" value="@F.Fsa_Alerta"
+                                   placeholder="Ej. Alergia grave al maní, lleva epinefrina" aria-describedby="fsa-alerta-ayuda" @bloqueado />
+                            <div class="d-flex justify-content-between">
+                                <small id="fsa-alerta-ayuda" class="form-text text-muted">Aparece junto al nombre en el pase de lista. Solo lo indispensable.</small>
+                                <small class="form-text text-muted ml-2" id="fsa-alerta-cuenta" aria-live="polite"></small>
+                            </div>
+                            <div class="invalid-feedback" data-error="Alerta"></div>
+                        </div>
+                        <div class="form-group mb-0">
+                            <label for="Fsa_TipoSangre">Tipo de sangre</label>
+                            <select class="custom-select" id="Fsa_TipoSangre" name="Fsa_TipoSangre" @bloqueado>
+                                <option value="">Desconocido</option>
+                                @foreach (var t in FormatoSalud.TiposSangre)
+                                {
+                                    <option value="@t" selected="@(t == F.Fsa_TipoSangre)">@t</option>
+                                }
+                            </select>
+                            <div class="invalid-feedback" data-error="TipoSangre"></div>
+                        </div>
+                    </fieldset>
+
+                    @* ── 2. Alergias y condiciones ── *@
+                    <fieldset class="col-lg-6 mb-4">
+                        <legend class="fsa-seccion">Alergias y condiciones</legend>
+                        <div class="form-group">
+                            <label for="Fsa_Alergias">Alergias</label>
+                            <textarea class="form-control" id="Fsa_Alergias" name="Fsa_Alergias" rows="2" maxlength="2000"
+                                      placeholder="A alimentos, medicamentos, picaduras…" @bloqueado>@F.Fsa_Alergias</textarea>
+                        </div>
+                        <div class="form-group mb-0">
+                            <label for="Fsa_Condiciones">Condiciones médicas</label>
+                            <textarea class="form-control" id="Fsa_Condiciones" name="Fsa_Condiciones" rows="2" maxlength="2000"
+                                      placeholder="Asma, diabetes, epilepsia…" @bloqueado>@F.Fsa_Condiciones</textarea>
+                        </div>
+                    </fieldset>
+
+                    @* ── 3. Medicamentos y alimentación ── *@
+                    <fieldset class="col-lg-6 mb-4">
+                        <legend class="fsa-seccion">Medicamentos y alimentación</legend>
+                        <div class="form-group">
+                            <label for="Fsa_Medicamentos">Medicamentos</label>
+                            <textarea class="form-control" id="Fsa_Medicamentos" name="Fsa_Medicamentos" rows="2" maxlength="2000"
+                                      placeholder="Nombre, dosis y horario" @bloqueado>@F.Fsa_Medicamentos</textarea>
+                        </div>
+                        <div class="form-group mb-0">
+                            <label for="Fsa_RestriccionesAlimentarias">Restricciones alimentarias</label>
+                            <textarea class="form-control" id="Fsa_RestriccionesAlimentarias" name="Fsa_RestriccionesAlimentarias" rows="2" maxlength="2000"
+                                      placeholder="Sin gluten, sin lácteos…" @bloqueado>@F.Fsa_RestriccionesAlimentarias</textarea>
+                        </div>
+                    </fieldset>
+
+                    @* ── 4. Médico y seguro ── *@
+                    <fieldset class="col-lg-6 mb-4">
+                        <legend class="fsa-seccion">Médico y seguro</legend>
+                        <div class="form-row">
+                            <div class="form-group col-sm-7">
+                                <label for="Fsa_MedicoNombre">Médico</label>
+                                <input type="text" class="form-control" id="Fsa_MedicoNombre" name="Fsa_MedicoNombre" maxlength="100" value="@F.Fsa_MedicoNombre" placeholder="Nombre del médico" @bloqueado />
+                            </div>
+                            <div class="form-group col-sm-5">
+                                <label for="Fsa_MedicoTelefono">Teléfono del médico</label>
+                                <input type="tel" class="form-control" id="Fsa_MedicoTelefono" name="Fsa_MedicoTelefono" maxlength="9" inputmode="numeric"
+                                       value="@FormatoSalud.Telefono(F.Fsa_MedicoTelefono)" placeholder="9999-9999" data-telefono @bloqueado />
+                                <div class="invalid-feedback" data-error="MedicoTelefono"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Fsa_Hospital">Hospital o clínica preferida</label>
+                            <input type="text" class="form-control" id="Fsa_Hospital" name="Fsa_Hospital" maxlength="150" value="@F.Fsa_Hospital" placeholder="A dónde llevarlo en una emergencia" @bloqueado />
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6 mb-0">
+                                <label for="Fsa_Seguro">Seguro</label>
+                                <input type="text" class="form-control" id="Fsa_Seguro" name="Fsa_Seguro" maxlength="100" value="@F.Fsa_Seguro" list="fsa-seguros" placeholder="IHSS, privado…" @bloqueado />
+                            </div>
+                            <div class="form-group col-sm-6 mb-0">
+                                <label for="Fsa_SeguroPoliza">Póliza o número de afiliación</label>
+                                <input type="text" class="form-control" id="Fsa_SeguroPoliza" name="Fsa_SeguroPoliza" maxlength="50" value="@F.Fsa_SeguroPoliza" @bloqueado />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    @* ── 5. Contacto adicional ── *@
+                    <fieldset class="col-lg-6 mb-4">
+                        <legend class="fsa-seccion">Contacto adicional</legend>
+                        <p class="text-muted small">Además de los encargados. A quién llamar si ellos no contestan.</p>
+                        <div class="form-group">
+                            <label for="Fsa_ContactoEmergenciaNombre">Nombre</label>
+                            <input type="text" class="form-control" id="Fsa_ContactoEmergenciaNombre" name="Fsa_ContactoEmergenciaNombre" maxlength="100" value="@F.Fsa_ContactoEmergenciaNombre" @bloqueado />
+                            <div class="invalid-feedback" data-error="ContactoEmergenciaNombre"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6 mb-0">
+                                <label for="Fsa_ContactoEmergenciaParentesco">Parentesco</label>
+                                <input type="text" class="form-control" id="Fsa_ContactoEmergenciaParentesco" name="Fsa_ContactoEmergenciaParentesco" maxlength="50" value="@F.Fsa_ContactoEmergenciaParentesco" list="fsa-parentescos" placeholder="Abuela, tío…" @bloqueado />
+                            </div>
+                            <div class="form-group col-sm-6 mb-0">
+                                <label for="Fsa_ContactoEmergenciaTelefono">Teléfono</label>
+                                <input type="tel" class="form-control" id="Fsa_ContactoEmergenciaTelefono" name="Fsa_ContactoEmergenciaTelefono" maxlength="9" inputmode="numeric"
+                                       value="@FormatoSalud.Telefono(F.Fsa_ContactoEmergenciaTelefono)" placeholder="9999-9999" data-telefono @bloqueado />
+                                <div class="invalid-feedback" data-error="ContactoEmergenciaTelefono"></div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    @* ── 6. Notas ── *@
+                    <fieldset class="col-lg-6 mb-4">
+                        <legend class="fsa-seccion">Notas</legend>
+                        <div class="form-group mb-0">
+                            <label for="Fsa_Notas" class="sr-only">Notas</label>
+                            <textarea class="form-control" id="Fsa_Notas" name="Fsa_Notas" rows="4" maxlength="4000"
+                                      placeholder="Cualquier otra indicación (ej. usa lentes, restricción de actividad física)" @bloqueado>@F.Fsa_Notas</textarea>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <datalist id="fsa-seguros">
+                    @foreach (var s in FormatoSalud.Seguros) { <option value="@s"></option> }
+                </datalist>
+                <datalist id="fsa-parentescos">
+                    @foreach (var p in FormatoSalud.Parentescos) { <option value="@p"></option> }
+                </datalist>
+
+                @if (M.PuedeEditar)
+                {
+                    <div id="fsa-pie" hidden>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn mr-1" data-cancelar>Cancelar</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check2 mr-1" aria-hidden="true"></i> Guardar ficha</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </form>
+    }
+
+    @if (tieneFicha)
+    {
+        <section class="statbox widget box box-shadow mb-4" aria-labelledby="fsa-historial-titulo">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4 id="fsa-historial-titulo">Historial de cambios</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <p class="text-muted small">Quién cambió la ficha y qué campos tocó. Por privacidad no se guardan los valores anteriores.</p>
+                @if (M.Historial.Count == 0)
+                {
+                    <p class="text-muted mb-0">Sin cambios registrados.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="fsa-col-fecha">Fecha</th>
+                                    <th class="fsa-col-quien">Quién</th>
+                                    <th>Qué cambió</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var h in M.Historial)
+                                {
+                                    <tr>
+                                        <td class="text-nowrap">@FormatoSalud.DiaHora(h.Fsb_Fecha)</td>
+                                        <td>@(string.IsNullOrWhiteSpace(h.Usuario) ? "—" : h.Usuario)</td>
+                                        <td class="fsa-campos">
+                                            @if (h.Fsb_Accion == "creada")
+                                            {
+                                                <span class="badge outline-badge-success mr-1">Creó la ficha</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge outline-badge-primary mr-1">Editó</span>
+                                            }
+                                            @h.Fsb_Campos
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/fichas-salud.js" asp-append-version="true"></script>
+}

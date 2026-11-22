@@ -1,0 +1,136 @@
+@model GESTION_COLEGIAL.Business.Models.FichaSaludEmergenciaViewModel
+@using GESTION_COLEGIAL.UI.Models
+@*
+    Bloque "En caso de emergencia": alerta, tipo de sangre, a quién llamar (encargados con teléfono +
+    contacto adicional), médico, hospital y seguro. Lo usan la ficha de salud y la pestaña "Salud"
+    de la ficha 360. ViewData["Completo"] = true agrega alergias, condiciones y medicamentos
+    (en la ficha ya se ven en el formulario de abajo).
+*@
+@{
+    var F = Model.Ficha;
+    bool completo = ViewData["Completo"] as bool? == true;
+    bool tieneFicha = F.TieneFicha;
+    var conTelefono = Model.Contactos.Where(c => !string.IsNullOrWhiteSpace(c.Telefono)).ToList();
+    var sinTelefono = Model.Contactos.Where(c => string.IsNullOrWhiteSpace(c.Telefono)).ToList();
+    string contactoTel = FormatoSalud.Telefono(F.Fsa_ContactoEmergenciaTelefono);
+    bool hayAQuienLlamar = conTelefono.Count > 0 || contactoTel != null;
+    string medicoTel = FormatoSalud.Telefono(F.Fsa_MedicoTelefono);
+    string seguro = string.Join(" · ", new[] { FormatoSalud.Texto(F.Fsa_Seguro), FormatoSalud.Texto(F.Fsa_SeguroPoliza) == null ? null : "Póliza " + F.Fsa_SeguroPoliza.Trim() }.Where(x => x != null));
+}
+
+<section class="statbox widget box box-shadow mb-4 fsa-emergencia" aria-labelledby="fsa-emergencia-titulo">
+    <div class="widget-header">
+        <div class="row">
+            <div class="col-12">
+                <h4 id="fsa-emergencia-titulo"><i class="bi bi-heart-pulse-fill text-danger mr-1" aria-hidden="true"></i> En caso de emergencia</h4>
+            </div>
+        </div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div class="row">
+            @* ── Salud ── *@
+            <div class="col-lg-4 mb-3 mb-lg-0">
+                <h6 class="fsa-bloque-titulo">Salud</h6>
+                @if (!tieneFicha)
+                {
+                    <div class="alert alert-light-warning mb-3" role="status">
+                        <i class="bi bi-exclamation-triangle mr-1" aria-hidden="true"></i> Todavía no tiene ficha de salud.
+                    </div>
+                }
+                else if (F.Fsa_TieneAlerta && !string.IsNullOrWhiteSpace(F.Fsa_Alerta))
+                {
+                    <div class="alert alert-danger mb-3 fsa-alerta" role="alert">
+                        <strong class="d-block mb-1"><i class="bi bi-exclamation-octagon-fill mr-1" aria-hidden="true"></i> Alerta crítica</strong>
+                        @F.Fsa_Alerta
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted mb-3"><i class="bi bi-check-circle mr-1" aria-hidden="true"></i> Sin alertas críticas.</p>
+                }
+
+                <dl class="mb-0">
+                    <dt class="text-muted small">Tipo de sangre</dt>
+                    <dd class="@(string.IsNullOrWhiteSpace(F.Fsa_TipoSangre) ? "text-muted" : "fsa-sangre")">@(string.IsNullOrWhiteSpace(F.Fsa_TipoSangre) ? "Desconocido" : F.Fsa_TipoSangre)</dd>
+                    @if (completo && tieneFicha)
+                    {
+                        <dt class="text-muted small">Alergias</dt>
+                        <dd class="fsa-texto">@(FormatoSalud.Texto(F.Fsa_Alergias) ?? "—")</dd>
+                        <dt class="text-muted small">Condiciones</dt>
+                        <dd class="fsa-texto">@(FormatoSalud.Texto(F.Fsa_Condiciones) ?? "—")</dd>
+                        <dt class="text-muted small">Medicamentos</dt>
+                        <dd class="fsa-texto mb-0">@(FormatoSalud.Texto(F.Fsa_Medicamentos) ?? "—")</dd>
+                    }
+                </dl>
+            </div>
+
+            @* ── A quién llamar ── *@
+            <div class="col-lg-4 mb-3 mb-lg-0">
+                <h6 class="fsa-bloque-titulo">A quién llamar</h6>
+                @if (!hayAQuienLlamar)
+                {
+                    <div class="alert alert-light-warning mb-3" role="status">
+                        <i class="bi bi-telephone-x mr-1" aria-hidden="true"></i>
+                        No hay ningún teléfono de emergencia registrado.
+                    </div>
+                }
+                <ul class="list-unstyled mb-0">
+                    @foreach (var c in conTelefono)
+                    {
+                        <li class="fsa-contacto">
+                            <div class="font-weight-bold">@c.Nombre</div>
+                            <div class="text-muted small">
+                                Encargado@(string.IsNullOrWhiteSpace(c.Parentesco) ? "" : " · " + c.Parentesco)
+                                @if (c.EsPrincipal) { <span class="badge outline-badge-primary ml-1">Principal</span> }
+                            </div>
+                            <a class="fsa-telefono" href="@FormatoSalud.TelefonoEnlace(c.Telefono)"><i class="bi bi-telephone-fill mr-1" aria-hidden="true"></i>@FormatoSalud.Telefono(c.Telefono)</a>
+                        </li>
+                    }
+                    @if (contactoTel != null)
+                    {
+                        <li class="fsa-contacto">
+                            <div class="font-weight-bold">@F.Fsa_ContactoEmergenciaNombre</div>
+                            <div class="text-muted small">
+                                Contacto adicional@(string.IsNullOrWhiteSpace(F.Fsa_ContactoEmergenciaParentesco) ? "" : " · " + F.Fsa_ContactoEmergenciaParentesco)
+                            </div>
+                            <a class="fsa-telefono" href="@FormatoSalud.TelefonoEnlace(contactoTel)"><i class="bi bi-telephone-fill mr-1" aria-hidden="true"></i>@contactoTel</a>
+                        </li>
+                    }
+                    @foreach (var c in sinTelefono)
+                    {
+                        <li class="fsa-contacto">
+                            <div class="font-weight-bold">@c.Nombre</div>
+                            <div class="text-muted small">Encargado@(string.IsNullOrWhiteSpace(c.Parentesco) ? "" : " · " + c.Parentesco) · sin teléfono registrado</div>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            @* ── Atención médica ── *@
+            <div class="col-lg-4">
+                <h6 class="fsa-bloque-titulo">Atención médica</h6>
+                <dl class="mb-0">
+                    <dt class="text-muted small">Médico</dt>
+                    <dd>
+                        @if (FormatoSalud.Texto(F.Fsa_MedicoNombre) == null && medicoTel == null)
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                        else
+                        {
+                            <span class="d-block">@(FormatoSalud.Texto(F.Fsa_MedicoNombre) ?? "Sin nombre")</span>
+                            @if (medicoTel != null)
+                            {
+                                <a class="fsa-telefono" href="@FormatoSalud.TelefonoEnlace(medicoTel)"><i class="bi bi-telephone-fill mr-1" aria-hidden="true"></i>@medicoTel</a>
+                            }
+                        }
+                    </dd>
+                    <dt class="text-muted small">Hospital o clínica</dt>
+                    <dd class="@(FormatoSalud.Texto(F.Fsa_Hospital) == null ? "text-muted" : "")">@(FormatoSalud.Texto(F.Fsa_Hospital) ?? "—")</dd>
+                    <dt class="text-muted small">Seguro</dt>
+                    <dd class="mb-0 @(seguro.Length == 0 ? "text-muted" : "")">@(seguro.Length == 0 ? "—" : seguro)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</section>

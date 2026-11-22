@@ -15,6 +15,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         private readonly HorariosService      _horarios = new HorariosService();
         private readonly UsuariosService      _usuarios = new UsuariosService();
         private readonly CalendarioEscolarService _calendario = new CalendarioEscolarService();
+        private readonly FichasSaludService _salud = new FichasSaludService();
 
         private static DateTime? Fecha(string fecha) =>
             DateTime.TryParseExact((fecha ?? "").Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime d)
@@ -75,6 +76,24 @@ namespace GESTION_COLEGIAL.UI.Controllers
         {
             var result = await _service.ListAsync(Hor_Id, Fecha);
             return AjaxResult(result);
+        }
+
+        /// <summary>
+        /// Alertas críticas de salud de los alumnos de este horario: solo Alu_Id y el texto corto
+        /// (Fsa_Alerta). Lo ve quien pasa lista aunque no tenga permiso a las fichas de salud.
+        /// </summary>
+        public async Task<ActionResult> AlertasSaludAsync(int Hor_Id, string Fecha)
+        {
+            DateTime? dia = AsistenciaAdmController.Fecha(Fecha);
+            try
+            {
+                var alertas = await _salud.AlertasSeccionAsync(Hor_Id, dia?.ToString("yyyy-MM-dd"));
+                return Json(alertas.Select(a => new { a.Alu_Id, a.Fsa_Alerta }));
+            }
+            catch
+            {
+                return Json(Array.Empty<object>());
+            }
         }
 
         [HttpPost]

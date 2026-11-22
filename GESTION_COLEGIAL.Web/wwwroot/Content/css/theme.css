@@ -877,6 +877,8 @@ html.gc-dark .widget-card-four .w-icon { background: rgba(247, 164, 0, 0.16); co
 html.gc-dark .modal-header,html.gc-dark .modal-footer { border-color: #334155; }
 html.gc-dark .modal-header .close { color: #e2e8f0; }
 html.gc-dark .table,html.gc-dark .table td,html.gc-dark .table th { color: #cbd5e1; border-color: #334155; }
+/* Encabezado de tablas simples (las de DataTables ya tienen el suyo): main.css lo deja claro. */
+html.gc-dark .table > thead > tr > th { background-color: #0f172a; color: #94a3b8; }
 html.gc-dark .table-hover tbody tr:hover { background-color: #273449; }
 html.gc-dark .form-control,html.gc-dark .custom-select {
     background-color: #0f172a;
@@ -884,6 +886,8 @@ html.gc-dark .form-control,html.gc-dark .custom-select {
     color: #e2e8f0;
 }
 html.gc-dark .form-control:disabled,html.gc-dark .custom-select:disabled { background-color: #1e293b; color: #64748b; }
+/* main.css pinta claro (con !important) todo select deshabilitado: en oscuro debe quedar oscuro. */
+html.gc-dark select.custom-select:disabled { background-color: #1e293b !important; }
 html.gc-dark label { color: #cbd5e1; }
 html.gc-dark .btn:not([class*="btn-"]) {
     background: #334155;
@@ -891,6 +895,8 @@ html.gc-dark .btn:not([class*="btn-"]) {
     border-color: #334155;
 }
 html.gc-dark .btn-outline-secondary,html.gc-dark .btn-link { color: #cbd5e1; }
+/* .btn de main.css trae fondo durazno: con el texto claro del enlace no se leía. */
+html.gc-dark .btn-link,html.gc-dark .btn-link:hover,html.gc-dark .btn-link:focus { background-color: transparent; box-shadow: none; }
 html.gc-dark .nav-tabs { border-color: #334155; }
 html.gc-dark .nav-tabs .nav-link { color: #94a3b8; }
 html.gc-dark .nav-tabs .nav-link.active { background: transparent; color: #fbbf24; }
