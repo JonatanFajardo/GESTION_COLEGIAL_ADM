@@ -229,6 +229,15 @@
 .gc-tabla .tabulator-frozen.tabulator-frozen-left { border-right: 2px solid #e0e6ed; }
 .gc-tabla .tabulator-row.tabulator-selected { background-color: #fff3d6; }
 .gc-tabla .tabulator-row.tabulator-selected:hover { background-color: #ffe8b2; }
+/* Fila anulada (pagos anulados en caja): queda visible pero tachada y atenuada. */
+.fila-anulada,
+.gc-tabla .tabulator-row.fila-anulada .tabulator-cell { color: #888ea8; }
+.fila-anulada td:not(.sin-tachar),
+.gc-tabla .tabulator-row.fila-anulada .tabulator-cell:not([tabulator-field="Acciones"]):not([tabulator-field="EsAnulado"]) { text-decoration: line-through; }
+/* Al imprimir, mostrar todas las pestañas de una vista (ej. Cuenta del alumno). */
+@media print {
+    .imprimir-pestanas > .tab-pane { display: block !important; opacity: 1 !important; }
+}
 .gc-tabla input[type="checkbox"] { accent-color: #F7A400; }
 
 /* ── Tarjetas statbox de CORK ──

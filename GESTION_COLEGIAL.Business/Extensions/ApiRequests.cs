@@ -60,6 +60,14 @@ namespace GESTION_COLEGIAL.Business.Extensions
         }
 
         /// <summary>
+        /// Envía datos a la API mediante POST y devuelve si hubo error y el mensaje de la API.
+        /// </summary>
+        public static async Task<Models.RespuestaApi> PostConMensajeAsync(string url, object model)
+        {
+            return await SendHttpClient.PostConMensajeAsync(url, model);
+        }
+
+        /// <summary>
         /// Actualiza un elemento en la API.
         /// </summary>
         /// <param name="url">La URL de la API.</param>

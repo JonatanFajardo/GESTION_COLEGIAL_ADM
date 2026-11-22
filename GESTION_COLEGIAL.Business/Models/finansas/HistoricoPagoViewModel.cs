@@ -12,5 +12,7 @@ namespace GESTION_COLEGIAL.Business.Models
         public string numeroRecibo { get; set; } = string.Empty;
         public string usuario { get; set; } = string.Empty;
         public string observaciones { get; set; } = string.Empty;
+        public bool esAnulado { get; set; }
+        public string motivoAnulacion { get; set; } = string.Empty;
     }
 }

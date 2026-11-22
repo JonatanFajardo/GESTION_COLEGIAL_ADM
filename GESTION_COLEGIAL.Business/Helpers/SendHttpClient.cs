@@ -133,6 +133,92 @@ namespace GESTION_COLEGIAL.Business.Helpers
 		}
 
 		/// <summary>
+		/// Envía datos a la API y devuelve si hubo error junto con el mensaje que manda la API
+		/// (texto plano o un objeto con "Message"), para mostrárselo al usuario.
+		/// </summary>
+		public static async Task<Models.RespuestaApi> PostConMensajeAsync(string url, object model)
+		{
+			try
+			{
+				var contentSerialized = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+				var httpResponse = await httpclient.PostAsync($"{baseUrl}{url}", contentSerialized);
+				var cuerpo = await httpResponse.Content.ReadAsStringAsync();
+				bool error = !httpResponse.IsSuccessStatusCode;
+				string mensaje = ExtraerMensaje(cuerpo);
+				// Las correcciones de caja responden 200 con el Answer: Access = true significa error.
+				if (!error)
+				{
+					try
+					{
+						if (Newtonsoft.Json.Linq.JToken.Parse(cuerpo) is Newtonsoft.Json.Linq.JObject ans
+							&& ans.GetValue("Access", StringComparison.OrdinalIgnoreCase) is Newtonsoft.Json.Linq.JValue acc
+							&& acc.Type == Newtonsoft.Json.Linq.JTokenType.Boolean && (bool)acc)
+						{
+							error = true;
+						}
+					}
+					catch { /* cuerpo no JSON: se toma el código HTTP */ }
+				}
+				if (error && string.IsNullOrWhiteSpace(mensaje))
+				{
+					mensaje = httpResponse.StatusCode == System.Net.HttpStatusCode.NotFound
+						? "La operación todavía no está disponible en el servidor."
+						: "No se pudo completar la operación.";
+				}
+				return new Models.RespuestaApi { Error = error, Mensaje = mensaje ?? string.Empty };
+			}
+			catch (Exception)
+			{
+				return new Models.RespuestaApi { Error = true, Mensaje = "No se pudo conectar con el servidor." };
+			}
+		}
+
+		/// <summary>Saca el mensaje legible de la respuesta de la API (texto, Answer o ProblemDetails).</summary>
+		private static string ExtraerMensaje(string cuerpo)
+		{
+			if (string.IsNullOrWhiteSpace(cuerpo)) return null;
+			string mensaje = null;
+			try
+			{
+				var token = Newtonsoft.Json.Linq.JToken.Parse(cuerpo);
+				if (token.Type == Newtonsoft.Json.Linq.JTokenType.String)
+				{
+					mensaje = token.ToString();
+				}
+				else if (token is Newtonsoft.Json.Linq.JObject obj)
+				{
+					foreach (var campo in new[] { "Message", "Mensaje", "detail", "title" })
+					{
+						var v = obj.GetValue(campo, StringComparison.OrdinalIgnoreCase);
+						if (v != null && v.Type == Newtonsoft.Json.Linq.JTokenType.String && !string.IsNullOrWhiteSpace(v.ToString()))
+						{
+							mensaje = v.ToString();
+							break;
+						}
+					}
+					// Errores de validación del modelo: { errors: { Campo: ["…"] } }
+					if (obj.GetValue("errors", StringComparison.OrdinalIgnoreCase) is Newtonsoft.Json.Linq.JObject errores)
+					{
+						foreach (var p in errores.Properties())
+						{
+							var primero = p.Value is Newtonsoft.Json.Linq.JArray arr && arr.Count > 0 ? arr[0].ToString() : p.Value.ToString();
+							if (!string.IsNullOrWhiteSpace(primero)) { mensaje = primero; break; }
+						}
+					}
+				}
+			}
+			catch
+			{
+				// No es JSON: texto plano (sin HTML).
+				if (!cuerpo.TrimStart().StartsWith("<")) mensaje = cuerpo;
+			}
+			// Un detalle técnico (traza de la excepción) no le sirve al usuario.
+			if (mensaje != null && (mensaje.Length > 400 || mensaje.Contains("   at ") || mensaje.Contains("Exception:")))
+				return null;
+			return mensaje?.Trim();
+		}
+
+		/// <summary>
 		/// Solicita la eliminacion de un registro.
 		/// </summary>
 		/// <param name="url"></param>

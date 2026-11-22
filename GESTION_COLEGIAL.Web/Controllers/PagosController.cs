@@ -19,18 +19,17 @@ namespace GESTION_COLEGIAL.UI.Controllers
         private readonly PagosService pagosService = new PagosService();
 
         /// <summary>
-        /// Acción para mostrar la vista principal de pagos.
+        /// Movimientos de caja: los cobros de hoy o de cualquier rango de fechas.
+        /// Reemplaza a "Pagos del mes", "Pagos del día" e "Historial de pagos".
         /// </summary>
-        public ActionResult Index()
+        /// <param name="periodo">Atajo inicial: hoy, semana, mes o anio.</param>
+        public ActionResult Index(string periodo = null)
         {
-            ViewBag.PuedeCrear = TienePantalla("Crear pagos");
-
-            // Nombre del mes actual en español (es-HN) para títulos/subtítulos.
-            var cultura = new System.Globalization.CultureInfo("es-HN");
-            var ahora = DateTime.Now;
-            string mesActual = cultura.TextInfo.ToTitleCase(ahora.ToString("MMMM 'de' yyyy", cultura));
-            ViewBag.MesActual = mesActual;
-
+            var validos = new[] { "hoy", "semana", "mes", "anio" };
+            var p = (periodo ?? "").ToLowerInvariant();
+            ViewBag.Periodo = validos.Contains(p) ? p : "hoy";
+            ViewBag.PuedeCrear = TienePantalla("Crear pagos")
+                || string.Equals(Session[SesionUsuario.RoleName] as string, "admin", StringComparison.OrdinalIgnoreCase);
             return View();
         }
 
@@ -46,31 +45,29 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return View();
         }
 
-        /// <summary>
-        /// Acción para mostrar la vista de pagos del día.
-        /// </summary>
-        public ActionResult ListaDia()
-        {
-            return View();
-        }
+        /// <summary>Antes: Pagos del día. Ahora vive en Movimientos de caja.</summary>
+        public ActionResult ListaDia() => RedirectToAction("Index", new { periodo = "hoy" });
 
         /// <summary>
-        /// Acción asincrónica para obtener la lista de pagos.
+        /// Acción asincrónica para obtener la lista de pagos (todos).
         /// </summary>
         public async Task<ActionResult> ListAsync()
         {
             var result = await pagosService.ListAsync();
+            return AjaxResult(result);
+        }
 
-            // El listado de esta pantalla muestra únicamente los pagos del mes en curso.
-            // El histórico completo vive en CuentasCobrar/HistoricoPagos.
-            var ahora = DateTime.Now;
-            if (result != null)
-            {
-                result = result
-                    .Where(p => p.FechaPago.Year == ahora.Year && p.FechaPago.Month == ahora.Month)
-                    .ToList();
-            }
-
+        /// <summary>
+        /// Pagos entre dos fechas (ambas incluidas), anulados incluidos, del más reciente al más viejo.
+        /// </summary>
+        public async Task<ActionResult> ListByRangoAsync(DateTime? desde = null, DateTime? hasta = null)
+        {
+            var d = (desde ?? DateTime.Today).Date;
+            var h = (hasta ?? DateTime.Today).Date;
+            if (h < d) { var x = d; d = h; h = x; }
+            var result = (await pagosService.ListByRangoFechasAsync(d, h) ?? Enumerable.Empty<PagoListViewModel>())
+                .OrderByDescending(p => p.FechaPago)
+                .ToList();
             return AjaxResult(result);
         }
 
@@ -112,6 +109,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             // y sin ella FechaPago quedaba en DateTime.MinValue (0001-01-01), fuera del rango
             // de SQL Server datetime, provocando que el insert del API fallara.
             model.FechaPago = DateTime.Now;
+
+            // Quién cobra lo fija la sesión, nunca el navegador.
+            model.UsuarioId = GetUsuarioId();
 
             bool result = await pagosService.Create(model);
             if (result)

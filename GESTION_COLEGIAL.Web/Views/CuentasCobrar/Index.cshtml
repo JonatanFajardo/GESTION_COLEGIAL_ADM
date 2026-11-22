@@ -1,13 +1,15 @@
 @{
-    ViewBag.Title = "Cuentas por Cobrar";
+    ViewBag.Title = "Cuentas por cobrar";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string estado = ViewBag.Estado as string ?? "pendiente";
+    Func<string, string> claseEstado = e => e == estado ? "btn btn-primary" : "btn btn-outline-primary";
 }
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="#">Financiero</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Cuentas por Cobrar</li>
+            <li class="breadcrumb-item">Caja</li>
+            <li class="breadcrumb-item active" aria-current="page">Cuentas por cobrar</li>
         </ol>
     </nav>
 </div>
@@ -15,82 +17,74 @@
 <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
     <div class="mr-3">
         <h4 class="mb-1">Cuentas por cobrar</h4>
-        <p class="text-muted mb-0">Administre y monitoree las cuentas pendientes de pago del sistema</p>
+        <p class="text-muted mb-0">Lo que deben los alumnos: filtrá por estado, mirá la antigüedad y abrí la cuenta de cada alumno.</p>
     </div>
     <div class="mt-2 mt-md-0">
-        <a href="@Url.Action("Deudores")" class="btn btn-outline-danger"><i class="bi bi-exclamation-circle mr-1"></i> Ver deudores</a>
+        <a href="@Url.Action("CargosMasivos", "CuentasCobrar")" class="btn btn-outline-primary mr-2"><i class="bi bi-collection mr-1"></i> Cargos masivos</a>
+        <a href="@Url.Action("NuevoPago", "Pagos")" class="btn btn-primary"><i class="bi bi-cash-coin mr-1"></i> Nuevo pago</a>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-xl-4 col-md-6 col-12 layout-spacing">
-        <div class="widget widget-card-four">
-            <div class="widget-content">
-                <div class="w-content">
-                    <div class="w-info">
-                        <h6 class="value text-primary" id="total-pendiente">L 0.00</h6>
-                        <p>Total pendiente</p>
-                    </div>
-                    <div><div class="w-icon"><i class="bi bi-cash-coin"></i></div></div>
-                </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four"><div class="widget-content">
+            <div class="w-content">
+                <div class="w-info"><h6 class="value" id="k-total">—</h6><p>Total por cobrar</p></div>
+                <div><div class="w-icon"><i class="bi bi-wallet2"></i></div></div>
             </div>
-        </div>
+            <p class="text-muted small mb-0 mt-2">Saldo pendiente de todos los cargos</p>
+        </div></div>
     </div>
-    <div class="col-xl-4 col-md-6 col-12 layout-spacing">
-        <div class="widget widget-card-four">
-            <div class="widget-content">
-                <div class="w-content">
-                    <div class="w-info">
-                        <h6 class="value text-danger" id="cuentas-vencidas">0</h6>
-                        <p>Cuentas vencidas</p>
-                    </div>
-                    <div><div class="w-icon"><i class="bi bi-calendar-x"></i></div></div>
-                </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four"><div class="widget-content">
+            <div class="w-content">
+                <div class="w-info"><h6 class="value text-danger" id="k-vencido">—</h6><p>Vencido +30 días</p></div>
+                <div><div class="w-icon"><i class="bi bi-exclamation-triangle"></i></div></div>
             </div>
-        </div>
+            <p class="text-muted small mb-0 mt-2">Deuda con más de un mes de atraso</p>
+        </div></div>
     </div>
-    <div class="col-xl-4 col-md-6 col-12 layout-spacing">
-        <div class="widget widget-card-four">
-            <div class="widget-content">
-                <div class="w-content">
-                    <div class="w-info">
-                        <h6 class="value text-warning" id="alumnos-deudores">0</h6>
-                        <p>Alumnos deudores</p>
-                    </div>
-                    <div><div class="w-icon"><i class="bi bi-people"></i></div></div>
-                </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four"><div class="widget-content">
+            <div class="w-content">
+                <div class="w-info"><h6 class="value" id="k-alumnos">—</h6><p>Alumnos con deuda</p></div>
+                <div><div class="w-icon"><i class="bi bi-people"></i></div></div>
             </div>
-        </div>
+            <p class="text-muted small mb-0 mt-2">Con al menos un cargo sin pagar</p>
+        </div></div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four"><div class="widget-content">
+            <div class="w-content">
+                <div class="w-info"><h6 class="value text-warning" id="k-mora">—</h6><p>Mora acumulada</p></div>
+                <div><div class="w-icon"><i class="bi bi-hourglass-split"></i></div></div>
+            </div>
+            <p class="text-muted small mb-0 mt-2">Recargo en cargos sin pagar</p>
+        </div></div>
     </div>
 </div>
 
 <div class="statbox widget box box-shadow mb-4">
-    <div class="widget-header">
-        <div class="row">
-            <div class="col-12">
-                <h4>Listado de cuentas por cobrar</h4>
-                <p class="text-muted small mb-0 px-3 pb-3 mt-n2">Todas las cuentas pendientes (monto pendiente mayor a 0)</p>
-            </div>
-        </div>
-    </div>
     <div class="widget-content widget-content-area">
-        <div class="table-responsive">
-            <table class="table table-hover nowrap" id="datatable">
-                <thead>
-                    <tr>
-                        <th>Fila</th>
-                        <th>Concepto</th>
-                        <th>Alumno</th>
-                        <th>Pendiente</th>
-                        <th>Fecha Vence</th>
-                        <th>Estado Pago</th>
-                    </tr>
-                </thead>
-            </table>
+        <div class="d-flex flex-wrap align-items-center mb-3">
+            <div class="btn-group mr-3 mb-2" role="group" aria-label="Estado" id="f-estado">
+                <button type="button" class="@claseEstado("pendiente")" data-estado="pendiente">Pendientes <span class="badge badge-light ml-1" data-n="pendiente">0</span></button>
+                <button type="button" class="@claseEstado("vencida")" data-estado="vencida">Vencidas <span class="badge badge-light ml-1" data-n="vencida">0</span></button>
+                <button type="button" class="@claseEstado("pagada")" data-estado="pagada">Pagadas <span class="badge badge-light ml-1" data-n="pagada">0</span></button>
+                <button type="button" class="@claseEstado("todas")" data-estado="todas">Todas <span class="badge badge-light ml-1" data-n="todas">0</span></button>
+            </div>
+            <label for="f-antig" class="mb-2 mr-2 text-muted small">Antigüedad</label>
+            <select id="f-antig" class="custom-select custom-select-sm w-auto mb-2">
+                <option value="">Cualquiera</option>
+                <option>Al día</option><option>1-30 días</option><option>31-60 días</option><option>61-90 días</option><option>Más de 90 días</option>
+            </select>
         </div>
+        <div id="tabla-cxc" data-usuario="@(Session["Username"] as string ?? "anonimo")" data-estado="@estado"></div>
     </div>
 </div>
 
 @section Scripts{
-    <script src="~/Content/js/pages/cuentascobrar.js"></script>
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/caja-comun.js" asp-append-version="true"></script>
+    <script src="~/Content/js/pages/cuentascobrar.js" asp-append-version="true"></script>
 }

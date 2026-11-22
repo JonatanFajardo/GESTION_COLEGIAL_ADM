@@ -2,6 +2,7 @@ using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Helpers;
+using System.Linq;
 using System.Threading.Tasks;
 using GESTION_COLEGIAL.Business.Services.ModuloFinanzas;
 using GESTION_COLEGIAL.UI.Filters;
@@ -15,38 +16,47 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class CuentasCobrarController : BaseController
     {
         private readonly CuentasCobrarService cuentasCobrarService = new CuentasCobrarService();
+        private readonly PagosService pagosService = new PagosService();
+        private readonly SaldoFavorService saldoFavorService = new SaldoFavorService();
+        private readonly AlumnosService alumnosService = new AlumnosService();
+
+        /// <summary>Permiso para anular pagos, perdonar cargos y mover el saldo a favor.</summary>
+        public const string PermisoCorregir = "Corregir cuentas";
 
         /// <summary>
-        /// Acción para mostrar la vista principal de cuentas por cobrar.
+        /// Cuentas por cobrar: una sola lista con filtro Pendientes / Vencidas / Pagadas / Todas.
+        /// Reemplaza a Deudores, Cargos pendientes, Moratorias y el reporte de Morosos.
         /// </summary>
-        public ActionResult Index()
+        /// <param name="estado">Filtro inicial: pendiente, vencida, pagada o todas.</param>
+        public ActionResult Index(string estado = null)
         {
+            var validos = new[] { "pendiente", "vencida", "pagada", "todas" };
+            var e = (estado ?? "").ToLowerInvariant();
+            ViewBag.Estado = validos.Contains(e) ? e : "pendiente";
             return View();
         }
 
-        /// <summary>
-        /// Acción para mostrar la vista de deudores.
-        /// </summary>
-        public ActionResult Deudores()
-        {
-            return View();
-        }
+        /// <summary>Antes: Deudores. Ahora es el filtro "Vencidas" de Cuentas por cobrar.</summary>
+        public ActionResult Deudores() => RedirectToAction("Index", new { estado = "vencida" });
+
+        /// <summary>Antes: Cargos pendientes. Ahora es el filtro "Pendientes" de Cuentas por cobrar.</summary>
+        public ActionResult CargosPendientes() => RedirectToAction("Index", new { estado = "pendiente" });
+
+        /// <summary>Antes: Intereses por mora. Ahora es el filtro "Vencidas" (con la columna Mora).</summary>
+        public ActionResult Moratorias() => RedirectToAction("Index", new { estado = "vencida" });
+
+        /// <summary>Antes: Historial de pagos. Ahora vive en Movimientos de caja.</summary>
+        public ActionResult HistoricoPagos() => RedirectToAction("Index", "Pagos", new { periodo = "anio" });
 
         /// <summary>
-        /// Acción para mostrar el estado de cuenta de un alumno.
+        /// Cuenta del alumno: cargos, pagos, saldo a favor y correcciones.
+        /// Se abre con alumnoId o con la identidad del alumno.
         /// </summary>
         public ActionResult EstadoCuenta(int? alumnoId = null, string identidad = null)
         {
             ViewBag.AlumnoId = alumnoId ?? 0;
             ViewBag.Identidad = identidad ?? string.Empty;
-            return View();
-        }
-
-        /// <summary>
-        /// Acción para mostrar la vista de cargos pendientes.
-        /// </summary>
-        public ActionResult CargosPendientes()
-        {
+            ViewBag.PuedeCorregir = PuedeCorregir();
             return View();
         }
 
@@ -59,19 +69,22 @@ namespace GESTION_COLEGIAL.UI.Controllers
         }
 
         /// <summary>
-        /// Acción para mostrar la vista de histórico de pagos.
+        /// Alumnos (id, nombre, identidad y ubicación) para el buscador de la cuenta del alumno.
         /// </summary>
-        public ActionResult HistoricoPagos()
+        public async Task<ActionResult> AlumnosBuscarAsync()
         {
-            return View();
-        }
-
-        /// <summary>
-        /// Acción para mostrar la vista de moratorias.
-        /// </summary>
-        public ActionResult Moratorias()
-        {
-            return View();
+            var lista = await alumnosService.ListAsync() ?? Enumerable.Empty<AlumnoViewModel>();
+            var result = lista.Select(a => new
+            {
+                a.Alu_Id,
+                a.Alu_Nombre,
+                a.Per_Identidad,
+                a.Niv_Descripcion,
+                Grado = (a.Cno_Descripcion ?? "").Trim(),
+                a.Cur_Descripcion,
+                a.Sec_Descripcion
+            }).ToList();
+            return Json(result);
         }
 
         /// <summary>
@@ -140,20 +153,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessInsert);
-        }
-
-        /// <summary>
-        /// Acción asincrónica para aplicar descuento.
-        /// </summary>
-        [HttpPost]
-        public async Task<ActionResult> AplicarDescuentoAsync(int cuentaCobrarId, int descuentoId, decimal monto, string justificacion)
-        {
-            bool result = await cuentasCobrarService.AplicarDescuento(cuentaCobrarId, descuentoId, monto, justificacion);
-            if (result)
-            {
-                return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
-            }
-            return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
         }
 
         /// <summary>
@@ -286,5 +285,121 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(null, AlertMessage.AlertMessageType.Error, ex.Message);
             }
         }
+
+        #region Correcciones de la cuenta del alumno
+
+        /// <summary>
+        /// Saldo a favor del alumno.
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult> SaldoFavorAsync(int alumnoId)
+        {
+            var result = await saldoFavorService.Obtener(alumnoId);
+            return AjaxResult(result ?? new SaldoFavorViewModel { AlumnoId = alumnoId, Saldo = 0 });
+        }
+
+        /// <summary>
+        /// Registro de correcciones de la cuenta del alumno.
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult> CorreccionesAsync(int alumnoId)
+        {
+            var result = await saldoFavorService.Correcciones(alumnoId);
+            return AjaxResult(result ?? new System.Collections.Generic.List<CorreccionCuentaViewModel>());
+        }
+
+        /// <summary>
+        /// Anula un pago. Destino: "Devuelto" (se devolvió el dinero) o "SaldoFavor".
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AnularPagoAsync(int pagoId, string motivo, string destino)
+        {
+            if (!PuedeCorregir()) return SinPermisoCorregir();
+            if (pagoId <= 0) return Rechazo("Seleccione el pago a anular.");
+            if (string.IsNullOrWhiteSpace(motivo)) return Rechazo("El motivo es obligatorio.");
+            if (destino != "Devuelto" && destino != "SaldoFavor") return Rechazo("Indique qué pasó con el dinero.");
+
+            var r = await pagosService.Anular(new AnularPagoViewModel { PagoId = pagoId, Motivo = motivo.Trim(), Destino = destino, UsuarioId = GetUsuarioId() });
+            return Respuesta(r, "Pago anulado.");
+        }
+
+        /// <summary>
+        /// Perdona (rebaja sin cobrar) parte o todo un cargo.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PerdonarAsync(int cuentaCobrarId, decimal monto, string tipo, string motivo)
+        {
+            if (!PuedeCorregir()) return SinPermisoCorregir();
+            if (cuentaCobrarId <= 0) return Rechazo("Seleccione el cargo.");
+            if (monto <= 0) return Rechazo("El monto debe ser mayor que cero.");
+            if (tipo != "Exoneración" && tipo != "Beca" && tipo != "Ajuste") return Rechazo("Seleccione el tipo.");
+            if (string.IsNullOrWhiteSpace(motivo)) return Rechazo("El motivo es obligatorio.");
+
+            var r = await cuentasCobrarService.Perdonar(new PerdonarCargoViewModel { CuentaCobrarId = cuentaCobrarId, Monto = monto, Tipo = tipo, Motivo = motivo.Trim(), UsuarioId = GetUsuarioId() });
+            return Respuesta(r, "Cargo rebajado.");
+        }
+
+        /// <summary>
+        /// Devuelve dinero del saldo a favor al encargado.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DevolverSaldoAsync(int alumnoId, decimal monto, string metodo, string motivo)
+        {
+            if (!PuedeCorregir()) return SinPermisoCorregir();
+            if (alumnoId <= 0) return Rechazo("Seleccione el alumno.");
+            if (monto <= 0) return Rechazo("El monto debe ser mayor que cero.");
+            if (metodo != "Efectivo" && metodo != "Transferencia" && metodo != "Cheque") return Rechazo("Indique cómo se devuelve el dinero.");
+            if (string.IsNullOrWhiteSpace(motivo)) return Rechazo("El motivo es obligatorio.");
+
+            var r = await saldoFavorService.Devolver(new DevolverSaldoViewModel { AlumnoId = alumnoId, Monto = monto, Metodo = metodo, Motivo = motivo.Trim(), UsuarioId = GetUsuarioId() });
+            return Respuesta(r, "Devolución registrada.");
+        }
+
+        /// <summary>
+        /// Aplica el saldo a favor a los cargos pendientes del alumno.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AplicarSaldoAsync(int alumnoId, decimal monto, string motivo)
+        {
+            if (!PuedeCorregir()) return SinPermisoCorregir();
+            if (alumnoId <= 0) return Rechazo("Seleccione el alumno.");
+            if (monto <= 0) return Rechazo("El monto debe ser mayor que cero.");
+            if (string.IsNullOrWhiteSpace(motivo)) return Rechazo("El motivo es obligatorio.");
+
+            var r = await saldoFavorService.Aplicar(new AplicarSaldoViewModel { AlumnoId = alumnoId, Monto = monto, Motivo = motivo.Trim(), UsuarioId = GetUsuarioId() });
+            return Respuesta(r, "Saldo a favor aplicado.");
+        }
+
+        private bool PuedeCorregir() =>
+            string.Equals(Session[SesionUsuario.RoleName] as string, "admin", System.StringComparison.OrdinalIgnoreCase)
+            || TienePantalla(PermisoCorregir);
+
+        private ActionResult SinPermisoCorregir()
+        {
+            Response.StatusCode = 403;
+            return Json(new { success = false, message = "No tiene permiso para corregir cuentas." });
+        }
+
+        private ActionResult Rechazo(string mensaje)
+        {
+            Response.StatusCode = 400;
+            return Json(new { success = false, message = mensaje });
+        }
+
+        private ActionResult Respuesta(RespuestaApi r, string exito)
+        {
+            if (r == null || r.Error)
+            {
+                Response.StatusCode = 400;
+                return Json(new { success = false, message = string.IsNullOrWhiteSpace(r?.Mensaje) ? "No se pudo completar la operación." : r.Mensaje });
+            }
+            return Json(new { success = true, message = string.IsNullOrWhiteSpace(r.Mensaje) ? exito : r.Mensaje });
+        }
+
+        #endregion
     }
 }

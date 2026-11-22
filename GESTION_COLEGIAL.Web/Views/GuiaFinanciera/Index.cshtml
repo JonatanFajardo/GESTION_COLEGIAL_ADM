@@ -98,44 +98,18 @@
                     </div>
                     <h4 class="text-center">Cuentas por Cobrar</h4>
                     <p class="text-muted">
-                        Administra todas las cuentas por cobrar de los alumnos. Puedes generar cargos,
-                        aplicar descuentos y dar seguimiento al estado de cada cuenta.
+                        Lo que deben los alumnos en una sola lista: filtrá por Pendientes, Vencidas, Pagadas
+                        o Todas, mirá la antigüedad y la mora, y cobrá o abrí la cuenta de cada alumno.
                     </p>
                     <p><strong>Funcionalidades:</strong></p>
                     <ul>
-                        <li>Ver listado de todas las cuentas</li>
-                        <li>Generar cargos por alumno</li>
-                        <li>Aplicar descuentos</li>
-                        <li>Ver detalles de cada cuenta</li>
+                        <li>Deudores y morosos (filtro "Vencidas")</li>
+                        <li>Antigüedad de la deuda y mora</li>
+                        <li>Agrupar por alumno, concepto o sección</li>
+                        <li>Exportar a Excel o PDF</li>
                     </ul>
                     <a href="@Url.Action("Index", "CuentasCobrar")" class="btn btn-outline-primary btn-block">
                         <i class="bi bi-arrow-right mr-1"></i> Ir a Cuentas por Cobrar
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Deudores -->
-        <div class="col-md-6 mb-3">
-            <div class="statbox widget box box-shadow h-100">
-                <div class="widget-content widget-content-area">
-                    <div class="text-center mb-3">
-                        <i class="bi bi-person-exclamation h1 text-danger"></i>
-                    </div>
-                    <h4 class="text-center">Deudores</h4>
-                    <p class="text-muted">
-                        Visualiza el listado de alumnos que tienen cuentas vencidas y requieren seguimiento
-                        para gestionar su situación de pago.
-                    </p>
-                    <p><strong>Información disponible:</strong></p>
-                    <ul>
-                        <li>Alumnos con saldos vencidos</li>
-                        <li>Monto total adeudado</li>
-                        <li>Días de mora</li>
-                        <li>Historial de deudas</li>
-                    </ul>
-                    <a href="@Url.Action("Deudores", "CuentasCobrar")" class="btn btn-outline-primary btn-block">
-                        <i class="bi bi-arrow-right mr-1"></i> Ver Deudores
                     </a>
                 </div>
             </div>
@@ -148,10 +122,10 @@
                     <div class="text-center mb-3">
                         <i class="bi bi-file-earmark-text-fill h1 text-primary"></i>
                     </div>
-                    <h4 class="text-center">Estado de Cuenta</h4>
+                    <h4 class="text-center">Cuenta del alumno</h4>
                     <p class="text-muted">
-                        Consulta el estado de cuenta detallado de cualquier alumno, incluyendo cargos,
-                        pagos realizados y saldo pendiente.
+                        Todo lo de un alumno: cargos, pagos, saldo a favor y correcciones (anular un pago,
+                        perdonar parte de un cargo, devolver dinero), cada una con su motivo.
                     </p>
                     <p><strong>Detalles incluidos:</strong></p>
                     <ul>
@@ -161,33 +135,7 @@
                         <li>Historial completo de movimientos</li>
                     </ul>
                     <a href="@Url.Action("EstadoCuenta", "CuentasCobrar")" class="btn btn-outline-primary btn-block">
-                        <i class="bi bi-arrow-right mr-1"></i> Ver Estado de Cuenta
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cargos Pendientes -->
-        <div class="col-md-6 mb-3">
-            <div class="statbox widget box box-shadow h-100">
-                <div class="widget-content widget-content-area">
-                    <div class="text-center mb-3">
-                        <i class="bi bi-alarm-fill h1 text-secondary"></i>
-                    </div>
-                    <h4 class="text-center">Cargos Pendientes</h4>
-                    <p class="text-muted">
-                        Visualiza todos los cargos pendientes de pago en el sistema, organizados por
-                        concepto, alumno o fecha de vencimiento.
-                    </p>
-                    <p><strong>Información mostrada:</strong></p>
-                    <ul>
-                        <li>Listado de cargos sin pagar</li>
-                        <li>Fecha de vencimiento</li>
-                        <li>Monto pendiente</li>
-                        <li>Alumno asociado</li>
-                    </ul>
-                    <a href="@Url.Action("CargosPendientes", "CuentasCobrar")" class="btn btn-outline-primary btn-block">
-                        <i class="bi bi-arrow-right mr-1"></i> Ver Cargos Pendientes
+                        <i class="bi bi-arrow-right mr-1"></i> Ver cuenta del alumno
                     </a>
                 </div>
             </div>
@@ -218,32 +166,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Moratorias -->
-        <div class="col-md-6 mb-3">
-            <div class="statbox widget box box-shadow h-100">
-                <div class="widget-content widget-content-area">
-                    <div class="text-center mb-3">
-                        <i class="bi bi-exclamation-octagon-fill h1 text-warning"></i>
-                    </div>
-                    <h4 class="text-center">Moratorias</h4>
-                    <p class="text-muted">
-                        Gestiona los cargos por mora aplicados a pagos vencidos según las políticas
-                        establecidas por el colegio.
-                    </p>
-                    <p><strong>Gestión de mora:</strong></p>
-                    <ul>
-                        <li>Visualizar moratorias aplicadas</li>
-                        <li>Calcular intereses moratorios</li>
-                        <li>Configurar políticas de mora</li>
-                        <li>Reportes de morosidad</li>
-                    </ul>
-                    <a href="@Url.Action("Moratorias", "CuentasCobrar")" class="btn btn-outline-primary btn-block">
-                        <i class="bi bi-arrow-right mr-1"></i> Ver Moratorias
-                    </a>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Sección: Registro de Pagos -->
@@ -261,21 +183,21 @@
                     <div class="text-center mb-3">
                         <i class="bi bi-cash-stack h1 text-success"></i>
                     </div>
-                    <h4 class="text-center">Gestión de Pagos</h4>
+                    <h4 class="text-center">Movimientos de caja</h4>
                     <p class="text-muted">
-                        Pantalla principal para registrar y consultar todos los pagos realizados.
-                        Aquí podrás registrar nuevos pagos, ver el historial y generar recibos.
+                        Los cobros de hoy, de la semana, del mes o de cualquier rango de fechas,
+                        con totales por forma de pago y por cajero.
                     </p>
                     <p><strong>Funcionalidades principales:</strong></p>
                     <ul>
-                        <li>Registrar nuevos pagos</li>
-                        <li>Seleccionar cuentas pendientes</li>
-                        <li>Elegir forma de pago</li>
-                        <li>Ver ingresos del día</li>
+                        <li>Cobros del día (arqueo)</li>
+                        <li>Histórico por rango de fechas</li>
+                        <li>Totales por forma de pago</li>
+                        <li>Pagos anulados visibles y tachados</li>
                         <li>Imprimir recibos de pago</li>
                     </ul>
                     <a href="@Url.Action("Index", "Pagos")" class="btn btn-outline-primary btn-block">
-                        <i class="bi bi-arrow-right mr-1"></i> Ir a Gestión de Pagos
+                        <i class="bi bi-arrow-right mr-1"></i> Ir a Movimientos de caja
                     </a>
                 </div>
             </div>
@@ -303,60 +225,6 @@
                     </ul>
                     <a href="@Url.Action("NuevoPago", "Pagos")" class="btn btn-outline-primary btn-block">
                         <i class="bi bi-arrow-right mr-1"></i> Registrar Nuevo Pago
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pagos del Día -->
-        <div class="col-md-6 mb-3">
-            <div class="statbox widget box box-shadow h-100">
-                <div class="widget-content widget-content-area">
-                    <div class="text-center mb-3">
-                        <i class="bi bi-calendar-check-fill h1 text-info"></i>
-                    </div>
-                    <h4 class="text-center">Pagos del Día</h4>
-                    <p class="text-muted">
-                        Consulta todos los pagos registrados en el día actual. Útil para
-                        realizar arqueos de caja y cuadres diarios.
-                    </p>
-                    <p><strong>Información disponible:</strong></p>
-                    <ul>
-                        <li>Listado de pagos del día</li>
-                        <li>Total de ingresos</li>
-                        <li>Desglose por forma de pago</li>
-                        <li>Usuario que registró el pago</li>
-                        <li>Reimprimir recibos</li>
-                    </ul>
-                    <a href="@Url.Action("ListaDia", "Pagos")" class="btn btn-outline-primary btn-block">
-                        <i class="bi bi-arrow-right mr-1"></i> Ver Pagos del Día
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Histórico de Pagos -->
-        <div class="col-md-6 mb-3">
-            <div class="statbox widget box box-shadow h-100">
-                <div class="widget-content widget-content-area">
-                    <div class="text-center mb-3">
-                        <i class="bi bi-clock-history h1 text-secondary"></i>
-                    </div>
-                    <h4 class="text-center">Histórico de Pagos</h4>
-                    <p class="text-muted">
-                        Accede al historial completo de todos los pagos registrados en el sistema,
-                        con opciones de búsqueda y filtrado avanzadas.
-                    </p>
-                    <p><strong>Opciones de consulta:</strong></p>
-                    <ul>
-                        <li>Buscar por alumno</li>
-                        <li>Filtrar por rango de fechas</li>
-                        <li>Filtrar por forma de pago</li>
-                        <li>Exportar reportes</li>
-                        <li>Ver detalles de cada pago</li>
-                    </ul>
-                    <a href="@Url.Action("HistoricoPagos", "CuentasCobrar")" class="btn btn-outline-primary btn-block">
-                        <i class="bi bi-arrow-right mr-1"></i> Ver Histórico
                     </a>
                 </div>
             </div>
@@ -393,33 +261,6 @@
                     </ul>
                     <a href="@Url.Action("DashboardFinanciero", "ReportesFinancieros")" class="btn btn-outline-primary btn-block">
                         <i class="bi bi-arrow-right mr-1"></i> Ver Dashboard
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reporte de Morosos -->
-        <div class="col-md-6 mb-3">
-            <div class="statbox widget box box-shadow h-100">
-                <div class="widget-content widget-content-area">
-                    <div class="text-center mb-3">
-                        <i class="bi bi-exclamation-circle-fill h1 text-danger"></i>
-                    </div>
-                    <h4 class="text-center">Reporte de Morosos</h4>
-                    <p class="text-muted">
-                        Genera reportes detallados de los alumnos con pagos vencidos,
-                        incluyendo montos adeudados y días de mora.
-                    </p>
-                    <p><strong>Información del reporte:</strong></p>
-                    <ul>
-                        <li>Listado de alumnos morosos</li>
-                        <li>Monto total adeudado</li>
-                        <li>Días de atraso</li>
-                        <li>Contacto de encargados</li>
-                        <li>Exportar a Excel/PDF</li>
-                    </ul>
-                    <a href="@Url.Action("Morosos", "ReportesFinancieros")" class="btn btn-outline-primary btn-block">
-                        <i class="bi bi-arrow-right mr-1"></i> Ver Reporte de Morosos
                     </a>
                 </div>
             </div>
@@ -527,15 +368,15 @@
                         </li>
                         <li>
                             <strong>Registro de pagos:</strong>
-                            Conforme los encargados realicen pagos, regístralos en "Gestión de Pagos" o "Nuevo Pago"
+                            Conforme los encargados realicen pagos, regístralos en "Nuevo pago"
                         </li>
                         <li>
                             <strong>Seguimiento diario:</strong>
-                            Consulta "Pagos del Día" para realizar arqueos de caja y verificar los ingresos diarios
+                            Consulta "Movimientos de caja" (Hoy) para realizar arqueos de caja y verificar los ingresos diarios
                         </li>
                         <li>
                             <strong>Control de morosidad:</strong>
-                            Revisa periódicamente "Deudores" y "Reporte de Morosos" para dar seguimiento a pagos atrasados
+                            Revisa periódicamente "Cuentas por cobrar" con el filtro "Vencidas" para dar seguimiento a pagos atrasados
                         </li>
                         <li>
                             <strong>Análisis financiero:</strong>

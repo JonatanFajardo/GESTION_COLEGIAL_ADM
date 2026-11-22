@@ -17,7 +17,9 @@
  *       buscador: "#mi-input",               // opcional: usar un buscador que ya existe
  *       filtroExtra: function (fila) {},     // opcional: filtros propios de la pantalla
  *       alCargar: function (filas) {},       // opcional: después de cada carga de datos
- *       agrupar: [{ campos: ["Grado"], texto: "Grado" }] // opcional: opciones de "Agrupar por"
+ *       agrupar: [{ campos: ["Grado"], texto: "Grado" }], // opcional: opciones de "Agrupar por"
+ *       formatoFila: function (fila) {},     // opcional: marcar filas (ej. una clase para las anuladas)
+ *       ocultas: ["Campo"]                    // opcional: columnas ocultas al inicio (el usuario las puede mostrar)
  *   });
  *   t.filtrar();   // vuelve a aplicar buscador + filtroExtra
  *   t.recargar();  // pide los datos otra vez
@@ -90,7 +92,7 @@ var GcTabla = (function () {
         var $densidad = $("#" + id + "-densidad");
 
         // ── Estado guardado ──
-        function porDefecto() { return { orden: ORDEN_DEFECTO.slice(), anchos: {}, fijas: [], ocultas: [], agrupar: "", densidad: "normal" }; }
+        function porDefecto() { return { orden: ORDEN_DEFECTO.slice(), anchos: {}, fijas: [], ocultas: (op.ocultas || []).slice(), agrupar: "", densidad: "normal" }; }
         function leer() {
             try {
                 var e = JSON.parse(localStorage.getItem(clave) || "null");
@@ -207,6 +209,7 @@ var GcTabla = (function () {
             paginationSizeSelector: [10, 20, 50, 100, true],
             paginationCounter: "rows",
             placeholder: op.vacio || "Ningún dato disponible en esta tabla",
+            rowFormatter: op.formatoFila || undefined,
             locale: "es",
             langs: IDIOMA
         });
