@@ -1,0 +1,22 @@
+@model GESTION_COLEGIAL.Business.Models.FichaSaludEmergenciaViewModel
+@* Pestaña "Salud" de la ficha 360 del alumno: solo el resumen de emergencia y el enlace a la ficha. *@
+@if (Model == null || Model.Ficha == null)
+{
+    <div class="alert alert-light-warning" role="status">
+        <i class="bi bi-exclamation-triangle mr-1" aria-hidden="true"></i> No se pudo cargar la ficha de salud.
+    </div>
+}
+else
+{
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+        <p class="text-muted mb-2 mr-3">
+            @(Model.Ficha.TieneFicha
+                ? "Lo que hay que saber en una emergencia. El detalle y el historial están en la ficha de salud."
+                : "Este alumno todavía no tiene ficha de salud.")
+        </p>
+        <a class="btn btn-primary mb-2" href="@Url.Action("Ficha", "FichasSalud", new { id = Model.Ficha.Alu_Id })">
+            <i class="bi bi-clipboard2-pulse mr-1" aria-hidden="true"></i> Abrir ficha de salud
+        </a>
+    </div>
+    <partial name="~/Views/FichasSalud/_Emergencia.cshtml" model="Model" view-data='new ViewDataDictionary(ViewData) { { "Completo", true } }' />
+}

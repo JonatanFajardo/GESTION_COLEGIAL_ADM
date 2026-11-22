@@ -1,0 +1,128 @@
+@model GESTION_COLEGIAL.Business.Models.FichaSaludEmergenciaViewModel
+@using GESTION_COLEGIAL.UI.Models
+@{
+    var F = Model.Ficha;
+    ViewBag.Title = "Ficha de salud · " + F.Alumno;
+    string institucion = ViewBag.Institucion as string;
+    string direccion = ViewBag.Direccion as string;
+    DateTime impreso = (ViewBag.Impreso as DateTime?) ?? DateTime.Now;
+    var conTelefono = Model.Contactos.Where(c => !string.IsNullOrWhiteSpace(c.Telefono)).ToList();
+    string contactoTel = FormatoSalud.Telefono(F.Fsa_ContactoEmergenciaTelefono);
+    string medicoTel = FormatoSalud.Telefono(F.Fsa_MedicoTelefono);
+    Func<string, string> v = s => FormatoSalud.Texto(s) ?? "—";
+    string ubicacion = string.Join(" · ", new[] { F.Ubicacion, F.Nivel }.Where(x => !string.IsNullOrWhiteSpace(x)));
+}
+
+@section Styles{
+    <link href="~/css/pages/fichas-salud-imprimir.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content fsa-no-imprimir">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Fichas de salud</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Ficha", new { id = F.Alu_Id })">@F.Alumno</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Imprimir</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina fsa-no-imprimir">
+    <div class="mr-3">
+        <h4 class="mb-1">Imprimir ficha de salud</h4>
+        <p class="text-muted mb-0">Hoja tamaño carta para llevar en excursiones o tener a mano en la enfermería.</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <button type="button" class="btn btn-primary mb-1" data-imprimir>
+            <i class="bi bi-printer mr-1" aria-hidden="true"></i> Imprimir
+        </button>
+        <a class="btn btn-outline-secondary mb-1" href="@Url.Action("Ficha", new { id = F.Alu_Id })">
+            <i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Volver a la ficha
+        </a>
+    </div>
+</div>
+
+<div class="fsa-papel">
+    <article class="fsa-hoja">
+        <header class="fsa-hoja-membrete">
+            <div>
+                <div class="fsa-hoja-institucion">@(string.IsNullOrWhiteSpace(institucion) ? "Ficha de salud" : institucion)</div>
+                @if (!string.IsNullOrWhiteSpace(direccion)) { <div class="fsa-hoja-pequeno">@direccion</div> }
+            </div>
+            <div class="fsa-hoja-titulo">FICHA DE SALUD<span>Confidencial · uso del colegio</span></div>
+        </header>
+
+        <section class="fsa-hoja-alumno">
+            <div class="fsa-hoja-nombre">@F.Alumno</div>
+            <div class="fsa-hoja-pequeno">
+                @(ubicacion.Length > 0 ? ubicacion : "Sin grado asignado")
+                @if (!string.IsNullOrWhiteSpace(F.Identidad)) { <span> · Identidad @F.Identidad</span> }
+                @if (F.FechaNacimiento.HasValue) { <span> · Nació el @FormatoSalud.Dia(F.FechaNacimiento)</span> }
+            </div>
+        </section>
+
+        @if (!F.TieneFicha)
+        {
+            <div class="fsa-hoja-aviso">Este alumno todavía no tiene ficha de salud. Solo se muestran los encargados.</div>
+        }
+        else if (F.Fsa_TieneAlerta && !string.IsNullOrWhiteSpace(F.Fsa_Alerta))
+        {
+            <div class="fsa-hoja-alerta"><strong>ALERTA CRÍTICA:</strong> @F.Fsa_Alerta</div>
+        }
+
+        <div class="fsa-hoja-dos">
+            <section>
+                <h2>Datos de salud</h2>
+                <dl>
+                    <dt>Tipo de sangre</dt><dd class="fsa-hoja-fuerte">@(string.IsNullOrWhiteSpace(F.Fsa_TipoSangre) ? "Desconocido" : F.Fsa_TipoSangre)</dd>
+                    <dt>Alergias</dt><dd>@v(F.Fsa_Alergias)</dd>
+                    <dt>Condiciones médicas</dt><dd>@v(F.Fsa_Condiciones)</dd>
+                    <dt>Medicamentos</dt><dd>@v(F.Fsa_Medicamentos)</dd>
+                    <dt>Restricciones alimentarias</dt><dd>@v(F.Fsa_RestriccionesAlimentarias)</dd>
+                </dl>
+            </section>
+            <section>
+                <h2>A quién llamar</h2>
+                @if (conTelefono.Count == 0 && contactoTel == null)
+                {
+                    <p>No hay teléfonos de emergencia registrados.</p>
+                }
+                <ul class="fsa-hoja-contactos">
+                    @foreach (var c in conTelefono)
+                    {
+                        <li><strong>@FormatoSalud.Telefono(c.Telefono)</strong> · @c.Nombre <span class="fsa-hoja-pequeno">(encargado@(string.IsNullOrWhiteSpace(c.Parentesco) ? "" : ", " + c.Parentesco))</span></li>
+                    }
+                    @if (contactoTel != null)
+                    {
+                        <li><strong>@contactoTel</strong> · @F.Fsa_ContactoEmergenciaNombre <span class="fsa-hoja-pequeno">(contacto adicional@(string.IsNullOrWhiteSpace(F.Fsa_ContactoEmergenciaParentesco) ? "" : ", " + F.Fsa_ContactoEmergenciaParentesco))</span></li>
+                    }
+                </ul>
+                <h2>Atención médica</h2>
+                <dl>
+                    <dt>Médico</dt><dd>@(medicoTel == null ? v(F.Fsa_MedicoNombre) : (FormatoSalud.Texto(F.Fsa_MedicoNombre) ?? "Sin nombre") + " · " + medicoTel)</dd>
+                    <dt>Hospital o clínica</dt><dd>@v(F.Fsa_Hospital)</dd>
+                    <dt>Seguro</dt><dd>@v(F.Fsa_Seguro)@(FormatoSalud.Texto(F.Fsa_SeguroPoliza) == null ? "" : " · Póliza " + F.Fsa_SeguroPoliza.Trim())</dd>
+                </dl>
+            </section>
+        </div>
+
+        @if (FormatoSalud.Texto(F.Fsa_Notas) != null)
+        {
+            <section>
+                <h2>Notas</h2>
+                <p class="fsa-hoja-texto">@F.Fsa_Notas</p>
+            </section>
+        }
+
+        <footer class="fsa-hoja-pie">
+            Impreso el @FormatoSalud.DiaHora(impreso)
+            @if (F.TieneFicha) { <span> · Ficha actualizada el @FormatoSalud.Dia(F.Actualizada)</span> }
+            · Verifique con secretaría si la información cambió.
+        </footer>
+    </article>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/fichas-salud.js" asp-append-version="true"></script>
+}
