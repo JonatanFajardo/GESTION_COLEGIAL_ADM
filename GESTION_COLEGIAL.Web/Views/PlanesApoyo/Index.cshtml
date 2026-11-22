@@ -1,0 +1,195 @@
+@model GESTION_COLEGIAL.UI.Models.PlanesApoyoIndexViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    ViewBag.Title = "Planes de apoyo";
+    var M = Model;
+    string estadoInicial = M.Estado ?? "abiertos";
+}
+
+@section Styles{
+    <link href="~/css/pages/planes-apoyo.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Planes de apoyo</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Planes de apoyo</h4>
+        <p class="text-muted mb-0">
+            @(M.PuedeGestionar
+                ? "Alumnos con un plan para mejorar: quién lo lleva, cuándo se revisa y cómo van sus pasos."
+                : "Los planes de apoyo donde usted es responsable o tiene un paso asignado.")
+        </p>
+    </div>
+    <div class="d-flex flex-wrap mt-2 mt-md-0">
+        <button type="button" class="btn btn-outline-primary mb-1 mr-2" id="pa-exportar">
+            <i class="bi bi-file-earmark-spreadsheet mr-1" aria-hidden="true"></i> Exportar a Excel
+        </button>
+        @if (M.PuedeGestionar)
+        {
+            <a class="btn btn-primary mb-1" href="@Url.Action("Nuevo")">
+                <i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Nuevo plan
+            </a>
+        }
+    </div>
+</div>
+
+@* ── Indicadores (mismas reglas de lectura que la tabla: lo confidencial ajeno no se cuenta) ── *@
+<div class="row" id="pa-kpis">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four pa-kpi pa-kpi-indigo h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="kpi-activos">—</h6>
+                        <p>Activos</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-life-preserver" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3" id="kpi-activos-texto">&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four pa-kpi pa-kpi-ambar h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="kpi-vencidos">—</h6>
+                        <p>Revisión vencida</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-calendar-x" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">
+                    Planes abiertos con la fecha de revisión pasada.
+                    <a href="#tabla-planes-apoyo" class="pa-enlace-kpi" id="kpi-vencidos-ver" role="button" hidden>Ver solo estos</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four pa-kpi pa-kpi-cian h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="kpi-atrasados">—</h6>
+                        <p>Pasos atrasados</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-hourglass-split" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">Pasos sin hacer con la fecha límite pasada.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four pa-kpi pa-kpi-esmeralda h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info">
+                        <h6 class="value" id="kpi-completados">—</h6>
+                        <p id="kpi-completados-titulo">Completados este año</p>
+                    </div>
+                    <div><div class="w-icon"><i class="bi bi-check2-circle" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">El alumno ya no necesita el plan.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ── Filtros ── *@
+<section class="statbox widget box box-shadow mb-4" aria-labelledby="pa-filtros-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="pa-filtros-titulo">Buscar planes</h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div class="form-row align-items-end">
+            <div class="col-md-6 col-xl-2 form-group">
+                <label for="pa-estado">Estado</label>
+                <select id="pa-estado" class="custom-select">
+                    <option value="abiertos" selected="@(estadoInicial == "abiertos")">Abiertos</option>
+                    <option value="todos" selected="@(estadoInicial == "todos")">Todos</option>
+                    @foreach (var e in CatalogoPlanes.Estados)
+                    {
+                        <option value="@e.Codigo" selected="@(estadoInicial == e.Codigo)">@e.Etiqueta</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 col-xl-2 form-group">
+                <label for="pa-categoria">Categoría</label>
+                <select id="pa-categoria" class="custom-select">
+                    <option value="">Todas</option>
+                    @foreach (var c in CatalogoPlanes.Categorias)
+                    {
+                        <option value="@c.Codigo" selected="@(M.Categoria == c.Codigo)">@c.Etiqueta</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 col-xl-3 form-group">
+                <label for="pa-nivel">Nivel</label>
+                <select id="pa-nivel" class="custom-select">
+                    <option value="">Todos los niveles</option>
+                    @foreach (var n in M.Niveles.Where(n => !string.IsNullOrEmpty(n.Value)))
+                    {
+                        <option value="@n.Value">@n.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 col-xl-3 form-group">
+                <label for="pa-grado">Grado</label>
+                <select id="pa-grado" class="custom-select" disabled>
+                    <option value="">Elija un nivel primero</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-xl-2 form-group">
+                <label for="pa-seccion">Sección</label>
+                <select id="pa-seccion" class="custom-select" disabled>
+                    <option value="">Elija un grado</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row align-items-center">
+            <div class="col-md-6 col-xl-4 form-group">
+                <label for="pa-buscar" class="sr-only">Buscar</label>
+                <input type="search" id="pa-buscar" class="form-control" placeholder="Buscar alumno, identidad u objetivo" autocomplete="off" />
+            </div>
+            <div class="col-md-6 col-xl-8 d-flex flex-wrap align-items-center form-group">
+                <div class="custom-control custom-switch mr-4 my-1">
+                    <input type="checkbox" class="custom-control-input" id="pa-solo-vencidos" checked="@M.SoloVencidos" />
+                    <label class="custom-control-label" for="pa-solo-vencidos">Solo revisión vencida</label>
+                </div>
+                <div class="custom-control custom-switch mr-4 my-1">
+                    <input type="checkbox" class="custom-control-input" id="pa-solo-mios" checked="@M.SoloMios" />
+                    <label class="custom-control-label" for="pa-solo-mios" title="Responsable del plan o de alguno de sus pasos">Solo donde soy responsable</label>
+                </div>
+                <button type="button" class="btn btn-link p-0 my-1" id="pa-limpiar" hidden><i class="bi bi-x-lg mr-1" aria-hidden="true"></i> Quitar filtros</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ── Listado ── *@
+<section class="statbox widget box box-shadow mb-4" aria-labelledby="pa-tabla-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="pa-tabla-titulo">Planes <span class="badge outline-badge-primary ml-1" id="pa-total">0</span></h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div id="tabla-planes-apoyo" class="gc-tabla pa-tabla" data-usuario="@(Session["Username"] as string ?? "anonimo")"
+             data-url="@Url.Action("ListAsync")" data-url-resumen="@Url.Action("ResumenAsync")"
+             data-url-plan="@Url.Action("Plan")" data-url-grados="@Url.Action("GradosAsync")" data-url-secciones="@Url.Action("SeccionesAsync")"
+             data-gestiona="@(M.PuedeGestionar ? "1" : "0")"></div>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/planes-apoyo.js" asp-append-version="true"></script>
+}

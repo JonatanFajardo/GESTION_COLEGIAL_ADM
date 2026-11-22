@@ -1,0 +1,464 @@
+@model GESTION_COLEGIAL.UI.Models.PlanApoyoPaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@using GESTION_COLEGIAL.UI.Models
+@{
+    var M = Model;
+    var P = M.Plan;
+    ViewBag.Title = "Plan de apoyo · " + P.Alumno;
+    string nombre(string s) => string.IsNullOrWhiteSpace(s) ? "Persona desconocida" : s;
+    bool responsableDisponible = !P.Usu_IdResponsable.HasValue || M.Usuarios.Any(u => u.Usu_Id == P.Usu_IdResponsable.Value);
+    string ubicacion = string.Join(" · ", new[] { P.Ubicacion, P.Nivel }.Where(x => !string.IsNullOrWhiteSpace(x)));
+}
+
+@section Styles{
+    <link href="~/css/pages/planes-apoyo.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Planes de apoyo</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@P.Alumno</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="fluid-container" id="pa-plan" data-plan="@P.Apo_Id" data-version="@P.Apo_Version" data-estado="@P.Apo_Estado"
+     data-url-estado="@Url.Action("CambiarEstadoAsync")" data-url-editar="@Url.Action("EditarAsync")"
+     data-url-paso="@Url.Action("AgregarPasoAsync")" data-url-completar="@Url.Action("CompletarPasoAsync")"
+     data-url-quitar="@Url.Action("QuitarPasoAsync")" data-url-nota="@Url.Action("AgregarNotaAsync")"
+     data-url-eliminar="@Url.Action("EliminarAsync")" data-hoy="@M.Hoy"
+     data-confidenciales="@string.Join(",", CatalogoPlanes.ConfidencialesPorDefecto)">
+    @Html.AntiForgeryToken()
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+        <div class="mr-3 pa-encabezado-texto">
+            <h4 class="mb-1">@P.Apo_Titulo</h4>
+            <p class="text-muted mb-0">Plan de apoyo de @P.Alumno@(ubicacion.Length > 0 ? " · " + ubicacion : "")</p>
+        </div>
+        <div class="d-flex flex-wrap mt-2 mt-md-0">
+            <a class="btn btn-outline-primary mb-1 mr-2" href="@Url.Action("Imprimir", new { id = P.Apo_Id })">
+                <i class="bi bi-printer mr-1" aria-hidden="true"></i> Imprimir
+            </a>
+            <a class="btn btn-outline-secondary mb-1" href="@Url.Action("Index")">
+                <i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Planes de apoyo
+            </a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(M.Aviso))
+    {
+        <div class="alert alert-light-success mb-4" role="status"><i class="bi bi-check-circle mr-1" aria-hidden="true"></i> <strong>@M.Aviso</strong></div>
+    }
+    <div class="alert alert-light-danger mb-4" id="pa-error-general" role="alert" hidden></div>
+
+    <div class="row">
+        <div class="col-xl-8">
+            @* ── Resumen del plan ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-label="Resumen del plan">
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex flex-wrap align-items-center mb-3">
+                        <span class="pa-avatar mr-3" aria-hidden="true">@FormatoPlan.Iniciales(P.Alumno)</span>
+                        <div class="mr-3">
+                            <div class="font-weight-bold pa-alumno">@P.Alumno</div>
+                            <div class="text-muted small">
+                                @(string.IsNullOrWhiteSpace(P.Identidad) ? "Sin identidad" : "Identidad " + P.Identidad)
+                                @if (!string.IsNullOrWhiteSpace(P.Curso)) { <span> · @P.Curso</span> }
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center ml-sm-auto">
+                            <span class="badge @CatalogoPlanes.InsigniaEstado(P.Apo_Estado) mr-1 mb-1" id="pa-estado-actual">@CatalogoPlanes.Estado(P.Apo_Estado)</span>
+                            <span class="badge @CatalogoPlanes.InsigniaCategoria(P.Apo_Categoria) mr-1 mb-1">@CatalogoPlanes.Categoria(P.Apo_Categoria)</span>
+                            @if (P.Apo_EsConfidencial)
+                            {
+                                <span class="badge outline-badge-danger mb-1"><i class="bi bi-lock mr-1" aria-hidden="true"></i>Confidencial</span>
+                            }
+                        </div>
+                    </div>
+
+                    <dl class="row mb-0 pa-datos">
+                        <div class="col-sm-6 col-lg-3 mb-3">
+                            <dt>Empieza</dt>
+                            <dd>@FormatoPlan.Dia(P.Apo_FechaInicio)</dd>
+                            @if (P.Apo_FechaFin.HasValue)
+                            {
+                                <dd class="text-muted small">Terminó el @FormatoPlan.Dia(P.Apo_FechaFin)</dd>
+                            }
+                        </div>
+                        <div class="col-sm-6 col-lg-3 mb-3">
+                            <dt>Revisión</dt>
+                            <dd class="@(P.RevisionVencida ? "text-danger" : "")">
+                                @FormatoPlan.Dia(P.Apo_FechaRevision)
+                                @if (P.RevisionVencida) { <span class="badge badge-danger ml-1">Vencida</span> }
+                            </dd>
+                        </div>
+                        <div class="col-sm-6 col-lg-3 mb-3">
+                            <dt>Responsable</dt>
+                            <dd>@(string.IsNullOrWhiteSpace(P.Responsable) ? "—" : P.Responsable)</dd>
+                        </div>
+                        <div class="col-sm-6 col-lg-3 mb-3">
+                            <dt>Pasos hechos</dt>
+                            <dd>@P.PasosHechos de @P.PasosTotal</dd>
+                            @if (P.PasosTotal > 0)
+                            {
+                                int pct = (int)Math.Round(P.PasosHechos * 100.0 / P.PasosTotal);
+                                <div class="progress pa-progreso mt-1" role="progressbar" aria-label="Avance de los pasos" aria-valuenow="@pct" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar pa-barra" style="width:@(pct)%"></div>
+                                </div>
+                            }
+                        </div>
+                    </dl>
+
+                    @if (!string.IsNullOrWhiteSpace(P.Apo_Resumen))
+                    {
+                        <p class="pa-texto mb-3">@P.Apo_Resumen</p>
+                    }
+                    <p class="text-muted small mb-0">
+                        Lo abrió @nombre(P.Creador) el @FormatoPlan.Dia(P.Apo_FechaRegistra)
+                        @if (!string.IsNullOrWhiteSpace(P.Ani_Nombre)) { <span> · Año lectivo @P.Ani_Nombre</span> }
+                    </p>
+
+                    @if (M.Siguientes.Count > 0 || M.PuedeEditar)
+                    {
+                        <div class="d-flex flex-wrap align-items-center pa-separador pt-3 mt-3" aria-label="Acciones del plan">
+                            @foreach (var s in M.Siguientes)
+                            {
+                                string clase = s.Codigo == "cancelado" ? "btn-outline-danger"
+                                             : s.Codigo == "completado" ? "btn-outline-success"
+                                             : P.Apo_Estado == "borrador" || P.Apo_Estado == "en_pausa" ? "btn-primary" : "btn-outline-primary";
+                                <button type="button" class="btn @clase mr-2 mb-2" data-transicion="@s.Codigo" data-accion="@s.Accion"
+                                        data-pide-motivo="@(s.PideMotivo ? "1" : "0")" data-destino="@s.Etiqueta">
+                                    <i class="bi @CatalogoPlanes.IconoAccion(s.Codigo, P.Apo_Estado) mr-1" aria-hidden="true"></i> @s.Accion
+                                </button>
+                            }
+                            @if (M.PuedeEditar)
+                            {
+                                <button type="button" class="btn btn-outline-primary mr-2 mb-2" id="pa-editar" aria-expanded="false" aria-controls="pa-form-editar">
+                                    <i class="bi bi-pencil mr-1" aria-hidden="true"></i> Editar datos
+                                </button>
+                            }
+                            @if (M.PuedeGestionar && P.Apo_Estado == "borrador")
+                            {
+                                <button type="button" class="btn btn-link text-danger mb-2 ml-auto" id="pa-eliminar">
+                                    <i class="bi bi-trash mr-1" aria-hidden="true"></i> Eliminar borrador
+                                </button>
+                            }
+                        </div>
+                    }
+
+                    @if (M.PuedeEditar)
+                    {
+                        <form id="pa-form-editar" class="pa-separador pt-3 mt-2" aria-label="Editar datos del plan" novalidate hidden>
+                            <div class="form-row">
+                                <div class="col-md-5 form-group">
+                                    <label for="categoria">Categoría <span class="text-danger">*</span></label>
+                                    <select id="categoria" class="custom-select">
+                                        @foreach (var c in CatalogoPlanes.Categorias)
+                                        {
+                                            <option value="@c.Codigo" selected="@(P.Apo_Categoria == c.Codigo)">@c.Etiqueta</option>
+                                        }
+                                    </select>
+                                    <p class="text-danger small mb-0" data-error="categoria"></p>
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    <label for="titulo">Objetivo <span class="text-danger">*</span></label>
+                                    <input id="titulo" class="form-control" maxlength="150" autocomplete="off" value="@P.Apo_Titulo" />
+                                    <p class="text-danger small mb-0" data-error="titulo"></p>
+                                </div>
+                                <div class="col-12 form-group">
+                                    <label for="resumen">Situación y lo que se espera lograr</label>
+                                    <textarea id="resumen" class="form-control" rows="4" maxlength="5000">@P.Apo_Resumen</textarea>
+                                    <p class="text-danger small mb-0" data-error="resumen"></p>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label for="inicio">Empieza <span class="text-danger">*</span></label>
+                                    <input type="date" id="inicio" class="form-control" value="@FormatoPlan.Iso(P.Apo_FechaInicio)" />
+                                    <p class="text-danger small mb-0" data-error="inicio"></p>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label for="revision">Se revisa el <span class="text-danger">*</span></label>
+                                    <input type="date" id="revision" class="form-control" value="@FormatoPlan.Iso(P.Apo_FechaRevision)" />
+                                    <p class="text-danger small mb-0" data-error="revision"></p>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="responsable">Responsable <span class="text-danger">*</span></label>
+                                    <select id="responsable" class="custom-select">
+                                        @if (!responsableDisponible)
+                                        {
+                                            <option value="@P.Usu_IdResponsable" selected>@P.Responsable (ya no puede ser responsable)</option>
+                                        }
+                                        @foreach (var g in M.Usuarios.GroupBy(u => FormatoPlan.GrupoRol(u.Rol)))
+                                        {
+                                            <optgroup label="@g.Key">
+                                                @foreach (var u in g)
+                                                {
+                                                    <option value="@u.Usu_Id" selected="@(P.Usu_IdResponsable == u.Usu_Id)">@u.Nombre</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    </select>
+                                    <p class="text-danger small mb-0" data-error="responsable"></p>
+                                </div>
+                                <div class="col-12 form-group">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="confidencial" checked="@P.Apo_EsConfidencial" />
+                                        <label class="custom-control-label" for="confidencial"><i class="bi bi-lock mr-1" aria-hidden="true"></i>Plan confidencial</label>
+                                    </div>
+                                    <small class="form-text text-muted">Solo lo verán dirección, el responsable y quien lo abrió.</small>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-end">
+                                <button type="button" class="btn mr-2 mb-2" id="pa-editar-cancelar">Cancelar</button>
+                                <button type="submit" class="btn btn-primary mb-2"><i class="bi bi-save mr-1" aria-hidden="true"></i> Guardar cambios</button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </section>
+
+            @* ── Pasos ── *@
+            <section class="statbox widget box box-shadow mb-4" id="pa-pasos" aria-labelledby="pa-pasos-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12">
+                        <h4 id="pa-pasos-titulo">Pasos <span class="text-muted font-weight-normal small">· @M.Pendientes por hacer@(M.Atrasados > 0 ? $" · {M.Atrasados} atrasado{(M.Atrasados == 1 ? "" : "s")}" : "")</span></h4>
+                    </div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    @if (!M.PuedeGestionar && M.EstaAbierto && M.Pasos.Any(p => p.EsMio && !p.Hecho))
+                    {
+                        <p class="text-muted small"><i class="bi bi-info-circle mr-1" aria-hidden="true"></i>Marque como hechos los pasos que tiene asignados y cuente cómo va en las notas.</p>
+                    }
+                    @if (M.Pasos.Count == 0)
+                    {
+                        <p class="text-muted @(M.PuedeEditar ? "" : "mb-0")">Todavía no hay pasos.</p>
+                    }
+                    else
+                    {
+                        <ul class="list-group mb-3 pa-pasos">
+                            @foreach (var a in M.Pasos)
+                            {
+                                <li class="list-group-item d-flex align-items-start justify-content-between flex-wrap @(a.Atrasado ? "pa-paso-atrasado" : "") @(a.Hecho ? "pa-paso-hecho" : "")">
+                                    <div class="mr-3 mb-1 pa-paso-texto">
+                                        <p class="mb-1 pa-paso-descripcion">
+                                            @if (a.Hecho) { <i class="bi bi-check-circle-fill text-success mr-1" aria-hidden="true"></i> }
+                                            <span class="@(a.Hecho ? "pa-tachado" : "font-weight-bold")">@a.Apa_Descripcion</span>
+                                            @if (a.Atrasado) { <span class="badge badge-danger ml-1">Atrasado</span> }
+                                            @if (a.EsMio && !a.Hecho) { <span class="badge outline-badge-primary ml-1">Suyo</span> }
+                                        </p>
+                                        <p class="text-muted small mb-0">
+                                            <i class="bi bi-person mr-1" aria-hidden="true"></i>@(string.IsNullOrWhiteSpace(a.Responsable) ? "Sin responsable" : a.Responsable)
+                                            <span class="@(a.Atrasado ? "text-danger" : "")"> · <i class="bi bi-calendar-event mr-1" aria-hidden="true"></i>@(a.Apa_FechaLimite.HasValue ? "Para el " + FormatoPlan.Dia(a.Apa_FechaLimite) : "Sin fecha")</span>
+                                            @if (a.Hecho)
+                                            {
+                                                <span> · Hecho el @FormatoPlan.Dia(a.Apa_FechaHecha)@(string.IsNullOrWhiteSpace(a.HechaPor) ? "" : " por " + a.HechaPor)</span>
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="d-flex flex-nowrap">
+                                        @if (M.PuedeMarcar(a))
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-success text-nowrap mb-1" data-completar="@a.Apa_Id">
+                                                <i class="bi bi-check-lg mr-1" aria-hidden="true"></i> Marcar hecho
+                                            </button>
+                                        }
+                                        @if (M.PuedeEditar && !a.Hecho)
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-danger ml-1 mb-1" data-quitar="@a.Apa_Id" data-texto="@a.Apa_Descripcion"
+                                                    title="Quitar paso" aria-label="Quitar el paso: @a.Apa_Descripcion">
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                    @if (M.PuedeEditar)
+                    {
+                        <form id="pa-form-paso" class="pa-form-paso" aria-label="Agregar un paso" novalidate>
+                            <h6 class="pa-subtitulo">Agregar un paso</h6>
+                            <div class="form-row">
+                                <div class="col-12 form-group mb-2">
+                                    <label for="paso-descripcion" class="sr-only">Qué tiene que pasar</label>
+                                    <input id="paso-descripcion" class="form-control" maxlength="500" autocomplete="off"
+                                           placeholder="Qué tiene que pasar (ej. Tutoría de Matemáticas los martes)" />
+                                    <p class="text-danger small mb-0" data-error="paso-descripcion"></p>
+                                </div>
+                                <div class="col-lg-5 form-group mb-2">
+                                    <label for="paso-responsable" class="sr-only">Quién</label>
+                                    <select id="paso-responsable" class="custom-select">
+                                        <option value="">¿Quién lo hace?</option>
+                                        @foreach (var g in M.Usuarios.GroupBy(u => FormatoPlan.GrupoRol(u.Rol)))
+                                        {
+                                            <optgroup label="@g.Key">
+                                                @foreach (var u in g)
+                                                {
+                                                    <option value="@u.Usu_Id">@u.Nombre</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    </select>
+                                    <p class="text-danger small mb-0" data-error="paso-responsable"></p>
+                                </div>
+                                <div class="col-sm-6 col-lg-4 form-group mb-2">
+                                    <label for="paso-fecha" class="sr-only">Fecha límite</label>
+                                    <input type="date" id="paso-fecha" class="form-control" title="Fecha límite" aria-describedby="paso-fecha-ayuda" />
+                                    <p class="text-danger small mb-0" data-error="paso-fecha"></p>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 form-group mb-2">
+                                    <button type="submit" class="btn btn-outline-primary btn-block text-nowrap"><i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Agregar paso</button>
+                                </div>
+                            </div>
+                            <small class="form-text text-muted mt-0" id="paso-fecha-ayuda">
+                                Cada paso lleva responsable y fecha límite. Al responsable le llega un aviso.
+                                @if (P.Apo_EsConfidencial) { <span>Plan confidencial: solo se asigna a quien lo puede ver.</span> }
+                            </small>
+                        </form>
+                    }
+                </div>
+            </section>
+
+            @* ── Notas de seguimiento ── *@
+            <section class="statbox widget box box-shadow mb-4" id="pa-notas" aria-labelledby="pa-notas-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="pa-notas-titulo">Notas de seguimiento <span class="text-muted font-weight-normal small">· @M.Notas.Count</span></h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    @if (M.PuedeAnotar)
+                    {
+                        <form id="pa-form-nota" class="mb-4" aria-label="Agregar una nota" novalidate>
+                            <label for="nota" class="sr-only">Nota</label>
+                            <textarea id="nota" class="form-control" rows="3" maxlength="5000" placeholder="¿Cómo va el alumno? Lo que se hizo, lo que se observó, lo que sigue."></textarea>
+                            <p class="text-danger small mb-0" data-error="nota"></p>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted">Las notas no se editan después.</small>
+                                <button type="submit" class="btn btn-outline-primary"><i class="bi bi-chat-left-text mr-1" aria-hidden="true"></i> Agregar nota</button>
+                            </div>
+                        </form>
+                    }
+                    @if (M.Notas.Count == 0)
+                    {
+                        <p class="text-muted mb-0">Todavía no hay notas.</p>
+                    }
+                    else
+                    {
+                        <ol class="list-unstyled mb-0 pa-linea">
+                            @foreach (var n in M.Notas)
+                            {
+                                <li class="pa-linea-item">
+                                    <span class="pa-avatar pa-avatar-sm" aria-hidden="true">@FormatoPlan.Iniciales(n.Usuario)</span>
+                                    <div class="pa-linea-cuerpo">
+                                        <p class="small mb-1">
+                                            <strong class="pa-linea-autor">@nombre(n.Usuario)</strong>
+                                            <span class="text-muted ml-1">@FormatoPlan.DiaHora(n.Apn_Fecha)</span>
+                                        </p>
+                                        <p class="pa-texto mb-0">@n.Apn_Texto</p>
+                                    </div>
+                                </li>
+                            }
+                        </ol>
+                    }
+                </div>
+            </section>
+        </div>
+
+        <div class="col-xl-4">
+            @* ── Historial de estados ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="pa-historial-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="pa-historial-titulo">Historial de estados</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <ol class="list-unstyled mb-0 pa-historial">
+                        @foreach (var h in M.Historial.AsEnumerable().Reverse())
+                        {
+                            <li class="pa-historial-item">
+                                <p class="mb-1">
+                                    <span class="badge @CatalogoPlanes.InsigniaEstado(h.Ape_De)">@CatalogoPlanes.Estado(h.Ape_De)</span>
+                                    <i class="bi bi-arrow-right mx-1 text-muted" aria-label="a"></i>
+                                    <span class="badge @CatalogoPlanes.InsigniaEstado(h.Ape_A)">@CatalogoPlanes.Estado(h.Ape_A)</span>
+                                </p>
+                                @if (!string.IsNullOrWhiteSpace(h.Ape_Motivo))
+                                {
+                                    <p class="pa-texto small mb-1">«@h.Ape_Motivo»</p>
+                                }
+                                <p class="text-muted small mb-0">@nombre(h.Usuario) · @FormatoPlan.DiaHora(h.Ape_Fecha)</p>
+                            </li>
+                        }
+                        <li class="pa-historial-item">
+                            <p class="mb-1"><span class="badge badge-secondary">Abierto como borrador</span></p>
+                            <p class="text-muted small mb-0">@nombre(P.Creador) · @FormatoPlan.DiaHora(P.Apo_FechaRegistra)</p>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="pa-reglas-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="pa-reglas-titulo">Quién ve este plan</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area small text-muted">
+                    @if (P.Apo_EsConfidencial)
+                    {
+                        <p class="mb-0 text-muted"><i class="bi bi-lock mr-1" aria-hidden="true"></i>Es <strong>confidencial</strong>: solo dirección, el responsable (@(string.IsNullOrWhiteSpace(P.Responsable) ? "sin asignar" : P.Responsable)) y quien lo abrió.</p>
+                    }
+                    else
+                    {
+                        <p class="mb-0 text-muted"><i class="bi bi-people mr-1" aria-hidden="true"></i>Dirección, el responsable y quienes tienen un paso asignado.</p>
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+@* Ventana para mover de estado (el JS pone el título, el texto y si el motivo es obligatorio). *@
+<div class="modal fade" id="pa-modal-estado" tabindex="-1" role="dialog" aria-labelledby="pa-modal-titulo" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pa-modal-titulo">Cambiar estado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="pa-modal-destino" value="" />
+                <p class="mb-3" id="pa-modal-texto"></p>
+                <div class="form-group mb-0">
+                    <label for="pa-modal-motivo" id="pa-modal-motivo-etiqueta">Motivo</label>
+                    <textarea id="pa-modal-motivo" class="form-control" rows="3" maxlength="500" placeholder="Por qué"></textarea>
+                    <p class="text-danger small mb-0 mt-1" id="pa-modal-error"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Volver</button>
+                <button type="button" class="btn btn-primary" id="pa-modal-confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Confirmación de quitar un paso o eliminar el borrador. *@
+<div class="modal fade" id="pa-modal-pregunta" tabindex="-1" role="dialog" aria-labelledby="pa-confirmar-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pa-confirmar-titulo">¿Seguro?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0" id="pa-confirmar-texto"></p>
+                <p class="text-danger small mb-0 mt-2" id="pa-confirmar-error"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Volver</button>
+                <button type="button" class="btn btn-danger" id="pa-confirmar-si">Sí, quitar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/planes-apoyo.js" asp-append-version="true"></script>
+}
