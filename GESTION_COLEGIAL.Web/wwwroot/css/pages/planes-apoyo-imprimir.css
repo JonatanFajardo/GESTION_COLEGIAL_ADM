@@ -1,0 +1,107 @@
+/* Plan de apoyo · hoja tamaño carta para imprimir (PlanesApoyo/Imprimir).
+   Solo la carga esa vista: @page y @media print ocultan el menú y quitan márgenes,
+   y no deben afectar a otras pantallas.
+   Siempre papel blanco con texto oscuro, en cualquier tema (también en modo oscuro). */
+.pa-papel { overflow-x: auto; margin-bottom: 1.5rem; }
+
+.pa-hoja {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    padding: 0.7in 0.75in 0.6in;
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    line-height: 1.45;
+    display: flex;
+    flex-direction: column;
+}
+.pa-hoja * { color: inherit; }
+/* Dos clases: más fuerte que "html.gc-dark h2" del tema oscuro. */
+.pa-papel .pa-hoja h2 {
+    font-size: 9.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #374151;
+    border-bottom: 1px solid #d1d5db;
+    padding-bottom: 3pt;
+    margin: 13pt 0 6pt;
+}
+.pa-hoja-membrete {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: 8pt;
+    border-bottom: 2px solid #111827;
+}
+.pa-hoja-institucion { font-size: 13pt; font-weight: 700; }
+.pa-hoja-titulo { font-size: 13pt; font-weight: 700; text-align: right; letter-spacing: .05em; }
+.pa-hoja-titulo span { display: block; font-size: 8pt; font-weight: 400; letter-spacing: 0; color: #6b7280; }
+.pa-hoja-pequeno { font-size: 8.5pt; color: #4b5563; }
+.pa-hoja-alumno { margin: 12pt 0 4pt; }
+.pa-hoja-nombre { font-size: 15pt; font-weight: 700; }
+.pa-hoja-objetivo { font-size: 12pt; font-weight: 700; margin: 0 0 6pt; }
+.pa-hoja-datos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4pt 18pt; margin: 0 0 6pt; }
+.pa-hoja-datos dt { font-size: 8pt; color: #6b7280; font-weight: 400; }
+.pa-hoja-datos dd { margin: 0; font-weight: 600; }
+.pa-hoja-texto { white-space: pre-line; margin: 0; }
+.pa-hoja-tabla { width: 100%; border-collapse: collapse; font-size: 9pt; }
+.pa-hoja-tabla th { text-align: left; font-size: 8pt; color: #4b5563; font-weight: 700; border-bottom: 1px solid #9ca3af; padding: 3pt 4pt; }
+.pa-hoja-tabla td { border-bottom: 1px dotted #d1d5db; padding: 4pt; vertical-align: top; }
+.pa-nowrap { white-space: nowrap; }
+.pa-hoja-notas { list-style: none; padding: 0; margin: 0; font-size: 9pt; }
+.pa-hoja-notas li { padding: 3pt 0; border-bottom: 1px dotted #d1d5db; }
+.pa-hoja-firmas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24pt; margin-top: 36pt; font-size: 8.5pt; text-align: center; color: #374151; }
+.pa-hoja-firmas span { display: block; border-top: 1px solid #111827; margin-bottom: 3pt; }
+.pa-hoja-pie { margin-top: auto; padding-top: 10pt; border-top: 1px solid #d1d5db; font-size: 8pt; color: #6b7280; }
+
+@media (max-width: 640px) {
+    .pa-hoja { padding: 1.25rem 1rem; min-height: 0; }
+    .pa-hoja-datos { grid-template-columns: 1fr 1fr; }
+    .pa-hoja-membrete { flex-wrap: wrap; }
+    .pa-hoja-titulo { text-align: left; }
+}
+
+@page { size: letter; margin: 0; }
+
+@media print {
+    html body .header-container,
+    html body .main-container .sidebar-wrapper,
+    html body .main-container .sidebar-wrapper.sidebar-theme,
+    .overlay,
+    .search-overlay,
+    .footer-wrapper,
+    #load_screen,
+    .cmdk-welcome,
+    .cmdk-backdrop,
+    .pa-no-imprimir,
+    .breadcrumb-wrapper-content {
+        display: none !important;
+    }
+    html, body { background: #ffffff !important; }
+    #container, #content, .main-content, .layout-px-spacing, .layout-top-spacing, .pa-papel {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto !important;
+        max-width: none !important;
+        min-height: 0 !important;
+        background: #ffffff !important;
+        overflow: visible !important;
+    }
+    .pa-hoja {
+        border: 0;
+        box-shadow: none;
+        max-width: none;
+        width: 8.5in;
+        min-height: 11in;
+        padding: 0.6in 0.7in 0.5in;
+    }
+    .pa-hoja-tabla tr { page-break-inside: avoid; }
+}

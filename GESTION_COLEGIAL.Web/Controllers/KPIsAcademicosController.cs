@@ -41,10 +41,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        public async Task<ActionResult> EnRiesgoAsync(int? Anio)
+        /// <summary>
+        /// Alumnos con promedio menor a la nota mínima. El mínimo se manda siempre: si va vacío la API
+        /// pasa NULL al procedimiento (no usa su valor por defecto) y la lista sale vacía.
+        /// </summary>
+        public async Task<ActionResult> EnRiesgoAsync(int? Anio, decimal? PromedioMinimo)
         {
             string anio = (Anio ?? DateTime.Now.Year).ToString();
-            var result = await _enRiesgo.ListAsync(null, anio);
+            decimal minimo = PromedioMinimo.HasValue && PromedioMinimo.Value > 0 && PromedioMinimo.Value <= 100 ? PromedioMinimo.Value : 70m;
+            var result = await _enRiesgo.ListAsync(minimo.ToString(System.Globalization.CultureInfo.InvariantCulture), anio);
             return AjaxResult(result);
         }
 

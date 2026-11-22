@@ -7,6 +7,9 @@
     ViewBag.Title = "Caso " + C.Cas_Referencia;
     bool abierto = M.EstaAbierto;
     bool atender = M.PuedeAtender && abierto;
+    // Enlace "Abrir plan de apoyo" para cada alumno del caso: solo quien gestiona planes de apoyo.
+    bool puedePlanes = (Session["RoleName"] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase)
+                       || GESTION_COLEGIAL.UI.Filters.SessionManager.TienePantalla(Session["pantallas"] as string, GESTION_COLEGIAL.UI.Controllers.PlanesApoyoController.PantallaGestionar);
 }
 
 @section Styles{
@@ -142,6 +145,12 @@
                                         }
                                     </span>
                                     <span class="text-muted">@CatalogoCasos.Papel(p.Cpe_Papel)@(string.IsNullOrWhiteSpace(p.Cpe_Nota) ? "" : " · " + p.Cpe_Nota)</span>
+                                    @if (puedePlanes && p.Alu_Id.HasValue)
+                                    {
+                                        <a class="btn btn-link btn-sm p-0 w-100 text-left mt-1" href="@Url.Action("Nuevo", "PlanesApoyo", new { aluId = p.Alu_Id, categoria = "conducta" })">
+                                            <i class="bi bi-life-preserver mr-1" aria-hidden="true"></i>Abrir plan de apoyo
+                                        </a>
+                                    }
                                 </li>
                             }
                         </ul>

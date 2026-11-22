@@ -1,6 +1,9 @@
 @{
     ViewBag.Title = "Analítica Académica";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    // "Crear plan" / "Ver plan" en la tabla de riesgo: solo quien gestiona planes de apoyo.
+    bool puedePlanes = (Session["RoleName"] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase)
+                       || GESTION_COLEGIAL.UI.Filters.SessionManager.TienePantalla(Session["pantallas"] as string, GESTION_COLEGIAL.UI.Controllers.PlanesApoyoController.PantallaGestionar);
 }
 
 @section Styles{
@@ -249,10 +252,11 @@
                                         <th>Alumno</th>
                                         <th>Sección</th>
                                         <th class="text-right">Prom.</th>
+                                        @if (puedePlanes) { <th class="text-right pl-0 pr-1" title="Plan de apoyo">Plan</th> }
                                     </tr>
                                 </thead>
                                 <tbody id="tabla-en-riesgo">
-                                    <tr><td colspan="3" class="text-center text-muted py-3">Sin datos.</td></tr>
+                                    <tr><td colspan="@(puedePlanes ? 4 : 3)" class="text-center text-muted py-3">Sin datos.</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -347,7 +351,8 @@
             urlEnRiesgo:      "@Url.Action("EnRiesgoAsync")",
             urlPiramide:      "@Url.Action("PiramideAsync")",
             urlNotaMinima:    "@Url.Action("NotaMinimaAsync", "GraduacionAlumnos")",
-            urlDetalleAlumno: "@Url.Action("Detalle", "Alumnos")"
+            urlDetalleAlumno: "@Url.Action("Detalle", "Alumnos")",
+            urlPlanesAbiertos: @Html.Raw(puedePlanes ? "\"" + Url.Action("AbiertosAsync", "PlanesApoyo") + "\"" : "null")
         });
     </script>
 }

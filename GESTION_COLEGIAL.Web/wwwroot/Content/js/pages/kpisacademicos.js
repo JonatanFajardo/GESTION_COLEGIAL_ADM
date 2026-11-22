@@ -443,23 +443,26 @@ var KPIsAcademicos = (function () {
 
     function cargarEnRiesgo(anio) {
         if (!urls.urlEnRiesgo) return;
+        // Con permiso de gestionar planes de apoyo hay una 4.ª columna: "Crear plan" / "Ver plan".
+        var conPlanes = !!urls.urlPlanesAbiertos;
+        var columnas = conPlanes ? 4 : 3;
+        var sinDatos = '<tr><td colspan="' + columnas + '" class="text-center text-muted py-3">Sin datos.</td></tr>';
 
         $.ajax({
             url: urls.urlEnRiesgo,
             type: 'GET',
-            data: { Anio: anio },
+            data: { Anio: anio, PromedioMinimo: notaMin },
             success: function (resp) {
                 var filas = (resp && resp.data) ? resp.data : [];
                 var $tbody = $("#tabla-en-riesgo");
                 $tbody.empty();
 
                 if (!filas || filas.length === 0) {
-                    $tbody.html(
-                        '<tr><td colspan="3" class="text-center text-muted py-3">Sin datos.</td></tr>'
-                    );
+                    $tbody.html(sinDatos);
                     return;
                 }
 
+                var ids = [];
                 var max = Math.min(filas.length, 15);
                 for (var i = 0; i < max; i++) {
                     var f = filas[i];
@@ -471,6 +474,7 @@ var KPIsAcademicos = (function () {
                     var prom    = parseFloat(promRaw) || 0;
                     var cls     = 'text-' + claseScore(prom) + ' font-weight-bold';
                     var aluId   = f.Alu_Id != null ? parseInt(f.Alu_Id, 10) : null;
+                    if (aluId) ids.push(aluId);
 
                     var clickable = aluId && urls.urlDetalleAlumno;
                     var trAttrs = clickable
@@ -479,26 +483,57 @@ var KPIsAcademicos = (function () {
 
                     $tbody.append(
                         '<tr' + trAttrs + '>' +
-                        '<td>' + escapeHtml(nombre) + '</td>' +
+                        '<td class="text-wrap">' + escapeHtml(nombre) + '</td>' +
                         '<td>' + escapeHtml(f.Sec_Descripcion) + '</td>' +
                         '<td class="text-right"><span class="' + cls + '">' + prom.toFixed(1) + '</span></td>' +
+                        (conPlanes ? '<td class="text-right text-nowrap pl-0 pr-1" data-plan-alu="' + (aluId || '') + '"><span class="text-muted small">…</span></td>' : '') +
                         '</tr>'
                     );
                 }
 
-                // Fila clickeable → ficha 360 del alumno
-                $tbody.off("click.riesgo").on("click.riesgo", ".kpi-riesgo-row", function () {
+                // Fila clickeable → ficha 360 del alumno (los botones del plan no abren la ficha)
+                $tbody.off("click.riesgo").on("click.riesgo", ".kpi-riesgo-row", function (e) {
+                    if ($(e.target).closest("a, button").length) return;
                     var id = $(this).data("alu-id");
                     if (id && urls.urlDetalleAlumno) {
                         window.location.href = urls.urlDetalleAlumno + '/' + id;
                     }
                 });
+
+                if (conPlanes) cargarPlanesDeRiesgo(ids);
             },
             error: function () {
-                $("#tabla-en-riesgo").html(
-                    '<tr><td colspan="3" class="text-center text-muted py-3">Sin datos.</td></tr>'
-                );
+                $("#tabla-en-riesgo").html(sinDatos);
             }
+        });
+    }
+
+    // Planes de apoyo abiertos de los alumnos en riesgo: "Ver plan" si ya tiene uno, si no "Crear plan".
+    function cargarPlanesDeRiesgo(ids) {
+        var $celdas = $("#tabla-en-riesgo [data-plan-alu]");
+        if (!ids.length) { $celdas.empty(); return; }
+        $.ajax({
+            url: urls.urlPlanesAbiertos,
+            type: 'GET',
+            data: { ids: ids.join(",") },
+            success: function (r) {
+                if (!r || !r.permitido) { $celdas.empty(); return; }
+                var porAlumno = {};
+                (r.planes || []).forEach(function (p) { porAlumno[p.aluId] = p; });
+                $celdas.each(function () {
+                    var aluId = parseInt($(this).attr("data-plan-alu"), 10);
+                    if (!aluId) { $(this).empty(); return; }
+                    var p = porAlumno[aluId];
+                    if (p) {
+                        $(this).html('<a class="btn btn-sm btn-outline-primary px-2 text-nowrap" href="' + escapeHtml(p.url) + '" title="' +
+                            escapeHtml("Plan de apoyo: " + p.titulo + " (" + p.estado + ")") + '">Ver plan</a>');
+                    } else {
+                        $(this).html('<a class="btn btn-sm btn-primary px-2 text-nowrap" href="' + escapeHtml(r.urlNuevo + "?aluId=" + aluId + "&categoria=refuerzo") +
+                            '" title="Abrir un plan de apoyo para este alumno">Crear plan</a>');
+                    }
+                });
+            },
+            error: function () { $celdas.empty(); }
         });
     }
 

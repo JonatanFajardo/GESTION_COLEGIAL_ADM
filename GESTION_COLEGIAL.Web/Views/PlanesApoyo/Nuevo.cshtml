@@ -1,0 +1,204 @@
+@model GESTION_COLEGIAL.UI.Models.PlanApoyoNuevoPaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    var M = Model;
+    ViewBag.Title = "Nuevo plan de apoyo";
+    bool actualElegible = M.UsuarioActual.HasValue && M.Usuarios.Any(u => u.Usu_Id == M.UsuarioActual.Value);
+    int? responsableInicial = actualElegible ? M.UsuarioActual : null;
+}
+
+@section Styles{
+    <link href="~/css/pages/planes-apoyo.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Planes de apoyo</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Nuevo plan</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Nuevo plan de apoyo</h4>
+        <p class="text-muted mb-0">Elija al alumno, escriba qué se quiere lograr y quién lo lleva. Los pasos se agregan después, en el plan.</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <a class="btn btn-outline-secondary" href="@Url.Action("Index")">
+            <i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Planes de apoyo
+        </a>
+    </div>
+</div>
+
+<div class="alert alert-light-danger mb-4" id="pa-error-general" role="alert" hidden></div>
+
+<form id="pa-form-nuevo" aria-label="Nuevo plan de apoyo" novalidate
+      data-url="@Url.Action("CrearAsync")" data-url-alumnos="@Url.Action("AlumnosAsync")"
+      data-url-abiertos="@Url.Action("AbiertosAlumnoAsync")"
+      data-alumno="@M.AluId" data-categoria="@M.Categoria"
+      data-confidenciales="@string.Join(",", CatalogoPlanes.ConfidencialesPorDefecto)">
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-xl-9">
+
+            @* ── 1 · Alumno ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-alumno">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="b-alumno">1 · Alumno</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div id="pa-buscador">
+                        <label for="pa-alumno-buscar">Buscar alumno activo <span class="text-danger">*</span></label>
+                        <input type="search" id="pa-alumno-buscar" class="form-control" autocomplete="off" disabled
+                               placeholder="Cargando alumnos…" aria-describedby="pa-alumno-ayuda" aria-controls="pa-alumno-resultados" />
+                        <small class="form-text text-muted" id="pa-alumno-ayuda">Escriba al menos 2 letras del nombre o números de la identidad.</small>
+                        <div class="list-group mt-2 pa-resultados" id="pa-alumno-resultados" role="listbox" aria-label="Alumnos encontrados"></div>
+                    </div>
+
+                    @* El "hidden" va en el contenedor: d-flex (con !important) le ganaría al atributo. *@
+                    <div id="pa-alumno-elegido" hidden>
+                        <div class="d-flex align-items-center justify-content-between flex-wrap pa-alumno-elegido">
+                            <div class="d-flex align-items-center mr-3 mb-2">
+                                <span class="pa-avatar mr-3" id="pa-alumno-iniciales" aria-hidden="true"></span>
+                                <div>
+                                    <div class="font-weight-bold pa-alumno" id="pa-alumno-nombre"></div>
+                                    <div class="text-muted small" id="pa-alumno-detalle"></div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm mb-2" id="pa-alumno-cambiar">
+                                <i class="bi bi-arrow-repeat mr-1" aria-hidden="true"></i> Cambiar alumno
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-danger small mb-0 mt-1" data-error="alumno"></p>
+                    <div class="alert alert-light-warning mb-0 mt-3 pa-ya-tiene" id="pa-ya-tiene" role="status" hidden></div>
+                </div>
+            </section>
+
+            @* ── 2 · Plan ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-plan">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="b-plan">2 · Plan</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="form-row">
+                        <div class="col-md-5 form-group">
+                            <label for="categoria">Categoría <span class="text-danger">*</span></label>
+                            <select id="categoria" class="custom-select">
+                                <option value="">Elija</option>
+                                @foreach (var c in CatalogoPlanes.Categorias)
+                                {
+                                    <option value="@c.Codigo" selected="@(M.Categoria == c.Codigo)">@c.Etiqueta</option>
+                                }
+                            </select>
+                            <p class="text-danger small mb-0" data-error="categoria"></p>
+                        </div>
+                        <div class="col-md-7 form-group">
+                            <label for="titulo">Objetivo <span class="text-danger">*</span></label>
+                            <input id="titulo" class="form-control" maxlength="150" autocomplete="off"
+                                   placeholder="Ej. Aprobar Matemáticas en el tercer parcial" aria-describedby="titulo-cuenta" />
+                            <small class="form-text text-muted text-right" id="titulo-cuenta">0/150</small>
+                            <p class="text-danger small mb-0" data-error="titulo"></p>
+                        </div>
+                        <div class="col-12 form-group mb-0">
+                            <label for="resumen">Situación y lo que se espera lograr</label>
+                            <textarea id="resumen" class="form-control" rows="4" maxlength="5000"
+                                      placeholder="Qué se detectó (notas, faltas, conducta, salud) y cómo sabremos que el plan funcionó."></textarea>
+                            <p class="text-danger small mb-0" data-error="resumen"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            @* ── 3 · Fechas y responsable ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-fechas">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="b-fechas">3 · Fechas y responsable</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="form-row">
+                        <div class="col-md-3 form-group">
+                            <label for="inicio">Empieza <span class="text-danger">*</span></label>
+                            <input type="date" id="inicio" class="form-control" value="@M.Hoy" />
+                            <p class="text-danger small mb-0" data-error="inicio"></p>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="revision">Se revisa el <span class="text-danger">*</span></label>
+                            <input type="date" id="revision" class="form-control" value="@M.RevisionSugerida" min="@M.Hoy" aria-describedby="revision-ayuda" />
+                            <small class="form-text text-muted" id="revision-ayuda">Ese día se mira si el plan funciona.</small>
+                            <p class="text-danger small mb-0" data-error="revision"></p>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="responsable">Responsable <span class="text-danger">*</span></label>
+                            <select id="responsable" class="custom-select" aria-describedby="responsable-ayuda">
+                                <option value="">Elija</option>
+                                @foreach (var g in M.Usuarios.GroupBy(u => GESTION_COLEGIAL.UI.Models.FormatoPlan.GrupoRol(u.Rol)))
+                                {
+                                    <optgroup label="@g.Key">
+                                        @foreach (var u in g)
+                                        {
+                                            <option value="@u.Usu_Id" selected="@(responsableInicial == u.Usu_Id)">@u.Nombre</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                            <small class="form-text text-muted" id="responsable-ayuda">Dirección, docentes o administración.</small>
+                            <p class="text-danger small mb-0" data-error="responsable"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            @* ── 4 · Confidencialidad ── *@
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-conf">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="b-conf">4 · Confidencialidad</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="confidencial" aria-describedby="confidencial-ayuda" />
+                        <label class="custom-control-label font-weight-bold" for="confidencial"><i class="bi bi-lock mr-1" aria-hidden="true"></i>Plan confidencial</label>
+                    </div>
+                    <small class="form-text text-muted" id="confidencial-ayuda">
+                        Solo lo verán dirección, el responsable y quien lo abrió; los docentes con un paso asignado no lo verán.
+                        Se marca solo para Salud y Orientación; puede cambiarlo.
+                    </small>
+                </div>
+            </section>
+
+            <div class="d-flex flex-wrap justify-content-end mb-4">
+                <a class="btn mb-2 mr-2" href="@Url.Action("Index")">Cancelar</a>
+                <button type="submit" class="btn btn-outline-primary mb-2 mr-2" data-activar="0">
+                    <i class="bi bi-save mr-1" aria-hidden="true"></i> Guardar como borrador
+                </button>
+                <button type="submit" class="btn btn-primary mb-2" data-activar="1">
+                    <i class="bi bi-play-fill mr-1" aria-hidden="true"></i> Guardar y activar
+                </button>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="b-ayuda">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="b-ayuda">Cómo funciona</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <ol class="pl-3 mb-0 small pa-ayuda">
+                        <li><strong>Borrador:</strong> todavía se está armando.</li>
+                        <li><strong>Activo:</strong> el colegio lo está aplicando. Agregue pasos con responsable y fecha límite.</li>
+                        <li>Cada responsable marca sus pasos y escribe notas de seguimiento.</li>
+                        <li>En la fecha de revisión, dirección decide: seguir, pausar, completar o cancelar.</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/Content/js/pages/planes-apoyo.js" asp-append-version="true"></script>
+}
