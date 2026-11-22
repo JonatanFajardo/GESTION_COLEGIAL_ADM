@@ -56,6 +56,7 @@ html.gc-dark .pa-kpi-esmeralda .w-icon { color: #6ee7b7; background: rgba(16, 18
 .pa-resultados .list-group-item.active { background: #f1f5f9; color: #0e1726; border-color: #e2e8f0; outline: none; }
 .pa-resultados .pa-sub { display: block; color: #6b7280; font-size: .8rem; }
 .pa-alumno-elegido { padding: .75rem 1rem .25rem; border: 1px solid #e0e6ed; border-radius: 6px; background: #f8fafc; }
+.pa-ya-tiene a { color: #7c2d12; font-weight: 600; text-decoration: underline; }
 .pa-ayuda li { margin-bottom: .5rem; }
 .pa-ayuda li:last-child { margin-bottom: 0; }
 
@@ -125,6 +126,7 @@ html.gc-dark .pa-tachado { color: #94a3b8; }
 html.gc-dark .pa-historial { border-left-color: #334155; }
 html.gc-dark .pa-historial-item::before { background: #1e293b; border-color: #a5b4fc; }
 html.gc-dark .pa-alumno-elegido { background: #172033; border-color: #334155; }
+html.gc-dark .pa-ya-tiene a { color: #fde68a; }
 html.gc-dark .pa-resultados .list-group-item { background: #1e293b; color: #cbd5e1; border-color: #334155; }
 html.gc-dark .pa-resultados .list-group-item:hover,
 html.gc-dark .pa-resultados .list-group-item:focus,

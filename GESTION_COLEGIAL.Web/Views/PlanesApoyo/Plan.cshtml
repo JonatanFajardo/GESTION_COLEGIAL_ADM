@@ -235,7 +235,7 @@
                     }
                     else
                     {
-                        <ul class="list-group mb-3 pa-pasos">
+                        <ul class="list-group @(M.PuedeEditar ? "mb-3" : "mb-0") pa-pasos">
                             @foreach (var a in M.Pasos)
                             {
                                 <li class="list-group-item d-flex align-items-start justify-content-between flex-wrap @(a.Atrasado ? "pa-paso-atrasado" : "") @(a.Hecho ? "pa-paso-hecho" : "")">
