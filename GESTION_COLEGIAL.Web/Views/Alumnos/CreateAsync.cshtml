@@ -14,14 +14,14 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
             <li class="breadcrumb-item"><a href="/alumnos">Alumnos</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Crear Alumno</li>
+            <li class="breadcrumb-item active" aria-current="page">@(Model.Alu_Id == 0 ? "Crear Alumno" : "Editar Alumno")</li>
         </ol>
     </nav>
 </div>
 
 <div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
     <div class="mr-3">
-        <h4 class="mb-1">Registro de alumnos</h4>
+        <h4 class="mb-1">@(Model.Alu_Id == 0 ? "Registro de alumnos" : "Editar alumno")</h4>
         <p class="text-muted mb-0">Complete la información personal y académica del estudiante.</p>
     </div>
 </div>
@@ -43,7 +43,7 @@
                         <div class="d-flex align-items-center">
                             <span class="badge badge-success mr-2" id="statusBadge"><span id="statusDot"></span><span id="statusText">Activo</span></span>
                             <label class="switch s-outline s-outline-primary mb-0">
-                                <input type="checkbox" id="statusToggle" checked>
+                                <input type="checkbox" id="statusToggle" @(Model.Alu_Id == 0 || Model.Per_EsActivo ? "checked" : "")>
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -51,6 +51,7 @@
                     <hr />
                     @Html.HiddenFor(model => model.Alu_Id)
                     @Html.HiddenFor(model => model.Per_Id)
+                    <input type="hidden" id="Per_EsActivo" name="Per_EsActivo" value="@(Model.Alu_Id == 0 || Model.Per_EsActivo ? "true" : "false")" />
 
                     <div class="row">
                         @* Columna Identidad *@
@@ -59,7 +60,7 @@
                                 <label>
                                     Identidad
                                 </label>
-                                @Html.EditorFor(model => model.Per_Identidad, new { htmlAttributes = new { type = "number", @class = "form-control", @minlength = "13", @placeholder = "0801200012345" } })
+                                @Html.EditorFor(model => model.Per_Identidad, new { htmlAttributes = new { type = "text", @class = "form-control", @maxlength = "15", @placeholder = "0801-2000-12345", @autocomplete = "off" } })
                                 @Html.ValidationMessageFor(model => model.Per_Identidad, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -113,7 +114,7 @@
                                 <label>
                                     Fecha de Nacimiento
                                 </label>
-                                @Html.TextBoxFor(model => model.Per_FechaNacimiento, new { @class = "form-control", type = "date" })
+                                @Html.TextBoxFor(model => model.Per_FechaNacimiento, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
                                 @Html.ValidationMessageFor(model => model.Per_FechaNacimiento, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -135,7 +136,7 @@
                                 <label>
                                     Teléfono
                                 </label>
-                                @Html.EditorFor(model => model.Per_Telefono, new { htmlAttributes = new { @class = "form-control", @maxlength = "9", @placeholder = "9876-5432" } })
+                                @Html.EditorFor(model => model.Per_Telefono, new { htmlAttributes = new { @class = "form-control", @maxlength = "9", @placeholder = "9876-5432 (8 dígitos)" } })
                                 @Html.ValidationMessageFor(model => model.Per_Telefono, "", new { @class = "text-danger" })
                             </div>
                         </div>

@@ -1,106 +1,68 @@
-// Funcionalidad para el formulario de alumnos
-(function() {
+// Formulario de alumnos (crear / editar)
+(function () {
     'use strict';
 
-    // Estado del formulario
-    let estadoActivo = true;
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.querySelector('form[action*="Guardar"]');
+        if (!form) return;
 
-    // Elementos del DOM
-    const statusToggle = document.getElementById('statusToggle');
-    const statusBadge = document.getElementById('statusBadge');
-    const statusDot = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
+        var toggle = document.getElementById('statusToggle');
+        var badge = document.getElementById('statusBadge');
+        var texto = document.getElementById('statusText');
+        var esActivo = document.getElementById('Per_EsActivo');
 
-    // Función para actualizar el estado visual
-    function actualizarEstado(activo) {
-        estadoActivo = activo;
-
-        if (activo) {
-            statusBadge.classList.remove('badge-secondary');
-            statusBadge.classList.add('badge-success');
-            statusText.textContent = 'Activo';
-        } else {
-            statusBadge.classList.remove('badge-success');
-            statusBadge.classList.add('badge-secondary');
-            statusText.textContent = 'Inactivo';
+        // El interruptor "Estado del alumno" manda el valor real (Per_EsActivo) al guardar.
+        function pintarEstado() {
+            var activo = !toggle || toggle.checked;
+            if (esActivo) esActivo.value = activo ? 'true' : 'false';
+            if (badge) {
+                badge.classList.toggle('badge-success', activo);
+                badge.classList.toggle('badge-secondary', !activo);
+            }
+            if (texto) texto.textContent = activo ? 'Activo' : 'Inactivo';
         }
-    }
-
-    // Los checkboxes del sistema ya funcionan correctamente
-    // Solo agregamos funcionalidad adicional si es necesaria
-
-    // Inicializar cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', function() {
-        // Configurar toggle de estado
-        if (statusToggle && statusBadge && statusDot && statusText) {
-            // Inicializar estado basado en el checkbox
-            actualizarEstado(statusToggle.checked);
-
-            // Event listener para el toggle
-            statusToggle.addEventListener('change', function() {
-                actualizarEstado(this.checked);
-            });
+        if (toggle) {
+            toggle.addEventListener('change', pintarEstado);
+            pintarEstado();
         }
 
-        // Confirmación antes de cancelar
-        const cancelBtn = document.getElementById('cancelBtn');
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', function(e) {
-                // Verificar si hay cambios en el formulario
-                const form = this.closest('form');
-                if (form) {
-                    const nombreAlumno = form.querySelector('input[name="Alu_Nombre"]');
-                    const nivelId = form.querySelector('select[name="Niv_Id"]');
+        // La identidad se escribe con o sin guiones; se envía solo con dígitos.
+        var identidad = document.getElementById('Per_Identidad');
+        function limpiarIdentidad() { if (identidad) identidad.value = identidad.value.replace(/[\s-]/g, ''); }
+        if (identidad) identidad.addEventListener('blur', limpiarIdentidad);
+        var telefono = document.getElementById('Per_Telefono');
+        if (telefono) telefono.addEventListener('blur', function () { telefono.value = telefono.value.replace(/[\s-]/g, ''); });
 
-                    // Verificar si hay algún checkbox marcado
-                    const checkboxesMarcados = form.querySelectorAll('input[type="checkbox"]:checked').length;
-
-                    const hasChanges = (nombreAlumno && nombreAlumno.value.trim() !== '') ||
-                                      (nivelId && nivelId.value !== '') ||
-                                      checkboxesMarcados > 0;
-
-                    if (hasChanges) {
-                        if (!confirm('¿Está seguro de que desea cancelar? Los cambios no guardados se perderán.')) {
-                            e.preventDefault();
-                            return false;
-                        }
-                    }
+        // Cancelar: pide confirmación solo si se está creando y ya se escribió algo.
+        var cancelar = document.getElementById('cancelBtn');
+        if (cancelar) {
+            cancelar.addEventListener('click', function (e) {
+                var esNuevo = !document.getElementById('Alu_Id') || document.getElementById('Alu_Id').value === '0';
+                var nombre = document.getElementById('Per_PrimerNombre');
+                if (esNuevo && nombre && nombre.value.trim() !== '' &&
+                    !confirm('¿Está seguro de que desea cancelar? Los cambios no guardados se perderán.')) {
+                    e.preventDefault();
                 }
             });
         }
 
-        // Animación de entrada para los acordeones
-        const accordionHeaders = document.querySelectorAll('.accordion-header-alumno');
-        accordionHeaders.forEach(function(header) {
-            header.addEventListener('click', function() {
-                // Agregar clase para animación suave
-                this.classList.toggle('collapsed');
-            });
-        });
-    });
-
-    // Validación del formulario antes de enviar
-    const form = document.querySelector('form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            const nombreAlumno = this.querySelector('input[name="Alu_Nombre"]');
-            const nivelId = this.querySelector('select[name="Niv_Id"]');
-
-            if (!nombreAlumno || nombreAlumno.value.trim() === '') {
-                alert('Por favor ingrese el nombre del alumno.');
+        // Antes de enviar: normaliza y revisa lo mínimo (el servidor valida todo de nuevo).
+        form.addEventListener('submit', function (e) {
+            limpiarIdentidad();
+            if (telefono) telefono.value = telefono.value.replace(/[\s-]/g, '');
+            var nombre = document.getElementById('Per_PrimerNombre');
+            var nivel = document.getElementById('Niv_Id');
+            if (nombre && nombre.value.trim() === '') {
+                alert('Por favor ingrese el primer nombre del alumno.');
                 e.preventDefault();
-                nombreAlumno.focus();
-                return false;
+                nombre.focus();
+                return;
             }
-
-            if (!nivelId || nivelId.value === '') {
+            if (nivel && nivel.value === '') {
                 alert('Por favor seleccione un nivel educativo.');
                 e.preventDefault();
-                nivelId.focus();
-                return false;
+                nivel.focus();
             }
-
-            return true;
         });
-    }
+    });
 })();

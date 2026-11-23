@@ -84,9 +84,13 @@
             </div>
 
             <div class="mb-2">
-                <a href="@Url.Action("FindAsync", new { id = Model.Alu_Id })" class="btn btn-primary mr-2 mb-1">
-                    <i class="bi bi-pencil mr-1"></i> Editar
-                </a>
+                @if ((Session["RoleName"] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase)
+                     || GESTION_COLEGIAL.UI.Filters.SessionManager.TienePantalla(Session["pantallas"] as string, "Editar alumnos"))
+                {
+                    <a href="@Url.Action("Editar", new { id = Model.Alu_Id })" class="btn btn-primary mr-2 mb-1">
+                        <i class="bi bi-pencil mr-1"></i> Editar
+                    </a>
+                }
                 @if ((Session["RoleName"] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase)
                      || GESTION_COLEGIAL.UI.Filters.SessionManager.TienePantalla(Session["pantallas"] as string, "Constancias y expediente"))
                 {
@@ -384,6 +388,7 @@
 @section Scripts{
     <script src="~/Content/js/pages/alumnos.detail.js"></script>
     <script src="~/Content/js/pages/alumno-ficha.js"></script>
+    <script src="~/Content/js/pages/alumno-familia.js"></script>
     <script>
         AlumnoFicha.init(@Model.Alu_Id);
     </script>

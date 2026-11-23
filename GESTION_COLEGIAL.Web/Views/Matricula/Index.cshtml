@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="col-md-4 form-group mat-field" data-field>
                     <label>Identidad <span class="text-danger">*</span></label>
-                    <input type="text" id="Per_Identidad" name="Per_Identidad" class="form-control" maxlength="13" placeholder="0801200012345" data-req data-len="13">
+                    <input type="text" id="Per_Identidad" name="Per_Identidad" class="form-control" maxlength="15" placeholder="0801-2000-12345" data-req data-len="13" autocomplete="off">
                     <div class="invalid-feedback">Ingrese los 13 dígitos de identidad.</div>
                     <small class="form-text text-muted" id="identidadAviso"></small>
                 </div>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-md-4 form-group mat-field" data-field>
                     <label>Teléfono <span class="text-danger">*</span></label>
-                    <input type="text" id="Per_Telefono" name="Per_Telefono" class="form-control" maxlength="11" placeholder="98765432" data-req>
+                    <input type="text" id="Per_Telefono" name="Per_Telefono" class="form-control" maxlength="9" placeholder="98765432" data-req>
                     <div class="invalid-feedback">Campo requerido.</div>
                 </div>
                 <div class="col-md-4 form-group mat-field" data-field>
@@ -220,7 +220,7 @@
                 <div class="row">
                     <div class="col-md-4 form-group mat-field" data-field data-group="enc-nuevo">
                         <label>Identidad <span class="text-danger">*</span></label>
-                        <input type="text" id="enc_Per_Identidad" class="form-control" maxlength="13" data-req-enc>
+                        <input type="text" id="enc_Per_Identidad" class="form-control" maxlength="15" placeholder="0801-1980-12345" data-req-enc autocomplete="off">
                         <div class="invalid-feedback">Campo requerido (13 dígitos).</div>
                     </div>
                     <div class="col-md-4 form-group mat-field" data-field data-group="enc-nuevo">
@@ -229,8 +229,8 @@
                         <div class="invalid-feedback">Campo requerido.</div>
                     </div>
                     <div class="col-md-4 form-group mat-field" data-field data-group="enc-nuevo">
-                        <label>Segundo nombre <span class="text-danger">*</span></label>
-                        <input type="text" id="enc_Per_SegundoNombre" class="form-control" data-req-enc>
+                        <label>Segundo nombre</label>
+                        <input type="text" id="enc_Per_SegundoNombre" class="form-control">
                         <div class="invalid-feedback">Campo requerido.</div>
                     </div>
                 </div>
@@ -241,8 +241,8 @@
                         <div class="invalid-feedback">Campo requerido.</div>
                     </div>
                     <div class="col-md-4 form-group mat-field" data-field data-group="enc-nuevo">
-                        <label>Apellido materno <span class="text-danger">*</span></label>
-                        <input type="text" id="enc_Per_ApellidoMaterno" class="form-control" data-req-enc>
+                        <label>Apellido materno</label>
+                        <input type="text" id="enc_Per_ApellidoMaterno" class="form-control">
                         <div class="invalid-feedback">Campo requerido.</div>
                     </div>
                     <div class="col-md-4 form-group mat-field" data-field data-group="enc-nuevo">
@@ -263,7 +263,7 @@
                     </div>
                     <div class="col-md-4 form-group mat-field" data-field data-group="enc-nuevo">
                         <label>Teléfono <span class="text-danger">*</span></label>
-                        <input type="text" id="enc_Per_Telefono" class="form-control" maxlength="11" data-req-enc>
+                        <input type="text" id="enc_Per_Telefono" class="form-control" maxlength="9" data-req-enc>
                         <div class="invalid-feedback">Campo requerido.</div>
                     </div>
                     <div class="col-md-4 form-group mat-field" data-field data-group="enc-nuevo">
@@ -380,6 +380,7 @@
             urlEncargados:   "@Url.Action("ListarEncargadosAsync", "Matricula")",
             urlParentescos:  "@Url.Action("ListarParentescosAsync", "Matricula")",
             urlGuardarEnc:   "@Url.Action("GuardarEncargadoAsync", "Matricula")",
+            urlVincularEnc:  "@Url.Action("VincularEncargadoAsync", "Matricula")",
             urlGuardarAlu:   "@Url.Action("GuardarAlumnoAsync", "Matricula")",
             urlDocumentos:   "@Url.Action("Index", "DocumentosAlumnoAdm")",
             urlAlumnos:      "@Url.Action("Index", "Alumnos")",
