@@ -1,0 +1,176 @@
+@model GESTION_COLEGIAL.UI.Models.TemariosResumenPaginaViewModel
+@{
+    ViewBag.Title = "Avance del programa por sección";
+    var M = Model;
+}
+
+@section Styles{
+    <link href="~/css/pages/temarios.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Académico</li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Temario y avance</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Avance por sección</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Avance del programa por sección</h4>
+        <p class="text-muted mb-0">Qué secciones van al día con su temario según la semana de clases; la más atrasada, primero.</p>
+    </div>
+    @if (M.PuedeEditar)
+    {
+        <div class="mt-2 mt-md-0">
+            <a class="btn btn-primary mb-1" href="@Url.Action("Index")"><i class="bi bi-journal-text mr-1" aria-hidden="true"></i> Ir a los temarios</a>
+        </div>
+    }
+</div>
+
+<ul class="nav nav-pills mb-4 tm-vistas" aria-label="Vistas del temario">
+    <li class="nav-item"><a class="nav-link" href="@Url.Action("Index")"><i class="bi bi-journal-text mr-1" aria-hidden="true"></i> Biblioteca de temarios</a></li>
+    <li class="nav-item"><a class="nav-link active" aria-current="page" href="@Url.Action("Resumen")"><i class="bi bi-traffic-light mr-1" aria-hidden="true"></i> Avance por sección</a></li>
+</ul>
+
+<div class="row">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four tm-kpi tm-kpi-indigo h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info"><h6 class="value" id="kpi-secciones">—</h6><p>Secciones con temario</p></div>
+                    <div><div class="w-icon"><i class="bi bi-people" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3" id="kpi-secciones-texto">&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four tm-kpi tm-kpi-esmeralda h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info"><h6 class="value" id="kpi-al-dia">—</h6><p>Al día</p></div>
+                    <div><div class="w-icon"><i class="bi bi-check2-circle" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">Dieron (u omitieron) todo lo de las semanas pasadas.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four tm-kpi tm-kpi-ambar h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info"><h6 class="value" id="kpi-atraso">—</h6><p>Con atraso</p></div>
+                    <div><div class="w-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3" id="kpi-atraso-texto">&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four tm-kpi tm-kpi-cian h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info"><h6 class="value" id="kpi-sin-temario">—</h6><p>Materias sin temario</p></div>
+                    <div><div class="w-icon"><i class="bi bi-journal-x" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">Se dan en el horario y no tienen programa. <a href="#tm-sin-temario">Ver cuáles</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="statbox widget box box-shadow mb-4" aria-labelledby="tm-r-filtros-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="tm-r-filtros-titulo">Filtrar</h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div class="form-row align-items-end">
+            <div class="col-6 col-md-3 col-xl-2 form-group">
+                <label for="tm-r-anio">Año</label>
+                <select id="tm-r-anio" class="custom-select">
+                    @foreach (var a in M.Anios)
+                    {
+                        <option value="@a.Value" selected="@(a.Value == M.AnioActual)">@a.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-6 col-md-3 col-xl-2 form-group">
+                <label for="tm-r-semestre">Semestre</label>
+                <select id="tm-r-semestre" class="custom-select">
+                    <option value="">Los dos</option>
+                    @foreach (var s in M.Semestres)
+                    {
+                        <option value="@s.Value">@s.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 col-xl-2 form-group">
+                <label for="tm-r-nivel">Nivel</label>
+                <select id="tm-r-nivel" class="custom-select">
+                    <option value="">Todos los niveles</option>
+                    @foreach (var n in M.Niveles)
+                    {
+                        <option value="@n.Value">@n.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 col-xl-2 form-group">
+                <label for="tm-r-grado">Grado</label>
+                <select id="tm-r-grado" class="custom-select" disabled><option value="">Elija un nivel primero</option></select>
+            </div>
+            <div class="col-md-6 col-xl-2 form-group">
+                <label for="tm-r-semaforo">Semáforo</label>
+                <select id="tm-r-semaforo" class="custom-select">
+                    <option value="">Todos</option>
+                    <option value="atrasada">Atrasada (3 o más temas)</option>
+                    <option value="leve">Leve atraso (1 o 2)</option>
+                    <option value="con_atraso">Con atraso (cualquiera)</option>
+                    <option value="al_dia">Al día</option>
+                    <option value="sin_inicio">Sin iniciar</option>
+                    <option value="sin_temas">Sin temas</option>
+                </select>
+            </div>
+            <div class="col-md-6 col-xl-2 form-group">
+                <label for="tm-r-buscar">Buscar</label>
+                <input type="search" id="tm-r-buscar" class="form-control" placeholder="Materia o docente" autocomplete="off" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="statbox widget box box-shadow mb-4" aria-labelledby="tm-r-tabla-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="tm-r-tabla-titulo">Secciones <span class="badge outline-badge-primary ml-1" id="tm-r-total">0</span></h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div id="tabla-temario-resumen" class="gc-tabla tm-tabla" data-usuario="@(Session["Username"] as string ?? "anonimo")"
+             data-url="@Url.Action("ResumenAsync")" data-url-sin-temario="@Url.Action("SinTemarioAsync")"
+             data-url-temario="@Url.Action("Temario")" data-url-opciones="@Url.Action("OpcionesAsync")"
+             data-url-nuevo="@(M.PuedeEditar ? Url.Action("Index") : "")"></div>
+    </div>
+</section>
+
+<section class="statbox widget box box-shadow mb-4" id="tm-sin-temario" aria-labelledby="tm-sin-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="tm-sin-titulo">Materias sin temario <span class="badge outline-badge-info ml-1" id="tm-sin-total">0</span></h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <p class="text-muted small">Materias que aparecen en el horario del año y semestre elegidos y todavía no tienen un temario.</p>
+        <div class="table-responsive tm-scroll">
+            <table class="table table-hover table-sm mb-0">
+                <thead><tr><th>Semestre</th><th>Materia</th><th>Grado</th><th class="text-right">Secciones</th>@if (M.PuedeEditar) { <th><span class="sr-only">Acción</span></th> }</tr></thead>
+                <tbody id="tm-sin-cuerpo"><tr><td colspan="5" class="text-muted">Cargando…</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/temarios.js" asp-append-version="true"></script>
+}

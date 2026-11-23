@@ -26,6 +26,18 @@ namespace GESTION_COLEGIAL.UI.Controllers
             });
         }
 
+        /// <summary>
+        /// Temas del temario de la materia (mismo grado, curso, semestre y año del horario) para una semana:
+        /// la ventana del plan los ofrece para llenar tema, objetivos y recursos. El alcance lo decide la API.
+        /// </summary>
+        public async Task<ActionResult> TemasDelTemarioAsync(int horId, int semana)
+        {
+            if (horId <= 0 || semana < 1 || semana > 30) return AjaxResult(new object[0]);
+            int usu = GetUsuarioId();
+            var temas = await new TemariosService().TemasDeHorarioAsync(horId, semana, usu);
+            return AjaxResult(temas.Select(t => new { t.Tet_Id, t.Tem_Nombre, t.Tet_Titulo, t.Tet_Objetivos, t.Tet_Contenido, t.Tet_Recursos }));
+        }
+
         public async Task<ActionResult> ListAsync(int Hor_Id)
         {
             var result = await _service.ListAsync(Hor_Id);

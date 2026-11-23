@@ -245,8 +245,37 @@ var AsistenciaAdm = (function () {
     }
 
     /* ---------------- Init ---------------- */
+    /* ---------------- Plan: temas del temario de la semana ---------------- */
+    var temasTemario = [], pedidoTemario = 0;
+    function temarioDeSemana() {
+        var $box = $("#plan-temario"), sem = parseInt($("#form-plan [name='Pla_Semana']").val(), 10);
+        var hor = $("#plan-hor-hidden").val();
+        if (!urls.planTemario || !hor || !(sem >= 1 && sem <= 30)) { $box.attr("hidden", true); return; }
+        var yo = ++pedidoTemario;
+        $.getJSON(urls.planTemario, { horId: hor, semana: sem }, function (r) {
+            if (yo !== pedidoTemario) return;
+            temasTemario = (r && r.data) || [];
+            if (!temasTemario.length) { $box.attr("hidden", true); return; }
+            $("#plan-temario-lista").html(temasTemario.map(function (t, i) {
+                return '<button type="button" class="list-group-item list-group-item-action py-2" data-tema-temario="' + i + '">' +
+                    '<strong>' + esc(t.Tet_Titulo) + '</strong>' + (t.Tet_Objetivos ? '<br><span class="small text-muted">' + esc(t.Tet_Objetivos) + '</span>' : '') + '</button>';
+            }).join(""));
+            $box.removeAttr("hidden");
+        });
+    }
+
     obj.init = function (u) {
         urls = u;
+        var esperaTemario;
+        $(document).on("input change", "#form-plan [name='Pla_Semana']", function () { clearTimeout(esperaTemario); esperaTemario = setTimeout(temarioDeSemana, 300); });
+        $("#modal-plan").on("shown.bs.modal", temarioDeSemana);
+        $(document).on("click", "[data-tema-temario]", function () {
+            var t = temasTemario[parseInt($(this).data("tema-temario"), 10)];
+            if (!t) return;
+            $("#form-plan [name='Pla_Tema']").val((t.Tet_Titulo || "").slice(0, 200));
+            $("#form-plan [name='Pla_Objetivos']").val(t.Tet_Objetivos || "");
+            $("#form-plan [name='Pla_Recursos']").val((t.Tet_Recursos || "").slice(0, 300));
+        });
 
         // Fecha local (toISOString daría el día UTC: después de las 6 p. m. en Honduras saldría mañana)
         var ahora = new Date();

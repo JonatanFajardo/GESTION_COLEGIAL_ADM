@@ -1,0 +1,109 @@
+@model GESTION_COLEGIAL.UI.Models.TemarioImprimirViewModel
+@{
+    var M = Model;
+    var T = M.Temario;
+    ViewBag.Title = "Imprimir temario · " + T.Materia + " · " + T.Grado;
+    var es = new System.Globalization.CultureInfo("es-HN");
+    string rango(int semana)
+    {
+        var ini = GESTION_COLEGIAL.Business.Models.CatalogoTemario.InicioSemana(T.Tem_FechaInicio, semana);
+        return ini.ToString("d MMM", es) + " – " + ini.AddDays(4).ToString("d MMM", es);
+    }
+    var semanas = M.Temas.GroupBy(x => x.Tet_Semana).OrderBy(g => g.Key).ToList();
+}
+
+@section Styles{
+    <link href="~/css/pages/temarios-imprimir.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content tm-no-imprimir">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Temario y avance</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Temario", new { id = T.Tem_Id })">@T.Materia · @T.Grado</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Imprimir</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina tm-no-imprimir">
+    <div class="mr-3">
+        <h4 class="mb-1">Imprimir temario</h4>
+        <p class="text-muted mb-0">Hoja tamaño carta con el programa por semana, para el expediente docente o la planificación.</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <button type="button" class="btn btn-primary mb-1 mr-2" data-imprimir><i class="bi bi-printer mr-1" aria-hidden="true"></i> Imprimir</button>
+        <a class="btn btn-outline-secondary mb-1" href="@Url.Action("Temario", new { id = T.Tem_Id })"><i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Volver al temario</a>
+    </div>
+</div>
+
+<div class="tm-papel">
+    <article class="tm-hoja">
+        <header class="tm-hoja-membrete">
+            <div>
+                <div class="tm-hoja-institucion">@(string.IsNullOrWhiteSpace(M.Institucion) ? "Temario de la asignatura" : M.Institucion)</div>
+                @if (!string.IsNullOrWhiteSpace(M.Direccion)) { <div class="tm-hoja-pequeno">@M.Direccion</div> }
+            </div>
+            <div class="tm-hoja-titulo">TEMARIO<span>@T.Periodo</span></div>
+        </header>
+
+        <section class="tm-hoja-datos">
+            <div><span>Asignatura</span>@T.Materia</div>
+            <div><span>Grado</span>@T.Grado</div>
+            <div><span>Curso o carrera</span>@(string.IsNullOrWhiteSpace(T.Curso) ? "Todos los del grado" : T.Curso)</div>
+            <div><span>Nivel</span>@(T.Nivel ?? "—")</div>
+            <div><span>Inicio de clases</span>@T.Tem_FechaInicio.ToString("d 'de' MMMM yyyy", es)</div>
+            <div><span>Temas</span>@M.Temas.Count en @semanas.Count semanas</div>
+        </section>
+        <h1 class="tm-hoja-nombre">@T.Tem_Nombre</h1>
+        @if (!string.IsNullOrWhiteSpace(T.Tem_Descripcion))
+        {
+            <p class="tm-hoja-texto">@T.Tem_Descripcion</p>
+        }
+
+        @if (M.Temas.Count == 0)
+        {
+            <p class="tm-hoja-pequeno">Este temario todavía no tiene temas.</p>
+        }
+        else
+        {
+            <table class="tm-hoja-tabla">
+                <thead>
+                    <tr><th class="tm-col-sem">Semana</th><th>Tema y objetivos</th><th>Contenido</th><th>Recursos</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var g in semanas)
+                    {
+                        bool primero = true;
+                        foreach (var x in g.OrderBy(x => x.Tet_Orden))
+                        {
+                            <tr>
+                                @if (primero)
+                                {
+                                    <td class="tm-col-sem" rowspan="@g.Count()"><strong>@g.Key</strong><br /><span class="tm-hoja-pequeno">@rango(g.Key)</span></td>
+                                    primero = false;
+                                }
+                                <td><strong>@x.Tet_Titulo</strong>@if (!string.IsNullOrWhiteSpace(x.Tet_Objetivos)) {<div class="tm-hoja-texto tm-hoja-pequeno">@x.Tet_Objetivos</div>}</td>
+                                <td class="tm-hoja-texto">@x.Tet_Contenido</td>
+                                <td class="tm-hoja-texto">@x.Tet_Recursos</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+
+        <div class="tm-hoja-firmas">
+            <div><span></span>Docente</div>
+            <div><span></span>Coordinación académica</div>
+            <div><span></span>Dirección</div>
+        </div>
+
+        <footer class="tm-hoja-pie">Impreso el @M.Impreso.ToString("d 'de' MMMM yyyy, h:mm tt", es). Temario n.º @T.Tem_Id.</footer>
+    </article>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/temarios.js" asp-append-version="true"></script>
+}

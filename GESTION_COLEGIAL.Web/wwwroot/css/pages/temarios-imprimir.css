@@ -1,0 +1,49 @@
+/* Temario · hoja tamaño carta para imprimir (Temarios/Imprimir). Solo la carga esa vista.
+   Siempre papel blanco con texto oscuro, en cualquier tema (también en modo oscuro). */
+.tm-papel { overflow-x: auto; margin-bottom: 1.5rem; }
+.tm-hoja {
+    box-sizing: border-box; width: 100%; max-width: 8.5in; min-height: 11in; margin: 0 auto;
+    padding: 0.6in 0.65in 0.5in; background: #ffffff; color: #111827; border: 1px solid #d1d5db;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08); font-family: Arial, Helvetica, sans-serif;
+    font-size: 9.5pt; line-height: 1.4; display: flex; flex-direction: column;
+}
+.tm-hoja * { color: inherit; }
+.tm-hoja-membrete { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; padding-bottom: 8pt; border-bottom: 2px solid #111827; }
+.tm-hoja-institucion { font-size: 13pt; font-weight: 700; }
+.tm-hoja-titulo { font-size: 13pt; font-weight: 700; text-align: right; letter-spacing: .05em; }
+.tm-hoja-titulo span { display: block; font-size: 8.5pt; font-weight: 400; letter-spacing: 0; color: #4b5563; }
+.tm-hoja-pequeno { font-size: 8pt; color: #4b5563; }
+.tm-hoja-datos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4pt 16pt; margin: 10pt 0 6pt; font-weight: 600; }
+.tm-hoja-datos span { display: block; font-size: 7.5pt; font-weight: 400; color: #6b7280; }
+.tm-papel .tm-hoja h1.tm-hoja-nombre { font-size: 12pt; font-weight: 700; margin: 6pt 0 4pt; color: #111827; }
+.tm-hoja-texto { white-space: pre-line; margin: 0; }
+.tm-hoja-tabla { width: 100%; border-collapse: collapse; font-size: 8.5pt; margin-top: 8pt; }
+.tm-hoja-tabla th { text-align: left; font-size: 7.5pt; color: #374151; font-weight: 700; border-bottom: 1px solid #6b7280; padding: 3pt 4pt; text-transform: uppercase; letter-spacing: .03em; }
+.tm-hoja-tabla td { border-bottom: 1px solid #e5e7eb; padding: 4pt; vertical-align: top; }
+.tm-hoja-tabla .tm-col-sem { width: 0.95in; text-align: center; background: #f9fafb; }
+.tm-hoja-firmas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24pt; margin-top: 36pt; font-size: 8.5pt; text-align: center; color: #374151; }
+.tm-hoja-firmas span { display: block; border-top: 1px solid #111827; margin-bottom: 3pt; }
+.tm-hoja-pie { margin-top: auto; padding-top: 10pt; border-top: 1px solid #d1d5db; font-size: 8pt; color: #6b7280; }
+
+@media (max-width: 640px) {
+    .tm-hoja { padding: 1.25rem 1rem; min-height: 0; }
+    .tm-hoja-datos { grid-template-columns: 1fr 1fr; }
+    .tm-hoja-membrete { flex-wrap: wrap; }
+    .tm-hoja-titulo { text-align: left; }
+}
+
+@page { size: letter; margin: 0; }
+
+@media print {
+    html body .header-container,
+    html body .main-container .sidebar-wrapper,
+    .overlay, .search-overlay, .footer-wrapper, #load_screen, .cmdk-welcome, .cmdk-backdrop,
+    .tm-no-imprimir, .breadcrumb-wrapper-content { display: none !important; }
+    html, body { background: #ffffff !important; }
+    #container, #content, .main-content, .layout-px-spacing, .layout-top-spacing, .tm-papel {
+        margin: 0 !important; padding: 0 !important; width: auto !important; max-width: none !important;
+        min-height: 0 !important; background: #ffffff !important; overflow: visible !important;
+    }
+    .tm-hoja { border: 0; box-shadow: none; max-width: none; width: 8.5in; min-height: 11in; padding: 0.5in 0.6in 0.45in; }
+    .tm-hoja-tabla tr { page-break-inside: avoid; }
+}

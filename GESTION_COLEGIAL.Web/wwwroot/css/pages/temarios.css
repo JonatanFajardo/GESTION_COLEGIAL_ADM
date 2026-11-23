@@ -1,0 +1,87 @@
+/* Temario y avance — solo lo que CORK no trae: color de los íconos de los indicadores (paleta
+   aprobada), barra de avance mini, temas agrupados por semana y la matriz temas × secciones.
+   La hoja para imprimir vive en temarios-imprimir.css (solo la carga esa vista).
+   Colores explícitos en cada capa para el contraste en tema claro, azul y oscuro. */
+
+/* ── Indicadores: indigo / esmeralda / ámbar / cian ── */
+.tm-kpi .w-icon { justify-content: center; }
+.tm-kpi-indigo .w-icon,
+html.gc-theme-blue .tm-kpi-indigo .w-icon    { color: #4f46e5; background: #eef2ff; }
+.tm-kpi-esmeralda .w-icon,
+html.gc-theme-blue .tm-kpi-esmeralda .w-icon { color: #047857; background: #d1fae5; }
+.tm-kpi-ambar .w-icon,
+html.gc-theme-blue .tm-kpi-ambar .w-icon     { color: #b45309; background: #fef3c7; }
+.tm-kpi-cian .w-icon,
+html.gc-theme-blue .tm-kpi-cian .w-icon      { color: #0e7490; background: #cffafe; }
+html.gc-dark .tm-kpi-indigo .w-icon    { color: #a5b4fc; background: rgba(79, 70, 229, 0.22); }
+html.gc-dark .tm-kpi-esmeralda .w-icon { color: #6ee7b7; background: rgba(16, 185, 129, 0.22); }
+html.gc-dark .tm-kpi-ambar .w-icon     { color: #fcd34d; background: rgba(245, 158, 11, 0.22); }
+html.gc-dark .tm-kpi-cian .w-icon      { color: #67e8f9; background: rgba(6, 182, 212, 0.22); }
+
+/* ── Tablas de la biblioteca y del resumen ── */
+.tm-tabla.tabulator .tabulator-row .tabulator-cell { white-space: normal; }
+.tm-caja { width: 100%; min-width: 0; overflow-wrap: break-word; }
+.tm-sub { display: block; color: #6b7280; font-size: .8rem; }
+.tm-enlace { color: #0e1726; font-weight: 600; }
+.tm-enlace:hover, .tm-enlace:focus { color: #1b55e2; text-decoration: underline; }
+html.gc-dark .tm-enlace { color: #e0e6ed; }
+html.gc-dark .tm-sub { color: #9ca3af; }
+.tm-barra { height: 6px; margin-top: 4px; background: #e5e7eb; border-radius: 3px; overflow: hidden; min-width: 70px; }
+.tm-barra span { display: block; height: 100%; background: #10b981; }
+html.gc-dark .tm-barra { background: #3b3f5c; }
+
+/* ── Temas por semana ── */
+.tm-semana { border: 1px solid #e0e6ed; border-radius: 6px; margin-bottom: 1rem; background: #fff; }
+.tm-semana-cab { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding: .6rem 1rem; border-bottom: 1px solid #e0e6ed; background: #f8fafc; border-radius: 6px 6px 0 0; }
+.tm-semana-cab h5 { margin: 0; font-size: 1rem; font-weight: 600; color: #0e1726; }
+.tm-semana-cab .tm-fechas { color: #6b7280; font-size: .85rem; }
+.tm-semana.tm-actual { border-color: #2196f3; }
+.tm-semana.tm-actual .tm-semana-cab { background: #e7f2fd; }
+.tm-tema { display: flex; gap: .75rem; padding: .75rem 1rem; border-bottom: 1px dashed #e0e6ed; }
+.tm-tema:last-child { border-bottom: 0; }
+.tm-tema-num { flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; background: #eef2ff; color: #3730a3; font-weight: 700; font-size: .8rem; display: inline-flex; align-items: center; justify-content: center; }
+.tm-tema-cuerpo { flex: 1 1 auto; min-width: 0; }
+.tm-tema-titulo { font-weight: 600; color: #0e1726; overflow-wrap: anywhere; }
+.tm-tema-detalle { margin: .35rem 0 0; font-size: .85rem; color: #3b3f5c; }
+.tm-tema-detalle dt { font-weight: 600; color: #6b7280; font-size: .75rem; text-transform: uppercase; letter-spacing: .03em; margin-top: .3rem; }
+.tm-tema-detalle dd { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
+.tm-tema-acciones { flex: 0 0 auto; display: flex; flex-wrap: wrap; align-items: flex-start; gap: .25rem; }
+.tm-oculto-detalle .tm-tema-detalle { display: none; }
+html.gc-dark .tm-semana { background: #1b2e4b; border-color: #3b3f5c; }
+html.gc-dark .tm-semana-cab { background: #191e3a; border-color: #3b3f5c; }
+html.gc-dark .tm-semana-cab h5, html.gc-dark .tm-tema-titulo { color: #e0e6ed; }
+html.gc-dark .tm-semana.tm-actual .tm-semana-cab { background: #1b3a5c; }
+html.gc-dark .tm-tema { border-color: #3b3f5c; }
+html.gc-dark .tm-tema-detalle { color: #bfc9d4; }
+html.gc-dark .tm-tema-num { background: rgba(79, 70, 229, 0.25); color: #c7d2fe; }
+
+/* ── Tarjetas de sección (avance) ── */
+.tm-grupo { border: 1px solid #e0e6ed; border-radius: 6px; padding: .75rem 1rem; height: 100%; background: #fff; }
+.tm-grupo h6 { margin: 0; font-weight: 600; color: #0e1726; }
+html.gc-dark .tm-grupo { background: #1b2e4b; border-color: #3b3f5c; }
+html.gc-dark .tm-grupo h6 { color: #e0e6ed; }
+
+/* ── Matriz temas × secciones ── */
+.tm-matriz { font-size: .85rem; margin-bottom: 0; }
+.tm-matriz th, .tm-matriz td { vertical-align: middle; }
+.tm-matriz thead th { white-space: nowrap; text-align: center; font-size: .78rem; }
+.tm-matriz .tm-col-tema { min-width: 220px; text-align: left; position: sticky; left: 0; z-index: 1; background: #fff; }
+.tm-matriz .tm-col-semana { width: 56px; text-align: center; color: #6b7280; }
+html.gc-dark .tm-matriz .tm-col-tema { background: #0e1726; }
+.tm-celda { width: 38px; height: 32px; padding: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: #9ca3af; font-size: 1.05rem; line-height: 1; }
+.tm-celda:not([disabled]) { cursor: pointer; }
+.tm-celda:not([disabled]):hover, .tm-celda:not([disabled]):focus { border-color: #2196f3; outline: none; }
+.tm-celda[disabled] { opacity: .45; cursor: default; }
+html.gc-dark .tm-vistas .nav-link:not(.active) { color: #bfc9d4; }
+.tm-celda.tm-dado { color: #047857; background: #d1fae5; }
+.tm-celda.tm-parcial { color: #b45309; background: #fef3c7; }
+.tm-celda.tm-omitido { color: #4b5563; background: #e5e7eb; }
+.tm-celda.tm-atrasado { color: #b91c1c; border-color: #fca5a5; background: #fef2f2; }
+html.gc-dark .tm-celda.tm-dado { color: #6ee7b7; background: rgba(16, 185, 129, 0.2); }
+html.gc-dark .tm-celda.tm-parcial { color: #fcd34d; background: rgba(245, 158, 11, 0.2); }
+html.gc-dark .tm-celda.tm-omitido { color: #d1d5db; background: rgba(107, 114, 128, 0.3); }
+html.gc-dark .tm-celda.tm-atrasado { color: #fca5a5; background: rgba(220, 38, 38, 0.18); border-color: #7f1d1d; }
+.tm-leyenda { display: flex; flex-wrap: wrap; gap: .5rem 1rem; font-size: .8rem; color: #6b7280; }
+.tm-leyenda .tm-celda { width: 26px; height: 22px; font-size: .85rem; display: inline-flex; align-items: center; justify-content: center; margin-right: .25rem; vertical-align: middle; }
+.tm-pre { white-space: pre-line; overflow-wrap: anywhere; }
+.tm-scroll { max-height: 26rem; overflow-y: auto; }
