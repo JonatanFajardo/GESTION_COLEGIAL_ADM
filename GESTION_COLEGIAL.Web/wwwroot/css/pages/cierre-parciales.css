@@ -1,0 +1,37 @@
+/* Cierre de parciales — solo lo que CORK no trae: color de los íconos de los indicadores (paleta
+   aprobada), título de cada semestre, barra de avance y textos de faltantes / completo.
+   Colores explícitos en cada capa para el contraste en tema claro, azul y oscuro. */
+
+/* ── Indicadores: indigo / ámbar / cian / esmeralda ── */
+.cp-kpi .w-icon { justify-content: center; }
+.cp-kpi-indigo .w-icon,
+html.gc-theme-blue .cp-kpi-indigo .w-icon    { color: #4f46e5; background: #eef2ff; }
+.cp-kpi-ambar .w-icon,
+html.gc-theme-blue .cp-kpi-ambar .w-icon     { color: #b45309; background: #fef3c7; }
+.cp-kpi-cian .w-icon,
+html.gc-theme-blue .cp-kpi-cian .w-icon      { color: #0e7490; background: #cffafe; }
+.cp-kpi-esmeralda .w-icon,
+html.gc-theme-blue .cp-kpi-esmeralda .w-icon { color: #047857; background: #d1fae5; }
+html.gc-dark .cp-kpi-indigo .w-icon    { color: #a5b4fc; background: rgba(79, 70, 229, 0.22); }
+html.gc-dark .cp-kpi-ambar .w-icon     { color: #fcd34d; background: rgba(245, 158, 11, 0.22); }
+html.gc-dark .cp-kpi-cian .w-icon      { color: #67e8f9; background: rgba(6, 182, 212, 0.22); }
+html.gc-dark .cp-kpi-esmeralda .w-icon { color: #6ee7b7; background: rgba(16, 185, 129, 0.22); }
+
+/* ── Tarjetas de cada parcial ── */
+.cp-semestre { color: #0e1726; font-weight: 600; }
+html.gc-dark .cp-semestre { color: #e0e6ed; }
+.cp-periodo h5 { color: #0e1726; }
+html.gc-dark .cp-periodo h5 { color: #e0e6ed; }
+.cp-progreso { height: 8px; }
+.cp-lineas li { margin-bottom: .35rem; color: #515365; }
+html.gc-dark .cp-lineas li { color: #bfc9d4; }
+.cp-falta { color: #b45309; }
+.cp-completo { color: #047857; }
+html.gc-dark .cp-falta { color: #fcd34d; }
+html.gc-dark .cp-completo { color: #6ee7b7; }
+
+/* ── Historial ── */
+.cp-historial .cp-motivo { min-width: 220px; max-width: 420px; white-space: normal; overflow-wrap: anywhere; }
+
+/* ── Notas faltantes: textos largos (materia, carrera, docentes) bajan de línea ── */
+#tabla-faltantes.tabulator .tabulator-row .tabulator-cell { white-space: normal; overflow-wrap: anywhere; }

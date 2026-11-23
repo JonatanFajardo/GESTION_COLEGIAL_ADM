@@ -11,6 +11,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         private readonly BoletinAdmService _service = new BoletinAdmService();
         private readonly AlumnosService    _alumnos = new AlumnosService();
         private readonly EscalaNotasService _escala = new EscalaNotasService();
+        private readonly CierresParcialService _cierres = new CierresParcialService();
 
         public ActionResult Index() => View();
 
@@ -28,6 +29,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             {
                 alumnos = alumnos.Select(a => new { id = a.Alu_Id, texto = a.Alu_Nombre })
             });
+        }
+
+        // GET: BoletinAdm/PublicacionAsync?anio= -> estado de los parciales del año (Cierre de parciales):
+        // los que tienen notas y no están publicados se muestran como "Resultados provisionales".
+        public async Task<ActionResult> PublicacionAsync(int anio)
+        {
+            var result = await _cierres.PeriodosAsync(anio);
+            return AjaxResult(result);
         }
 
         // GET: BoletinAdm/GetAsync?Alu_Id=&Anio=
