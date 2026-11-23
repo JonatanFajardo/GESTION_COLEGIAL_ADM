@@ -1,7 +1,7 @@
+using GESTION_COLEGIAL.Business.Helpers;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Filters;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.UI.Controllers
@@ -10,7 +10,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class AlumnosDirectorioController : BaseController
     {
         private readonly AlumnosDirectorioService _service = new AlumnosDirectorioService();
-        private const string ApiBase = "http://localhost:5076/api/v1/";
 
         public ActionResult Index() => View();
 
@@ -19,13 +18,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
             string qs = "";
             if (!string.IsNullOrEmpty(Cur_Id)) qs += "&Cur_Id=" + Cur_Id;
             if (!string.IsNullOrEmpty(Sec_Id)) qs += "&Sec_Id=" + Sec_Id;
-            string apiUrl = ApiBase + "AlumnosDirectorio/ListAsync" + (qs.Length > 0 ? "?" + qs.TrimStart('&') : "");
-            using (var client = new HttpClient())
-            {
-                var response = await client.GetAsync(apiUrl);
-                var raw = response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : "[]";
-                return Content("{\"data\":" + raw + "}", "application/json");
-            }
+            string apiUrl = "AlumnosDirectorio/ListAsync" + (qs.Length > 0 ? "?" + qs.TrimStart('&') : "");
+            var raw = await SendHttpClient.GetRawAsync(apiUrl);
+            return Content("{\"data\":" + raw + "}", "application/json");
         }
 
         [HttpGet]

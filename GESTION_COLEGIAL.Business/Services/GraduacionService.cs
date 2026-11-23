@@ -16,8 +16,6 @@ namespace GESTION_COLEGIAL.Business.Services
     /// </summary>
     public class GraduacionService
     {
-        private const string BaseUrl = "http://localhost:5076/api/v1/";
-
         /// <summary>
         /// Obtiene la lista de candidatos a graduacion.
         /// </summary>
@@ -34,14 +32,12 @@ namespace GESTION_COLEGIAL.Business.Services
         /// </summary>
         public async Task<GraduacionResultadoViewModel> GraduarAsync(int alumnoId, int usuarioId)
         {
-            string url = $"{BaseUrl}Graduacion/GraduarAsync?alumnoId={alumnoId}&usuarioId={usuarioId}";
+            string url = $"Graduacion/GraduarAsync?alumnoId={alumnoId}&usuarioId={usuarioId}";
             var resultado = new GraduacionResultadoViewModel { AlumnoId = alumnoId };
             try
             {
-                using (var http = new HttpClient())
+                using (var response = await SendHttpClient.PostRespuestaAsync(url))
                 {
-                    var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
-                    var response = await http.PostAsync(url, content);
                     var body = await response.Content.ReadAsStringAsync();
 
                     if (response.IsSuccessStatusCode)
@@ -71,14 +67,12 @@ namespace GESTION_COLEGIAL.Business.Services
         {
             string query = $"topN={topN}&dryRun={(dryRun ? "true" : "false")}";
             if (anio.HasValue) query += $"&anio={anio.Value}";
-            string url = $"{BaseUrl}Graduacion/BackfillAsync?{query}";
+            string url = $"Graduacion/BackfillAsync?{query}";
 
             try
             {
-                using (var http = new HttpClient())
+                using (var response = await SendHttpClient.PostRespuestaAsync(url))
                 {
-                    var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
-                    var response = await http.PostAsync(url, content);
                     var body = await response.Content.ReadAsStringAsync();
 
                     if (!response.IsSuccessStatusCode)
@@ -120,9 +114,23 @@ namespace GESTION_COLEGIAL.Business.Services
             var trimmed = body.Trim();
             if (trimmed.StartsWith("\"") && trimmed.EndsWith("\""))
             {
-                try { return JsonConvert.DeserializeObject<string>(trimmed); }
-                catch { return trimmed.Trim('"'); }
+                try { trimmed = JsonConvert.DeserializeObject<string>(trimmed) ?? ""; }
+                catch { trimmed = trimmed.Trim('"'); }
             }
+            else if (trimmed.StartsWith("{"))
+            {
+                // Respuesta JSON de la API: { Mensaje } o { title } (permiso, validación).
+                try
+                {
+                    var obj = Newtonsoft.Json.Linq.JObject.Parse(trimmed);
+                    trimmed = (string)(obj["Mensaje"] ?? obj["message"] ?? obj["title"]) ?? "";
+                }
+                catch { trimmed = ""; }
+            }
+            // Una página de error o una traza técnica (con encabezados de la petición) no se muestra al usuario.
+            if (trimmed.Length == 0 || trimmed.Length > 400 || trimmed.StartsWith("<")
+                || trimmed.Contains("   at ") || trimmed.Contains("Exception"))
+                return "Error al ejecutar la operacion.";
             return trimmed;
         }
     }

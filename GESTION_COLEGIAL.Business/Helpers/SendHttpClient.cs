@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.Business.Helpers
@@ -26,6 +29,24 @@ namespace GESTION_COLEGIAL.Business.Helpers
 			return url.EndsWith("/") ? url : url + "/";
 		}
 
+		// Llave compartida con la API (variable de entorno GC_API_KEY). Sin ella las llamadas salen como antes.
+		private static readonly byte[] llaveApi = LeerLlave();
+
+		/// <summary>
+		/// Devuelve el Usu_Id de la sesión de la petición en curso (o null si no hay sesión).
+		/// Lo configura la Web al arrancar; con él la API sabe quién hace cada llamada.
+		/// </summary>
+		public static Func<int?> UsuarioDeLaSesion { get; set; }
+
+		/// <summary>True cuando GC_API_KEY está configurada.</summary>
+		public static bool LlaveConfigurada => llaveApi != null;
+
+		private static byte[] LeerLlave()
+		{
+			var llave = Environment.GetEnvironmentVariable("GC_API_KEY");
+			return string.IsNullOrWhiteSpace(llave) ? null : Encoding.UTF8.GetBytes(llave.Trim());
+		}
+
 		private static HttpClient CrearCliente()
 		{
 			var handler = new HttpClientHandler
@@ -33,7 +54,35 @@ namespace GESTION_COLEGIAL.Business.Helpers
 				// Acepta el certificado autofirmado de la API en desarrollo (mismo comportamiento que antes).
 				ServerCertificateCustomValidationCallback = (mensaje, certificado, cadena, errores) => true
 			};
-			return new HttpClient(handler);
+			return new HttpClient(new EncabezadosSeguridad(handler));
+		}
+
+		/// <summary>"Usu_Id|segundos|firma": firma = HMAC-SHA256 de "Usu_Id|segundos" con la llave (hexadecimal).</summary>
+		private static string FirmarUsuario(int usuId)
+		{
+			string datos = usuId.ToString(CultureInfo.InvariantCulture) + "|"
+				+ DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture);
+			string firma = Convert.ToHexStringLower(HMACSHA256.HashData(llaveApi, Encoding.UTF8.GetBytes(datos)));
+			return datos + "|" + firma;
+		}
+
+		/// <summary>Agrega X-Api-Key y, con sesión, X-Gc-Usuario a cada llamada (solo si hay llave).</summary>
+		private sealed class EncabezadosSeguridad : DelegatingHandler
+		{
+			public EncabezadosSeguridad(HttpMessageHandler interno) : base(interno) { }
+
+			protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage peticion, CancellationToken cancelacion)
+			{
+				if (llaveApi != null)
+				{
+					peticion.Headers.Remove("X-Api-Key");
+					peticion.Headers.Remove("X-Gc-Usuario");
+					peticion.Headers.TryAddWithoutValidation("X-Api-Key", Encoding.UTF8.GetString(llaveApi));
+					int? usuId = UsuarioDeLaSesion?.Invoke();
+					if (usuId > 0) peticion.Headers.TryAddWithoutValidation("X-Gc-Usuario", FirmarUsuario(usuId.Value));
+				}
+				return base.SendAsync(peticion, cancelacion);
+			}
 		}
 
 		#region Asincrono
@@ -55,6 +104,12 @@ namespace GESTION_COLEGIAL.Business.Helpers
 			}
 			catch { return "[]"; }
 		}
+
+		/// <summary>
+		/// POST sin cuerpo que devuelve la respuesta tal cual (quien llama lee el código y el texto).
+		/// </summary>
+		public static Task<HttpResponseMessage> PostRespuestaAsync(string url) =>
+			httpclient.PostAsync($"{baseUrl}{url}", new StringContent(string.Empty, Encoding.UTF8, "application/json"));
 
 		public static async Task<List<T>> GetAsync<T>(string url/*, object model*/)
 		{
