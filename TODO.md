@@ -197,3 +197,7 @@ Los 5 hubs **reutilizan los endpoints de los controllers originales** (`/Modalid
 - [ ] **Validar en navegador** que cada hub hace CRUD real de todos sus catálogos (crear/editar/eliminar/detalle) antes de considerar el borrado definitivo.
 - [ ] **Matriz roles/pantallas**: dar de alta las permission strings de los 5 hubs ("Estructura Académica", "Programa Académico", "Recursos de Horario", "Configuración de Cobranza", "Catálogos Comunes") y migrar los permisos de los catálogos sueltos hacia ellas (hoy los hubs se ven vía `esAdmin`; los CRUD internos aún dependen del guard viejo de cada controller).
 - [ ] **Limpieza post-validación** (commit aparte, tocar csproj): eliminar las vistas `Index.cshtml` sueltas de los catálogos ya consolidados (Modalidades, NivelesEducativos, Secciones, Semestres, Parciales, Cursos, CursosNiveles, Duraciones, Materias, Aulas, Dias, Horas, ConceptosPago, FormasPago, Descuentos, EstadosPago, Tarifas, Estados, Parentescos, Titulos, Cargos) — **dejando** cada controller y sus vistas Create/Edit/Delete/Detail que el hub reutiliza. Recién ahí quitar los bloques comentados del sidebar.
+
+### Alumnos y matrícula
+- [ ] Cupo de las secciones del año: hoy se fijó por script (35 o los matriculados); falta una pantalla para editarlo (Año Lectivo está congelado).
+- [ ] Lista de espera → Matricular: si la modalidad guardada del aspirante no corresponde al grado, el combo queda para elegir a mano (revisar datos de aspirantes).

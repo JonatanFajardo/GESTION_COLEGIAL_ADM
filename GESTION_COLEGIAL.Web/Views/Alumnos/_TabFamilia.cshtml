@@ -49,6 +49,8 @@
     };
 
     // Paleta rotativa para avatares
+    int aluId = ViewBag.AluId is int ai ? ai : 0;
+    bool puedeEditar = ViewBag.PuedeEditar is bool pe && pe;
     var colores = new[] { "#4f46e5", "#f97316", "#10b981", "#06b6d4", "#8b5cf6", "#ef4444" };
 }
 
@@ -58,6 +60,12 @@
         <i class="bi bi-inbox h1 text-muted d-block"></i>
         <h5>Sin encargados vinculados</h5>
         <p class="text-muted">Este alumno no tiene encargados registrados en el sistema.</p>
+        @if (puedeEditar && aluId > 0)
+        {
+            <button type="button" class="btn btn-sm btn-primary mr-2 mb-2 af-fam-ligar" data-alu="@aluId">
+                <i class="bi bi-link-45deg mr-1"></i> Ligar un encargado
+            </button>
+        }
         <a href="/Encargados/Index" class="btn btn-sm btn-outline-primary mr-2 mb-2">
             Gestionar encargados <i class="bi bi-arrow-right"></i>
         </a>
@@ -69,6 +77,12 @@
     <div class="widget-header d-flex flex-wrap align-items-center justify-content-between mb-3">
         <h5 class="mb-0"><i class="bi bi-people-fill mr-2"></i>Encargados del alumno</h5>
         <span class="text-muted small">@encargados.Count registrado@(encargados.Count == 1 ? "" : "s")</span>
+        @if (puedeEditar && aluId > 0)
+        {
+            <button type="button" class="btn btn-sm btn-primary af-fam-ligar" data-alu="@aluId">
+                <i class="bi bi-link-45deg mr-1"></i> Ligar otro encargado
+            </button>
+        }
     </div>
 
     <div class="row">
@@ -134,6 +148,12 @@
                             <a href="/Encargados/Detalle/@encId" class="btn btn-sm btn-outline-primary mr-2 mb-2">
                                 Ver ficha del encargado <i class="bi bi-arrow-right"></i>
                             </a>
+                        }
+                        @if (puedeEditar && aluId > 0 && encId != null)
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-danger mb-2 af-fam-desligar" data-alu="@aluId" data-enc="@encId" data-nombre="@nombre">
+                                <i class="bi bi-x-circle mr-1"></i> Desligar
+                            </button>
                         }
                     </div>
                 </div>

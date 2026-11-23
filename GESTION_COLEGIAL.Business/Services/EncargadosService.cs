@@ -21,6 +21,14 @@ namespace GESTION_COLEGIAL.Business.Services
         }
 
 
+        /// <summary>Liga un encargado existente a un alumno con su parentesco (si ya estaba ligado, cambia el parentesco).</summary>
+        public async Task<RespuestaApi> VincularAsync(int encId, int aluId, int parId) =>
+            await ApiRequests.PostConMensajeAsync("Encargados/VincularAsync", new { Enc_Id = encId, Alu_Id = aluId, Par_Id = parId });
+
+        /// <summary>Quita el vínculo entre un encargado y un alumno (no borra al encargado).</summary>
+        public async Task<RespuestaApi> DesvincularAsync(int encId, int aluId) =>
+            await ApiRequests.PostConMensajeAsync("Encargados/DesvincularAsync", new { Enc_Id = encId, Alu_Id = aluId, Par_Id = 0 });
+
         /// <summary>
         /// Obtiene una lista de encargados de forma asincrónica.
         /// </summary>
