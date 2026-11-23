@@ -387,6 +387,15 @@
     margin-left: 0 !important;
 }
 
+/* ── Escritorio (>= 992px): menú lateral oculto con "Sidebar compacto" o con la hamburguesa ── */
+@media (min-width: 992px) {
+    .sidebar-wrapper { transition: left .25s ease, visibility .25s; }
+    .main-container.sidebar-closed > .sidebar-wrapper {
+        left: -280px !important;
+        visibility: hidden;
+    }
+}
+
 /* ── Móvil / tablet (< 992px): el sidebar es un cajón que abre la hamburguesa ── */
 @media (max-width: 991.98px) {
     .main-container #content { margin-left: 0; }
