@@ -414,3 +414,12 @@
         visibility: visible;
     }
 }
+
+/* ── Botón "¿Qué querés hacer?": el menú es claro, así que texto y fondo oscuros sobre claro ── */
+.sidebar-wrapper .cmdk-trigger {
+    background: var(--sb-bg-hover, #f1f5f9);
+    color: var(--sb-ink, #1e293b);
+    border-color: var(--sb-line, #e2e8f0);
+}
+.sidebar-wrapper .cmdk-trigger:hover { background: var(--sb-soft, #fff1e6); }
+.sidebar-wrapper .cmdk-trigger kbd { background: var(--sb-line, #e2e8f0); color: var(--sb-ink-2, #475569); }
