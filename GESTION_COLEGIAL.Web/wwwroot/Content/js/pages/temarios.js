@@ -137,7 +137,7 @@
         $nivel.on("change", function () {
             sinPadre($grado, "Elija un nivel primero"); sinPadre($curso, "Elija un grado"); sinPadre($materia, "Elija un grado");
             var v = num($nivel.val());
-            if (v) opciones(urlOpciones, { tipo: "grado", nivId: v }).then(function (it) { llenar($grado, it, "Todos los grados"); $grado.prop("disabled", false); });
+            if (v) opciones(urlOpciones, { tipo: "grado", nivId: v }).then(function (it) { llenar($grado, it, "Todos"); $grado.prop("disabled", false); });
             refiltrar();
         });
         $grado.on("change", function () {
