@@ -194,7 +194,7 @@ INSERT INTO app.tbPersonas
      Per_CorreoElectronico, Per_Telefono, Per_Direccion, Per_Sexo,
      Per_UsuarioRegistra, Per_FechaRegistra)
 SELECT
-    '/Content/img/profile/profile-13.jpeg',
+    '/Content/img/profile/profile-13-hombre.jpeg',
     nd.Identidad, nd.PrimerNombre, nd.SegundoNombre,
     nd.ApellidoPaterno, nd.ApellidoMaterno, nd.FechaNacimiento,
     nd.Email, nd.Telefono, nd.Direccion, nd.Sexo,

@@ -64,9 +64,9 @@ No aplican: biblioteca, internado/dormitorios, varias sedes, presupuesto contabl
 ## Hallazgos generales (fuera del calendario, 2026-11-12)
 
 - **API sin autenticación:** ningún controlador de la API exige login y docker-compose publica el puerto 5076. Cualquiera que llegue a ese puerto puede leer o cambiar datos sin pasar por el ADM. Antes del go-live: exigir token o no publicar el puerto fuera del servidor.
-- **Modo oscuro:** el menú lateral y la barra de migas siguen claros; en *Docencia diaria* la etiqueta "Horario" desaparece; `text-muted` tiene poco contraste en toda la app.
+- ~~**Modo oscuro:** menú lateral, barra de migas y `text-muted`~~ (hecho). Pendiente: en *Docencia diaria* la etiqueta "Horario" desaparece.
 - **Pase de lista para dirección:** el selector de horarios muestra solo los del empleado ligado al usuario; un director (o el admin "jona", ligado a un empleado sin horario) no ve ninguno. Decidir si dirección debe ver todos.
-- **"Sidebar compacto" en escritorio:** la preferencia está rota desde antes (el sidebar tapa el contenido). Arreglarla exige mostrar la hamburguesa también en escritorio.
+- ~~**"Sidebar compacto" en escritorio**~~ (hecho): la hamburguesa se muestra también en escritorio y oculta o muestra el menú.
 3. Disciplina · 4. Reportes de asistencia de alumnos · 5. Constancias · 6. Escala de notas + cuadro de honor · 7. Portal de padres.
 
 ---

@@ -283,7 +283,18 @@ document.addEventListener('DOMContentLoaded', function () {
         document.documentElement.classList.toggle('sidebar-noneoverflow', open); // bloquea el scroll del fondo (regla existente < 992px)
     }
     document.addEventListener('click', function (e) {
-        if (e.target.closest('.sidebarCollapse')) { e.preventDefault(); setDrawer(!container.classList.contains('sbar-open')); }
+        if (e.target.closest('.sidebarCollapse')) {
+            e.preventDefault();
+            if (window.matchMedia('(min-width: 992px)').matches) {
+                // Escritorio: la hamburguesa oculta o muestra el menú lateral y recuerda la preferencia.
+                var cerrado = container.classList.toggle('sidebar-closed');
+                try { localStorage.setItem('gc-sidebar-collapsed', cerrado ? '1' : '0'); } catch (err) { }
+                var chk = document.getElementById('toggle-sidebar-collapsed');
+                if (chk) chk.checked = cerrado;
+            } else {
+                setDrawer(!container.classList.contains('sbar-open'));
+            }
+        }
         else if (e.target.closest('.overlay')) { setDrawer(false); }
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setDrawer(false); });
