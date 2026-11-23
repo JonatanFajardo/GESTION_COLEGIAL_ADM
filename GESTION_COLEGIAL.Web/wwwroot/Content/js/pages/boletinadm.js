@@ -1,7 +1,7 @@
 var BoletinAdm = (function () {
     var obj = {};
 
-    obj.init = function (urlGet, urlDropdowns) {
+    obj.init = function (urlGet, urlDropdowns, urlPublicacion) {
         $.getJSON(urlDropdowns, function (data) {
             var sa = $("#f-alu");
             $.each(data.alumnos, function (_, a) {
@@ -18,6 +18,11 @@ var BoletinAdm = (function () {
                 // La API puede devolver directo el array o envuelto en .data
                 var data = (res && res.data) ? res.data : (res || []);
                 var tbody = $("#tbody-boletin").empty();
+
+                // Parciales que Dirección aún no publica (Cierre de parciales): aviso "Resultados provisionales".
+                if (window.BoletinProvisional && urlPublicacion) {
+                    BoletinProvisional.marcar(urlPublicacion, anio, "#boletin-provisional");
+                }
 
                 if (!data || data.length === 0) {
                     tbody.append('<tr><td colspan="5" class="text-center text-muted">Sin notas registradas para este alumno.</td></tr>');

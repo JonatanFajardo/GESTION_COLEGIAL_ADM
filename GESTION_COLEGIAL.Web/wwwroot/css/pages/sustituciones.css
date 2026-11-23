@@ -1,0 +1,86 @@
+/* Sustituciones de docentes — solo lo que CORK no trae: color de los íconos de los indicadores
+   (paleta aprobada), avatar con iniciales, lista elegible de suplentes, subtítulos de las clases y
+   filas canceladas del historial. Colores explícitos en cada capa para tema claro, azul y oscuro. */
+
+/* ── Indicadores: indigo / ámbar / esmeralda / cian ── */
+.sus-kpi .w-icon { justify-content: center; }
+.sus-kpi-indigo .w-icon,
+html.gc-theme-blue .sus-kpi-indigo .w-icon    { color: #4f46e5; background: #eef2ff; }
+.sus-kpi-ambar .w-icon,
+html.gc-theme-blue .sus-kpi-ambar .w-icon     { color: #b45309; background: #fef3c7; }
+.sus-kpi-esmeralda .w-icon,
+html.gc-theme-blue .sus-kpi-esmeralda .w-icon { color: #047857; background: #d1fae5; }
+.sus-kpi-cian .w-icon,
+html.gc-theme-blue .sus-kpi-cian .w-icon      { color: #0e7490; background: #cffafe; }
+html.gc-dark .sus-kpi-indigo .w-icon    { color: #a5b4fc; background: rgba(79, 70, 229, 0.22); }
+html.gc-dark .sus-kpi-ambar .w-icon     { color: #fcd34d; background: rgba(245, 158, 11, 0.22); }
+html.gc-dark .sus-kpi-esmeralda .w-icon { color: #6ee7b7; background: rgba(16, 185, 129, 0.22); }
+html.gc-dark .sus-kpi-cian .w-icon      { color: #67e8f9; background: rgba(6, 182, 212, 0.22); }
+
+/* ── Selector de día y buscadores ── */
+.sus-fecha { width: 11rem; flex: 0 0 auto; border-radius: 0; }
+.sus-buscar { width: 16rem; max-width: 100%; }
+
+/* ── Tarjeta de cada docente ausente ── */
+.sus-min0 { min-width: 0; }
+.sus-nombre { font-size: 1rem; font-weight: 600; color: #0e1726; overflow-wrap: anywhere; }
+.sus-avatar {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2ff;
+    color: #3730a3;
+    font-weight: 700;
+    font-size: .95rem;
+}
+.sus-avatar-sm { width: 32px; height: 32px; flex-basis: 32px; font-size: .78rem; }
+.sus-sub { display: block; color: #6b7280; font-size: .8rem; }
+.sus-clases td { vertical-align: middle; }
+.sus-clases .sus-hora { color: #3b3f5c; font-size: .85rem; }
+.sus-vacio-icono { font-size: 1.6rem; }
+
+/* ── Lista elegible (suplentes / docentes) ── */
+.sus-sugerencias { max-height: 340px; overflow-y: auto; }
+.sus-sugerencias .sus-opcion { padding: .6rem .9rem; color: #0e1726; }
+.sus-sugerencias .sus-opcion .sus-sub-opcion { color: #6b7280; }
+.sus-sugerencias .sus-opcion.active,
+.sus-sugerencias .sus-opcion.active:hover,
+.sus-sugerencias .sus-opcion.active:focus { background: #eef2ff; border-color: #c7d2fe; color: #1e1b4b; z-index: 2; }
+.sus-sugerencias .sus-opcion.active .sus-sub-opcion { color: #3730a3; }
+.sus-sugerencias .sus-opcion[disabled] { opacity: .6; cursor: not-allowed; }
+.sus-sugerencias .badge { white-space: normal; }
+.sus-resumen { padding: .75rem 1rem; border: 1px solid #e0e6ed; border-radius: 6px; background: #f8fafc; color: #0e1726; }
+
+/* ── Historial ── */
+.sus-totales { max-height: 520px; overflow-y: auto; }
+.sus-tabla .tabulator-row.sus-cancelada .tabulator-cell { color: #888ea8; text-decoration: line-through; }
+.sus-tabla .tabulator-row.sus-cancelada .tabulator-cell .badge { text-decoration: none; }
+
+/* ── Modo oscuro ── */
+html.gc-dark .sus-nombre,
+html.gc-dark .sus-clases .sus-hora { color: #e0e6ed; }
+html.gc-dark .sus-sub,
+html.gc-dark .sus-sugerencias .sus-opcion .sus-sub-opcion { color: #a0aec0; }
+html.gc-dark .sus-avatar { background: rgba(79, 70, 229, 0.25); color: #c7d2fe; }
+html.gc-dark .sus-resumen { background: #1b2e4b; border-color: #3b3f5c; color: #e0e6ed; }
+html.gc-dark .sus-sugerencias .sus-opcion { color: #e0e6ed; }
+html.gc-dark .sus-sugerencias .sus-opcion.active,
+html.gc-dark .sus-sugerencias .sus-opcion.active:hover,
+html.gc-dark .sus-sugerencias .sus-opcion.active:focus { background: rgba(79, 70, 229, 0.3); border-color: #6366f1; color: #fff; }
+html.gc-dark .sus-sugerencias .sus-opcion.active .sus-sub-opcion { color: #c7d2fe; }
+
+/* ── Tablas compactas (las celdas de CORK son muy anchas para estas listas) ── */
+.sus-clases.table > thead > tr > th,
+.sus-clases.table > tbody > tr > td { padding: .6rem .75rem; letter-spacing: normal; }
+.sus-clases .sus-col-hora { width: 11rem; }
+.sus-clases .sus-col-estado { width: 15rem; }
+.sus-clases .sus-col-accion { width: 8.5rem; }
+.sus-totales .table { table-layout: fixed; }
+.sus-totales .table > thead > tr > th,
+.sus-totales .table > tbody > tr > td,
+.sus-totales .table > tfoot > tr > td { padding: .45rem .5rem; letter-spacing: normal; white-space: normal; overflow-wrap: anywhere; }
+.sus-totales .sus-col-num { width: 4.25rem; }

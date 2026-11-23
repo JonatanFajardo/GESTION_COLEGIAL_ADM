@@ -1,3 +1,4 @@
+using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Filters;
@@ -13,6 +14,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         private readonly HorariosService  _horarios  = new HorariosService();
         private readonly ParcialesService _parciales = new ParcialesService();
         private readonly UsuariosService  _usuarios  = new UsuariosService();
+        private readonly CierresParcialService _cierres = new CierresParcialService();
 
         public ActionResult Index() => View();
 
@@ -39,7 +41,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
             return Json(new
             {
-                horarios  = horarios.Select(h  => new { id = h.Hor_Id, texto = h.Dia_Descripcion + " " + h.Hor_HoraInicioDescripcion + " — " + h.Mat_Nombre + " (" + h.Sec_Descripcion + ")" }),
+                horarios  = horarios.Select(h  => new { id = h.Hor_Id, sem = h.Sem_Id, anio = h.Hor_Año, texto = h.Dia_Descripcion + " " + h.Hor_HoraInicioDescripcion + " — " + h.Mat_Nombre + " (" + h.Sec_Descripcion + ")" }),
                 parciales = parciales.Select(p => new { id = p.Pac_Id, texto = p.Pac_Descripcion }),
             });
         }
@@ -51,10 +53,35 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
+        // Cierre de parciales (script 075): un parcial cerrado por Dirección es solo lectura.
+        private static string MensajeCerrado(CierreParcialPeriodoViewModel p) =>
+            $"El {p.Parcial?.ToLower()} del {p.Semestre?.ToLower()} de {p.Anio} está cerrado: ya no se pueden registrar, "
+            + "cambiar ni quitar notas. Si hace falta una corrección, pida a Dirección que lo reabra.";
+
+        // GET: NotasAdm/PeriodoAsync?anio=&semId=&pacId= -> ¿el parcial está cerrado?
+        public async Task<ActionResult> PeriodoAsync(int anio, int semId, int pacId)
+        {
+            var p = await _cierres.PeriodoAsync(anio, semId, pacId);
+            bool cerrado = p != null && p.EstaCerrado;
+            return Json(new
+            {
+                cerrado,
+                publicado = p?.Publicado ?? false,
+                mensaje = cerrado ? MensajeCerrado(p) : null
+            });
+        }
+
         [HttpPost]
         public async Task<ActionResult> GuardarNota(int? Not_Id, int Alu_Id, int Sec_Id,
             int Mat_Id, int Sem_Id, int Par_Id, decimal Not_Nota, string Not_Año)
         {
+            // Parcial cerrado: se rechaza aquí con el motivo (la API y el procedimiento lo vuelven a revisar).
+            var periodo = (Not_Id ?? 0) > 0
+                ? await _cierres.PeriodoDeNotaAsync(Not_Id.Value)
+                : (System.DateTime.TryParse(Not_Año, out var fechaAnio) ? await _cierres.PeriodoAsync(fechaAnio.Year, Sem_Id, Par_Id) : null);
+            if (periodo != null && periodo.EstaCerrado)
+                return Json(new { success = false, cerrado = true, message = MensajeCerrado(periodo) });
+
             bool err;
             if (Not_Id == null || Not_Id == 0)
                 err = await _service.CreateAsync(new { Alu_Id, Sec_Id, Mat_Id, Sem_Id, Par_Id, Not_Nota, Not_Año, UsuarioRegistra = GetUsuarioId() });

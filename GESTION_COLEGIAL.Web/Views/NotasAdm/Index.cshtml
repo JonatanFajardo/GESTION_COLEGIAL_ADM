@@ -63,6 +63,7 @@
             </div>
             </div>
         </div>
+        <div id="nb-aviso-cierre" hidden></div>
         <div class="statbox widget box box-shadow mb-4">
             <div class="widget-content widget-content-area">
                 <div class="table-responsive">
@@ -99,6 +100,7 @@
             </div>
             </div>
         </div>
+        <div id="nb-boletin-provisional" hidden></div>
         <div class="statbox widget box box-shadow mb-4" id="panel-boletin" style="display:none;">
             <div class="widget-content widget-content-area">
                 <div class="table-responsive">
@@ -118,12 +120,15 @@
 </div>
 
 @section Scripts{
-    <script src="~/Content/js/pages/notasadm.js"></script>
+    <script src="~/Content/js/components/boletin-provisional.js" asp-append-version="true"></script>
+    <script src="~/Content/js/pages/notasadm.js" asp-append-version="true"></script>
     <script>
         NotasAdm.init({
             urlList:          "@Url.Action("ListAsync", "NotasAdm")",
             urlGuardar:       "@Url.Action("GuardarNota", "NotasAdm")",
             urlDropdowns:     "@Url.Action("DropdownsAsync", "NotasAdm")",
+            urlPeriodo:       "@Url.Action("PeriodoAsync", "NotasAdm")",
+            urlBoletinPublicacion: "@Url.Action("PublicacionAsync", "BoletinAdm")",
             urlBoletinGet:    "@Url.Action("GetAsync", "BoletinAdm")",
             urlBoletinDrops:  "@Url.Action("DropdownsAsync", "BoletinAdm")",
             urlBoletinEscala: "@Url.Action("EscalaAsync", "BoletinAdm")",

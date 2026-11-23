@@ -9,6 +9,37 @@ var NotasAdm = (function () {
     var contexto = {};
     var parciales = [];        // catálogo real de parciales [{id, texto}]
     var escala = [];           // rangos de la escala de notas [{Esc_Concepto, Esc_Abreviatura, Esc_NotaDesde, ...}]
+    var horarios = [];         // [{id, sem, anio, texto}] para saber el período del horario elegido
+    var cierre = { soloLectura: false, mensaje: "" };   // parcial cerrado por Dirección (Cierre de parciales)
+
+    function esc(s) {
+        return String(s === null || s === undefined ? "" : s)
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    // Parcial cerrado = solo lectura: aviso arriba de la tabla y sin campos ni botones para guardar.
+    function aplicarCierre() {
+        var $aviso = $("#nb-aviso-cierre");
+        if (cierre.soloLectura) {
+            $aviso.html('<div class="alert alert-light-warning mb-4" role="alert"><i class="bi bi-lock-fill mr-1" aria-hidden="true"></i>' +
+                '<strong>Solo lectura.</strong> ' + esc(cierre.mensaje) + '</div>').removeAttr("hidden");
+        } else {
+            $aviso.attr("hidden", true).empty();
+        }
+        $("#tbody-notas .nota-input, #tbody-notas .btn-guardar, #btn-guardar-todo").prop("disabled", cierre.soloLectura);
+    }
+
+    function verificarCierre(horId, parId) {
+        var h = horarios.filter(function (x) { return String(x.id) === String(horId); })[0];
+        cierre = { soloLectura: false, mensaje: "" };
+        aplicarCierre();
+        if (!h || !urls.periodo) return;
+        $.getJSON(urls.periodo, { anio: h.anio || new Date().getFullYear(), semId: h.sem, pacId: parId }, function (r) {
+            cierre = { soloLectura: !!(r && r.cerrado), mensaje: (r && r.mensaje) || "" };
+            aplicarCierre();
+        });
+    }
 
     // Traduce un promedio al concepto de la escala (misma lógica que FN_EscalaConcepto:
     // el rango con la mayor nota mínima que no supera el promedio).
@@ -67,6 +98,7 @@ var NotasAdm = (function () {
                 alert("Seleccione el horario y el parcial.");
                 return;
             }
+            verificarCierre(contexto.Hor_Id, contexto.Par_Id);
             $.getJSON(urls.list, contexto, function (data) {
                 var tbody = $("#tbody-notas").empty();
                 if (!data || data.length === 0) {
@@ -84,11 +116,17 @@ var NotasAdm = (function () {
                     var input = '<input type="number" class="form-control nota-input" step="0.01" min="0" max="100" value="' + valor + '">';
                     tbody.append("<tr><td>" + row.Alu_NombreCompleto + "</td><td>" + input + "</td><td>" + btn + "</td></tr>");
                 });
+                aplicarCierre();
             });
         });
 
         // Guarda la nota de una fila. cb(success) es opcional (usado por Guardar Todo).
         function guardarNota(tr, cb) {
+            if (cierre.soloLectura) {
+                if (!cb) toastr.warning(cierre.mensaje);
+                if (cb) cb(false, cierre.mensaje);
+                return;
+            }
             var btn  = tr.find(".btn-guardar");
             var nota = tr.find(".nota-input").val();
             $.post(urls.guardar, {
@@ -104,8 +142,11 @@ var NotasAdm = (function () {
                 var ok = !!(res && res.success);
                 if (ok) {
                     btn.removeClass("btn-success").addClass("btn-secondary").text("Guardado");
+                } else if (res && res.message && !cb) {
+                    toastr.error(res.message);
                 }
-                if (cb) cb(ok);
+                if (res && res.cerrado) { cierre = { soloLectura: true, mensaje: res.message }; aplicarCierre(); }
+                if (cb) cb(ok, res && res.message);
             }).fail(function () {
                 if (cb) cb(false);
             });
@@ -117,6 +158,7 @@ var NotasAdm = (function () {
 
         // ---------- Guardar Todo (mismo patrón loop que Pase de Lista en asistenciaadm.js) ----------
         $("#btn-guardar-todo").on("click", function () {
+            if (cierre.soloLectura) { toastr.warning(cierre.mensaje); return; }
             var filas = $("#tbody-notas tr").filter(function () {
                 return esNumero($(this).find(".nota-input").val());
             });
@@ -128,7 +170,7 @@ var NotasAdm = (function () {
 
             var $btn = $(this).prop("disabled", true);
             var htmlOriginal = $btn.html();
-            var total = filas.length, procesadas = 0, exitosas = 0;
+            var total = filas.length, procesadas = 0, exitosas = 0, ultimoError = "";
 
             function actualizarProgreso() {
                 $btn.html('<i class="fa-solid fa-spinner fa-spin"></i> Guardando ' + procesadas + '/' + total + '...');
@@ -136,9 +178,10 @@ var NotasAdm = (function () {
             actualizarProgreso();
 
             filas.each(function () {
-                guardarNota($(this), function (ok) {
+                guardarNota($(this), function (ok, mensaje) {
                     procesadas++;
                     if (ok) exitosas++;
+                    else if (mensaje) ultimoError = mensaje;
                     if (procesadas < total) {
                         actualizarProgreso();
                         return;
@@ -147,7 +190,8 @@ var NotasAdm = (function () {
                     if (exitosas === total) {
                         toastr.success("Se guardaron " + exitosas + " nota(s) correctamente.");
                     } else {
-                        toastr.warning(exitosas + " de " + total + " nota(s) guardadas. " + (total - exitosas) + " fallaron, intente de nuevo.");
+                        toastr.warning(exitosas + " de " + total + " nota(s) guardadas. " + (total - exitosas) + " fallaron" +
+                            (ultimoError ? ": " + ultimoError : ", intente de nuevo."));
                     }
                 });
             });
@@ -159,7 +203,7 @@ var NotasAdm = (function () {
         var tr = $("#thead-boletin").empty();
         tr.append('<th>Materia</th>');
         $.each(parciales, function (_, p) {
-            tr.append('<th class="text-center">' + p.texto + '</th>');
+            tr.append('<th class="text-center" data-pac="' + p.id + '">' + p.texto + '</th>');
         });
         tr.append('<th class="text-center">Promedio</th>');
         tr.append('<th class="text-center">Concepto</th>');
@@ -188,6 +232,15 @@ var NotasAdm = (function () {
                 var totalCols = parciales.length + 3; // Materia + parciales + Promedio + Concepto
 
                 renderCabeceraBoletin();
+
+                // Parciales que Dirección aún no publica: aviso y marca "Provisional" en su columna.
+                if (window.BoletinProvisional && urls.boletinPublicacion) {
+                    BoletinProvisional.marcar(urls.boletinPublicacion, anio, "#nb-boletin-provisional", function (porPac) {
+                        $("#thead-boletin th[data-pac]").each(function () {
+                            if (porPac[$(this).data("pac")]) $(this).append(' <span class="badge outline-badge-warning ml-1">Provisional</span>');
+                        });
+                    });
+                }
 
                 if (!data || data.length === 0) {
                     tbody.append('<tr><td colspan="' + totalCols + '" class="text-center text-muted">Sin notas registradas para este alumno.</td></tr>');
@@ -236,6 +289,8 @@ var NotasAdm = (function () {
             list:         config.urlList,
             guardar:      config.urlGuardar,
             dropdowns:    config.urlDropdowns,
+            periodo:      config.urlPeriodo,
+            boletinPublicacion: config.urlBoletinPublicacion,
             boletinGet:   config.urlBoletinGet,
             boletinDrops: config.urlBoletinDrops,
             boletinEscala:config.urlBoletinEscala,
@@ -256,6 +311,7 @@ var NotasAdm = (function () {
         // Dropdowns del cuaderno + catálogo real de parciales (compartido con el boletín)
         $.getJSON(urls.dropdowns, function (data) {
             parciales = data.parciales || [];
+            horarios  = data.horarios  || [];
             llenarSelect($("#f-hor"), data.horarios,  "-- Seleccione Horario --");
             llenarSelect($("#f-par"), data.parciales, "-- Seleccione Parcial --");
             renderCabeceraBoletin();

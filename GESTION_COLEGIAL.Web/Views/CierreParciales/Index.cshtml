@@ -1,0 +1,218 @@
+@model GESTION_COLEGIAL.UI.Models.CierreParcialesIndexViewModel
+@{
+    ViewBag.Title = "Cierre de parciales";
+    var M = Model;
+}
+
+@section Styles{
+    <link href="~/css/pages/cierre-parciales.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Cierre de parciales</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Cierre de parciales</h4>
+        <p class="text-muted mb-0">
+            @(M.PuedeCerrar
+                ? "Revise qué notas faltan, cierre cada parcial para que nadie cambie notas y publique los resultados del boletín."
+                : "Qué notas faltan por cargar en cada parcial y cuáles ya cerró y publicó Dirección.")
+        </p>
+    </div>
+    <form method="get" action="@Url.Action("Index")" class="d-flex align-items-center mt-2 mt-md-0">
+        <label for="cp-anio" class="mb-0 mr-2 text-muted">Año</label>
+        <select id="cp-anio" name="anio" class="custom-select w-auto">
+            @foreach (var a in M.Anios)
+            {
+                <option value="@a.Anio" selected="@(a.Anio == M.Anio)">@(a.Anio + (a.EsActivo ? " (activo)" : ""))</option>
+            }
+        </select>
+        <noscript><button type="submit" class="btn btn-primary ml-2">Ver</button></noscript>
+    </form>
+</div>
+
+<div id="cp-raiz"
+     data-anio="@M.Anio"
+     data-puede-cerrar="@(M.PuedeCerrar ? "1" : "0")"
+     data-url-estado="@Url.Action("EstadoAsync")"
+     data-url-faltantes="@Url.Action("FaltantesAsync")"
+     data-url-historial="@Url.Action("HistorialAsync")"
+     data-url-cerrar="@Url.Action("CerrarAsync")"
+     data-url-publicar="@Url.Action("PublicarAsync")"
+     data-url-despublicar="@Url.Action("DespublicarAsync")"
+     data-url-reabrir="@Url.Action("ReabrirAsync")"
+     data-url-fechas="@Url.Action("FechasAsync")">
+
+    @* ── Indicadores del año ── *@
+    <div class="row">
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four cp-kpi cp-kpi-indigo h-100">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-avance">—</h6>
+                            <p>Notas cargadas</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-journal-check" aria-hidden="true"></i></div></div>
+                    </div>
+                    <p class="text-muted small mb-0 mt-3" id="kpi-avance-texto">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four cp-kpi cp-kpi-ambar h-100">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-faltantes">—</h6>
+                            <p>Notas por exigir</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-hourglass-split" aria-hidden="true"></i></div></div>
+                    </div>
+                    <p class="text-muted small mb-0 mt-3" id="kpi-faltantes-texto">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four cp-kpi cp-kpi-cian h-100">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-cerrados">—</h6>
+                            <p>Parciales cerrados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-lock" aria-hidden="true"></i></div></div>
+                    </div>
+                    <p class="text-muted small mb-0 mt-3">Nadie puede cambiar sus notas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four cp-kpi cp-kpi-esmeralda h-100">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="kpi-publicados">—</h6>
+                            <p>Resultados publicados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-megaphone" aria-hidden="true"></i></div></div>
+                    </div>
+                    <p class="text-muted small mb-0 mt-3">El boletín ya no los marca provisionales</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cp-aviso-horario" hidden></div>
+
+    @* ── Una tarjeta por semestre × parcial (la pinta cierre-parciales.js) ── *@
+    <div id="cp-periodos">
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-content widget-content-area text-center text-muted py-5">
+                <i class="fas fa-spinner fa-spin mr-1" aria-hidden="true"></i> Calculando el avance de notas…
+            </div>
+        </div>
+    </div>
+
+    @* ── Notas faltantes de un parcial ── *@
+    <div class="statbox widget box box-shadow mb-4" id="cp-faltantes" hidden>
+        <div class="widget-header">
+            <div class="d-flex flex-wrap align-items-center justify-content-between pt-3">
+                <div class="mr-3">
+                    <h4 class="pl-0 pt-0 mb-1" id="cp-faltantes-titulo">Notas faltantes</h4>
+                    <p class="text-muted mb-0" id="cp-faltantes-sub">Por sección, materia y docente.</p>
+                </div>
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-2 mt-md-0" id="cp-faltantes-cerrar">
+                    <i class="bi bi-x-lg mr-1" aria-hidden="true"></i> Ocultar
+                </button>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div id="tabla-faltantes" class="gc-tabla" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
+        </div>
+    </div>
+
+    @* ── Historial ── *@
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Historial de @M.Anio</h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 cp-historial">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Parcial</th>
+                            <th>Acción</th>
+                            <th>Motivo</th>
+                            <th class="text-right">Faltaban</th>
+                            <th>Quién</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cp-historial">
+                        <tr><td colspan="6" class="text-center text-muted">Cargando…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (M.PuedeCerrar)
+{
+    @* Una sola ventana para todas las acciones (cerrar, publicar, retirar publicación, reabrir, fechas). *@
+    <div class="modal fade" id="cp-modal" tabindex="-1" role="dialog" aria-labelledby="cp-modal-titulo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cp-modal-titulo">Acción</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3" id="cp-modal-texto"></p>
+                    <div class="alert alert-light-warning mb-3" id="cp-modal-faltantes" role="alert" hidden></div>
+                    <div class="custom-control custom-checkbox mb-3" id="cp-modal-confirmar-grupo" hidden>
+                        <input type="checkbox" class="custom-control-input" id="cp-modal-confirmar">
+                        <label class="custom-control-label" for="cp-modal-confirmar">Cierro el parcial aunque falten notas</label>
+                    </div>
+                    <div class="form-group mb-0" id="cp-modal-motivo-grupo" hidden>
+                        <label for="cp-modal-motivo" id="cp-modal-motivo-label">Motivo</label>
+                        <textarea id="cp-modal-motivo" class="form-control" rows="3" maxlength="500"></textarea>
+                        <small class="form-text text-muted" id="cp-modal-motivo-ayuda">Queda en el historial.</small>
+                        <div class="invalid-feedback" id="cp-modal-motivo-error"></div>
+                    </div>
+                    <div class="form-row" id="cp-modal-fechas" hidden>
+                        <div class="form-group col-md-6 mb-0">
+                            <label for="cp-modal-inicio">Inicio de carga</label>
+                            <input type="date" id="cp-modal-inicio" class="form-control">
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <label for="cp-modal-limite">Fecha límite</label>
+                            <input type="date" id="cp-modal-limite" class="form-control">
+                        </div>
+                        <small class="form-text text-muted col-12">Opcionales. Pasada la fecha límite, el parcial se marca como vencido.</small>
+                    </div>
+                    <div class="alert alert-light-danger mt-3 mb-0" id="cp-modal-error" role="alert" hidden></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="cp-modal-aceptar">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/cierre-parciales.js" asp-append-version="true"></script>
+}

@@ -300,7 +300,7 @@
                 </li>
             }
 
-            @if (tiene("Cuaderno de notas") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Calendario escolar") || tiene("Casos de disciplina") || tiene("Planes de apoyo") || tiene("Temario y avance") || tiene("Reporte de asistencia de alumnos") || tiene("Constancias y expediente") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
+            @if (tiene("Cuaderno de notas") || tiene("Cierre de parciales") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Calendario escolar") || tiene("Casos de disciplina") || tiene("Planes de apoyo") || tiene("Sustituciones de docentes") || tiene("Temario y avance") || tiene("Reporte de asistencia de alumnos") || tiene("Constancias y expediente") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
             {
                 <li class="menu">
                     <a href="#Academico" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -315,6 +315,7 @@
                     <ul class="collapse submenu list-unstyled" id="Academico" data-parent="#accordionExample">
                         @* Hubs consolidados (2026-07) — cada hub agrupa en tabs las pantallas que antes eran entradas separadas *@
                         @if (tiene("Cuaderno de notas") || tiene("Boletín de calificaciones")) { <li>@Html.ActionLink("Notas y boletín", "Index", "NotasAdm")</li> }
+                        @if (tiene("Cierre de parciales") || esAdmin) { <li>@Html.ActionLink("Cierre de parciales", "Index", "CierreParciales")</li> }
                         @if (tiene("Escala de notas") || esAdmin) { <li>@Html.ActionLink("Escala de notas", "Index", "EscalaNotas")</li> }
                         @if (tiene("Cuadro de honor") || esAdmin) { <li>@Html.ActionLink("Cuadro de honor", "Index", "CuadroHonor")</li> }
                         @if (tiene("Pase de lista") || tiene("Plan de clases") || tiene("Tareas y entregas")) { <li>@Html.ActionLink("Docencia diaria", "Index", "AsistenciaAdm")</li> }
@@ -325,6 +326,7 @@
                         @if (tiene("Centro de anuncios"))              { <li>@Html.ActionLink("Comunicados",   "Index", "CentroAnuncios")</li> }
                         @if (tiene("Casos de disciplina") || esAdmin)  { <li>@Html.ActionLink("Disciplina",    "Index", "Disciplina")</li> }
                         @if (tiene("Planes de apoyo") || esAdmin)      { <li>@Html.ActionLink("Planes de apoyo", "Index", "PlanesApoyo")</li> }
+                        @if (tiene("Sustituciones de docentes") || esAdmin) { <li>@Html.ActionLink("Sustituciones", "Index", "Sustituciones")</li> }
                         @if (tiene("Reporte de asistencia de alumnos") || esAdmin) { <li>@Html.ActionLink("Reporte de asistencia", "Index", "ReporteAsistencia")</li> }
                         @if (tiene("Constancias y expediente") || esAdmin) { <li>@Html.ActionLink("Constancias y expediente", "Index", "Constancias")</li> }
                         @* Deshabilitadas por test de utilidad §7 (ver TODO.md — decisión 2026-07-08):
