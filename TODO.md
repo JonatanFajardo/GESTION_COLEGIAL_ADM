@@ -103,6 +103,43 @@ Pendientes que quedaron abiertos:
 
 ## Pantallas deshabilitadas — decisión de producto pendiente
 
+### Reportes sueltos → `Centro de reportes` (2026-11-23)
+Un solo lugar (`/CentroReportes`) para pedir cualquier reporte con sus filtros, verlo y bajarlo en Excel o PDF, con "Mis reportes recientes" para repetirlo (tabla `app.tbReportesGenerados`, script API 081). Cada reporte solo aparece y solo se ejecuta si el usuario tiene el permiso de su pantalla de origen (validado en el servidor). Los `<li>` se comentaron; controllers y vistas siguen vivos.
+
+| Pantalla | Rol que la usa | Tarea concreta | ¿Duplica? | Veredicto |
+|---|---|---|---|---|
+| Panel financiero (`ReportesFinancieros/DashboardFinanciero`) | Contador | Ver de un vistazo cómo van las finanzas | No (agregado) | Mantener |
+| Ingresos del mes | Contador | Ver lo cobrado en un mes | La API no está conectada (servicio comentado, procedimientos inexistentes): la pantalla no carga | Deshabilitar → "Ingresos por concepto" del Centro |
+| Comparativa anual | Contador | Comparar cobros entre años | Misma falla de API | Deshabilitar → "Flujo de caja por mes" por año |
+| Proyección de cobros | Contador | Ver lo que falta cobrar del mes | Misma falla de API | Deshabilitar → "Cargos pendientes de cobro" |
+| Pendientes por cobrar | Contador, cajero | Lista de cargos con saldo | Sí, con Cuentas por cobrar (filtro vencidas) | Pasar al centro ("Cargos pendientes de cobro") |
+| Historial de transacciones | Cajero, contador | Pagos de un rango de fechas | Sí, con Movimientos de caja | Pasar al centro ("Pagos recibidos") |
+| Conciliación rápida | Cajero | Cuadrar pagos del día | No (operativa) | Mantener |
+| Flujo de caja | Contador | Cobrado vs pendiente por mes (año) | No | Pasar al centro (mismo filtro: año) |
+| Estado de resultados | Contador | Resumen de un mes | No | Pasar al centro (año + mes) |
+| Análisis de ingresos | Contador | Cobrado y pendiente por concepto (año) | No | Pasar al centro ("Cobrado y pendiente por concepto") |
+| Comparativo por año | Director | Matrícula por programa entre dos años | No | Pasar al centro ("Matrícula: comparativo entre dos años") |
+| Indicadores financieros | Contador, director | Indicadores del mes | Revisar si duplica el Panel financiero | Mantener |
+| Antigüedad de saldos | Contador | Deuda por días de atraso | No | Pasar al centro |
+| Mayores deudores | Contador | A quién llamar primero | No | Pasar al centro (con "cuántos alumnos") |
+| Morosidad por nivel | Contador, director | % de morosidad por programa | No | Pasar al centro ("Morosidad por programa") |
+| Gráficos (`VisorGraficos`) | — (solo admin: su permiso no existe en la DB) | Gráficos resumen | Sí, con los dashboards | Deshabilitar |
+| Reportes pre-generados | Director, consulta | Índice de enlaces a reportes | Sí, lo reemplaza el Centro | Deshabilitar |
+| Pirámide de matrícula | Director, secretaria | Alumnos por programa y sexo | No | Pasar al centro ("Matrícula por programa y sexo") |
+| Antigüedad (RRHH) | RRHH | Años de cada empleado | No | Pasar al centro ("Antigüedad del personal") |
+| Analítica académica | Director | Indicadores y alumnos en riesgo | No (agregado) | Mantener |
+| Reporte de asistencia | Director, docente | Asistencia por sección con planilla día a día | No | Mantener (el Centro solo agrega la exportación "Asistencia de alumnos por sección") |
+| Cuadro de honor | Director | Mejores promedios con su configuración | No | Mantener |
+| Cumpleaños | RRHH | Tarjetas de cumpleaños del mes | No | Mantener |
+| Asistencia del personal | RRHH, director | Registrar asistencia diaria | No (operativa) | Mantener (el Centro agrega el resumen por empleado) |
+| Cumplimiento documental | RRHH, director | Marcar documentos entregados | No (operativa) | Mantener (el Centro agrega "Documentos pendientes del personal") |
+
+Pendientes:
+- [ ] Los nombres de permiso de varios controllers no coinciden con `seguridad.tbPantallas` (ej. `[SessionManager("Flujo de Caja")]` vs "Flujo de caja proyectado"; igual Estado de resultados, Análisis de ingresos, Comparativo de años, Pendientes por cobrar). Por eso solo el admin podía abrir esas pantallas. El Centro acepta ambos nombres.
+- [ ] `EmpleadosAntiguedad` devuelve siempre 0 años (la columna del procedimiento se llama "Años" y la API espera "Anos"); el Centro calcula años y meses. La fecha usada es la de registro de la persona, no una fecha de contratación real.
+- [ ] `RendimientoPorSeccion` devuelve el mismo total de alumnos para secciones de programas distintos: revisar antes de sumarlo al Centro.
+- [ ] Decidir si se borran los controllers y vistas de las pantallas que pasaron al Centro.
+
 ### `EstadoCuentaAdm` → consolidar en `CuentasCobrar/EstadoCuenta` (2026-09-19)
 Dos "Estado de cuenta" del alumno hacían lo mismo. Se dejó **`CuentasCobrar/EstadoCuenta`** como canónica (accionable: cobra, descuentos, mora, histórico con recibos) y se le **agregó Imprimir/PDF** (membrete + `@media print`) que solo tenía la otra. `EstadoCuentaAdm` se **ocultó solo para cajero** (`!esCajero` en sidebar) y se corrigió su símbolo "Q"→"L".
 - [ ] Verificar que director/contador/consulta que usan `EstadoCuentaAdm` tengan acceso a `CuentasCobrar/EstadoCuenta` (permiso "Listado de cuentas por cobrar") antes de ocultarla globalmente.
