@@ -162,6 +162,11 @@
                                 <label>Tema *</label>
                                 <input type="text" name="Pla_Tema" class="form-control" maxlength="200" required>
                             </div>
+                            <div class="col-md-12 form-group" id="plan-temario" hidden>
+                                <label class="mb-1">Del temario de la materia para esta semana</label>
+                                <div class="list-group" id="plan-temario-lista"></div>
+                                <small class="form-text text-muted">Elija un tema para llenar tema, objetivos y recursos. Puede ajustarlos después.</small>
+                            </div>
                             <div class="col-md-12 form-group">
                                 <label>Objetivos</label>
                                 <textarea name="Pla_Objetivos" class="form-control" rows="3"></textarea>
@@ -251,6 +256,7 @@
             planCreate:     "@Url.Action("CreateAsync", "PlanClasesAdm")",
             planEdit:       "@Url.Action("EditAsync", "PlanClasesAdm")",
             planDelete:     "@Url.Action("DeleteAsync", "PlanClasesAdm")",
+            planTemario:    "@Url.Action("TemasDelTemarioAsync", "PlanClasesAdm")",
             tareaList:      "@Url.Action("ListAsync", "TareasAdm")",
             tareaCreate:    "@Url.Action("CreateAsync", "TareasAdm")",
             tareaEdit:      "@Url.Action("EditAsync", "TareasAdm")",

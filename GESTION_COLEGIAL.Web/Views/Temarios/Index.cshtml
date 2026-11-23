@@ -1,0 +1,281 @@
+@model GESTION_COLEGIAL.UI.Models.TemariosIndexViewModel
+@{
+    ViewBag.Title = "Temario y avance";
+    var M = Model;
+}
+
+@section Styles{
+    <link href="~/css/pages/temarios.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Temario y avance</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Temario y avance</h4>
+        <p class="text-muted mb-0">
+            @(M.PuedeSupervisar
+                ? "El programa de cada materia por semana y cuánto lleva cada sección."
+                : "Los temarios de las materias que usted imparte: arme los temas por semana y marque lo que dio en cada sección.")
+        </p>
+    </div>
+    @if (M.PuedeEditar)
+    {
+        <div class="d-flex flex-wrap mt-2 mt-md-0">
+            <button type="button" class="btn btn-outline-primary mb-1 mr-2" id="tm-btn-copiar">
+                <i class="bi bi-files mr-1" aria-hidden="true"></i> Copiar temario
+            </button>
+            <button type="button" class="btn btn-primary mb-1" id="tm-btn-nuevo">
+                <i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Nuevo temario
+            </button>
+        </div>
+    }
+</div>
+
+@if (M.PuedeSupervisar)
+{
+    <ul class="nav nav-pills mb-4 tm-vistas" aria-label="Vistas del temario">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="@Url.Action("Index")"><i class="bi bi-journal-text mr-1" aria-hidden="true"></i> Biblioteca de temarios</a></li>
+        <li class="nav-item"><a class="nav-link" href="@Url.Action("Resumen")"><i class="bi bi-traffic-light mr-1" aria-hidden="true"></i> Avance por sección</a></li>
+    </ul>
+}
+
+<div class="row" id="tm-kpis">
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four tm-kpi tm-kpi-indigo h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info"><h6 class="value" id="kpi-temarios">—</h6><p>Temarios</p></div>
+                    <div><div class="w-icon"><i class="bi bi-journal-text" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3" id="kpi-temarios-texto">&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four tm-kpi tm-kpi-esmeralda h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info"><h6 class="value" id="kpi-avance">—</h6><p>Avance promedio</p></div>
+                    <div><div class="w-icon"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">Temas ya dados, promedio de las secciones.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four tm-kpi tm-kpi-ambar h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    <div class="w-info"><h6 class="value" id="kpi-atrasadas">—</h6><p>Secciones atrasadas</p></div>
+                    <div><div class="w-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></div></div>
+                </div>
+                <p class="text-muted small mb-0 mt-3">Con temas de semanas pasadas sin dar.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+        <div class="widget widget-card-four tm-kpi tm-kpi-cian h-100">
+            <div class="widget-content">
+                <div class="w-content">
+                    @if (M.PuedeSupervisar)
+                    {
+                        <div class="w-info"><h6 class="value" id="kpi-sin-temario">—</h6><p>Materias sin temario</p></div>
+                        <div><div class="w-icon"><i class="bi bi-journal-x" aria-hidden="true"></i></div></div>
+                    }
+                    else
+                    {
+                        <div class="w-info"><h6 class="value" id="kpi-secciones">—</h6><p>Secciones</p></div>
+                        <div><div class="w-icon"><i class="bi bi-people" aria-hidden="true"></i></div></div>
+                    }
+                </div>
+                <p class="text-muted small mb-0 mt-3">
+                    @if (M.PuedeSupervisar)
+                    {
+                        <span>Del horario de @M.AnioActual. </span><a href="@Url.Action("Resumen")#tm-sin-temario">Ver cuáles</a>
+                    }
+                    else
+                    {
+                        <span>Secciones que llevan estas materias.</span>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="statbox widget box box-shadow mb-4" aria-labelledby="tm-filtros-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="tm-filtros-titulo">Buscar temarios</h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div class="form-row align-items-end">
+            <div class="col-6 col-md-3 col-xl-2 form-group">
+                <label for="tm-f-anio">Año</label>
+                <select id="tm-f-anio" class="custom-select">
+                    <option value="">Todos</option>
+                    @foreach (var a in M.Anios)
+                    {
+                        <option value="@a.Value" selected="@(a.Value == M.AnioActual)">@a.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-6 col-md-3 col-xl-2 form-group">
+                <label for="tm-f-semestre">Semestre</label>
+                <select id="tm-f-semestre" class="custom-select">
+                    <option value="">Los dos</option>
+                    @foreach (var s in M.Semestres)
+                    {
+                        <option value="@s.Value">@s.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 col-xl-2 form-group">
+                <label for="tm-f-nivel">Nivel</label>
+                <select id="tm-f-nivel" class="custom-select">
+                    <option value="">Todos</option>
+                    @foreach (var n in M.Niveles)
+                    {
+                        <option value="@n.Value">@n.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 col-xl-2 form-group">
+                <label for="tm-f-grado">Grado</label>
+                <select id="tm-f-grado" class="custom-select" disabled><option value="">Elija un nivel primero</option></select>
+            </div>
+            <div class="col-md-4 col-xl-2 form-group">
+                <label for="tm-f-curso">Curso <span class="text-muted">(opcional)</span></label>
+                <select id="tm-f-curso" class="custom-select" disabled><option value="">Elija un grado</option></select>
+            </div>
+            <div class="col-md-4 col-xl-2 form-group">
+                <label for="tm-f-materia">Materia</label>
+                <select id="tm-f-materia" class="custom-select" disabled><option value="">Elija un grado</option></select>
+            </div>
+        </div>
+        <div class="form-row align-items-center">
+            <div class="col-md-6 col-xl-4 form-group">
+                <label for="tm-buscar" class="sr-only">Buscar</label>
+                <input type="search" id="tm-buscar" class="form-control" placeholder="Buscar materia o temario" autocomplete="off" />
+            </div>
+            <div class="col-md-6 col-xl-8 d-flex flex-wrap align-items-center form-group">
+                <div class="custom-control custom-switch mr-4 my-1">
+                    <input type="checkbox" class="custom-control-input" id="tm-solo-atrasados" />
+                    <label class="custom-control-label" for="tm-solo-atrasados">Solo con secciones atrasadas</label>
+                </div>
+                <button type="button" class="btn btn-link p-0 my-1" id="tm-limpiar" hidden><i class="bi bi-x-lg mr-1" aria-hidden="true"></i> Quitar filtros</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="statbox widget box box-shadow mb-4" aria-labelledby="tm-tabla-titulo">
+    <div class="widget-header">
+        <div class="row"><div class="col-12"><h4 id="tm-tabla-titulo">Temarios <span class="badge outline-badge-primary ml-1" id="tm-total">0</span></h4></div></div>
+    </div>
+    <div class="widget-content widget-content-area">
+        <div id="tabla-temarios" class="gc-tabla tm-tabla" data-usuario="@(Session["Username"] as string ?? "anonimo")"
+             data-url="@Url.Action("ListAsync")" data-url-temario="@Url.Action("Temario")" data-url-opciones="@Url.Action("OpcionesAsync")"
+             data-url-sin-temario="@(M.PuedeSupervisar ? Url.Action("SinTemarioAsync") : "")"
+             data-edita="@(M.PuedeEditar ? "1" : "0")" data-anio-actual="@M.AnioActual"></div>
+    </div>
+</section>
+
+@Html.AntiForgeryToken()
+
+@if (M.PuedeEditar)
+{
+    @* ── Nuevo temario ── *@
+    <div class="modal fade" id="tm-modal-nuevo" tabindex="-1" role="dialog" aria-labelledby="tm-nuevo-titulo" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <form class="modal-content" id="tm-form-nuevo" novalidate data-url="@Url.Action("CrearAsync")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tm-nuevo-titulo">Nuevo temario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small">El temario es el programa de la materia para un grado y un semestre. Lo comparten todas las secciones del grado que llevan la materia.</p>
+                    <div class="alert alert-light-danger" id="tm-nuevo-error" role="alert" hidden></div>
+                    <div class="form-row">
+                        <div class="col-md-3 form-group">
+                            <label for="tm-anio">Año *</label>
+                            <select id="tm-anio" class="custom-select">
+                                @foreach (var a in M.Anios)
+                                {
+                                    <option value="@a.Value" selected="@(a.Value == M.AnioActual)">@a.Text</option>
+                                }
+                            </select>
+                            <p class="invalid-feedback d-block mb-0" data-error="tm-anio"></p>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="tm-semestre">Semestre *</label>
+                            <select id="tm-semestre" class="custom-select">
+                                @foreach (var s in M.Semestres)
+                                {
+                                    <option value="@s.Value">@s.Text</option>
+                                }
+                            </select>
+                            <p class="invalid-feedback d-block mb-0" data-error="tm-semestre"></p>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="tm-inicio">Inicio de clases del semestre *</label>
+                            <input type="date" id="tm-inicio" class="form-control" />
+                            <small class="form-text text-muted">Con esta fecha se calcula en qué semana van las clases.</small>
+                            <p class="invalid-feedback d-block mb-0" data-error="tm-inicio"></p>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 form-group">
+                            <label for="tm-nivel">Nivel *</label>
+                            <select id="tm-nivel" class="custom-select"><option value="">Cargando…</option></select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="tm-grado">Grado *</label>
+                            <select id="tm-grado" class="custom-select" disabled><option value="">Elija un nivel primero</option></select>
+                            <p class="invalid-feedback d-block mb-0" data-error="tm-grado"></p>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="tm-curso">Curso o carrera <span class="text-muted">(opcional)</span></label>
+                            <select id="tm-curso" class="custom-select" disabled><option value="">Elija un grado</option></select>
+                            <small class="form-text text-muted">Déjelo en "Todos" si el programa es el mismo para todas las carreras del grado.</small>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="tm-materia">Materia *</label>
+                            <select id="tm-materia" class="custom-select" disabled><option value="">Elija un grado</option></select>
+                            <p class="invalid-feedback d-block mb-0" data-error="tm-materia"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tm-nombre">Nombre del temario *</label>
+                        <input type="text" id="tm-nombre" class="form-control" maxlength="150" autocomplete="off" />
+                        <p class="invalid-feedback d-block mb-0" data-error="tm-nombre"></p>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="tm-descripcion">Descripción <span class="text-muted">(opcional)</span></label>
+                        <textarea id="tm-descripcion" class="form-control" rows="2" maxlength="2000" placeholder="Enfoque, competencias del CNB, forma de evaluar…"></textarea>
+                        <p class="invalid-feedback d-block mb-0" data-error="tm-descripcion"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg mr-1" aria-hidden="true"></i> Crear temario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <partial name="_TemarioCopiar" model="new GESTION_COLEGIAL.UI.Models.TemarioCopiarModalViewModel { AnioActual = M.AnioActual, Semestres = M.Semestres, Anios = M.Anios }" />
+}
+
+@section Scripts{
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/temarios.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,329 @@
+@model GESTION_COLEGIAL.UI.Models.TemarioPaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    var M = Model;
+    var T = M.Temario;
+    ViewBag.Title = "Temario · " + T.Materia + " · " + T.Grado;
+    bool avance = M.Tab == "avance";
+    var es = new System.Globalization.CultureInfo("es-HN");
+    string semanaTexto = T.SemanaActual.HasValue ? "Semana " + T.SemanaActual + " de clases" : "Las clases aún no empiezan";
+    var copiaModal = new GESTION_COLEGIAL.UI.Models.TemarioCopiarModalViewModel
+    {
+        AnioActual = T.Tem_Anio, OrigenId = T.Tem_Id, OrigenTexto = T.Materia + " · " + T.Ubicacion + " · " + T.Periodo,
+        Semestres = M.Semestres, Anios = M.Anios
+    };
+}
+
+@section Styles{
+    <link href="~/css/pages/temarios.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Académico</li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Temario y avance</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@T.Materia · @T.Grado</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">@T.Materia · @T.Ubicacion</h4>
+        <p class="text-muted mb-0">@T.Periodo · @semanaTexto</p>
+    </div>
+    <div class="d-flex flex-wrap mt-2 mt-md-0">
+        <a class="btn btn-outline-primary mb-1 mr-2" href="@Url.Action("Imprimir", new { id = T.Tem_Id })">
+            <i class="bi bi-printer mr-1" aria-hidden="true"></i> Imprimir
+        </a>
+        @if (M.PuedeCrear)
+        {
+            <button type="button" class="btn btn-outline-primary mb-1 mr-2" id="tm-btn-copiar"><i class="bi bi-files mr-1" aria-hidden="true"></i> Copiar</button>
+        }
+        @if (T.PuedeEditar)
+        {
+            <button type="button" class="btn btn-outline-primary mb-1 mr-2" id="tm-btn-editar"><i class="bi bi-pencil mr-1" aria-hidden="true"></i> Editar datos</button>
+            <button type="button" class="btn btn-outline-danger mb-1" id="tm-btn-eliminar"><i class="bi bi-trash mr-1" aria-hidden="true"></i> Quitar</button>
+        }
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(M.Aviso))
+{
+    <div class="alert alert-light-success mb-4" role="status">
+        <i class="bi bi-check-circle mr-1" aria-hidden="true"></i> @M.Aviso
+    </div>
+}
+
+<section class="statbox widget box box-shadow mb-4" aria-label="Datos del temario">
+    <div class="widget-content widget-content-area">
+        <div class="row">
+            <div class="col-6 col-md-3 mb-2"><span class="tm-sub">Nivel</span><strong>@(T.Nivel ?? "—")</strong></div>
+            <div class="col-6 col-md-3 mb-2"><span class="tm-sub">Curso o carrera</span><strong>@(string.IsNullOrWhiteSpace(T.Curso) ? "Todos los del grado" : T.Curso)</strong></div>
+            <div class="col-6 col-md-3 mb-2"><span class="tm-sub">Inicio de clases</span><strong>@T.Tem_FechaInicio.ToString("d 'de' MMMM yyyy", es)</strong></div>
+            <div class="col-6 col-md-3 mb-2"><span class="tm-sub">Temas · secciones</span><strong id="tm-dato-conteo">@T.Temas temas · @T.Secciones secciones</strong></div>
+        </div>
+        <p class="font-weight-bold mb-1 mt-1">@T.Tem_Nombre</p>
+        @if (!string.IsNullOrWhiteSpace(T.Tem_Descripcion))
+        {
+            <p class="mb-2 tm-pre">@T.Tem_Descripcion</p>
+        }
+        <p class="text-muted small mb-0">
+            Creado por @(T.Registra ?? "—") el @T.Tem_FechaRegistra.ToString("d MMM yyyy", es).
+            @if (T.Tem_IdOrigen.HasValue && !string.IsNullOrWhiteSpace(T.Origen))
+            {
+                <span>Copiado de <a href="@Url.Action("Temario", new { id = T.Tem_IdOrigen })">@T.Origen</a>.</span>
+            }
+        </p>
+    </div>
+</section>
+
+<div id="tm-temario" data-id="@T.Tem_Id" data-url-datos="@Url.Action("DatosAsync", new { id = T.Tem_Id })"
+     data-url-tema="@Url.Action("GuardarTemaAsync")" data-url-mover="@Url.Action("MoverTemaAsync")" data-url-quitar-tema="@Url.Action("QuitarTemaAsync")"
+     data-url-marcar="@Url.Action("MarcarAvanceAsync")" data-url-quitar-marca="@Url.Action("QuitarAvanceAsync")"
+     data-url-editar="@Url.Action("EditarAsync")" data-url-eliminar="@Url.Action("EliminarAsync")" data-url-lista="@Url.Action("ListAsync")"
+     data-inicio="@T.Tem_FechaInicio.ToString("yyyy-MM-dd")" data-hoy="@M.Hoy" data-mat="@T.Mat_Id"
+     data-edita="@(T.PuedeEditar ? "1" : "0")" data-supervisa="@(T.PuedeSupervisar ? "1" : "0")">
+
+    <ul class="nav nav-tabs mb-3" id="tm-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link @(avance ? "" : "active")" id="tm-tab-temas" data-toggle="tab" href="#tm-panel-temas" role="tab" aria-controls="tm-panel-temas" aria-selected="@(avance ? "false" : "true")">
+                <i class="bi bi-list-ol mr-1" aria-hidden="true"></i> Temas por semana <span class="badge badge-light ml-1" id="tm-n-temas">@T.Temas</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(avance ? "active" : "")" id="tm-tab-avance" data-toggle="tab" href="#tm-panel-avance" role="tab" aria-controls="tm-panel-avance" aria-selected="@(avance ? "true" : "false")">
+                <i class="bi bi-check2-square mr-1" aria-hidden="true"></i> Avance por sección <span class="badge badge-light ml-1" id="tm-n-secciones">@T.Secciones</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        @* ── Temas por semana ── *@
+        <div class="tab-pane fade @(avance ? "" : "show active")" id="tm-panel-temas" role="tabpanel" aria-labelledby="tm-tab-temas">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+                <div class="d-flex flex-wrap">
+                    @if (T.PuedeEditar)
+                    {
+                        <button type="button" class="btn btn-primary mb-1 mr-2" id="tm-btn-tema"><i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Agregar tema</button>
+                        <button type="button" class="btn btn-outline-primary mb-1 mr-2" id="tm-btn-traer"><i class="bi bi-box-arrow-in-down mr-1" aria-hidden="true"></i> Traer temas de otro temario</button>
+                    }
+                </div>
+                <div class="custom-control custom-switch my-1">
+                    <input type="checkbox" class="custom-control-input" id="tm-ver-detalle" checked />
+                    <label class="custom-control-label" for="tm-ver-detalle">Ver objetivos, contenido y recursos</label>
+                </div>
+            </div>
+            <div id="tm-semanas"><p class="text-muted">Cargando temas…</p></div>
+        </div>
+
+        @* ── Avance por sección ── *@
+        <div class="tab-pane fade @(avance ? "show active" : "")" id="tm-panel-avance" role="tabpanel" aria-labelledby="tm-tab-avance">
+            <div class="row" id="tm-grupos"></div>
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="tm-matriz-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="tm-matriz-titulo">Temas dados por sección</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="tm-leyenda mb-3" aria-hidden="true">
+                        <span><span class="tm-celda tm-dado"><i class="bi bi-check-lg"></i></span>Dado</span>
+                        <span><span class="tm-celda tm-parcial"><i class="bi bi-circle-half"></i></span>Dado en parte</span>
+                        <span><span class="tm-celda tm-omitido"><i class="bi bi-skip-forward"></i></span>Omitido</span>
+                        <span><span class="tm-celda tm-atrasado"><i class="bi bi-exclamation"></i></span>Atrasado (semana pasada)</span>
+                        <span><span class="tm-celda"><i class="bi bi-circle"></i></span>Sin marcar</span>
+                    </div>
+                    <p class="text-muted small" id="tm-matriz-ayuda"></p>
+                    <div class="table-responsive" id="tm-matriz"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+@* ── Marcar avance ── *@
+<div class="modal fade" id="tm-modal-avance" tabindex="-1" role="dialog" aria-labelledby="tm-avance-titulo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content" id="tm-form-avance" novalidate>
+            <div class="modal-header">
+                <h5 class="modal-title" id="tm-avance-titulo">Marcar avance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-1 font-weight-bold" id="tm-av-tema"></p>
+                <p class="text-muted small" id="tm-av-seccion"></p>
+                <div class="alert alert-light-danger" id="tm-av-error" role="alert" hidden></div>
+                <fieldset class="form-group">
+                    <legend class="col-form-label pt-0">¿Cómo le fue con este tema? *</legend>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="tm-av-dado" name="tm-av-estado" value="dado" class="custom-control-input" checked />
+                        <label class="custom-control-label" for="tm-av-dado">Dado</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="tm-av-parcial" name="tm-av-estado" value="parcial" class="custom-control-input" />
+                        <label class="custom-control-label" for="tm-av-parcial">Dado en parte</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="tm-av-omitido" name="tm-av-estado" value="omitido" class="custom-control-input" />
+                        <label class="custom-control-label" for="tm-av-omitido">Omitido</label>
+                    </div>
+                </fieldset>
+                <div class="form-group" id="tm-av-fecha-grupo">
+                    <label for="tm-av-fecha">Fecha en que se dio *</label>
+                    <input type="date" id="tm-av-fecha" class="form-control" max="@M.Hoy" min="@T.Tem_FechaInicio.ToString("yyyy-MM-dd")" />
+                    <p class="invalid-feedback d-block mb-0" data-error="tm-av-fecha"></p>
+                </div>
+                <div class="form-group mb-0">
+                    <label for="tm-av-nota">Nota de clase <span class="text-muted">(opcional)</span></label>
+                    <textarea id="tm-av-nota" class="form-control" rows="3" maxlength="1000" placeholder="Qué se trabajó, qué quedó pendiente, tarea asignada…"></textarea>
+                    <p class="invalid-feedback d-block mb-0" data-error="tm-av-nota"></p>
+                </div>
+                <p class="text-muted small mt-2 mb-0" id="tm-av-quien"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger mr-auto" id="tm-av-quitar" hidden><i class="bi bi-x-circle mr-1" aria-hidden="true"></i> Quitar marca</button>
+                <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg mr-1" aria-hidden="true"></i> Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (T.PuedeEditar)
+{
+    @* ── Agregar / editar tema ── *@
+    <div class="modal fade" id="tm-modal-tema" tabindex="-1" role="dialog" aria-labelledby="tm-tema-titulo-modal" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <form class="modal-content" id="tm-form-tema" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tm-tema-titulo-modal">Agregar tema</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="tm-tema-id" value="0" />
+                    <div class="alert alert-light-danger" id="tm-tema-error" role="alert" hidden></div>
+                    <div class="form-row">
+                        <div class="col-md-3 form-group">
+                            <label for="tm-tema-semana">Semana *</label>
+                            <input type="number" id="tm-tema-semana" class="form-control" min="1" max="30" step="1" />
+                            <small class="form-text text-muted" id="tm-tema-fechas">&nbsp;</small>
+                            <p class="invalid-feedback d-block mb-0" data-error="tm-tema-semana"></p>
+                        </div>
+                        <div class="col-md-9 form-group">
+                            <label for="tm-tema-titulo">Tema *</label>
+                            <input type="text" id="tm-tema-titulo" class="form-control" maxlength="200" autocomplete="off" />
+                            <p class="invalid-feedback d-block mb-0" data-error="tm-tema-titulo"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tm-tema-objetivos">Objetivos</label>
+                        <textarea id="tm-tema-objetivos" class="form-control" rows="2" maxlength="2000" placeholder="Qué debe lograr el alumno al terminar el tema"></textarea>
+                        <p class="invalid-feedback d-block mb-0" data-error="tm-tema-objetivos"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="tm-tema-contenido">Contenido</label>
+                        <textarea id="tm-tema-contenido" class="form-control" rows="3" maxlength="4000" placeholder="Subtemas, conceptos y actividades"></textarea>
+                        <p class="invalid-feedback d-block mb-0" data-error="tm-tema-contenido"></p>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="tm-tema-recursos">Recursos</label>
+                        <textarea id="tm-tema-recursos" class="form-control" rows="2" maxlength="1000" placeholder="Libro de texto, páginas, materiales, enlaces"></textarea>
+                        <p class="invalid-feedback d-block mb-0" data-error="tm-tema-recursos"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg mr-1" aria-hidden="true"></i> Guardar tema</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @* ── Editar datos del temario ── *@
+    <div class="modal fade" id="tm-modal-editar" tabindex="-1" role="dialog" aria-labelledby="tm-editar-titulo" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <form class="modal-content" id="tm-form-editar" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tm-editar-titulo">Datos del temario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small">Materia, grado, semestre y año no cambian. Para otro semestre o año, copie el temario.</p>
+                    <div class="alert alert-light-danger" id="tm-editar-error" role="alert" hidden></div>
+                    <div class="form-group">
+                        <label for="tm-nombre">Nombre *</label>
+                        <input type="text" id="tm-nombre" class="form-control" maxlength="150" value="@T.Tem_Nombre" />
+                        <p class="invalid-feedback d-block mb-0" data-error="tm-nombre"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="tm-inicio">Inicio de clases *</label>
+                        <input type="date" id="tm-inicio" class="form-control" value="@T.Tem_FechaInicio.ToString("yyyy-MM-dd")" />
+                        <p class="invalid-feedback d-block mb-0" data-error="tm-inicio"></p>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="tm-descripcion">Descripción</label>
+                        <textarea id="tm-descripcion" class="form-control" rows="3" maxlength="2000">@T.Tem_Descripcion</textarea>
+                        <p class="invalid-feedback d-block mb-0" data-error="tm-descripcion"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg mr-1" aria-hidden="true"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @* ── Traer temas de otro temario (agrega al final) ── *@
+    <div class="modal fade" id="tm-modal-traer" tabindex="-1" role="dialog" aria-labelledby="tm-traer-titulo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form class="modal-content" id="tm-form-traer" novalidate data-url="@Url.Action("CopiarAsync")">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tm-traer-titulo">Traer temas de otro temario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small">Los temas del temario elegido se agregan al final de este, con sus mismas semanas. Solo aparecen temarios de @T.Materia.</p>
+                    <div class="alert alert-light-danger" id="tm-traer-error" role="alert" hidden></div>
+                    <div class="form-group mb-0">
+                        <label for="tm-traer-origen">Temario *</label>
+                        <select id="tm-traer-origen" class="custom-select"><option value="">Cargando…</option></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-box-arrow-in-down mr-1" aria-hidden="true"></i> Traer temas</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@* ── Confirmar (quitar tema / quitar temario) ── *@
+<div class="modal fade" id="tm-modal-confirmar" tabindex="-1" role="dialog" aria-labelledby="tm-confirmar-titulo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tm-confirmar-titulo">Confirmar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="modal-body"><p class="mb-0" id="tm-confirmar-texto"></p></div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="tm-confirmar-si">Quitar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (M.PuedeCrear)
+{
+    <partial name="_TemarioCopiar" model="copiaModal" />
+}
+
+@section Scripts{
+    <script src="~/Content/js/pages/temarios.js" asp-append-version="true"></script>
+}
