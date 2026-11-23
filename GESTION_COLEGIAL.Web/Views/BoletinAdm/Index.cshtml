@@ -34,6 +34,7 @@
         </div>
         </div>
     </div>
+    <div id="boletin-provisional" hidden></div>
     <div class="statbox widget box box-shadow mb-4" id="panel-boletin" style="display:none;">
         <div class="widget-header">
             <div class="row"><div class="col-12"><h4>Notas por materia</h4></div></div>
@@ -57,11 +58,13 @@
     </div>
 </div>
 @section Scripts{
-    <script src="~/Content/js/pages/boletinadm.js"></script>
+    <script src="~/Content/js/components/boletin-provisional.js" asp-append-version="true"></script>
+    <script src="~/Content/js/pages/boletinadm.js" asp-append-version="true"></script>
     <script>
         BoletinAdm.init(
             "@Url.Action("GetAsync")",
-            "@Url.Action("DropdownsAsync")"
+            "@Url.Action("DropdownsAsync")",
+            "@Url.Action("PublicacionAsync")"
         );
     </script>
 }
