@@ -202,6 +202,12 @@ var GcTabla = (function () {
             },
             columns: columnas(),
             groupBy: camposAgrupar(estado.agrupar),
+            // El valor del grupo viene de los datos: se escapa (Tabulator lo pinta como HTML).
+            groupHeader: function (valor, cantidad) {
+                var t = document.createElement("span");
+                t.textContent = valor === null || valor === undefined || valor === "" ? "(vacío)" : String(valor);
+                return t.innerHTML + "<span style='color:#d00; margin-left:10px;'>(" + cantidad + ")</span>";
+            },
             groupStartOpen: true,
             groupToggleElement: "header",
             pagination: true,
