@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using GESTION_COLEGIAL.Business.Helpers;
 using Microsoft.Extensions.WebEncoders;
 using GESTION_COLEGIAL.UI.Compat;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -81,7 +82,20 @@ if (!string.IsNullOrWhiteSpace(rutaLlaves))
         .SetApplicationName("GestionColegial.Web");
 }
 
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
+
+// Cada llamada a la API lleva la llave (GC_API_KEY) y el usuario de la sesión firmado.
+var accesoContexto = app.Services.GetRequiredService<IHttpContextAccessor>();
+SendHttpClient.UsuarioDeLaSesion = () =>
+    int.TryParse(accesoContexto.HttpContext?.User?.FindFirst(SesionUsuario.UserId)?.Value, out var usuId) && usuId > 0
+        ? usuId
+        : null;
+if (!SendHttpClient.LlaveConfigurada)
+{
+    app.Logger.LogWarning("GC_API_KEY no está configurada: las llamadas a la API salen sin llave.");
+}
 
 // Cultura de Honduras para fechas, números y moneda (antes en <globalization> del Web.config).
 var cultura = new CultureInfo("es-HN");
