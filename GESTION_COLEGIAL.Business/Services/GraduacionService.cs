@@ -114,9 +114,23 @@ namespace GESTION_COLEGIAL.Business.Services
             var trimmed = body.Trim();
             if (trimmed.StartsWith("\"") && trimmed.EndsWith("\""))
             {
-                try { return JsonConvert.DeserializeObject<string>(trimmed); }
-                catch { return trimmed.Trim('"'); }
+                try { trimmed = JsonConvert.DeserializeObject<string>(trimmed) ?? ""; }
+                catch { trimmed = trimmed.Trim('"'); }
             }
+            else if (trimmed.StartsWith("{"))
+            {
+                // Respuesta JSON de la API: { Mensaje } o { title } (permiso, validación).
+                try
+                {
+                    var obj = Newtonsoft.Json.Linq.JObject.Parse(trimmed);
+                    trimmed = (string)(obj["Mensaje"] ?? obj["message"] ?? obj["title"]) ?? "";
+                }
+                catch { trimmed = ""; }
+            }
+            // Una página de error o una traza técnica (con encabezados de la petición) no se muestra al usuario.
+            if (trimmed.Length == 0 || trimmed.Length > 400 || trimmed.StartsWith("<")
+                || trimmed.Contains("   at ") || trimmed.Contains("Exception"))
+                return "Error al ejecutar la operacion.";
             return trimmed;
         }
     }
