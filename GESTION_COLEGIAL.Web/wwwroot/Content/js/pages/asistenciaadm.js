@@ -47,6 +47,49 @@ var AsistenciaAdm = (function () {
         if (horId) recargarTab(tabActiva);
     }
 
+    /* ---------------- Selector de horarios (según quién entra y la fecha) ---------------- */
+    var filtrosListos = false;
+    var pedidoHorarios = 0;
+
+    function limpiarOpciones($sel, texto) {
+        $sel.empty().append('<option value="">' + esc(texto) + '</option>').prop("disabled", true);
+    }
+
+    function cargarOpciones($sel, params) {
+        var f = $("#f-fecha").val();
+        return $.getJSON(urls.filtros, $.extend({ Fecha: f }, params), function (items) {
+            $.each(items || [], function (_, o) {
+                $sel.append('<option value="' + o.id + '">' + esc(o.texto) + '</option>');
+            });
+            $sel.prop("disabled", false);
+        });
+    }
+
+    function cargarHorarios() {
+        var n = ++pedidoHorarios;
+        var previo = $("#dd-hor").val();
+        return $.getJSON(urls.dropdowns, {
+            Fecha: $("#f-fecha").val(), Niv_Id: $("#dd-niv").val() || 0, Cun_Id: $("#dd-cun").val() || 0, Sec_Id: $("#dd-sec").val() || 0
+        }, function (data) {
+            if (n !== pedidoHorarios) return;
+            var sel = $("#dd-hor").empty();
+            var vacio = data.direccion && !$("#dd-sec").val() ? "-- Elija nivel, grado y sección --" : "-- Seleccione Horario --";
+            sel.append('<option value="">' + vacio + '</option>');
+            var hay = false;
+            $.each(data.horarios, function (_, h) {
+                if (String(h.id) === String(previo)) hay = true;
+                sel.append('<option value="' + h.id + '">' + esc(h.texto) + '</option>');
+            });
+            if (hay) sel.val(previo);
+            else if (previo) { sel.val(""); onHorarioChange(); }
+            if (data.direccion && !filtrosListos) {
+                filtrosListos = true;
+                $("#dd-filtros").prop("hidden", false);
+                cargarOpciones($("#dd-niv"), {});
+            }
+        });
+    }
+
     /* ---------------- Tab 1: Pase de Lista ---------------- */
     /* Si el colegio cierra ese día (feriado o cierre publicado en el Calendario escolar),
        no hay pase de lista: se muestra el aviso en vez de la lista.
@@ -91,6 +134,10 @@ var AsistenciaAdm = (function () {
             // El controller responde { data: [...] } (AjaxResult); se acepta también la lista directa
             var data = $.isArray(respuesta) ? respuesta : ((respuesta && respuesta.data) || []);
             var tbody = $("#tbody-asistencia").empty();
+            if (respuesta && respuesta.sinAcceso) {
+                tbody.append('<tr><td colspan="4" class="text-center text-muted">' + esc(respuesta.message) + '</td></tr>');
+                return;
+            }
             if (!data || data.length === 0) {
                 tbody.append('<tr><td colspan="4" class="text-center text-muted">No hay alumnos en la sección de este horario.</td></tr>');
                 return;
@@ -285,14 +332,22 @@ var AsistenciaAdm = (function () {
         fecha = hoy;
 
         // Horarios compartidos (un solo dropdown para los 3 tabs)
-        $.getJSON(urls.dropdowns, function (data) {
-            var sel = $("#dd-hor");
-            $.each(data.horarios, function (_, h) {
-                sel.append('<option value="' + h.id + '">' + esc(h.texto) + '</option>');
-            });
-        });
+        cargarHorarios();
 
         $("#dd-hor").on("change", onHorarioChange);
+
+        // Dirección: filtros en cascada Nivel -> Grado -> Sección (cada hijo pide sus opciones al padre)
+        $("#dd-niv").on("change", function () {
+            limpiarOpciones($("#dd-cun"), "-- Seleccione grado --"); limpiarOpciones($("#dd-sec"), "-- Seleccione sección --");
+            if ($(this).val()) cargarOpciones($("#dd-cun"), { Niv_Id: $(this).val() });
+            cargarHorarios();
+        });
+        $("#dd-cun").on("change", function () {
+            limpiarOpciones($("#dd-sec"), "-- Seleccione sección --");
+            if ($(this).val()) cargarOpciones($("#dd-sec"), { Niv_Id: $("#dd-niv").val(), Cun_Id: $(this).val() });
+            cargarHorarios();
+        });
+        $("#dd-sec").on("change", cargarHorarios);
 
         // Tabs
         $("#dd-tabs").on("click", ".dd-tab-item", function (e) {
@@ -306,7 +361,8 @@ var AsistenciaAdm = (function () {
         $("#f-fecha").on("change", function () {
             fecha = $(this).val();
             cargado.asistencia = false;
-            if (horId && fecha) cargarAsistencia();
+            // Las clases que se cubren cambian con la fecha: se vuelve a pedir el selector antes de cargar la lista
+            cargarHorarios().always(function () { if (horId && fecha) cargarAsistencia(); });
         });
         $(document).on("click", ".btn-marcar", function () { guardarUno($(this)); });
 

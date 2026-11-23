@@ -43,9 +43,9 @@ namespace GESTION_COLEGIAL.Business.Services
             ?? new List<FichaSaludBitacoraViewModel>();
 
         /// <summary>Alertas críticas de los alumnos del pase de lista de un horario (fecha yyyy-MM-dd).</summary>
-        public async Task<List<FichaSaludAlertaViewModel>> AlertasSeccionAsync(int horId, string fecha) =>
+        public async Task<List<FichaSaludAlertaViewModel>> AlertasSeccionAsync(int horId, string fecha, int usuarioId) =>
             (await ApiRequests.ListAsync<FichaSaludAlertaViewModel>(
-                $"{Base}AlertasSeccionAsync?horId={horId}" + (string.IsNullOrWhiteSpace(fecha) ? "" : "&fecha=" + Uri.EscapeDataString(fecha))))?.ToList()
+                $"{Base}AlertasSeccionAsync?horId={horId}&usuarioId={usuarioId}" + (string.IsNullOrWhiteSpace(fecha) ? "" : "&fecha=" + Uri.EscapeDataString(fecha))))?.ToList()
             ?? new List<FichaSaludAlertaViewModel>();
 
         /// <summary>La ficha y a quién llamar, juntos (bloque de emergencia).</summary>
