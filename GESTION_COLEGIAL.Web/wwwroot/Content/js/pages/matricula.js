@@ -198,7 +198,7 @@ var Matricula = (function () {
             var lista = (res && res.data) ? res.data : [];
             var $sel = $(sel).empty().append('<option value="">-- Seleccionar --</option>');
             $.each(lista, function (_, it) {
-                $sel.append('<option value="' + it.Value + '">' + it.Text + '</option>');
+                $sel.append($("<option>").val(it.Value).text(it.Text));
             });
             $sel.prop("disabled", lista.length === 0);
         }).fail(function () {
@@ -271,7 +271,7 @@ var Matricula = (function () {
                 $(".mat-par").each(function () {
                     var $sel = $(this);
                     $.each(lista, function (_, it) {
-                        $sel.append('<option value="' + it.Value + '">' + it.Text + '</option>');
+                        $sel.append($("<option>").val(it.Value).text(it.Text));
                     });
                 });
             });
@@ -352,7 +352,7 @@ var Matricula = (function () {
     function val(id) { return ($("#" + id).val() || "").toString().trim() || "—"; }
 
     function fila(k, v) {
-        return '<div class="d-flex justify-content-between border-bottom py-1 small"><span class="text-muted">' + k + '</span><span class="font-weight-bold text-right">' + (v || "—") + '</span></div>';
+        return '<div class="d-flex justify-content-between border-bottom py-1 small"><span class="text-muted">' + k + '</span><span class="font-weight-bold text-right">' + $("<div>").text(v || "—").html() + '</span></div>';
     }
 
     function construirResumen() {
