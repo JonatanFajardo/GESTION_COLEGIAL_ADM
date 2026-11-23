@@ -1,0 +1,127 @@
+@model List<(string Clave, string Titulo, string Area, string Descripcion, string Icono)>
+@using GESTION_COLEGIAL.UI.Models
+@{
+    ViewBag.Title = "Centro de reportes";
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Reportes</li>
+            <li class="breadcrumb-item active" aria-current="page">Centro de reportes</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Centro de reportes</h4>
+        <p class="text-muted mb-0">Elija un reporte, ajuste los filtros, revíselo y bájelo en Excel o PDF. Solo aparecen los reportes de las pantallas a las que usted tiene acceso.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-4 col-lg-5 col-12">
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4>Reportes disponibles</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                @if (Model.Count == 0)
+                {
+                    <p class="text-muted mb-0">No tiene reportes disponibles. Pida a la administración el permiso de la pantalla que necesita.</p>
+                }
+                else
+                {
+                    <input type="search" id="cr-buscar" class="form-control mb-2" placeholder="Buscar reporte…" aria-label="Buscar reporte" />
+                    @foreach (var area in CatalogoReportes.Areas)
+                    {
+                        var deArea = Model.Where(r => r.Area == area).ToList();
+                        if (deArea.Count == 0) { continue; }
+                        <div class="cr-area" data-area="@area">
+                            <h6 class="text-muted small font-weight-bold text-uppercase mt-3 mb-2">@area <span class="badge outline-badge-secondary ml-1">@deArea.Count</span></h6>
+                            <div class="list-group">
+                                @foreach (var r in deArea)
+                                {
+                                    <a href="?r=@r.Clave" class="list-group-item list-group-item-action py-2 cr-item" data-clave="@r.Clave" title="@r.Descripcion"
+                                       data-buscar="@($"{r.Titulo} {r.Descripcion} {r.Area}".ToLowerInvariant())">
+                                        <div class="d-flex align-items-start">
+                                            <i class="@r.Icono text-primary mr-2 mt-1 cr-tono"></i>
+                                            <div class="text-truncate">
+                                                <div class="font-weight-bold text-truncate">@r.Titulo</div>
+                                                <small class="text-muted d-block text-truncate cr-tono">@r.Descripcion</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <p id="cr-sin-resultados" class="text-muted mt-3 mb-0 d-none">Ningún reporte coincide con la búsqueda.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-8 col-lg-7 col-12">
+        @* Sin reporte elegido *@
+        <div id="cr-vacio" class="statbox widget box box-shadow mb-4">
+            <div class="widget-content widget-content-area text-center py-5">
+                <i class="bi bi-file-earmark-bar-graph text-primary h1 d-block mb-3"></i>
+                <h5 class="mb-2">Elija un reporte de la lista</h5>
+                <p class="text-muted mb-0">O repita uno que generó antes desde «Mis reportes recientes».</p>
+            </div>
+        </div>
+
+        @* Parámetros del reporte *@
+        <div id="cr-reporte" class="statbox widget box box-shadow mb-4 d-none">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-12">
+                        <h4 id="cr-titulo" class="pb-1"></h4>
+                        <p id="cr-descripcion" class="text-muted px-3 mb-0"></p>
+                        <p class="text-muted small px-3 mb-0">Pantalla de origen: <span id="cr-origen"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <form id="cr-form" novalidate>
+                    <div id="cr-parametros" class="form-row"></div>
+                    <p id="cr-sin-parametros" class="text-muted d-none">Este reporte no lleva filtros: muestra la información al día de hoy.</p>
+                    <div class="d-flex flex-wrap align-items-center">
+                        <button type="submit" id="cr-generar" class="btn btn-primary mr-2"><i class="bi bi-play-fill mr-1"></i>Generar reporte</button>
+                        <button type="button" id="cr-restablecer" class="btn btn-link">Restablecer filtros</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @* Recientes (como "What has been asked for" de Skuul) *@
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4>Mis reportes recientes</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <div id="cr-recientes"><p class="text-muted mb-0">Cargando…</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Resultado: a todo el ancho, para que quepan las columnas *@
+<div id="cr-resultado" class="statbox widget box box-shadow mb-4 d-none">
+    <div class="widget-content widget-content-area">
+        <div id="cr-estado" role="status" aria-live="polite"></div>
+        <div id="cr-tabla-caja"></div>
+    </div>
+</div>
+
+<script type="application/json" id="cr-catalogo">@Html.Raw(ViewBag.Catalogo)</script>
+<input type="hidden" id="cr-inicial" value="@ViewBag.Inicial" />
+<input type="hidden" id="cr-usuario" value="@(Session["Username"] as string ?? "anonimo")" />
+
+@section Scripts{
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/centro-reportes.js" asp-append-version="true"></script>
+}
