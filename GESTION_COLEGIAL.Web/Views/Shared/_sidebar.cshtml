@@ -266,7 +266,8 @@
                         @if (tiene("Fichas de salud") || esAdmin) { <li>@Html.ActionLink("Fichas de salud",                 "Index", "FichasSalud")</li> }
                         @* Parentescos → consolidado en hub "Catálogos Comunes" (CatalogosComunes). Link suelto deshabilitado (test §7, ver TODO.md). Controller Parentescos sigue vivo: el hub lo reutiliza.
                         @if (tiene("Listado de parentescos"))    { <li>@Html.ActionLink("Parentescos",          "Index", "Parentescos")</li> } *@
-                        @if (tiene("Pirámide de Matrícula"))     { <li>@Html.ActionLink("Pirámide de matrícula","Index", "PiramideMatricula")</li> }
+                        @* Pirámide de matrícula → pasó al Centro de reportes ("Matrícula por programa y sexo"). Controller vivo (ver TODO.md).
+                        @if (tiene("Pirámide de Matrícula"))     { <li>@Html.ActionLink("Pirámide de matrícula","Index", "PiramideMatricula")</li> } *@
                         @* Mensajes a Encargados: deshabilitado temporalmente — hoy solo persiste en DB sin envío real; ver TODO.md para decisión de producto (SMTP vs portal encargados) *@
                         @*@if (tiene("Mensajes a Encargados"))     { <li>@Html.ActionLink("Mensajes a Encargados","Index", "Mensajes")</li> }*@
                     </ul>
@@ -364,7 +365,8 @@
                         @* Cargos → consolidado en hub "Catálogos Comunes" (CatalogosComunes). Link suelto deshabilitado (test §7, ver TODO.md). Controller Cargos sigue vivo: el hub lo reutiliza.
                         @if (tiene("Listado de cargos"))           { <li>@Html.ActionLink("Cargos",                "Index", "Cargos")</li> } *@
                         @if (tiene("Control de vacaciones"))       { <li>@Html.ActionLink("Vacaciones y permisos", "Index", "VacacionesAdm")</li> }
-                        @if (tiene("Reporte de Antigüedad"))       { <li>@Html.ActionLink("Antigüedad",  "Index", "EmpleadosAntiguedad")</li> }
+                        @* Antigüedad → pasó al Centro de reportes ("Antigüedad del personal"). Controller vivo (ver TODO.md).
+                        @if (tiene("Reporte de Antigüedad"))       { <li>@Html.ActionLink("Antigüedad",  "Index", "EmpleadosAntiguedad")</li> } *@
                         @if (tiene("Organigrama"))                 { <li>@Html.ActionLink("Organigrama",           "Index", "Organigrama")</li> }
                         @if (tiene("Cumpleaños Empleados"))        { <li>@Html.ActionLink("Cumpleaños",            "Index", "EmpleadosCumpleanos")</li> }
                         @if (tiene("Asistencia Empleados"))        { <li>@Html.ActionLink("Asistencia del personal",  "Index", "AsistenciaEmpleados")</li> }
@@ -419,7 +421,7 @@
                 </li>
             }
 
-            @if (tiene("Aging de Cuentas por Cobrar") || tiene("Top Alumnos con Deuda") || tiene("Morosidad por Nivel") || tiene("Visor de Gráficos") || tiene("Reportes pre-generados"))
+            @if (tiene("Centro de reportes"))
             {
                 <li class="menu">
                     <a href="#Reportes" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -432,11 +434,14 @@
                         </div>
                     </a>
                     <ul class="collapse submenu list-unstyled" id="Reportes" data-parent="#accordionExample">
+                        <li>@Html.ActionLink("Centro de reportes", "Index", "CentroReportes")</li>
+                        @* Pasaron al Centro de reportes (Antigüedad de saldos, Mayores deudores, Morosidad por nivel) o se deshabilitaron
+                           (Gráficos: duplica los dashboards; Reportes pre-generados: lo reemplaza el Centro). Controllers vivos (ver TODO.md).
                         @if (tiene("Aging de Cuentas por Cobrar"))  { <li>@Html.ActionLink("Antigüedad de saldos",         "Index", "AgingCuentas")</li> }
                         @if (tiene("Top Alumnos con Deuda"))         { <li>@Html.ActionLink("Mayores deudores",          "Index", "TopDeudores")</li> }
                         @if (tiene("Morosidad por Nivel"))           { <li>@Html.ActionLink("Morosidad por nivel",   "Index", "MorosidadPorNivel")</li> }
                         @if (tiene("Visor de Gráficos"))             { <li>@Html.ActionLink("Gráficos",     "Index", "VisorGraficos")</li> }
-                        @if (tiene("Reportes pre-generados"))        { <li>@Html.ActionLink("Reportes","Index", "ReportesPregenerados")</li> }
+                        @if (tiene("Reportes pre-generados"))        { <li>@Html.ActionLink("Reportes","Index", "ReportesPregenerados")</li> } *@
                     </ul>
                 </li>
             }
@@ -494,6 +499,10 @@
                         @if (tiene("Listado de pagos"))              { <li>@Html.ActionLink("Nuevo pago",          "NuevoPago",     "Pagos")</li> }
                         @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cuenta del alumno",   "EstadoCuenta",  "CuentasCobrar")</li> }
                         @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cargos masivos",      "CargosMasivos", "CuentasCobrar")</li> }
+                        @* Reportes financieros sueltos → Centro de reportes (ver TODO.md). Ingresos del mes, Comparativa anual y
+                           Proyección de cobros se deshabilitaron: su API no está conectada (el servicio está comentado en la API y los
+                           procedimientos no existen). Pendientes por cobrar, Historial de transacciones, Flujo de caja, Estado de
+                           resultados, Análisis de ingresos y Comparativo por año pasaron al Centro con los mismos filtros. Controllers vivos.
                         @if (tiene("Reportes financieros"))
                         {
                             <li class="submenu-header">Reportes</li>
@@ -501,24 +510,24 @@
                             <li>@Html.ActionLink("Comparativa anual",    "ComparativaAnual", "ReportesFinancieros")</li>
                             <li>@Html.ActionLink("Proyección de cobros", "ProyeccionCobros", "ReportesFinancieros")</li>
                         }
-                        @if (tiene("Pagos del Día") || tiene("Pendientes por Cobrar") || tiene("Historial de Transacciones") || tiene("Conciliación Rápida"))
+                        @if (tiene("Pendientes por Cobrar"))        { <li>@Html.ActionLink("Pendientes por cobrar",   "Index", "PendientesCobrar")</li> }
+                        @if (tiene("Historial de Transacciones"))   { <li>@Html.ActionLink("Historial de transacciones", "Index", "HistorialTransacciones")</li> }
+                        @if (tiene("Flujo de Caja"))                    { <li>@Html.ActionLink("Flujo de caja",        "Index", "FlujoCaja")</li> }
+                        @if (tiene("Estado de Resultados"))             { <li>@Html.ActionLink("Estado de resultados", "Index", "EstadoResultados")</li> }
+                        @if (tiene("Análisis Ingresos vs Egresos"))     { <li>@Html.ActionLink("Análisis de ingresos",    "Index", "AnalisisIngresos")</li> }
+                        @if (tiene("Comparativo de Años"))              { <li>@Html.ActionLink("Comparativo por año",  "Index", "ComparativoAnios")</li> } *@
+                        @if (tiene("Pagos del Día") || tiene("Conciliación Rápida"))
                         {
                             <li class="submenu-header">Operativo</li>
                         }
                         @* "Pagos del día" (PagosDelDia/Index) eliminado — pantalla-dashboard duplicada/baja utilidad. *@
-                        @if (tiene("Pendientes por Cobrar"))        { <li>@Html.ActionLink("Pendientes por cobrar",   "Index", "PendientesCobrar")</li> }
-                        @if (tiene("Historial de Transacciones"))   { <li>@Html.ActionLink("Historial de transacciones", "Index", "HistorialTransacciones")</li> }
                         @if (tiene("Conciliación Rápida"))          { <li>@Html.ActionLink("Conciliación rápida",     "Index", "Conciliacion")</li> }
 
-                        @if (tiene("Flujo de Caja") || tiene("Estado de Resultados") || tiene("Análisis Ingresos vs Egresos") || tiene("Comparativo de Años") || tiene("KPIs Financieros"))
+                        @if (tiene("KPIs Financieros"))
                         {
                             <li class="submenu-header">Análisis</li>
+                            <li>@Html.ActionLink("Indicadores financieros",     "Index", "KPIsFinancieros")</li>
                         }
-                        @if (tiene("Flujo de Caja"))                    { <li>@Html.ActionLink("Flujo de caja",        "Index", "FlujoCaja")</li> }
-                        @if (tiene("Estado de Resultados"))             { <li>@Html.ActionLink("Estado de resultados", "Index", "EstadoResultados")</li> }
-                        @if (tiene("Análisis Ingresos vs Egresos"))     { <li>@Html.ActionLink("Análisis de ingresos",    "Index", "AnalisisIngresos")</li> }
-                        @if (tiene("Comparativo de Años"))              { <li>@Html.ActionLink("Comparativo por año",  "Index", "ComparativoAnios")</li> }
-                        @if (tiene("KPIs Financieros"))                 { <li>@Html.ActionLink("Indicadores financieros",     "Index", "KPIsFinancieros")</li> }
 
                         @if (tiene("Nomina Docentes"))
                         {

@@ -122,11 +122,15 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// <summary>
 		/// Obtiene o establece la identidad de la Persona.
 		/// </summary>
-		[StringLength(13, MinimumLength = 13, ErrorMessage = "El campo debe contener 13 dígitos")]
-		[RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe ser numérico")]
+		[StringLength(13, MinimumLength = 13, ErrorMessage = "La identidad debe tener 13 dígitos")]
+		[RegularExpression("(0[1-9]|1[0-8])[0-9]{11}", ErrorMessage = "Identidad no válida: son 13 dígitos y los dos primeros son el departamento (01 a 18)")]
 		[Display(Name = "Identidad")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		public string Per_Identidad { get; set; }
+		public string Per_Identidad { get => _identidad; set => _identidad = SoloDigitos(value); }
+		private string _identidad;
+
+		/// <summary>Quita guiones y espacios (0801-1990-12345 se guarda como 0801199012345); siempre texto.</summary>
+		private static string SoloDigitos(string v) => v == null ? null : System.Text.RegularExpressions.Regex.Replace(v, @"[\s-]", "");
 
 		/// <summary>
 		/// Obtiene o establece el primer nombre de la Persona.
@@ -141,7 +145,6 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// </summary>
 		[StringLength(50)]
 		[Display(Name = "Segundo nombre")]
-		[Required(ErrorMessage = "El campo es requerido")]
 		public string Per_SegundoNombre { get; set; }
 
 		/// <summary>
@@ -157,7 +160,6 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// </summary>
 		[StringLength(50)]
 		[Display(Name = "Apellido materno")]
-		[Required(ErrorMessage = "El campo es requerido")]
 		public string Per_ApellidoMaterno { get; set; }
 
 		/// <summary>
@@ -183,9 +185,10 @@ namespace GESTION_COLEGIAL.Business.Models
 		/// </summary>
 		[Display(Name = "Teléfono")]
 		[Required(ErrorMessage = "El campo es requerido")]
-		[StringLength(11, MinimumLength = 8, ErrorMessage = "El campo debe tener mínimo 8 dígitos y como máximo 11")]
-		[RegularExpression("([1-9][0-9]*)", ErrorMessage = "El campo debe ser numérico")]
-		public string Per_Telefono { get; set; }
+		[StringLength(9, MinimumLength = 8, ErrorMessage = "El teléfono debe tener 8 dígitos")]
+		[RegularExpression("[1-9][0-9]{7,8}", ErrorMessage = "El teléfono debe ser numérico (8 dígitos)")]
+		public string Per_Telefono { get => _telefono; set => _telefono = SoloDigitos(value); }
+		private string _telefono;
 
 		/// <summary>
 		/// Obtiene o establece la dirección de la Persona.

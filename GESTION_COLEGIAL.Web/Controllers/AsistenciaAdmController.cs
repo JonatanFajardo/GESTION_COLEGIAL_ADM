@@ -1,4 +1,5 @@
 using GESTION_COLEGIAL.Business.Services;
+using GESTION_COLEGIAL.UI.Compat;
 using GESTION_COLEGIAL.UI.Extensions;
 using GESTION_COLEGIAL.UI.Filters;
 using System;
@@ -12,8 +13,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class AsistenciaAdmController : BaseController
     {
         private readonly AsistenciaAdmService _service  = new AsistenciaAdmService();
-        private readonly HorariosService      _horarios = new HorariosService();
-        private readonly UsuariosService      _usuarios = new UsuariosService();
         private readonly CalendarioEscolarService _calendario = new CalendarioEscolarService();
         private readonly FichasSaludService _salud = new FichasSaludService();
 
@@ -44,36 +43,68 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public ActionResult Index() => View();
 
-        public async Task<ActionResult> DropdownsAsync()
+        /// <summary>Dirección (admin o director) ve y filtra todos los horarios; el docente solo los suyos y los que cubre.</summary>
+        private bool EsDireccion()
         {
-            var horariosTask = _horarios.ListAsync();
-            // La sesión solo guarda Usu_Id/Rol/Token (ver AccountController.Login), no el Emp_Id
-            // del docente. Se resuelve aquí vía Usuarios/FindAsync para poder filtrar sin tocar
-            // AccountController/BaseController (fuera del alcance de este cambio).
-            var usuarioTask  = _usuarios.Find(GetUsuarioId());
+            string rol = Session[SesionUsuario.RoleName] as string ?? "";
+            return rol.Equals("admin", StringComparison.OrdinalIgnoreCase) || rol.Equals("director", StringComparison.OrdinalIgnoreCase);
+        }
 
-            await Task.WhenAll(horariosTask, usuarioTask);
+        private const string SinAcceso = "No puede pasar lista de este horario en esa fecha.";
 
-            var horarios = horariosTask.Result;
-            var usuario  = usuarioTask.Result;
+        private Task<bool> PuedeAsync(int Hor_Id, DateTime dia) =>
+            _service.PuedeAsync(GetUsuarioId(), Hor_Id, dia.ToString("yyyy-MM-dd"));
 
-            // Si el usuario logueado tiene un Empleado (docente) asociado, mostrar solo sus horarios.
-            // Si no tiene Emp_Id (p.ej. un admin sin vínculo a empleado), se deja el listado completo
-            // para no romper el acceso de otros roles (Director también usa Pase de Lista).
-            if (usuario != null && usuario.Emp_Id > 0)
-                horarios = horarios.Where(h => h.Emp_Id == usuario.Emp_Id);
+        /// <summary>
+        /// Horarios del selector para la fecha. Docente: los suyos y las clases que cubre ese día (marcadas
+        /// como sustitución). Dirección: ninguno hasta elegir la sección (Nivel → Grado → Sección), porque son miles.
+        /// </summary>
+        public async Task<ActionResult> DropdownsAsync(string Fecha, int Niv_Id = 0, int Cun_Id = 0, int Sec_Id = 0)
+        {
+            DateTime dia = AsistenciaAdmController.Fecha(Fecha) ?? DateTime.Today;
+            bool direccion = EsDireccion();
+            if (direccion && Sec_Id <= 0)
+                return Json(new { direccion, horarios = Array.Empty<object>() });
+
+            var lista = await _service.HorariosAsync(GetUsuarioId(), dia.ToString("yyyy-MM-dd"),
+                direccion ? Niv_Id : 0, direccion ? Cun_Id : 0, direccion ? Sec_Id : 0);
 
             return Json(new
             {
-                horarios = horarios.Select(h => new {
+                direccion,
+                horarios = lista.Select(h => new {
                     id    = h.Hor_Id,
-                    texto = h.Dia_Descripcion + " " + h.Hor_HoraInicioDescripcion + " — " + h.Mat_Nombre + " (" + h.Sec_Descripcion + ")"
+                    texto = (h.EsSustitucion ? "Sustitución de " + h.Titular + " · " : "")
+                            + h.Dia + " " + h.Hora + " — " + h.Materia + " (" + h.Grado + " " + h.Seccion + ")"
                 })
             });
         }
 
+        /// <summary>
+        /// Opciones del siguiente nivel de la cascada Nivel → Grado → Sección, pedidas ya filtradas por el padre.
+        /// Solo dirección. Sin padre: niveles; con Niv_Id: grados; con Niv_Id y Cun_Id: secciones.
+        /// </summary>
+        public async Task<ActionResult> FiltrosAsync(string Fecha, int Niv_Id = 0, int Cun_Id = 0)
+        {
+            if (!EsDireccion()) return Json(Array.Empty<object>());
+            DateTime dia = AsistenciaAdmController.Fecha(Fecha) ?? DateTime.Today;
+            var lista = await _service.HorariosAsync(GetUsuarioId(), dia.ToString("yyyy-MM-dd"), Niv_Id, Cun_Id, 0);
+
+            if (Niv_Id <= 0)
+                return Json(lista.Where(h => h.Niv_Id > 0).GroupBy(h => h.Niv_Id).OrderBy(g => g.Key)
+                    .Select(g => new { id = g.Key, texto = g.First().Nivel }));
+            if (Cun_Id <= 0)
+                return Json(lista.Where(h => h.Cun_Id > 0).GroupBy(h => h.Cun_Id).OrderBy(g => g.Key)
+                    .Select(g => new { id = g.Key, texto = g.First().Grado }));
+            return Json(lista.Where(h => h.Sec_Id > 0).GroupBy(h => h.Sec_Id).OrderBy(g => g.First().Seccion)
+                .Select(g => new { id = g.Key, texto = g.First().Seccion }));
+        }
+
         public async Task<ActionResult> ListAsync(int Hor_Id, string Fecha)
         {
+            DateTime? dia = AsistenciaAdmController.Fecha(Fecha);
+            if (dia == null || !await PuedeAsync(Hor_Id, dia.Value))
+                return Json(new { data = Array.Empty<object>(), sinAcceso = true, message = SinAcceso });
             var result = await _service.ListAsync(Hor_Id, Fecha);
             return AjaxResult(result);
         }
@@ -85,9 +116,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> AlertasSaludAsync(int Hor_Id, string Fecha)
         {
             DateTime? dia = AsistenciaAdmController.Fecha(Fecha);
+            if (dia == null || !await PuedeAsync(Hor_Id, dia.Value)) return Json(Array.Empty<object>());
             try
             {
-                var alertas = await _salud.AlertasSeccionAsync(Hor_Id, dia?.ToString("yyyy-MM-dd"));
+                var alertas = await _salud.AlertasSeccionAsync(Hor_Id, dia.Value.ToString("yyyy-MM-dd"), GetUsuarioId());
                 return Json(alertas.Select(a => new { a.Alu_Id, a.Fsa_Alerta }));
             }
             catch
@@ -108,6 +140,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
             estado = estado.Length > 0 ? estado.Substring(0, 1) : "";
             if (Array.IndexOf(EstadosAsistencia, estado) < 0)
                 return Json(new { success = false, cerrado = false, message = "Estado no válido." });
+
+            // Solo quien da la clase (titular), la cubre ese día (suplente) o es dirección puede pasar lista.
+            if (!await PuedeAsync(Hor_Id, dia.Value))
+                return Json(new { success = false, cerrado = false, message = SinAcceso });
 
             // Un día en que el colegio cierra (calendario escolar) no tiene pase de lista.
             // La base de datos también lo rechaza (incluso al editar un registro ya guardado).

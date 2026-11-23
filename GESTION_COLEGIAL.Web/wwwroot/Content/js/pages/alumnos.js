@@ -20,126 +20,52 @@ var Alumnos = (function () {
 
 
 
-$("#Niv_Id").on("change", function (e) {
-    var valueSelected = $(this).val();
-    var data = {
-        id: valueSelected
+/* Cascada académica del formulario de alumnos: Nivel → Grado → Modalidad → Curso → Sección.
+   Cada hijo se pide filtrado por su padre, arranca deshabilitado sin padre y se limpia al cambiar el padre. */
+(function () {
+    var CASCADA = [
+        { padre: "#Niv_Id", hijo: "#Cun_Id", url: "/Alumnos/GetCursosNiveles", texto: "-- Seleccionar Curso --" },
+        { padre: "#Cun_Id", hijo: "#Mda_Id", url: "/Alumnos/GetModalidades", texto: "-- Seleccionar Modalidad --" },
+        { padre: "#Mda_Id", hijo: "#Cur_Id", url: "/Alumnos/GetCursos", texto: "-- Seleccionar Cursos --" },
+        { padre: "#Cur_Id", hijo: "#Sec_Id", url: "/Alumnos/GetSecciones", texto: "-- Seleccionar Curso secciones --" }
+    ];
+
+    function vaciar(sel, texto) {
+        $(sel).empty().append($("<option>").val("").text(texto)).val("").prop("disabled", true);
     }
-    $.ajax({
-        type: "GET",
-        url: 'GetCursosNiveles/',
-        data: data,
-        dataType: "json",
-        success: function (response) {
-            if (response != null) {
-                FillDropDown("#Cun_Id", response.data);
-            }
-            else {
-            }
-        },
-        error: function (request, status, error) {
-            console.log('Error: ' + request.responseText);
-        }
-    });
-});
 
-$("#Cun_Id").on("change", function (e) {
-    var valueSelected = $(this).val();
-    var data = {
-        id: valueSelected
+    // Limpia todos los niveles debajo del paso i.
+    function limpiarDesde(i) {
+        for (var k = i; k < CASCADA.length; k++) vaciar(CASCADA[k].hijo, CASCADA[k].texto);
     }
-    $.ajax({
-        type: "GET",
-        url: 'GetModalidades/',
-        data: data,
-        dataType: "json",
-        success: function (response) {
-            if (response != null) {
-                FillDropDown("#Mda_Id", response.data);
-            }
-            else {
-            }
-        },
-        error: function (request, status, error) {
-            console.log('Error: ' + request.responseText);
-        }
+
+    CASCADA.forEach(function (paso, i) {
+        $(paso.padre).on("change", function () {
+            var id = $(this).val();
+            limpiarDesde(i);
+            if (!id) return;
+            $.ajax({ type: "GET", url: paso.url, data: { id: id }, dataType: "json" })
+                .done(function (response) {
+                    var lista = (response && response.data) ? response.data : [];
+                    var $hijo = $(paso.hijo).empty().append($("<option>").val("").text(paso.texto));
+                    $.each(lista, function (_, row) { $hijo.append($("<option>").val(row.Value).text(row.Text)); });
+                    $hijo.val("").prop("disabled", lista.length === 0);
+                })
+                .fail(function () { alert("No se pudieron cargar las opciones. Intente de nuevo."); });
+        });
     });
-});
 
-$("#Mda_Id").on("change", function (e) {
-    var valueSelected = $(this).val();
-    var data = {
-        id: valueSelected
-    }
-    $.ajax({
-        type: "GET",
-        url: 'GetCursos/',
-        data: data,
-        dataType: "json",
-        success: function (response) {
-            if (response != null) {
-                FillDropDown("#Cur_Id", response.data);
-            }
-            else {
-            }
-        },
-        error: function (request, status, error) {
-            console.log('Error: ' + request.responseText);
-        }
+    // Al abrir el formulario, los hijos sin opciones (alumno nuevo) quedan deshabilitados.
+    $(function () {
+        CASCADA.forEach(function (paso) {
+            if ($(paso.hijo).length && $(paso.hijo).find("option[value!='']").length === 0) $(paso.hijo).prop("disabled", true);
+        });
+        // Deshabilitados no se envían: al guardar se vuelven a habilitar.
+        $("form[action*='Guardar']").on("submit", function () {
+            CASCADA.forEach(function (paso) { $(paso.hijo).prop("disabled", false); });
+        });
     });
-});
-
-$("#Cur_Id").on("change", function (e) {
-    var valueSelected = $(this).val();
-    var data = {
-        id: valueSelected
-    }
-    $.ajax({
-        type: "GET",
-        url: 'GetSecciones/',
-        data: data,
-        dataType: "json",
-        success: function (response) {
-            if (response != null) {
-                console.log(response);
-                FillDropDown("#Sec_Id", response.data);
-            }
-            else {
-            }
-        },
-        error: function (request, status, error) {
-            console.log('Error: ' + request.responseText);
-        }
-    });
-});
-$(function () {
-});
-
-/**
- * Permite ingresar data a un dropdown.
- * @param {any} dropDownId
- * @param {any} list El primer valor debe de ser el valor y el segundo el texto a mostrar.
- */
-function FillDropDown(dropDownId, list) {
-    $(dropDownId).empty();
-    console.log(list);
-    $.each(list, function (index, row) {
-        console.log(row);
-        //console.log(row[]);
-        //if (index != 0) {
-        //    $(dropDownId).append("<option value='" + list["data"][0] + "' selected='selected'>" + Text + "</option>");
-        //} else {
-        //    $(dropDownId).append("<option value='" + Value + "'>" + Text + "</option>")
-        //}
-        if (index != 0) {
-            $(dropDownId).append("<option value='" + row.Value + "' selected='selected'>" + row.Text + "</option>");
-        } else {
-            $(dropDownId).append("<option value='" + row.Value + "'>" + row.Text + "</option>")
-        }
-    });
-}
-
-
+}());
 
         //Modal y mas
 //==================================================
