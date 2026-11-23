@@ -22,13 +22,10 @@ namespace GESTION_COLEGIAL.UI.Controllers
 	/// ParentescosService, DocumentosAlumnoAdmService) — no se tocó ningún
 	/// controlador ni vista de Alumnos/Encargados.
 	///
-	/// Huecos de API documentados (ver también TODO.md):
-	/// 1) No existe endpoint para vincular Alumno-Encargado-Parentesco al momento
-	///    del alta. EncargadoViewModel no tiene Alu_Id ni Par_Id. Encargados/ByAlumnoAsync
-	///    (lectura) existe en el API externo, pero no hay contraparte de escritura.
-	///    Por eso GuardarEncargadoAsync crea al encargado (Persona + Encargado) pero
-	///    el parentesco elegido en el wizard NO se persiste en ningún lado; sólo viaja
-	///    en el resumen visual de Paso 4 para que el usuario lo capture manualmente.
+	/// El encargado (nuevo o ya registrado) se liga al alumno con su parentesco en
+	/// app.tbEncargados_tbAlumnos al confirmar la matrícula.
+	///
+	/// Hueco documentado:
 	/// 2) No existe endpoint para generar ni consultar una plantilla de "documentos
 	///    requeridos" para un alumno que aún no existe (DocumentosAlumno/ListAsync
 	///    exige un Alu_Id ya creado, y no hay acción de alta de documento, sólo
@@ -181,23 +178,53 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		}
 
 		/// <summary>
-		/// Crea un encargado nuevo (Persona + Encargado) reutilizando EncargadosService.Create.
-		/// HUECO DOCUMENTADO: el Par_Id (parentesco) recibido aquí NO se envía a la API porque
-		/// EncargadoViewModel no tiene campo de parentesco ni de Alu_Id — no hay dónde persistirlo.
-		/// Se recibe solo para poder mostrarlo en el resumen de Paso 4.
+		/// Registra al encargado nuevo (Persona + Encargado) y lo liga al alumno recién creado con su parentesco.
+		/// Si la identidad ya pertenece a un encargado, no lo duplica: solo lo liga.
 		/// </summary>
 		[HttpPost]
-		public async Task<ActionResult> GuardarEncargadoAsync(EncargadoViewModel model)
+		public async Task<ActionResult> GuardarEncargadoAsync(EncargadoViewModel model, int aluId, int parId)
 		{
+			if (aluId <= 0 || parId <= 0)
+				return Json(new { success = false, message = "Falta el alumno o el parentesco del encargado." });
 			if (!ModelState.IsValid)
 			{
-				return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
+				var primero = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault(m => !string.IsNullOrWhiteSpace(m));
+				return Json(new { success = false, message = primero ?? "Revise los datos del encargado." });
 			}
 
-			bool huboError = await encargadosService.Create(model);
-			return huboError
-				? AjaxResult(false, AlertMessage.AlertMessageCustomType.Error)
-				: AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessInsert);
+			var existente = await BuscarEncargadoPorIdentidadAsync(model.Per_Identidad);
+			if (existente == null)
+			{
+				bool huboError = await encargadosService.Create(model);
+				if (huboError)
+					return Json(new { success = false, message = "No se pudo registrar al encargado." });
+				existente = await BuscarEncargadoPorIdentidadAsync(model.Per_Identidad);
+				if (existente == null)
+					return Json(new { success = false, message = "El encargado no quedó registrado. Revise sus datos." });
+			}
+			var vinculo = await encargadosService.VincularAsync(existente.Enc_Id, aluId, parId);
+			return vinculo.Error
+				? Json(new { success = false, message = vinculo.Mensaje })
+				: Json(new { success = true, enc_Id = existente.Enc_Id });
+		}
+
+		/// <summary>Liga un encargado ya registrado al alumno recién creado, con su parentesco.</summary>
+		[HttpPost]
+		public async Task<ActionResult> VincularEncargadoAsync(int aluId, int encId, int parId)
+		{
+			if (aluId <= 0 || encId <= 0 || parId <= 0)
+				return Json(new { success = false, message = "Falta el alumno, el encargado o el parentesco." });
+			var vinculo = await encargadosService.VincularAsync(encId, aluId, parId);
+			return vinculo.Error
+				? Json(new { success = false, message = vinculo.Mensaje })
+				: Json(new { success = true });
+		}
+
+		private async Task<EncargadoViewModel> BuscarEncargadoPorIdentidadAsync(string identidad)
+		{
+			if (string.IsNullOrWhiteSpace(identidad)) return null;
+			var lista = await encargadosService.ListAsync();
+			return (lista ?? Enumerable.Empty<EncargadoViewModel>()).FirstOrDefault(e => e.Per_Identidad == identidad);
 		}
 
 		// ============================================================
@@ -215,8 +242,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
 			if (!ModelState.IsValid)
 			{
-				return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
+				var primero = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault(m => !string.IsNullOrWhiteSpace(m));
+				return Json(new { success = false, message = primero ?? "Revise los datos del alumno." });
 			}
+
+			// Una identidad no se repite entre alumnos.
+			var yaExiste = await alumnosService.FindByIdentidad(model.Per_Identidad);
+			if (yaExiste != null && yaExiste.Alu_Id > 0)
+				return Json(new { success = false, message = "Ya existe un alumno con esa identidad." });
 
 			// Desde la lista de espera se revisa ANTES de crear al alumno: si el aspirante ya no tiene la oferta
 			// (otra pestaña lo matriculó, lo rechazaron) o la identidad ya es de un alumno, no se crea nada.
@@ -237,12 +270,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			bool huboError = await alumnosService.Create(model);
 			if (huboError)
 			{
-				return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
+				return Json(new { success = false, message = "No se pudo crear al alumno. Revise los datos e intente de nuevo." });
 			}
 
 			// El API no regresa el Alu_Id recién creado desde CreateAsync (sólo boolean invertido,
 			// ver SendHttpClient). Se recupera por identidad para poder enlazar a Documentos/Detalle.
 			var creado = await alumnosService.FindByIdentidad(model.Per_Identidad);
+			if (creado == null || creado.Alu_Id <= 0)
+				return Json(new { success = false, message = "El alumno no quedó registrado. Revise los datos e intente de nuevo." });
 			// Lo inscribe en el año activo, en la sección del año de su ubicación (si falta, la crea).
 			// Si falla, la matrícula igual queda hecha: se puede inscribir después en Inscripción y promociones.
 			bool inscritoEnAnio = false;

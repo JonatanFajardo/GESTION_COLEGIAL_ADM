@@ -22,6 +22,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		private readonly Ficha360AlumnoAdmService ficha360Service = new Ficha360AlumnoAdmService();
 		private readonly BitacoraService bitacoraService = new BitacoraService();
 		private readonly EncargadosService encargadosService = new EncargadosService();
+		private readonly ParentescosService parentescosService = new ParentescosService();
 
 		/// <summary>
 		/// Muestra la vista del índice.
@@ -42,9 +43,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		[SessionManager("Crear alumnos")]
 		public async Task<ActionResult> Nuevo()
 		{
-			var model = new AlumnoViewModel();
-			var drop = await Dropdown(model);
-			return View("CreateAsync", drop);
+			return await FormularioAsync(new AlumnoViewModel());
 		}
 
 		/// <summary>
@@ -66,47 +65,30 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		public async Task<ActionResult> Editar(int id)
 		{
 			var result = await alumnosService.Find(id);
-			var drop = await Dropdown(result);
+			if (result == null || result.Alu_Id == 0)
+			{
+				AlertMessage.Show(AlertMessage.AlertMessageType.Error, "No se encontró el alumno");
+				return RedirectToAction("Index");
+			}
+			return await FormularioAsync(result);
+		}
 
-			//Esto se hace para llenar los drowpdown al editar los registros.
-
-			// Llenamos el ViewBag con los niveles de curso disponibles, basados en el identificador de nivel (Niv_Id) del resultado obtenido.
-			// Se usa ContinueWith para procesar la lista devuelta por el método CursoNivelesDropdown y convertirla en una lista de SelectListItem.
-			ViewBag.Niveles = await alumnosService.CursoNivelesDropdown(result.Niv_Id)
-			  .ContinueWith(task => (task.Result ?? Enumerable.Empty<CursoNivelDropViewModel>()).Select(x => new SelectListItem
-			  {
-				  Value = x.Cun_Id.ToString(), // Asignamos el ID del curso como valor del dropdown.
-				  Text = x.Cun_Descripcion // Asignamos la descripción del curso como texto visible en el dropdown.
-			  }).ToList());
-
-			// Llenamos el ViewBag con las modalidades disponibles según el curso seleccionado (Cun_Id).
-			ViewBag.Modalidades = await alumnosService.ModalidadesDropdown(result.Cun_Id)
-			  .ContinueWith(task => (task.Result ?? Enumerable.Empty<ModalidadViewModel>()).Select(x => new SelectListItem
-			  {
-				  Value = x.Mda_Id.ToString(), // Asignamos el ID de la modalidad como valor del dropdown.
-				  Text = x.Mda_Descripcion // Asignamos la descripción de la modalidad como texto visible en el dropdown.
-			  }).ToList());
-
-			// Llenamos el ViewBag con los cursos disponibles según la modalidad seleccionada (Mda_Id).
-			ViewBag.Cursos = await alumnosService.CursosDropdown(result.Mda_Id)
-			  .ContinueWith(task => (task.Result ?? Enumerable.Empty<CursoViewModel>()).Select(x => new SelectListItem
-			  {
-				  Value = x.Cur_Id.ToString(), // Asignamos el ID del curso como valor del dropdown.
-				  Text = x.Cur_Nombre // Asignamos el nombre del curso como texto visible en el dropdown.
-			  }).ToList());
-
-			// Llenamos el ViewBag con las secciones disponibles según el curso seleccionado (Cur_Id).
-			ViewBag.Secciones = await alumnosService.SeccionesDropdown(result.Cur_Id)
-			  .ContinueWith(task => (task.Result ?? Enumerable.Empty<SeccionViewModel>()).Select(x => new SelectListItem
-			  {
-				  Value = x.Sec_Id.ToString(), // Asignamos el ID de la sección como valor del dropdown.
-				  Text = x.Sec_Descripcion // Asignamos la descripción de la sección como texto visible en el dropdown.
-			  }).ToList());
-
-
-
+		/// <summary>
+		/// Arma el formulario con sus listas: niveles y estados, más las opciones de grado, modalidad, curso y
+		/// sección que corresponden a lo que el alumno ya tiene elegido (cada una filtrada por su padre).
+		/// </summary>
+		private async Task<ActionResult> FormularioAsync(AlumnoViewModel model)
+		{
+			var drop = await Dropdown(model);
+			ViewBag.Niveles = model.Niv_Id > 0 ? Items(await alumnosService.CursoNivelesDropdown(model.Niv_Id), x => x.Cun_Id, x => x.Cun_Descripcion) : new List<SelectListItem>();
+			ViewBag.Modalidades = model.Cun_Id > 0 ? Items(await alumnosService.ModalidadesDropdown(model.Cun_Id), x => x.Mda_Id, x => x.Mda_Descripcion) : new List<SelectListItem>();
+			ViewBag.Cursos = model.Mda_Id > 0 ? Items(await alumnosService.CursosDropdown(model.Mda_Id), x => x.Cur_Id, x => x.Cur_Nombre) : new List<SelectListItem>();
+			ViewBag.Secciones = model.Cur_Id > 0 ? Items(await alumnosService.SeccionesDropdown(model.Cur_Id), x => x.Sec_Id, x => x.Sec_Descripcion) : new List<SelectListItem>();
 			return View("CreateAsync", drop);
 		}
+
+		private static List<SelectListItem> Items<T>(IEnumerable<T> origen, System.Func<T, int> valor, System.Func<T, string> texto) =>
+			(origen ?? Enumerable.Empty<T>()).Select(x => new SelectListItem { Value = valor(x).ToString(), Text = texto(x) }).ToList();
 
 		/// <summary>
 		/// Muestra la vista de detalle de un alumno de forma asíncrona.
@@ -154,9 +136,32 @@ namespace GESTION_COLEGIAL.UI.Controllers
 		/// <param name="model">El modelo del alumno.</param>
 		/// <returns>El resultado de la operación.</returns>
 		[HttpPost]
-		[SessionManager("Crear alumnos")]
 		public async Task<ActionResult> Guardar(AlumnoViewModel model)
 		{
+			// Crear pide "Crear alumnos"; editar pide "Editar alumnos".
+			if (!TienePantalla(model.Alu_Id == 0 ? "Crear alumnos" : "Editar alumnos"))
+			{
+				AlertMessage.Show(AlertMessage.AlertMessageType.Error, model.Alu_Id == 0 ? "No tiene permiso para crear alumnos" : "No tiene permiso para editar alumnos");
+				return RedirectToAction("Index");
+			}
+			// La ubicación académica se elige completa (nivel, grado, modalidad, curso, sección y estado).
+			if (model.Niv_Id <= 0) ModelState.AddModelError("Niv_Id", "Seleccione el nivel educativo");
+			if (model.Cun_Id <= 0) ModelState.AddModelError("Cun_Id", "Seleccione el grado");
+			if (model.Mda_Id <= 0) ModelState.AddModelError("Mda_Id", "Seleccione la modalidad");
+			if (model.Cur_Id <= 0) ModelState.AddModelError("Cur_Id", "Seleccione el curso");
+			if (model.Sec_Id <= 0) ModelState.AddModelError("Sec_Id", "Seleccione la sección");
+			if (model.Est_Id <= 0) ModelState.AddModelError("Est_Id", "Seleccione el estado");
+			if (model.Alu_Id == 0 && !string.IsNullOrEmpty(model.Per_Identidad))
+			{
+				var repetido = await alumnosService.FindByIdentidad(model.Per_Identidad);
+				if (repetido != null && repetido.Alu_Id > 0) ModelState.AddModelError("Per_Identidad", "Ya existe un alumno con esa identidad");
+			}
+			if (!ModelState.IsValid)
+			{
+				AlertMessage.Show(AlertMessage.AlertMessageType.Error, "Revise los campos marcados en rojo");
+				return await FormularioAsync(model);
+			}
+
 			if (model.Alu_Id == 0)
 			{
 				bool result = await alumnosService.Create(model);
@@ -429,12 +434,48 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			try
 			{
 				var data = await encargadosService.ByAlumnoAsync(id);
+				ViewBag.AluId = id;
+				ViewBag.PuedeEditar = TienePantalla("Editar alumnos");
 				return PartialView("_TabFamilia", data);
 			}
 			catch
 			{
+				ViewBag.AluId = id;
+				ViewBag.PuedeEditar = TienePantalla("Editar alumnos");
 				return PartialView("_TabFamilia", (object)null);
 			}
+		}
+
+		/// <summary>Encargados ya registrados y parentescos, para ligar uno a este alumno desde la pestaña Familia.</summary>
+		[HttpGet]
+		[SessionManager("Editar alumnos")]
+		public async Task<ActionResult> OpcionesFamiliaAsync()
+		{
+			var encargados = (await encargadosService.ListAsync() ?? Enumerable.Empty<EncargadoViewModel>())
+				.Select(x => new { Value = x.Enc_Id, Text = x.Enc_Nombre, Identidad = x.Per_Identidad });
+			var parentescos = (await parentescosService.ListAsync() ?? Enumerable.Empty<ParentescoViewModel>())
+				.Select(x => new { Value = x.Par_Id, Text = x.Par_Descripcion });
+			return AjaxResult(new { encargados, parentescos });
+		}
+
+		/// <summary>Liga un encargado existente al alumno con su parentesco (o cambia el parentesco si ya estaba ligado).</summary>
+		[HttpPost]
+		[SessionManager("Editar alumnos")]
+		public async Task<ActionResult> VincularEncargadoAsync(int aluId, int encId, int parId)
+		{
+			if (aluId <= 0 || encId <= 0 || parId <= 0)
+				return Json(new { success = false, message = "Elija el encargado y el parentesco." });
+			var r = await encargadosService.VincularAsync(encId, aluId, parId);
+			return Json(new { success = !r.Error, message = r.Error ? r.Mensaje : "Encargado ligado al alumno." });
+		}
+
+		/// <summary>Quita el vínculo del encargado con el alumno (el encargado sigue registrado).</summary>
+		[HttpPost]
+		[SessionManager("Editar alumnos")]
+		public async Task<ActionResult> DesvincularEncargadoAsync(int aluId, int encId)
+		{
+			var r = await encargadosService.DesvincularAsync(encId, aluId);
+			return Json(new { success = !r.Error, message = r.Error ? r.Mensaje : "Encargado desligado del alumno." });
 		}
 
 		public async Task<ActionResult> GetDocumentosAsync(int id)

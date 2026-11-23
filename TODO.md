@@ -64,9 +64,9 @@ No aplican: biblioteca, internado/dormitorios, varias sedes, presupuesto contabl
 ## Hallazgos generales (fuera del calendario, 2026-11-12)
 
 - **API sin autenticación:** ningún controlador de la API exige login y docker-compose publica el puerto 5076. Cualquiera que llegue a ese puerto puede leer o cambiar datos sin pasar por el ADM. Antes del go-live: exigir token o no publicar el puerto fuera del servidor.
-- **Modo oscuro:** el menú lateral y la barra de migas siguen claros; en *Docencia diaria* la etiqueta "Horario" desaparece; `text-muted` tiene poco contraste en toda la app.
+- ~~**Modo oscuro:** menú lateral, barra de migas y `text-muted`~~ (hecho). Pendiente: en *Docencia diaria* la etiqueta "Horario" desaparece.
 - ✅ **Pase de lista para dirección** (hecho 2026-11-23, rama `feature/pase-lista`, script 080 de la API): admin y director ven todos los horarios del año con filtros Nivel → Grado → Sección y pueden pasar lista; el docente sigue viendo solo los suyos y, en la fecha de una sustitución, también la clase que cubre (marcada "Sustitución de ..."). El servidor valida titular, suplente en esa fecha o dirección al listar, guardar y pedir alertas de salud.
-- **"Sidebar compacto" en escritorio:** la preferencia está rota desde antes (el sidebar tapa el contenido). Arreglarla exige mostrar la hamburguesa también en escritorio.
+- ~~**"Sidebar compacto" en escritorio**~~ (hecho): la hamburguesa se muestra también en escritorio y oculta o muestra el menú.
 3. Disciplina · 4. Reportes de asistencia de alumnos · 5. Constancias · 6. Escala de notas + cuadro de honor · 7. Portal de padres.
 
 ---
@@ -197,3 +197,7 @@ Los 5 hubs **reutilizan los endpoints de los controllers originales** (`/Modalid
 - [ ] **Validar en navegador** que cada hub hace CRUD real de todos sus catálogos (crear/editar/eliminar/detalle) antes de considerar el borrado definitivo.
 - [ ] **Matriz roles/pantallas**: dar de alta las permission strings de los 5 hubs ("Estructura Académica", "Programa Académico", "Recursos de Horario", "Configuración de Cobranza", "Catálogos Comunes") y migrar los permisos de los catálogos sueltos hacia ellas (hoy los hubs se ven vía `esAdmin`; los CRUD internos aún dependen del guard viejo de cada controller).
 - [ ] **Limpieza post-validación** (commit aparte, tocar csproj): eliminar las vistas `Index.cshtml` sueltas de los catálogos ya consolidados (Modalidades, NivelesEducativos, Secciones, Semestres, Parciales, Cursos, CursosNiveles, Duraciones, Materias, Aulas, Dias, Horas, ConceptosPago, FormasPago, Descuentos, EstadosPago, Tarifas, Estados, Parentescos, Titulos, Cargos) — **dejando** cada controller y sus vistas Create/Edit/Delete/Detail que el hub reutiliza. Recién ahí quitar los bloques comentados del sidebar.
+
+### Alumnos y matrícula
+- [ ] Cupo de las secciones del año: hoy se fijó por script (35 o los matriculados); falta una pantalla para editarlo (Año Lectivo está congelado).
+- [ ] Lista de espera → Matricular: si la modalidad guardada del aspirante no corresponde al grado, el combo queda para elegir a mano (revisar datos de aspirantes).

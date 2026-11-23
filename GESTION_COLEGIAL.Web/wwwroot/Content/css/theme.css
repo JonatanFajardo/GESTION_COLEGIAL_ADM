@@ -680,7 +680,7 @@ html.gc-dark h1,html.gc-dark h2,html.gc-dark h3,html.gc-dark h4,html.gc-dark h5,
 }
 
 html.gc-dark .text-muted {
-    color: #64748b !important;
+    color: #94a3b8 !important;
 }
 
 html.gc-dark hr {
@@ -954,3 +954,21 @@ html.gc-dark .tabulator-row.tabulator-group .tabulator-arrow { border-left-color
 html.gc-dark .tabulator-row.tabulator-group.tabulator-group-visible .tabulator-arrow { border-top-color: #cbd5e1; border-left-color: transparent; }
 html.gc-dark .tabulator .tabulator-header .tabulator-col.tabulator-sortable.tabulator-col-sorter-element:hover,
 html.gc-dark .tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover { background-color: #273449; color: #e2e8f0; }
+
+/* ── Modo oscuro: menú lateral y migas de pan ── */
+html.gc-dark {
+    --sb-ink: #e2e8f0;
+    --sb-ink-2: #cbd5e1;
+    --sb-muted: #94a3b8;
+    --sb-line: #334155;
+    --sb-bg: #1e293b;
+    --sb-bg-hover: #273449;
+    --sb-soft: rgba(255, 122, 31, .18);
+}
+html.gc-dark .sidebar-search-input:focus { background: #0f172a !important; }
+html.gc-dark .sidebar-wrapper,
+html.gc-dark .sidebar-wrapper.sidebar-theme { box-shadow: 2px 0 12px rgba(0, 0, 0, .4) !important; }
+html.gc-dark .breadcrumb { background-color: #1e293b; }
+html.gc-dark .breadcrumb-item a { color: #cbd5e1; }
+html.gc-dark .breadcrumb-item.active { color: #94a3b8; }
+html.gc-dark .breadcrumb-item + .breadcrumb-item::before { color: #64748b; }

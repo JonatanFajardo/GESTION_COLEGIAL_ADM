@@ -22,6 +22,10 @@ var Matricula = (function () {
     var alumnoCreadoId = 0;
     var resultadoAspirante = null; // solo desde la lista de espera (cfg.aspirante)
 
+    // La identidad se escribe con o sin guiones (0801-1990-12345) y se guarda como texto de 13 dígitos.
+    function soloDigitos(v) { return (v || "").toString().replace(/[\s-]/g, ""); }
+    function identidadValida(v) { return /^(0[1-9]|1[0-8])[0-9]{11}$/.test(v); }
+
     // -------------------------------------------------- init
     obj.init = function (config) {
         cfg = config || {};
@@ -57,7 +61,7 @@ var Matricula = (function () {
         $("#Per_ApellidoMaterno").val(ape.slice(1).join(" "));
         $("#Per_FechaNacimiento").val(a.nacimiento || "");
         $("#Per_Sexo").val(a.sexo || "");
-        if (a.telefono) $("#Per_Telefono").val(String(a.telefono).replace(/\D/g, "").slice(0, 11)); // el alta solo acepta números
+        if (a.telefono) $("#Per_Telefono").val(String(a.telefono).replace(/\D/g, "").slice(0, 9)); // el alta solo acepta números
         if (a.correo) $("#Per_CorreoElectronico").val(a.correo);
         if (a.identidad) $("#Per_Identidad").val(a.identidad).trigger("blur");
         $("#Est_Id option").filter(function () { return $.trim($(this).text()).toLowerCase() === "activo"; }).prop("selected", true);
@@ -100,7 +104,7 @@ var Matricula = (function () {
             $("#enc_Per_ApellidoPaterno").val(n[2]);
             $("#enc_Per_ApellidoMaterno").val(n[3]);
             if (a.encargadoIdentidad) $("#enc_Per_Identidad").val(a.encargadoIdentidad);
-            if (a.telefono) $("#enc_Per_Telefono").val(String(a.telefono).replace(/\D/g, "").slice(0, 11));
+            if (a.telefono) $("#enc_Per_Telefono").val(String(a.telefono).replace(/\D/g, "").slice(0, 9));
             if (a.correo) $("#enc_Per_CorreoElectronico").val(a.correo);
             if (a.parId) $("#parNuevoSel").val(String(a.parId));
         });
@@ -194,7 +198,7 @@ var Matricula = (function () {
             var lista = (res && res.data) ? res.data : [];
             var $sel = $(sel).empty().append('<option value="">-- Seleccionar --</option>');
             $.each(lista, function (_, it) {
-                $sel.append('<option value="' + it.Value + '">' + it.Text + '</option>');
+                $sel.append($("<option>").val(it.Value).text(it.Text));
             });
             $sel.prop("disabled", lista.length === 0);
         }).fail(function () {
@@ -204,11 +208,17 @@ var Matricula = (function () {
 
     // -------------------------------------------------- Duplicado por identidad
     function wireIdentidad() {
+        $("#enc_Per_Identidad").on("blur", function () { $(this).val(soloDigitos($(this).val())); });
         $("#Per_Identidad").on("blur", function () {
-            var ident = ($(this).val() || "").trim();
+            var ident = soloDigitos($(this).val());
+            $(this).val(ident);
             var $aviso = $("#identidadAviso");
             $aviso.text("").css("color", "");
-            if (ident.length !== 13) return;
+            if (ident.length === 0) return;
+            if (!identidadValida(ident)) {
+                $aviso.css("color", "#b91c1c").text("Son 13 dígitos y los dos primeros son el departamento (01 a 18).");
+                return;
+            }
 
             $.ajax({
                 type: "GET",
@@ -261,7 +271,7 @@ var Matricula = (function () {
                 $(".mat-par").each(function () {
                     var $sel = $(this);
                     $.each(lista, function (_, it) {
-                        $sel.append('<option value="' + it.Value + '">' + it.Text + '</option>');
+                        $sel.append($("<option>").val(it.Value).text(it.Text));
                     });
                 });
             });
@@ -292,7 +302,9 @@ var Matricula = (function () {
             var $f = $(this);
             var val = ($f.val() || "").toString().trim();
             var len = $f.data("len");
-            var malo = (val === "") || (len && val.length !== parseInt(len, 10));
+            if ($f.attr("id") === "Per_Identidad") { val = soloDigitos(val); $f.val(val); }
+            var malo = (val === "") || (len && val.length !== parseInt(len, 10)) ||
+                ($f.attr("id") === "Per_Identidad" && !identidadValida(val));
             if (malo) {
                 marcarError($f);
                 ok = false;
@@ -317,7 +329,9 @@ var Matricula = (function () {
         } else {
             $("#encNuevo").find("[data-req-enc]").each(function () {
                 var $f = $(this);
-                if (($f.val() || "").toString().trim() === "") {
+                var v = ($f.val() || "").toString().trim();
+                if ($f.attr("id") === "enc_Per_Identidad") { v = soloDigitos(v); $f.val(v); }
+                if (v === "" || ($f.attr("id") === "enc_Per_Identidad" && !identidadValida(v))) {
                     marcarError($f); ok = false; primero = primero || $f;
                 }
             });
@@ -338,7 +352,7 @@ var Matricula = (function () {
     function val(id) { return ($("#" + id).val() || "").toString().trim() || "—"; }
 
     function fila(k, v) {
-        return '<div class="d-flex justify-content-between border-bottom py-1 small"><span class="text-muted">' + k + '</span><span class="font-weight-bold text-right">' + (v || "—") + '</span></div>';
+        return '<div class="d-flex justify-content-between border-bottom py-1 small"><span class="text-muted">' + k + '</span><span class="font-weight-bold text-right">' + $("<div>").text(v || "—").html() + '</span></div>';
     }
 
     function construirResumen() {
@@ -394,7 +408,7 @@ var Matricula = (function () {
             Alu_Id: 0,
             Per_Id: 0,
             Per_EsActivo: true,
-            Per_Identidad: $("#Per_Identidad").val(),
+            Per_Identidad: soloDigitos($("#Per_Identidad").val()),
             Per_PrimerNombre: $("#Per_PrimerNombre").val(),
             Per_SegundoNombre: $("#Per_SegundoNombre").val(),
             Per_ApellidoPaterno: $("#Per_ApellidoPaterno").val(),
@@ -422,7 +436,7 @@ var Matricula = (function () {
             EsActivo: "true",
             Per_EsActivo: true,
             Enc_Ocupacion: $("#enc_Enc_Ocupacion").val(),
-            Per_Identidad: $("#enc_Per_Identidad").val(),
+            Per_Identidad: soloDigitos($("#enc_Per_Identidad").val()),
             Per_PrimerNombre: $("#enc_Per_PrimerNombre").val(),
             Per_SegundoNombre: $("#enc_Per_SegundoNombre").val(),
             Per_ApellidoPaterno: $("#enc_Per_ApellidoPaterno").val(),
@@ -457,20 +471,21 @@ var Matricula = (function () {
             alumnoCreadoId = (res.item && res.item.alu_Id) ? res.item.alu_Id : 0;
             resultadoAspirante = (res.item && res.item.aspirante) ? res.item.aspirante : null;
 
-            // 2) Crear encargado nuevo si aplica (vínculo alumno-encargado: hueco de API)
+            // 2) Ligar al encargado (nuevo o ya registrado) con su parentesco
+            var fallo = function (msg) { finalizar(false, msg); };
             if (encMode === "nuevo") {
-                $.ajax({
-                    type: "POST",
-                    url: cfg.urlGuardarEnc,
-                    data: payloadEncargadoNuevo(),
-                    dataType: "json"
-                }).done(function (r2) {
-                    finalizar(!!(r2 && r2.success));
-                }).fail(function () {
-                    finalizar(false);
-                });
+                var dat = payloadEncargadoNuevo();
+                dat.aluId = alumnoCreadoId;
+                dat.parId = $("#parNuevoSel").val();
+                $.ajax({ type: "POST", url: cfg.urlGuardarEnc, data: dat, dataType: "json" })
+                    .done(function (r2) { if (r2 && r2.success) finalizar(true); else fallo(r2 && r2.message); })
+                    .fail(function () { fallo(); });
             } else {
-                finalizar(true, true); // encargado existente: sin escritura de vínculo (hueco API)
+                $.ajax({
+                    type: "POST", url: cfg.urlVincularEnc, dataType: "json",
+                    data: { aluId: alumnoCreadoId, encId: $("#encExistenteSel").val(), parId: $("#parExistenteSel").val() }
+                }).done(function (r2) { if (r2 && r2.success) finalizar(true); else fallo(r2 && r2.message); })
+                  .fail(function () { fallo(); });
             }
         }).fail(function () {
             alertar("Error de comunicación al crear el alumno.", "error");
@@ -478,14 +493,13 @@ var Matricula = (function () {
         });
     }
 
-    function finalizar(encOk, vinculoPendiente) {
+    function finalizar(encOk, motivo) {
         var notaEnc = "";
-        if (encMode === "nuevo" && !encOk) {
-            notaEnc = '<p class="text-danger"><i class="fas fa-triangle-exclamation mr-1"></i> El alumno se creó, pero el encargado no pudo registrarse. Regístrelo desde Encargados.</p>';
-        } else if (encMode === "nuevo" && encOk) {
-            notaEnc = '<p class="text-warning"><i class="fas fa-circle-info mr-1"></i> Encargado registrado. El vínculo alumno–encargado deberá confirmarse en la ficha del alumno (no soportado por el API en el alta).</p>';
-        } else if (vinculoPendiente) {
-            notaEnc = '<p class="text-warning"><i class="fas fa-circle-info mr-1"></i> El vínculo con el encargado existente deberá confirmarse en la ficha del alumno (no soportado por el API en el alta).</p>';
+        if (!encOk) {
+            notaEnc = '<p class="text-danger"><i class="fas fa-triangle-exclamation mr-1"></i> El alumno se creó, pero el encargado no quedó ligado' +
+                (motivo ? ': ' + $("<div>").text(motivo).html() : '') + '. Lígelo desde la pestaña Familia de la ficha del alumno.</p>';
+        } else {
+            notaEnc = '<p class="text-success"><i class="fas fa-circle-check mr-1"></i> Encargado ligado al alumno.</p>';
         }
 
         var linkDocs = alumnoCreadoId
