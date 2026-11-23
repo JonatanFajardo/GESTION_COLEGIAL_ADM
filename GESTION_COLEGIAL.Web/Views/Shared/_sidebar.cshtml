@@ -300,7 +300,7 @@
                 </li>
             }
 
-            @if (tiene("Cuaderno de notas") || tiene("Cierre de parciales") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Calendario escolar") || tiene("Casos de disciplina") || tiene("Planes de apoyo") || tiene("Reporte de asistencia de alumnos") || tiene("Constancias y expediente") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
+            @if (tiene("Cuaderno de notas") || tiene("Cierre de parciales") || tiene("Pase de lista") || tiene("Boletín de calificaciones") || tiene("Centro de anuncios") || tiene("Calendario escolar") || tiene("Casos de disciplina") || tiene("Planes de apoyo") || tiene("Sustituciones de docentes") || tiene("Reporte de asistencia de alumnos") || tiene("Constancias y expediente") || tiene("Rendimiento por Sección") || tiene("KPIs Académicos") || tiene("Alumnos en Riesgo Académico") || tiene("Búsqueda de Alumnos"))
             {
                 <li class="menu">
                     <a href="#Academico" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -325,6 +325,7 @@
                         @if (tiene("Centro de anuncios"))              { <li>@Html.ActionLink("Comunicados",   "Index", "CentroAnuncios")</li> }
                         @if (tiene("Casos de disciplina") || esAdmin)  { <li>@Html.ActionLink("Disciplina",    "Index", "Disciplina")</li> }
                         @if (tiene("Planes de apoyo") || esAdmin)      { <li>@Html.ActionLink("Planes de apoyo", "Index", "PlanesApoyo")</li> }
+                        @if (tiene("Sustituciones de docentes") || esAdmin) { <li>@Html.ActionLink("Sustituciones", "Index", "Sustituciones")</li> }
                         @if (tiene("Reporte de asistencia de alumnos") || esAdmin) { <li>@Html.ActionLink("Reporte de asistencia", "Index", "ReporteAsistencia")</li> }
                         @if (tiene("Constancias y expediente") || esAdmin) { <li>@Html.ActionLink("Constancias y expediente", "Index", "Constancias")</li> }
                         @* Deshabilitadas por test de utilidad §7 (ver TODO.md — decisión 2026-07-08):
