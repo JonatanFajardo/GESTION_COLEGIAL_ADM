@@ -1,0 +1,349 @@
+@model GESTION_COLEGIAL.UI.Models.SustitucionesIndexViewModel
+@{
+    ViewBag.Title = "Sustituciones de docentes";
+    var M = Model;
+}
+
+@section Styles{
+    <link href="~/css/pages/sustituciones.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Sustituciones</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Sustituciones de docentes</h4>
+        <p class="text-muted mb-0">
+            @(M.VerTodas
+                ? "Quién falta cada día, qué clases quedan sin profesor y quién las cubre."
+                : "Las clases que le toca cubrir y quién cubre las suyas cuando usted falta.")
+        </p>
+    </div>
+    @if (M.PuedeAsignar)
+    {
+        <div class="mt-2 mt-md-0">
+            <button type="button" class="btn btn-primary" id="sus-marcar">
+                <i class="bi bi-person-dash mr-1" aria-hidden="true"></i> Marcar docente ausente
+            </button>
+        </div>
+    }
+</div>
+
+<div id="sus-app" data-hoy="@M.Hoy" data-fecha="@M.Fecha" data-inicio-mes="@M.InicioMes"
+     data-asigna="@(M.PuedeAsignar ? "1" : "0")" data-todas="@(M.VerTodas ? "1" : "0")"
+     data-url-dia="@Url.Action("DiaAsync")" data-url-sugerencias="@Url.Action("SugerenciasAsync")"
+     data-url-docentes="@Url.Action("DocentesAsync")" data-url-historial="@Url.Action("HistorialAsync")"
+     data-url-asignar="@Url.Action("AsignarAsync")" data-url-cancelar="@Url.Action("CancelarAsync")"
+     data-url-marcar="@Url.Action("MarcarAusenciaAsync")" data-url-quitar="@Url.Action("QuitarAusenciaAsync")">
+
+    <ul class="nav nav-tabs mb-4" id="sus-pestanas" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="sus-tab-dia" data-toggle="tab" href="#sus-dia" role="tab" aria-controls="sus-dia" aria-selected="true">
+                <i class="bi bi-calendar-day mr-1" aria-hidden="true"></i> Día a día
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="sus-tab-historial" data-toggle="tab" href="#sus-historial" role="tab" aria-controls="sus-historial" aria-selected="false">
+                <i class="bi bi-clock-history mr-1" aria-hidden="true"></i> @(M.VerTodas ? "Historial y horas" : "Mi historial")
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        @* ───────────────────────── Día a día ───────────────────────── *@
+        <div class="tab-pane fade show active" id="sus-dia" role="tabpanel" aria-labelledby="sus-tab-dia">
+
+            <section class="statbox widget box box-shadow mb-4" aria-label="Elegir el día">
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="btn-group mr-3 my-1" role="group" aria-label="Cambiar de día">
+                            <button type="button" class="btn btn-outline-primary" id="sus-anterior" title="Día anterior" aria-label="Día anterior"><i class="bi bi-chevron-left" aria-hidden="true"></i></button>
+                            <label for="sus-fecha" class="sr-only">Fecha</label>
+                            <input type="date" id="sus-fecha" class="form-control sus-fecha" value="@M.Fecha" />
+                            <button type="button" class="btn btn-outline-primary" id="sus-siguiente" title="Día siguiente" aria-label="Día siguiente"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+                        </div>
+                        <button type="button" class="btn btn-link px-0 mr-4 my-1" id="sus-hoy"><i class="bi bi-calendar-check mr-1" aria-hidden="true"></i> Ir a hoy</button>
+                        <h5 class="mb-0 my-1" id="sus-titulo" aria-live="polite">&nbsp;</h5>
+                    </div>
+                </div>
+            </section>
+
+            <div class="row" id="sus-kpis">
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four sus-kpi sus-kpi-indigo h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="value" id="kpi-1">—</h6>
+                                    <p>@(M.VerTodas ? "Docentes ausentes" : "Clases que cubro")</p>
+                                </div>
+                                <div><div class="w-icon"><i class="bi @(M.VerTodas ? "bi-person-x" : "bi-person-workspace")" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-3">@(M.VerTodas ? "Vacaciones, permisos, asistencia o marcados a mano." : "Clases de otro docente que usted cubre este día.")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four sus-kpi sus-kpi-ambar h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="value" id="kpi-2">—</h6>
+                                    <p>@(M.VerTodas ? "Clases sin cubrir" : "Mis clases sin cubrir")</p>
+                                </div>
+                                <div><div class="w-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-3">@(M.VerTodas ? "Clases de los ausentes que aún no tienen suplente." : "Clases suyas de este día que aún no tienen suplente.")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four sus-kpi sus-kpi-esmeralda h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="value" id="kpi-3">—</h6>
+                                    <p>@(M.VerTodas ? "Clases cubiertas" : "Mis clases cubiertas")</p>
+                                </div>
+                                <div><div class="w-icon"><i class="bi bi-check2-circle" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-3">@(M.VerTodas ? "Clases de los ausentes que ya tienen suplente." : "Clases suyas que otro docente cubre este día.")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four sus-kpi sus-kpi-cian h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info">
+                                    <h6 class="value" id="kpi-4">—</h6>
+                                    <p id="kpi-4-titulo">@(M.VerTodas ? "Horas cubiertas en el mes" : "Horas que cubrí en el mes")</p>
+                                </div>
+                                <div><div class="w-icon"><i class="bi bi-clock" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-3" id="kpi-4-texto">&nbsp;</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-light-info mb-4" id="sus-aviso" role="status" hidden></div>
+
+            @if (!M.VerTodas)
+            {
+                @if (!M.TieneEmpleado)
+                {
+                    <div class="alert alert-light-warning mb-4" role="status">Su usuario no está ligado a un empleado: no hay clases suyas que mostrar.</div>
+                }
+                <section class="statbox widget box box-shadow mb-4" aria-labelledby="sus-cubro-titulo">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12"><h4 id="sus-cubro-titulo">Clases que me toca cubrir este día</h4></div></div>
+                    </div>
+                    <div class="widget-content widget-content-area pt-0">
+                        <div id="sus-cubro"></div>
+                    </div>
+                </section>
+                <section class="statbox widget box box-shadow mb-4" aria-labelledby="sus-proximas-titulo">
+                    <div class="widget-header">
+                        <div class="row"><div class="col-12"><h4 id="sus-proximas-titulo">Mis próximas sustituciones</h4></div></div>
+                    </div>
+                    <div class="widget-content widget-content-area pt-0">
+                        <div id="sus-proximas"></div>
+                    </div>
+                </section>
+            }
+
+            <section aria-labelledby="sus-ausentes-titulo">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+                    <h5 class="mb-2 mr-3" id="sus-ausentes-titulo">
+                        @(M.VerTodas ? "Docentes ausentes" : "Mis ausencias de este día")
+                        <span class="badge outline-badge-primary ml-1" id="sus-total">0</span>
+                    </h5>
+                    @if (M.VerTodas)
+                    {
+                        <div class="d-flex flex-wrap align-items-center mb-2">
+                            <div class="custom-control custom-switch mr-3 my-1">
+                                <input type="checkbox" class="custom-control-input" id="sus-solo-pendientes" />
+                                <label class="custom-control-label" for="sus-solo-pendientes">Solo con clases sin cubrir</label>
+                            </div>
+                            <label for="sus-buscar" class="sr-only">Buscar docente</label>
+                            <input type="search" id="sus-buscar" class="form-control sus-buscar my-1" placeholder="Docente, materia o grado" autocomplete="off" />
+                        </div>
+                    }
+                </div>
+                <div class="row" id="sus-ausentes"></div>
+            </section>
+        </div>
+
+        @* ───────────────────────── Historial ───────────────────────── *@
+        <div class="tab-pane fade" id="sus-historial" role="tabpanel" aria-labelledby="sus-tab-historial">
+            <section class="statbox widget box box-shadow mb-4" aria-labelledby="sus-filtros-titulo">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="sus-filtros-titulo">Buscar sustituciones</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area pt-0">
+                    <div class="form-row align-items-end">
+                        <div class="col-6 col-md-3 col-xl-2 form-group">
+                            <label for="sus-desde">Desde</label>
+                            <input type="date" id="sus-desde" class="form-control" value="@M.InicioMes" />
+                        </div>
+                        <div class="col-6 col-md-3 col-xl-2 form-group">
+                            <label for="sus-hasta">Hasta</label>
+                            <input type="date" id="sus-hasta" class="form-control" value="@M.Hoy" />
+                        </div>
+                        <div class="col-md-6 col-xl-3 form-group">
+                            <label for="sus-suplente">Suplente</label>
+                            <select id="sus-suplente" class="custom-select"><option value="">Todos</option></select>
+                        </div>
+                        <div class="col-md-12 col-xl-5 form-group d-flex flex-wrap align-items-center">
+                            <button type="button" class="btn btn-sm btn-rounded btn-outline-primary mr-2 my-1" data-rango="mes">Este mes</button>
+                            <button type="button" class="btn btn-sm btn-rounded btn-outline-primary mr-3 my-1" data-rango="anterior">Mes anterior</button>
+                            <div class="custom-control custom-switch mr-3 my-1">
+                                <input type="checkbox" class="custom-control-input" id="sus-canceladas" />
+                                <label class="custom-control-label" for="sus-canceladas">Incluir canceladas</label>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary my-1 ml-auto" id="sus-exportar">
+                                <i class="bi bi-file-earmark-spreadsheet mr-1" aria-hidden="true"></i> Exportar a Excel
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-danger small mb-0" id="sus-rango-error" hidden></p>
+                </div>
+            </section>
+
+            <div class="row">
+                <div class="col-xl-4 layout-spacing">
+                    <section class="statbox widget box box-shadow h-100" aria-labelledby="sus-totales-titulo">
+                        <div class="widget-header">
+                            <div class="row"><div class="col-12"><h4 id="sus-totales-titulo">@(M.VerTodas ? "Horas por suplente" : "Mis horas cubiertas")</h4></div></div>
+                        </div>
+                        <div class="widget-content widget-content-area pt-0">
+                            <p class="text-muted small">Solo sustituciones vigentes (no canceladas) del rango.</p>
+                            <div class="table-responsive sus-totales">
+                                <table class="table table-sm table-hover mb-0">
+                                    <thead><tr><th scope="col">Suplente</th><th scope="col" class="text-right sus-col-num">Clases</th><th scope="col" class="text-right sus-col-num">Horas</th></tr></thead>
+                                    <tbody id="sus-totales"></tbody>
+                                    <tfoot id="sus-totales-pie"></tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-xl-8 layout-spacing">
+                    <section class="statbox widget box box-shadow h-100" aria-labelledby="sus-tabla-titulo">
+                        <div class="widget-header">
+                            <div class="row"><div class="col-12"><h4 id="sus-tabla-titulo">Sustituciones <span class="badge outline-badge-primary ml-1" id="sus-hist-total">0</span></h4></div></div>
+                        </div>
+                        <div class="widget-content widget-content-area pt-0">
+                            <div id="tabla-sustituciones" class="gc-tabla sus-tabla" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (M.PuedeAsignar)
+{
+    @* ── Asignar suplente ── *@
+    <div class="modal fade" id="sus-modal-asignar" tabindex="-1" role="dialog" aria-labelledby="sus-asignar-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sus-asignar-titulo">Asignar suplente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="sus-resumen mb-3" id="sus-asignar-clase"></div>
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                        <label for="sus-buscar-suplente" class="font-weight-bold mb-1 mr-3">Docentes libres a esa hora <span class="badge outline-badge-primary ml-1" id="sus-libres">0</span></label>
+                        <input type="search" id="sus-buscar-suplente" class="form-control sus-buscar mb-1" placeholder="Buscar docente" autocomplete="off" />
+                    </div>
+                    <p class="text-muted small mb-2">Primero quien sabe la materia, luego quien da clases en el mismo grado y luego quien lleva menos sustituciones este mes.</p>
+                    <div class="list-group sus-sugerencias" id="sus-sugerencias" role="radiogroup" aria-label="Suplentes sugeridos"></div>
+                    <button type="button" class="btn btn-link px-0 mt-1" id="sus-ver-todos" hidden></button>
+                    <div class="form-group mt-3 mb-0">
+                        <label for="sus-notas">Notas para el suplente <span class="text-muted">(opcional)</span></label>
+                        <textarea id="sus-notas" class="form-control" rows="2" maxlength="500" placeholder="Ej.: la guía de trabajo está en la secretaría"></textarea>
+                    </div>
+                    <p class="text-danger small mt-2 mb-0" id="sus-asignar-error" role="alert" hidden></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="sus-asignar-guardar" disabled><i class="bi bi-person-check mr-1" aria-hidden="true"></i> Asignar suplente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ── Marcar docente ausente ── *@
+    <div class="modal fade" id="sus-modal-ausente" tabindex="-1" role="dialog" aria-labelledby="sus-ausente-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sus-ausente-titulo">Marcar docente ausente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small">Úselo cuando la falta no está en vacaciones y permisos ni en la asistencia del día.</p>
+                    <div class="form-group">
+                        <label for="sus-aus-fecha">Fecha</label>
+                        <input type="date" id="sus-aus-fecha" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sus-aus-buscar">Docente</label>
+                        <input type="search" id="sus-aus-buscar" class="form-control mb-2" placeholder="Buscar por nombre" autocomplete="off" />
+                        <div class="list-group sus-sugerencias sus-docentes" id="sus-aus-lista" role="radiogroup" aria-label="Docentes"></div>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="sus-aus-motivo">Motivo</label>
+                        <textarea id="sus-aus-motivo" class="form-control" rows="2" maxlength="300" placeholder="Ej.: cita médica, duelo, capacitación"></textarea>
+                    </div>
+                    <p class="text-danger small mt-2 mb-0" id="sus-ausente-error" role="alert" hidden></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="sus-ausente-guardar"><i class="bi bi-person-dash mr-1" aria-hidden="true"></i> Marcar ausente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ── Confirmar (cancelar sustitución / quitar ausencia) ── *@
+    <div class="modal fade" id="sus-modal-confirmar" tabindex="-1" role="dialog" aria-labelledby="sus-confirmar-titulo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sus-confirmar-titulo">Confirmar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p id="sus-confirmar-texto" class="mb-3"></p>
+                    <div class="form-group mb-0" id="sus-confirmar-motivo-grupo">
+                        <label for="sus-confirmar-motivo">Motivo <span class="text-muted">(opcional)</span></label>
+                        <textarea id="sus-confirmar-motivo" class="form-control" rows="2" maxlength="300"></textarea>
+                    </div>
+                    <p class="text-danger small mt-2 mb-0" id="sus-confirmar-error" role="alert" hidden></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-danger" id="sus-confirmar-ok">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/sustituciones.js" asp-append-version="true"></script>
+}
