@@ -74,6 +74,33 @@
                                 <textarea name="Anu_Contenido" class="form-control" rows="4" placeholder="Descripcion del anuncio o comunicado..."></textarea>
                             </div>
                             <div class="col-md-12 form-group">
+                                <label>¿A quién va dirigido? *</label>
+                                <select name="Anu_Publico" id="anu-publico" class="form-control">
+                                    <option value="todos">Todo el colegio (personal y familias)</option>
+                                    <option value="personal">Solo personal</option>
+                                    <option value="familias">Familias</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12" id="anu-familias" style="display:none">
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <label>Nivel</label>
+                                        <select name="Anu_NivId" id="anu-nivel" class="form-control"></select>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label>Grado</label>
+                                        <select name="Anu_CunId" id="anu-grado" class="form-control" disabled></select>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label>Sección</label>
+                                        <select name="Anu_SecId" id="anu-seccion" class="form-control" disabled></select>
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        <small class="text-muted">Sin nivel, el anuncio llega a todas las familias. Con grado o sección, solo a las familias que tengan un hijo ahí.</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
                                 <label>Fecha de Expiracion</label>
                                 <input type="date" name="Anu_FechaExpiracion" class="form-control">
                             </div>
@@ -95,7 +122,8 @@
         CentroAnuncios.init(
             "@Url.Action("ListAsync")",
             "@Url.Action("CreateAsync")",
-            "@Url.Action("DeleteAsync")"
+            "@Url.Action("DeleteAsync")",
+            "@Url.Action("OpcionesAsync")"
         );
     </script>
 }

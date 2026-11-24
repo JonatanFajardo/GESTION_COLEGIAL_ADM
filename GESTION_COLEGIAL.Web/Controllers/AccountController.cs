@@ -1,9 +1,10 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using GESTION_COLEGIAL.UI.Filters;
 
 namespace GESTION_COLEGIAL.UI.Controllers
 {
@@ -46,36 +47,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 if (result != null && result.Success)
                 {
-                    string pantallas = result.Pantallas != null
-                        ? String.Join(",", result.Pantallas)
-                        : "";
+                    await IniciarSesionAsync(HttpContext, result, model.RememberMe);
 
-                    // Los datos del usuario viajan cifrados en la cookie de login
-                    // (antes: Session + ticket de FormsAuthentication).
-                    var claims = new List<Claim>
+                    // El encargado (portal de padres) siempre entra a su portal.
+                    if (SoloPortalEncargadoFilter.RolEncargado.Equals((result.User.Rol_Nombre ?? "").Trim(), StringComparison.OrdinalIgnoreCase))
                     {
-                        new Claim(ClaimTypes.Name, result.User.Usu_Name ?? ""),
-                        new Claim(ClaimTypes.Role, result.User.Rol_Nombre ?? ""),
-                        new Claim(SesionUsuario.UserId, result.User.Usu_Id.ToString()),
-                        new Claim(SesionUsuario.EmpId, result.User.Emp_Id.ToString()),
-                        new Claim(SesionUsuario.RolId, result.User.Rol_Id.ToString()),
-                        new Claim(SesionUsuario.RoleName, result.User.Rol_Nombre ?? ""),
-                        new Claim(SesionUsuario.Username, result.User.Usu_Name ?? ""),
-                        new Claim(SesionUsuario.Token, result.Token ?? ""),
-                        new Claim(SesionUsuario.Pantallas, pantallas)
-                    };
-
-                    var identidad = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var propiedades = new AuthenticationProperties
-                    {
-                        // "Recordarme": 7 días aunque se cierre el navegador; si no, 60 minutos de inactividad.
-                        IsPersistent = model.RememberMe,
-                        ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(7) : (DateTimeOffset?)null
-                    };
-
-                    // Descarta datos de una sesión anterior (ej. "ver como rol").
-                    HttpContext.Session.Clear();
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identidad), propiedades);
+                        return RedirectToAction("Index", "Portal");
+                    }
 
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
@@ -94,6 +72,43 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 ModelState.AddModelError("", "No se pudo conectar con el servidor. Intente de nuevo en un momento.");
                 return View(model);
             }
+        }
+
+        /// <summary>
+        /// Crea la cookie de login con los datos del usuario (también la usa la activación del portal de padres).
+        /// </summary>
+        internal static async Task IniciarSesionAsync(HttpContext contexto, LoginResponseViewModel result, bool recordar)
+        {
+            string pantallas = result.Pantallas != null
+                ? String.Join(",", result.Pantallas)
+                : "";
+
+            // Los datos del usuario viajan cifrados en la cookie de login
+            // (antes: Session + ticket de FormsAuthentication).
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, result.User.Usu_Name ?? ""),
+                new Claim(ClaimTypes.Role, result.User.Rol_Nombre ?? ""),
+                new Claim(SesionUsuario.UserId, result.User.Usu_Id.ToString()),
+                new Claim(SesionUsuario.EmpId, result.User.Emp_Id.ToString()),
+                new Claim(SesionUsuario.RolId, result.User.Rol_Id.ToString()),
+                new Claim(SesionUsuario.RoleName, result.User.Rol_Nombre ?? ""),
+                new Claim(SesionUsuario.Username, result.User.Usu_Name ?? ""),
+                new Claim(SesionUsuario.Token, result.Token ?? ""),
+                new Claim(SesionUsuario.Pantallas, pantallas)
+            };
+
+            var identidad = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var propiedades = new AuthenticationProperties
+            {
+                // "Recordarme": 7 días aunque se cierre el navegador; si no, 60 minutos de inactividad.
+                IsPersistent = recordar,
+                ExpiresUtc = recordar ? DateTimeOffset.UtcNow.AddDays(7) : (DateTimeOffset?)null
+            };
+
+            // Descarta datos de una sesión anterior (ej. "ver como rol").
+            contexto.Session.Clear();
+            await contexto.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identidad), propiedades);
         }
 
         /// <summary>IP del navegador (la que ve el ADM), para el límite de intentos de la API.</summary>

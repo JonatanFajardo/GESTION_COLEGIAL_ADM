@@ -1,0 +1,70 @@
+@model GESTION_COLEGIAL.UI.Models.PortalPaginaViewModel
+@{
+    var M = Model;
+}
+<div class="row">
+    @foreach (var h in M.Hijos)
+    {
+        string inicial = string.IsNullOrEmpty(h.Alu_PrimerNombre) ? "?" : h.Alu_PrimerNombre.Substring(0, 1).ToUpper();
+        <div class="col-12 col-lg-6 mb-4">
+            <div class="statbox widget box box-shadow h-100">
+                <div class="widget-content widget-content-area h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="portal-avatar mr-3" aria-hidden="true">@inicial</div>
+                        <div class="portal-min-w-0">
+                            <h5 class="mb-1 portal-nombre">@h.Alu_Nombre</h5>
+                            <p class="text-muted small mb-0">@h.Ubicacion@(string.IsNullOrWhiteSpace(h.Curso) ? "" : " · " + h.Curso)</p>
+                            @if (!string.IsNullOrWhiteSpace(h.Parentesco))
+                            {
+                                <p class="text-muted small mb-0">Usted es: @h.Parentesco</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="row no-gutters portal-cifras">
+                        <a class="col-6 col-sm-3 portal-cifra" href="@Url.Action("Notas", new { alumno = h.Alu_Id })">
+                            <span class="portal-cifra-valor">@(h.PromedioPublicado.HasValue ? h.PromedioPublicado.Value.ToString("0.#") : "—")</span>
+                            <span class="portal-cifra-texto">Promedio publicado</span>
+                        </a>
+                        <a class="col-6 col-sm-3 portal-cifra" href="@Url.Action("Asistencia", new { alumno = h.Alu_Id })">
+                            <span class="portal-cifra-valor @(h.Ausencias > 0 ? "text-danger" : "")">@h.Ausencias</span>
+                            <span class="portal-cifra-texto">Faltas este año</span>
+                        </a>
+                        <a class="col-6 col-sm-3 portal-cifra" href="@Url.Action("Cuenta", new { alumno = h.Alu_Id })">
+                            <span class="portal-cifra-valor @(h.SaldoVencido > 0 ? "text-danger" : "")">L @h.SaldoPendiente.ToString("N2")</span>
+                            <span class="portal-cifra-texto">@(h.SaldoVencido > 0 ? "Saldo (con vencido)" : "Saldo pendiente")</span>
+                        </a>
+                        <a class="col-6 col-sm-3 portal-cifra" href="@Url.Action("Solicitudes", new { alumno = h.Alu_Id })">
+                            <span class="portal-cifra-valor">@h.SolicitudesAbiertas</span>
+                            <span class="portal-cifra-texto">Solicitudes abiertas</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="statbox widget box box-shadow mb-4">
+    <div class="widget-header">
+        <div class="row">
+            <div class="col-12 d-flex align-items-center justify-content-between">
+                <h4>Anuncios recientes</h4>
+                <a class="btn btn-link btn-sm mr-3" href="@Url.Action("Anuncios", new { alumno = M.Hijo?.Alu_Id })">Ver todos</a>
+            </div>
+        </div>
+    </div>
+    <div class="widget-content widget-content-area">
+        @if (M.Anuncios.Count == 0)
+        {
+            <p class="text-muted mb-0">No hay anuncios vigentes.</p>
+        }
+        @foreach (var a in M.Anuncios)
+        {
+            <div class="portal-anuncio">
+                <h6 class="mb-1">@a.Anu_Titulo</h6>
+                <p class="text-muted small mb-1">@a.Anu_FechaPublicacion?.ToString("dd/MM/yyyy")</p>
+                <p class="mb-0 portal-texto-corto">@a.Anu_Contenido</p>
+            </div>
+        }
+    </div>
+</div>

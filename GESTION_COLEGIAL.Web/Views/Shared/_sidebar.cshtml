@@ -238,7 +238,7 @@
             }
             *@
 
-            @if (tiene("Listado de alumnos") || tiene("Directorio de Alumnos") || tiene("Pirámide de Matrícula") || tiene("Mensajes a Encargados") || tiene("Documentos alumno") || tiene("Matrícula nueva") || tiene("Fichas de salud") || tiene("Lista de espera"))
+            @if (tiene("Listado de alumnos") || tiene("Directorio de Alumnos") || tiene("Pirámide de Matrícula") || tiene("Mensajes a Encargados") || tiene("Documentos alumno") || tiene("Matrícula nueva") || tiene("Fichas de salud") || tiene("Lista de espera") || tiene("Invitaciones al portal") || tiene("Solicitudes del portal"))
             {
                 <li class="menu">
                     <a href="#Alumnos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -264,6 +264,8 @@
                                                                  { <li>@Html.ActionLink("Directorio de contacto","Index", "DirectorioContacto")</li> }
                         @if (tiene("Documentos alumno"))         { <li>@Html.ActionLink("Documentos del alumno",           "Index", "DocumentosAlumnoAdm")</li> }
                         @if (tiene("Fichas de salud") || esAdmin) { <li>@Html.ActionLink("Fichas de salud",                 "Index", "FichasSalud")</li> }
+                        @if (tiene("Invitaciones al portal") || esAdmin) { <li>@Html.ActionLink("Invitaciones al portal",   "Index", "InvitacionesPortal")</li> }
+                        @if (tiene("Solicitudes del portal") || esAdmin) { <li>@Html.ActionLink("Solicitudes del portal",   "Index", "SolicitudesPortal")</li> }
                         @* Parentescos → consolidado en hub "Catálogos Comunes" (CatalogosComunes). Link suelto deshabilitado (test §7, ver TODO.md). Controller Parentescos sigue vivo: el hub lo reutiliza.
                         @if (tiene("Listado de parentescos"))    { <li>@Html.ActionLink("Parentescos",          "Index", "Parentescos")</li> } *@
                         @* Pirámide de matrícula → pasó al Centro de reportes ("Matrícula por programa y sexo"). Controller vivo (ver TODO.md).

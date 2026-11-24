@@ -1,0 +1,102 @@
+@model GESTION_COLEGIAL.UI.Models.PortalPaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    var M = Model;
+    var N = M.Nueva;
+}
+<div class="row">
+    <div class="col-12 col-lg-5 mb-4">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4>Nueva solicitud</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <form asp-action="Solicitar" asp-controller="Portal" method="post" id="portal-solicitud">
+                    <input type="hidden" name="Alu_Id" value="@M.Hijo.Alu_Id" />
+                    <p class="small text-muted">Para: @M.Hijo.Alu_Nombre</p>
+                    <div class="form-group">
+                        <label for="sol-tipo">¿Qué necesita?</label>
+                        <select class="custom-select" id="sol-tipo" name="Tipo" required>
+                            <option value="">Elija una opción</option>
+                            @foreach (var t in PortalTextos.Tipos)
+                            {
+                                <option value="@t" selected="@(N.Tipo == t)">@PortalTextos.Tipo(t)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group" id="sol-fecha-grupo">
+                        <label for="sol-fecha">Fecha de la falta</label>
+                        <input class="form-control" type="date" id="sol-fecha" name="FechaFalta"
+                               value="@N.FechaFalta?.ToString("yyyy-MM-dd")" max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sol-asunto">Asunto</label>
+                        <input class="form-control" type="text" id="sol-asunto" name="Asunto" maxlength="150" required
+                               value="@N.Asunto" placeholder="Ej.: Cita con el maestro guía" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sol-detalle">Detalle <span class="text-muted small">(opcional)</span></label>
+                        <textarea class="form-control" id="sol-detalle" name="Detalle" rows="4" maxlength="2000"
+                                  placeholder="Cuéntele al colegio lo que necesita">@N.Detalle</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="bi bi-send mr-1" aria-hidden="true"></i> Enviar solicitud
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-7 mb-4">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row"><div class="col-12"><h4>Mis solicitudes</h4></div></div>
+            </div>
+            <div class="widget-content widget-content-area">
+                @if (M.Solicitudes.Count == 0)
+                {
+                    <p class="text-muted mb-0">Todavía no ha hecho solicitudes sobre @M.Hijo.Alu_PrimerNombre.</p>
+                }
+                @foreach (var s in M.Solicitudes)
+                {
+                    <div class="portal-solicitud">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="portal-min-w-0 mr-2">
+                                <p class="small text-muted mb-1">@PortalTextos.Tipo(s.Sol_Tipo) · @s.Sol_FechaRegistra.ToString("dd/MM/yyyy")</p>
+                                <h6 class="mb-1">@s.Sol_Asunto</h6>
+                            </div>
+                            <span class="badge @PortalTextos.EstadoBadge(s.Sol_Estado)">@PortalTextos.Estado(s.Sol_Estado)</span>
+                        </div>
+                        @if (s.Sol_FechaFalta.HasValue)
+                        {
+                            <p class="small mb-1">Falta del @s.Sol_FechaFalta.Value.ToString("dd/MM/yyyy")</p>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(s.Sol_Detalle))
+                        {
+                            <p class="mb-2 portal-texto">@s.Sol_Detalle</p>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(s.Sol_Respuesta))
+                        {
+                            <div class="alert alert-light-primary mb-2">
+                                <strong>Respuesta del colegio</strong>
+                                @if (s.Sol_FechaAtiende.HasValue)
+                                {
+                                    <span class="small"> · @s.Sol_FechaAtiende.Value.ToString("dd/MM/yyyy")</span>
+                                }
+                                <p class="mb-0 portal-texto">@s.Sol_Respuesta</p>
+                            </div>
+                        }
+                        @if (s.Abierta)
+                        {
+                            <form asp-action="Retirar" asp-controller="Portal" method="post" class="portal-retirar">
+                                <input type="hidden" name="id" value="@s.Sol_Id" />
+                                <input type="hidden" name="alumno" value="@M.Hijo.Alu_Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Retirar solicitud</button>
+                            </form>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

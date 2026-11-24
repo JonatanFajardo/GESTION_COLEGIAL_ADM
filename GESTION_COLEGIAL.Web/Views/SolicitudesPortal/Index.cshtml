@@ -1,0 +1,126 @@
+@model GESTION_COLEGIAL.UI.Models.SolicitudesPortalIndexViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    ViewBag.Title = "Solicitudes del portal";
+    var M = Model;
+    var filtros = new[] { ("abiertas", "Abiertas"), ("nueva", "Nuevas"), ("en_proceso", "En proceso"), ("atendida", "Atendidas"), ("rechazada", "Rechazadas"), ("retirada", "Retiradas"), ("todas", "Todas") };
+    var kpis = new[]
+    {
+        ((M.Resumen.Nuevas ?? 0).ToString(), "Nuevas sin atender", "bi-inbox"),
+        ((M.Resumen.EnProceso ?? 0).ToString(), "En proceso", "bi-hourglass-split"),
+        ((M.Resumen.AtendidasMes ?? 0).ToString(), "Atendidas este mes", "bi-check2-circle"),
+        ((M.Resumen.RechazadasMes ?? 0).ToString(), "Rechazadas este mes", "bi-x-circle")
+    };
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Alumnos</li>
+            <li class="breadcrumb-item active" aria-current="page">Solicitudes del portal</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Solicitudes del portal de padres</h4>
+        <p class="text-muted mb-0">Lo que piden las familias desde el portal: justificar faltas, citas y constancias. Atienda y responda aquí.</p>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var k in kpis)
+    {
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value">@k.Item1</h6>
+                            <p>@k.Item2</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi @k.Item3" aria-hidden="true"></i></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="statbox widget box box-shadow mb-4">
+    <div class="widget-content widget-content-area">
+        <div class="mb-2">
+            @foreach (var f in filtros)
+            {
+                <a class="btn btn-sm btn-rounded @(M.Estado == f.Item1 ? "btn-primary" : "btn-outline-primary") mr-1 mb-2"
+                   href="@Url.Action("Index", new { estado = f.Item1, tipo = M.Tipo, texto = M.Texto })">@f.Item2</a>
+            }
+        </div>
+        <form method="get" asp-action="Index" class="form-row align-items-end mb-3">
+            <input type="hidden" name="estado" value="@M.Estado" />
+            <div class="col-12 col-md-4 mb-2">
+                <label for="sol-tipo">Tipo</label>
+                <select class="custom-select" id="sol-tipo" name="tipo">
+                    <option value="">Todos</option>
+                    @foreach (var t in PortalTextos.Tipos)
+                    {
+                        <option value="@t" selected="@(M.Tipo == t)">@PortalTextos.Tipo(t)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+                <label for="sol-texto">Buscar</label>
+                <input type="search" class="form-control" id="sol-texto" name="texto" value="@M.Texto" placeholder="Asunto, alumno o encargado" />
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+            </div>
+        </form>
+
+        @if (M.Filas.Count == 0)
+        {
+            <p class="text-muted mb-0">No hay solicitudes con ese filtro.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Recibida</th>
+                            <th scope="col">Alumno</th>
+                            <th scope="col">Encargado</th>
+                            <th scope="col">Solicitud</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col"><span class="sr-only">Abrir</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in M.Filas)
+                        {
+                            <tr>
+                                <td class="text-nowrap">@s.Sol_FechaRegistra.ToString("dd/MM/yyyy")<span class="d-block small text-muted">@s.Sol_FechaRegistra.ToString("h:mm tt")</span></td>
+                                <td>@s.Alu_Nombre<span class="d-block small text-muted">@s.Grado@(string.IsNullOrWhiteSpace(s.Seccion) ? "" : " · " + s.Seccion)</span></td>
+                                <td>@s.Enc_Nombre</td>
+                                <td>@s.Sol_Asunto<span class="d-block small text-muted">@PortalTextos.Tipo(s.Sol_Tipo)@(s.Sol_FechaFalta.HasValue ? " · falta del " + s.Sol_FechaFalta.Value.ToString("dd/MM") : "")</span></td>
+                                <td>
+                                    <span class="badge @PortalTextos.EstadoBadge(s.Sol_Estado)">@PortalTextos.Estado(s.Sol_Estado)</span>
+                                    @if (!string.IsNullOrEmpty(s.AtendidoPor))
+                                    {
+                                        <span class="d-block small text-muted">@s.AtendidoPor</span>
+                                    }
+                                </td>
+                                <td class="text-right">
+                                    <a class="btn btn-sm @(s.Sol_Estado == "nueva" || s.Sol_Estado == "en_proceso" ? "btn-primary" : "btn-outline-primary")"
+                                       href="@Url.Action("Ver", new { id = s.Sol_Id })">@(s.Sol_Estado == "nueva" || s.Sol_Estado == "en_proceso" ? "Atender" : "Ver")</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

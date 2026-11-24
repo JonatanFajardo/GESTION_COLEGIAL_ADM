@@ -1,15 +1,17 @@
 var CentroAnuncios = (function () {
     var obj = {};
-    var urlList, urlCreate, urlDelete;
+    var urlList, urlCreate, urlDelete, urlOpciones;
     var todosLosAnuncios = [];
     var filtroActivo = "todos";
 
-    obj.init = function (ul, uc, ud) {
+    obj.init = function (ul, uc, ud, uo) {
+        urlOpciones = uo;
         urlList   = ul;
         urlCreate = uc;
         urlDelete = ud;
 
         cargarAnuncios();
+        iniciarPublico();
 
         $(document).on("click", "#tabs-anuncios .nav-link", function () {
             $("#tabs-anuncios .nav-link").removeClass("active");
@@ -30,6 +32,7 @@ var CentroAnuncios = (function () {
                 if (res && res.success) {
                     $("#modal-nuevo").modal("hide");
                     $("#form-nuevo")[0].reset();
+                    reiniciarPublico();
                     cargarAnuncios();
                 }
             });
@@ -43,6 +46,54 @@ var CentroAnuncios = (function () {
             });
         });
     };
+
+    // Público del anuncio: Nivel > Grado > Sección en cascada estricta
+    function vaciar($sel, texto, deshabilitar) {
+        $sel.empty().append($("<option>").val("").text(texto)).prop("disabled", deshabilitar);
+    }
+
+    function llenar($sel, tipo, padre, texto, cb) {
+        vaciar($sel, texto, true);
+        $.getJSON(urlOpciones, { tipo: tipo, padre: padre }, function (res) {
+            (res.data || []).forEach(function (o) {
+                $sel.append($("<option>").val(o.Id).text(o.Texto));
+            });
+            if (cb) cb();
+        });
+    }
+
+    function reiniciarPublico() {
+        $("#anu-familias").hide();
+        vaciar($("#anu-grado"), "Todos los grados", true);
+        vaciar($("#anu-seccion"), "Todas las secciones", true);
+        llenar($("#anu-nivel"), "nivel", null, "Todas las familias", function () { $("#anu-nivel").prop("disabled", false); });
+    }
+
+    function iniciarPublico() {
+        reiniciarPublico();
+        $("#anu-publico").on("change", function () {
+            $("#anu-familias").toggle($(this).val() === "familias");
+        });
+        $("#anu-nivel").on("change", function () {
+            var v = $(this).val();
+            vaciar($("#anu-seccion"), "Todas las secciones", true);
+            vaciar($("#anu-grado"), "Todos los grados", true);
+            if (!v) return;
+            llenar($("#anu-grado"), "grado", v, "Todos los grados", function () { $("#anu-grado").prop("disabled", false); });
+        });
+        $("#anu-grado").on("change", function () {
+            var v = $(this).val();
+            vaciar($("#anu-seccion"), "Todas las secciones", true);
+            if (!v) return;
+            llenar($("#anu-seccion"), "seccion", v, "Todas las secciones", function () { $("#anu-seccion").prop("disabled", false); });
+        });
+    }
+
+    function insigniaPublico(a) {
+        var cls = a.Anu_Publico === "personal" ? "badge-secondary" : (a.Anu_Publico === "familias" ? "badge-info" : "badge-primary");
+        var ico = a.Anu_Publico === "personal" ? "bi-person-badge" : (a.Anu_Publico === "familias" ? "bi-people" : "bi-building");
+        return '<span class="badge ' + cls + '"><i class="bi ' + ico + ' mr-1"></i>' + escapeHtml(a.PublicoTexto || "") + '</span>';
+    }
 
     function cargarAnuncios() {
         $.ajax({
@@ -104,6 +155,7 @@ var CentroAnuncios = (function () {
                 +         '<i class="fa-solid fa-bullhorn ' + (esVigente ? 'text-primary' : 'text-muted') + ' h4 mb-0"></i>'
                 +         badge
                 +       '</div>'
+                +       '<div class="mb-2">' + insigniaPublico(a) + '</div>'
                 +       '<h5 class="card-title">' + escapeHtml(a.Anu_Titulo) + '</h5>'
                 +       '<p class="card-text text-muted flex-grow-1">' + escapeHtml(a.Anu_Contenido) + '</p>'
                 +       '<hr class="my-2">'

@@ -1,0 +1,70 @@
+@model GESTION_COLEGIAL.UI.Models.InvitacionActivarViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutPortal.cshtml";
+    ViewBag.Title = "Activar cuenta · Portal de padres";
+    ViewBag.SinMenu = true;
+    var I = Model.Info;
+    string mensaje = I.Estado switch
+    {
+        "vencida" => "Este enlace ya venció. Pida uno nuevo a la secretaría del colegio.",
+        "revocada" => "Este enlace fue detenido por el colegio. Pida uno nuevo a la secretaría.",
+        "aceptada" => "Este enlace ya se usó. Si ya creó su cuenta, inicie sesión.",
+        _ => "Este enlace no es válido. Revise que lo copió completo o pida uno nuevo al colegio."
+    };
+}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 widget encabezado-pagina">
+            <div class="mr-3">
+                <h4 class="mb-1">@(I.Estado == "pendiente" ? (string.IsNullOrEmpty(I.UsuarioExistente) ? "Cree su cuenta" : "Ponga una contraseña nueva") : "Enlace no disponible")</h4>
+                <p class="text-muted mb-0">Portal de padres: notas, asistencia, pagos y avisos de sus hijos.</p>
+            </div>
+        </div>
+
+        @if (I.Estado != "pendiente")
+        {
+            <div class="alert alert-light-warning mb-3" role="alert">@mensaje</div>
+            <a class="btn btn-primary" href="@Url.Action("Login", "Account")">Ir a iniciar sesión</a>
+        }
+        else
+        {
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-content widget-content-area">
+                    <p class="mb-3">
+                        Hola, <strong>@I.Enc_Nombre</strong>. Con esta cuenta podrá ver a: <strong>@I.Hijos</strong>.
+                        @if (!string.IsNullOrEmpty(I.UsuarioExistente))
+                        {
+                            <span>Ya tiene la cuenta <strong>@I.UsuarioExistente</strong>; aquí le pone una contraseña nueva.</span>
+                        }
+                    </p>
+                    @if (!string.IsNullOrEmpty(Model.Error))
+                    {
+                        <div class="alert alert-light-danger mb-3" role="alert">@Model.Error</div>
+                    }
+                    <form method="post" action="@Url.Content("~/invitacion/" + Uri.EscapeDataString(Model.Codigo ?? ""))" autocomplete="off" asp-antiforgery="true">
+                        <div class="form-group">
+                            <label for="inv-usuario">Nombre de usuario</label>
+                            <input class="form-control" id="inv-usuario" name="usu_Name" maxlength="50" required
+                                   pattern="[A-Za-z0-9._\-]{4,50}" value="@Model.Usu_Name" autocomplete="username" />
+                            <small class="form-text text-muted">Al menos 4 caracteres: letras, números, punto o guion, sin espacios.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="inv-clave">Contraseña</label>
+                            <input class="form-control" id="inv-clave" name="contrasena" type="password" minlength="8" maxlength="100" required autocomplete="new-password" />
+                            <small class="form-text text-muted">Al menos 8 caracteres, con letras y números.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="inv-confirmar">Repita la contraseña</label>
+                            <input class="form-control" id="inv-confirmar" name="confirmar" type="password" minlength="8" maxlength="100" required autocomplete="new-password" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Activar mi cuenta</button>
+                        @if (I.Inv_Vence.HasValue)
+                        {
+                            <p class="small text-muted text-center mt-2 mb-0">El enlace vence el @I.Inv_Vence.Value.ToString("dd/MM/yyyy").</p>
+                        }
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,113 @@
+@model GESTION_COLEGIAL.UI.Models.PortalPaginaViewModel
+@{
+    var M = Model;
+    var periodos = M.Notas
+        .GroupBy(n => new { n.Sem_Id, n.Pac_Id })
+        .Select(g => g.First())
+        .OrderBy(n => n.Sem_Id).ThenBy(n => n.Pac_Id)
+        .ToList();
+    var materias = M.Notas.GroupBy(n => n.Mat_Nombre).OrderBy(g => g.Key).ToList();
+    decimal? promedio = M.Notas.Count > 0 ? Math.Round(M.Notas.Average(n => n.Nota), 1) : (decimal?)null;
+    decimal minima = M.Notas.FirstOrDefault()?.NotaMinima ?? 60m;
+    // "Primero" → "Primer" delante de un sustantivo (Primer parcial).
+    Func<string, string> Ordinal = t => string.Equals(t?.Trim(), "Primero", StringComparison.OrdinalIgnoreCase) ? "Primer" : t?.Trim();
+    var reprobadas = materias.Count(g => g.Average(n => n.Nota) < minima);
+}
+
+@if (M.Notas.Count == 0)
+{
+    <div class="alert alert-light-info mb-4">
+        Todavía no hay notas publicadas de este año. El colegio las publica al cerrar cada parcial.
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-6 col-md-4 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value">@promedio?.ToString("0.0")</h6>
+                            <p>Promedio general</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-bar-chart" aria-hidden="true"></i></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value">@periodos.Count</h6>
+                            <p>Parciales publicados</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-check2-square" aria-hidden="true"></i></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value @(reprobadas > 0 ? "text-danger" : "")">@reprobadas</h6>
+                            <p>Materias bajo @minima.ToString("0")</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 portal-tabla-notas">
+                    <thead>
+                        <tr>
+                            <th scope="col">Materia</th>
+                            @foreach (var p in periodos)
+                            {
+                                <th scope="col" class="text-center">@Ordinal(p.Pac_Descripcion) parcial<span class="d-block small text-muted">@Ordinal(p.Sem_Descripcion) semestre</span></th>
+                            }
+                            <th scope="col" class="text-center">Promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var g in materias)
+                        {
+                            decimal prom = Math.Round(g.Average(n => n.Nota), 1);
+                            <tr>
+                                <td>@g.Key</td>
+                                @foreach (var p in periodos)
+                                {
+                                    var n = g.FirstOrDefault(x => x.Sem_Id == p.Sem_Id && x.Pac_Id == p.Pac_Id);
+                                    <td class="text-center">
+                                        @if (n == null)
+                                        {
+                                            <span class="text-muted">—</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="font-weight-bold @(n.Aprueba ? "" : "text-danger")">@n.Nota.ToString("0.#")</span>
+                                            @if (!string.IsNullOrEmpty(n.Concepto))
+                                            {
+                                                <span class="d-block small text-muted">@n.Concepto</span>
+                                            }
+                                        }
+                                    </td>
+                                }
+                                <td class="text-center font-weight-bold @(prom < minima ? "text-danger" : "")">@prom.ToString("0.0")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

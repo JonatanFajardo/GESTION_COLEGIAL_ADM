@@ -1,0 +1,122 @@
+@model GESTION_COLEGIAL.UI.Models.PortalPaginaViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutPortal.cshtml";
+    var M = Model;
+    var hijo = M.Hijo;
+    ViewBag.Saludo = M.Encargado?.Enc_PrimerNombre;
+
+    // (clave, texto, ícono, acción)
+    var secciones = new[]
+    {
+        ("inicio", "Inicio", "bi-house-door", "Index"),
+        ("notas", "Notas", "bi-journal-text", "Notas"),
+        ("asistencia", "Asistencia", "bi-calendar-check", "Asistencia"),
+        ("cuenta", "Estado de cuenta", "bi-wallet2", "Cuenta"),
+        ("calendario", "Calendario", "bi-calendar3", "Calendario"),
+        ("anuncios", "Anuncios", "bi-megaphone", "Anuncios"),
+        ("solicitudes", "Solicitudes", "bi-chat-left-text", "Solicitudes")
+    };
+    var actual = secciones.FirstOrDefault(s => s.Item1 == M.Seccion);
+    string accionActual = actual.Item4 ?? "Index";
+    ViewBag.Title = (actual.Item2 ?? "Inicio") + " · Portal de padres";
+
+    string titulo = M.Seccion switch
+    {
+        "notas" => "Notas publicadas",
+        "asistencia" => "Asistencia",
+        "cuenta" => "Estado de cuenta",
+        "calendario" => "Calendario",
+        "anuncios" => "Anuncios del colegio",
+        "solicitudes" => "Solicitudes al colegio",
+        _ => "Hola" + (string.IsNullOrEmpty(M.Encargado?.Enc_PrimerNombre) ? "" : ", " + M.Encargado.Enc_PrimerNombre)
+    };
+    string descripcion = M.Seccion switch
+    {
+        "notas" => "Solo aparecen los parciales que el colegio ya publicó.",
+        "asistencia" => "Clases registradas este año: faltas, tardanzas y justificadas.",
+        "cuenta" => "Cargos del año y lo que falta pagar. Para pagar, acérquese a caja.",
+        "calendario" => "Actividades del colegio, de su sección y las de su hijo.",
+        "anuncios" => "Avisos vigentes del colegio.",
+        "solicitudes" => "Justifique una falta, pida una cita o una constancia, y vea la respuesta aquí.",
+        _ => "Así van sus hijos hoy."
+    };
+}
+
+@if (M.Encargado == null)
+{
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 widget encabezado-pagina">
+        <div class="mr-3">
+            <h4 class="mb-1">Portal de padres</h4>
+            <p class="text-muted mb-0">Este espacio es para los padres, madres o encargados de los alumnos.</p>
+        </div>
+    </div>
+    <div class="alert alert-light-info mb-4">
+        Esta cuenta no está ligada a un encargado. El colegio envía a cada encargado un enlace para crear su cuenta.
+    </div>
+}
+else
+{
+    @if (M.Hijos.Count > 0)
+    {
+        <nav class="portal-secciones mb-3" aria-label="Secciones del portal">
+            @foreach (var s in secciones)
+            {
+                <a class="btn btn-sm btn-rounded @(s.Item1 == M.Seccion ? "btn-primary" : "btn-outline-primary") mr-2 mb-2"
+                   href="@Url.Action(s.Item4, "Portal", s.Item1 == "inicio" ? null : new { alumno = hijo?.Alu_Id })"
+                   aria-current="@(s.Item1 == M.Seccion ? "page" : null)">
+                    <i class="bi @s.Item3 mr-1" aria-hidden="true"></i>@s.Item2
+                </a>
+            }
+        </nav>
+    }
+
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 widget encabezado-pagina">
+        <div class="mr-3">
+            <h4 class="mb-1">@titulo</h4>
+            <p class="text-muted mb-0">@descripcion</p>
+        </div>
+        @if (M.Seccion != "inicio" && M.Hijos.Count > 1)
+        {
+            <div class="portal-hijos mt-2 mt-md-0" role="group" aria-label="Elegir hijo">
+                @foreach (var h in M.Hijos)
+                {
+                    <a class="btn btn-sm btn-rounded @(h.Alu_Id == hijo?.Alu_Id ? "btn-primary" : "btn-outline-primary") mb-1"
+                       href="@Url.Action(accionActual, "Portal", new { alumno = h.Alu_Id })">@h.Alu_PrimerNombre</a>
+                }
+            </div>
+        }
+    </div>
+
+    @if (!string.IsNullOrEmpty(M.Aviso))
+    {
+        <div class="alert alert-light-success mb-3" role="status">@M.Aviso</div>
+    }
+    @if (!string.IsNullOrEmpty(M.Error))
+    {
+        <div class="alert alert-light-danger mb-3" role="alert">@M.Error</div>
+    }
+
+    @if (M.Hijos.Count == 0)
+    {
+        <div class="alert alert-light-info mb-4">
+            Todavía no hay alumnos ligados a su cuenta. Comuníquese con la secretaría del colegio.
+        </div>
+    }
+    else
+    {
+        @if (M.Seccion != "inicio" && M.Hijos.Count == 1 && hijo != null)
+        {
+            <p class="text-muted small mb-3"><i class="bi bi-person mr-1" aria-hidden="true"></i>@hijo.Alu_Nombre · @hijo.Ubicacion</p>
+        }
+        @switch (M.Seccion)
+        {
+            case "notas": <partial name="_Notas" model="M" /> break;
+            case "asistencia": <partial name="_Asistencia" model="M" /> break;
+            case "cuenta": <partial name="_Cuenta" model="M" /> break;
+            case "calendario": <partial name="_Calendario" model="M" /> break;
+            case "anuncios": <partial name="_Anuncios" model="M" /> break;
+            case "solicitudes": <partial name="_Solicitudes" model="M" /> break;
+            default: <partial name="_Inicio" model="M" /> break;
+        }
+    }
+}
