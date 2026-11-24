@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -43,7 +43,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
             try
             {
-                var result = await _accountService.LoginAsync(model);
+                var result = await _accountService.LoginAsync(model, IpCliente(HttpContext));
 
                 if (result != null && result.Success)
                 {
@@ -63,12 +63,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("", result?.Message ?? "Usuario o contrasena incorrectos");
+                // Mensaje genérico de la API: no dice si el usuario existe.
+                ModelState.AddModelError("", string.IsNullOrWhiteSpace(result?.Message) ? "Usuario o contraseña incorrectos." : result.Message);
                 return View(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ModelState.AddModelError("", "Error al conectar con el servidor: " + ex.Message);
+                ModelState.AddModelError("", "No se pudo conectar con el servidor. Intente de nuevo en un momento.");
                 return View(model);
             }
         }
@@ -108,6 +109,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
             // Descarta datos de una sesión anterior (ej. "ver como rol").
             contexto.Session.Clear();
             await contexto.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identidad), propiedades);
+        }
+
+        /// <summary>IP del navegador (la que ve el ADM), para el límite de intentos de la API.</summary>
+        internal static string IpCliente(HttpContext contexto)
+        {
+            var ip = contexto.Connection.RemoteIpAddress;
+            if (ip == null) return null;
+            return (ip.IsIPv4MappedToIPv6 ? ip.MapToIPv4() : ip).ToString();
         }
 
         [AllowAnonymous]

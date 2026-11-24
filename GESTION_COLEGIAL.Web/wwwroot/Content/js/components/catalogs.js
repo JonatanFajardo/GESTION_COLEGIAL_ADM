@@ -136,10 +136,12 @@ var Catalogs = (function () {
         // obtiene el input con el name de la propiedad enviada
         var $input = $('#edit-modal form input[name="' + n + '" i]');
         if ($input.length > 0) {
-            if ($input.attr("type") == "text" || $input.attr("type") == "hidden") {
-                $input.val(v);
-            } else if ($input.attr("type") == "checkbox") {
+            var tipo = ($input.attr("type") || "text").toLowerCase();
+            if (tipo == "checkbox") {
                 $input.prop("checked", v);
+            } else if (tipo != "radio" && tipo != "password" && tipo != "file") {
+                // text, hidden, number, email, date... (antes los numéricos quedaban vacíos al editar)
+                $input.val(v);
             }
         }
         else {
@@ -250,13 +252,10 @@ var Catalogs = (function () {
     };
 
     obj.begin = function (xhr, settings) {
-        if (action == "edit") {
-            submitBtn = Ladda.create($(".ladda-button")[0]);
-        }
-        else {
-            submitBtn = Ladda.create($(".ladda-button")[0]);
-        }
-        submitBtn.start();
+        // Sin botón .ladda-button en el modal no hay animación (antes fallaba y no se enviaba el formulario).
+        var boton = $(".ladda-button")[0];
+        submitBtn = boton ? Ladda.create(boton) : null;
+        if (submitBtn) submitBtn.start();
     };
 
     obj.success = function (data, status, xhr) {
@@ -279,7 +278,7 @@ var Catalogs = (function () {
     }
 
     obj.complete = function (xhr, status) {
-        submitBtn.stop();
+        if (submitBtn) submitBtn.stop();
     };
 
     return obj;
