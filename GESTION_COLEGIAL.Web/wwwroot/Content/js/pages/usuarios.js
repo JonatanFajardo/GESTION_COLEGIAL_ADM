@@ -24,6 +24,16 @@ var Usuarios = (function () {
                 }
             ]
             datatableCatalogs.init(Direction, header);
+
+            // Contraseña: siempre vacía al abrir; obligatoria solo al crear (al editar, vacía = no cambia).
+            $("#edit-modal").on("show.bs.modal", function () {
+                var nuevo = !($("#item-id").val() > 0);
+                $("#Usu_Contrasena").val("");
+                $("#contrasena-obligatoria").toggle(nuevo);
+                $("#contrasena-ayuda").text(nuevo
+                    ? "Contraseña inicial: al menos 8 caracteres. Désela a la persona y pídale que la cambie en Mi Perfil."
+                    : "Escriba una nueva solo si quiere restablecerla; déjela vacía para no cambiarla.");
+            });
         })
     }
     return obj;

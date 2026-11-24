@@ -43,6 +43,16 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(UsuarioViewModel model)
         {
+            if (model.Usu_Id == 0 && string.IsNullOrEmpty(model.Usu_Contrasena))
+            {
+                return AjaxResult(false, false, AlertMessage.AlertMessageType.Error, "Escriba la contraseña inicial del usuario (al menos 8 caracteres).");
+            }
+            if (!string.IsNullOrEmpty(model.Usu_Contrasena)
+                && (model.Usu_Contrasena.Length < 8 || string.Equals(model.Usu_Contrasena, model.Usu_Name, System.StringComparison.OrdinalIgnoreCase)))
+            {
+                return AjaxResult(false, false, AlertMessage.AlertMessageType.Error, "La contraseña debe tener al menos 8 caracteres y ser distinta del usuario.");
+            }
+
             if (model.Usu_Id == 0)
             {
                 bool result = await usuariosService.Create(model);

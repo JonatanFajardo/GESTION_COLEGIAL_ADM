@@ -21,6 +21,9 @@
         <h4 class="mb-1">Mi Perfil</h4>
         <p class="text-muted mb-0">Información del usuario en sesión</p>
     </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-contrasena">
+        <i class="fas fa-key mr-1"></i> Cambiar contraseña
+    </button>
 </div>
 
 <div class="fluid-container">
@@ -99,3 +102,44 @@
         </div>
     }
 </div>
+
+<!-- Cambiar contraseña -->
+<div class="modal fade" id="modal-contrasena" tabindex="-1" role="dialog" aria-labelledby="modal-contrasena-titulo" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="form-contrasena" action="@Url.Action("CambiarContrasena", "Perfil")" method="post" autocomplete="off" novalidate>
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-contrasena-titulo">Cambiar contraseña</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger d-none" id="contrasena-error" role="alert"></div>
+                    <div class="form-group">
+                        <label for="contrasenaActual">Contraseña actual <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="contrasenaActual" name="contrasenaActual" autocomplete="current-password" maxlength="128" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="contrasenaNueva">Contraseña nueva <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="contrasenaNueva" name="contrasenaNueva" autocomplete="new-password" minlength="8" maxlength="128" required />
+                        <small class="form-text text-muted">Al menos 8 caracteres, distinta de su usuario. Mejor una frase fácil de recordar.</small>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="confirmarContrasena">Repita la contraseña nueva <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="confirmarContrasena" name="confirmarContrasena" autocomplete="new-password" maxlength="128" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btn-guardar-contrasena">
+                        <i class="fas fa-check mr-1"></i> Guardar contraseña
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/perfil-contrasena.js" asp-append-version="true"></script>
+}
