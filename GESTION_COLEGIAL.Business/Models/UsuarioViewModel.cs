@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace GESTION_COLEGIAL.Business.Models
@@ -25,5 +26,15 @@ namespace GESTION_COLEGIAL.Business.Models
 
         [Display(Name = "Activo")]
         public bool Usu_EsActivo { get; set; }
+
+        /// <summary>
+        /// Contraseña inicial (obligatoria al crear) o nueva (al editar: vacía = no se cambia).
+        /// Viaja a la API como "Usu_Contraseña"; la huella la calcula la API.
+        /// </summary>
+        [JsonProperty("Usu_Contraseña")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Contraseña")]
+        [StringLength(128, MinimumLength = 8, ErrorMessage = "La contraseña debe tener entre 8 y 128 caracteres.")]
+        public string Usu_Contrasena { get; set; }
     }
 }

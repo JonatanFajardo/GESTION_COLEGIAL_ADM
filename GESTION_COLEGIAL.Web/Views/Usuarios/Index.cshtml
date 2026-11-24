@@ -130,6 +130,22 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="Usu_Contrasena">
+                                        Contraseña
+                                        <span class="text-danger" id="contrasena-obligatoria">*</span>
+                                    </label>
+                                    @Html.PasswordFor(model => model.Usu_Contrasena, new { @class = "form-control", autocomplete = "new-password", maxlength = "128" })
+                                    @Html.ValidationMessageFor(model => model.Usu_Contrasena, "", new { @class = "text-danger" })
+                                    <small class="form-text text-muted" id="contrasena-ayuda">
+                                        Al crear: contraseña inicial (al menos 8 caracteres). Al editar: déjela vacía para no cambiarla.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -241,8 +257,8 @@
         });
     </script>
     <script>
-        // Cargar roles en el dropdown al abrir el modal
-        $('#edit-modal').on('show.bs.modal', function () {
+        // Cargar los roles una vez al abrir la página: al editar, el rol del usuario ya tiene su opción.
+        $(function () {
             $.ajax({
                 url: "@Url.Action("RolesDropdownAsync")",
                 type: "GET",
