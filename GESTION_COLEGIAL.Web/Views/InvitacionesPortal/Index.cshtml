@@ -1,0 +1,208 @@
+@model GESTION_COLEGIAL.UI.Models.InvitacionesPortalIndexViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    ViewBag.Title = "Invitaciones al portal";
+    var M = Model;
+    var estados = new[] { "activo", "pendiente", "vencida", "revocada", "sin_invitar", "suspendido" };
+    var kpis = new[]
+    {
+        (M.Resumen.ConHijos.ToString(), "Con hijos ligados", "bi-people"),
+        ((M.Resumen.Activos ?? 0).ToString(), "Ya entran al portal", "bi-person-check"),
+        ((M.Resumen.Pendientes ?? 0).ToString(), "Invitación sin usar", "bi-envelope"),
+        ((M.Resumen.SinAcceso ?? 0).ToString(), "Sin acceso todavía", "bi-person-dash")
+    };
+}
+
+@section Styles{
+    <link href="~/css/pages/portal-padres.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Alumnos</li>
+            <li class="breadcrumb-item active" aria-current="page">Invitaciones al portal</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Invitaciones al portal de padres</h4>
+        <p class="text-muted mb-0">Genere el enlace de cada encargado para que cree su cuenta y vea a sus hijos desde el celular.</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <a class="btn btn-outline-primary" href="@Url.Action("Index", "SolicitudesPortal")">
+            <i class="bi bi-inbox mr-1" aria-hidden="true"></i> Solicitudes del portal
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var k in kpis)
+    {
+        <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value">@k.Item1</h6>
+                            <p>@k.Item2</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi @k.Item3" aria-hidden="true"></i></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!string.IsNullOrEmpty(M.Enlace))
+{
+    <div class="alert alert-light-success mb-4" role="status">
+        <p class="mb-2"><strong>Enlace listo para @M.EnlaceNombre.</strong> Cópielo y envíelo por WhatsApp o correo. Sirve una sola vez y vence el @M.EnlaceVence.
+        Por seguridad no se vuelve a mostrar: si se pierde, genere otro.</p>
+        <div class="input-group">
+            <input type="text" class="form-control" id="inv-enlace" value="@M.Enlace" readonly aria-label="Enlace de invitación" />
+            <div class="input-group-append">
+                <button type="button" class="btn btn-primary" id="inv-copiar" data-copiar="#inv-enlace">
+                    <i class="bi bi-clipboard mr-1" aria-hidden="true"></i> Copiar
+                </button>
+            </div>
+        </div>
+    </div>
+}
+@if (!string.IsNullOrEmpty(M.Aviso))
+{
+    <div class="alert alert-light-success mb-4" role="status">@M.Aviso</div>
+}
+@if (!string.IsNullOrEmpty(M.Error))
+{
+    <div class="alert alert-light-danger mb-4" role="alert">@M.Error</div>
+}
+
+<div class="statbox widget box box-shadow mb-4">
+    <div class="widget-content widget-content-area">
+        <form method="get" asp-action="Index" class="form-row align-items-end mb-3">
+            <div class="col-12 col-md-5 mb-2">
+                <label for="inv-texto">Buscar</label>
+                <input type="search" class="form-control" id="inv-texto" name="texto" value="@M.Texto" placeholder="Encargado, identidad, hijo o usuario" />
+            </div>
+            <div class="col-12 col-md-3 mb-2">
+                <label for="inv-estado">Acceso</label>
+                <select class="custom-select" id="inv-estado" name="estado">
+                    <option value="">Todos</option>
+                    @foreach (var e in estados)
+                    {
+                        <option value="@e" selected="@(M.Estado == e)">@PortalTextos.Acceso(e)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <div class="custom-control custom-checkbox mb-2">
+                    <input type="checkbox" class="custom-control-input" id="inv-todos" name="todos" value="true" @(M.Todos ? "checked" : "") />
+                    <label class="custom-control-label" for="inv-todos">Incluir sin hijos</label>
+                </div>
+            </div>
+            <div class="col-12 col-md-2 mb-2">
+                <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+            </div>
+        </form>
+
+        @if (M.Filas.Count == 0)
+        {
+            <p class="text-muted mb-0">No hay encargados con ese filtro.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Encargado</th>
+                            <th scope="col">Hijos</th>
+                            <th scope="col">Acceso</th>
+                            <th scope="col" class="text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var f in M.Filas)
+                        {
+                            <tr>
+                                <td>
+                                    @f.Enc_Nombre
+                                    <span class="d-block small text-muted">@f.Enc_Identidad@(string.IsNullOrWhiteSpace(f.Enc_Telefono) ? "" : " · Tel. " + f.Enc_Telefono)</span>
+                                </td>
+                                <td>
+                                    @if (f.Hijos == 0)
+                                    {
+                                        <span class="text-muted">Sin hijos ligados</span>
+                                    }
+                                    else
+                                    {
+                                        @f.HijosNombres
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge @PortalTextos.AccesoBadge(f.EstadoAcceso)">@PortalTextos.Acceso(f.EstadoAcceso)</span>
+                                    @if (!string.IsNullOrEmpty(f.Usu_Name))
+                                    {
+                                        <span class="d-block small text-muted">Usuario: @f.Usu_Name</span>
+                                    }
+                                    else if (f.EstadoAcceso == "pendiente" && f.Inv_Vence.HasValue)
+                                    {
+                                        <span class="d-block small text-muted">Vence el @f.Inv_Vence.Value.ToString("dd/MM/yyyy") · por @f.InvitadoPor</span>
+                                    }
+                                </td>
+                                <td class="text-right text-nowrap">
+                                    @if (f.Hijos > 0)
+                                    {
+                                        <form asp-action="Invitar" method="post" class="d-inline">
+                                            <input type="hidden" name="encId" value="@f.Enc_Id" />
+                                            <input type="hidden" name="texto" value="@M.Texto" />
+                                            <input type="hidden" name="estado" value="@M.Estado" />
+                                            <input type="hidden" name="todos" value="@(M.Todos ? "true" : "false")" />
+                                            <button type="submit" class="btn btn-sm @(f.EstadoAcceso == "sin_invitar" ? "btn-primary" : "btn-outline-primary") mb-1"
+                                                    title="@(f.Usu_Id.HasValue ? "Enlace para poner una contraseña nueva" : "Generar enlace de invitación")">
+                                                @(f.Usu_Id.HasValue ? "Enlace de contraseña" : f.EstadoAcceso == "sin_invitar" ? "Invitar" : "Nuevo enlace")
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (f.EstadoAcceso == "pendiente")
+                                    {
+                                        <form asp-action="Revocar" method="post" class="d-inline">
+                                            <input type="hidden" name="encId" value="@f.Enc_Id" />
+                                            <input type="hidden" name="texto" value="@M.Texto" />
+                                            <input type="hidden" name="estado" value="@M.Estado" />
+                                            <input type="hidden" name="todos" value="@(M.Todos ? "true" : "false")" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger mb-1">Detener</button>
+                                        </form>
+                                    }
+                                    @if (f.Usu_Id.HasValue)
+                                    {
+                                        <form asp-action="Acceso" method="post" class="d-inline">
+                                            <input type="hidden" name="encId" value="@f.Enc_Id" />
+                                            <input type="hidden" name="suspender" value="@(f.CuentaActiva ? "true" : "false")" />
+                                            <input type="hidden" name="texto" value="@M.Texto" />
+                                            <input type="hidden" name="estado" value="@M.Estado" />
+                                            <input type="hidden" name="todos" value="@(M.Todos ? "true" : "false")" />
+                                            <button type="submit" class="btn btn-sm @(f.CuentaActiva ? "btn-outline-danger" : "btn-outline-success") mb-1">
+                                                @(f.CuentaActiva ? "Suspender" : "Reactivar")
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <p class="small text-muted mt-2 mb-0">Mostrando @M.Filas.Count encargado(s)@(M.Filas.Count >= 300 ? " (los primeros 300; use el buscador)" : "").</p>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/portal-padres.js" asp-append-version="true"></script>
+}

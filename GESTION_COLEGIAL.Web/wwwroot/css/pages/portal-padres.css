@@ -1,0 +1,187 @@
+/* Portal de padres: piezas que CORK no trae (barra superior propia, tarjeta de hijo,
+   cifras de la tarjeta, lista del calendario). Pensado primero para el celular. */
+
+body.portal-padres {
+    background: #f1f2f3;
+    color: #3b3f5c;
+}
+
+.portal-barra {
+    background: var(--primary, #1b55e2);
+    color: #fff;
+    padding: 12px 0;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, .15);
+}
+
+.portal-marca,
+.portal-marca:hover {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+}
+
+.portal-marca-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin-right: 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+}
+
+.portal-saludo {
+    color: #fff;
+    font-weight: 600;
+}
+
+.portal-contenido {
+    padding-top: 20px;
+    padding-bottom: 32px;
+}
+
+/* Secciones: una fila que se desliza de lado en el celular. */
+.portal-secciones {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+}
+
+.portal-secciones .btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+@media (min-width: 992px) {
+    .portal-secciones {
+        flex-wrap: wrap;
+        overflow-x: visible;
+    }
+}
+
+.portal-hijos .btn + .btn {
+    margin-left: 6px;
+}
+
+.portal-min-w-0 {
+    min-width: 0;
+}
+
+.portal-nombre {
+    overflow-wrap: anywhere;
+}
+
+.portal-avatar {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f2f3;
+    color: var(--primary, #1b55e2);
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+/* Indicadores CORK sin cabecera: en el portal no se deja el espacio de arriba. */
+.portal-padres .widget-card-four {
+    padding: 18px 20px;
+}
+
+.portal-padres .widget-card-four .w-content {
+    margin-top: 0;
+}
+
+.portal-padres .layout-spacing {
+    padding-bottom: 16px;
+}
+
+/* Cifras de la tarjeta de cada hijo (cada una lleva a su sección). */
+.portal-cifras {
+    border-top: 1px solid #e0e6ed;
+    padding-top: 6px;
+}
+
+.portal-cifra,
+.portal-cifra:hover {
+    display: block;
+    padding: 10px 6px;
+    text-align: center;
+    color: #3b3f5c;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.portal-cifra:hover,
+.portal-cifra:focus {
+    background: #f6f8fb;
+}
+
+.portal-cifra-valor {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.portal-cifra-texto {
+    display: block;
+    font-size: .78rem;
+    color: #6c757d;
+}
+
+.portal-anuncio + .portal-anuncio,
+.portal-solicitud + .portal-solicitud,
+.portal-historial + .portal-historial {
+    border-top: 1px solid #e0e6ed;
+    margin-top: 14px;
+    padding-top: 14px;
+}
+
+.portal-texto {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.portal-texto-corto {
+    white-space: pre-line;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Calendario en lista por día. */
+.portal-dia + .portal-dia {
+    border-top: 1px solid #e0e6ed;
+    margin-top: 12px;
+    padding-top: 12px;
+}
+
+.portal-dia-fecha {
+    flex: 0 0 48px;
+}
+
+.portal-dia-numero {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary, #1b55e2);
+    line-height: 1.1;
+}
+
+.portal-tabla-notas th,
+.portal-tabla-notas td {
+    vertical-align: middle;
+}
+
+.portal-retirar {
+    margin-top: 4px;
+}

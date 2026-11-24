@@ -1,0 +1,56 @@
+@* Diseño del portal de padres: sin el menú administrativo, pensado primero para el celular. *@
+@{
+    bool sinMenu = ViewBag.SinMenu == true;
+    string saludo = ViewBag.Saludo as string;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@(ViewBag.Title ?? "Portal de padres")</title>
+    <link rel="icon" type="image/x-icon" href="~/Content/img/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="~/Content/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/css/main.css" rel="stylesheet" />
+    <link href="~/Content/css/widgets/modules-widgets.css" rel="stylesheet" />
+    <link href="~/Content/css/elements/alert.css" rel="stylesheet" />
+    <link href="~/Content/css/forms/theme-checkbox-radio.css" rel="stylesheet" />
+    <link href="~/Content/css/custom.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/css/pages/portal-padres.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body class="portal-padres">
+    <header class="portal-barra">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a class="portal-marca d-flex align-items-center" href="@(sinMenu ? "#" : Url.Action("Index", "Portal"))">
+                <span class="portal-marca-icono"><i class="bi bi-mortarboard-fill" aria-hidden="true"></i></span>
+                <span>Portal de padres</span>
+            </a>
+            @if (!sinMenu && User.Identity?.IsAuthenticated == true)
+            {
+                <div class="d-flex align-items-center">
+                    @if (!string.IsNullOrEmpty(saludo))
+                    {
+                        <span class="portal-saludo d-none d-sm-inline mr-3">Hola, @saludo</span>
+                    }
+                    <a class="btn btn-sm btn-outline-light" href="@Url.Action("Logout", "Account")">
+                        <i class="bi bi-box-arrow-right mr-1" aria-hidden="true"></i> Salir
+                    </a>
+                </div>
+            }
+        </div>
+    </header>
+
+    <main class="container portal-contenido">
+        @RenderBody()
+    </main>
+
+    <script src="~/Content/js/libs/jquery-3.1.1.min.js"></script>
+    <script src="~/Content/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/pages/portal-padres.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

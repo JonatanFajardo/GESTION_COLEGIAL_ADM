@@ -1,0 +1,62 @@
+@model GESTION_COLEGIAL.UI.Models.PortalPaginaViewModel
+@{
+    var M = Model;
+    var cultura = new System.Globalization.CultureInfo("es-HN");
+    string nombreMes = M.Mes.ToString("MMMM yyyy", cultura);
+    nombreMes = char.ToUpper(nombreMes[0]) + nombreMes.Substring(1);
+    var dias = M.Eventos.OrderBy(e => e.Eve_Inicio).GroupBy(e => e.Eve_Inicio.Date).ToList();
+}
+
+<div class="statbox widget box box-shadow mb-4">
+    <div class="widget-header">
+        <div class="d-flex align-items-center justify-content-between px-3 py-2">
+            <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Calendario", new { alumno = M.Hijo.Alu_Id, mes = M.Mes.AddMonths(-1).ToString("yyyy-MM") })"
+               aria-label="Mes anterior"><i class="bi bi-chevron-left" aria-hidden="true"></i></a>
+            <h5 class="mb-0">@nombreMes</h5>
+            <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Calendario", new { alumno = M.Hijo.Alu_Id, mes = M.Mes.AddMonths(1).ToString("yyyy-MM") })"
+               aria-label="Mes siguiente"><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
+        </div>
+    </div>
+    <div class="widget-content widget-content-area">
+        @if (dias.Count == 0)
+        {
+            <p class="text-muted mb-0">No hay actividades en este mes.</p>
+        }
+        @foreach (var d in dias)
+        {
+            <div class="portal-dia d-flex">
+                <div class="portal-dia-fecha text-center mr-3">
+                    <span class="d-block small text-muted">@d.Key.ToString("ddd", cultura)</span>
+                    <span class="d-block portal-dia-numero">@d.Key.Day</span>
+                </div>
+                <div class="flex-grow-1 portal-min-w-0">
+                    @foreach (var e in d)
+                    {
+                        <div class="mb-2">
+                            <h6 class="mb-1">@e.Eve_Titulo</h6>
+                            <p class="small text-muted mb-1">
+                                @(e.Eve_TodoElDia ? "Todo el día" : e.Eve_Inicio.ToString("h:mm tt") + " – " + e.Eve_Fin.ToString("h:mm tt"))
+                                @if (e.Eve_Fin.Date > e.Eve_Inicio.Date)
+                                {
+                                    <span> · hasta el @e.Eve_Fin.ToString("dd/MM")</span>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(e.Eve_Lugar))
+                                {
+                                    <span> · @e.Eve_Lugar</span>
+                                }
+                            </p>
+                            @if (e.Eve_CierraColegio)
+                            {
+                                <span class="badge badge-warning mb-1">No hay clases</span>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(e.Eve_Descripcion))
+                            {
+                                <p class="mb-0 portal-texto">@e.Eve_Descripcion</p>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

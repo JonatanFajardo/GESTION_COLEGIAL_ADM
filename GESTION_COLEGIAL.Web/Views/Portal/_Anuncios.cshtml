@@ -1,0 +1,24 @@
+@model GESTION_COLEGIAL.UI.Models.PortalPaginaViewModel
+@{
+    var M = Model;
+}
+@if (M.Anuncios.Count == 0)
+{
+    <div class="alert alert-light-info mb-4">No hay anuncios vigentes.</div>
+}
+@foreach (var a in M.Anuncios)
+{
+    <div class="statbox widget box box-shadow mb-3">
+        <div class="widget-content widget-content-area">
+            <h5 class="mb-1">@a.Anu_Titulo</h5>
+            <p class="text-muted small mb-2">
+                Publicado el @a.Anu_FechaPublicacion?.ToString("dd/MM/yyyy")
+                @if (a.Anu_FechaExpiracion.HasValue)
+                {
+                    <span> · vigente hasta el @a.Anu_FechaExpiracion.Value.ToString("dd/MM/yyyy")</span>
+                }
+            </p>
+            <p class="mb-0 portal-texto">@a.Anu_Contenido</p>
+        </div>
+    </div>
+}

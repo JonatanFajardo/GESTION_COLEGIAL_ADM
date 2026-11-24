@@ -1,0 +1,137 @@
+@model GESTION_COLEGIAL.UI.Models.SolicitudesPortalVerViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    ViewBag.Title = "Solicitud del portal";
+    var M = Model;
+    var S = M.Solicitud;
+    bool abierta = S.Sol_Estado == "nueva" || S.Sol_Estado == "en_proceso";
+    string elegido = M.EstadoElegido ?? (S.Sol_Estado == "nueva" ? "en_proceso" : "atendida");
+    var opciones = new[] { ("en_proceso", "En proceso", "La estamos viendo"), ("atendida", "Atendida", "Lo pedido está resuelto"), ("rechazada", "Rechazada", "No se puede hacer") }
+        .Where(o => o.Item1 != S.Sol_Estado).ToArray();
+}
+
+@section Styles{
+    <link href="~/css/pages/portal-padres.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Solicitudes del portal</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Solicitud #@S.Sol_Id</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">@S.Sol_Asunto</h4>
+        <p class="text-muted mb-0">@PortalTextos.Tipo(S.Sol_Tipo) · recibida el @S.Sol_FechaRegistra.ToString("dd/MM/yyyy h:mm tt")</p>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <span class="badge @PortalTextos.EstadoBadge(S.Sol_Estado) mr-2">@PortalTextos.Estado(S.Sol_Estado)</span>
+        <a class="btn btn-outline-primary" href="@Url.Action("Index")"><i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Volver a la bandeja</a>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(M.Aviso))
+{
+    <div class="alert alert-light-success mb-4" role="status">@M.Aviso</div>
+}
+@if (!string.IsNullOrEmpty(M.Error))
+{
+    <div class="alert alert-light-danger mb-4" role="alert">@M.Error</div>
+}
+
+<div class="row">
+    <div class="col-12 col-lg-7 mb-4">
+        <div class="statbox widget box box-shadow mb-4">
+            <div class="widget-header"><div class="row"><div class="col-12"><h4>Lo que pide la familia</h4></div></div></div>
+            <div class="widget-content widget-content-area">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Alumno</dt>
+                    <dd class="col-sm-8">@S.Alu_Nombre<span class="d-block small text-muted">@S.Grado@(string.IsNullOrWhiteSpace(S.Seccion) ? "" : " · Sección " + S.Seccion)</span></dd>
+                    <dt class="col-sm-4">Encargado</dt>
+                    <dd class="col-sm-8">@S.Enc_Nombre@(string.IsNullOrWhiteSpace(S.Parentesco) ? "" : " (" + S.Parentesco + ")")
+                        <span class="d-block small text-muted">
+                            @(string.IsNullOrWhiteSpace(S.Enc_Telefono) ? "" : "Tel. " + S.Enc_Telefono)
+                            @(string.IsNullOrWhiteSpace(S.Enc_Correo) ? "" : " · " + S.Enc_Correo)
+                        </span>
+                    </dd>
+                    @if (S.Sol_FechaFalta.HasValue)
+                    {
+                        <dt class="col-sm-4">Fecha de la falta</dt>
+                        <dd class="col-sm-8">@S.Sol_FechaFalta.Value.ToString("dddd dd/MM/yyyy")</dd>
+                    }
+                    <dt class="col-sm-4">Detalle</dt>
+                    <dd class="col-sm-8 portal-texto">@(string.IsNullOrWhiteSpace(S.Sol_Detalle) ? "—" : S.Sol_Detalle)</dd>
+                    @if (!string.IsNullOrWhiteSpace(S.Sol_Respuesta))
+                    {
+                        <dt class="col-sm-4">Respuesta enviada</dt>
+                        <dd class="col-sm-8 portal-texto">@S.Sol_Respuesta<span class="d-block small text-muted">@S.AtendidoPor · @S.Sol_FechaAtiende?.ToString("dd/MM/yyyy h:mm tt")</span></dd>
+                    }
+                </dl>
+                @if (S.Sol_Tipo == "justificar" && abierta)
+                {
+                    <div class="alert alert-light-info mt-3 mb-0">La solicitud no cambia la asistencia por sí sola: si procede, marque la falta como <strong>Justificada</strong> en el pase de lista y luego responda aquí.</div>
+                }
+                @if (S.Sol_Tipo == "constancia" && abierta && M.PuedeEmitirConstancias)
+                {
+                    <div class="alert alert-light-info mt-3 mb-0">
+                        Emita la constancia en <a href="@Url.Action("Index", "Constancias")">Constancias y expediente</a> y luego responda aquí cuándo la pueden recoger.
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (abierta)
+        {
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header"><div class="row"><div class="col-12"><h4>Atender</h4></div></div></div>
+                <div class="widget-content widget-content-area">
+                    <form asp-action="Cambiar" asp-route-id="@S.Sol_Id" method="post">
+                        <div class="form-group">
+                            <label class="d-block">Nuevo estado</label>
+                            @foreach (var o in opciones)
+                            {
+                                <div class="custom-control custom-radio mb-1">
+                                    <input type="radio" class="custom-control-input" id="est-@o.Item1" name="estado" value="@o.Item1" checked="@(elegido == o.Item1)" />
+                                    <label class="custom-control-label" for="est-@o.Item1">@o.Item2 <span class="text-muted small">— @o.Item3</span></label>
+                                </div>
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label for="sol-respuesta">Respuesta para la familia</label>
+                            <textarea class="form-control" id="sol-respuesta" name="respuesta" rows="4" maxlength="2000"
+                                      placeholder="La familia verá este texto en su portal">@M.Respuesta</textarea>
+                            <small class="form-text text-muted">Obligatoria al atender o rechazar. Al pasar a "En proceso" es opcional y queda solo en el historial.</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-12 col-lg-5 mb-4">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header"><div class="row"><div class="col-12"><h4>Historial</h4></div></div></div>
+            <div class="widget-content widget-content-area">
+                @foreach (var h in M.Historial)
+                {
+                    <div class="portal-historial">
+                        <p class="mb-1">
+                            <span class="badge @PortalTextos.EstadoBadge(h.Soh_EstadoNuevo)">@PortalTextos.Estado(h.Soh_EstadoNuevo)</span>
+                            <span class="small text-muted ml-1">@h.Soh_Fecha.ToString("dd/MM/yyyy h:mm tt") · @(h.EsFamilia ? "la familia" : h.Usu_Name)</span>
+                        </p>
+                        @if (!string.IsNullOrWhiteSpace(h.Soh_Comentario))
+                        {
+                            <p class="mb-0 small portal-texto">@h.Soh_Comentario</p>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

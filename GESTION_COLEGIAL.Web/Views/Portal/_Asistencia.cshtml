@@ -1,0 +1,90 @@
+@model GESTION_COLEGIAL.UI.Models.PortalPaginaViewModel
+@using GESTION_COLEGIAL.Business.Models
+@{
+    var M = Model;
+    int total = M.Asistencia.Count;
+    int presentes = M.Asistencia.Count(a => a.Asi_Estado == "P");
+    int ausencias = M.Asistencia.Count(a => a.Asi_Estado == "A");
+    int tardanzas = M.Asistencia.Count(a => a.Asi_Estado == "T");
+    int justificadas = M.Asistencia.Count(a => a.Asi_Estado == "J");
+    decimal? pct = total > 0 ? Math.Round((presentes + tardanzas) * 100m / total, 1) : (decimal?)null;
+    var novedades = M.Asistencia.Where(a => a.Asi_Estado != "P").ToList();
+    var kpis = new[]
+    {
+        (pct.HasValue ? pct.Value.ToString("0.0") + " %" : "—", "Asistió a clase", "bi-percent", ""),
+        (ausencias.ToString(), "Faltas", "bi-x-circle", ausencias > 0 ? "text-danger" : ""),
+        (tardanzas.ToString(), "Tardanzas", "bi-clock-history", ""),
+        (justificadas.ToString(), "Justificadas", "bi-patch-check", "")
+    };
+}
+
+@if (total == 0)
+{
+    <div class="alert alert-light-info mb-4">Todavía no hay clases con asistencia registrada este año.</div>
+}
+else
+{
+    <div class="row">
+        @foreach (var k in kpis)
+        {
+            <div class="col-6 col-md-3 layout-spacing">
+                <div class="widget widget-card-four">
+                    <div class="widget-content">
+                        <div class="w-content">
+                            <div class="w-info">
+                                <h6 class="value @k.Item4">@k.Item1</h6>
+                                <p>@k.Item2</p>
+                            </div>
+                            <div><div class="w-icon"><i class="bi @k.Item3" aria-hidden="true"></i></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="statbox widget box box-shadow mb-4">
+        <div class="widget-header">
+            <div class="row"><div class="col-12"><h4>Faltas y tardanzas</h4></div></div>
+        </div>
+        <div class="widget-content widget-content-area">
+            @if (novedades.Count == 0)
+            {
+                <p class="text-muted mb-0">Sin faltas ni tardanzas en @total clases registradas. ¡Muy bien!</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Clase</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col" class="d-none d-md-table-cell">Observación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var a in novedades)
+                            {
+                                <tr>
+                                    <td class="text-nowrap">@a.Asi_Fecha.ToString("ddd dd/MM")</td>
+                                    <td>@a.Mat_Nombre@(string.IsNullOrEmpty(a.HoraInicio) ? "" : " · " + a.HoraInicio)</td>
+                                    <td>
+                                        <span class="badge @PortalTextos.AsistenciaBadge(a.Asi_Estado)">@PortalTextos.Asistencia(a.Asi_Estado)</span>
+                                        @if (a.Asi_Estado == "A")
+                                        {
+                                            <a class="btn btn-sm btn-outline-primary text-nowrap d-block mt-2"
+                                               href="@Url.Action("Solicitudes", new { alumno = M.Hijo.Alu_Id, tipo = "justificar", fecha = a.Asi_Fecha.ToString("yyyy-MM-dd") })">Justificar</a>
+                                        }
+                                    </td>
+                                    <td class="d-none d-md-table-cell">@a.Asi_Observacion</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+}

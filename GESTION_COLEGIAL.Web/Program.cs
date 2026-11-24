@@ -22,6 +22,9 @@ builder.Services
         // del JS (/alumnos/listasync) darían 404. Se conservan los nombres como en MVC 5.
         opciones.SuppressAsyncSuffixInActionNames = false;
 
+        // El rol Encargado (portal de padres) solo entra al portal; nada administrativo.
+        opciones.Filters.Add(new GESTION_COLEGIAL.UI.Filters.SoloPortalEncargadoFilter());
+
         // Igual que el binder global de MVC 5: recorta espacios en los textos y los vacíos quedan en null.
         opciones.ModelBinderProviders.Insert(0, new RecortarTextosBinderProvider());
 
