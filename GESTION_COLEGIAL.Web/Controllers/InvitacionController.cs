@@ -1,4 +1,4 @@
-using GESTION_COLEGIAL.Business.Models;
+﻿using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using GESTION_COLEGIAL.UI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -45,7 +45,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             }
 
             // Igual que Skuul: con la cuenta lista, la persona entra de una vez.
-            var login = await _account.LoginAsync(new LoginViewModel { Username = r.Estado, Password = contrasena });
+            var login = await _account.LoginAsync(new LoginViewModel { Username = r.Estado, Password = contrasena }, AccountController.IpCliente(HttpContext));
             if (login != null && login.Success)
             {
                 await AccountController.IniciarSesionAsync(HttpContext, login, false);
