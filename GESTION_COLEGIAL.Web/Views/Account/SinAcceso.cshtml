@@ -1,5 +1,8 @@
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    // El encargado (portal de padres) no ve el menú administrativo.
+    Layout = GESTION_COLEGIAL.UI.Filters.SoloPortalEncargadoFilter.EsEncargado(Context)
+        ? "~/Views/Shared/_LayoutPortal.cshtml"
+        : "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Acceso Denegado";
 }
 
