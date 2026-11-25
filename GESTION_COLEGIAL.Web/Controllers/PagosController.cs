@@ -150,6 +150,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción asincrónica para obtener el recibo de un pago.
         /// </summary>
+        [SessionManager("Crear pagos|Comprobante de pago|Corregir cuentas")]
         public async Task<ActionResult> GetReciboAsync(int pagoId)
         {
             var result = await pagosService.GetReciboAsync(pagoId);
@@ -159,6 +160,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción para mostrar la vista del recibo de pago en formato imprimible.
         /// </summary>
+        [SessionManager("Crear pagos|Comprobante de pago|Corregir cuentas")]
         public async Task<ActionResult> Recibo(int pagoId)
         {
             try

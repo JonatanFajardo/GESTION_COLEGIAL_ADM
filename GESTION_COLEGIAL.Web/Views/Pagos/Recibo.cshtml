@@ -146,6 +146,48 @@
         }
 
         /* Estilos para impresión */
+        .anulado-box {
+            border: 3px solid #e7515a;
+            color: #e7515a;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 6px;
+            padding: 8px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        .anulado-box small {
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0;
+            color: #515365;
+        }
+
+        .tabla-lineas {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .tabla-lineas th, .tabla-lineas td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #e0e6ed;
+            text-align: left;
+        }
+
+        .tabla-lineas .num {
+            text-align: right;
+        }
+
+        .saldo-linea {
+            text-align: right;
+            margin: 8px 0 20px;
+            color: #515365;
+        }
+
         @@media print {
             body {
                 background-color: white;
@@ -186,8 +228,20 @@
         <!-- Header -->
         <div class="header">
             <h1>RECIBO DE PAGO</h1>
-            <p>Sistema de Gestión Colegial</p>
+            <p>@(string.IsNullOrWhiteSpace(Model.ColegioNombre) ? "Sistema de Gestión Colegial" : Model.ColegioNombre)</p>
+            @if (!string.IsNullOrWhiteSpace(Model.ColegioDireccion) || !string.IsNullOrWhiteSpace(Model.ColegioTelefono))
+            {
+                <p style="font-size: 12px;">@Model.ColegioDireccion @(string.IsNullOrWhiteSpace(Model.ColegioTelefono) ? "" : "· Tel. " + Model.ColegioTelefono)</p>
+            }
         </div>
+
+        @if (Model.EsAnulado)
+        {
+            <div class="anulado-box">
+                ANULADO
+                <small>@(Model.FechaAnulacion.HasValue ? Model.FechaAnulacion.Value.ToString("dd/MM/yyyy HH:mm") : "")@(string.IsNullOrWhiteSpace(Model.MotivoAnulacion) ? "" : " · " + Model.MotivoAnulacion)</small>
+            </div>
+        }
 
         <!-- Información del Recibo -->
         <div class="recibo-info">
@@ -208,6 +262,13 @@
                 <div class="info-label">Nombre:</div>
                 <div class="info-value">@Model.AlumnoNombre</div>
             </div>
+            @if (!string.IsNullOrEmpty(Model.EncargadoNombre))
+            {
+                <div class="info-row">
+                    <div class="info-label">Encargado:</div>
+                    <div class="info-value">@Model.EncargadoNombre</div>
+                </div>
+            }
             @if (!string.IsNullOrEmpty(Model.AlumnoIdentidad))
             {
                 <div class="info-row">
@@ -240,11 +301,33 @@
             }
         </div>
 
+        @if (Model.Lineas != null && Model.Lineas.Count > 0)
+        {
+            <div class="seccion">
+                <div class="seccion-titulo">Cargos pagados</div>
+                <table class="tabla-lineas">
+                    <thead><tr><th>Concepto</th><th>Periodo</th><th class="num">Descuento</th><th class="num">Pagado</th></tr></thead>
+                    <tbody>
+                        @foreach (var l in Model.Lineas)
+                        {
+                            <tr>
+                                <td>@l.Concepto</td>
+                                <td>@(l.Mes.HasValue && l.Mes > 0 ? l.Mes + "/" + l.Anio : (l.Anio?.ToString() ?? ""))</td>
+                                <td class="num">@(l.Descuento > 0 ? "L. " + l.Descuento.ToString("N2") : "-")</td>
+                                <td class="num">L. @l.Monto.ToString("N2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
         <!-- Total -->
         <div class="total-box">
             <div class="total-label">MONTO TOTAL PAGADO</div>
             <div class="total-monto">L. @Model.MontoTotal.ToString("N2")</div>
         </div>
+        <div class="saldo-linea">Saldo pendiente del alumno: <strong>L. @Model.SaldoPendiente.ToString("N2")</strong></div>
 
         <!-- Información del Usuario -->
         <div class="seccion">
