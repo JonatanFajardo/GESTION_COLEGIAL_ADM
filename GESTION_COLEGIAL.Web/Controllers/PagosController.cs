@@ -23,12 +23,24 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Descuentos disponibles para la pantalla de cobro (quien cobra no necesita el permiso del catálogo).
         /// </summary>
-        public async Task<ActionResult> DescuentosDelCobroAsync() => AjaxResult(await descuentosService.ListAsync());
+        [SessionManager("Crear pagos")]
+        public async Task<ActionResult> DescuentosDelCobroAsync()
+        {
+            var lista = await descuentosService.ListAsync() ?? Enumerable.Empty<DescuentoListViewModel>();
+            return AjaxResult(lista.Where(d => d.EsActivo && !d.EsEliminado)
+                                   .Select(d => new { d.DescuentoId, d.Descripcion, d.EsActivo, d.EsEliminado }).ToList());
+        }
 
         /// <summary>
         /// Tarifas vigentes para sugerir el monto de un cargo desde la pantalla de cobro.
         /// </summary>
-        public async Task<ActionResult> TarifasDelCobroAsync() => AjaxResult(await tarifaService.ListAsync());
+        [SessionManager("Crear pagos")]
+        public async Task<ActionResult> TarifasDelCobroAsync()
+        {
+            var lista = await tarifaService.ListAsync() ?? Enumerable.Empty<TarifaListViewModel>();
+            return AjaxResult(lista.Where(t => t.EsActivo && !t.EsEliminado)
+                                   .Select(t => new { t.ConceptoPagoId, t.Monto, t.AnioVigencia, t.EsEliminado }).ToList());
+        }
 
         /// <summary>
         /// Movimientos de caja: los cobros de hoy o de cualquier rango de fechas.
