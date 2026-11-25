@@ -172,15 +172,30 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
 
+        /// <summary>
+        /// Abre el año como activo. Si hay alumnos que cambiarían de sección, no hace nada hasta que
+        /// el usuario confirme (confirmar = true). Activar y mover alumnos ocurre en una sola transacción.
+        /// </summary>
         [HttpPost]
-        public async Task<ActionResult> SetActivoAsync(int id)
+        public async Task<ActionResult> SetActivoAsync(int id, bool confirmar = false)
         {
-            bool result = await aniosLectivosService.SetActivo(id);
-            if (result)
-            {
-                return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
-            }
-            return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
+            var conexion = new AnioConexionService();
+            var previa = await conexion.UbicacionPreviaAsync(id);
+            if (previa == null || !previa.Ok)
+                return Json(new { success = false, message = previa?.Mensaje ?? "No se pudo calcular cuántos alumnos cambiarían de sección." });
+            if (previa.Mover > 0 && !confirmar)
+                return Json(new { success = false, requiereConfirmacion = true, mover = previa.Mover, revisar = previa.CursoPorRevisar, noActivos = previa.NoActivos,
+                    message = $"Al abrir este año, {previa.Mover} alumnos cambiarán de sección." });
+
+            var ubicacion = await conexion.AplicarUbicacionAsync(id, GetUsuarioId(), activar: true);
+            if (ubicacion == null || !ubicacion.Ok)
+                return Json(new { success = false, message = "No se cambió el año de trabajo: " + (ubicacion?.Mensaje ?? "error desconocido") });
+
+            string mensaje = "Año de trabajo cambiado.";
+            if (ubicacion.Aplicados > 0)
+                mensaje += $" {ubicacion.Aplicados} alumnos pasaron a su sección de este año."
+                    + (ubicacion.CursoPorRevisar > 0 ? $" {ubicacion.CursoPorRevisar} cambiaron de nivel: revise su curso." : "");
+            return Json(new { success = true, message = mensaje });
         }
     }
 }

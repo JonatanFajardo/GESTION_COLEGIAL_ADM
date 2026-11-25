@@ -46,7 +46,11 @@
             if (!res.puedeCambiar) { $sel.prop('disabled', true).attr('title', 'Solo lectura'); }
         });
         $sel.on('change', function () {
-            $.post('@Url.Action("SetActivoAsync", "AniosLectivos")', { id: $(this).val() }, function () { location.reload(); });
+            var previo = $sel.find('option').filter(function () { return this.text.indexOf('✓') >= 0; }).val();
+            ActivarAnio.pedir('@Url.Action("SetActivoAsync", "AniosLectivos")', $(this).val(),
+                function () { location.reload(); },
+                function () { $sel.val(previo); },
+                function (tipo, msg) { try { if (window.toastr) toastr[tipo === 'error' ? 'error' : 'success'](msg); } catch (e) {} });
         });
     });
 </script>

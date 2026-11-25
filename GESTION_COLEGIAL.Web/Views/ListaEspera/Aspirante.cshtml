@@ -153,7 +153,7 @@
                             }
                             else if (A.Asp_Estado == "OF")
                             {
-                                if (M.PuedeMatricular && A.EsAnioActivo)
+                                if (M.PuedeMatricular && M.AdmiteMatricula)
                                 {
                                     <a class="btn btn-success mr-2 mb-2" href="@Url.Action("Index", "Matricula", new { aspiranteId = A.Asp_Id })">
                                         <i class="bi bi-person-check mr-1" aria-hidden="true"></i> Matricular
@@ -161,9 +161,9 @@
                                 }
                                 <button type="button" class="btn btn-outline-danger mr-2 mb-2" data-accion="rechazar"><i class="bi bi-x-circle mr-1" aria-hidden="true"></i> Rechazar</button>
                                 <button type="button" class="btn btn-outline-secondary mr-2 mb-2" data-accion="desistio"><i class="bi bi-box-arrow-left mr-1" aria-hidden="true"></i> Desistió</button>
-                                if (M.PuedeMatricular && !A.EsAnioActivo)
+                                if (M.PuedeMatricular && !M.AdmiteMatricula)
                                 {
-                                    <p class="text-muted small mb-2 w-100"><i class="bi bi-info-circle mr-1" aria-hidden="true"></i> Se podrá matricular cuando @A.Ani_Nombre sea el año activo.</p>
+                                    <p class="text-muted small mb-2 w-100"><i class="bi bi-info-circle mr-1" aria-hidden="true"></i> El año @A.Ani_Nombre no admite matrículas (ya cerró o todavía no tiene secciones).</p>
                                 }
                                 else if (!M.PuedeMatricular)
                                 {
