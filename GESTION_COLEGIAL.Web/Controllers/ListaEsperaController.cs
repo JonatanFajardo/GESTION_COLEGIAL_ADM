@@ -28,6 +28,11 @@ namespace GESTION_COLEGIAL.UI.Controllers
         private readonly ListaEsperaService _service = new ListaEsperaService();
         private readonly AlumnosService _alumnos = new AlumnosService();
         private readonly ParentescosService _parentescos = new ParentescosService();
+        private readonly AnioConexionService _anioConexion = new AnioConexionService();
+
+        /// <summary>¿Se puede inscribir en ese año? (el activo o uno siguiente con secciones, no cerrado).</summary>
+        private async Task<bool> AdmiteMatriculaAsync(int aniId) =>
+            (await _anioConexion.AniosInscripcionAsync()).Any(a => a.Ani_Id == aniId);
 
         private bool EsAdmin() =>
             (Session[SesionUsuario.RoleName] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase);
@@ -62,10 +67,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> Index(int? anio)
         {
             var anios = await _service.AniosAsync();
+            int aniElegido = ElegirAnio(anios, anio);
             var modelo = new ListaEsperaIndexViewModel
             {
                 Anios = anios,
-                AniId = ElegirAnio(anios, anio),
+                AniId = aniElegido,
+                AdmiteMatricula = await AdmiteMatriculaAsync(aniElegido),
                 PuedeGestionar = PuedeGestionar(),
                 PuedeMatricular = PuedeMatricular(),
                 Niveles = await NivelesAsync()
@@ -226,6 +233,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 Historial = await _service.HistorialAsync(id),
                 PuedeGestionar = PuedeGestionar(),
                 PuedeMatricular = PuedeMatricular(),
+                AdmiteMatricula = await AdmiteMatriculaAsync(a.Ani_Id),
                 Aviso = TextoAviso(aviso)
             };
             return View(modelo);

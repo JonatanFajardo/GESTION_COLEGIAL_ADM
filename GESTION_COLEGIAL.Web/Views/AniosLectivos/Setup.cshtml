@@ -109,7 +109,7 @@
                         </table>
                         <button type="button" class="btn btn-sm btn-outline-primary" id="btnAddPeriodo"><i class="bi bi-plus-lg mr-1"></i> Agregar período</button>
                         <script>
-                        (function () {
+                        document.addEventListener('DOMContentLoaded', function () {
                             var aniId = @id;
                             var urlList = '@Url.Action("ListAsync","PeriodosAnio")';
                             var urlCreate = '@Url.Action("CreateAsync","PeriodosAnio")';
@@ -134,7 +134,7 @@
                                 $.post(urlCreate,m,function(){load();}); });
                             $b.on('click','.p-del',function(){ var $r=$(this).closest('tr'); var id=parseInt($r.data('id'),10)||0; if(!id){$r.remove();return;} if(!confirm('¿Quitar período?'))return; $.post(urlDelete,{Pan_Id:id},function(){load();}); });
                             load();
-                        })();
+                        });
                         </script>
                     }
                 </div>
@@ -185,12 +185,17 @@
                         <div class="col-md-10"><label for="f4Profe">Profesor guía (opcional)</label><select id="f4Profe" class="custom-select" disabled><option value="">— Sin asignar —</option></select></div>
                         <div class="col-md-2 d-flex align-items-end"><button type="button" id="f4Add" class="btn btn-primary btn-block" disabled><i class="bi bi-plus-lg mr-1"></i> Agregar</button></div>
                     </div>
-                    <table class="table table-sm table-hover mt-3">
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="button" id="f4Cupos" class="btn btn-outline-primary btn-sm"><i class="bi bi-sliders mr-1" aria-hidden="true"></i> Editar cupos</button>
+                    </div>
+                    <partial name="_CuposAnio" />
+                    <script src="~/Content/js/components/cupos-anio.js" asp-append-version="true"></script>
+                    <table class="table table-sm table-hover mt-2">
                         <thead><tr><th>Nivel</th><th>Grado</th><th>Sección</th><th>Modalidad</th><th>Profe guía</th><th>Cupo</th><th>Estado</th><th></th></tr></thead>
                         <tbody id="f4Body"><tr><td colspan="8" class="text-center text-muted">Cargando…</td></tr></tbody>
                     </table>
                     <script>
-                    $(function(){
+                    document.addEventListener('DOMContentLoaded',function(){
                         var aniId=@id, grados=[];
                         var $n=$('#f4Nivel'),$g=$('#f4Grado'),$s=$('#f4Seccion'),$m=$('#f4Mod'),$p=$('#f4Profe'),$c=$('#f4Cupo'),$a=$('#f4Add'),$b=$('#f4Body');
                         function opt(v,t){return '<option value="'+v+'">'+t+'</option>';}
@@ -210,6 +215,7 @@
                         $a.on('click',function(){var model={Sea_Id:0,Ani_Id:aniId,Niv_Id:parseInt($n.val(),10),Cun_Id:parseInt($g.val(),10),Sec_Id:parseInt($s.val(),10),Mda_Id:$m.val()?parseInt($m.val(),10):null,Emp_Id:$p.val()?parseInt($p.val(),10):null,Sea_Cupo:$c.val()?parseInt($c.val(),10):null,Sea_Nombre:($g.find('option:selected').text()+' '+$s.find('option:selected').text()).trim(),Sea_Estado:2};
                             $a.prop('disabled',true); $.post('@Url.Action("CreateAsync","SeccionesAnio")',model,function(res){ if(res&&res.success){$n.val('').trigger('change');$c.val('');load();}else{alert('No se pudo agregar (¿sección duplicada?).');ready();} });});
                         $b.on('click','.f4-del',function(){if(!confirm('¿Eliminar sección?'))return;$.post('@Url.Action("DeleteAsync","SeccionesAnio")',{Sea_Id:$(this).data('id')},function(){load();});});
+                        $('#f4Cupos').on('click',function(){ GcCupos.abrir(aniId,'',load); });
                         load();
                     });
                     </script>
@@ -237,7 +243,7 @@
                         <tbody id="ofaBody"><tr><td colspan="6" class="text-center text-muted">Cargando…</td></tr></tbody>
                     </table>
                     <script>
-                    $(function(){
+                    document.addEventListener('DOMContentLoaded',function(){
                         var aniId=@id;
                         var $mat=$('#ofaMat'),$gra=$('#ofaGra'),$doc=$('#ofaDoc'),$hrs=$('#ofaHrs'),$b=$('#ofaBody');
                         function opt(v,t){return '<option value="'+v+'">'+t+'</option>';}

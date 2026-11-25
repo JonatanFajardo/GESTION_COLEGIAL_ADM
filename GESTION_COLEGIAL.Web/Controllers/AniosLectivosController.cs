@@ -180,7 +180,15 @@ namespace GESTION_COLEGIAL.UI.Controllers
             {
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
-            return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
+            // Al abrir el año como activo, los alumnos ya inscritos en él pasan a su sección de ese año.
+            var ubicacion = await new AnioConexionService().AplicarUbicacionAsync(id, GetUsuarioId());
+            string mensaje = "Año de trabajo cambiado.";
+            if (ubicacion != null && ubicacion.Ok && ubicacion.Aplicados > 0)
+                mensaje += $" {ubicacion.Aplicados} alumnos pasaron a su sección de este año."
+                    + (ubicacion.CursoPorRevisar > 0 ? $" {ubicacion.CursoPorRevisar} cambiaron de nivel: revise su curso." : "");
+            else if (ubicacion != null && !ubicacion.Ok)
+                mensaje += " No se pudo pasar la ubicación de los alumnos inscritos: " + ubicacion.Mensaje;
+            return Json(new { success = true, message = mensaje });
         }
     }
 }

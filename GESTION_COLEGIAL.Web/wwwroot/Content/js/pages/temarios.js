@@ -23,6 +23,30 @@
     function num(v) { var n = parseInt(v, 10); return isNaN(n) ? null : n; }
 
     /* Inicio de clases sugerido: primer lunes de febrero (I semestre) o de julio (II semestre). */
+    /* Inicio de clases desde los períodos del año lectivo (tipo "semestre"): si el año los tiene, la fecha
+       se toma de ahí y el campo queda bloqueado; si no, se deja escribir (respaldo: se sugiere un lunes). */
+    var cacheSemestres = {};
+    function semestresDe(url, anio) {
+        var k = url + "|" + anio;
+        if (!cacheSemestres[k]) cacheSemestres[k] = $.getJSON(url, { anio: anio }).then(function (r) { return (r && r.data) || []; }, function () { return []; });
+        return cacheSemestres[k];
+    }
+    function inicioDeSemestre($campo, url, anio, sem, respaldo) {
+        var $n = $campo.siblings(".tm-inicio-nota");
+        if (!$n.length) $n = $('<small class="form-text text-muted tm-inicio-nota"></small>').insertAfter($campo);
+        if (!url || !num(anio) || !num(sem)) { $campo.prop("disabled", false); $n.text(""); if (respaldo) respaldo(); return; }
+        semestresDe(url, num(anio)).then(function (lista) {
+            var s = lista.filter(function (x) { return x.Sem_Id === num(sem); })[0];
+            if (s && s.Inicio) {
+                $campo.val(String(s.Inicio).substring(0, 10)).prop("disabled", true);
+                $n.text("Tomado de los períodos del año lectivo (" + s.Nombre + "). Se cambia en Año Lectivo.");
+            } else {
+                $campo.prop("disabled", false); $n.text("");
+                if (respaldo) respaldo();
+            }
+        });
+    }
+
     function lunesSugerido(anio, sem) {
         anio = num(anio); if (!anio) return "";
         var d = new Date(anio, num(sem) === 2 ? 6 : 1, 1);
@@ -100,7 +124,10 @@
     var abrirCopiar = null;
     if ($formCopiar.length) {
         var $copiaError = $("#tm-copiar-error");
-        var sugerirCopia = function () { $("#tm-copia-inicio").val(lunesSugerido($("#tm-copia-anio").val(), $("#tm-copia-semestre").val())); };
+        var sugerirCopia = function () {
+            inicioDeSemestre($("#tm-copia-inicio"), $formCopiar.data("url-semestres"), $("#tm-copia-anio").val(), $("#tm-copia-semestre").val(),
+                function () { $("#tm-copia-inicio").val(lunesSugerido($("#tm-copia-anio").val(), $("#tm-copia-semestre").val())); });
+        };
         $("#tm-copia-anio, #tm-copia-semestre").on("change", sugerirCopia);
         abrirCopiar = function (origenId) {
             limpiarErrores($formCopiar, $copiaError);
@@ -267,7 +294,10 @@
             if (!num($nMat.val()) || !num($nGrado.val())) { $nNombre.val(""); return; }
             $nNombre.val(m.text() + " · " + g.text() + " · " + s.text() + " " + $nAnio.val());
         };
-        var sugerirInicio = function () { if (!$nInicio.data("tocado")) $nInicio.val(lunesSugerido($nAnio.val(), $nSem.val())); };
+        var sugerirInicio = function () {
+            inicioDeSemestre($nInicio, $formNuevo.data("url-semestres"), $nAnio.val(), $nSem.val(),
+                function () { if (!$nInicio.data("tocado")) $nInicio.val(lunesSugerido($nAnio.val(), $nSem.val())); });
+        };
         $nNombre.on("input", function () { $nNombre.data("tocado", $nNombre.val().trim() !== ""); });
         $nInicio.on("input change", function (e) { if (e.originalEvent) $nInicio.data("tocado", true); });
 
@@ -638,6 +668,7 @@
 
             // ── Datos del temario ──
             var $fEd = $("#tm-form-editar"), $edError = $("#tm-editar-error");
+            inicioDeSemestre($("#tm-inicio"), $fEd.data("url-semestres"), $fEd.data("anio"), $fEd.data("sem"), null);
             $("#tm-btn-editar").on("click", function () { limpiarErrores($fEd, $edError); $("#tm-modal-editar").modal("show"); });
             $fEd.on("submit", function (e) {
                 e.preventDefault();

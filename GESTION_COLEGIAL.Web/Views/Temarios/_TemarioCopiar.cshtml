@@ -3,7 +3,7 @@
    con todos los temas del de origen (el avance no se copia). La usan la biblioteca y la ficha del temario. *@
 <div class="modal fade" id="tm-modal-copiar" tabindex="-1" role="dialog" aria-labelledby="tm-copiar-titulo" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
-        <form class="modal-content" id="tm-form-copiar" novalidate data-url="@Url.Action("CopiarAsync", "Temarios")">
+        <form class="modal-content" id="tm-form-copiar" novalidate data-url-semestres="@Url.Action("SemestresAsync", "AnioConexion")" data-url="@Url.Action("CopiarAsync", "Temarios")">
             <div class="modal-header">
                 <h5 class="modal-title" id="tm-copiar-titulo">Copiar temario</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>

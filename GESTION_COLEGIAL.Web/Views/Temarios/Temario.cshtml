@@ -245,7 +245,7 @@
     @* ── Editar datos del temario ── *@
     <div class="modal fade" id="tm-modal-editar" tabindex="-1" role="dialog" aria-labelledby="tm-editar-titulo" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog" role="document">
-            <form class="modal-content" id="tm-form-editar" novalidate>
+            <form class="modal-content" id="tm-form-editar" novalidate data-url-semestres="@Url.Action("SemestresAsync", "AnioConexion")" data-anio="@T.Tem_Anio" data-sem="@T.Sem_Id">
                 <div class="modal-header">
                     <h5 class="modal-title" id="tm-editar-titulo">Datos del temario</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
