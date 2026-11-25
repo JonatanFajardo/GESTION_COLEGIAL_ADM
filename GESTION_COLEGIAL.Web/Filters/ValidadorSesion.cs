@@ -23,6 +23,10 @@ namespace GESTION_COLEGIAL.UI.Filters
 
         private sealed record Entrada(EstadoSesionViewModel Estado, DateTime Vence);
 
+        // Si la API no respondió, no se vuelve a intentar durante este tiempo (evita esperar en cada petición).
+        private static readonly TimeSpan EsperaTrasFallo = TimeSpan.FromSeconds(30);
+        private static DateTime sinApiHasta = DateTime.MinValue;
+
         private static readonly ConcurrentDictionary<int, Entrada> Cache = new();
         private static readonly AccountService Cuenta = new AccountService();
 
@@ -45,12 +49,14 @@ namespace GESTION_COLEGIAL.UI.Filters
 
             if (!Cache.TryGetValue(usuId, out Entrada entrada) || entrada.Vence < DateTime.UtcNow)
             {
+                if (DateTime.UtcNow < sinApiHasta) return; // La API no responde: se deja la sesión como está.
                 // La llamada a la API firma con el usuario de HttpContext.User, que aún no está puesto aquí.
                 contexto.HttpContext.User = principal;
                 EstadoSesionViewModel estado = null;
                 try { estado = await Cuenta.EstadoSesionAsync(usuId); } catch { }
                 if (estado == null)
                 {
+                    sinApiHasta = DateTime.UtcNow + EsperaTrasFallo;
                     return; // La API no respondió: no se cierra la sesión por eso.
                 }
                 entrada = new Entrada(estado, DateTime.UtcNow + Vigencia);
