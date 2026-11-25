@@ -1,0 +1,82 @@
+/* Notas ponderadas — plantillas de evaluación y actividades del cuaderno de notas. Solo lo que CORK no
+   trae: color de los íconos de los indicadores y de cada tipo de evaluación (paleta aprobada), barra de
+   pesos y la planilla de puntos (columna del alumno fija, celdas compactas y sus estados).
+   Colores explícitos en cada capa para el contraste en tema claro, azul y oscuro. */
+
+/* ── Indicadores: indigo / ámbar / cian / esmeralda ── */
+.np-kpi .w-icon { justify-content: center; }
+.np-kpi-indigo .w-icon,
+html.gc-theme-blue .np-kpi-indigo .w-icon    { color: #4f46e5; background: #eef2ff; }
+.np-kpi-ambar .w-icon,
+html.gc-theme-blue .np-kpi-ambar .w-icon     { color: #b45309; background: #fef3c7; }
+.np-kpi-cian .w-icon,
+html.gc-theme-blue .np-kpi-cian .w-icon      { color: #0e7490; background: #cffafe; }
+.np-kpi-esmeralda .w-icon,
+html.gc-theme-blue .np-kpi-esmeralda .w-icon { color: #047857; background: #d1fae5; }
+html.gc-dark .np-kpi-indigo .w-icon    { color: #a5b4fc; background: rgba(79, 70, 229, 0.22); }
+html.gc-dark .np-kpi-ambar .w-icon     { color: #fcd34d; background: rgba(245, 158, 11, 0.22); }
+html.gc-dark .np-kpi-cian .w-icon      { color: #67e8f9; background: rgba(6, 182, 212, 0.22); }
+html.gc-dark .np-kpi-esmeralda .w-icon { color: #6ee7b7; background: rgba(16, 185, 129, 0.22); }
+
+/* ── Colores de los tipos de evaluación (se repiten después del sexto) ── */
+.np-c0 { background-color: #4f46e5 !important; }
+.np-c1 { background-color: #10b981 !important; }
+.np-c2 { background-color: #f59e0b !important; }
+.np-c3 { background-color: #06b6d4 !important; }
+.np-c4 { background-color: #64748b !important; }
+.np-c5 { background-color: #a855f7 !important; }
+.np-b0 { border-top: 3px solid #4f46e5 !important; }
+.np-b1 { border-top: 3px solid #10b981 !important; }
+.np-b2 { border-top: 3px solid #f59e0b !important; }
+.np-b3 { border-top: 3px solid #06b6d4 !important; }
+.np-b4 { border-top: 3px solid #64748b !important; }
+.np-b5 { border-top: 3px solid #a855f7 !important; }
+
+.np-punto { display: inline-block; width: .65rem; height: .65rem; border-radius: 50%; margin-right: .35rem; vertical-align: middle; }
+.np-barra { height: 10px; }
+.np-tipos li { color: #3b3f5c; margin-bottom: .3rem; }
+.np-tipos .np-peso { font-weight: 600; color: #0e1726; }
+html.gc-dark .np-tipos li { color: #bfc9d4; }
+html.gc-dark .np-tipos .np-peso { color: #e0e6ed; }
+.np-tarjeta h5 { color: #0e1726; }
+html.gc-dark .np-tarjeta h5 { color: #e0e6ed; }
+
+/* Total de pesos en el formulario de plantilla */
+.np-total-ok { color: #047857; font-weight: 600; }
+.np-total-mal { color: #b91c1c; font-weight: 600; }
+html.gc-dark .np-total-ok { color: #6ee7b7; }
+html.gc-dark .np-total-mal { color: #fca5a5; }
+.np-tipos-tabla td { vertical-align: middle; }
+.np-tipos-tabla .np-peso-input { max-width: 110px; }
+
+/* ── Planilla de puntos del cuaderno ── */
+.np-planilla { margin-bottom: 0; }
+.np-planilla th, .np-planilla td { vertical-align: middle; padding: .4rem .5rem; }
+.np-planilla thead th { font-size: .78rem; white-space: nowrap; }
+.np-planilla .np-fija { position: sticky; left: 0; z-index: 2; background: #fff; min-width: 210px; max-width: 280px; white-space: normal; }
+html.gc-dark .np-planilla .np-fija { background: #0e1726; }
+.np-planilla thead .np-fija { z-index: 3; }
+.np-act { min-width: 96px; max-width: 150px; white-space: normal !important; }
+.np-act-nombre { display: block; font-weight: 600; color: #3b3f5c; line-height: 1.2; word-break: break-word; }
+.np-act-sub { display: block; font-size: .72rem; color: #6c757d; font-weight: 400; }
+html.gc-dark .np-act-nombre { color: #e0e6ed; }
+html.gc-dark .np-act-sub { color: #a5abb8; }
+.np-act .dropdown-toggle::after { display: none; }
+.np-act .btn-menu { padding: 0 .25rem; line-height: 1; color: #6c757d; }
+
+.np-celda.form-control { width: 76px; min-width: 76px; height: 32px; padding: .2rem .4rem; text-align: right; font-size: .85rem; }
+.np-celda.np-excusado { color: #495057; background-color: #eceef1; text-align: center; }
+.np-celda.np-noentrego { color: #b91c1c; text-align: center; font-weight: 600; }
+.np-celda.np-cambiada { border-color: #f59e0b; box-shadow: inset 0 0 0 1px #f59e0b; }
+html.gc-dark .np-celda.np-excusado { color: #e0e6ed; background-color: #2a3346; }
+html.gc-dark .np-celda.np-noentrego { color: #fca5a5; }
+.np-no-cuenta { opacity: .65; }
+.np-nota { min-width: 96px; white-space: nowrap; }
+.np-nota strong { font-size: .95rem; }
+.np-pie td { font-size: .75rem; color: #6c757d; }
+html.gc-dark .np-pie td { color: #a5abb8; }
+.np-celda.form-control:disabled { background-color: #f1f2f3; }
+html.gc-dark .np-celda.form-control:disabled { background-color: #1b2e4b; }
+@media (max-width: 575.98px) {
+    .np-planilla .np-fija { min-width: 130px; max-width: 160px; }
+}

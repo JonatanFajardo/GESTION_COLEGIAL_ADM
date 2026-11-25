@@ -2,6 +2,10 @@
     ViewBag.Title = "Notas y Boletín";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@section Styles{
+    <link href="~/css/pages/notas-ponderadas.css" rel="stylesheet" asp-append-version="true" />
+}
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -72,6 +76,7 @@
             </div>
         </div>
         <div id="nb-aviso-cierre" hidden></div>
+        <partial name="_CuadernoActividades" />
         <div class="statbox widget box box-shadow mb-4">
             <div class="widget-content widget-content-area">
                 <div class="table-responsive">
@@ -134,6 +139,7 @@
     <script src="~/Content/js/components/boletin-provisional.js" asp-append-version="true"></script>
     <script src="~/Content/js/components/boletin-notas.js" asp-append-version="true"></script>
     <script src="~/Content/js/pages/notasadm.js" asp-append-version="true"></script>
+    <script src="~/Content/js/pages/cuaderno-actividades.js" asp-append-version="true"></script>
     <script>
         NotasAdm.init({
             urlList:          "@Url.Action("ListAsync", "NotasAdm")",
