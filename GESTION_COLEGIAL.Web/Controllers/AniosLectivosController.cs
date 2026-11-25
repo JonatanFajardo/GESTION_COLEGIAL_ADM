@@ -110,7 +110,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
         public async Task<ActionResult> ListAsync()
         {
-            var result = await aniosLectivosService.ListAsync();
+            var result = await aniosLectivosService.ListAsync(incluirArchivados: true);
             return AjaxResult(result);
         }
 

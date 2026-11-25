@@ -1,0 +1,454 @@
+@model GESTION_COLEGIAL.UI.Models.CierreAnioIndexViewModel
+@{
+    ViewBag.Title = "Cierre del año";
+    var M = Model;
+    var R = M.Resumen;
+    string[] titulos = { "Revisión", "Resultados finales", "Decisiones de promoción", "Cerrar el año" };
+    int paso = M.Paso;
+    int estado = R?.Ani_Estado ?? 0;
+    string fechaCierre = R?.FechaCierre?.ToString("dd/MM/yyyy") ?? "";
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Cierre del año</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Cierre del año escolar</h4>
+        <p class="text-muted mb-0">Revise lo pendiente, calcule los resultados finales, decida quién pasa de grado y cierre el año para que nada más cambie.</p>
+    </div>
+    @if (M.Anios.Any())
+    {
+        <form method="get" action="@Url.Action("Index")" class="d-flex align-items-center mt-2 mt-md-0">
+            <label for="ca-anio" class="mb-0 mr-2 text-muted">Año</label>
+            <select id="ca-anio" name="id" class="custom-select w-auto" onchange="this.form.submit()">
+                @foreach (var a in M.Anios)
+                {
+                    <option value="@a.Ani_Id" selected="@(R != null && a.Ani_Id == R.Ani_Id)">@(a.Ani_Nombre + " · " + a.Ani_EstadoDescripcion + (a.Ani_EsActual ? " (de trabajo)" : ""))</option>
+                }
+            </select>
+            <noscript><button type="submit" class="btn btn-primary ml-2">Ver</button></noscript>
+        </form>
+    }
+</div>
+
+@if (M.AnioNoEncontrado && R != null)
+{
+    <div class="alert alert-light-warning" role="alert">
+        <i class="bi bi-exclamation-triangle mr-1" aria-hidden="true"></i>
+        El año pedido no existe o todavía no está abierto. Se muestra <strong>@R.Ani_Nombre</strong>: revise el año antes de usar los botones.
+    </div>
+}
+
+@if (R == null)
+{
+    <div class="alert alert-light-info" role="alert">
+        <i class="bi bi-info-circle mr-1" aria-hidden="true"></i>
+        No hay años lectivos abiertos ni cerrados. Publique un año en <a href="@Url.Action("Index", "AniosLectivos")">Años lectivos</a> para poder cerrarlo al terminar.
+    </div>
+}
+else
+{
+    <div id="ca-raiz"
+         data-id="@R.Ani_Id"
+         data-anio="@R.Ani_Anio"
+         data-paso="@paso"
+         data-estado="@estado"
+         data-puede-cerrar="@(M.PuedeCerrar ? "1" : "0")"
+         data-puede-reabrir="@(M.PuedeReabrir ? "1" : "0")"
+         data-editable="@(M.Editable ? "1" : "0")"
+         data-siguiente="@(R.SiguienteAnio?.ToString() ?? "")"
+         data-ve-parciales="@(M.VeParciales ? "1" : "0")"
+         data-ve-inscripcion="@(M.VeInscripcion ? "1" : "0")"
+         data-ve-anios="@(M.VeAnios ? "1" : "0")"
+         data-url-index="@Url.Action("Index")"
+         data-url-revision="@Url.Action("RevisionAsync")"
+         data-url-reglas="@Url.Action("ReglasAsync")"
+         data-url-secciones="@Url.Action("SeccionesAsync")"
+         data-url-resultados="@Url.Action("ResultadosAsync")"
+         data-url-decisiones="@Url.Action("DecisionesAsync")"
+         data-url-historial="@Url.Action("HistorialAsync")"
+         data-url-estado="@Url.Action("EstadoAsync")"
+         data-url-calcular="@Url.Action("CalcularAsync")"
+         data-url-regla="@Url.Action("ReglaAsync")"
+         data-url-recuperacion="@Url.Action("RecuperacionAsync")"
+         data-url-decision="@Url.Action("DecisionAsync")"
+         data-url-confirmar="@Url.Action("ConfirmarSeccionAsync")"
+         data-url-deshacer="@Url.Action("DeshacerSeccionAsync")"
+         data-url-parciales="@Url.Action("Index", "CierreParciales", new { anio = R.Ani_Anio })"
+         data-url-inscripcion="@Url.Action("Index", "MatriculaAnio")"
+         data-url-anios="@Url.Action("Index", "AniosLectivos")"
+         data-url-graduacion="@Url.Action("Index", "GraduacionAlumnos")">
+
+        @* ── Estado del año ── *@
+        @switch (estado)
+        {
+            case 3:
+                <div class="alert alert-light-info mb-4" role="alert">
+                    <i class="bi bi-unlock mr-1" aria-hidden="true"></i>
+                    <strong>@R.Ani_Nombre está abierto.</strong> Revise lo pendiente y, cuando los parciales estén cerrados y publicados, inicie el cierre: el año pasa a «Cerrando» y se habilitan los resultados finales y las decisiones.
+                </div>
+                break;
+            case 4:
+                <div class="alert alert-light-warning mb-4" role="alert">
+                    <i class="bi bi-hourglass-split mr-1" aria-hidden="true"></i>
+                    <strong>@R.Ani_Nombre está en cierre.</strong> Los docentes todavía pueden corregir notas de los parciales que Dirección reabra; calcule los resultados, registre las recuperaciones, confirme las decisiones y cierre el año.
+                </div>
+                break;
+            case 5:
+                <div class="alert alert-light-danger mb-4" role="alert">
+                    <i class="bi bi-lock-fill mr-1" aria-hidden="true"></i>
+                    <strong>@R.Ani_Nombre está cerrado@(fechaCierre != "" ? " desde el " + fechaCierre : "")@(string.IsNullOrEmpty(R.UsuarioCierre) ? "" : " (" + R.UsuarioCierre + ")").</strong> Sus notas, actividades, asistencia y tareas son de solo lectura. Reabrir requiere un permiso especial y un motivo.
+                </div>
+                break;
+            default:
+                <div class="alert alert-light-secondary mb-4" role="alert">
+                    <i class="bi bi-archive mr-1" aria-hidden="true"></i>
+                    <strong>@R.Ani_Nombre está archivado.</strong> Es historia de solo lectura y ya no sale en los selectores de año.
+                </div>
+                break;
+        }
+
+        @* ── Pasos ── *@
+        <div class="d-flex justify-content-between mb-4" role="navigation" aria-label="Pasos del cierre">
+            @for (int i = 1; i <= 4; i++)
+            {
+                bool hecho = estado >= 5 || i < paso;
+                string cls = i == paso ? "badge-primary" : (hecho ? "outline-badge-primary" : "outline-badge-secondary");
+                bool habilitado = i <= M.PasoMaximo;
+                <div class="flex-fill text-center px-1">
+                    @if (habilitado && i != paso)
+                    {
+                        <a href="@Url.Action("Index", new { id = R.Ani_Id, paso = i })" class="d-inline-block text-decoration-none">
+                            <span class="badge badge-pill @cls px-3 py-2 mb-2">@i</span>
+                            <span class="d-block small font-weight-bold">@titulos[i - 1]</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill @cls px-3 py-2 mb-2" aria-current="@(i == paso ? "step" : null)">@i</span>
+                        <div class="small @(i == paso ? "font-weight-bold" : "text-muted")">@titulos[i - 1]</div>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (paso == 1)
+        {
+            <div class="row">
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info"><h6 class="value">@R.Inscritos.ToString("N0")</h6><p>Alumnos inscritos</p></div>
+                                <div><div class="w-icon"><i class="bi bi-people" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-2">En @R.Secciones secciones del año</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info"><h6 class="value">@R.ParcialesPublicados de @R.ParcialesTotal</h6><p>Parciales publicados</p></div>
+                                <div><div class="w-icon"><i class="bi bi-journal-check" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-2">El promedio anual solo usa parciales publicados</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info"><h6 class="value">@R.Confirmados de @R.Inscritos</h6><p>Decisiones confirmadas</p></div>
+                                <div><div class="w-icon"><i class="bi bi-person-check" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-2">Promovidos, repiten o se gradúan</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info"><h6 class="value">@(R.SiguienteAnio?.ToString() ?? "—")</h6><p>Año siguiente</p></div>
+                                <div><div class="w-icon"><i class="bi bi-calendar-plus" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-2">@(R.SiguienteAnio.HasValue ? R.SiguienteNombre + " · " + R.SiguienteEstadoTexto : "Todavía no existe: créelo en Años lectivos")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4>Antes de cerrar</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <p class="text-muted">Lo que falta para cerrar el año. <i class="bi bi-x-octagon-fill text-danger" aria-hidden="true"></i> impide cerrar (salvo que Dirección lo fuerce con un motivo), <i class="bi bi-exclamation-triangle-fill text-warning" aria-hidden="true"></i> conviene revisarlo y <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i> está en orden.</p>
+                    <div id="ca-revision"><p class="text-muted mb-0">Cargando…</p></div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-end mb-4">
+                @if (estado == 3 && M.PuedeCerrar)
+                {
+                    <button type="button" class="btn btn-primary" id="ca-iniciar"><i class="bi bi-hourglass-split mr-1" aria-hidden="true"></i> Iniciar el cierre</button>
+                }
+                @if (estado == 4)
+                {
+                    @if (M.PuedeCerrar)
+                    {
+                        <button type="button" class="btn btn-outline-secondary mr-2" id="ca-cancelar">Cancelar el cierre</button>
+                    }
+                    <a class="btn btn-primary" href="@Url.Action("Index", new { id = R.Ani_Id, paso = 2 })">Siguiente: resultados finales <i class="bi bi-arrow-right ml-1" aria-hidden="true"></i></a>
+                }
+                @if (estado >= 5)
+                {
+                    <a class="btn btn-outline-primary" href="@Url.Action("Index", new { id = R.Ani_Id, paso = 2 })">Ver resultados finales</a>
+                }
+            </div>
+        }
+
+        @if (paso == 2)
+        {
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4>Reglas de aprobación por nivel</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <p class="text-muted">
+                        La <strong>nota final</strong> de cada materia es el promedio de los parciales publicados, redondeado al entero.
+                        Aprueba con la nota mínima del nivel. Quien reprueba hasta el máximo de materias del nivel va a <strong>recuperación</strong>
+                        (si la aprueba, su nota final es la de la recuperación); con más materias reprobadas, repite el grado.
+                        Valor inicial: la nota donde empieza el primer rango que aprueba en la <a href="@Url.Action("Index", "EscalaNotas")">Escala de notas</a>
+                        (hoy 70, el mínimo de aprobación que usa Honduras) y hasta 2 materias en recuperación.
+                    </p>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Nivel</th><th>Nota mínima para aprobar</th><th>Máximo de materias en recuperación</th><th>De dónde sale</th><th></th></tr></thead>
+                            <tbody id="ca-reglas"><tr><td colspan="5" class="text-center text-muted">Cargando…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4>Resultados finales</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+                        <p class="text-muted mb-2 mr-3">
+                            @if (R.Resultados > 0)
+                            {
+                                <span>@R.Resultados.ToString("N0") resultados (alumno × materia) calculados el @(R.FechaCalculo?.ToString("dd/MM/yyyy HH:mm")) con @R.ParcialesPublicados parciales publicados.</span>
+                            }
+                            else
+                            {
+                                <span>Todavía no se calcularon los resultados del año.</span>
+                            }
+                        </p>
+                        @if (M.Editable)
+                        {
+                            <button type="button" class="btn btn-primary mb-2" id="ca-calcular"><i class="bi bi-calculator mr-1" aria-hidden="true"></i> @(R.Resultados > 0 ? "Volver a calcular" : "Calcular resultados")</button>
+                        }
+                    </div>
+                    <partial name="_FiltrosCierre" />
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Sección</th><th class="text-right">Alumnos</th><th class="text-right">Recuperación pendiente</th><th class="text-right">Pendientes</th><th>Estado</th><th></th></tr></thead>
+                            <tbody id="ca-secciones"><tr><td colspan="6" class="text-center text-muted">Cargando…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow mb-4" id="ca-detalle" hidden>
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="ca-detalle-titulo">Sección</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead><tr><th>Materia</th><th class="text-right">Parciales</th><th class="text-right">Promedio</th><th class="text-right">Nota final</th><th>Resultado</th><th>Recuperación</th></tr></thead>
+                            <tbody id="ca-resultados"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between mb-4">
+                <a class="btn" href="@Url.Action("Index", new { id = R.Ani_Id, paso = 1 })"><i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Revisión</a>
+                <a class="btn btn-primary" href="@Url.Action("Index", new { id = R.Ani_Id, paso = 3 })">Siguiente: decisiones <i class="bi bi-arrow-right ml-1" aria-hidden="true"></i></a>
+            </div>
+        }
+
+        @if (paso == 3)
+        {
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4>Decisiones de promoción</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="alert alert-light-info" role="alert">
+                        <i class="bi bi-info-circle mr-1" aria-hidden="true"></i>
+                        Cada alumno trae una propuesta según sus resultados: <strong>promovido</strong>, <strong>repite</strong>, <strong>se gradúa</strong> (último grado de su nivel) o <strong>pendiente</strong> (recuperación sin nota).
+                        Dirección puede cambiarla con un motivo. Al <strong>confirmar la sección</strong>, la inscripción del año queda como promovido, repite o graduado@(R.SiguienteAnio.HasValue ? ", los promovidos y los que repiten quedan inscritos en " + R.SiguienteAnio + " (ver Inscripción y promociones)" : "")
+                        y los que se gradúan aparecen listos en <a href="@Url.Action("Index", "GraduacionAlumnos")">Graduación</a>.
+                    </div>
+                    <partial name="_FiltrosCierre" />
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Sección</th><th class="text-right">Alumnos</th><th class="text-right">Promovidos</th><th class="text-right">Repiten</th><th class="text-right">Se gradúan</th><th class="text-right">Pendientes</th><th>Estado</th><th></th></tr></thead>
+                            <tbody id="ca-secciones"><tr><td colspan="8" class="text-center text-muted">Cargando…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow mb-4" id="ca-detalle" hidden>
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4 id="ca-detalle-titulo">Sección</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+                        <p class="text-muted mb-2 mr-3" id="ca-detalle-texto"></p>
+                        <div id="ca-detalle-acciones" class="mb-2"></div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Alumno</th><th>Materias</th><th class="text-right">Promedio</th><th>Propuesta</th><th>Decisión</th><th>Año siguiente</th><th></th></tr></thead>
+                            <tbody id="ca-decisiones"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between mb-4">
+                <a class="btn" href="@Url.Action("Index", new { id = R.Ani_Id, paso = 2 })"><i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Resultados finales</a>
+                <a class="btn btn-primary" href="@Url.Action("Index", new { id = R.Ani_Id, paso = 4 })">Siguiente: cerrar el año <i class="bi bi-arrow-right ml-1" aria-hidden="true"></i></a>
+            </div>
+        }
+
+        @if (paso == 4)
+        {
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4>@(estado == 4 ? "Cerrar el año " + R.Ani_Anio : "Estado del año " + R.Ani_Anio)</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div id="ca-pendientes" class="mb-3"><p class="text-muted mb-0">Cargando…</p></div>
+
+                    @if (estado == 4 && M.PuedeCerrar)
+                    {
+                        <p>Al cerrar, el año pasa a <strong>Cerrado</strong>: nadie podrá registrar ni cambiar sus notas, actividades, asistencia, pase de lista ni tareas, y los resultados y decisiones quedan como están. La revisión de este momento queda guardada en el historial.</p>
+                        @if (R.EsActivo && R.SiguienteId.HasValue)
+                        {
+                            <div class="custom-control custom-checkbox mb-2">
+                                <input type="checkbox" class="custom-control-input" id="ca-pasar-activo" checked>
+                                <label class="custom-control-label" for="ca-pasar-activo">Pasar el año de trabajo a @R.SiguienteAnio (@R.SiguienteEstadoTexto)</label>
+                            </div>
+                            @if (R.SiguienteEstado < 3)
+                            {
+                                <p class="small text-muted ml-4">@R.SiguienteAnio todavía está en «@R.SiguienteEstadoTexto»: termine de configurarlo y publíquelo en Años lectivos.</p>
+                            }
+                        }
+                        <div id="ca-forzar-grupo" hidden>
+                            <div class="custom-control custom-checkbox mb-2">
+                                <input type="checkbox" class="custom-control-input" id="ca-forzar">
+                                <label class="custom-control-label" for="ca-forzar">Cerrar de todos modos, con los puntos pendientes de arriba</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="ca-motivo-cierre">Motivo <span class="text-danger">*</span></label>
+                                <textarea id="ca-motivo-cierre" class="form-control" rows="2" maxlength="500"></textarea>
+                                <small class="form-text text-muted">Queda en el historial junto con lo que faltaba.</small>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap justify-content-between mt-3">
+                            <a class="btn" href="@Url.Action("Index", new { id = R.Ani_Id, paso = 3 })"><i class="bi bi-arrow-left mr-1" aria-hidden="true"></i> Decisiones</a>
+                            <button type="button" class="btn btn-danger" id="ca-cerrar"><i class="bi bi-lock-fill mr-1" aria-hidden="true"></i> Cerrar el año @R.Ani_Anio</button>
+                        </div>
+                    }
+                    else if (estado == 5)
+                    {
+                        <div class="d-flex flex-wrap justify-content-end mt-3">
+                            @if (M.PuedeReabrir)
+                            {
+                                <button type="button" class="btn btn-outline-danger mr-2" id="ca-reabrir"><i class="bi bi-unlock mr-1" aria-hidden="true"></i> Reabrir el año</button>
+                            }
+                            @if (M.PuedeCerrar)
+                            {
+                                <button type="button" class="btn btn-outline-secondary" id="ca-archivar"><i class="bi bi-archive mr-1" aria-hidden="true"></i> Archivar el año</button>
+                            }
+                        </div>
+                        @if (!M.PuedeReabrir)
+                        {
+                            <p class="small text-muted mb-0 mt-2">Para reabrir el año hace falta el permiso especial «Reabrir el año escolar».</p>
+                        }
+                    }
+                    else if (estado == 4)
+                    {
+                        <p class="text-muted mb-0">Solo Dirección (permiso «Cerrar el año») puede cerrar el año.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4>Historial del año</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Fecha</th><th>Acción</th><th>Estado</th><th>Detalle o motivo</th><th>Quién</th></tr></thead>
+                            <tbody id="ca-historial"><tr><td colspan="5" class="text-center text-muted">Cargando…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* Ventana para confirmar acciones (iniciar, cancelar, cerrar, reabrir, archivar, deshacer, decidir). *@
+    <div class="modal fade" id="ca-modal" tabindex="-1" role="dialog" aria-labelledby="ca-modal-titulo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ca-modal-titulo">Confirmar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3" id="ca-modal-texto"></p>
+                    <div class="form-group" id="ca-modal-decision-grupo" hidden>
+                        <label for="ca-modal-decision">Decisión</label>
+                        <select id="ca-modal-decision" class="custom-select"></select>
+                    </div>
+                    <div class="form-group mb-0" id="ca-modal-motivo-grupo" hidden>
+                        <label for="ca-modal-motivo" id="ca-modal-motivo-label">Motivo</label>
+                        <textarea id="ca-modal-motivo" class="form-control" rows="3" maxlength="500"></textarea>
+                        <small class="form-text text-muted" id="ca-modal-motivo-ayuda">Queda en el historial.</small>
+                    </div>
+                    <div class="alert alert-light-danger mt-3 mb-0" id="ca-modal-error" role="alert" hidden></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="ca-modal-aceptar">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/Content/js/pages/cierre-anio.js" asp-append-version="true"></script>
+}
