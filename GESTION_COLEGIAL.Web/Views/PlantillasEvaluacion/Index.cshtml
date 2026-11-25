@@ -1,0 +1,251 @@
+@model GESTION_COLEGIAL.UI.Models.PlantillasEvaluacionIndexViewModel
+@{
+    ViewBag.Title = "Plantillas de evaluación";
+    var M = Model;
+}
+
+@section Styles{
+    <link href="~/css/pages/notas-ponderadas.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Académico</li>
+            <li class="breadcrumb-item active" aria-current="page">Plantillas de evaluación</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Plantillas de evaluación</h4>
+        <p class="text-muted mb-0">Cuánto pesa cada tipo de evaluación (exámenes, tareas, trabajos…) en la nota de cada parcial que sale de las actividades del docente.</p>
+    </div>
+    <div class="d-flex flex-wrap align-items-center mt-2 mt-md-0">
+        <form method="get" action="@Url.Action("Index")" class="d-flex align-items-center mr-2 mb-1">
+            <label for="np-anio" class="mb-0 mr-2 text-muted">Año</label>
+            <select id="np-anio" name="anio" class="custom-select w-auto">
+                @foreach (var a in M.Anios)
+                {
+                    <option value="@a.Id" selected="@(a.Id == M.Anio)">@(a.Texto + (a.EsActual ? " (activo)" : ""))</option>
+                }
+            </select>
+            <noscript><button type="submit" class="btn btn-primary ml-2">Ver</button></noscript>
+        </form>
+        <button type="button" class="btn btn-primary mb-1" id="np-nueva"><i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Nueva plantilla</button>
+    </div>
+</div>
+
+<div id="np-raiz"
+     data-anio="@M.Anio"
+     data-url-lista="@Url.Action("ListAsync")"
+     data-url-opciones="@Url.Action("OpcionesAsync")"
+     data-url-guardar="@Url.Action("GuardarAsync")"
+     data-url-quitar="@Url.Action("QuitarAsync")"
+     data-url-avance="@Url.Action("AvanceAsync")"
+     data-url-cuaderno="@Url.Action("Index", "NotasAdm")">
+
+    <ul class="nav nav-tabs mb-4" id="np-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="np-tab-plantillas" data-toggle="tab" href="#np-panel-plantillas" role="tab" aria-controls="np-panel-plantillas" aria-selected="true">
+                <i class="bi bi-sliders mr-1" aria-hidden="true"></i> Plantillas
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="np-tab-uso" data-toggle="tab" href="#np-panel-uso" role="tab" aria-controls="np-panel-uso" aria-selected="false">
+                <i class="bi bi-journal-check mr-1" aria-hidden="true"></i> Uso en los cuadernos
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        @* ── Plantillas ── *@
+        <div class="tab-pane fade show active" id="np-panel-plantillas" role="tabpanel" aria-labelledby="np-tab-plantillas">
+            <div class="alert alert-light-info mb-4" role="alert">
+                <i class="bi bi-info-circle-fill mr-1" aria-hidden="true"></i>
+                A cada materia se le aplica la plantilla <strong>más específica</strong>: la de su materia, si no la de su nivel y si no la
+                <strong>plantilla por defecto</strong> del año. Si cambia los pesos, se aplican a los parciales abiertos; los parciales
+                cerrados conservan los suyos. Una materia sin actividades sigue con nota directa.
+            </div>
+
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-header">
+                    <div class="row"><div class="col-12"><h4>Qué plantilla se aplica en @M.Anio</h4></div></div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Nivel</th><th>Plantilla que se aplica</th><th>Excepciones por materia</th></tr></thead>
+                            <tbody id="np-cobertura"><tr><td colspan="3" class="text-muted">Cargando…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="np-lista"></div>
+        </div>
+
+        @* ── Uso en los cuadernos ── *@
+        <div class="tab-pane fade" id="np-panel-uso" role="tabpanel" aria-labelledby="np-tab-uso">
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-content widget-content-area">
+                    <div class="form-row align-items-end">
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-1" for="np-sem">Semestre</label>
+                            <select id="np-sem" class="custom-select">
+                                @foreach (var s in M.Semestres)
+                                {
+                                    <option value="@s.Id">@s.Texto</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label class="mb-1" for="np-par">Parcial</label>
+                            <select id="np-par" class="custom-select">
+                                @foreach (var p in M.Parciales)
+                                {
+                                    <option value="@p.Id">@p.Texto</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2 text-md-right">
+                            <a href="@Url.Action("Index", "CierreParciales", new { anio = M.Anio })" class="btn btn-link px-0">
+                                <i class="bi bi-box-arrow-up-right mr-1" aria-hidden="true"></i> Notas faltantes del parcial: ver en Cierre de parciales
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-4 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four np-kpi np-kpi-indigo h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info"><h6 class="value" id="np-kpi-act">—</h6><p>Califican con actividades</p></div>
+                                <div><div class="w-icon"><i class="bi bi-list-check" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-3" id="np-kpi-act-texto">&nbsp;</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four np-kpi np-kpi-ambar h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info"><h6 class="value" id="np-kpi-cal">—</h6><p>Puntos capturados</p></div>
+                                <div><div class="w-icon"><i class="bi bi-pencil-square" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-3" id="np-kpi-cal-texto">&nbsp;</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 col-12 layout-spacing">
+                    <div class="widget widget-card-four np-kpi np-kpi-esmeralda h-100">
+                        <div class="widget-content">
+                            <div class="w-content">
+                                <div class="w-info"><h6 class="value" id="np-kpi-dia">—</h6><p>Notas del parcial al día</p></div>
+                                <div><div class="w-icon"><i class="bi bi-arrow-repeat" aria-hidden="true"></i></div></div>
+                            </div>
+                            <p class="text-muted small mb-0 mt-3" id="np-kpi-dia-texto">&nbsp;</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow mb-4">
+                <div class="widget-content widget-content-area">
+                    <div id="np-tabla-uso" class="gc-tabla" data-usuario="@(Session["Username"] as string ?? "anonimo")"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* ── Crear / editar plantilla ── *@
+    <div class="modal fade" id="np-modal" tabindex="-1" role="dialog" aria-labelledby="np-modal-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form class="modal-content" id="np-form" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="np-modal-titulo">Nueva plantilla</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div id="np-form-error" hidden></div>
+                    <div id="np-form-uso" hidden></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="np-nombre">Nombre <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="np-nombre" maxlength="100" placeholder="Ej.: Evaluación general @M.Anio" required>
+                            <div class="invalid-feedback">Escriba el nombre de la plantilla.</div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="np-f-anio">Año lectivo <span class="text-danger">*</span></label>
+                            <select class="custom-select" id="np-f-anio">
+                                @foreach (var a in M.Anios)
+                                {
+                                    <option value="@a.Id">@a.Texto</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="np-nivel">Nivel</label>
+                            <select class="custom-select" id="np-nivel"><option value="">Todos los niveles</option></select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="np-materia">Materia</label>
+                            <select class="custom-select" id="np-materia" disabled><option value="">Todas las materias</option></select>
+                            <small class="form-text text-muted">Solo para una excepción: una materia que se evalúa distinto.</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="np-descripcion">Descripción (opcional)</label>
+                        <textarea class="form-control" id="np-descripcion" rows="2" maxlength="500" placeholder="Cuándo se usa, acuerdos del consejo de profesores, etc."></textarea>
+                    </div>
+
+                    <label class="d-block mb-1">Tipos de evaluación <span class="text-danger">*</span></label>
+                    <small class="form-text text-muted mt-0 mb-2">Los pesos deben sumar 100 %. «Cómo se juntan» dice cómo se combinan las actividades de un mismo tipo.</small>
+                    <div class="table-responsive">
+                        <table class="table table-sm np-tipos-tabla mb-2">
+                            <thead><tr><th>Tipo</th><th>Peso (%)</th><th>Cómo se juntan</th><th class="text-right"><span class="sr-only">Quitar</span></th></tr></thead>
+                            <tbody id="np-tipos"></tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <button type="button" class="btn btn-sm btn-outline-primary mb-1" id="np-agregar-tipo"><i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Agregar tipo</button>
+                        <span id="np-total" class="mb-1" aria-live="polite"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="np-form-guardar">Guardar plantilla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @* ── Confirmar quitar ── *@
+    <div class="modal fade" id="np-modal-quitar" tabindex="-1" role="dialog" aria-labelledby="np-quitar-titulo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="np-quitar-titulo">Quitar plantilla</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="modal-body"><p class="mb-0" id="np-quitar-texto"></p></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="np-quitar-confirmar">Quitar plantilla</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_GcTabla" />
+    <script src="~/Content/js/pages/plantillas-evaluacion.js" asp-append-version="true"></script>
+}

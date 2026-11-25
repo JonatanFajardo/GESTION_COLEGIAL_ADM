@@ -106,6 +106,7 @@ var NotasAdm = (function () {
             $("#btn-guardar-todo").prop("disabled", true);
             cierre = { soloLectura: false, mensaje: "" };
             aplicarCierre();
+            $(document).trigger("cuaderno:limpiar");   // actividades del parcial (cuaderno-actividades.js)
         }
 
         $("#btn-cargar").on("click", function () {
@@ -121,6 +122,7 @@ var NotasAdm = (function () {
             contexto.Anio = h ? h.anio : new Date().getFullYear();
             contexto.Sem_Id = h ? h.sem : "";
             verificarCierre(contexto.Hor_Id, contexto.Par_Id);
+            $(document).trigger("cuaderno:cargar", [contexto]);   // actividades del parcial (cuaderno-actividades.js)
             $.getJSON(urls.list, { Hor_Id: contexto.Hor_Id, Par_Id: contexto.Par_Id }, function (data) {
                 var tbody = $("#tbody-notas").empty();
                 if (data && data.success === false) {
@@ -372,6 +374,7 @@ var NotasAdm = (function () {
             llenarSelect($("#f-sem"), listaSem, "-- Seleccione Semestre --");
             if (listaSem.length === 1) { $("#f-sem").val(listaSem[0].id).trigger("change"); }
             llenarSelect($("#f-par"), data.parciales, "-- Seleccione Parcial --");
+            $(document).trigger("cuaderno:listo");   // enlace directo a un cuaderno (cuaderno-actividades.js)
             if (!horarios.length) { toastr.info("No tiene materias asignadas en el año lectivo activo."); }
             renderCabeceraBoletin();
         });
