@@ -8,7 +8,8 @@
         alumnos: $raiz.data('urlAlumnos'), encargados: $raiz.data('urlEncargados'),
         opciones: $raiz.data('urlOpciones'), vincular: $raiz.data('urlVincular')
     };
-    var estado = { alumnos: [], encargados: [], opciones: null, ultimoParentesco: '', actual: null, filtradas: [] };
+    var LOTE = 50;
+    var estado = { alumnos: [], encargados: [], visibles: { alumnos: LOTE, encargados: LOTE }, opciones: null, ultimoParentesco: '', actual: null, filtradas: [] };
 
     function esc(s) {
         return String(s === null || s === undefined ? '' : s)
@@ -38,17 +39,27 @@
         $('#vf-kpi-barra').css('width', pct + '%');
     }
 
+    // Se pintan de a LOTE filas para que la lista no pese con cientos de alumnos.
+    function mostrarMas(lista, total) {
+        var resto = total - estado.visibles[lista];
+        var $c = $('#vf-mas-' + lista);
+        if (resto > 0) $c.prop('hidden', false).find('button').text('Mostrar ' + Math.min(LOTE, resto) + ' más (faltan ' + resto + ')');
+        else $c.prop('hidden', true);
+    }
+
     // ── Listas ───────────────────────────────────────────────────────────────
     function pintarAlumnos() {
         var q = norm($('#vf-buscar-alumnos').val());
         var filas = estado.alumnos.filter(function (a) { return !q || norm(a.Nombre + ' ' + a.Identidad + ' ' + a.Detalle).indexOf(q) >= 0; });
         var $t = $('#vf-filas-alumnos').empty();
         if (!filas.length) {
+            mostrarMas('alumnos', 0);
             $t.append('<tr><td colspan="4" class="text-center text-muted">' +
                 (estado.alumnos.length ? 'Ningún alumno coincide con la búsqueda.' : 'Todos los alumnos activos ya tienen encargado.') + '</td></tr>');
             return;
         }
-        filas.forEach(function (a) {
+        mostrarMas('alumnos', filas.length);
+        filas.slice(0, estado.visibles.alumnos).forEach(function (a) {
             $t.append('<tr><td>' + esc(a.Nombre) + '</td><td>' + esc(a.Identidad) + '</td><td>' + esc(a.Detalle) +
                 '</td><td class="text-right"><button type="button" class="btn btn-sm btn-primary vf-ligar-alumno" data-id="' + a.Id + '">' +
                 '<i class="bi bi-link-45deg mr-1" aria-hidden="true"></i>Ligar encargado</button></td></tr>');
@@ -60,11 +71,13 @@
         var filas = estado.encargados.filter(function (e) { return !q || norm(e.Nombre + ' ' + e.Identidad + ' ' + e.Telefono).indexOf(q) >= 0; });
         var $t = $('#vf-filas-encargados').empty();
         if (!filas.length) {
+            mostrarMas('encargados', 0);
             $t.append('<tr><td colspan="4" class="text-center text-muted">' +
                 (estado.encargados.length ? 'Ningún encargado coincide con la búsqueda.' : 'Todos los encargados ya tienen al menos un hijo ligado.') + '</td></tr>');
             return;
         }
-        filas.forEach(function (e) {
+        mostrarMas('encargados', filas.length);
+        filas.slice(0, estado.visibles.encargados).forEach(function (e) {
             $t.append('<tr><td>' + esc(e.Nombre) + '</td><td>' + esc(e.Identidad) + '</td><td>' + esc(e.Telefono) +
                 '</td><td class="text-right"><button type="button" class="btn btn-sm btn-primary vf-ligar-encargado" data-id="' + e.Id + '">' +
                 '<i class="bi bi-link-45deg mr-1" aria-hidden="true"></i>Ligar hijo</button></td></tr>');
@@ -155,8 +168,13 @@
 
     $(document).on('click', '.vf-ligar-alumno', function () { abrir('alumno', parseInt($(this).data('id'), 10)); });
     $(document).on('click', '.vf-ligar-encargado', function () { abrir('encargado', parseInt($(this).data('id'), 10)); });
-    $('#vf-buscar-alumnos').on('input', pintarAlumnos);
-    $('#vf-buscar-encargados').on('input', pintarEncargados);
+    $('#vf-buscar-alumnos').on('input', function () { estado.visibles.alumnos = LOTE; pintarAlumnos(); });
+    $('#vf-buscar-encargados').on('input', function () { estado.visibles.encargados = LOTE; pintarEncargados(); });
+    $(document).on('click', '.vf-mas', function () {
+        var l = $(this).data('lista');
+        estado.visibles[l] += LOTE;
+        if (l === 'alumnos') pintarAlumnos(); else pintarEncargados();
+    });
     $('#vf-buscar-opcion').on('input', function () { if (estado.actual) llenarOpciones(); });
     $('#vf-opcion').on('dblclick', function () { if ($(this).val() && $('#vf-parentesco').val()) guardar(); });
     $('#vf-guardar').on('click', guardar);

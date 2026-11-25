@@ -2,6 +2,14 @@
     Layout = null;
     int alumnoId = ViewBag.AlumnoId;
     int anioActual = DateTime.Now.Year;
+    bool puedeVerNotas = ViewBag.PuedeVerNotas == true;
+}
+@if (!puedeVerNotas)
+{
+    <div class="alert alert-light border mb-0" role="alert">
+        <i class="bi bi-lock mr-2" aria-hidden="true"></i>Su perfil no incluye ver las notas del alumno.
+    </div>
+    return;
 }
 <div>
     <div id="boletin-provisional" hidden></div>
