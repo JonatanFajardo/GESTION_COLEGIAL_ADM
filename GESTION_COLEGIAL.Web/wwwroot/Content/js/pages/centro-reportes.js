@@ -274,6 +274,7 @@
             case "dinero":
                 $.extend(col, { hozAlign: "right", headerHozAlign: "right", sorter: "number",
                     formatter: function (cell) { var v = cell.getValue(); return v === null || v === undefined ? "" : "L " + DINERO.format(v); } });
+                GcTabla.dineroDescarga(col);
                 break;
             case "porcentaje":
                 $.extend(col, { hozAlign: "right", headerHozAlign: "right", sorter: "number",
@@ -311,10 +312,10 @@
         if (!tabla || !resultado) return;
         var archivo = resultado.archivo + (rango === "selected" ? "-seleccion" : "");
         if (tipo === "xlsx") {
-            tabla.tabla.download("xlsx", archivo + ".xlsx", { sheetName: nombreHoja(resultado.titulo) }, rango);
+            tabla.tabla.download("xlsx", archivo + ".xlsx", { sheetName: nombreHoja(resultado.titulo), documentProcessing: GcTabla.formatoDineroXlsx(tabla.tabla) }, rango);
             return;
         }
-        tabla.tabla.download("pdf", archivo + ".pdf", {
+        GcTabla.descargarPdf(tabla.tabla, archivo + ".pdf", {
             orientation: "landscape",
             autoTable: function (doc) {
                 var ancho = doc.internal.pageSize.getWidth() - 80;

@@ -84,3 +84,13 @@ html.gc-dark .sus-sugerencias .sus-opcion.active .sus-sub-opcion { color: #c7d2f
 .sus-totales .table > tbody > tr > td,
 .sus-totales .table > tfoot > tr > td { padding: .45rem .5rem; letter-spacing: normal; white-space: normal; overflow-wrap: anywhere; }
 .sus-totales .sus-col-num { width: 4.25rem; }
+
+/* ── Celular: la tabla de clases se ajusta al ancho de la tarjeta (sin barra lateral) ── */
+@media (max-width: 575.98px) {
+    .sus-clases .sus-col-hora,
+    .sus-clases .sus-col-estado { width: auto; }
+    .sus-clases.table > thead > tr > th,
+    .sus-clases.table > tbody > tr > td { padding: .5rem .4rem; white-space: normal; }
+    .sus-clases td.text-nowrap { white-space: normal !important; }
+    .sus-clases .btn { white-space: normal; }
+}

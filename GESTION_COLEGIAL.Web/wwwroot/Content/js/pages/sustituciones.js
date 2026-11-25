@@ -234,7 +234,7 @@
             + '<div class="widget-content widget-content-area pt-0">'
             + (d.detalle ? '<p class="small text-muted mb-2"><i class="bi bi-chat-left-text mr-1" aria-hidden="true"></i>' + esc(d.detalle) + "</p>" : "")
             + (d.clases.length
-                ? '<div class="table-responsive"><table class="table table-sm mb-0 sus-clases"><caption class="sr-only">Clases de ' + esc(d.nombre) + "</caption>"
+                ? '<div class="table-responsive position-relative"><table class="table table-sm mb-0 sus-clases"><caption class="sr-only">Clases de ' + esc(d.nombre) + "</caption>"
                   + '<thead><tr><th scope="col" class="sus-col-hora">Hora</th><th scope="col">Clase</th><th scope="col" class="sus-col-estado">Estado</th>' + (ASIGNA ? '<th scope="col" class="sus-col-accion"><span class="sr-only">Acción</span></th>' : "") + "</tr></thead>"
                   + "<tbody>" + filas + "</tbody></table></div>"
                 : "")
@@ -244,7 +244,7 @@
 
     function tablaPropias(lista, conFecha) {
         if (!lista.length) return "";
-        return '<div class="table-responsive"><table class="table table-sm table-hover mb-0"><thead><tr>'
+        return '<div class="table-responsive position-relative"><table class="table table-sm table-hover mb-0"><thead><tr>'
             + (conFecha ? '<th scope="col">Fecha</th>' : "")
             + '<th scope="col">Hora</th><th scope="col">Clase</th><th scope="col">En lugar de</th><th scope="col">Notas</th></tr></thead><tbody>'
             + lista.map(function (s) {

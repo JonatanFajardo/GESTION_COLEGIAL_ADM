@@ -72,7 +72,7 @@ $(function () {
                   var nota = d.EsAnulado && d.MotivoAnulacion ? "Anulado: " + d.MotivoAnulacion : (d.Observaciones || "");
                   return '<div class="text-truncate"><div class="text-truncate">' + nombre + '</div>' + (nota ? '<div class="small text-muted text-truncate">' + Caja.esc(nota) + '</div>' : '') + '</div>';
               } },
-            { title: "Monto", field: "MontoTotal", width: 120, hozAlign: "right", sorter: "number",
+            { title: "Monto", field: "MontoTotal", gcDinero: true, width: 120, hozAlign: "right", sorter: "number",
               formatter: function (c) {
                   return anulado(c.getData()) ? Caja.dinero(c.getValue()) : '<strong class="text-success">' + Caja.dinero(c.getValue()) + '</strong>';
               } },
