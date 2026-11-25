@@ -258,3 +258,159 @@ html.gc-dark .statbox .widget-header h4 { color: #e2e8f0; }
     .statbox .widget-content-area { padding: 12px; }
 }
 .gc-tabla-columnas { min-width: 200px; max-height: 320px; overflow-y: auto; }
+
+/* Interruptores .switch: el estado marcado y el foco también aplican cuando entre el input y el .slider hay otro
+   elemento (por ejemplo el campo oculto que agrega CheckBoxFor). */
+.switch input:checked ~ .slider:before {
+        -webkit-transform: translateX(17px);
+        -ms-transform: translateX(17px);
+        transform: translateX(17px);
+}
+.switch input:checked ~ .slider:before {
+        background-color: #fff;
+}
+.switch.s-default input:checked ~ .slider {
+        background-color: #d3d3d3;
+}
+.switch.s-default input:focus ~ .slider {
+        box-shadow: 0 0 1px #ebedf2;
+}
+.switch.s-primary input:checked ~ .slider {
+        background-color: #F7A400;
+}
+.switch.s-primary input:focus ~ .slider {
+        box-shadow: 0 0 1px #F7A400;
+}
+.switch.s-success input:checked ~ .slider {
+        background-color: #1abc9c;
+}
+.switch.s-success input:focus ~ .slider {
+        box-shadow: 0 0 1px #1abc9c;
+}
+.switch.s-warning input:checked ~ .slider {
+        background-color: #e2a03f;
+}
+.switch.s-warning input:focus ~ .slider {
+        box-shadow: 0 0 1px #e2a03f;
+}
+.switch.s-danger input:checked ~ .slider {
+        background-color: #e7515a;
+}
+.switch.s-danger input:focus ~ .slider {
+        box-shadow: 0 0 1px #e7515a;
+}
+.switch.s-secondary input:checked ~ .slider {
+        background-color: #cccccc;
+}
+.switch.s-secondary input:focus ~ .slider {
+        box-shadow: 0 0 1px #cccccc;
+}
+.switch.s-info input:checked ~ .slider {
+        background-color: #2196f3;
+}
+.switch.s-info input:focus ~ .slider {
+        box-shadow: 0 0 1px #2196f3;
+}
+.switch.s-dark input:checked ~ .slider {
+        background-color: #3b3f5c;
+}
+.switch.s-dark input:focus ~ .slider {
+        box-shadow: 0 0 1px #3b3f5c;
+}
+.switch.s-outline-default input:checked ~ .slider {
+        border: 2px solid #ebedf2;
+}
+.switch.s-outline-default input:checked ~ .slider:before {
+            border: 2px solid #d3d3d3;
+            background-color: #d3d3d3;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.25);
+}
+.switch.s-outline-default input:focus ~ .slider {
+        box-shadow: 0 0 1px #ebedf2;
+}
+.switch.s-outline-primary input:checked ~ .slider {
+        border: 2px solid #F7A400;
+}
+.switch.s-outline-primary input:checked ~ .slider:before {
+            border: 2px solid #F7A400;
+            background-color: #F7A400;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34);
+}
+.switch.s-outline-primary input:focus ~ .slider {
+        box-shadow: 0 0 1px #F7A400;
+}
+.switch.s-outline-success input:checked ~ .slider {
+        border: 2px solid #1abc9c;
+}
+.switch.s-outline-success input:checked ~ .slider:before {
+            border: 2px solid #1abc9c;
+            background-color: #1abc9c;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34);
+}
+.switch.s-outline-success input:focus ~ .slider {
+        box-shadow: 0 0 1px #1abc9c;
+}
+.switch.s-outline-warning input:checked ~ .slider {
+        border: 2px solid #e2a03f;
+}
+.switch.s-outline-warning input:checked ~ .slider:before {
+            border: 2px solid #e2a03f;
+            background-color: #e2a03f;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34);
+}
+.switch.s-outline-warning input:focus ~ .slider {
+        box-shadow: 0 0 1px #e2a03f;
+}
+.switch.s-outline-danger input:checked ~ .slider {
+        border: 2px solid #e7515a;
+}
+.switch.s-outline-danger input:checked ~ .slider:before {
+            border: 2px solid #e7515a;
+            background-color: #e7515a;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34);
+}
+.switch.s-outline-danger input:focus ~ .slider {
+        box-shadow: 0 0 1px #e7515a;
+}
+.switch.s-outline-secondary input:checked ~ .slider {
+        border: 2px solid #cccccc;
+}
+.switch.s-outline-secondary input:checked ~ .slider:before {
+            border: 2px solid #cccccc;
+            background-color: #cccccc;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34);
+}
+.switch.s-outline-secondary input:focus ~ .slider {
+        box-shadow: 0 0 1px #cccccc;
+}
+.switch.s-outline-info input:checked ~ .slider {
+        border: 2px solid #2196f3;
+}
+.switch.s-outline-info input:checked ~ .slider:before {
+            border: 2px solid #2196f3;
+            background-color: #2196f3;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34);
+}
+.switch.s-outline-info input:focus ~ .slider {
+        box-shadow: 0 0 1px #2196f3;
+}
+.switch.s-outline-dark input:checked ~ .slider {
+        border: 2px solid #3b3f5c;
+}
+.switch.s-outline-dark input:checked ~ .slider:before {
+            border: 2px solid #3b3f5c;
+            background-color: #3b3f5c;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34);
+}
+.switch.s-outline-dark input:focus ~ .slider {
+        box-shadow: 0 0 1px #3b3f5c;
+}
+.switch.s-icons input:checked ~ .slider:before {
+            content: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%23fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>');
+            vertical-align: sub;
+            color: #fff;
+            line-height: 1.4;
+            -webkit-transform: translateX(23px);
+            -ms-transform: translateX(23px);
+            transform: translateX(23px);
+}

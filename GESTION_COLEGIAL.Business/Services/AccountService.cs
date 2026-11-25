@@ -30,6 +30,12 @@ namespace GESTION_COLEGIAL.Business.Services
             });
         }
 
+        /// <summary>Estado de la cuenta del usuario en sesión (null si la API no respondió).</summary>
+        public async Task<EstadoSesionViewModel> EstadoSesionAsync(int usuId)
+        {
+            return await ApiRequests.GetSingleAsync<EstadoSesionViewModel>("Account/EstadoSesion?value=" + usuId);
+        }
+
         public async Task<bool> LogoutAsync(int usuId)
         {
             string url = "Account/Logout";

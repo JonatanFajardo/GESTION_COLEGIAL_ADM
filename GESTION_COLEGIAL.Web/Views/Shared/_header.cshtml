@@ -1,4 +1,4 @@
-﻿<div class="header-container fixed-top">
+<div class="header-container fixed-top">
     <header class="header navbar navbar-expand-sm">
 
         <ul class="navbar-nav theme-brand flex-row  text-center">
@@ -35,13 +35,15 @@
         if (!window.jQuery) return;
         var $sel = $('#hdrAnioActivo');
         if (!$sel.length) return;
-        $.getJSON('@Url.Action("ListAsync", "AniosLectivos")', function (res) {
-            var d = (res && res.data) ? res.data : (res || []);
+        $.getJSON('@Url.Action("ListAsync", "AnioTrabajo")', function (res) {
+            var d = (res && res.data) ? res.data : [];
             $sel.empty();
-            if (!d.length) { $sel.append($('<option>').text('—')); return; }
+            if (!d.length) { $sel.append($('<option>').text('—')); $sel.prop('disabled', true); return; }
             d.forEach(function (a) {
                 $sel.append($('<option>').val(a.Ani_Id).text(a.Ani_Nombre + (a.Ani_EsActual ? ' ✓' : '')).prop('selected', a.Ani_EsActual));
             });
+            // Solo quien tiene la pantalla de años lectivos puede cambiar el año de trabajo.
+            if (!res.puedeCambiar) { $sel.prop('disabled', true).attr('title', 'Solo lectura'); }
         });
         $sel.on('change', function () {
             $.post('@Url.Action("SetActivoAsync", "AniosLectivos")', { id: $(this).val() }, function () { location.reload(); });

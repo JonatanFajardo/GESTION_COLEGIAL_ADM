@@ -122,8 +122,11 @@
                                     </label>
                                     <div class="d-flex align-items-center mt-2">
                                         <label class="switch s-outline s-outline-primary mb-0 mr-2">
-                                            @Html.CheckBoxFor(model => model.Usu_EsActivo, new { @id = "Usu_EsActivo" })
+                                            @* El control gris se pinta con "input:checked + .slider": el campo oculto que agrega CheckBoxFor
+                                               iba entre los dos y el interruptor se veía apagado aunque el usuario estuviera activo. *@
+                                            <input type="checkbox" id="Usu_EsActivo" name="Usu_EsActivo" value="true" />
                                             <span class="slider round"></span>
+                                            <input type="hidden" name="Usu_EsActivo" value="false" />
                                         </label>
                                         <label for="Usu_EsActivo" class="mb-0">Usuario activo</label>
                                     </div>

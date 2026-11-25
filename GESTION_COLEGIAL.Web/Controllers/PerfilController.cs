@@ -34,6 +34,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
             {
                 return Rechazo(string.IsNullOrWhiteSpace(r?.Mensaje) ? "No se pudo cambiar la contraseña." : r.Mensaje);
             }
+            // Esta sesión sigue abierta; las demás sesiones de la cuenta se cierran.
+            await ValidadorSesion.RenovarAsync(HttpContext);
             return Json(new { success = true, message = "Contraseña actualizada. Úsela la próxima vez que inicie sesión." });
         }
 

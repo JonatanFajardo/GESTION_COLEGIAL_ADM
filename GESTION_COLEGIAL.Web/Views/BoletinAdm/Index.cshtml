@@ -20,13 +20,16 @@
     <div class="statbox widget box box-shadow mb-4">
         <div class="widget-content widget-content-area">
         <div class="form-row">
-            <div class="col-md-6">
+            <div class="col-md-5 mb-2 mb-md-0">
                 <select id="f-alu" class="custom-select"><option value="">-- Seleccione Alumno --</option></select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2 mb-2 mb-md-0">
                 <input type="number" id="f-anio" class="form-control" placeholder="Año" value="@DateTime.Now.Year">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mb-2 mb-md-0">
+                <select id="f-sem-boletin" class="custom-select" aria-label="Semestre" disabled><option value="">Todo el año</option></select>
+            </div>
+            <div class="col-md-2">
                 <button class="btn btn-primary w-100" id="btn-ver">
                     <i class="fa-solid fa-magnifying-glass mr-1"></i> Ver Boletín
                 </button>
@@ -43,13 +46,7 @@
             <div class="table-responsive">
                 <table class="table table-hover" id="tabla-boletin">
                     <thead>
-                        <tr>
-                            <th>Materia</th>
-                            <th class="text-center">Parcial 1</th>
-                            <th class="text-center">Parcial 2</th>
-                            <th class="text-center">Parcial 3</th>
-                            <th class="text-center">Promedio</th>
-                        </tr>
+                        <tr id="thead-boletin"></tr>
                     </thead>
                     <tbody id="tbody-boletin"></tbody>
                 </table>
@@ -59,12 +56,15 @@
 </div>
 @section Scripts{
     <script src="~/Content/js/components/boletin-provisional.js" asp-append-version="true"></script>
-    <script src="~/Content/js/pages/boletinadm.js" asp-append-version="true"></script>
+    <script src="~/Content/js/components/boletin-notas.js" asp-append-version="true"></script>
     <script>
-        BoletinAdm.init(
-            "@Url.Action("GetAsync")",
-            "@Url.Action("DropdownsAsync")",
-            "@Url.Action("PublicacionAsync")"
-        );
+        BoletinNotas.init({
+            urlGet:           "@Url.Action("GetAsync")",
+            urlAlumnos:       "@Url.Action("DropdownsAsync")",
+            urlPublicacion:   "@Url.Action("PublicacionAsync")",
+            urlEscala:        "@Url.Action("EscalaAsync")",
+            urlNotaMinima:    "@Url.Action("NotaMinimaAsync", "GraduacionAlumnos")",
+            avisoProvisional: "#boletin-provisional"
+        });
     </script>
 }

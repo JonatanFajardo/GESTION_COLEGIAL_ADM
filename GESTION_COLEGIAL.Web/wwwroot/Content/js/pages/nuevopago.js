@@ -285,7 +285,7 @@ var NuevoPago = (function () {
                 var html = '<option value="">-- Sin descuento --</option>';
                 data.forEach(function(item) {
                     if (item.EsActivo && !item.EsEliminado) {
-                        html += '<option value="' + item.DescuentoId + '">' + item.Descripcion + '</option>';
+                        html += '<option value="' + item.DescuentoId + '">' + $("<div>").text(item.Descripcion).html() + '</option>';
                     }
                 });
                 $("#descuento-select").html(html);

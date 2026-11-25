@@ -1,14 +1,12 @@
 /* Hub "Notas y Boletín"
    Tab 1: Cuaderno de Notas (captura por Semestre + Materia/Sección + Parcial) — endpoints NotasAdm
-   Tab 2: Boletín (consulta por Alumno + Año) — endpoints BoletinAdm (reusados vía AJAX)
-   Columnas del boletín dinámicas según el catálogo real de Parciales.
+   Tab 2: Boletín — lo maneja components/boletin-notas.js (BoletinNotas)
    Umbral rojo = nota mínima configurable (GraduacionAlumnos/NotaMinimaAsync, fallback 70). */
 var NotasAdm = (function () {
     var obj = {};
     var urls = {};
     var contexto = {};
     var parciales = [];        // catálogo real de parciales [{id, texto}]
-    var escala = [];           // rangos de la escala de notas [{Esc_Concepto, Esc_Abreviatura, Esc_NotaDesde, ...}]
     var horarios = [];         // [{id, sem, anio, texto}] para saber el período del horario elegido
     var cierre = { soloLectura: false, mensaje: "" };   // parcial cerrado por Dirección (Cierre de parciales)
 
@@ -41,18 +39,6 @@ var NotasAdm = (function () {
         });
     }
 
-    // Traduce un promedio al concepto de la escala (misma lógica que FN_EscalaConcepto:
-    // el rango con la mayor nota mínima que no supera el promedio).
-    function conceptoDe(prom) {
-        if (prom === null || isNaN(parseFloat(prom))) return "";
-        var v = parseFloat(prom), mejor = null;
-        $.each(escala, function (_, e) {
-            var d = parseFloat(e.Esc_NotaDesde);
-            if (v >= d && (mejor === null || d > parseFloat(mejor.Esc_NotaDesde))) mejor = e;
-        });
-        if (!mejor) return "";
-        return mejor.Esc_Concepto + (mejor.Esc_Abreviatura ? " (" + mejor.Esc_Abreviatura + ")" : "");
-    }
     var notaMinima = 70;       // fallback si el GET de configuración falla
 
     // ---------- Utilidades ----------
@@ -253,91 +239,6 @@ var NotasAdm = (function () {
         });
     }
 
-    // ---------- Tab 2: Boletín ----------
-    function renderCabeceraBoletin() {
-        var tr = $("#thead-boletin").empty();
-        tr.append('<th>Materia</th>');
-        $.each(parciales, function (_, p) {
-            tr.append('<th class="text-center" data-pac="' + p.id + '">' + p.texto + '</th>');
-        });
-        tr.append('<th class="text-center">Promedio</th>');
-        tr.append('<th class="text-center">Concepto</th>');
-    }
-
-    // Busca la nota de un parcial del catálogo dentro del mapa de notas de una materia.
-    // idx es la posición (1-based) del parcial en el catálogo, como fallback por número.
-    function notaDeParcial(notas, parcial, idx) {
-        var candidatos = [String(parcial.id), parcial.texto, String(idx), "Parcial " + idx];
-        for (var i = 0; i < candidatos.length; i++) {
-            if (notas.hasOwnProperty(candidatos[i])) return notas[candidatos[i]];
-        }
-        return null;
-    }
-
-    function initBoletin() {
-        $("#btn-ver").on("click", function () {
-            var alu  = $("#f-alu").val();
-            var anio = $("#f-anio").val();
-            if (!alu || !anio) { alert("Seleccione el alumno y el año."); return; }
-
-            $.getJSON(urls.boletinGet, { Alu_Id: alu, Anio: anio }, function (res) {
-                // La API puede devolver directo el array o envuelto en .data
-                var data = (res && res.data) ? res.data : (res || []);
-                var tbody = $("#tbody-boletin").empty();
-                var totalCols = parciales.length + 3; // Materia + parciales + Promedio + Concepto
-
-                renderCabeceraBoletin();
-
-                // Parciales que Dirección aún no publica: aviso y marca "Provisional" en su columna.
-                if (window.BoletinProvisional && urls.boletinPublicacion) {
-                    BoletinProvisional.marcar(urls.boletinPublicacion, anio, "#nb-boletin-provisional", function (porPac) {
-                        $("#thead-boletin th[data-pac]").each(function () {
-                            if (porPac[$(this).data("pac")]) $(this).append(' <span class="badge outline-badge-warning ml-1">Provisional</span>');
-                        });
-                    });
-                }
-
-                if (!data || data.length === 0) {
-                    tbody.append('<tr><td colspan="' + totalCols + '" class="text-center text-muted">Sin notas registradas para este alumno.</td></tr>');
-                    $("#panel-boletin").show();
-                    return;
-                }
-
-                // Agrupar por materia; indexar la nota bajo todas las llaves conocidas del parcial
-                var materias = {};
-                $.each(data, function (_, r) {
-                    var mat = r.Mat_Nombre || "Sin materia";
-                    if (!materias[mat]) materias[mat] = {};
-                    var llaves = [r.Par_Id, r.Pac_Id, r.Par_Numero, r.Pac_Numero, r.Pac_Descripcion, r.Par_Descripcion];
-                    $.each(llaves, function (_, k) {
-                        if (k !== null && k !== undefined && k !== "") materias[mat][String(k)] = r.Not_Nota;
-                    });
-                });
-
-                $.each(materias, function (mat, notas) {
-                    var celdas = '<td>' + mat + '</td>';
-                    var vals = [];
-                    $.each(parciales, function (i, p) {
-                        var nota = notaDeParcial(notas, p, i + 1);
-                        if (esNumero(nota)) vals.push(parseFloat(nota));
-                        celdas += '<td' + claseNota(nota) + '>' + fmtNota(nota) + '</td>';
-                    });
-
-                    // Promedio aritmético simple sobre los parciales con nota
-                    var prom = vals.length > 0
-                        ? vals.reduce(function (a, b) { return a + b; }, 0) / vals.length
-                        : null;
-                    celdas += '<td' + claseNota(prom) + '><strong>' + fmtNota(prom) + '</strong></td>';
-                    celdas += '<td class="text-center text-muted">' + conceptoDe(prom) + '</td>';
-
-                    tbody.append('<tr>' + celdas + '</tr>');
-                });
-
-                $("#panel-boletin").show();
-            });
-        });
-    }
-
     // ---------- Init ----------
     obj.init = function (config) {
         urls = {
@@ -345,23 +246,11 @@ var NotasAdm = (function () {
             guardar:      config.urlGuardar,
             dropdowns:    config.urlDropdowns,
             periodo:      config.urlPeriodo,
-            boletinPublicacion: config.urlBoletinPublicacion,
-            boletinGet:   config.urlBoletinGet,
-            boletinDrops: config.urlBoletinDrops,
-            boletinEscala:config.urlBoletinEscala,
             notaMinima:   config.urlNotaMinima
         };
 
         initTabs();
         initCuaderno();
-        initBoletin();
-
-        // Escala de notas para traducir el promedio a concepto en el boletín (opcional).
-        if (urls.boletinEscala) {
-            $.getJSON(urls.boletinEscala, function (res) {
-                escala = (res && res.data) ? res.data : (res || []);
-            });
-        }
 
         // Dropdowns del cuaderno + catálogo real de parciales (compartido con el boletín)
         $.getJSON(urls.dropdowns, function (data) {
@@ -376,15 +265,6 @@ var NotasAdm = (function () {
             llenarSelect($("#f-par"), data.parciales, "-- Seleccione Parcial --");
             $(document).trigger("cuaderno:listo");   // enlace directo a un cuaderno (cuaderno-actividades.js)
             if (!horarios.length) { toastr.info("No tiene materias asignadas en el año lectivo activo."); }
-            renderCabeceraBoletin();
-        });
-
-        // Dropdown de alumnos del boletín
-        $.getJSON(urls.boletinDrops, function (data) {
-            var sa = $("#f-alu");
-            $.each(data.alumnos, function (_, a) {
-                sa.append('<option value="' + a.id + '">' + a.texto + '</option>');
-            });
         });
 
         // Nota mínima de aprobación configurable (fallback 70)

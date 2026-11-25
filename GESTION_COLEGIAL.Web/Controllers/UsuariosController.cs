@@ -43,6 +43,12 @@ namespace GESTION_COLEGIAL.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(UsuarioViewModel model)
         {
+            // Misma regla que la API y los procedimientos (ver Business/Models/UsuarioViewModel.cs).
+            model.Usu_Name = (model.Usu_Name ?? string.Empty).Trim();
+            if (!UsuarioViewModel.NombreValido(model.Usu_Name))
+            {
+                return AjaxResult(false, false, AlertMessage.AlertMessageType.Error, UsuarioViewModel.MensajeNombre);
+            }
             if (model.Usu_Id == 0 && string.IsNullOrEmpty(model.Usu_Contrasena))
             {
                 return AjaxResult(false, false, AlertMessage.AlertMessageType.Error, "Escriba la contraseña inicial del usuario (al menos 8 caracteres).");
@@ -72,6 +78,16 @@ namespace GESTION_COLEGIAL.UI.Controllers
                     return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
                 }
 
+                // Cambió la contraseña, el rol o el estado: las sesiones abiertas de esa cuenta se revisan ya.
+                if (model.Usu_Id == GetUsuarioId())
+                {
+                    await ValidadorSesion.RenovarAsync(HttpContext);
+                }
+                else
+                {
+                    ValidadorSesion.Olvidar(model.Usu_Id);
+                }
+
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessUpdate);
             }
         }
@@ -80,12 +96,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
         public async Task<ActionResult> ExistAsync(int? Usu_Id, string Usu_Name)
         {
             ValidationModal validationModal = new ValidationModal();
-            validationModal.SendMessage = Usu_Name;
-            validationModal.BlankSpaces();
-            validationModal.SpecialCharacters();
-            if (validationModal.RequestMessage != null)
+            if (!UsuarioViewModel.NombreValido((Usu_Name ?? string.Empty).Trim()))
             {
-                return Json(validationModal.RequestMessage);
+                return Json(UsuarioViewModel.MensajeNombre);
             }
 
             var result = await usuariosService.Exist(Usu_Name);
@@ -107,6 +120,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             {
                 return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
             }
+            ValidadorSesion.Olvidar(model.Usu_Id);
             return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessDelete);
         }
 

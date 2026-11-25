@@ -5,10 +5,18 @@ namespace GESTION_COLEGIAL.Business.Models
 {
     public class UsuarioViewModel : BaseViewModel
     {
+        public const string MensajeNombre = "El usuario debe tener entre 4 y 50 caracteres: letras, números, punto, guion o guion bajo, sin espacios.";
+
+        /// <summary>Regla única del nombre de usuario (la misma que aplican la API y los procedimientos).</summary>
+        public static bool NombreValido(string nombre) =>
+            !string.IsNullOrEmpty(nombre) && nombre.Length >= 4 && nombre.Length <= 50
+            && System.Text.RegularExpressions.Regex.IsMatch(nombre, @"^[-a-zA-Z0-9._]+$");
+
         [Key]
         public int Usu_Id { get; set; }
 
-        [StringLength(50)]
+        [StringLength(50, MinimumLength = 4, ErrorMessage = MensajeNombre)]
+        [RegularExpression(@"^[-a-zA-Z0-9._]+$", ErrorMessage = MensajeNombre)]
         [Display(Name = "Nombre de usuario")]
         [Required(ErrorMessage = "El campo es requerido")]
         [Remote(action: "ExistAsync", controller: "Usuarios", HttpMethod = "POST", AdditionalFields = nameof(Usu_Id) + "," + nameof(Usu_Name))]
