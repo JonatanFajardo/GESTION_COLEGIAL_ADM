@@ -397,11 +397,28 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetAcademicoAsync(int id)
+		public ActionResult GetAcademicoAsync(int id)
 		{
-			var data = await boletinService.GetAsync(id, System.DateTime.Now.Year);
-			return PartialView("_TabAcademico", data);
+			ViewBag.AlumnoId = id;
+			return PartialView("_TabAcademico");
 		}
+
+		// Datos del tab Académico (mismo boletín que "Notas y boletín", sin exigir esa pantalla).
+		[HttpGet]
+		public async Task<ActionResult> BoletinAsync(int Alu_Id, int Anio)
+			=> AjaxResult(await boletinService.GetAsync(Alu_Id, Anio));
+
+		[HttpGet]
+		public async Task<ActionResult> PublicacionAsync(int anio)
+			=> AjaxResult(await new CierresParcialService().PeriodosAsync(anio));
+
+		[HttpGet]
+		public async Task<ActionResult> EscalaAsync()
+			=> AjaxResult(await new EscalaNotasService().ListAsync());
+
+		[HttpGet]
+		public async Task<ActionResult> NotaMinimaAsync()
+			=> Json(new { valor = await new ConfiguracionService().GetNotaMinimaAprobacionAsync() });
 
 		public async Task<ActionResult> GetAsistenciaAsync(int id)
 		{
