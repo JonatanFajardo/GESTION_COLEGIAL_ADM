@@ -1,5 +1,7 @@
 using GESTION_COLEGIAL.Business.Helpers;
 using GESTION_COLEGIAL.UI.Filters;
+using GESTION_COLEGIAL.UI.Compat;
+using System;
 using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.UI.Controllers
@@ -9,16 +11,14 @@ namespace GESTION_COLEGIAL.UI.Controllers
     {
         public ActionResult Index() => View();
 
-        // Passthrough crudo del API para evitar el bug JObject + JavaScriptSerializer.
-        // El API devuelve PascalCase y se pasa tal cual al navegador.
-        // El SP requiere Emp_Id, Dia_Id y Anio (no Anio/Mes como otros dashboards).
-        public async Task<ActionResult> ResumenAsync(int? Emp_Id, int? Dia_Id, int? Anio)
+        // Passthrough crudo del API (PascalCase). El empleado es el del usuario firmado (y la API lo
+        // vuelve a poner por su cuenta); el día de la semana y el año son los de hoy en Honduras.
+        public async Task<ActionResult> ResumenAsync()
         {
-            var url = "DashboardDocente/ResumenAsync";
-            if (Emp_Id.HasValue && Dia_Id.HasValue && Anio.HasValue)
-                url += $"?Emp_Id={Emp_Id.Value}&Dia_Id={Dia_Id.Value}&Anio={Anio.Value}";
-
-            var raw = await SendHttpClient.GetRawAsync(url);
+            DateTime hoy = HoraHonduras.Hoy;
+            int diaId = hoy.DayOfWeek == DayOfWeek.Sunday ? 7 : (int)hoy.DayOfWeek;   // 1 = lunes … 7 = domingo
+            int empId = int.TryParse(Session[SesionUsuario.EmpId]?.ToString(), out int e) && e > 0 ? e : 0;
+            var raw = await SendHttpClient.GetRawAsync($"DashboardDocente/ResumenAsync?Emp_Id={empId}&Dia_Id={diaId}&Anio={hoy.Year}");
             return Content(raw, "application/json");
         }
     }

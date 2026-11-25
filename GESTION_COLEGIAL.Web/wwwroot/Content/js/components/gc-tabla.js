@@ -149,6 +149,7 @@ var GcTabla = (function () {
             if (COLUMNAS.Acciones) orden.push("Acciones");
             return orden.map(function (campo) {
                 var def = $.extend({}, COLUMNAS[campo]);
+                if (def.gcDinero) dineroDescarga(def);
                 // Que el título, el pin y la flecha de orden quepan sin cortarse.
                 var minimo = Math.round((def.title || "").length * 9 + (def.headerSort === false ? 50 : 86));
                 def.minWidth = Math.max(def.minWidth || 90, minimo);
@@ -282,8 +283,8 @@ var GcTabla = (function () {
         // ── Barra ──
         function exportar(tipo, rango) {
             var archivo = (op.archivo || op.nombre) + (rango === "selected" ? "-seleccion" : "");
-            if (tipo === "xlsx") tabla.download("xlsx", archivo + ".xlsx", { sheetName: op.tituloPdf || op.nombre }, rango);
-            else tabla.download("pdf", archivo + ".pdf", { orientation: "landscape", title: op.tituloPdf || "" }, rango);
+            if (tipo === "xlsx") tabla.download("xlsx", archivo + ".xlsx", { sheetName: op.tituloPdf || op.nombre, documentProcessing: formatoDineroXlsx(tabla) }, rango);
+            else descargarPdf(tabla, archivo + ".pdf", { orientation: "landscape", title: op.tituloPdf || "" }, rango);
         }
         var $agrupar = $("#" + id + "-agrupar");
         $agrupar.val(estado.agrupar);
@@ -360,5 +361,57 @@ var GcTabla = (function () {
         img.outerHTML = '<span class="avatar-title rounded-circle">' + (img.getAttribute("data-ini") || "") + '</span>';
     }
 
-    return { crear: crear, recargar: recargar, acciones: acciones, avatar: avatar, sinFoto: sinFoto };
+    // ── Dinero en las descargas ──
+    // Columna con gcDinero: true → en Excel la celda sigue siendo número, con formato «L 12,345.50»;
+    // en PDF (y demás) sale el texto «L 12,345.50».
+    var enPdf = false;
+    /** Descarga el PDF de una tabla de Tabulator con los montos como texto «L 12,345.50». */
+    function descargarPdf(tabulator, archivo, opciones, rango) {
+        enPdf = true;
+        try { tabulator.download("pdf", archivo, opciones, rango); } finally { enPdf = false; }
+    }
+    function textoDinero(v) {
+        var n = parseFloat(v);
+        if (isNaN(n)) return "";
+        return "L " + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function dineroDescarga(def) {
+        def.gcDinero = true;
+        if (!def.accessorDownload) {
+            // Tabulator no dice si la descarga es Excel o PDF; por eso el PDF se pide con descargarPdf (bandera).
+            def.accessorDownload = function (v) {
+                var n = parseFloat(v);
+                if (isNaN(n)) return "";
+                return enPdf ? textoDinero(n) : n;
+            };
+        }
+        return def;
+    }
+    /** documentProcessing de Tabulator: da formato de moneda a las celdas numéricas de las columnas con gcDinero. */
+    function formatoDineroXlsx(tabla) {
+        return function (libro) {
+            var titulos = tabla.getColumns().filter(function (c) { return c.getDefinition().gcDinero; })
+                .map(function (c) { return c.getDefinition().titleDownload || c.getDefinition().title; });
+            if (!titulos.length) return libro;
+            libro.SheetNames.forEach(function (nombre) {
+                var hoja = libro.Sheets[nombre];
+                if (!hoja || !hoja["!ref"]) return;
+                var rango = XLSX.utils.decode_range(hoja["!ref"]);
+                var cols = [];
+                for (var c = rango.s.c; c <= rango.e.c; c++) {
+                    var h = hoja[XLSX.utils.encode_cell({ r: rango.s.r, c: c })];
+                    if (h && titulos.indexOf(h.v) >= 0) cols.push(c);
+                }
+                cols.forEach(function (c) {
+                    for (var r = rango.s.r + 1; r <= rango.e.r; r++) {
+                        var cel = hoja[XLSX.utils.encode_cell({ r: r, c: c })];
+                        if (cel && cel.t === "n") cel.z = '"L "#,##0.00';
+                    }
+                });
+            });
+            return libro;
+        };
+    }
+
+    return { crear: crear, recargar: recargar, dineroDescarga: dineroDescarga, descargarPdf: descargarPdf, formatoDineroXlsx: formatoDineroXlsx, textoDinero: textoDinero, acciones: acciones, avatar: avatar, sinFoto: sinFoto };
 }());

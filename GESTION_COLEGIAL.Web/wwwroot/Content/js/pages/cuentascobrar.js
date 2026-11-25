@@ -88,9 +88,9 @@ $(function () {
                   var d = c.getData();
                   return '<div class="text-truncate"><div class="text-truncate">' + Caja.esc(c.getValue()) + '</div>' + (d.Mes && d.Anio ? '<div class="small text-muted">' + d.Mes + '/' + d.Anio + '</div>' : '') + '</div>';
               } },
-            { title: "Saldo", field: "Pendiente", width: 125, hozAlign: "right", sorter: "number",
+            { title: "Saldo", field: "Pendiente", gcDinero: true, width: 125, hozAlign: "right", sorter: "number",
               formatter: function (c) { return '<strong>' + Caja.dinero(c.getValue()) + '</strong>'; } },
-            { title: "Mora", field: "MontoMora", width: 120, hozAlign: "right", sorter: "number",
+            { title: "Mora", field: "MontoMora", gcDinero: true, width: 120, hozAlign: "right", sorter: "number",
               formatter: function (c) {
                   var v = parseFloat(c.getValue()) || 0;
                   return v > 0 ? '<span class="text-danger">' + Caja.dinero(v) + '</span>' : '<span class="text-muted">—</span>';

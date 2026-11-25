@@ -2,7 +2,8 @@
  * BoletinProvisional — aviso "Resultados provisionales" en el boletín (Cierre de parciales).
  * Pide el estado de los parciales del año y, si alguno con notas todavía no está publicado por
  * Dirección, pinta un aviso en el contenedor y devuelve { Pac_Id: true } de los parciales provisionales
- * para que la pantalla marque sus columnas.
+ * para que la pantalla marque sus columnas. El 2.º dato del callback es { "semestre-parcial": true }: cada
+ * período (semestre x parcial) se publica por separado.
  *
  *   BoletinProvisional.marcar("/BoletinAdm/PublicacionAsync", 2026, "#contenedor", function (porPac) { … });
  */
@@ -20,7 +21,7 @@ var BoletinProvisional = (function () {
             .done(function (r) {
                 var periodos = (r && r.data) ? r.data : (Array.isArray(r) ? r : []);
                 var pendientes = periodos.filter(function (p) { return p.NotasPeriodo > 0 && !p.Publicado; });
-                if (!pendientes.length) { $c.attr("hidden", true).empty(); listo({}); return; }
+                if (!pendientes.length) { $c.attr("hidden", true).empty(); listo({}, {}); return; }
 
                 var lista = pendientes.map(function (p) {
                     return esc(p.Parcial + " del " + String(p.Semestre || "").toLowerCase());
@@ -29,11 +30,11 @@ var BoletinProvisional = (function () {
                     '<strong>Resultados provisionales.</strong> Dirección todavía no publica: ' + lista + ' de ' + esc(anio) +
                     '. Estas notas aún pueden cambiar.</div>').removeAttr("hidden");
 
-                var porPac = {};
-                pendientes.forEach(function (p) { porPac[p.Pac_Id] = true; });
-                listo(porPac);
+                var porPac = {}, porPeriodo = {};
+                pendientes.forEach(function (p) { porPac[p.Pac_Id] = true; porPeriodo[p.Sem_Id + "-" + p.Pac_Id] = true; });
+                listo(porPac, porPeriodo);
             })
-            .fail(function () { $c.attr("hidden", true).empty(); listo({}); });
+            .fail(function () { $c.attr("hidden", true).empty(); listo({}, {}); });
     }
 
     return { marcar: marcar };
