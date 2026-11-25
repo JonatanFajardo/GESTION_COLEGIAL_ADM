@@ -5,6 +5,7 @@ namespace GESTION_COLEGIAL.UI.Filters
     /// <summary>
     /// Exige login y, si se indica, permiso a una pantalla concreta.
     /// Uso: [SessionManager("Listado de alumnos")] en el controller o la acción.
+    /// Con varias pantallas separadas por "|" basta con tener una.
     /// El admin entra a todo; "Home" solo exige login.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
@@ -33,7 +34,8 @@ namespace GESTION_COLEGIAL.UI.Filters
             else if (!string.IsNullOrEmpty(_pantallaNombre)
                      && _pantallaNombre != "Home"
                      && !EsAdmin(sesion)
-                     && !TienePantalla(pantallas, _pantallaNombre))
+                     && !_pantallaNombre.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                                        .Any(n => TienePantalla(pantallas, n)))
             {
                 // Usuario sin permiso para esta pantalla.
                 filterContext.Result = new RedirectToActionResult("SinAcceso", "Account", null);

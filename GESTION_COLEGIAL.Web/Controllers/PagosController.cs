@@ -17,6 +17,18 @@ namespace GESTION_COLEGIAL.UI.Controllers
     public class PagosController : BaseController
     {
         private readonly PagosService pagosService = new PagosService();
+        private readonly DescuentosService descuentosService = new DescuentosService();
+        private readonly TarifaService tarifaService = new TarifaService();
+
+        /// <summary>
+        /// Descuentos disponibles para la pantalla de cobro (quien cobra no necesita el permiso del catálogo).
+        /// </summary>
+        public async Task<ActionResult> DescuentosDelCobroAsync() => AjaxResult(await descuentosService.ListAsync());
+
+        /// <summary>
+        /// Tarifas vigentes para sugerir el monto de un cargo desde la pantalla de cobro.
+        /// </summary>
+        public async Task<ActionResult> TarifasDelCobroAsync() => AjaxResult(await tarifaService.ListAsync());
 
         /// <summary>
         /// Movimientos de caja: los cobros de hoy o de cualquier rango de fechas.
@@ -38,6 +50,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Acepta identidad (o alumnoId) para precargar el alumno al llegar
         /// desde Cartera/Estado de Cuenta.
         /// </summary>
+        [SessionManager("Crear pagos")]
         public ActionResult NuevoPago(string identidad = null, int alumnoId = 0)
         {
             ViewBag.Identidad = identidad ?? string.Empty;
@@ -93,6 +106,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Acción asincrónica para crear un pago.
         /// </summary>
         [HttpPost]
+        [SessionManager("Crear pagos")]
         public async Task<ActionResult> CreateAsync([FromBody] PagoViewModel model)
         {
             if (model == null)
