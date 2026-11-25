@@ -59,7 +59,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			model = await alumnosService.Dropdown(model);
 			var anios = await anioConexionService.AniosInscripcionAsync();
 			ViewBag.AniosInscripcion = anios;
-			ViewBag.AnioSeleccionado = (anios.FirstOrDefault(a => a.EsActivo) ?? anios.FirstOrDefault())?.Ani_Id ?? 0;
+			// Solo se preselecciona el año activo; si ya no admite matrículas (p. ej. está cerrando), se pide elegir el año.
+			ViewBag.AnioSeleccionado = anios.FirstOrDefault(a => a.EsActivo)?.Ani_Id ?? 0;
 			ViewBag.AnioFijo = false;
 			if (aspiranteId.HasValue && aspiranteId.Value > 0)
 				await PrepararAspiranteAsync(aspiranteId.Value, anios);

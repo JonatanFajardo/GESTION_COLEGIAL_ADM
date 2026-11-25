@@ -42,9 +42,15 @@ namespace GESTION_COLEGIAL.Business.Services
                 new { Alu_Id = aluId, Ani_Id = aniId, Usuario = usuario })
             ?? Fallo("No se pudo inscribir al alumno en el año.");
 
-        public async Task<AnioConexionResultadoViewModel> AplicarUbicacionAsync(int aniId, int usuario) =>
+        /// <summary>Cuántos alumnos cambiarían de sección al abrir el año (no cambia nada).</summary>
+        public async Task<AnioConexionResultadoViewModel> UbicacionPreviaAsync(int aniId) =>
+            await ApiRequests.GetSingleAsync<AnioConexionResultadoViewModel>($"{Base}UbicacionPreviaAsync?aniId={aniId}")
+            ?? Fallo("No se pudo calcular cuántos alumnos cambiarían de sección.");
+
+        /// <summary>Pasa la ubicación de los inscritos al año y, con activar, lo marca como activo en la misma transacción.</summary>
+        public async Task<AnioConexionResultadoViewModel> AplicarUbicacionAsync(int aniId, int usuario, bool activar = false) =>
             await ApiRequests.PostAsyncWithResponse<AnioConexionResultadoViewModel>(Base + "AplicarUbicacionAsync",
-                new { Ani_Id = aniId, Usuario = usuario })
+                new { Ani_Id = aniId, Usuario = usuario, Activar = activar })
             ?? Fallo("No se pudo pasar la ubicación de los alumnos al año.");
 
         public async Task<List<SemestreAnioViewModel>> SemestresAsync(int anio) =>

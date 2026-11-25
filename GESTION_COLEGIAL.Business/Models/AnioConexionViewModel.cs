@@ -62,6 +62,10 @@ namespace GESTION_COLEGIAL.Business.Models
         public int? Cupo { get; set; }
         public int Aplicados { get; set; }
         public int CursoPorRevisar { get; set; }
+        /// <summary>Vista previa de la ubicación: alumnos que cambiarían de sección.</summary>
+        public int Mover { get; set; }
+        /// <summary>Vista previa: inscritos que no se tocan por no estar Activos.</summary>
+        public int NoActivos { get; set; }
     }
 
     /// <summary>Semestre (1 o 2) según los períodos del año.</summary>

@@ -132,13 +132,17 @@
             <div class="row">
                 <div class="col-md-4 form-group mat-field" data-field>
                     <label for="Ani_Id">Año de inscripción <span class="text-danger">*</span></label>
-                    <select id="Ani_Id" name="Ani_Id" class="custom-select" disabled="@anioFijo">
+                    <select id="Ani_Id" name="Ani_Id" class="custom-select" disabled="@anioFijo" data-req="true">
+                        @if (aniSeleccionado == 0)
+                        {
+                            <option value="" selected>-- Elija el año --</option>
+                        }
                         @foreach (var a in aniosInscripcion)
                         {
                             <option value="@a.Ani_Id" selected="@(a.Ani_Id == aniSeleccionado)">@a.Ani_Nombre (@(a.EsActivo ? "activo" : a.Ani_EstadoTexto.ToLower()))</option>
                         }
                     </select>
-                    <small class="form-text text-muted" id="aniAviso">@(anioFijo ? "El aspirante aspira a este año." : "Por defecto el año activo. Para inscribir en el año siguiente, ese año debe tener sus secciones creadas.")</small>
+                    <small class="form-text text-muted" id="aniAviso">@(anioFijo ? "El aspirante aspira a este año." : aniSeleccionado == 0 ? "El año activo ya no admite matrículas: elija el año en que va a inscribir." : "Por defecto el año activo. Para inscribir en el año siguiente, ese año debe tener sus secciones creadas.")</small>
                 </div>
             </div>
             <div class="row">
