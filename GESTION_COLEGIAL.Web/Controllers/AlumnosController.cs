@@ -397,8 +397,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			}
 		}
 
-		// Las notas solo las ve quien tiene el permiso de "Boletín de calificaciones" (mismo que Notas y boletín).
-		private bool PuedeVerNotas() => (Session[SesionUsuario.RoleName] as string ?? "").Equals("admin", System.StringComparison.OrdinalIgnoreCase) || TienePantalla("Boletín de calificaciones");
+		// Las notas solo las ve quien ya puede verlas en otra pantalla: "Boletín de calificaciones" (Notas y boletín) o "Constancias y expediente" (Secretaría).
+		private bool PuedeVerNotas() => (Session[SesionUsuario.RoleName] as string ?? "").Equals("admin", System.StringComparison.OrdinalIgnoreCase) || TienePantalla("Boletín de calificaciones") || TienePantalla("Constancias y expediente");
 
 		public ActionResult GetAcademicoAsync(int id)
 		{
