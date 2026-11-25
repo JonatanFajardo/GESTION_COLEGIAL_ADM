@@ -92,7 +92,9 @@
 
     // ───────────────────────────── Cálculo (mismo que app.FN_Evaluacion_Calculo) ─────────────────────────────
     // Por tipo: suma = puntos/máximo sumados; promedio = promedio de cada actividad; mejor = la mejor.
-    // Solo cuentan calificado y no entregó (0) de actividades que cuentan; los tipos sin nada no entran.
+    // Solo cuentan calificado y no entregó (0) de actividades que cuentan; los tipos sin nada no entran
+    // y su peso se reparte entre los demás. Redondeo igual que la base: 2 decimales con ,5 hacia arriba
+    // (nota) y el entero sale de esa nota (,50 o más sube). Devuelve también qué tipos contaron.
     function calcular(aluId) {
         var grupos = {};
         $.each(C.Actividades, function (_, a) {
@@ -106,18 +108,36 @@
             g.pts += p;
             g.max += Number(a.PuntosMax);
         });
-        var suma = 0, pesos = 0;
-        $.each(grupos, function (_, g) {
+        var suma = 0, pesos = 0, partes = {};
+        $.each(grupos, function (cet, g) {
             var parte;
             if (g.comb === "promedio") parte = g.partes.reduce(function (s, x) { return s + x; }, 0) / g.partes.length;
             else if (g.comb === "mejor") parte = Math.max.apply(null, g.partes);
             else parte = g.max > 0 ? g.pts / g.max : 0;
+            partes[cet] = parte;
             suma += parte * g.peso;
             pesos += g.peso;
         });
         if (!pesos) return null;
         var v = suma / pesos * 100;
-        return { nota: Math.round(v * 100 + 1e-7) / 100, entera: Math.round(v + 1e-7) };
+        var cent = Math.floor(v * 100 + 0.5 + 1e-6);   // mismo 0.000001 que app.FN_Evaluacion_Calculo
+        return { nota: cent / 100, entera: Math.floor((cent + 50) / 100), partes: partes, pesos: pesos };
+    }
+
+    // Texto de ayuda de la nota calculada: lo logrado en cada tipo y cuáles no cuentan todavía.
+    function detalleNota(r) {
+        var lineas = [], faltan = [];
+        $.each(C.Tipos, function (_, t) {
+            if (!t.Cet_Id) return;
+            if (r.partes.hasOwnProperty(t.Cet_Id))
+                lineas.push(t.Nombre + " (" + fmt(t.Peso) + " %): " + fmt(Math.round(r.partes[t.Cet_Id] * 10000) / 100) + " % logrado");
+            else faltan.push(t.Nombre);
+        });
+        var texto = lineas.join("\n");
+        if (faltan.length)
+            texto += "\nSin nada calificado: " + faltan.join(", ") + ". Su peso se reparte entre los tipos que sí tienen (cuentan " +
+                fmt(r.pesos) + " % de 100 %).";
+        return texto;
     }
 
     // ───────────────────────────── Nota directa vs. actividades ─────────────────────────────
@@ -146,7 +166,7 @@
             var n = C.Actividades.filter(function (a) { return t.Cet_Id && a.Cet_Id === t.Cet_Id && !a.NoCuenta; }).length;
             var uso = !C.UsaActividades ? "" : (n ? " · " + n + " actividad" + (n === 1 ? "" : "es")
                 : ' · <span class="text-warning">sin actividades: todavía no cuenta</span>');
-            html += '<li class="col-md-6 col-xl-4"><span class="np-punto np-c' + (i % 6) + '"></span>' + esc(t.Nombre) +
+            html += '<li class="col-md-6"><span class="np-punto np-c' + (i % 6) + '"></span>' + esc(t.Nombre) +
                 ' <span class="np-peso">' + fmt(t.Peso) + ' %</span> <span class="text-muted small">(' +
                 esc(COMBINACION[t.Combinacion] || t.Combinacion) + ')</span>' + uso + '</li>';
         });
@@ -173,7 +193,9 @@
         } else {
             titulo = "Nota por actividades";
             texto = "La nota del parcial se calcula con los puntos y los pesos de la plantilla «" + esc(C.Plantilla ? C.Plantilla.Nombre : "") +
-                "» y se guarda sola en las notas del parcial (boletín) cada vez que guarda los puntos.";
+                "» y se guarda sola en las notas del parcial (boletín) cada vez que guarda los puntos. " +
+                "Si un alumno todavía no tiene nada calificado en un tipo (o todo excusado), ese tipo no cuenta para él y su peso " +
+                "se reparte entre los demás. La nota se redondea a 2 decimales y el entero sube desde ,50.";
             if (!bloqueado) {
                 botones = '<button type="button" class="btn btn-primary mb-1" id="ev-agregar"><i class="bi bi-plus-lg mr-1" aria-hidden="true"></i> Agregar actividad</button>';
                 var desact = C.Alumnos.some(function (a) { return a.Entera !== null && a.NotaParcial !== a.Entera; });
@@ -206,7 +228,9 @@
         var r = calcular(alu.Alu_Id);
         if (!r) return '<span class="text-muted" title="Sin nada calificado todavía">—</span>';
         var rojo = r.entera < notaMinima ? " text-danger" : "";
-        return '<strong class="' + rojo + '">' + r.entera + '</strong> <span class="text-muted small">(' + fmt(r.nota) + ')</span>';
+        var reparte = r.pesos < 100 ? ' <i class="bi bi-info-circle text-muted" aria-hidden="true"></i>' : "";
+        return '<span class="np-detalle" title="' + esc(detalleNota(r)) + '"><strong class="' + rojo + '">' + r.entera +
+            '</strong> <span class="text-muted small">(' + fmt(r.nota) + ')</span>' + reparte + '</span>';
     }
 
     function celdaParcial(alu) {
@@ -407,7 +431,7 @@
                 if (!r || !r.success) { mostrarErrorGuardar((r && r.message) || "No se pudieron guardar los puntos."); return; }
                 toastr.success(lista.length + " calificación(es) guardada(s)." +
                     (r.notasEscritas ? " Se actualizaron " + r.notasEscritas + " nota(s) del parcial." : ""));
-                if (r.avisoNotas) toastr.warning(r.avisoNotas);
+                if (r.avisoNotas) toastr.warning(esc(r.avisoNotas));
                 cargar();
             })
             .fail(function () { mostrarErrorGuardar("No se pudo conectar con el servidor. Sus cambios siguen en pantalla: intente de nuevo."); })
@@ -421,9 +445,9 @@
         $.ajax({ url: URL.actualizar + "?cevId=" + encodeURIComponent(C.Cev_Id), type: "POST", dataType: "json",
                  headers: { RequestVerificationToken: token() } })
             .done(function (r) {
-                if (!r || !r.success) { toastr.error((r && r.message) || "No se pudieron actualizar las notas del parcial."); return; }
+                if (!r || !r.success) { toastr.error(esc((r && r.message) || "No se pudieron actualizar las notas del parcial.")); return; }
                 toastr.success(r.notasEscritas ? "Se actualizaron " + r.notasEscritas + " nota(s) del parcial." : "Las notas del parcial ya estaban al día.");
-                if (r.avisoNotas) toastr.warning(r.avisoNotas);
+                if (r.avisoNotas) toastr.warning(esc(r.avisoNotas));
                 cargar();
             })
             .fail(function () { toastr.error("No se pudo conectar con el servidor."); })
@@ -508,8 +532,8 @@
                     return;
                 }
                 $("#ev-modal").modal("hide");
-                toastr.success(r.message || "Actividad guardada.");
-                if (r.avisoNotas) toastr.warning(r.avisoNotas);
+                toastr.success(esc(r.message || "Actividad guardada."));
+                if (r.avisoNotas) toastr.warning(esc(r.avisoNotas));
                 cargar();
             })
             .fail(function () {
@@ -531,7 +555,7 @@
         });
         $("#ev-modal").modal("hide");
         renderPlanilla();
-        if (n) toastr.info("Se llenaron " + n + " celda(s) de «" + act.Nombre + "». Revíselas y pulse «Guardar puntos».");
+        if (n) toastr.info("Se llenaron " + n + " celda(s) de «" + esc(act.Nombre) + "». Revíselas y pulse «Guardar puntos».");
         else toastr.info("Esa actividad no tiene celdas vacías.");
     });
 
@@ -560,7 +584,7 @@
                 $("#ev-modal-quitar").modal("hide");
                 if (!r || !r.success) { mostrarErrorGuardar((r && r.message) || "No se pudo quitar la actividad."); return; }
                 toastr.success("Actividad quitada.");
-                if (r.avisoNotas) toastr.warning(r.avisoNotas);
+                if (r.avisoNotas) toastr.warning(esc(r.avisoNotas));
                 cargar();
             })
             .fail(function () { toastr.error("No se pudo conectar con el servidor."); })

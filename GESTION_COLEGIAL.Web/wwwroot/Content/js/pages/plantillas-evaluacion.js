@@ -289,8 +289,8 @@
                     return;
                 }
                 $("#np-modal").modal("hide");
-                toastr.success(r.message || "Plantilla guardada.");
-                if (r.aviso) toastr.warning(r.aviso);
+                toastr.success(esc(r.message || "Plantilla guardada."));
+                if (r.aviso) toastr.warning(esc(r.aviso));
                 if (payload.Anio !== ANIO) { window.location.href = window.location.pathname + "?anio=" + payload.Anio; return; }
                 cargar();
                 if (tabla) tabla.recargar();
@@ -314,7 +314,7 @@
         enviar(URL.quitar, { Ple_Id: quitando.Ple_Id, Version: quitando.Version })
             .done(function (r) {
                 $("#np-modal-quitar").modal("hide");
-                if (!r || !r.success) { toastr.error((r && r.message) || "No se pudo quitar la plantilla."); return; }
+                if (!r || !r.success) { toastr.error(esc((r && r.message) || "No se pudo quitar la plantilla.")); return; }
                 toastr.success("Plantilla quitada.");
                 cargar();
             })
