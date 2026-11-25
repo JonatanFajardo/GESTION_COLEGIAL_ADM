@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using GESTION_COLEGIAL.Business.Models;
 using GESTION_COLEGIAL.Business.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -95,7 +95,8 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 new Claim(SesionUsuario.RoleName, result.User.Rol_Nombre ?? ""),
                 new Claim(SesionUsuario.Username, result.User.Usu_Name ?? ""),
                 new Claim(SesionUsuario.Token, result.Token ?? ""),
-                new Claim(SesionUsuario.Pantallas, pantallas)
+                new Claim(SesionUsuario.Pantallas, pantallas),
+                new Claim(ValidadorSesion.ClaimSello, result.User.Sello ?? "")
             };
 
             var identidad = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -105,6 +106,9 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 IsPersistent = recordar,
                 ExpiresUtc = recordar ? DateTimeOffset.UtcNow.AddDays(7) : (DateTimeOffset?)null
             };
+
+            // La API acaba de comprobar la cuenta: ese es el estado vigente (evita usar uno guardado de antes).
+            ValidadorSesion.Recordar(result.User.Usu_Id, new EstadoSesionViewModel { Habilitado = 1, Sello = result.User.Sello });
 
             // Descarta datos de una sesión anterior (ej. "ver como rol").
             contexto.Session.Clear();

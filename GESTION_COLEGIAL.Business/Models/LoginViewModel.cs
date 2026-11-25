@@ -34,5 +34,14 @@ namespace GESTION_COLEGIAL.Business.Models
         public int Emp_Id { get; set; }
         public int Rol_Id { get; set; }
         public string Rol_Nombre { get; set; }
+        /// <summary>Sello de sesión: cambia al cambiar la contraseña, desactivar la cuenta o cambiar el rol.</summary>
+        public string Sello { get; set; }
+    }
+
+    /// <summary>Respuesta de Account/EstadoSesion: si la cuenta sigue habilitada y su sello actual.</summary>
+    public class EstadoSesionViewModel
+    {
+        public int Habilitado { get; set; }
+        public string Sello { get; set; }
     }
 }
