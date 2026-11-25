@@ -21,6 +21,10 @@ namespace GESTION_COLEGIAL.Business.Services
         }
 
 
+        /// <summary>Alumnos activos sin encargado (tipo "alumnos") o encargados sin hijos (tipo "encargados").</summary>
+        public async Task<IEnumerable<VinculoPendienteViewModel>> SinVinculoAsync(string tipo) =>
+            await ApiRequests.ListAsync<VinculoPendienteViewModel>("Encargados/SinVinculoAsync?tipo=" + Uri.EscapeDataString(tipo));
+
         /// <summary>Liga un encargado existente a un alumno con su parentesco (si ya estaba ligado, cambia el parentesco).</summary>
         public async Task<RespuestaApi> VincularAsync(int encId, int aluId, int parId) =>
             await ApiRequests.PostConMensajeAsync("Encargados/VincularAsync", new { Enc_Id = encId, Alu_Id = aluId, Par_Id = parId });

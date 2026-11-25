@@ -126,6 +126,11 @@ namespace GESTION_COLEGIAL.Business.Services
 		/// <returns>true si la edición fue exitosa, de lo contrario false.</returns>
 		public async Task<Boolean> Edit(CursoViewModel model)
 		{
+			// La pantalla envía las secciones marcadas como casillas; la API espera sus ids.
+			if (model.SeccionesCheckList != null)
+			{
+				model.Secciones = model.SeccionesCheckList.Where(x => x.Selected == true).Select(x => Convert.ToInt32(x.Value)).ToArray();
+			}
 			// Direcciones.
 			string url = "Cursos/EditAsync";
 			string urlModalidades = "Cursos/CursosModalidadesEdit";

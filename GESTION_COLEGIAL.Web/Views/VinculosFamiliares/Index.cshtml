@@ -1,0 +1,141 @@
+@{
+    ViewBag.Title = "Vínculos familiares";
+}
+
+<div class="breadcrumb-wrapper-content">
+    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item">Alumnos</li>
+            <li class="breadcrumb-item active" aria-current="page">Vínculos familiares</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="d-flex flex-wrap align-items-center justify-content-between layout-top-spacing mb-4 widget encabezado-pagina">
+    <div class="mr-3">
+        <h4 class="mb-1">Vínculos familiares</h4>
+        <p class="text-muted mb-0">Ligue a cada alumno con su encargado. Sin ese vínculo el portal de padres sale vacío y la ficha de salud no sabe a quién llamar.</p>
+    </div>
+</div>
+
+<div id="vf-raiz"
+     data-url-alumnos="@Url.Action("SinEncargadoAsync")" data-url-encargados="@Url.Action("SinHijosAsync")"
+     data-url-opciones="@Url.Action("OpcionesAsync")" data-url-vincular="@Url.Action("VincularAsync")">
+
+    <div class="row">
+        <div class="col-xl-4 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="vf-kpi-alumnos">—</h6>
+                            <p>Alumnos sin encargado</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-person-x" aria-hidden="true"></i></div></div>
+                    </div>
+                    <p class="text-muted small mb-0 mt-2" id="vf-kpi-alumnos-nota">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="vf-kpi-encargados">—</h6>
+                            <p>Encargados sin hijos</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-people" aria-hidden="true"></i></div></div>
+                    </div>
+                    <p class="text-muted small mb-0 mt-2" id="vf-kpi-encargados-nota">&nbsp;</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-12 col-12 layout-spacing">
+            <div class="widget widget-card-four">
+                <div class="widget-content">
+                    <div class="w-content">
+                        <div class="w-info">
+                            <h6 class="value" id="vf-kpi-avance">—</h6>
+                            <p>Alumnos con encargado</p>
+                        </div>
+                        <div><div class="w-icon"><i class="bi bi-link-45deg" aria-hidden="true"></i></div></div>
+                    </div>
+                    <div class="progress mt-2"><div class="progress-bar bg-gradient-primary" id="vf-kpi-barra" style="width:0%"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" id="vf-tab-alumnos" data-toggle="tab" href="#vf-panel-alumnos" role="tab" aria-selected="true">Alumnos sin encargado</a></li>
+                <li class="nav-item"><a class="nav-link" id="vf-tab-encargados" data-toggle="tab" href="#vf-panel-encargados" role="tab" aria-selected="false">Encargados sin hijos</a></li>
+            </ul>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="vf-panel-alumnos" role="tabpanel">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend"><span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span></div>
+                        <input type="search" id="vf-buscar-alumnos" class="form-control" placeholder="Buscar alumno por nombre, identidad o grado" aria-label="Buscar alumno">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Alumno</th><th>Identidad</th><th>Grado y sección</th><th class="text-right">Acción</th></tr></thead>
+                            <tbody id="vf-filas-alumnos"><tr><td colspan="4" class="text-center text-muted">Cargando…</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3" id="vf-mas-alumnos" hidden><button type="button" class="btn btn-outline-primary btn-sm vf-mas" data-lista="alumnos"></button></div>
+                </div>
+                <div class="tab-pane fade" id="vf-panel-encargados" role="tabpanel">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend"><span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span></div>
+                        <input type="search" id="vf-buscar-encargados" class="form-control" placeholder="Buscar encargado por nombre, identidad o teléfono" aria-label="Buscar encargado">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Encargado</th><th>Identidad</th><th>Teléfono</th><th class="text-right">Acción</th></tr></thead>
+                            <tbody id="vf-filas-encargados"><tr><td colspan="4" class="text-center text-muted">Cargando…</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3" id="vf-mas-encargados" hidden><button type="button" class="btn btn-outline-primary btn-sm vf-mas" data-lista="encargados"></button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="vf-modal" tabindex="-1" role="dialog" aria-labelledby="vf-modal-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="vf-modal-titulo">Ligar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3" id="vf-modal-fijo"></p>
+                <div class="form-group">
+                    <label for="vf-buscar-opcion" id="vf-modal-etiqueta">Buscar</label>
+                    <input type="search" id="vf-buscar-opcion" class="form-control mb-2" placeholder="Escriba parte del nombre o la identidad" autocomplete="off">
+                    <select id="vf-opcion" class="custom-select" size="6" aria-labelledby="vf-modal-etiqueta"></select>
+                    <small class="form-text text-muted" id="vf-modal-ayuda"></small>
+                </div>
+                <div class="form-group mb-0">
+                    <label for="vf-parentesco">Parentesco</label>
+                    <select id="vf-parentesco" class="custom-select"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="vf-guardar"><i class="bi bi-link-45deg mr-1" aria-hidden="true"></i> Ligar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Content/js/pages/vinculos-familiares.js" asp-append-version="true"></script>
+}

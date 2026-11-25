@@ -1,177 +1,53 @@
-﻿@using System.Linq
-@using System.Collections.Generic
 @{
     Layout = null;
-    var anio = DateTime.Now.Year;
-
-    // Utilidades locales para leer campos de un dynamic sin romper si no existen.
-    Func<dynamic, string, object> getVal = (row, name) =>
-    {
-        if (row == null) return null;
-        try
-        {
-            var dict = row as IDictionary<string, object>;
-            if (dict != null)
-            {
-                object v;
-                return dict.TryGetValue(name, out v) ? v : null;
-            }
-            var prop = ((object)row).GetType().GetProperty(name);
-            return prop != null ? prop.GetValue(row, null) : null;
-        }
-        catch { return null; }
-    };
-
-    Func<object, decimal?> toDec = (v) =>
-    {
-        if (v == null) return null;
-        decimal d;
-        if (decimal.TryParse(v.ToString(), System.Globalization.NumberStyles.Any,
-            System.Globalization.CultureInfo.InvariantCulture, out d)) return d;
-        if (decimal.TryParse(v.ToString(), out d)) return d;
-        return null;
-    };
-
-    Func<object, int?> toParcial = (v) =>
-    {
-        if (v == null) return null;
-        int n;
-        if (int.TryParse(v.ToString(), out n)) return n;
-        // Ej: "Parcial 1" / "P1"
-        var s = v.ToString();
-        var digits = new string(s.Where(char.IsDigit).ToArray());
-        if (int.TryParse(digits, out n)) return n;
-        return null;
-    };
-
-    var items = Model as List<dynamic>;
-
-    // Agrupar por materia y armar { materia, p1, p2, p3, promedio }
-    var filas = new List<dynamic>();
-    decimal promGeneral = 0m;
-    string estadoRend = "Sin datos";
-    string badgeClass = "badge-secondary";
-
-    if (items != null && items.Any())
-    {
-        var grupos = items
-            .GroupBy(r => (getVal(r, "Mat_Nombre") ?? getVal(r, "Mat_Descripcion") ?? "Sin materia").ToString())
-            .ToList();
-
-        foreach (var g in grupos)
-        {
-            decimal? p1 = null, p2 = null, p3 = null;
-            foreach (var r in g)
-            {
-                var parNum = toParcial(getVal(r, "Par_Numero") ?? getVal(r, "Pac_Numero") ?? getVal(r, "Pac_Descripcion"));
-                var nota = toDec(getVal(r, "Not_Nota") ?? getVal(r, "Nota"));
-                if (parNum == 1) p1 = nota;
-                else if (parNum == 2) p2 = nota;
-                else if (parNum == 3) p3 = nota;
-            }
-            var notas = new[] { p1, p2, p3 }.Where(n => n.HasValue).Select(n => n.Value).ToList();
-            decimal? prom = notas.Any() ? (decimal?)notas.Average() : null;
-            filas.Add(new
-            {
-                Materia = g.Key,
-                P1 = p1,
-                P2 = p2,
-                P3 = p3,
-                Promedio = prom
-            });
-        }
-
-        var promedios = filas
-            .Select(f => (decimal?)f.Promedio)
-            .Where(p => p.HasValue)
-            .Select(p => p.Value)
-            .ToList();
-
-        if (promedios.Any())
-        {
-            promGeneral = promedios.Average();
-            if (promGeneral >= 90) { estadoRend = "Sobresaliente"; badgeClass = "badge-success"; }
-            else if (promGeneral >= 80) { estadoRend = "Bueno"; badgeClass = "badge-primary"; }
-            else if (promGeneral >= 70) { estadoRend = "Regular"; badgeClass = "badge-warning"; }
-            else { estadoRend = "Deficiente"; badgeClass = "badge-danger"; }
-        }
-    }
-
-    Func<decimal?, string> fmt = (n) => n.HasValue ? n.Value.ToString("0.0") : "-";
+    int alumnoId = ViewBag.AlumnoId;
+    int anioActual = DateTime.Now.Year;
+    bool puedeVerNotas = ViewBag.PuedeVerNotas == true;
 }
-
+@if (!puedeVerNotas)
+{
+    <div class="alert alert-light border mb-0" role="alert">
+        <i class="bi bi-lock mr-2" aria-hidden="true"></i>Su perfil no incluye ver las notas del alumno.
+    </div>
+    return;
+}
 <div>
-    @if (items == null || !items.Any())
-    {
-        <div class="text-center p-4">
-            <i class="bi bi-inbox h2 text-muted"></i>
-            <div class="mt-2 text-muted">Sin notas registradas para el año @anio.</div>
-        </div>
-    }
-    else
-    {
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <div class="statbox widget box box-shadow h-100">
-                    <div class="widget-header">
-                        <h5 class="mb-0"><i class="bi bi-award mr-2"></i>Promedio general</h5>
-                    </div>
-                    <div class="p-3 text-center">
-                        <div class="display-4 font-weight-bold text-primary">
-                            @promGeneral.ToString("0.0")
-                        </div>
-                        <div class="mt-2">
-                            <span class="badge @badgeClass">@estadoRend</span>
-                        </div>
-                        <div class="text-muted small mt-3">Escala: 0 - 100 pts</div>
-                    </div>
-                </div>
-            </div>
+    <div id="boletin-provisional" hidden></div>
 
-            <div class="col-md-8 mb-3">
-                <div class="statbox widget box box-shadow h-100">
-                    <div class="widget-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0"><i class="bi bi-journal-bookmark mr-2"></i>Notas por parcial</h5>
-                        <small class="text-muted">Año lectivo @anio</small>
-                    </div>
-                    <div class="p-3">
-                        <div class="table-responsive">
-                            <table class="table table-sm align-middle mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Materia</th>
-                                        <th class="text-center">I</th>
-                                        <th class="text-center">II</th>
-                                        <th class="text-center">III</th>
-                                        <th class="text-center">Promedio</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var f in filas)
-                                    {
-                                        var promFila = (decimal?)f.Promedio;
-                                        var claseProm = (promFila.HasValue && promFila.Value < 70) ? "text-danger font-weight-bold" : "font-weight-bold";
-                                        <tr>
-                                            <td>@f.Materia</td>
-                                            <td class="text-center">@fmt((decimal?)f.P1)</td>
-                                            <td class="text-center">@fmt((decimal?)f.P2)</td>
-                                            <td class="text-center">@fmt((decimal?)f.P3)</td>
-                                            <td class="text-center @claseProm">@fmt(promFila)</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+    <div class="statbox widget box box-shadow mb-3" id="panel-boletin">
+        <div class="widget-header p-3 d-flex flex-wrap align-items-center justify-content-between">
+            <h5 class="mb-2 mb-md-0"><i class="bi bi-journal-bookmark mr-2" aria-hidden="true"></i>Notas por semestre y parcial</h5>
+            <div class="form-inline">
+                <label for="f-anio-ficha" class="mr-2 small text-muted mb-0">Año</label>
+                <select id="f-anio-ficha" class="custom-select custom-select-sm w-auto mr-3">
+                    @for (var a = anioActual; a >= anioActual - 3; a--)
+                    {
+                        <option value="@a">@a</option>
+                    }
+                </select>
+                <label for="f-sem-boletin" class="mr-2 small text-muted mb-0">Semestre</label>
+                <select id="f-sem-boletin" class="custom-select custom-select-sm w-auto"></select>
             </div>
         </div>
-    }
+        <div class="px-3 pb-3">
+            <div class="d-flex align-items-baseline mb-3">
+                <span class="text-muted mr-2">Promedio general</span>
+                <span class="h4 mb-0 font-weight-bold text-primary" id="nb-promedio-general">-</span>
+                <span class="text-muted small ml-2">(escala de 0 a 100)</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover mb-0" id="tabla-boletin">
+                    <thead><tr id="thead-boletin"></tr></thead>
+                    <tbody id="tbody-boletin"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-12">
             <div class="statbox widget box box-shadow">
-                <div class="widget-header">
+                <div class="widget-header p-3">
                     <h5 class="mb-0"><i class="bi bi-arrow-right-circle mr-2"></i>Acciones</h5>
                 </div>
                 <div class="p-3 d-flex flex-wrap">
@@ -188,3 +64,16 @@
         </div>
     </div>
 </div>
+<script src="~/Content/js/components/boletin-provisional.js" asp-append-version="true"></script>
+<script src="~/Content/js/components/boletin-notas.js" asp-append-version="true"></script>
+<script>
+    BoletinNotas.incrustar({
+        aluId: @alumnoId,
+        anio: @anioActual,
+        urlGet: "@Url.Action("BoletinAsync", "Alumnos")",
+        urlPublicacion: "@Url.Action("PublicacionAsync", "Alumnos")",
+        urlEscala: "@Url.Action("EscalaAsync", "Alumnos")",
+        urlNotaMinima: "@Url.Action("NotaMinimaAsync", "Alumnos")",
+        avisoProvisional: "#boletin-provisional"
+    });
+</script>

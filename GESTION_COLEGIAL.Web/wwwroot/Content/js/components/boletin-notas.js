@@ -81,6 +81,7 @@ var BoletinNotas = (function () {
 
         var tbody = $("#tbody-boletin").empty();
         if (!datos.length || !columnas.length) {
+            $("#nb-promedio-general").text("-").removeClass("text-danger");
             tbody.append('<tr><td colspan="' + (columnas.length + 3) + '" class="text-center text-muted">Sin notas registradas para este alumno.</td></tr>');
             return;
         }
@@ -92,6 +93,7 @@ var BoletinNotas = (function () {
             materias[mat][clave(r)] = r.Not_Nota;
         });
 
+        var proms = [];
         $.each(orden, function (_, mat) {
             var celdas = '<td class="px-2">' + esc(mat) + "</td>", vals = [];
             $.each(columnas, function (_, p) {
@@ -104,13 +106,21 @@ var BoletinNotas = (function () {
             celdas += "<td" + claseNota(prom) + "><strong>" + fmtNota(prom) + "</strong></td>";
             celdas += '<td class="text-center text-muted px-2">' + esc(conceptoDe(prom)) + "</td>";
             tbody.append("<tr>" + celdas + "</tr>");
+            if (prom !== null) proms.push(prom);
         });
+
+        // Promedio general (promedio de los promedios por materia), si la vista tiene dónde mostrarlo.
+        var general = proms.length ? proms.reduce(function (a, b) { return a + b; }, 0) / proms.length : null;
+        $("#nb-promedio-general").text(fmtNota(general)).toggleClass("text-danger", esNumero(general) && general < notaMinima);
     }
 
     function ver() {
         var alu = $("#f-alu").val(), anio = $("#f-anio").val();
         if (!alu || !anio) { alert("Seleccione el alumno y el año."); return; }
+        cargar(alu, anio);
+    }
 
+    function cargar(alu, anio) {
         $.getJSON(urls.get, { Alu_Id: alu, Anio: anio }, function (res) {
             datos = (res && res.data) ? res.data : (res || []);
             if (!$.isArray(datos)) datos = [];
@@ -127,6 +137,26 @@ var BoletinNotas = (function () {
                 });
             }
         });
+    }
+
+    function cargarAuxiliares(cfg) {
+        if (cfg.urlEscala) {
+            $.getJSON(cfg.urlEscala, function (res) { escala = (res && res.data) ? res.data : (res || []); });
+        }
+        if (cfg.urlNotaMinima) {
+            $.getJSON(cfg.urlNotaMinima).done(function (res) {
+                if (res && esNumero(res.valor)) notaMinima = parseFloat(res.valor);
+            });
+        }
+    }
+
+    // Modo incrustado (ficha del alumno): el alumno ya está elegido; el año se cambia con #f-anio-ficha.
+    function incrustar(cfg) {
+        urls = { get: cfg.urlGet, publicacion: cfg.urlPublicacion, aviso: cfg.avisoProvisional || "#boletin-provisional" };
+        cargarAuxiliares(cfg);
+        $("#f-sem-boletin").on("change", pintar);
+        $("#f-anio-ficha").on("change", function () { cargar(cfg.aluId, $(this).val()); });
+        cargar(cfg.aluId, $("#f-anio-ficha").val() || cfg.anio);
     }
 
     function init(cfg) {
@@ -149,5 +179,5 @@ var BoletinNotas = (function () {
         $("#f-sem-boletin").on("change", pintar);
     }
 
-    return { init: init };
+    return { init: init, incrustar: incrustar };
 }());
