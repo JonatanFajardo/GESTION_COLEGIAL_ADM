@@ -298,10 +298,10 @@
             identidad: "@(ViewBag.Identidad ?? "")",
             urlFindAlumnoByIdentidad: "@Url.Action("FindByIdentidadAsync", "Alumnos")",
             urlConceptosAlumno: "@Url.Action("ListByAlumnoAsync", "CuentasCobrar")",
-            urlDescuentos: "@Url.Action("DropdownAsync", "Descuentos")",
+            urlDescuentos: "@Url.Action("DescuentosDelCobroAsync", "Pagos")",
             urlFormasPago: "@Url.Action("DropdownAsync", "FormasPago")",
             urlConceptosPago: "@Url.Action("DropdownAsync", "ConceptosPago")",
-            urlTarifas: "@Url.Action("ListAsync", "Tarifas")",
+            urlTarifas: "@Url.Action("TarifasDelCobroAsync", "Pagos")",
             urlCrearCargo: "@Url.Action("CrearCargoAlumnoAsync", "CuentasCobrar")",
             urlRegistrarPago: "@Url.Action("CreateAsync", "Pagos")"
         });

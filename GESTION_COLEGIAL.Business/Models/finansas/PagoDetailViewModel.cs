@@ -30,6 +30,17 @@ namespace GESTION_COLEGIAL.Business.Models
         // Información de Forma de Pago
         public string FormaPago { get; set; } = string.Empty;
 
+        // Datos del recibo impreso
+        public string EncargadoNombre { get; set; } = string.Empty;
+        public bool EsAnulado { get; set; }
+        public string MotivoAnulacion { get; set; } = string.Empty;
+        public DateTime? FechaAnulacion { get; set; }
+        public decimal SaldoPendiente { get; set; }
+        public string ColegioNombre { get; set; } = string.Empty;
+        public string ColegioTelefono { get; set; } = string.Empty;
+        public string ColegioDireccion { get; set; } = string.Empty;
+        public System.Collections.Generic.List<ReciboLineaViewModel> Lineas { get; set; } = new System.Collections.Generic.List<ReciboLineaViewModel>();
+
         // Información de auditoría
         public bool EsEliminado { get; set; }
         public int UsuarioRegistraId { get; set; }
@@ -38,5 +49,14 @@ namespace GESTION_COLEGIAL.Business.Models
         public int? UsuarioModificaId { get; set; }
         public string NombreCompletoUsuarioModifica { get; set; } = string.Empty;
         public DateTime? FechaModifica { get; set; }
+    }
+
+    public class ReciboLineaViewModel
+    {
+        public string Concepto { get; set; } = string.Empty;
+        public int? Mes { get; set; }
+        public int? Anio { get; set; }
+        public decimal Monto { get; set; }
+        public decimal Descuento { get; set; }
     }
 }

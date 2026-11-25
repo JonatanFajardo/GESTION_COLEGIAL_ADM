@@ -498,9 +498,9 @@
                         }
                         @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cuentas por cobrar",  "Index",         "CuentasCobrar")</li> }
                         @if (tiene("Listado de pagos"))              { <li>@Html.ActionLink("Movimientos de caja", "Index",         "Pagos")</li> }
-                        @if (tiene("Listado de pagos"))              { <li>@Html.ActionLink("Nuevo pago",          "NuevoPago",     "Pagos")</li> }
+                        @if (tiene("Crear pagos"))                { <li>@Html.ActionLink("Nuevo pago",          "NuevoPago",     "Pagos")</li> }
                         @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cuenta del alumno",   "EstadoCuenta",  "CuentasCobrar")</li> }
-                        @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cargos masivos",      "CargosMasivos", "CuentasCobrar")</li> }
+                        @if (tiene("Crear pagos") || tiene("Crear cuentas por cobrar")) { <li>@Html.ActionLink("Cargos masivos",      "CargosMasivos", "CuentasCobrar")</li> }
                         @* Reportes financieros sueltos → Centro de reportes (ver TODO.md). Ingresos del mes, Comparativa anual y
                            Proyección de cobros se deshabilitaron: su API no está conectada (el servicio está comentado en la API y los
                            procedimientos no existen). Pendientes por cobrar, Historial de transacciones, Flujo de caja, Estado de

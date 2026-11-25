@@ -63,6 +63,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// <summary>
         /// Acción para mostrar la vista de cargos masivos.
         /// </summary>
+        [SessionManager("Crear pagos|Crear cuentas por cobrar")]
         public ActionResult CargosMasivos()
         {
             return View();
@@ -145,6 +146,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Acción asincrónica para generar cargos de un alumno.
         /// </summary>
         [HttpPost]
+        [SessionManager("Crear pagos|Crear cuentas por cobrar")]
         public async Task<ActionResult> GenerarCargosAlumnoAsync(int alumnoId, int anio)
         {
             bool result = await cuentasCobrarService.GenerarCargosAlumno(alumnoId, anio);
@@ -160,6 +162,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Usa SP: finanza.PR_GenerarMensualidad
         /// </summary>
         [HttpPost]
+        [SessionManager("Crear pagos|Crear cuentas por cobrar")]
         public async Task<ActionResult> GenerarMensualidadAsync(int mes, int anio)
         {
             try
@@ -178,6 +181,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Usa SP: finanza.PR_GenerarMensualidadesRango
         /// </summary>
         [HttpPost]
+        [SessionManager("Crear pagos|Crear cuentas por cobrar")]
         public async Task<ActionResult> GenerarMensualidadesRangoAsync(int mesInicio, int mesFin, int anio)
         {
             try
@@ -230,6 +234,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// Crea un cargo (CuentaCobrar) ad-hoc para un alumno desde el wizard de Nuevo Pago.
         /// </summary>
         [HttpPost]
+        [SessionManager("Crear pagos|Crear cuentas por cobrar")]
         public async Task<ActionResult> CrearCargoAlumnoAsync(CuentaCobrarFindViewModel model)
         {
             try
