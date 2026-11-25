@@ -4,6 +4,7 @@ using System.Text.Unicode;
 using GESTION_COLEGIAL.Business.Helpers;
 using Microsoft.Extensions.WebEncoders;
 using GESTION_COLEGIAL.UI.Compat;
+using GESTION_COLEGIAL.UI.Filters;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Localization;
@@ -72,6 +73,8 @@ builder.Services
         opciones.AccessDeniedPath = "/account/sinacceso";
         opciones.ExpireTimeSpan = TimeSpan.FromMinutes(60);
         opciones.SlidingExpiration = true;
+        // Cierra las sesiones cuya cuenta cambió (contraseña, rol, desactivada). Ver Filters/ValidadorSesion.cs.
+        opciones.Events.OnValidatePrincipal = ValidadorSesion.ValidarAsync;
     });
 
 // Llaves que cifran la cookie de login y los tokens de formularios. En Docker se guardan en un
