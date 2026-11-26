@@ -66,6 +66,39 @@ namespace GESTION_COLEGIAL.Business.Models
         public int? Anio { get; set; }
         public string Parcial { get; set; }
         public List<DocumentoContenidoNota> Notas { get; set; } = new List<DocumentoContenidoNota>();
+
+        /// <summary>Notas finales del cierre del año (solo años con la decisión del alumno confirmada).</summary>
+        public List<DocumentoContenidoFinal> Finales { get; set; } = new List<DocumentoContenidoFinal>();
+
+        /// <summary>Promedio y decisión de cada año con el cierre confirmado.</summary>
+        public List<DocumentoContenidoResultado> Resultados { get; set; } = new List<DocumentoContenidoResultado>();
+    }
+
+    /// <summary>Nota final de una materia en el cierre del año (con la recuperación ya aplicada).</summary>
+    public class DocumentoContenidoFinal
+    {
+        public int? Anio { get; set; }
+        public string Materia { get; set; }
+        public decimal? NotaFinal { get; set; }
+
+        /// <summary>"aprobado" / "reprobado" / "sin_notas".</summary>
+        public string Resultado { get; set; }
+        public decimal? NotaRecuperacion { get; set; }
+        public bool? AproboRecuperacion { get; set; }
+    }
+
+    /// <summary>Resultado de un año en el cierre: promedio y decisión.</summary>
+    public class DocumentoContenidoResultado
+    {
+        public int? Anio { get; set; }
+        public decimal? Promedio { get; set; }
+
+        /// <summary>"promovido" / "repite" / "gradua".</summary>
+        public string Decision { get; set; }
+
+        /// <summary>Aprobó el último grado de su nivel sin ser el último de su carrera (Noveno).</summary>
+        public bool TerminaNivel { get; set; }
+        public string Nivel { get; set; }
     }
 
     public class DocumentoContenidoAlumno

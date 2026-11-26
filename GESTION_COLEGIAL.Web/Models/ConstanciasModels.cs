@@ -84,6 +84,22 @@ namespace GESTION_COLEGIAL.UI.Models
         public static string Nota(decimal? n) => n.HasValue ? n.Value.ToString("0.##", Cultura) : "—";
         public static string Promedio(decimal? n) => n.HasValue ? n.Value.ToString("0.0", Cultura) : "—";
 
+        /// <summary>Decisión del cierre del año en palabras ("Promovido(a) al grado siguiente"…); null si no hay.</summary>
+        public static string TextoResultado(DocumentoContenidoResultado r)
+        {
+            if (r == null) return null;
+            string nivel = (r.Nivel ?? "").Trim();
+            return (r.Decision ?? "").Trim().ToLowerInvariant() switch
+            {
+                "promovido" => r.TerminaNivel && nivel.Length > 0
+                    ? "Promovido(a) al grado siguiente; completó " + (nivel.StartsWith("Educación", StringComparison.OrdinalIgnoreCase) ? "la " : "el nivel ") + nivel
+                    : "Promovido(a) al grado siguiente",
+                "repite" => "Repite el grado",
+                "gradua" => "Aprobó el último grado de su carrera",
+                _ => null
+            };
+        }
+
         /// <summary>Primer tramo de la dirección ("San Pedro Sula, Cortés…" → "San Pedro Sula").</summary>
         public static string Ciudad(string direccion)
         {
@@ -92,12 +108,16 @@ namespace GESTION_COLEGIAL.UI.Models
         }
     }
 
-    /// <summary>Una materia del boletín: nota por parcial y promedio.</summary>
+    /// <summary>Una materia del boletín: nota por parcial y promedio (o nota final si el año ya cerró).</summary>
     public class FilaBoletin
     {
         public string Materia { get; set; }
         public Dictionary<string, decimal?> Notas { get; set; } = new Dictionary<string, decimal?>();
         public decimal? Promedio { get; set; }
+        public decimal? NotaFinal { get; set; }
+
+        /// <summary>La nota final viene de la recuperación.</summary>
+        public bool Recuperada { get; set; }
     }
 
     /// <summary>Un año del expediente: grado, sección, materias con su promedio y promedio del año.</summary>
@@ -108,6 +128,15 @@ namespace GESTION_COLEGIAL.UI.Models
         public string Seccion { get; set; }
         public List<KeyValuePair<string, decimal?>> Materias { get; set; } = new List<KeyValuePair<string, decimal?>>();
         public decimal? Promedio { get; set; }
+
+        /// <summary>El año tiene el cierre confirmado: las materias muestran su nota final.</summary>
+        public bool ConFinales { get; set; }
+
+        /// <summary>Materias cuya nota final viene de la recuperación.</summary>
+        public HashSet<string> Recuperadas { get; set; } = new HashSet<string>();
+
+        /// <summary>Decisión del cierre en palabras.</summary>
+        public string Resultado { get; set; }
     }
 
     /// <summary>
@@ -140,6 +169,12 @@ namespace GESTION_COLEGIAL.UI.Models
         public List<AnioExpediente> Anios { get; set; } = new List<AnioExpediente>();
 
         public decimal? PromedioGeneral { get; set; }
+
+        /// <summary>Boletín de todos los parciales de un año ya cerrado: la última columna es la nota final.</summary>
+        public bool ConFinales { get; set; }
+
+        /// <summary>Decisión del cierre del año (boletín y constancia de estudio).</summary>
+        public string ResultadoAnio { get; set; }
 
         private static decimal? Media(IEnumerable<decimal?> valores)
         {
@@ -182,6 +217,11 @@ namespace GESTION_COLEGIAL.UI.Models
             d.Anio = contenido.Anio;
             d.Parcial = contenido.Parcial;
             var notas = contenido.Notas ?? new List<DocumentoContenidoNota>();
+            var finales = contenido.Finales ?? new List<DocumentoContenidoFinal>();
+            var resultados = contenido.Resultados ?? new List<DocumentoContenidoResultado>();
+            var comparar = StringComparer.Create(CatalogoDocumentos.Cultura, true);
+            if (tipo == CatalogoDocumentos.Estudio || tipo == CatalogoDocumentos.Boletin)
+                d.ResultadoAnio = CatalogoDocumentos.TextoResultado(resultados.FirstOrDefault(r => r.Anio == d.Anio));
 
             if (tipo == CatalogoDocumentos.Boletin)
             {
@@ -205,6 +245,21 @@ namespace GESTION_COLEGIAL.UI.Models
                 foreach (var f in d.Filas)
                     f.Promedio = Media(f.Notas.Values);
                 d.PromedioGeneral = Media(d.Filas.Select(f => f.Promedio));
+
+                // Año ya cerrado: nota final oficial de cada materia (con la recuperación aplicada).
+                var fin = finales.Where(x => x.Anio == d.Anio).GroupBy(x => x.Materia ?? "", comparar)
+                                 .ToDictionary(g => g.Key, g => g.First(), comparar);
+                if (fin.Count > 0)
+                {
+                    d.ConFinales = true;
+                    foreach (var f in d.Filas)
+                        if (fin.TryGetValue(f.Materia ?? "", out var x))
+                        {
+                            f.NotaFinal = x.NotaFinal;
+                            f.Recuperada = x.AproboRecuperacion == true;
+                        }
+                    d.PromedioGeneral = Media(d.Filas.Select(f => f.NotaFinal ?? f.Promedio));
+                }
             }
             else if (tipo == CatalogoDocumentos.Expediente)
             {
@@ -221,14 +276,23 @@ namespace GESTION_COLEGIAL.UI.Models
                                 Media(m.GroupBy(Columna).Select(p => Media(p.Select(n => n.Nota))))))
                             .ToList();
                         var primera = g.FirstOrDefault(n => !string.IsNullOrWhiteSpace(n.Grado)) ?? g.First();
-                        return new AnioExpediente
+                        var y = new AnioExpediente { Anio = g.Key, Grado = primera.Grado, Seccion = primera.Seccion };
+
+                        // Año con el cierre confirmado: nota final oficial de cada materia y la decisión.
+                        var fin = finales.Where(x => x.Anio == g.Key).GroupBy(x => x.Materia ?? "", comparar)
+                                         .ToDictionary(f => f.Key, f => f.First(), comparar);
+                        if (fin.Count > 0)
                         {
-                            Anio = g.Key,
-                            Grado = primera.Grado,
-                            Seccion = primera.Seccion,
-                            Materias = materias,
-                            Promedio = Media(materias.Select(m => m.Value))
-                        };
+                            y.ConFinales = true;
+                            materias = materias.Select(m => fin.TryGetValue(m.Key, out var x) && x.NotaFinal.HasValue
+                                ? new KeyValuePair<string, decimal?>(m.Key, x.NotaFinal) : m).ToList();
+                            foreach (var x in fin.Values.Where(x => x.AproboRecuperacion == true))
+                                y.Recuperadas.Add(x.Materia ?? "");
+                        }
+                        y.Resultado = CatalogoDocumentos.TextoResultado(resultados.FirstOrDefault(r => r.Anio == g.Key));
+                        y.Materias = materias;
+                        y.Promedio = Media(materias.Select(m => m.Value));
+                        return y;
                     })
                     .ToList();
                 // Promedio general = promedio de todas las materias de todos los años.

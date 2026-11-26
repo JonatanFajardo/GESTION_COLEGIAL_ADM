@@ -154,6 +154,12 @@
 .cst-anio-titulo { font-family: Arial, sans-serif; font-size: 10.5pt; font-weight: 700; margin: 0.6rem 0 0.35rem; color: #111827; }
 .cst-promedio-general { text-align: right; font-family: Arial, sans-serif; font-size: 11pt; margin: 0.4rem 0 0; color: #111827; }
 
+/* Notas finales del cierre del año: marca de recuperación, leyenda y resultado del año. */
+.cst-marca { font-size: 7pt; font-weight: 700; margin-left: 2px; vertical-align: super; color: #111827; }
+.cst-leyenda { font-family: Arial, sans-serif; font-size: 8.5pt; color: #4b5563 !important; margin: -0.4rem 0 0.6rem; }
+.cst-resultado { font-family: Arial, sans-serif; font-size: 10.5pt; margin: 0 0 0.9rem; color: #111827; }
+.cst-promedio-general + .cst-leyenda { margin-top: 0.5rem; }
+
 .cst-lugar { margin: 1.2rem 0 0; font-size: 11pt; color: #111827; }
 
 .cst-firmas {
