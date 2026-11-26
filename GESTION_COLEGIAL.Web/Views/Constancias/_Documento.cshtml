@@ -66,6 +66,10 @@
                 <strong>@(hay(A.Nombre) ? A.Nombre : "el alumno")</strong>@(hay(A.Identidad) ? ", con número de identidad " + A.Identidad + "," : "")
                 está matriculado(a) en esta institución en el año lectivo <strong>@(hay(anioTexto) ? anioTexto : "—")</strong>@(hay(ubicacionTexto) ? ", cursando " + ubicacionTexto : "")@(hay(A.Nivel) ? ", nivel " + A.Nivel : "")@(hay(A.Modalidad) ? ", modalidad " + A.Modalidad : "").
             </p>
+            @if (hay(D.ResultadoAnio))
+            {
+                <p class="cst-parrafo">Resultado final del año lectivo @anioTexto: <strong>@D.ResultadoAnio</strong>.</p>
+            }
             <p class="cst-parrafo">
                 Y para los fines que al interesado convengan, se extiende la presente en la ciudad de @D.Ciudad,
                 @CatalogoDocumentos.FechaLarga(D.FechaEmision).
@@ -87,7 +91,7 @@
                             {
                                 <th scope="col" class="cst-num">@(hay(p) ? p : "Parcial")</th>
                             }
-                            <th scope="col" class="cst-num">Promedio</th>
+                            <th scope="col" class="cst-num">@(D.ConFinales ? "Nota final" : "Promedio")</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,7 +103,15 @@
                                 {
                                     <td class="cst-num">@CatalogoDocumentos.Nota(f.Notas.TryGetValue(p, out var n) ? n : null)</td>
                                 }
-                                <td class="cst-num cst-fuerte">@CatalogoDocumentos.Promedio(f.Promedio)</td>
+                                @if (D.ConFinales)
+                                {
+                                    <td class="cst-num cst-fuerte">@CatalogoDocumentos.Nota(f.NotaFinal ?? f.Promedio)@if (f.Recuperada)
+                                    {<span class="cst-marca" title="Aprobada en recuperación">R</span>}</td>
+                                }
+                                else
+                                {
+                                    <td class="cst-num cst-fuerte">@CatalogoDocumentos.Promedio(f.Promedio)</td>
+                                }
                             </tr>
                         }
                     </tbody>
@@ -110,6 +122,14 @@
                         </tr>
                     </tfoot>
                 </table>
+                @if (D.ConFinales)
+                {
+                    <p class="cst-leyenda">Nota final del cierre del año @anioTexto@(D.Filas.Any(f => f.Recuperada) ? "; R = aprobada en recuperación" : "").</p>
+                }
+                @if (hay(D.ResultadoAnio))
+                {
+                    <p class="cst-resultado">Resultado del año: <strong>@D.ResultadoAnio</strong></p>
+                }
             }
         }
         else if (D.Tipo == CatalogoDocumentos.Expediente)
@@ -128,7 +148,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">Materia</th>
-                                <th scope="col" class="cst-num">Promedio</th>
+                                <th scope="col" class="cst-num">@(y.ConFinales ? "Nota final" : "Promedio")</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,7 +156,15 @@
                             {
                                 <tr>
                                     <th scope="row">@m.Key</th>
-                                    <td class="cst-num">@CatalogoDocumentos.Promedio(m.Value)</td>
+                                    @if (y.ConFinales)
+                                    {
+                                        <td class="cst-num">@CatalogoDocumentos.Nota(m.Value)@if (y.Recuperadas.Contains(m.Key))
+                                        {<span class="cst-marca" title="Aprobada en recuperación">R</span>}</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="cst-num">@CatalogoDocumentos.Promedio(m.Value)</td>
+                                    }
                                 </tr>
                             }
                         </tbody>
@@ -147,11 +175,19 @@
                             </tr>
                         </tfoot>
                     </table>
+                    @if (hay(y.Resultado))
+                    {
+                        <p class="cst-resultado">Resultado: <strong>@y.Resultado</strong></p>
+                    }
                 </section>
             }
             if (D.Anios.Count > 0)
             {
                 <p class="cst-promedio-general">Promedio general: <strong>@CatalogoDocumentos.Promedio(D.PromedioGeneral)</strong></p>
+            }
+            if (D.Anios.Any(y => y.ConFinales))
+            {
+                <p class="cst-leyenda">En los años con el cierre confirmado se muestra la nota final de cada materia@(D.Anios.Any(y => y.Recuperadas.Count > 0) ? "; R = aprobada en recuperación" : "").</p>
             }
         }
     </div>
