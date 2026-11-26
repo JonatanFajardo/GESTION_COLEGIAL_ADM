@@ -2,6 +2,7 @@ using GESTION_COLEGIAL.Business.Extensions;
 using GESTION_COLEGIAL.Business.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GESTION_COLEGIAL.Business.Services
@@ -11,10 +12,15 @@ namespace GESTION_COLEGIAL.Business.Services
     /// </summary>
     public class AniosLectivosService
     {
-        public async Task<IEnumerable<AnioLectivoViewModel>> ListAsync()
+        /// <summary>
+        /// Años lectivos. Por defecto sin los archivados (estado 6): un año archivado es solo historia y no
+        /// sale en los selectores de año. La lista de Años lectivos y el cierre del año piden todos.
+        /// </summary>
+        public async Task<IEnumerable<AnioLectivoViewModel>> ListAsync(bool incluirArchivados = false)
         {
             string url = "AniosLectivos/ListAsync";
-            return await ApiRequests.ListAsync<AnioLectivoViewModel>(url);
+            var anios = await ApiRequests.ListAsync<AnioLectivoViewModel>(url);
+            return incluirArchivados || anios == null ? anios : anios.Where(a => a.Ani_Estado != 6).ToList();
         }
 
         public async Task<AnioLectivoViewModel> Find(int id)

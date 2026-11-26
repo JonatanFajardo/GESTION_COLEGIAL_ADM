@@ -114,7 +114,8 @@
                 list: "@Url.Action("ListAsync")",
                 setup: "@Url.Action("Setup")",
                 setActivo: "@Url.Action("SetActivoAsync")",
-                rollforward: "@Url.Action("RollForwardAsync", "Rollover")"
+                rollforward: "@Url.Action("RollForwardAsync", "Rollover")",
+                cierre: "@Url.Action("Index", "CierreAnio")"
             };
 
             function notify(type, msg) {
@@ -136,9 +137,13 @@
                         { data: "Ani_FechaInicio", render: fdate },
                         { data: "Ani_FechaFin", render: fdate },
                         { data: null, orderable: false, render: function (r) { return '<span class="badge ' + (estadoBadge[r.Ani_Estado] || "badge-secondary") + '">' + (r.Ani_EstadoDescripcion || "") + '</span>'; } },
-                        { data: null, orderable: false, render: function (r) { return r.Ani_EsActual ? '<span class="badge badge-primary"><i class="fas fa-check mr-1"></i>Activo</span>' : '<button type="button" class="btn btn-sm btn-outline-primary btn-activar" data-id="' + r.Ani_Id + '">Marcar activo</button>'; } },
+                        { data: null, orderable: false, render: function (r) { return r.Ani_EsActual ? '<span class="badge badge-primary"><i class="fas fa-check mr-1"></i>Activo</span>' : r.Ani_Estado === 6 ? '<span class="text-muted small">Archivado</span>' : '<button type="button" class="btn btn-sm btn-outline-primary btn-activar" data-id="' + r.Ani_Id + '">Marcar activo</button>'; } },
                         { data: null, orderable: false, render: function (r) {
-                            return '<button type="button" class="btn btn-sm btn-link text-info btn-accion edit" data-id="' + r.Ani_Id + '" title="Configurar / editar"><i class="fas fa-pen"></i></button>' +
+                            // Año abierto, en cierre, cerrado o archivado: entra al asistente de cierre del año.
+                            var cierre = r.Ani_Estado >= 3
+                                ? '<a class="btn btn-sm btn-link text-warning btn-accion" href="' + urls.cierre + '?id=' + r.Ani_Id + '" title="' + (r.Ani_Estado === 3 ? 'Cerrar el año' : 'Cierre del año') + '"><i class="fas fa-flag-checkered"></i></a>'
+                                : '';
+                            return cierre + '<button type="button" class="btn btn-sm btn-link text-info btn-accion edit" data-id="' + r.Ani_Id + '" title="Configurar / editar"><i class="fas fa-pen"></i></button>' +
                                    '<button type="button" class="btn btn-sm btn-link text-primary btn-accion roll" data-anio="' + r.Ani_Anio + '" data-name="' + r.Ani_Nombre + '" title="Arrastrar estructura de otro año"><i class="fas fa-copy"></i></button>' +
                                    '<button type="button" class="btn btn-sm btn-link text-danger btn-accion del" data-id="' + r.Ani_Id + '" data-name="' + r.Ani_Nombre + '" title="Eliminar"><i class="fas fa-trash"></i></button>';
                         } }
