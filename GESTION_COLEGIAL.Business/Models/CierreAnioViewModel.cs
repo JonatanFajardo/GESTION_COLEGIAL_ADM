@@ -117,6 +117,10 @@ namespace GESTION_COLEGIAL.Business.Models
         public DateTime? FechaConfirmacion { get; set; }
         public string UsuarioConfirma { get; set; }
         public bool EsUltimoGrado { get; set; }
+        /// <summary>Aprobó el último grado de su nivel sin ser el último de su carrera (Noveno: termina la educación básica).</summary>
+        public bool TerminaNivel { get; set; }
+        /// <summary>Qué hizo la confirmación con una inscripción del año siguiente que ya existía: "movio" o "quito".</summary>
+        public string AjusteDestino { get; set; }
         public bool HaySiguienteGrado { get; set; }
         public string Destino { get; set; }
         public int? AnioDestino { get; set; }
@@ -198,6 +202,8 @@ namespace GESTION_COLEGIAL.Business.Models
         public int? Graduan { get; set; }
         public int? Inscritos { get; set; }
         public int? SinSeccion { get; set; }
+        public int? Movidos { get; set; }
+        public int? Quitados { get; set; }
         public int? AnioDestino { get; set; }
         public int? Deshechos { get; set; }
     }

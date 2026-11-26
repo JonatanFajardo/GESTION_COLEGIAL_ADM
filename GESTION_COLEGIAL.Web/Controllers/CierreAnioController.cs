@@ -33,6 +33,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
             (Session[SesionUsuario.RoleName] as string ?? "").Equals("admin", StringComparison.OrdinalIgnoreCase);
 
         private bool PuedeCerrar() => EsAdmin() || TienePantalla(PantallaCerrar);
+        private bool VeAnios() => EsAdmin() || TienePantalla("Listado de años lectivos");
         private bool PuedeReabrir() => EsAdmin() || TienePantalla(PantallaReabrir);
 
         private int? UsuId() =>
@@ -72,7 +73,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 AnioNoEncontrado = id.HasValue && !anios.Any(a => a.Ani_Id == id.Value),
                 VeParciales = EsAdmin() || TienePantalla("Cierre de parciales"),
                 VeInscripcion = EsAdmin() || TienePantalla("Promociones y expediente por año"),
-                VeAnios = EsAdmin() || TienePantalla("Listado de años lectivos")
+                VeAnios = VeAnios()
             });
         }
 
@@ -127,17 +128,21 @@ namespace GESTION_COLEGIAL.UI.Controllers
             };
             var r = await _service.EstadoAsync(model);
 
-            // Al cerrar el año de trabajo, si se pidió: el año siguiente pasa a ser el de trabajo con la MISMA
-            // activación de Años lectivos (API AniosLectivos/SetActivoAsync), no con un cambio propio.
-            if (r != null && r.Ok && accion == "cerrar" && model.PasarActivo)
+            // Al cerrar el año de trabajo, si se pidió (solo quien administra Años lectivos): el año siguiente pasa
+            // a ser el de trabajo con la MISMA activación de Años lectivos, que en la misma transacción pasa a los
+            // alumnos inscritos a su sección de ese año (API AnioConexion/AplicarUbicacionAsync con activar).
+            if (r != null && r.Ok && accion == "cerrar" && model.PasarActivo && VeAnios())
             {
                 var resumen = await _service.ResumenAsync(model.Ani_Id);
                 if (resumen != null && resumen.EsActivo && resumen.SiguienteId.HasValue && (resumen.SiguienteEstado ?? 0) < 5)
                 {
-                    bool error = await _anios.SetActivo(resumen.SiguienteId.Value);   // true = error (booleano invertido)
-                    exito += error
-                        ? " No se pudo cambiar el año de trabajo: hágalo en Años lectivos."
-                        : $" El año de trabajo pasó a {resumen.SiguienteAnio}.";
+                    var ubicacion = await new AnioConexionService().AplicarUbicacionAsync(resumen.SiguienteId.Value, GetUsuarioId(), activar: true);
+                    if (ubicacion == null || !ubicacion.Ok)
+                        exito += " No se pudo cambiar el año de trabajo: hágalo en Años lectivos.";
+                    else
+                        exito += $" El año de trabajo pasó a {resumen.SiguienteAnio}."
+                            + (ubicacion.Aplicados > 0 ? $" {ubicacion.Aplicados} alumnos pasaron a su sección de ese año." : "")
+                            + (ubicacion.CursoPorRevisar > 0 ? $" {ubicacion.CursoPorRevisar} cambiaron de nivel: revise su curso." : "");
                 }
             }
             return Responder(r, "No se pudo cambiar el estado del año.", exito);

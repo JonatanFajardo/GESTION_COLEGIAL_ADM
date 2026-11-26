@@ -147,7 +147,7 @@ var GraduacionAlumnos = (function () {
         var ids = $('.chk-candidato:checked').map(function () { return parseInt($(this).data('id'), 10); }).get();
         if (!ids.length) return;
 
-        var mensaje = '¿Confirma graduar a ' + ids.length + ' alumno(s)? Esta operación archiva al alumno y no es reversible.';
+        var mensaje = '¿Confirma graduar a ' + ids.length + ' alumno(s)? El alumno queda como Graduado, conserva todo su expediente y pasa al directorio de egresados. No se puede deshacer.';
         if (typeof Swal !== 'undefined') {
             Swal.fire({
                 title: 'Confirmar graduación',

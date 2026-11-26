@@ -404,9 +404,12 @@
                 var decision = d.Decision
                     ? badgeDec(d.Decision) + '<div class="small text-muted">Motivo: ' + esc(d.Motivo) + "</div>"
                     : '<span class="text-muted small">Igual a la propuesta</span>';
-                var destino = d.Archivado ? '<span class="badge badge-dark">Graduado y archivado</span>'
-                    : (d.Destino ? esc(d.AnioDestino) + " · " + esc(d.Destino) : (d.Confirmada ? '<span class="text-muted small">' + (d.Efectiva === "gradua" ? "Pasa a Graduación" : "Sin inscribir (no existe el año siguiente)") + "</span>" : '<span class="text-muted">—</span>'));
-                return '<tr><td><strong>' + esc(d.Alumno) + "</strong>" + (d.Identidad ? '<div class="small text-muted">' + esc(d.Identidad) + "</div>" : "") +
+                var destino = d.Archivado ? '<span class="badge badge-dark">Graduado</span>'
+                    : d.AjusteDestino === "quito" ? '<span class="text-muted small">Pasa a Graduación (se quitó su inscripción de ' + esc(d.AnioDestino) + ")</span>"
+                    : (d.Destino ? esc(d.AnioDestino) + " · " + esc(d.Destino) +
+                        (d.AjusteDestino === "movio" ? '<div class="small text-muted">Estaba inscrito en otro grado: se cambió</div>' : "") : (d.Confirmada ? '<span class="text-muted small">' + (d.Efectiva === "gradua" ? "Pasa a Graduación" : "Sin inscribir (no existe el año siguiente)") + "</span>" : '<span class="text-muted">—</span>'));
+                return '<tr><td><strong>' + esc(d.Alumno) + "</strong>" +
+                    (d.TerminaNivel ? ' <span class="badge outline-badge-info" title="Aprobó el último grado de su nivel: pasa al primer grado del nivel siguiente">Termina su nivel</span>' : "") + (d.Identidad ? '<div class="small text-muted">' + esc(d.Identidad) + "</div>" : "") +
                     '</td><td class="small text-wrap">' + resumen + '</td><td class="text-right">' + num(d.Promedio, 2) +
                     "</td><td>" + badgeDec(d.Propuesta) + '</td><td class="text-wrap">' + decision + '</td><td class="text-wrap">' + destino + '</td><td class="text-right">' +
                     (EDITABLE && !d.Confirmada ? '<button type="button" class="btn btn-sm btn-outline-primary ca-cambiar" data-fila="' + i + '">Cambiar</button>' :
@@ -424,7 +427,8 @@
         abrirModal({
             titulo: "Decisión de " + d.Alumno,
             texto: "Propuesta según sus resultados: " + badgeDec(d.Propuesta) + ". " +
-                (d.EsUltimoGrado && d.HaySiguienteGrado ? "Cursa el último grado de su nivel: «Promovido» lo inscribe en el primer grado del nivel siguiente. " : "") +
+                (d.TerminaNivel ? "Termina su nivel: «Promovido» lo inscribe en el primer grado del nivel siguiente. " : "") +
+                (d.EsUltimoGrado ? "Cursa el último grado de su carrera: «Se gradúa» lo pasa a la pantalla de Graduación. " : "") +
                 "Si elige algo distinto a la propuesta, escriba el motivo.",
             decisiones: lista,
             decisionActual: d.Efectiva !== "pendiente" ? d.Efectiva : lista[0],
@@ -458,7 +462,11 @@
                     if (!r || !r.success) { errorModal(r && r.message || "No se pudieron confirmar las decisiones."); return; }
                     $("#ca-modal").modal("hide");
                     var d = r.datos || {};
-                    avisar(true, "Decisiones confirmadas: " + num(d.Confirmados) + "." + (d.Inscritos ? " " + num(d.Inscritos) + " inscritos en " + esc(d.AnioDestino) + (d.SinSeccion ? " (" + num(d.SinSeccion) + " sin sección)" : "") + "." : ""));
+                    avisar(true, "Decisiones confirmadas: " + num(d.Confirmados) + "." +
+                        (d.Inscritos ? " " + num(d.Inscritos) + " inscritos en " + esc(d.AnioDestino) + "." : "") +
+                        (d.Movidos ? " " + num(d.Movidos) + " ya estaban inscritos en " + esc(d.AnioDestino) + " en otro grado y se cambiaron al que les toca." : "") +
+                        (d.Quitados ? " A " + num(d.Quitados) + " que se gradúan se les quitó su inscripción de " + esc(d.AnioDestino) + "." : "") +
+                        (d.SinSeccion ? " " + num(d.SinSeccion) + " quedaron sin sección: asígnela en Matrícula." : ""));
                     cargarSecciones().done(function () { pintarSecciones3(); verDecisiones(seaActual); });
                 }).fail(function () { errorModal("No se pudo conectar con el servidor."); });
             }

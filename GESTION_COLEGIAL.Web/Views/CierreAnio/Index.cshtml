@@ -9,6 +9,10 @@
     string fechaCierre = R?.FechaCierre?.ToString("dd/MM/yyyy") ?? "";
 }
 
+@section Styles{
+    <link href="~/css/pages/cierre-anio.css" rel="stylesheet" asp-append-version="true" />
+}
+
 <div class="breadcrumb-wrapper-content">
     <nav class="breadcrumb-style-one" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -302,13 +306,13 @@ else
                 <div class="widget-content widget-content-area">
                     <div class="alert alert-light-info" role="alert">
                         <i class="bi bi-info-circle mr-1" aria-hidden="true"></i>
-                        Cada alumno trae una propuesta según sus resultados: <strong>promovido</strong>, <strong>repite</strong>, <strong>se gradúa</strong> (último grado de su nivel) o <strong>pendiente</strong> (recuperación sin nota).
+                        Cada alumno trae una propuesta según sus resultados: <strong>promovido</strong>, <strong>repite</strong>, <strong>se gradúa</strong> (último grado de su carrera) o <strong>pendiente</strong> (recuperación sin nota).
                         Dirección puede cambiarla con un motivo. Al <strong>confirmar la sección</strong>, la inscripción del año queda como promovido, repite o graduado@(R.SiguienteAnio.HasValue ? ", los promovidos y los que repiten quedan inscritos en " + R.SiguienteAnio + " (ver Inscripción y promociones)" : "")
                         y los que se gradúan aparecen listos en <a href="@Url.Action("Index", "GraduacionAlumnos")">Graduación</a>.
                     </div>
                     <partial name="_FiltrosCierre" />
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        <table class="table table-hover mb-0 ca-tabla">
                             <thead><tr><th>Sección</th><th class="text-right">Alumnos</th><th class="text-right">Promovidos</th><th class="text-right">Repiten</th><th class="text-right">Se gradúan</th><th class="text-right">Pendientes</th><th>Estado</th><th></th></tr></thead>
                             <tbody id="ca-secciones"><tr><td colspan="8" class="text-center text-muted">Cargando…</td></tr></tbody>
                         </table>
@@ -326,7 +330,7 @@ else
                         <div id="ca-detalle-acciones" class="mb-2"></div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
+                        <table class="table table-hover mb-0 ca-tabla">
                             <thead><tr><th>Alumno</th><th>Materias</th><th class="text-right">Promedio</th><th>Propuesta</th><th>Decisión</th><th>Año siguiente</th><th></th></tr></thead>
                             <tbody id="ca-decisiones"></tbody>
                         </table>
@@ -352,12 +356,17 @@ else
                     @if (estado == 4 && M.PuedeCerrar)
                     {
                         <p>Al cerrar, el año pasa a <strong>Cerrado</strong>: nadie podrá registrar ni cambiar sus notas, actividades, asistencia, pase de lista ni tareas, y los resultados y decisiones quedan como están. La revisión de este momento queda guardada en el historial.</p>
-                        @if (R.EsActivo && R.SiguienteId.HasValue)
+                        @if (R.EsActivo && R.SiguienteId.HasValue && !M.VeAnios)
+                        {
+                            <p class="small text-muted">Después de cerrar, quien administra Años lectivos debe pasar el año de trabajo a @R.SiguienteAnio.</p>
+                        }
+                        else if (R.EsActivo && R.SiguienteId.HasValue)
                         {
                             <div class="custom-control custom-checkbox mb-2">
                                 <input type="checkbox" class="custom-control-input" id="ca-pasar-activo" checked>
                                 <label class="custom-control-label" for="ca-pasar-activo">Pasar el año de trabajo a @R.SiguienteAnio (@R.SiguienteEstadoTexto)</label>
                             </div>
+                            <p class="small text-muted ml-4 mb-2">Los alumnos inscritos en @R.SiguienteAnio pasan a su sección de ese año.</p>
                             @if (R.SiguienteEstado < 3)
                             {
                                 <p class="small text-muted ml-4">@R.SiguienteAnio todavía está en «@R.SiguienteEstadoTexto»: termine de configurarlo y publíquelo en Años lectivos.</p>

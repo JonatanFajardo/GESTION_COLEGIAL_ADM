@@ -1,0 +1,9 @@
+/* Cierre del año: tablas de secciones y decisiones más compactas. La hoja global de tablas pone
+   10px 21px a cada celda y no deja partir el texto; con 7-8 columnas la tabla no cabía en la tarjeta. */
+.ca-tabla > thead > tr > th,
+.ca-tabla > tbody > tr > td {
+    padding: 8px 12px;
+}
+.ca-tabla > tbody > tr > td.text-wrap {
+    white-space: normal;
+}
