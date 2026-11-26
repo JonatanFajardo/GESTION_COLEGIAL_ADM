@@ -35,6 +35,10 @@ namespace GESTION_COLEGIAL.Business.Services
             return await ApiRequests.CreateAsync(url, model);
         }
 
+        /// <summary>Crea el usuario y devuelve también el mensaje que respondió la API (nombre repetido, etc.).</summary>
+        public async Task<RespuestaApi> CreateConMensaje(UsuarioViewModel model)
+            => await ApiRequests.PostConMensajeAsync("Usuarios/CreateAsync", model);
+
         public async Task<Boolean> Edit(UsuarioViewModel model)
         {
             string url = "Usuarios/EditAsync";

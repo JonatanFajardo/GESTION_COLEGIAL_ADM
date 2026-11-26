@@ -123,6 +123,28 @@
                 <i class="fas fa-circle-info mr-1"></i> Seleccione en cascada: cada nivel habilita el siguiente
                 (Nivel → Grado → Modalidad → Curso → Sección → Estado).
             </div>
+            @{
+                var aniosInscripcion = ViewBag.AniosInscripcion as System.Collections.Generic.List<GESTION_COLEGIAL.Business.Models.AnioInscripcionViewModel>
+                    ?? new System.Collections.Generic.List<GESTION_COLEGIAL.Business.Models.AnioInscripcionViewModel>();
+                int aniSeleccionado = (int)(ViewBag.AnioSeleccionado ?? 0);
+                bool anioFijo = (bool)(ViewBag.AnioFijo ?? false);
+            }
+            <div class="row">
+                <div class="col-md-4 form-group mat-field" data-field>
+                    <label for="Ani_Id">Año de inscripción <span class="text-danger">*</span></label>
+                    <select id="Ani_Id" name="Ani_Id" class="custom-select" disabled="@anioFijo" data-req="true">
+                        @if (aniSeleccionado == 0)
+                        {
+                            <option value="" selected>-- Elija el año --</option>
+                        }
+                        @foreach (var a in aniosInscripcion)
+                        {
+                            <option value="@a.Ani_Id" selected="@(a.Ani_Id == aniSeleccionado)">@a.Ani_Nombre (@(a.EsActivo ? "activo" : a.Ani_EstadoTexto.ToLower()))</option>
+                        }
+                    </select>
+                    <small class="form-text text-muted" id="aniAviso">@(anioFijo ? "El aspirante aspira a este año." : aniSeleccionado == 0 ? "El año activo ya no admite matrículas: elija el año en que va a inscribir." : "Por defecto el año activo. Para inscribir en el año siguiente, ese año debe tener sus secciones creadas.")</small>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4 form-group mat-field" data-field>
                     <label>1 · Nivel educativo <span class="text-danger">*</span></label>
@@ -165,6 +187,8 @@
                     <div class="invalid-feedback">Campo requerido.</div>
                 </div>
             </div>
+
+            <div id="matCupoAviso" class="alert d-none mb-3" role="status"></div>
 
             @* Ocultos que el AlumnoViewModel necesita al crear *@
             <input type="hidden" id="Alu_Id" name="Alu_Id" value="0" />
@@ -376,6 +400,7 @@
             urlGuardarEnc:   "@Url.Action("GuardarEncargadoAsync", "Matricula")",
             urlVincularEnc:  "@Url.Action("VincularEncargadoAsync", "Matricula")",
             urlGuardarAlu:   "@Url.Action("GuardarAlumnoAsync", "Matricula")",
+            urlVerificarCupo: "@Url.Action("VerificarCupoAsync", "AnioConexion")",
             urlDocumentos:   "@Url.Action("Index", "DocumentosAlumnoAdm")",
             urlAlumnos:      "@Url.Action("Index", "Alumnos")",
             aspirante:       @Html.Raw(ViewBag.AspiranteJson ?? "null")

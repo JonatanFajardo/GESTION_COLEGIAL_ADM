@@ -59,13 +59,23 @@ namespace GESTION_COLEGIAL.UI.Controllers
                 return AjaxResult(false, false, AlertMessage.AlertMessageType.Error, "La contraseña debe tener al menos 8 caracteres y ser distinta del usuario.");
             }
 
+            // El nombre se revisa aquí antes de guardar: la capa que habla con la API no devuelve el texto de sus errores.
+            var existente = await usuariosService.Exist(model.Usu_Name);
+            if (existente != null && existente.Usu_Id != model.Usu_Id)
+            {
+                return AjaxResult(false, false, AlertMessage.AlertMessageType.Error,
+                    "Ya existe un usuario llamado \"" + model.Usu_Name + "\". Elija otro nombre.");
+            }
+            const string noGuardo = "No se pudo guardar el usuario. Revise que el nombre no esté en uso y que el rol y el empleado elegidos existan.";
+
             if (model.Usu_Id == 0)
             {
-                bool result = await usuariosService.Create(model);
+                var respuesta = await usuariosService.CreateConMensaje(model);
 
-                if (result)
+                if (respuesta.Error)
                 {
-                    return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
+                    return AjaxResult(false, false, AlertMessage.AlertMessageType.Error,
+                        string.IsNullOrWhiteSpace(respuesta.Mensaje) ? noGuardo : respuesta.Mensaje);
                 }
                 return AjaxResult(true, AlertMessage.AlertMessageCustomType.SuccessInsert);
             }
@@ -75,7 +85,7 @@ namespace GESTION_COLEGIAL.UI.Controllers
 
                 if (result)
                 {
-                    return AjaxResult(false, AlertMessage.AlertMessageCustomType.Error);
+                    return AjaxResult(false, false, AlertMessage.AlertMessageType.Error, noGuardo);
                 }
 
                 // Cambió la contraseña, el rol o el estado: las sesiones abiertas de esa cuenta se revisan ya.

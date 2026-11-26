@@ -21,6 +21,8 @@ var Matricula = (function () {
     var encMode = "existente"; // "existente" | "nuevo"
     var alumnoCreadoId = 0;
     var resultadoAspirante = null; // solo desde la lista de espera (cfg.aspirante)
+    var resultadoInscripcion = null; // { ok, anio, aviso } de la inscripción en el año
+    var cupoPermitido = null;      // null = sin revisar; true/false según la revisión del cupo del año
 
     // La identidad se escribe con o sin guiones (0801-1990-12345) y se guarda como texto de 13 dígitos.
     function soloDigitos(v) { return (v || "").toString().replace(/[\s-]/g, ""); }
@@ -33,6 +35,7 @@ var Matricula = (function () {
         var pParentescos = cargarParentescos();
         var pEncargados = cargarEncargados();
         wireCascada();
+        wireCupo();
         wireNav();
         wireEncModo();
         wireIdentidad();
@@ -181,6 +184,30 @@ var Matricula = (function () {
         });
     }
 
+    // -------------------------------------------------- Año de inscripción y cupo de la sección
+    function wireCupo() {
+        $("#Ani_Id, #Sec_Id").on("change", revisarCupo);
+        $("#Niv_Id, #Cun_Id, #Mda_Id, #Cur_Id").on("change", function () { limpiarCupo(); });
+    }
+
+    function limpiarCupo() {
+        cupoPermitido = null;
+        $("#matCupoAviso").addClass("d-none").text("");
+    }
+
+    function revisarCupo() {
+        var sec = $("#Sec_Id").val();
+        if (!sec) { limpiarCupo(); return; }
+        $.getJSON(cfg.urlVerificarCupo, {
+            aniId: $("#Ani_Id").val(), nivId: $("#Niv_Id").val(), cunId: $("#Cun_Id").val(), mdaId: $("#Mda_Id").val(), secId: sec
+        }).done(function (r) {
+            cupoPermitido = !!(r && r.permitido);
+            var cls = !cupoPermitido ? "alert-light-danger" : (r.cupo == null || r.libres <= 3 ? "alert-light-warning" : "alert-light-success");
+            $("#matCupoAviso").removeClass("d-none alert-light-danger alert-light-warning alert-light-success").addClass(cls)
+                .text((r && r.mensaje) || "");
+        }).fail(function () { limpiarCupo(); });
+    }
+
     function resetHijo(sel, placeholder) {
         $(sel).empty()
             .append('<option value="">' + placeholder + '</option>')
@@ -312,6 +339,12 @@ var Matricula = (function () {
             }
         });
 
+        if (ok && cupoPermitido === false) {
+            alertar($("#matCupoAviso").text() || "La sección no tiene cupo en ese año.", "error");
+            $("#Sec_Id").focus();
+            ok = false;
+        }
+
         if (!ok && primero) primero.focus();
         return ok;
     }
@@ -369,7 +402,7 @@ var Matricula = (function () {
         $("#sumAlumno").html('<h6 class="text-primary font-weight-bold"><i class="fas fa-user mr-1"></i> Alumno</h6>' + htmlAlu);
 
         // Académico (cascada)
-        var htmlAca = fila("Nivel", txtSel("#Niv_Id")) +
+        var htmlAca = fila("Año de inscripción", txtSel("#Ani_Id")) + fila("Nivel", txtSel("#Niv_Id")) +
             fila("Grado", txtSel("#Cun_Id")) +
             fila("Modalidad", txtSel("#Mda_Id")) +
             fila("Curso", txtSel("#Cur_Id")) +
@@ -425,6 +458,7 @@ var Matricula = (function () {
             Sec_Id: $("#Sec_Id").val(),
             Est_Id: $("#Est_Id").val()
         };
+        p.aniId = $("#Ani_Id").val();
         if (cfg.aspirante) p.aspiranteId = cfg.aspirante.id;
         return p;
     }
@@ -470,6 +504,7 @@ var Matricula = (function () {
             }
             alumnoCreadoId = (res.item && res.item.alu_Id) ? res.item.alu_Id : 0;
             resultadoAspirante = (res.item && res.item.aspirante) ? res.item.aspirante : null;
+            resultadoInscripcion = res.item ? { ok: !!res.item.inscrito_anio, anio: res.item.anio_nombre, aviso: res.item.aviso_inscripcion } : null;
 
             // 2) Ligar al encargado (nuevo o ya registrado) con su parentesco
             var fallo = function (msg) { finalizar(false, msg); };
@@ -506,6 +541,13 @@ var Matricula = (function () {
             ? '<a href="' + cfg.urlDocumentos + '" class="btn btn-primary mr-2"><i class="fas fa-folder-open mr-1"></i> Gestionar documentos</a>'
             : "";
         var linkAlu = '<a href="' + cfg.urlAlumnos + '" class="btn btn-outline-secondary"><i class="fas fa-list mr-1"></i> Ir al listado</a>';
+
+        if (resultadoInscripcion) {
+            notaEnc += resultadoInscripcion.ok
+                ? '<p class="text-success"><i class="fas fa-circle-check mr-1"></i> Inscrito en el año ' + $("<div>").text(resultadoInscripcion.anio || "").html() + '.</p>'
+                : '<p class="text-danger"><i class="fas fa-triangle-exclamation mr-1"></i> El alumno se creó, pero no quedó inscrito en el año' +
+                  (resultadoInscripcion.aviso ? ': ' + $("<div>").text(resultadoInscripcion.aviso).html() : '') + '. Inscríbalo desde Promociones y expediente por año.</p>';
+        }
 
         // Desde la lista de espera: cómo quedó el aspirante y enlace de vuelta.
         if (resultadoAspirante) {

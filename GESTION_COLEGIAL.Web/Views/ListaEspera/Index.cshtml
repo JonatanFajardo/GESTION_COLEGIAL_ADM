@@ -32,6 +32,9 @@
                 <option value="@a.Ani_Id" selected="@(a.Ani_Id == M.AniId)">@a.Ani_Nombre@(a.EsActivo ? " (activo)" : "")</option>
             }
         </select>
+        <button type="button" class="btn btn-outline-primary mr-2" id="lde-cupos" data-anio="@M.AniId" data-nombre="@M.Anio?.Ani_Nombre">
+            <i class="bi bi-sliders mr-1" aria-hidden="true"></i> Cupos
+        </button>
         @if (M.PuedeGestionar && M.AdmiteRegistro)
         {
             <a class="btn btn-primary" href="@Url.Action("Registrar", new { anio = M.AniId })">
@@ -47,14 +50,21 @@
      data-url-grados="@Url.Action("GradosAsync")" data-url-modalidades="@Url.Action("ModalidadesAsync")"
      data-url-estado="@Url.Action("CambiarEstadoAsync")" data-url-aspirante="@Url.Action("Aspirante")"
      data-url-matricula="@Url.Action("Index", "Matricula")"
-     data-gestionar="@(M.PuedeGestionar ? "1" : "0")" data-matricular="@(M.PuedeMatricular && M.EsAnioActivo ? "1" : "0")">
+     data-gestionar="@(M.PuedeGestionar ? "1" : "0")" data-matricular="@(M.PuedeMatricular && M.AdmiteMatricula ? "1" : "0")">
     @Html.AntiForgeryToken()
 
-    @if (M.PuedeMatricular && !M.EsAnioActivo)
+    @if (M.PuedeMatricular && M.AdmiteMatricula && !M.EsAnioActivo)
     {
         <div class="alert alert-light-info mb-4" role="status">
             <i class="bi bi-info-circle mr-1" aria-hidden="true"></i>
-            La matrícula se hace en el año activo. Los aspirantes de @(M.Anio?.Ani_Nombre) se podrán matricular cuando ese año sea el activo; mientras tanto se pueden registrar, ordenar y recibir ofertas.
+            Se matricula para @(M.Anio?.Ani_Nombre) (todavía no es el año activo): el alumno queda inscrito en sus secciones y cupos, y su ubicación actual cambia cuando ese año se abra.
+        </div>
+    }
+    else if (M.PuedeMatricular && !M.AdmiteMatricula)
+    {
+        <div class="alert alert-light-info mb-4" role="status">
+            <i class="bi bi-info-circle mr-1" aria-hidden="true"></i>
+            @(M.Anio?.Ani_Nombre) ya no admite matrículas. Los aspirantes se pueden consultar, pero no matricular.
         </div>
     }
 
@@ -203,5 +213,14 @@
 
 @section Scripts{
     <partial name="_GcTabla" />
+    <partial name="_CuposAnio" />
+    <script src="~/Content/js/components/cupos-anio.js" asp-append-version="true"></script>
+    <script>
+        $("#lde-cupos").on("click", function () {
+            var cambio = false;
+            $("#modalCuposAnio").one("hidden.bs.modal", function () { if (cambio) location.reload(); });
+            GcCupos.abrir($(this).data("anio"), $(this).data("nombre"), function () { cambio = true; });
+        });
+    </script>
     <script src="~/Content/js/pages/lista-espera.js" asp-append-version="true"></script>
 }

@@ -192,9 +192,7 @@
             }
 
             function setActivo(id) {
-                $.post(urls.setActivo, { id: id })
-                    .done(function (resp) { notify(resp && resp.success === false ? "error" : "success", resp && resp.message); reload(); })
-                    .fail(function () { notify("error"); });
+                ActivarAnio.pedir(urls.setActivo, id, reload, reload, notify);
             }
             function onDeleteSuccess(resp) {
                 if (resp && resp.success === false) { notify("error", resp.message); return; }

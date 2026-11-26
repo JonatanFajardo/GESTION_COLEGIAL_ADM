@@ -40,6 +40,10 @@ namespace GESTION_COLEGIAL.Business.Models
         public bool Publicado { get; set; }
         public DateTime? FechaInicio { get; set; }
         public DateTime? FechaLimite { get; set; }
+        /// <summary>Fechas del semestre según los períodos del año lectivo (null si el año no los tiene).</summary>
+        public DateTime? SemestreInicio { get; set; }
+        public DateTime? SemestreFin { get; set; }
+        public bool SemestreVigente { get; set; }
         public bool LimiteVencido { get; set; }
         public DateTime? FechaCierre { get; set; }
         public string UsuarioCierre { get; set; }

@@ -262,6 +262,7 @@
                         @* Encargados + Directorio fusionados en "Directorio de Contacto" (tabs Por Alumno / Por Encargado) *@
                         @if (tiene("Directorio de Contacto") || tiene("Listado de encargados") || tiene("Directorio de Alumnos") || esAdmin)
                                                                  { <li>@Html.ActionLink("Directorio de contacto","Index", "DirectorioContacto")</li> }
+                        @if (tiene("Editar alumnos") || esAdmin) { <li>@Html.ActionLink("Vínculos familiares",     "Index", "VinculosFamiliares")</li> }
                         @if (tiene("Documentos alumno"))         { <li>@Html.ActionLink("Documentos del alumno",           "Index", "DocumentosAlumnoAdm")</li> }
                         @if (tiene("Fichas de salud") || esAdmin) { <li>@Html.ActionLink("Fichas de salud",                 "Index", "FichasSalud")</li> }
                         @if (tiene("Invitaciones al portal") || esAdmin) { <li>@Html.ActionLink("Invitaciones al portal",   "Index", "InvitacionesPortal")</li> }

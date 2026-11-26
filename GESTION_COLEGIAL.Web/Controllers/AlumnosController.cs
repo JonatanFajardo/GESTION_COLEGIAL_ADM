@@ -397,11 +397,32 @@ namespace GESTION_COLEGIAL.UI.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetAcademicoAsync(int id)
+		// Las notas solo las ve quien ya puede verlas en otra pantalla: "Boletín de calificaciones" (Notas y boletín) o "Constancias y expediente" (Secretaría).
+		private bool PuedeVerNotas() => (Session[SesionUsuario.RoleName] as string ?? "").Equals("admin", System.StringComparison.OrdinalIgnoreCase) || TienePantalla("Boletín de calificaciones") || TienePantalla("Constancias y expediente");
+
+		public ActionResult GetAcademicoAsync(int id)
 		{
-			var data = await boletinService.GetAsync(id, System.DateTime.Now.Year);
-			return PartialView("_TabAcademico", data);
+			ViewBag.AlumnoId = id;
+			ViewBag.PuedeVerNotas = PuedeVerNotas();
+			return PartialView("_TabAcademico");
 		}
+
+		// Datos del tab Académico (mismo boletín que "Notas y boletín").
+		[HttpGet]
+		public async Task<ActionResult> BoletinAsync(int Alu_Id, int Anio)
+			=> !PuedeVerNotas() ? new StatusCodeResult(403) : AjaxResult(await boletinService.GetAsync(Alu_Id, Anio));
+
+		[HttpGet]
+		public async Task<ActionResult> PublicacionAsync(int anio)
+			=> !PuedeVerNotas() ? new StatusCodeResult(403) : AjaxResult(await new CierresParcialService().PeriodosAsync(anio));
+
+		[HttpGet]
+		public async Task<ActionResult> EscalaAsync()
+			=> !PuedeVerNotas() ? new StatusCodeResult(403) : AjaxResult(await new EscalaNotasService().ListAsync());
+
+		[HttpGet]
+		public async Task<ActionResult> NotaMinimaAsync()
+			=> !PuedeVerNotas() ? new StatusCodeResult(403) : Json(new { valor = await new ConfiguracionService().GetNotaMinimaAprobacionAsync() });
 
 		public async Task<ActionResult> GetAsistenciaAsync(int id)
 		{

@@ -17,6 +17,8 @@ namespace GESTION_COLEGIAL.UI.Models
         public AspiranteAnioViewModel Anio => Anios.FirstOrDefault(a => a.Ani_Id == AniId);
         public bool AdmiteRegistro => Anio?.AdmiteRegistro == true;
         public bool EsAnioActivo => Anio?.EsActivo == true;
+        /// <summary>Se puede matricular en el año activo o en uno siguiente (Borrador, Programado o Abierto).</summary>
+        public bool AdmiteMatricula { get; set; }
     }
 
     /// <summary>Pantalla completa "Registro de aspirante" (nuevo o edición mientras siga abierto).</summary>
@@ -40,6 +42,8 @@ namespace GESTION_COLEGIAL.UI.Models
         public List<AspiranteHistorialViewModel> Historial { get; set; } = new List<AspiranteHistorialViewModel>();
         public bool PuedeGestionar { get; set; }
         public bool PuedeMatricular { get; set; }
+        /// <summary>El año del aspirante admite inscripciones (es el activo o uno siguiente con secciones).</summary>
+        public bool AdmiteMatricula { get; set; }
         public string Aviso { get; set; }
     }
 }

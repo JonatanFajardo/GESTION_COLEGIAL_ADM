@@ -196,7 +196,7 @@
     @* ── Nuevo temario ── *@
     <div class="modal fade" id="tm-modal-nuevo" tabindex="-1" role="dialog" aria-labelledby="tm-nuevo-titulo" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
-            <form class="modal-content" id="tm-form-nuevo" novalidate data-url="@Url.Action("CrearAsync")">
+            <form class="modal-content" id="tm-form-nuevo" novalidate data-url-semestres="@Url.Action("SemestresAsync", "AnioConexion")" data-url="@Url.Action("CrearAsync")">
                 <div class="modal-header">
                     <h5 class="modal-title" id="tm-nuevo-titulo">Nuevo temario</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>

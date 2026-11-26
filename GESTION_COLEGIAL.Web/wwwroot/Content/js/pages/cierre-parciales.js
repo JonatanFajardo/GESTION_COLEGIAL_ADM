@@ -142,7 +142,12 @@
             lineas.push('<i class="bi bi-calendar-event mr-1" aria-hidden="true"></i>' + t +
                 (p.LimiteVencido ? ' <span class="badge outline-badge-danger ml-1">Fecha límite vencida</span>' : ''));
         } else if (p.Estado !== "cerrado") {
-            lineas.push('<i class="bi bi-calendar mr-1" aria-hidden="true"></i>Sin fecha límite de carga');
+            lineas.push('<i class="bi bi-calendar mr-1" aria-hidden="true"></i>Sin fecha límite de carga' +
+                (p.SemestreFin ? ' (el semestre termina el ' + fecha(p.SemestreFin) + ')' : ''));
+        }
+        if (p.SemestreInicio) {
+            lineas.push('<i class="bi bi-calendar-range mr-1" aria-hidden="true"></i>Semestre: desde ' + fecha(p.SemestreInicio) +
+                (p.SemestreFin ? ' hasta ' + fecha(p.SemestreFin) : ''));
         }
 
         if (p.Estado === "cerrado" && p.FechaCierre) {
@@ -171,7 +176,8 @@
             '  <div class="statbox widget box box-shadow h-100 cp-periodo" data-sem="' + p.Sem_Id + '" data-pac="' + p.Pac_Id + '">' +
             '    <div class="widget-content widget-content-area h-100 d-flex flex-column">' +
             '      <div class="d-flex align-items-start justify-content-between mb-3">' +
-            '        <div class="mr-2"><h5 class="mb-0">' + esc(p.Parcial) + '</h5><span class="text-muted small">' + esc(p.Semestre) + ' ' + p.Anio + '</span></div>' +
+            '        <div class="mr-2"><h5 class="mb-0">' + esc(p.Parcial) + '</h5><span class="text-muted small">' + esc(p.Semestre) + ' ' + p.Anio + '</span>' +
+            (p.SemestreVigente ? ' <span class="badge outline-badge-primary ml-1">Semestre vigente</span>' : '') + '</div>' +
             '        ' + insignia(p) +
             '      </div>' +
             '      <div class="d-flex justify-content-between small mb-1">' +
