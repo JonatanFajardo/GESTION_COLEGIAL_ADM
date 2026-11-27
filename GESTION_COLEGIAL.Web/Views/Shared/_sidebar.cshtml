@@ -505,8 +505,9 @@
                         @if (tiene("Listado de cuentas por cobrar")) { <li>@Html.ActionLink("Cuenta del alumno",   "EstadoCuenta",  "CuentasCobrar")</li> }
                         @if (tiene("Crear pagos") || tiene("Crear cuentas por cobrar")) { <li>@Html.ActionLink("Cargos masivos",      "CargosMasivos", "CuentasCobrar")</li> }
                         @* Reportes financieros sueltos → Centro de reportes (ver TODO.md). Ingresos del mes, Comparativa anual y
-                           Proyección de cobros se deshabilitaron: su API no está conectada (el servicio está comentado en la API y los
-                           procedimientos no existen). Pendientes por cobrar, Historial de transacciones, Flujo de caja, Estado de
+                           Proyección de cobros nunca funcionaron (su API no existía): ahora son reportes del Centro («Ingresos por
+                           concepto», «Cobros: comparativo entre dos años», «Proyección de cobros del año») y sus enlaces viejos
+                           llevan allá. Pendientes por cobrar, Historial de transacciones, Flujo de caja, Estado de
                            resultados, Análisis de ingresos y Comparativo por año pasaron al Centro con los mismos filtros. Controllers vivos.
                         @if (tiene("Reportes financieros"))
                         {

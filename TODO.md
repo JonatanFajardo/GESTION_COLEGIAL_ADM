@@ -117,8 +117,8 @@ Un solo lugar (`/CentroReportes`) para pedir cualquier reporte con sus filtros, 
 |---|---|---|---|---|
 | Panel financiero (`ReportesFinancieros/DashboardFinanciero`) | Contador | Ver de un vistazo cómo van las finanzas | No (agregado) | Mantener |
 | Ingresos del mes | Contador | Ver lo cobrado en un mes | La API no está conectada (servicio comentado, procedimientos inexistentes): la pantalla no carga | Deshabilitar → "Ingresos por concepto" del Centro |
-| Comparativa anual | Contador | Comparar cobros entre años | Misma falla de API | Deshabilitar → "Flujo de caja por mes" por año |
-| Proyección de cobros | Contador | Ver lo que falta cobrar del mes | Misma falla de API | Deshabilitar → "Cargos pendientes de cobro" |
+| Comparativa anual | Contador | Comparar cobros entre años | Misma falla de API | Hecho → reporte "Cobros: comparativo entre dos años" del Centro |
+| Proyección de cobros | Contador | Ver lo que falta cobrar del año | Misma falla de API | Hecho → reporte "Proyección de cobros del año" del Centro (incluye mensualidades por generar) |
 | Pendientes por cobrar | Contador, cajero | Lista de cargos con saldo | Sí, con Cuentas por cobrar (filtro vencidas) | Pasar al centro ("Cargos pendientes de cobro") |
 | Historial de transacciones | Cajero, contador | Pagos de un rango de fechas | Sí, con Movimientos de caja | Pasar al centro ("Pagos recibidos") |
 | Conciliación rápida | Cajero | Cuadrar pagos del día | No (operativa) | Mantener |
