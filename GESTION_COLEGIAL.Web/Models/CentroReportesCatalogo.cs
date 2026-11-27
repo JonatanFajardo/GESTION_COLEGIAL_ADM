@@ -331,6 +331,29 @@ namespace GESTION_COLEGIAL.UI.Models
                              C("PorcentajeCobrado", "% cobrado", "porcentaje") },
                 Ejecutar = c => Api.FilasAsync($"AnalisisIngresos/ListAsync?Anio={c.Entero("anio")}")
             },
+            new ReporteDefinicion
+            {
+                Clave = "comparativo-cobros", Area = Finanzas, Icono = "bi bi-bar-chart-line",
+                Titulo = "Cobros: comparativo entre dos años",
+                Descripcion = "Mes a mes, lo cobrado en dos años, con la diferencia y la variación en %.",
+                Origen = "Comparativa anual", Pantallas = new[] { "Reportes financieros" },
+                Parametros = { Anio("anioBase", "Año base", "anioAnterior"), Anio("anioComparado", "Año a comparar") },
+                Columnas = { C("NombreMes", "Mes"), C("CobradoBase", "Año base", "dinero", true),
+                             C("CobradoComparado", "Año a comparar", "dinero", true), C("Diferencia", "Diferencia", "dinero", true),
+                             C("Variacion", "Variación", "porcentaje") },
+                Ejecutar = c => Api.FilasAsync($"CentroReportes/ComparativoCobrosAsync?anioBase={c.Entero("anioBase")}&anioComparado={c.Entero("anioComparado")}")
+            },
+            new ReporteDefinicion
+            {
+                Clave = "proyeccion-cobros", Area = Finanzas, Icono = "bi bi-calendar2-range",
+                Titulo = "Proyección de cobros del año",
+                Descripcion = "Lo que falta por cobrar mes a mes: lo atrasado, el saldo de los cargos que vencen cada mes y una estimación de las mensualidades que todavía no se han generado (tarifa de cada alumno activo).",
+                Origen = "Proyección de cobros", Pantallas = new[] { "Reportes financieros" },
+                Parametros = { Anio(), P("mesDesde", "Desde el mes", "mes", true, "mesActual") },
+                Columnas = { C("NombreMes", "Mes"), C("Pendiente", "Ya cargado", "dinero", true),
+                             C("EstimadoPorGenerar", "Por generar", "dinero", true), C("TotalEsperado", "Total por cobrar", "dinero", true) },
+                Ejecutar = c => Api.FilasAsync($"CentroReportes/ProyeccionCobrosAsync?anio={c.Entero("anio")}&mesDesde={c.Entero("mesDesde")}")
+            },
 
             // ───────────────────────────── Recursos humanos ─────────────────────────────
             new ReporteDefinicion

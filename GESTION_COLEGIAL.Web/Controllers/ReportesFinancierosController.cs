@@ -27,47 +27,13 @@ namespace GESTION_COLEGIAL.UI.Controllers
         /// </summary>
         public ActionResult Morosos() => RedirectToAction("Index", "CuentasCobrar", new { estado = "vencida" });
 
-        /// <summary>
-        /// Acción para mostrar el reporte de ingresos por mes.
-        /// </summary>
-        public ActionResult IngresosMes()
-        {
-            return View();
-        }
+        // Ingresos del mes, Proyección de cobros y Comparativa anual viven en el Centro de reportes
+        // (las pantallas viejas nunca funcionaron: su API no existía). Los enlaces viejos llevan allá.
+        public ActionResult IngresosMes() => RedirectToAction("Index", "CentroReportes", new { r = "ingresos-concepto" });
+        public ActionResult ProyeccionCobros() => RedirectToAction("Index", "CentroReportes", new { r = "proyeccion-cobros" });
+        public ActionResult ComparativaAnual() => RedirectToAction("Index", "CentroReportes", new { r = "comparativo-cobros" });
 
-        /// <summary>
-        /// Acción para mostrar el reporte de proyección de cobros.
-        /// </summary>
-        public ActionResult ProyeccionCobros()
-        {
-            return View();
-        }
 
-        /// <summary>
-        /// Acción para mostrar el reporte comparativo anual.
-        /// </summary>
-        public ActionResult ComparativaAnual()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Acción asincrónica para obtener ingresos por mes.
-        /// </summary>
-        public async Task<ActionResult> IngresosPorMesAsync(int anio, int mes)
-        {
-            var result = await reportesService.IngresosPorMesAsync(anio, mes);
-            return AjaxResult(result);
-        }
-
-        /// <summary>
-        /// Acción asincrónica para obtener proyección de cobros.
-        /// </summary>
-        public async Task<ActionResult> ProyeccionCobrosAsync(int anio, int mes)
-        {
-            var result = await reportesService.ProyeccionCobrosAsync(anio, mes);
-            return AjaxResult(result);
-        }
 
         /// <summary>
         /// Acción asincrónica para obtener listado de morosos.
@@ -87,14 +53,6 @@ namespace GESTION_COLEGIAL.UI.Controllers
             return AjaxResult(result);
         }
 
-        /// <summary>
-        /// Acción asincrónica para obtener comparativa anual.
-        /// </summary>
-        public async Task<ActionResult> ComparativaAnualAsync(int anioInicio, int anioFin)
-        {
-            var result = await reportesService.ComparativaAnualAsync(anioInicio, anioFin);
-            return AjaxResult(result);
-        }
 
         /// <summary>
         /// Acción asincrónica para obtener datos del dashboard financiero.
